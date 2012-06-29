@@ -1,0 +1,202 @@
+<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="7.60"> 
+	<tileset name="Water creatures">
+		<creatures>
+			<creature name="Azure Frog"/>
+			<creature name="Coral Frog"/>
+			<creature name="Crimson Frog"/>
+			<creature name="Green Frog"/>
+			<creature name="Toad"/>
+		</creatures>
+	</tileset>
+	
+	<tileset name="Animals">
+		<creatures>
+            <creature name="Sibang"/>
+			<creature name="Kongra"/>
+            <creature name="Lizard Sentinel"/>
+			<creature name="Lizard Templar"/>
+			<creature name="Lizard Snakecharmer"/>
+			<creature name="Chicken"/>
+			<creature name="Rabbit"/>
+			<creature name="Black Sheep"/>
+			<creature name="Dog"/>
+			<creature name="Sheep"/>
+			<creature name="Deer"/>
+			<creature name="Flamingo"/>
+			<creature name="Parrot"/>
+			<creature name="Pig"/>
+			<creature name="Seagull"/>
+			<creature name="Skunk"/>
+			<creature name="Rat"/>
+			<creature name="Badger"/>
+			<creature name="Bat"/>
+			<creature name="Cave Rat"/>
+			<creature name="Wolf"/>
+			<creature name="Winter Wolf"/>
+			<creature name="Hyaena"/>
+			<creature name="Bear"/>
+			<creature name="Panda"/>
+			<creature name="Polar Bear"/>
+			<creature name="Crab"/>
+			<creature name="Lion"/>
+			<creature name="Rotworm"/>
+			<creature name="Tiger"/>
+			<creature name="Crocodile"/>
+			<creature name="War Wolf"/>
+			<creature name="Carrion Worm"/>
+			<creature name="Tortoise"/>
+			<creature name="Terror Bird"/>
+			<creature name="Thornback Tortoise"/>
+			<creature name="Blood Crab"/>
+			<creature name="Elephant"/>
+		</creatures>
+	</tileset>
+	
+	<tileset name="Bugs">
+		<creatures>
+			<creature name="Giant Spider"/>
+			<creature name="Poison Spider"/>
+			<creature name="Spider"/>
+			<creature name="Scorpion"/>
+			<creature name="Tarantula"/>
+			<creature name="The Old Widow"/>
+			<creature name="Ancient Scarab"/>
+			<creature name="Bug"/>
+			<creature name="Butterfly"/>
+			<creature name="Centipede"/>
+			<creature name="Larva"/>
+			<creature name="Scarab"/>
+			<creature name="Wasp"/>
+			<creature name="Blood Crab"/>
+			<creature name="Crab"/>
+		</creatures>
+	</tileset>
+	
+    <tileset name="Bosses">
+        <creatures>
+			<creature name="Apprentice Sheng"/>
+			<creature name="Ghazbaran"/>
+			<creature name="Grorlam"/>
+			<creature name="Tiquandas Revenge"/>
+			<creature name="The Horned Fox"/>
+			<creature name="The Old Widow"/>
+			<creature name="General Murius"/>
+			<creature name="Bones"/>
+			<creature name="Dharalion"/>
+			<creature name="Fernfang"/>
+			<creature name="Demodras"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Large and Nasty">
+        <creatures>
+            <creature name="Cyclops"/>
+			<creature name="Behemoth"/>
+            <creature name="Fire Devil"/>
+			<creature name="Demon"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Humans">
+        <creatures>
+            <creature name="Dwarf"/>
+			<creature name="Dwarf Soldier"/>
+			<creature name="Dwarf Guard"/>
+			<creature name="Dwarf Geomancer"/>
+            <creature name="Smuggler"/>
+			<creature name="Amazon"/>
+			<creature name="Wild Warrior"/>
+			<creature name="Bandit"/>
+			<creature name="Valkyrie"/>
+			<creature name="Stalker"/>
+			<creature name="Assassin"/>
+			<creature name="Witch"/>
+			<creature name="Dark Monk"/>
+			<creature name="Hunter"/>
+			<creature name="Monk"/>
+			<creature name="Priestess"/>
+			<creature name="Necromancer"/>
+			<creature name="Hero"/>
+			<creature name="Black Knight"/>
+			<creature name="Warlock"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Lesser humans">
+        <creatures>
+            <creature name="Dwarf"/>
+			<creature name="Dwarf Soldier"/>
+			<creature name="Dwarf Guard"/>
+			<creature name="Dwarf Geomancer"/>
+            <creature name="Elf"/>
+			<creature name="Elf Scout"/>
+			<creature name="Elf Arcanist"/>
+			<creature name="Dharalion"/>
+            <creature name="Minotaur"/>
+			<creature name="Minotaur Archer"/>
+			<creature name="Minotaur Mage"/>
+			<creature name="Minotaur Guard"/>
+            <creature name="Goblin"/>
+            <creature name="Dworc Venomsniper"/>
+			<creature name="Dworc Fleshhunter"/>
+			<creature name="Dworc Voodoomaster"/>
+			<creature name="Orc"/>
+			<creature name="Orc Spearman"/>
+			<creature name="Orc Warrior"/>
+			<creature name="Orc Rider"/>
+			<creature name="Orc Shaman"/>
+			<creature name="Orc Berserker"/>
+			<creature name="Orc Leader"/>
+			<creature name="Orc Warlord"/>
+			<creature name="Troll"/>
+			<creature name="Frost Troll"/>
+			<creature name="Swamp Troll"/>
+         </creatures>
+    </tileset>
+	
+	<tileset name="Magical Creatures">
+		<creatures>
+			<creature name="Deathslicer"/>
+			<creature name="Magicthrower"/>
+			<creature name="Gazer"/>
+			<creature name="Beholder"/>
+			<creature name="Blue Djinn"/>
+			<creature name="Green Djinn"/>
+			<creature name="Fire Elemental"/>
+			<creature name="Elder Beholder"/>
+			<creature name="Efreet"/>
+			<creature name="Marid"/>
+			<creature name="Dragon"/>
+			<creature name="Serpent Spawn"/>
+			<creature name="Dragon Lord"/>
+			<creature name="Hydra"/>
+		</creatures>
+    </tileset>
+	
+    <tileset name="Pharaohs">
+        <creatures>
+            <creature name="Dipthrah"/>
+			<creature name="Omruc"/>
+			<creature name="Vashresamun"/>
+			<creature name="Mahrdis"/>
+			<creature name="Ashmunrah"/>
+			<creature name="Rahemos"/>
+         </creatures>
+    </tileset>
+	
+	<tileset name="Undead">
+		<creatures>
+			<creature name="Banshee"/>
+			<creature name="Bonebeast"/>
+			<creature name="Demon Skeleton"/>
+			<creature name="Destroyer"/>
+			<creature name="Ghoul"/>
+			<creature name="Lich"/>
+			<creature name="Mummy"/>
+			<creature name="Necromancer"/>
+			<creature name="Skeleton"/>
+			<creature name="Spectre"/>
+			<creature name="Vampire"/>
+		</creatures>
+	</tileset>
+</materialsextension>

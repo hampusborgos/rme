@@ -1,0 +1,72 @@
+<materialsextension name="Better creature categories (8.40)" author="Remere" description="Added the creatures of the 8.4 update." client="8.40"> 
+    	<tileset name="Water creatures">
+		<creatures>
+			<creature name="Young Sea Serpent"/>
+		</creatures>
+	</tileset>
+	
+	<tileset name="Giants">
+        <creatures>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Humans">
+        <creatures>
+            <creature name="Crazed Beggar"/>
+            <creature name="Mad Scientist"/>
+            <creature name="Gladiator"/>
+            <creature name="Gang Member"/>
+            <creature name="Fury"/>
+            <creature name="Azerus"/>
+            <creature name="Ice Witch"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Lesser humans">
+        <creatures>
+            <creature name="Mutated Human"/>
+         </creatures>
+    </tileset>
+	
+	<tileset name="Magical Creatures">
+		<creatures>
+			<creature name="Nightmare Scion"/>
+			<creature name="Nightstalker"/>
+			<creature name="Gozzler"/>
+            <creature name="Haunted Treeling"/>
+            <creature name="Haunted Spirit"/>
+		</creatures>
+    </tileset>
+	
+	<tileset name="Elementals">
+		<creatures>
+			<creature name="Acid Blob"/>
+			<creature name="Death Blob"/>
+			<creature name="Mercury Blob"/>
+			<creature name="Tar Blob"/>
+            <creature name="War Golem"/>
+            <creature name="Worker Golem"/>
+            <creature name="Damaged Worker Golem"/>
+		</creatures>
+    </tileset>
+	
+	<tileset name="Undead">
+		<creatures>
+			<creature name="Undead Gladiator"/>
+			<creature name="Zombie"/>
+            <creature name="Werewolf"/>
+            <creature name="Vampire Bride"/>
+		</creatures>
+	</tileset>
+	
+	<tileset name="Freaks">
+		<creatures>
+            <creature name="Hellspawn"/>
+            <creature name="Mutated Bat"/>
+            <creature name="Mutated Human"/>
+            <creature name="Mutated Rat"/>
+            <creature name="Mutated Tiger"/>
+            <creature name="Werewolf"/>
+		</creatures>
+	</tileset>
+</materialsextension>

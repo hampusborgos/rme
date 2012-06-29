@@ -1,0 +1,36 @@
+#!/bin/bash
+echo "Creating RME release $1"
+
+if [ "$1" == "" ]; then
+	echo "Provide version number!"
+	exit 1
+fi
+
+echo -n "Run make... "
+cd source
+make release > /dev/null
+if [ "$?" != "0" ]; then
+	echo "FAILED"
+	exit 1
+else
+	echo "Done"
+fi
+cd ..
+
+export DIR="rme-debian-$1"
+
+rm -Rf $DIR
+echo "Creating release dir $DIR"
+mkdir $DIR
+
+svn export data "$DIR/data"
+cp rme_icon.ico $DIR
+cp README.txt $DIR
+cp clients.xml $DIR
+cp source/rme-install $DIR
+cp source/rme-release $DIR/rme
+
+rm -f "$DIR.tar.gz"
+tar -cz $DIR > "$DIR.tar.gz"
+rm -Rf $DIR
+

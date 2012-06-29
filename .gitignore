@@ -1,0 +1,11 @@
+
+# RME
+rme.cfg
+
+# Visual Studio
+*.MAP
+*.user
+*.APS
+
+# Xcode
+*.xcuserdata

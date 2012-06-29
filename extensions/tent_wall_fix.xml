@@ -1,0 +1,7 @@
+<materialsextension name="Tent Wall Fix" author="Remere" description="Fixes a tent wall from Bobanys wall extension" client="8.20">
+	<brush name="colored tent wall" type="wall" server_lookid="7619">
+		<wall type="pole">
+			<item id="9060" chance="500"/>
+		</wall>
+	</brush>
+</materialsextension>

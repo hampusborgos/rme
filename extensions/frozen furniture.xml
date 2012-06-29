@@ -1,0 +1,63 @@
+<materialsextension name="Frozen Furtunite" author="Dark Master" description="This adds frozen furtunite to the editor." client="8.00;8.10;8.20"> 
+	<brush name="stone throne" type="doodad" server_lookid="7280" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="7279"/> </tile>
+				<tile x="0" y="1"> <item id="7280"/> </tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="7278"/> </tile>
+				<tile x="1" y="0"> <item id="7277"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="stone table" type="doodad" server_lookid="7276" draggable="true" on_blocking="true" thickness="100/100">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="7273"/> </tile>
+			<tile x="0" y="1"> <item id="7275"/> </tile>
+			<tile x="1" y="0"> <item id="7274"/> </tile>
+			<tile x="1" y="1"> <item id="7276"/> </tile>
+		</composite>
+	</brush>
+	
+	<brush name="frozen throne" type="doodad" server_lookid="7163" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="7163" chance="10"/> </alternate>
+		<alternate> <item id="7164" chance="10"/> </alternate>
+		<alternate> <item id="7165" chance="10"/> </alternate>
+		<alternate> <item id="7166" chance="10"/> </alternate>
+	</brush>
+	
+	<brush name="frozen clock" type="doodad" server_lookid="7167" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate> <item id="7167" chance="10"/> </alternate>
+		<alternate> <item id="7168" chance="10"/> </alternate>
+	</brush>
+	
+	<brush name="frozen chest" type="doodad" server_lookid="7160" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="7160" chance="10"/> </alternate>
+		<alternate> <item id="7161" chance="10"/> </alternate>
+	</brush>
+	
+	<brush name="frozen trough" type="doodad" server_lookid="7169" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate> <item id="7169" chance="10"/> </alternate>
+		<alternate> <item id="7170" chance="10"/> </alternate>
+	</brush>
+	
+	<brush name="frozen drawer" type="doodad" server_lookid="7162" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<item id="7162" chance="100"/>
+	</brush>
+
+	<tileset name="Snow"> 
+		<doodad> 
+			<brush name="stone throne"/>
+			<brush name="stone table"/>
+			<brush name="frozen throne"/>
+			<brush name="frozen chest"/>
+			<brush name="frozen clock"/>
+			<brush name="frozen trough"/>
+			<brush name="frozen drawer"/> 
+		</doodad> 
+	</tileset> 
+</materialsextension>

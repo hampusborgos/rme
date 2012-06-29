@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menubar>
+    <menu name="$File">
+        <item name="$New..." hotkey="Ctrl-N" action="NEW" help="Create a new map."/>
+        <item name="$Open..." hotkey="Ctrl-O" action="OPEN" help="Open another map."/>
+        <item name="$Save" hotkey="Ctrl-S" action="SAVE" help="Save the current map."/>
+        <item name="Save $As..." hotkey="Ctrl-Alt-S" action="SAVE_AS" help="Save the current map as a new file."/>
+        <item name="$Generate Map" action="GENERATE_MAP" help="Generate a new map."/>
+        <item name="$Close" hotkey="Ctrl-Q" action="CLOSE" help="Closes the currently open map."/>
+        <separator/>
+        <menu name="$Import">
+            <item name="$Import Map..." action="IMPORT_MAP" help="Import map data from another map file."/>
+            <item name="Import $Monsters/NPC..." action="IMPORT_MONSTERS" help="Import etiher a monsters.xml file or a specific monster/NPC."/>
+            <item name="Import Mi$nimap..." action="IMPORT_MINIMAP" help="Import map data from a .bmp file."/>
+        </menu>
+        <menu name="$Export">
+            <item name="$Export Minimap..." action="EXPORT_MINIMAP" help="Export minimap to an image file."/>
+        </menu>
+        <menu name="$Reload">
+            <item name="$Reload" hotkey="F5" action="RELOAD_DATA" help="Reloads all data files."/>
+        </menu>
+        <separator/>
+        <menu name="Recent $Files" special="RECENT_FILES"/>
+        <item name="$Preferences" action="PREFERENCES" help="Configure the map editor."/>
+        <item name="E$xit" action="EXIT" help="Close the editor."/>
+    </menu>
+    <menu name="$Edit">
+        <item name="$Undo" hotkey="Ctrl-Z" action="UNDO" help="Undo last action."/>
+        <item name="$Redo" hotkey="Ctrl-Y" action="REDO" help="Redo last undoed action."/>
+        <separator/>
+        <item name="Find $Item..." hotkey="Ctrl-F" action="FIND_ITEM" help="Find all instances of an item type the map."/>
+        <menu name="$Find">
+            <item name="Find $Everything" action="SEARCH_EVERYTHING" help="Find all unique/action/text/container items."/>
+            <separator/>
+            <item name="Find $Unique" action="SEARCH_UNIQUE" help="Find all items with unique ID."/>
+            <item name="Find $Action" action="SEARCH_ACTION" help="Find all items with action ID."/>
+            <item name="Find $Container" action="SEARCH_CONTAINER" help="Find all containers."/>
+            <item name="Find $Writeable" action="SEARCH_WRITEABLE" help="Find all writeable items."/>
+        </menu>
+        <separator/>
+        <menu name="$Selection">
+            <item name="$Compensate Selection" action="SELECT_MODE_COMPENSATE" help="Compensate for floor difference when selecting."/>
+            <separator/>
+            <item name="$Current Floor" action="SELECT_MODE_CURRENT" help="Select only current floor."/>
+            <item name="$Lower Floors" action="SELECT_MODE_LOWER" help="Select all lower floors."/>
+            <item name="$Visible Floors" action="SELECT_MODE_VISIBLE" help="Select only visible floors."/>
+        </menu>
+        <menu name="$Border Options">
+            <item name="Border $Automagic" hotkey="A" action="AUTOMAGIC" help="Turns on all automatic border functions."/>
+			<separator/>
+            <item name="$Borderize Selection" hotkey="Ctrl-B" action="BORDERIZE_SELECTION" help="Creates automatic borders in the entire selected area."/>
+            <item name="Borderize $Map" action="BORDERIZE_MAP" help="Reborders the entire map."/>
+            <item name="Ra$ndomize Selection" action="RANDOMIZE_SELECTION" help="Randomizes the ground tiles of the selected area."/>
+            <item name="$Randomize Map" action="RANDOMIZE_MAP" help="Randomizes all tiles of the entire map."/>
+        </menu>
+        <menu name="$Other Options">
+            <item name="$Remove Items by ID..." action="MAP_REMOVE_ITEMS" help="Removes all items with the selected ID from the map."/>
+            <item name="Remove $all corpses..." action="MAP_REMOVE_CORPSES" help="Removes all corpses from the map."/>
+            <item name="Remove all $unreachable tiles..." action="MAP_REMOVE_UNREACHABLE_TILES" help="Removes all tiles that cannot be reached (or seen) by the player from the map."/>
+            <item name="$Clear Invalid Houses" action="CLEAR_INVALID_HOUSES" help="Clears house tiles not belonging to any house."/>
+            <item name="Clear $Modified State" action="CLEAR_MODIFIED_STATE" help="Clears the modified state from all tiles."/>
+        </menu>
+        <separator/>
+        <item name="Goto $Position..." hotkey="Ctrl-G" action="GOTO_POSITION" help="Go to a specific XYZ position."/>
+        <item name="$Jump to Brush..." hotkey="J" action="JUMP_TO_BRUSH" help="Jump to a brush."/>
+        <item name="Jump to $Item..." hotkey="Ctrl-J" action="JUMP_TO_ITEM_BRUSH" help="Jump to an item brush (RAW palette)."/>
+        <separator/>
+        <item name="$Cut" hotkey="Ctrl-X" action="CUT" help="Cut a part of the map."/>
+        <item name="C$opy" hotkey="Ctrl-C" action="COPY" help="Copy a part of the map."/>
+        <item name="$Paste" hotkey="Ctrl-V" action="PASTE" help="Paste a part of the map."/>
+    </menu>
+    <menu name="$Map">
+        <item name="Edit $Towns" hotkey="Ctrl-T" action="EDIT_TOWNS" help="Edit towns."/>
+        <item name="Edit $Items" hotkey="Ctrl-I" action="EDIT_ITEMS" help="Edit items."/>
+        <item name="Edit $Monsters" action="EDIT_MONSTERS" help="Edit monsters."/>
+        <separator/>
+        <item name="$Cleanup..." action="MAP_CLEANUP" help="Removes all unknown items from the map."/>
+        <item name="$Properties..." hotkey="Ctrl-P" action="MAP_PROPERTIES" help="Show and change the map properties."/>
+        <item name="$Statistics" hotkey="F8" action="MAP_STATISTICS" help="Show map statistics."/>
+    </menu>
+    <menu name="$View">
+        <item name="$New View" hotkey="Ctrl-Shift-N" action="NEW_VIEW" help="Creates a new view of the current map."/>
+        <item name="$Take Screenshot" hotkey="F11" action="TAKE_SCREENSHOT" help="Saves the current view to the disk."/>
+        <separator/>
+        <item name="$Show shade" hotkey="Q" action="SHOW_SHADE" help="Shade lower floors."/>
+        <item name="Show $all floors" hotkey="Ctrl-W" action="SHOW_ALL_FLOORS" help="If not checked other floors are hidden."/>
+        <item name="Ghost $loose items" hotkey="G" action="GHOST_ITEMS" help="Ghost items (except ground)."/>
+        <item name="Ghost $higher floors" hotkey="Ctrl-L" action="GHOST_HIGHER_FLOORS" help="Ghost floors."/>
+        <item name="Show $Ingame Box" hotkey="Shift-I" action="SHOW_INGAME_BOX" help="Shadows out areas not visible ingame (from the center of the screen)."/>
+        <item name="Show $Grid" hotkey="Shift-G" action="SHOW_GRID" help="Shows a grid over all items."/>
+        <item name="H$ighlight items" hotkey="V" action="HIGHLIGHT_ITEMS" help="Highlight tiles with items on them."/>
+        <separator/>
+        <item name="Show creatures" hotkey="F" action="SHOW_CREATURES" help="Show creatures on the map."/>
+        <item name="Show spawns" hotkey="S" action="SHOW_SPAWNS" help="Show spawns on the map."/>
+        <item name="Sho$w special" hotkey="E" action="SHOW_SPECIAL" help="Show special tiles on the map, like PZ."/>
+        <item name="Only show $colors" hotkey="Ctrl-E" action="SHOW_ONLY_COLORS" help="Show only the special tiles on the map."/>
+        <item name="Only show $modified" hotkey="Ctrl-M" action="SHOW_ONLY_MODIFIED" help="Show only the tiles that have been modified since the map was opened."/>
+        <item name="Show $houses" hotkey="Ctrl-H" action="SHOW_HOUSES" help="Show houses on the map."/>
+        <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
+    </menu>
+    <menu name="$Window">
+        <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>
+        <item name="$New Palette" action="NEW_PALETTE" help="Creates a new palette."/>
+        <separator/>
+        <item name="$Terrain Palette" hotkey="T" action="SELECT_TERRAIN" help="Select the Terrain palette."/>
+        <item name="$Doodad Palette" hotkey="D" action="SELECT_DOODAD" help="Select the Doodad palette."/>
+        <item name="$Item Palette" hotkey="I" action="SELECT_ITEM" help="Select the Item palette."/>
+        <item name="$House Palette" hotkey="H" action="SELECT_HOUSE" help="Select the House palette."/>
+        <item name="$Creature Palette" hotkey="C" action="SELECT_CREATURE" help="Select the Creature palette."/>
+        <item name="$Waypoint Palette" hotkey="W" action="SELECT_WAYPOINT" help="Select the Waypoint palette."/>
+        <item name="$RAW Palette" hotkey="R" action="SELECT_RAW" help="Select the RAW palette."/>
+    </menu>
+    <menu name="$Live">
+        <item name="$Host Server" action="LIVE_START" help="Start a live mapping session (as the host)."/>
+        <item name="$Join Server" action="LIVE_JOIN" help="Join a live mapping session."/>
+        <item name="$Leave Server" action="LIVE_CLOSE" help="Leave this live mapping session."/>
+    </menu>
+    <menu name="$Debug">
+        <item name="$Debug .dat" action="DEBUG_VIEW_DAT" help="View all item sprites available."/>
+    </menu>
+    <menu name="F$loor">
+        <item name="Floor 0" action="FLOOR_0" help=""/>
+        <item name="Floor 1" action="FLOOR_1" help=""/>
+        <item name="Floor 2" action="FLOOR_2" help=""/>
+        <item name="Floor 3" action="FLOOR_3" help=""/>
+        <item name="Floor 4" action="FLOOR_4" help=""/>
+        <item name="Floor 5" action="FLOOR_5" help=""/>
+        <item name="Floor 6" action="FLOOR_6" help=""/>
+        <item name="Floor 7" action="FLOOR_7" help=""/>
+        <item name="Floor 8" action="FLOOR_8" help=""/>
+        <item name="Floor 9" action="FLOOR_9" help=""/>
+        <item name="Floor 10" action="FLOOR_10" help=""/>
+        <item name="Floor 11" action="FLOOR_11" help=""/>
+        <item name="Floor 12" action="FLOOR_12" help=""/>
+        <item name="Floor 13" action="FLOOR_13" help=""/>
+        <item name="Floor 14" action="FLOOR_14" help=""/>
+        <item name="Floor 15" action="FLOOR_15" help=""/>
+    </menu>
+    <menu name="$About">
+        <item name="$Extensions..." hotkey="F2" action="EXTENSIONS" help=""/>
+        <item name="Goto $Website" hotkey="F3" action="GOTO_WEBSITE" help=""/>
+        <item name="$About..." hotkey="F1" action="ABOUT" help=""/>
+    </menu>
+</menubar>

@@ -1,0 +1,386 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Beta Release|Win32">
+      <Configuration>Beta Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7AA6C5AC-C8C4-40EF-A0B3-3569B9819163}</ProjectGuid>
+    <RootNamespace>RME</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">f:\Libs\include;F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.9.1\include\msvc;F:\Libs\wxWidgets-2.9.1\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\Libs\lib\boost;F:\Libs\lib;F:\Libs\wxWidgets-2.9.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.8.10\include\msvc;F:\Libs\wxWidgets-2.8.10\include;F:\Libs\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Libs\lib;F:\Libs\lib\boost;F:\Libs\wxWidgets-2.8.10\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.8.10\include\msvc;F:\Libs\wxWidgets-2.8.10\include;F:\Libs\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\lib;F:\Libs\lib\boost;F:\Libs\wxWidgets-2.8.10\lib\vc_lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include\msvc;C:\wxWidgets-2.8.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_CRTDBG_MAP_ALLOC;__DEBUG__;__EXPERIMENTAL__;LIVE_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libxml2.lib;comctl32.lib;Rpcrt4.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(TargetName).map</MapFileName>
+      <MapExports>true</MapExports>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <IgnoreSpecificDefaultLibraries>wxscintillad.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include\msvc;G:\Alster\C++\include;C:\wxWidgets-2.8.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;__RELEASE__;__EXPERIMENTAL__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libxml2.lib;comctl32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\wxWidgets-2.8.8\lib\vc_lib;G:\Alster\C++\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+      <Profile>false</Profile>
+      <CLRThreadAttribute>DefaultThreadingAttribute</CLRThreadAttribute>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include\msvc;G:\Alster\C++\include;C:\wxWidgets-2.8.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;__RELEASE__;;__RELEASE__;__EXPERIMENTAL__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>libxml2.lib;comctl32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\wxWidgets-2.8.8\lib\vc_lib;G:\Alster\C++\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RME.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\brush_tables.cpp" />
+    <ClCompile Include="..\..\source\container_properties_window.cpp" />
+    <ClInclude Include="..\..\source\carpet_brush.h" />
+    <ClCompile Include="..\..\source\carpet_brush.cpp" />
+    <ClInclude Include="..\..\source\common.h" />
+    <ClCompile Include="..\..\source\common.cpp" />
+    <ClInclude Include="..\..\source\container_properties_window.h" />
+    <ClInclude Include="..\..\source\con_vector.h" />
+    <ClInclude Include="..\..\source\creature_brush.h" />
+    <ClCompile Include="..\..\source\creature_brush.cpp" />
+    <ClInclude Include="..\..\source\dat_debug_view.h" />
+    <ClCompile Include="..\..\source\dat_debug_view.cpp" />
+    <ClInclude Include="..\..\source\definitions.h" />
+    <ClInclude Include="..\..\source\doodad_brush.h" />
+    <ClCompile Include="..\..\source\doodad_brush.cpp" />
+    <ClCompile Include="..\..\source\eraser_brush.cpp" />
+    <ClInclude Include="..\..\source\filehandle.h" />
+    <ClCompile Include="..\..\source\filehandle.cpp" />
+    <ClInclude Include="..\..\source\ground_brush.h" />
+    <ClCompile Include="..\..\source\ground_brush.cpp" />
+    <ClInclude Include="..\..\source\house_brush.h" />
+    <ClCompile Include="..\..\source\house_brush.cpp" />
+    <ClInclude Include="..\..\source\house_exit_brush.h" />
+    <ClCompile Include="..\..\source\house_exit_brush.cpp" />
+    <ClInclude Include="..\..\source\live_action.h" />
+    <ClCompile Include="..\..\source\live_action.cpp" />
+    <ClInclude Include="..\..\source\live_client.h" />
+    <ClCompile Include="..\..\source\live_client.cpp" />
+    <ClInclude Include="..\..\source\live_packets.h" />
+    <ClInclude Include="..\..\source\live_peer.h" />
+    <ClCompile Include="..\..\source\live_peer.cpp" />
+    <ClInclude Include="..\..\source\live_server.h" />
+    <ClCompile Include="..\..\source\live_server.cpp" />
+    <ClInclude Include="..\..\source\live_socket.h" />
+    <ClCompile Include="..\..\source\live_socket.cpp" />
+    <ClInclude Include="..\..\source\live_tab.h" />
+    <ClCompile Include="..\..\source\live_tab.cpp" />
+    <ClInclude Include="..\..\source\map_allocator.h" />
+    <ClInclude Include="..\..\source\map_region.h" />
+    <ClCompile Include="..\..\source\map_region.cpp" />
+    <ClInclude Include="..\..\source\mt_rand.h" />
+    <ClCompile Include="..\..\source\mt_rand.cpp" />
+    <ClInclude Include="..\..\source\net_connection.h" />
+    <ClCompile Include="..\..\source\net_connection.cpp" />
+    <ClInclude Include="..\..\source\numbertextctrl.h" />
+    <ClInclude Include="..\..\source\properties_window.h" />
+    <ClInclude Include="..\..\source\raw_brush.h" />
+    <ClCompile Include="..\..\source\numbertextctrl.cpp" />
+    <ClCompile Include="..\..\source\properties_window.cpp" />
+    <ClCompile Include="..\..\source\raw_brush.cpp" />
+    <ClInclude Include="..\..\source\rme_forward_declarations.h" />
+    <ClInclude Include="..\..\source\rme_net.h" />
+    <ClCompile Include="..\..\source\rme_net.cpp" />
+    <ClInclude Include="..\..\source\settings.h" />
+    <ClCompile Include="..\..\source\settings.cpp" />
+    <ClInclude Include="..\..\source\spawn_brush.h" />
+    <ClCompile Include="..\..\source\spawn_brush.cpp" />
+    <ClInclude Include="..\..\source\table_brush.h" />
+    <ClInclude Include="..\..\source\threads.h" />
+    <ClInclude Include="..\..\source\graphics.h" />
+    <ClCompile Include="..\..\source\graphics.cpp" />
+    <ClInclude Include="..\..\source\pngfiles.h" />
+    <ClInclude Include="..\..\source\sprites.h" />
+    <ClInclude Include="..\..\source\application.h" />
+    <ClCompile Include="..\..\source\application.cpp" />
+    <ClInclude Include="..\..\source\dcbutton.h" />
+    <ClCompile Include="..\..\source\dcbutton.cpp" />
+    <ClInclude Include="..\..\source\editor_tabs.h" />
+    <ClCompile Include="..\..\source\editor_tabs.cpp" />
+    <ClInclude Include="..\..\source\gui.h" />
+    <ClCompile Include="..\..\source\gui.cpp" />
+    <ClInclude Include="..\..\source\gui_ids.h" />
+    <ClInclude Include="..\..\source\main_menubar.h" />
+    <ClCompile Include="..\..\source\main_menubar.cpp" />
+    <ClInclude Include="..\..\source\map_tab.h" />
+    <ClCompile Include="..\..\source\map_tab.cpp" />
+    <ClInclude Include="..\..\source\minimap_window.h" />
+    <ClCompile Include="..\..\source\minimap_window.cpp" />
+    <ClInclude Include="..\..\source\process_com.h" />
+    <ClCompile Include="..\..\source\process_com.cpp" />
+    <ClInclude Include="..\..\source\palette_brushlist.h" />
+    <ClCompile Include="..\..\source\palette_brushlist.cpp" />
+    <ClInclude Include="..\..\source\palette_common.h" />
+    <ClCompile Include="..\..\source\palette_common.cpp" />
+    <ClInclude Include="..\..\source\palette_creature.h" />
+    <ClCompile Include="..\..\source\palette_creature.cpp" />
+    <ClInclude Include="..\..\source\palette_house.h" />
+    <ClCompile Include="..\..\source\palette_house.cpp" />
+    <ClInclude Include="..\..\source\palette_waypoints.h" />
+    <ClCompile Include="..\..\source\palette_waypoints.cpp" />
+    <ClInclude Include="..\..\source\palette_window.h" />
+    <ClCompile Include="..\..\source\palette_window.cpp" />
+    <ClInclude Include="..\..\source\about_window.h" />
+    <ClCompile Include="..\..\source\about_window.cpp" />
+    <ClInclude Include="..\..\source\common_windows.h" />
+    <ClCompile Include="..\..\source\common_windows.cpp" />
+    <ClInclude Include="..\..\source\preferences.h" />
+    <ClCompile Include="..\..\source\preferences.cpp" />
+    <ClInclude Include="..\..\source\old_properties_window.h" />
+    <ClCompile Include="..\..\source\old_properties_window.cpp" />
+    <ClInclude Include="..\..\source\result_window.h" />
+    <ClCompile Include="..\..\source\result_window.cpp" />
+    <ClInclude Include="..\..\source\map_display.h" />
+    <ClCompile Include="..\..\source\map_display.cpp" />
+    <ClInclude Include="..\..\source\map_drawer.h" />
+    <ClCompile Include="..\..\source\map_drawer.cpp" />
+    <ClInclude Include="..\..\source\map_window.h" />
+    <ClCompile Include="..\..\source\map_window.cpp" />
+    <ClInclude Include="..\..\source\action.h" />
+    <ClCompile Include="..\..\source\action.cpp" />
+    <ClInclude Include="..\..\source\client_version.h" />
+    <ClCompile Include="..\..\source\client_version.cpp" />
+    <ClInclude Include="..\..\source\copybuffer.h" />
+    <ClCompile Include="..\..\source\copybuffer.cpp" />
+    <ClInclude Include="..\..\source\creatures.h" />
+    <ClCompile Include="..\..\source\creatures.cpp" />
+    <ClInclude Include="..\..\source\editor.h" />
+    <ClCompile Include="..\..\source\editor.cpp" />
+    <ClInclude Include="..\..\source\items.h" />
+    <ClCompile Include="..\..\source\items.cpp" />
+    <ClInclude Include="..\..\source\selection.h" />
+    <ClCompile Include="..\..\source\selection.cpp" />
+    <ClInclude Include="..\..\source\updater.h" />
+    <ClCompile Include="..\..\source\table_brush.cpp" />
+    <ClCompile Include="..\..\source\templatemapclassic.cpp" />
+    <ClCompile Include="..\..\source\updater.cpp" />
+    <ClInclude Include="..\..\source\brush.h" />
+    <ClCompile Include="..\..\source\brush.cpp" />
+    <ClInclude Include="..\..\source\brush_enums.h" />
+    <ClInclude Include="..\..\source\materials.h" />
+    <ClCompile Include="..\..\source\materials.cpp" />
+    <ClInclude Include="..\..\source\tileset.h" />
+    <ClCompile Include="..\..\source\tileset.cpp" />
+    <ClInclude Include="..\..\source\basemap.h" />
+    <ClCompile Include="..\..\source\basemap.cpp" />
+    <ClInclude Include="..\..\source\complexitem.h" />
+    <ClCompile Include="..\..\source\complexitem.cpp" />
+    <ClInclude Include="..\..\source\creature.h" />
+    <ClCompile Include="..\..\source\creature.cpp" />
+    <ClInclude Include="..\..\source\house.h" />
+    <ClCompile Include="..\..\source\house.cpp" />
+    <ClInclude Include="..\..\source\item.h" />
+    <ClCompile Include="..\..\source\item.cpp" />
+    <ClInclude Include="..\..\source\item_attributes.h" />
+    <ClCompile Include="..\..\source\item_attributes.cpp" />
+    <ClInclude Include="..\..\source\map.h" />
+    <ClCompile Include="..\..\source\map.cpp" />
+    <ClInclude Include="..\..\source\outfit.h" />
+    <ClInclude Include="..\..\source\position.h" />
+    <ClInclude Include="..\..\source\spawn.h" />
+    <ClCompile Include="..\..\source\spawn.cpp" />
+    <ClCompile Include="..\..\source\templatemap76-74.cpp" />
+    <ClCompile Include="..\..\source\templatemap81.cpp" />
+    <ClCompile Include="..\..\source\templatemap854.cpp" />
+    <ClInclude Include="..\..\source\templates.h" />
+    <ClInclude Include="..\..\source\tile.h" />
+    <ClCompile Include="..\..\source\tile.cpp" />
+    <ClInclude Include="..\..\source\town.h" />
+    <ClCompile Include="..\..\source\town.cpp" />
+    <ClInclude Include="..\..\source\wall_brush.h" />
+    <ClCompile Include="..\..\source\wall_brush.cpp" />
+    <ClInclude Include="..\..\source\waypoints.h" />
+    <ClCompile Include="..\..\source\waypoints.cpp" />
+    <ClInclude Include="..\..\source\iomap.h" />
+    <ClCompile Include="..\..\source\iomap.cpp" />
+    <ClInclude Include="..\..\source\iomap_otbm.h" />
+    <ClCompile Include="..\..\source\iomap_otbm.cpp" />
+    <ClInclude Include="..\..\source\iomap_otmm.h" />
+    <ClCompile Include="..\..\source\iomap_otmm.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClInclude Include="..\..\source\json.h" />
+    <ClInclude Include="..\..\source\json\json_spirit.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_error_position.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_reader.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_reader_template.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_stream_reader.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_utils.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_value.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_writer.h" />
+    <ClInclude Include="..\..\source\json\json_spirit_writer_template.h" />
+    <ClInclude Include="..\..\source\main.h" />
+    <ClInclude Include="..\..\source\waypoint_brush.h" />
+    <ClCompile Include="..\..\source\waypoint_brush.cpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\mkpch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\source\pngfiles.cpp" />
+    <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\source\json\json_spirit_value.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\source\json\json_spirit_writer.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\source\main.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Use</PrecompiledHeader>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\clients.xml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="..\..\data\menubar.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

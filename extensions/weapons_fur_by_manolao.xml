@@ -1,0 +1,116 @@
+<materialsextension name="Fur Walls, Weapon doodads" author="Manolo" description="Adds Fur Walls and weapon related doodads to the palette." client="8.00;8.10;8.20"> 
+	<brush name="Fur Wall" type="wall" server_lookid="6774"> 
+		<wall type="horizontal"> 
+			<item id="6774" chance="500"/> 
+			<item id="6776" chance="0"/> -- This needs to be here for backwards compability -- 
+			<item id="6782" chance="0"/> -- This needs to be here for backwards compability -- 
+			<item id="6786" chance="100"/> -- This needs to be here for backwards compability --    
+			<item id="6787" chance="100"/> -- This needs to be here for backwards compability --     
+			<door id="6795" type="normal" open="false"/> -- 
+			<door id="6796" type="normal" open="true"/> -- 
+			<door id="6799" type="locked" open="false"/> -- 
+			<door id="6800" type="locked" open="true"/> -- 
+			<door id="6788" type="hatch_window" open="false"/> 
+			<door id="6790" type="hatch_window" open="true"/> 
+			<door id="6788" type="window"/> 
+		</wall> 
+		<wall type="vertical"> 
+			<item id="6773" chance="500"/> 
+			<item id="6778" chance="0"/> -- This needs to be here for backwards compability -- 
+			<item id="6780" chance="0"/> -- This needs to be here for backwards compability -- 
+			<item id="6784" chance="100"/> -- This needs to be here for backwards compability --    
+			<item id="6785" chance="100"/> -- This needs to be here for backwards compability --     
+			<door id="6797" type="normal" open="false"/> 
+			<door id="6798" type="normal" open="true"/> 
+			<door id="6801" type="locked" open="false"/> 
+			<door id="6802" type="locked" open="true"/> 
+			<door id="6789" type="hatch_window" open="false"/> 
+			<door id="6791" type="hatch_window" open="true"/> 
+			<door id="6789" type="window"/> 
+		</wall> 
+		<wall type="corner"> 
+			<item id="6777" chance="1000"/> 
+			<item id="6779" chance="0"/> -- This needs to be here for backwards compability -- 
+			<item id="6781" chance="0"/> -- This needs to be here for backwards compability -- 
+			<item id="6783" chance="0"/> -- This needs to be here for backwards compability -- 
+		</wall> 
+		<wall type="pole"> 
+			<item id="6775" chance="1000"/> 
+		</wall> 
+	</brush>> 
+
+	<tileset name="Snow"> 
+		<terrain> 
+			<brush name="Fur Wall"/> 
+		</terrain> 
+	</tileset>  
+
+	<brush name="Weapon Rack" type="doodad" server_lookid="6110" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="6109" chance="10"/> </alternate> 
+		<alternate> <item id="6110" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="Armor Rack" type="doodad" server_lookid="6111" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="6111" chance="10"/> </alternate> 
+		<alternate> <item id="6112" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="Empty Weapon Rack" type="doodad" server_lookid="5852" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="5852" chance="10"/> </alternate> 
+		<alternate> <item id="5853" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="Lance" type="doodad" server_lookid="5854" draggable="false" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="5854" chance="10"/> </alternate> 
+		<alternate> <item id="5855" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="sword" type="doodad" server_lookid="5856" draggable="false" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="5856" chance="10"/> </alternate> 
+		<alternate> <item id="5857" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="Empty Armor Rack" type="doodad" server_lookid="5860" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="5860" chance="10"/> </alternate> 
+		<alternate> <item id="5861" chance="10"/> </alternate> 
+	</brush> 
+	
+	<brush name="Armor" type="doodad" server_lookid="5860" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="5862" chance="10"/> </alternate> 
+		<alternate> <item id="5863" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="shield" type="doodad" server_lookid="7234" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="7234" chance="10"/> </alternate> 
+		<alternate> <item id="7235" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="red shield" type="doodad" server_lookid="7238" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="7238" chance="10"/> </alternate> 
+		<alternate> <item id="7239" chance="10"/> </alternate> 
+	</brush>
+	
+	<brush name="blue shield" type="doodad" server_lookid="7240" draggable="true" on_blocking="true" thickness="100/100"> 
+		<alternate> <item id="7240" chance="10"/> </alternate> 
+		<alternate> <item id="7241" chance="10"/> </alternate> 
+	</brush>
+
+	<tileset name="Interior">  
+		<doodad>  
+			<brush name="Weapon Rack"/> 
+			<brush name="Armor Rack"/> 
+			<brush name="Lance"/> 
+			<brush name="sword"/> 
+			<brush name="Armor"/>  
+			<brush name="Empty Armor Rack"/>  
+		</doodad>  
+	</tileset> 
+	
+	<tileset name="Hangables">
+		<doodad>  
+			<brush name="shield"/>  
+			<brush name="red shield"/>  
+			<brush name="blue shield"/>  
+		</doodad>  
+	</tileset> 
+</materialsextension> 

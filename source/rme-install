@@ -1,0 +1,82 @@
+#!/bin/bash
+
+echo "------------------------------------------------------------------------------"
+echo "Remere's Map Editor installation script"
+echo -n "Checking for root privilegies... "
+
+if [ "$(id -u)" != "0" ]; then
+	echo "FAILED"
+	echo "This script must be run as root" 1>&2
+	exit 1
+else
+	echo "Done"
+fi
+
+echo -n "Adding tt-solutions repository... "
+grep "apt.tt-solutions.com" /etc/apt/sources.list > /dev/null
+if [ "$?" != "0" ]; then
+	echo "" >> /etc/apt/sources.list
+	echo "# tt-solutions repository, added by Remere's Map Editor installation script." >> /etc/apt/sources.list
+	echo "deb http://apt.tt-solutions.com/ubuntu/ dapper main" >> /etc/apt/sources.list
+	echo "Done"
+else
+	echo "Already done"
+fi
+
+echo "Installing required packages"
+
+echo -n "Installing libwxgtk2.8-0... "
+apt-get -y install libwxgtk2.8-0 > /dev/null
+if [ "$?" != "0" ]; then
+	echo "FAILED"
+	echo "You must do a manual install of the required packages"
+else
+	echo "Done"
+fi
+
+echo -n "Installing libboost1.40-all-dev... "
+apt-get -y install libboost1.40-all-dev > /dev/null
+if [ "$?" != "0" ]; then
+	echo "FAILED"
+	echo "You must do a manual install of the required packages"
+else
+	echo "Done"
+fi
+
+echo -n "Installing libxml2... "
+apt-get -y install libxml2 > /dev/null
+if [ "$?" != "0" ]; then
+	echo "FAILED"
+	echo "You must do a manual install of the required packages"
+else
+	echo "Done"
+fi
+
+echo -n "Installing libglu1-mesa... "
+apt-get -y install libglu1-mesa > /dev/null
+if [ "$?" != "0" ]; then
+	echo "FAILED"
+	echo "You must do a manual install of the required packages"
+else
+	echo "Done"
+fi
+
+echo -n "Installing libgl1-mesa-glx... "
+apt-get -y install libgl1-mesa-glx > /dev/null
+if [ "$?" != "0" ]; then
+	echo "FAILED"
+	echo "You must do a manual install of the required packages"
+else
+	echo "Done"
+fi
+
+echo -n "Do you want to update all packages, editor may not run with not-updated runtime libraries. [y/n] "
+read pr
+if [ "$pr" == "y" ]; then
+	echo "Running apt-get update..."
+	apt-get update
+fi
+
+echo "Installation complete, run ./rme to launch the editor"
+read -p "Press any key to exit... "
+

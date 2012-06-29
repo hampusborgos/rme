@@ -1,0 +1,396 @@
+<materialsextension name="Better creature categories (8.20)" author="Devil Boy/Remere" description="More creature categories." client="8.20"> 
+	<tileset name="Water creatures">
+		<creatures>
+			<creature name="Azure Frog"/>
+			<creature name="Coral Frog"/>
+			<creature name="Crimson Frog"/>
+			<creature name="Green Frog"/>
+			<creature name="Orchid Frog"/>
+			<creature name="Toad"/>
+			<creature name="Quara Constrictor"/>
+			<creature name="Quara Hydromancer"/>
+			<creature name="Quara Mantassin"/>
+			<creature name="Quara Pincher"/>
+			<creature name="Quara Predator"/>
+			<creature name="Quara Constrictor Scout"/>
+			<creature name="Quara Hydromancer Scout"/>
+			<creature name="Quara Mantassin Scout"/>
+			<creature name="Quara Pincher Scout"/>
+			<creature name="Quara Predator Scout"/>
+		</creatures>
+	</tileset>
+	
+	<tileset name="Animals">
+		<creatures>
+            <creature name="Sibang"/>
+			<creature name="Kongra"/>
+			<creature name="Merlkin"/>
+            <creature name="Lizard Sentinel"/>
+			<creature name="Lizard Templar"/>
+			<creature name="Lizard Snakecharmer"/>
+            <creature name="Chakoya Toolshaper"/>
+			<creature name="Chakoya Tribewarden"/>
+			<creature name="Chakoya Windcaller"/>
+			<creature name="Chicken"/>
+			<creature name="Rabbit"/>
+			<creature name="Black Sheep"/>
+			<creature name="Dog"/>
+			<creature name="Sheep"/>
+			<creature name="Deer"/>
+			<creature name="Flamingo"/>
+			<creature name="Parrot"/>
+			<creature name="Pig"/>
+			<creature name="Seagull"/>
+			<creature name="Blue Butterfly"/>
+			<creature name="Yellow Butterfly"/>
+			<creature name="Red Butterfly"/>
+			<creature name="Skunk"/>
+			<creature name="Rat"/>
+			<creature name="Badger"/>
+			<creature name="Bat"/>
+			<creature name="Cave Rat"/>
+			<creature name="Wolf"/>
+			<creature name="Winter Wolf"/>
+			<creature name="Hyaena"/>
+			<creature name="Bear"/>
+			<creature name="Panda"/>
+			<creature name="Polar Bear"/>
+			<creature name="Crab"/>
+			<creature name="Lion"/>
+			<creature name="Rotworm"/>
+			<creature name="Rotworm Queen"/>
+			<creature name="Tiger"/>
+			<creature name="Crocodile"/>
+			<creature name="Snake"/>
+			<creature name="War Wolf"/>
+			<creature name="Carrion Worm"/>
+			<creature name="Tortoise"/>
+			<creature name="Terror Bird"/>
+			<creature name="Thornback Tortoise"/>
+			<creature name="Blood Crab"/>
+			<creature name="Elephant"/>
+			<creature name="Mammoth"/>
+			<creature name="Spit Nettle"/>
+			<creature name="Jungle Maw"/>
+			<creature name="Cobra"/>
+			<creature name="Penguin"/>
+			<creature name="Cockroach"/>
+			<creature name="Dire Penguin"/>
+			<creature name="Husky"/>
+            <creature name="Yeti"/>
+            <creature name="Silver Rabbit"/>
+		</creatures>
+	</tileset>
+	
+    <tileset name="Arena Bosses">
+        <creatures>
+            <creature name="Frostfur"/>
+			<creature name="Bloodpaw"/>
+			<creature name="Bovinus"/>
+			<creature name="Achad"/>
+			<creature name="Colerian the Barbarian"/>
+			<creature name="The Hairy One"/>
+			<creature name="Axeitus Headbanger"/>
+			<creature name="Rocky"/>
+			<creature name="Cursed Gladiator"/>
+			<creature name="Orcus the Cruel"/>
+			<creature name="Avalanche"/>
+			<creature name="Kreebosh the Exile"/>
+			<creature name="The Dark Dancer"/>
+			<creature name="The Hag"/>
+			<creature name="Slim"/>
+			<creature name="Grimgor Guteater"/>
+			<creature name="Drasilla"/>
+			<creature name="Spirit of Earth"/>
+			<creature name="Spirit of Water"/>
+			<creature name="Spirit of Fire"/>
+			<creature name="Webster"/>
+			<creature name="Darakan the Executioner"/>
+			<creature name="Norgle Glacierbeard"/>
+			<creature name="The Pit Lord"/>
+			<creature name="Svoren The Mad"/>
+			<creature name="The Masked Marauder"/>
+			<creature name="Gnorre Chyllson"/>
+			<creature name="Fallen Mooh'Tah Master Ghar"/>
+			<creature name="Deathbringer"/>
+			<creature name="The Obliverator"/>
+         </creatures>
+    </tileset>
+	
+	<tileset name="Bugs">
+		<creatures>
+			<creature name="Crystal Spider"/>
+			<creature name="Giant Spider"/>
+			<creature name="Poison Spider"/>
+			<creature name="Spider"/>
+			<creature name="Scorpion"/>
+			<creature name="Tarantula"/>
+			<creature name="The Old Widow"/>
+			<creature name="Webster"/>
+			<creature name="Ancient Scarab"/>
+			<creature name="Bug"/>
+			<creature name="Butterfly"/>
+			<creature name="Centipede"/>
+			<creature name="Larva"/>
+			<creature name="Scarab"/>
+			<creature name="Wasp"/>
+			<creature name="Blood Crab"/>
+			<creature name="Crab"/>
+		</creatures>
+	</tileset>
+	
+    <tileset name="Bosses">
+        <creatures>
+			<creature name="Apprentice Sheng"/>
+			<creature name="Morgaroth"/>
+			<creature name="Ghazbaran"/>
+			<creature name="Grorlam"/>
+			<creature name="Tiquandas Revenge"/>
+			<creature name="Thul"/>
+			<creature name="The Horned Fox"/>
+			<creature name="Munster"/>
+			<creature name="The Old Widow"/>
+			<creature name="The Ruthless Herald"/>
+			<creature name="General Murius"/>
+			<creature name="Bones"/>
+			<creature name="Dharalion"/>
+			<creature name="Fernfang"/>
+			<creature name="Demodras"/>
+			<creature name="Yakchal"/>
+			<creature name="Brutus Bloodbeard"/>
+			<creature name="Deadeye Devious"/>
+			<creature name="Lethal Lissy"/>
+			<creature name="The Evil Eye"/>
+			<creature name="Mr. Punish"/>
+			<creature name="Countess Sorrow"/>
+			<creature name="Necropharus"/>
+			<creature name="Infernatil"/>
+			<creature name="Apocalypse"/>
+			<creature name="Bazir"/>
+			<creature name="Dracola"/>
+			<creature name="Freegoiz"/>
+			<creature name="The Handmaiden"/>
+			<creature name="The Imperor"/>
+			<creature name="The Plasmother"/>
+			<creature name="Verminor"/>
+			<creature name="Ferumbras"/>
+			<creature name="Orshabaal"/>
+			<creature name="The Count"/>
+			<creature name="Minishabaal"/>
+			<creature name="Morgaroth"/>
+            <creature name="Mr. Punish"/>
+            <creature name="The Handmaiden"/>
+			<creature name="The Imperor"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Giants">
+        <creatures>
+            <creature name="Cyclops"/>
+            <creature name="Yeti"/>
+			<creature name="Frost Giant"/>
+			<creature name="Frost Giantess"/>
+			<creature name="Cyclops Drone"/>
+			<creature name="Cyclops Smith"/>
+			<creature name="Behemoth"/>
+            <creature name="Fire Devil"/>
+			<creature name="Diabolic Imp"/>
+			<creature name="Destroyer"/>
+			<creature name="Nightmare"/>
+			<creature name="Plaguesmith"/>
+			<creature name="Dark Torturer"/>
+			<creature name="Hand of Cursed Fate"/>
+			<creature name="Demon"/>
+			<creature name="Demon (Goblin)"/>
+			<creature name="Juggernaut"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Humans">
+        <creatures>
+            <creature name="Dwarf"/>
+			<creature name="Dwarf Soldier"/>
+			<creature name="Dwarf Guard"/>
+			<creature name="Dwarf Geomancer"/>
+            <creature name="Smuggler"/>
+			<creature name="Amazon"/>
+			<creature name="Wild Warrior"/>
+			<creature name="Bandit"/>
+			<creature name="Valkyrie"/>
+			<creature name="Stalker"/>
+			<creature name="Novice of the Cult"/>
+			<creature name="Assassin"/>
+			<creature name="Witch"/>
+			<creature name="Pirate Marauder"/>
+			<creature name="Dark Monk"/>
+			<creature name="Hunter"/>
+			<creature name="Pirate Cutthroat"/>
+			<creature name="Monk"/>
+			<creature name="Pirate Buccaneer"/>
+			<creature name="Acolyte of the Cult"/>
+			<creature name="Pirate Corsair"/>
+			<creature name="Adept of the Cult"/>
+			<creature name="Priestess"/>
+			<creature name="Enlightened of the Cult"/>
+			<creature name="Necromancer"/>
+			<creature name="Hero"/>
+			<creature name="Black Knight"/>
+			<creature name="Warlock"/>
+			<creature name="Barbarian Bloodwalker"/>
+			<creature name="Barbarian Brutetamer"/>
+			<creature name="Barbarian Headsplitter"/>
+			<creature name="Barbarian Skullhunter"/>
+            <creature name="Nomad"/>
+            <creature name="Primitive"/>
+         </creatures>
+    </tileset>
+	
+    <tileset name="Lesser humans">
+        <creatures>
+            <creature name="Dwarf"/>
+			<creature name="Dwarf Soldier"/>
+			<creature name="Dwarf Guard"/>
+			<creature name="Dwarf Geomancer"/>
+            <creature name="Elf"/>
+			<creature name="Elf Scout"/>
+			<creature name="Elf Arcanist"/>
+			<creature name="Dharalion"/>
+            <creature name="Minotaur"/>
+			<creature name="Minotaur Archer"/>
+			<creature name="Minotaur Mage"/>
+			<creature name="Minotaur Guard"/>
+            <creature name="Goblin"/>
+            <creature name="Dworc Venomsniper"/>
+			<creature name="Dworc Fleshhunter"/>
+			<creature name="Dworc Voodoomaster"/>
+			<creature name="Fluffy"/>
+			<creature name="Orc"/>
+			<creature name="Orc Spearman"/>
+			<creature name="Orc Warrior"/>
+			<creature name="Goblin Assassin"/>
+			<creature name="Goblin Scavenger"/>
+			<creature name="Orc Rider"/>
+			<creature name="Orc Shaman"/>
+			<creature name="Orc Berserker"/>
+			<creature name="Orc Leader"/>
+			<creature name="Orc Warlord"/>
+            <creature name="Island Troll"/>
+			<creature name="Troll"/>
+			<creature name="Frost Troll"/>
+			<creature name="Swamp Troll"/>
+         </creatures>
+    </tileset>
+	
+	<tileset name="Magical Creatures">
+		<creatures>
+			<creature name="Animated Pumpkin"/>
+			<creature name="Lavahole"/>
+			<creature name="Magic Pillar"/>
+			<creature name="Poisonthrower"/>
+			<creature name="Flamethrower"/>
+			<creature name="Deathslicer"/>
+			<creature name="Mimic"/>
+			<creature name="Braindeath"/>
+			<creature name="Magicthrower"/>
+			<creature name="Plaguethrower"/>
+			<creature name="Shredderthrower"/>
+			<creature name="The Halloween Hare"/>
+			<creature name="Bog Raider"/>
+			<creature name="Gazer"/>
+			<creature name="Wyrm"/>
+			<creature name="Wisp"/>
+			<creature name="Beholder"/>
+			<creature name="Blue Djinn"/>
+			<creature name="Green Djinn"/>
+			<creature name="Elder Beholder"/>
+			<creature name="Efreet"/>
+			<creature name="Hellhound"/>
+			<creature name="Marid"/>
+			<creature name="Dragon"/>
+			<creature name="Frost Dragon"/>
+			<creature name="Wyvern"/>
+			<creature name="Serpent Spawn"/>
+			<creature name="Dragon Lord"/>
+			<creature name="Hydra"/>
+			<creature name="Diabolic Imp"/>
+			<creature name="Destroyer"/>
+			<creature name="Nightmare"/>
+			<creature name="Plaguesmith"/>
+			<creature name="Dark Torturer"/>
+			<creature name="Son of Verminor"/>
+			<creature name="Hand of Cursed Fate"/>
+		</creatures>
+    </tileset>
+	
+	<tileset name="Elementals">
+		<creatures>
+			<creature name="Hellfire Fighter"/>
+			<creature name="Fire Elemental"/>
+			<creature name="Massive Fire Elemental"/>
+			<creature name="Water Elemental"/>
+			<creature name="Roaring Water Elemental"/>
+			<creature name="Massive Water Elemental"/>
+			<creature name="Cryo Elemental"/>
+			<creature name="Energy Elemental"/>
+			<creature name="Massive Energy Elemental"/>
+			<creature name="Earth Elemental"/>
+			<creature name="Massive Earth Elemental"/>
+			<creature name="Ice Golem"/>
+			<creature name="Stone Golem"/>
+			<creature name="Slick Water Elemental"/>
+			<creature name="Gargoyle"/>
+			<creature name="Slime"/>
+			<creature name="Defiler"/>
+			<creature name="Bog Raider"/>
+			<creature name="Spirit of Earth"/>
+			<creature name="Spirit of Water"/>
+			<creature name="Spirit of Fire"/>
+		</creatures>
+    </tileset>
+	
+    <tileset name="Pharaohs">
+        <creatures>
+            <creature name="Dipthrah"/>
+			<creature name="Omruc"/>
+			<creature name="Thalas"/>
+			<creature name="Vashresamun"/>
+			<creature name="Morguthis"/>
+			<creature name="Mahrdis"/>
+			<creature name="Ashmunrah"/>
+			<creature name="Rahemos"/>
+            <creature name="Arkhothep"/>
+         </creatures>
+    </tileset>
+	
+	<tileset name="Undead">
+		<creatures>
+			<creature name="Banshee"/>
+			<creature name="Ghost"/>
+			<creature name="Braindeath"/>
+			<creature name="Bonebeast"/>
+			<creature name="Demon Skeleton"/>
+			<creature name="Ghoul"/>
+			<creature name="Lich"/>
+			<creature name="Lost Soul"/>
+			<creature name="Mummy"/>
+			<creature name="Necromancer"/>
+			<creature name="Pirate Ghost"/>
+			<creature name="Pirate Skeleton"/>
+			<creature name="Skeleton"/>
+			<creature name="Skeleton Warrior"/>
+			<creature name="Spectre"/>
+			<creature name="Undead Dragon"/>
+			<creature name="Vampire"/>
+			<creature name="Phantasm"/>
+			<creature name="Grim Reaper"/>
+			<creature name="Betrayed Wraith"/>
+			<creature name="Blightwalker"/>
+			<creature name="Crypt Shambler"/>
+			<creature name="Destroyer"/>
+			<creature name="Undead Minion"/>
+			<creature name="Nightmare"/>
+			<creature name="Dark Torturer"/>
+			<creature name="Hand of Cursed Fate"/>
+		</creatures>
+	</tileset>
+</materialsextension>

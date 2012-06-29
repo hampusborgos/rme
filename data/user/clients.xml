@@ -1,0 +1,55 @@
+<clients>
+	<client version="7.40">
+		<data dat="0x41BF619C" spr="0x41B9EA86"/>
+	</client>
+	<client version="7.60">
+		<data dat="0x439D5A33" spr="0x439852BE"/>
+	</client>
+	<client version="8.00">
+		<data dat="0x467FD7E6" spr="0x467F9E74"/>
+	</client>
+	<client version="8.10">
+		<data dat="0x475D3747" spr="0x475D0B01"/>
+		<data dat="0x47F60E37" spr="0x47EBB9B2"/>
+	</client>
+	<client version="8.20 - 8.31">
+		<data dat="0x486905AA" spr="0x4868ECC9"/>
+		<data dat="0x486CCA2B" spr="0x4868ECC9"/>
+		<data dat="0x489980A1" spr="0x489980A5"/>
+		<data dat="0x48DA1FB6" spr="0x48C8E712"/>
+	</client>
+	<client version="8.40">
+		<data dat="0x493D607A" spr="0x493D4E7C"/>
+		<data dat="0x49B7CC19" spr="0x49B140EA"/>
+		<data dat="0x49C233C9" spr="0x49B140EA"/>
+	</client>
+	<client version="8.50">
+		<data dat="0x4A49C5EB" spr="0x4A44FD4E"/>
+		<data dat="0x4A4CC0DC" spr="0x4A44FD4E"/>
+		<data dat="0x4AE97492" spr="0x4A44FD4E"/>
+	</client>
+	<client version="8.54 (bad)" hidden="true">
+		<data dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
+		<data dat="0x4B28B89E" spr="0x4B1E2C87"/>
+	</client>
+	<client version="8.54">
+		<data dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
+		<data dat="0x4B28B89E" spr="0x4B1E2C87"/>
+	</client>
+	<client version="8.60 (old)" hidden="true">
+		<data dat="0x4C2C7993" spr="0x4C220594"/>
+	</client>
+	<client version="8.60">
+		<data dat="0x4C2C7993" spr="0x4C220594"/>
+		<data dat="0x4C6A4CBC" spr="0x4C63F145"/>
+	</client>
+  <client version="8.70">
+    <data dat="0x4CFE22C5" spr="0x4CFD078A"/>
+  </client>
+  <client version="9.10">
+    <data dat="0x4E12DAFF" spr="0x4E12DB27"/>
+  </client>
+  <client version="9.20 - 9.31">
+    <data dat="0x4E807C08" spr="0x4E807C23"/>
+  </client>
+</clients>
