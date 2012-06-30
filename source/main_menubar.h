@@ -45,6 +45,7 @@ namespace MenuBar
 		UNDO,
 		REDO,
 		FIND_ITEM,
+		REPLACE_ITEM,
 		SEARCH_EVERYTHING,
 		SEARCH_UNIQUE,
 		SEARCH_ACTION,
@@ -194,6 +195,7 @@ public:
 	void OnCopy(wxCommandEvent& event);
 	void OnPaste(wxCommandEvent& event);
 	void OnSearchForItem(wxCommandEvent& event);
+	void OnReplaceItem(wxCommandEvent& event);
 	void OnSearchForStuff(wxCommandEvent& event);
 	void OnSearchForUnique(wxCommandEvent& event);
 	void OnSearchForAction(wxCommandEvent& event);

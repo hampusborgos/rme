@@ -28,6 +28,7 @@
 #include "result_window.h"
 
 #include "gui.h"
+
 #include "editor.h"
 #include "materials.h"
 #include "live_client.h"
@@ -63,8 +64,9 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 
 	MAKE_ACTION(UNDO, wxITEM_NORMAL, OnUndo);
 	MAKE_ACTION(REDO, wxITEM_NORMAL, OnRedo);
-
+	
 	MAKE_ACTION(FIND_ITEM, wxITEM_NORMAL, OnSearchForItem);
+	MAKE_ACTION(REPLACE_ITEM, wxITEM_NORMAL, OnReplaceItem);
 	MAKE_ACTION(SEARCH_EVERYTHING, wxITEM_NORMAL, OnSearchForStuff);
 	MAKE_ACTION(SEARCH_UNIQUE, wxITEM_NORMAL, OnSearchForUnique);
 	MAKE_ACTION(SEARCH_ACTION, wxITEM_NORMAL, OnSearchForAction);
@@ -281,8 +283,9 @@ void MainMenuBar::Update()
 	EnableItem(IMPORT_MAP, is_local);
 	EnableItem(IMPORT_MINIMAP, false);
 	EnableItem(EXPORT_MINIMAP, is_local);
-
+	
 	EnableItem(FIND_ITEM, is_host);
+	EnableItem(REPLACE_ITEM, is_local);
 	EnableItem(SEARCH_UNIQUE, is_host);
 
 	EnableItem(CUT, has_map);
@@ -791,9 +794,9 @@ void MainMenuBar::OnRedo(wxCommandEvent& WXUNUSED(event))
 
 namespace OnSearchForItem 
 {
-	struct TMP 
+	struct Finder 
 	{
-		TMP(uint16_t itemid) : more_than_500(false), itemid(itemid) {}
+		Finder(uint16_t itemid) : more_than_500(false), itemid(itemid) {}
 		bool more_than_500;
 		uint16_t itemid;
 		std::vector<std::pair<Tile*, Item*> > found;
@@ -822,11 +825,9 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 		return;
 
 	FindItemDialog finder(frame, wxT("Search for Item"));
-	finder.ShowModal();
-	uint16_t itemid = finder.getResultID();
-	if(itemid != 0) 
+	if(finder.ShowModal() != 0) 
 	{
-		OnSearchForItem::TMP func(itemid);
+		OnSearchForItem::Finder func(finder.getResultID());
 		gui.CreateLoadBar(wxT("Searching map..."));
 
 		foreach_ItemOnMap(gui.GetCurrentMap(), func);
@@ -841,14 +842,51 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 		SearchResultWindow* result = gui.ShowSearchWindow();
 		result->Clear();
-		for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); 
-			iter != found.end(); ++iter) 
+		for(std::vector<std::pair<Tile*, Item*> >::const_iterator iter = found.begin(); 
+				iter != found.end();
+				++iter) 
 		{
 			Tile* tile = iter->first;
 			Item* item = iter->second;
 			result->AddPosition(wxstr(item->getName()), tile->getPosition());
 		}
 	}
+}
+void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event)) 
+{
+	if(gui.IsEditorOpen() == false) 
+		return;
+
+	ReplaceItemDialog dlg(frame, wxT("Replace Item"));
+	
+	if(dlg.ShowModal() != 0) 
+	{
+		uint16_t find_id = dlg.GetResultFindID();
+		uint16_t with_id = dlg.GetResultWithID();
+
+		OnSearchForItem::Finder finder(find_id);
+		gui.GetCurrentEditor()->actionQueue->clear();
+		gui.CreateLoadBar(wxT("Searching & replacing map..."));
+
+		// Search the map
+		foreach_ItemOnMap(gui.GetCurrentMap(), finder);
+
+		// Replace the items in a second step (can't replace while iterating)
+		for (std::vector<std::pair<Tile*, Item*> >::const_iterator replace_iter = finder.found.begin();
+				replace_iter != finder.found.end();
+				++replace_iter)
+		{
+			transformItem(replace_iter->second, with_id, replace_iter->first);
+		}
+
+		wxString msg;
+		msg << wxT("Replaced ") << finder.found.size() << " items.";
+		gui.SetStatusText(msg);
+
+		gui.DestroyLoadBar();
+	}
+
+	gui.RefreshView();
 }
 
 namespace OnSearchForStuff 

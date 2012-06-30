@@ -630,18 +630,37 @@ void ExportMiniMapWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 }
 
 // ============================================================================
+// Numkey forwarding text control
+
+BEGIN_EVENT_TABLE(KeyForwardingTextCtrl, wxTextCtrl)
+	EVT_KEY_DOWN(KeyForwardingTextCtrl::OnKeyDown)
+END_EVENT_TABLE()
+
+void KeyForwardingTextCtrl::OnKeyDown(wxKeyEvent& event) 
+{
+	if(
+		event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_DOWN || 
+		event.GetKeyCode() == WXK_PAGEDOWN || event.GetKeyCode() == WXK_PAGEUP) 
+	{
+		GetParent()->GetEventHandler()->AddPendingEvent(event);
+	} 
+	else 
+	{
+		event.Skip();
+	}
+}
+
+// ============================================================================
 // Find Item Dialog (Jump to item)
 
 BEGIN_EVENT_TABLE(FindDialog, wxDialog)
 	EVT_TIMER(wxID_ANY, FindDialog::OnTextIdle)
 	EVT_TEXT(JUMP_DIALOG_TEXT, FindDialog::OnTextChange)
+	EVT_KEY_DOWN(FindDialog::OnKeyDown)
 	EVT_TEXT_ENTER(JUMP_DIALOG_TEXT, FindDialog::OnClickOK)
 	EVT_LISTBOX_DCLICK(JUMP_DIALOG_LIST, FindDialog::OnClickList)
 	EVT_BUTTON(wxID_OK, FindDialog::OnClickOK)
-END_EVENT_TABLE()
-
-BEGIN_EVENT_TABLE(FindDialog::customTextCtrl, wxTextCtrl)
-	EVT_KEY_DOWN(FindDialog::customTextCtrl::OnKeyDown)
+	EVT_BUTTON(wxID_CANCEL, FindDialog::OnClickCancel)
 END_EVENT_TABLE()
 
 FindDialog::FindDialog(wxWindow* parent, wxString title) :
@@ -652,18 +671,18 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	search_field = newd customTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	search_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	search_field->SetFocus();
 	sizer->Add(search_field, 0, wxEXPAND);
 
 	item_list = newd FindDialogListBox(this, JUMP_DIALOG_LIST);
 	item_list->SetMinSize(wxSize(470, 400));
-	sizer->Add(item_list, 1, wxEXPAND | wxALL, 2);
+	sizer->Add(item_list, wxSizerFlags(1).Expand().Border());
 
 	wxSizer* stdsizer = newd wxBoxSizer(wxHORIZONTAL);
 	stdsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
 	stdsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
-	sizer->Add(stdsizer, 0, wxALL | wxCENTER, 4);
+	sizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
 
 	SetSizerAndFit(sizer);
 	// We can't call it here since it calls an abstract function, call in child constructors instead.
@@ -723,29 +742,14 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 	}
 }
 
-void FindDialog::customTextCtrl::OnKeyDown(wxKeyEvent& event) 
+void FindDialog::OnTextIdle(wxTimerEvent& WXUNUSED(event)) 
 {
-	if(
-		event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_DOWN || 
-		event.GetKeyCode() == WXK_PAGEDOWN || event.GetKeyCode() == WXK_PAGEUP) 
-	{
-		FindDialog* p = dynamic_cast<FindDialog*>(GetParent());
-		p->OnKeyDown(event);
-	} 
-	else 
-	{
-		event.Skip();
-	}
+	RefreshContents();
 }
 
 void FindDialog::OnTextChange(wxCommandEvent& WXUNUSED(event)) 
 {
 	idle_input_timer.Start(800, true);
-}
-
-void FindDialog::OnTextIdle(wxTimerEvent& WXUNUSED(event)) 
-{
-	RefreshContents();
 }
 
 void FindDialog::OnClickList(wxCommandEvent& event) 
@@ -1030,7 +1034,213 @@ void FindBrushDialog::RefreshContentsInternal()
 }
 
 // ============================================================================
-// 
+// Replace item dialog
+
+BEGIN_EVENT_TABLE(ReplaceItemDialog, wxDialog)
+	EVT_TIMER(wxID_ANY, ReplaceItemDialog::OnTextIdle)
+
+	EVT_KEY_DOWN(ReplaceItemDialog::OnKeyDown)
+	EVT_TEXT(REPLACE_DIALOG_FIND_TEXT, ReplaceItemDialog::OnTextChange)
+	EVT_TEXT_ENTER(REPLACE_DIALOG_FIND_TEXT, ReplaceItemDialog::OnClickOK)
+	EVT_TEXT(REPLACE_DIALOG_WITH_TEXT, ReplaceItemDialog::OnTextChange)
+	EVT_TEXT_ENTER(REPLACE_DIALOG_WITH_TEXT, ReplaceItemDialog::OnClickOK)
+
+	EVT_BUTTON(wxID_OK, ReplaceItemDialog::OnClickOK)
+	EVT_BUTTON(wxID_CANCEL, ReplaceItemDialog::OnClickCancel)
+END_EVENT_TABLE()
+
+ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
+	wxDialog(gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
+	find_idle_input_timer(this),
+	with_idle_input_timer(this)
+{
+	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
+
+	wxFlexGridSizer *gridsizer = newd wxFlexGridSizer(2, 10, 10);
+
+	// Labels
+	gridsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Replace this item:")), 0);
+	gridsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("With this item:")), 0);
+
+	// The text fields
+	find_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_FIND_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	find_item_field->SetFocus();
+	gridsizer->Add(find_item_field, wxSizerFlags(0).Expand());
+
+	with_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_WITH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	gridsizer->Add(with_item_field, wxSizerFlags(0).Expand());
+
+	// The lists
+	find_item_list = newd FindDialogListBox(this, REPLACE_DIALOG_FIND_LIST);
+	find_item_list->SetMinSize(wxSize(250, 400));
+	gridsizer->Add(find_item_list, wxSizerFlags(1).Expand());
+
+	with_item_list = newd FindDialogListBox(this, REPLACE_DIALOG_WITH_LIST);
+	with_item_list->SetMinSize(wxSize(250, 400));
+	gridsizer->Add(with_item_list, wxSizerFlags(1).Expand());
+
+	topsizer->Add(gridsizer, wxSizerFlags(1).Expand().Border());
+
+	// Buttons
+	wxSizer* stdsizer = newd wxBoxSizer(wxHORIZONTAL);
+	stdsizer->Add(newd wxButton(this, wxID_OK, wxT("Replace")), wxSizerFlags(1).Center());
+	stdsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	topsizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
+
+	SetSizerAndFit(topsizer);
+	
+	RefreshContents(find_item_list);
+	RefreshContents(with_item_list);
+}
+	
+
+ReplaceItemDialog::~ReplaceItemDialog() 
+{
+	// ...
+}
+
+void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event) 
+{
+	FindDialogListBox *item_list = (event.GetEventObject() == find_item_field ? find_item_list : with_item_list);
+	int w, h;
+	item_list->GetSize(&w, &h);
+	size_t amount = 1; 
+
+	switch(event.GetKeyCode())
+	{
+		case WXK_PAGEUP:
+			amount = h / 32 + 1;
+		case WXK_UP:
+		{
+			if(item_list->GetItemCount() > 0) 
+			{
+				size_t n = item_list->GetSelection();
+				if(n == wxNOT_FOUND) 
+					n = 0;
+				else if(n - amount > 0 && n - amount < n) // latter is needed for unsigned overflow
+					n -= amount;
+				else
+					n = 0;
+				item_list->SetSelection(n);
+			}
+		}
+		break;
+		case WXK_PAGEDOWN:
+			amount = h / 32 + 1;
+		case WXK_DOWN:
+		{
+			if(item_list->GetItemCount() > 0) {
+				size_t n = item_list->GetSelection();
+				size_t itemcount = item_list->GetItemCount();
+				if(n == wxNOT_FOUND)
+					n = 0;
+				else if(uint(n) < itemcount - amount && itemcount - amount < itemcount)
+					n += amount;
+				else
+					n = item_list->GetItemCount() - 1;
+
+				item_list->SetSelection(n);
+			}
+		}
+		break;
+	default:
+		event.Skip();
+	}
+}
+
+void ReplaceItemDialog::OnTextIdle(wxTimerEvent& event) 
+{
+	if (&event.GetTimer() == &find_idle_input_timer)
+		RefreshContents(find_item_list);
+	else
+		RefreshContents(with_item_list);
+}
+
+void ReplaceItemDialog::OnTextChange(wxCommandEvent& event) 
+{
+	if (event.GetEventObject() == find_item_field)
+		find_idle_input_timer.Start(800, true);
+	else
+		with_idle_input_timer.Start(800, true);
+}
+
+void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event)) 
+{
+	// This is kind of stupid as it would fail unless the "Please enter a search string" wasn't there
+	if(find_item_list->GetItemCount() > 0 && with_item_list->GetItemCount() > 0)
+	{
+		if(find_item_list->GetSelection() == wxNOT_FOUND)
+			find_item_list->SetSelection(0);
+		if(with_item_list->GetSelection() == wxNOT_FOUND)
+			with_item_list->SetSelection(0);
+		
+		result_find_brush = dynamic_cast<RAWBrush*>(find_item_list->GetSelectedBrush());
+		result_with_brush = dynamic_cast<RAWBrush*>(with_item_list->GetSelectedBrush());
+	}
+
+	if (result_find_brush == NULL || result_with_brush == NULL)
+	{
+		result_find_brush = NULL;
+		result_with_brush = NULL;
+
+		gui.PopupDialog(wxT("Select both items"), wxT("You must select two items for the replacement to work."), wxOK);
+		return;
+	}
+
+	EndModal(1);
+}
+
+void ReplaceItemDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event)) 
+{
+	EndModal(0);
+}
+
+void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list) 
+{
+	which_list->Clear();
+
+	wxTextCtrl *search_field = (which_list == find_item_list ? find_item_field : with_item_field);
+
+	std::string search_string = as_lower_str(nstr(search_field->GetValue()));
+	bool do_search = (search_string.size() >= 2);
+
+	if(do_search) 
+	{
+		for(int id = 0; id < item_db.getMaxID(); ++id) 
+		{
+			ItemType& it = item_db[id];
+			if(it.id == 0)
+				continue;
+
+			RAWBrush* raw = it.raw_brush;
+			if(raw == NULL)
+				continue;
+
+			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+				continue;
+
+			which_list->AddBrush(raw);
+		}
+
+		if(which_list->GetItemCount() > 0)
+			which_list->SetSelection(0);
+		else
+			which_list->SetNoMatches();
+	}
+}
+
+uint16_t ReplaceItemDialog::GetResultFindID() const
+{
+	return result_find_brush ? static_cast<RAWBrush*>(result_find_brush)->getItemID() : 0;
+}
+
+uint16_t ReplaceItemDialog::GetResultWithID() const
+{
+	return result_with_brush ? static_cast<RAWBrush*>(result_with_brush)->getItemID() : 0;
+}
+
+// ============================================================================
+// Listbox in find item / brush stuff
 
 FindDialogListBox::FindDialogListBox(wxWindow* parent, wxWindowID id) :
 	wxVListBox(parent, id, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE),

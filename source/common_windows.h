@@ -27,6 +27,9 @@
 class GameSprite;
 class MapTab;
 
+/**
+ * A toggle button with an item on it.
+ */
 class ItemToggleButton : public DCButton 
 {
 public:
@@ -35,6 +38,9 @@ public:
 	virtual ~ItemToggleButton() {}
 };
 
+/**
+ * A button with an item on it.
+ */
 class ItemButton : public DCButton 
 {
 public:
@@ -43,6 +49,10 @@ public:
 	virtual ~ItemButton() {}
 };
 
+/**
+ * The map properties window
+ * Change map size, protocol etc.
+ */
 class MapPropertiesWindow : public wxDialog 
 {
 public:
@@ -70,6 +80,10 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
+/**
+ * The import map dialog
+ * Allows selection of file path, offset and some weird options.
+ */
 class ImportMapWindow : public wxDialog
 {
 public:
@@ -93,6 +107,9 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
+/**
+ * The export minimap dialog, select output path and what floors to export.
+ */
 class ExportMiniMapWindow : public wxDialog
 {
 public:
@@ -113,6 +130,25 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
+/**
+ * Text control that will forward up/down pgup / pgdown keys to parent window
+ */
+class KeyForwardingTextCtrl : public wxTextCtrl 
+{
+public:
+	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+		: wxTextCtrl(parent, id, value, pos, size, style, validator, name) {}
+	~KeyForwardingTextCtrl() {}
+
+	void OnKeyDown(wxKeyEvent&);
+
+	DECLARE_EVENT_TABLE()
+};
+
+/**
+ * The list inside a find dialog
+ * Presents a list of brushes
+ */
 class FindDialogListBox : public wxVListBox 
 {
 public:
@@ -132,6 +168,11 @@ protected:
 	std::vector<Brush*> brushlist;
 };
 
+/**
+ * A generic find dialog
+ * ShowModal will return 0 or the item id for item dialogs
+ * 0 or 1 for brush dialogs
+ */
 class FindDialog : public wxDialog 
 {
 public:
@@ -153,21 +194,8 @@ protected:
 	virtual void OnClickListInternal(wxCommandEvent&) = 0;
 	virtual void OnClickOKInternal() = 0;
 
-	// Incredible thin wrapper that only provides overload for up/down keys
-	class customTextCtrl : public wxTextCtrl 
-	{
-	public:
-		customTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
-			: wxTextCtrl(parent, id, value, pos, size, style, validator, name) {}
-		~customTextCtrl() {}
-
-		void OnKeyDown(wxKeyEvent&);
-
-		DECLARE_EVENT_TABLE()
-	};
-
 	FindDialogListBox* item_list;
-	customTextCtrl* search_field;
+	KeyForwardingTextCtrl* search_field;
 	wxTimer idle_input_timer;
 	const Brush* result_brush;
 	int result_id;
@@ -175,6 +203,10 @@ protected:
 	DECLARE_EVENT_TABLE()
 };
 
+/**
+ * Find a brush dialog
+ * Find out what brush was returned through GetResult
+ */
 class FindBrushDialog : public FindDialog 
 {
 public:
@@ -186,6 +218,10 @@ public:
 	virtual void OnClickOKInternal();
 };
 
+/**
+ * Select an item dialog
+ * Find out what item was selected through return value of ShowModal() or getResultID
+ */
 class FindItemDialog : public FindDialog 
 {
 public:
@@ -202,6 +238,47 @@ protected:
 	bool (*extra_condition)(const ItemType&);
 };
 
+/**
+ * Select two items
+ * Will return the two selected items through GetResultFindID() and GetResultWithID()
+ */
+class ReplaceItemDialog : public wxDialog
+{
+public:
+	ReplaceItemDialog(wxWindow* parent, wxString title = wxT("Replace Item"));
+	virtual ~ReplaceItemDialog();
+	
+	void OnKeyDown(wxKeyEvent&);
+	void OnTextChange(wxCommandEvent&);
+	void OnTextIdle(wxTimerEvent&);
+	void OnClickList(wxCommandEvent&);
+	void OnClickOK(wxCommandEvent&);
+	void OnClickCancel(wxCommandEvent&);
+
+	uint16_t GetResultFindID() const;
+	uint16_t GetResultWithID() const;
+
+protected:
+	void RefreshContents(FindDialogListBox *whichList);
+
+	KeyForwardingTextCtrl* find_item_field;
+	FindDialogListBox *find_item_list;
+	KeyForwardingTextCtrl* with_item_field;
+	FindDialogListBox *with_item_list;
+
+	wxTimer find_idle_input_timer;
+	wxTimer with_idle_input_timer;
+	
+	Brush* result_find_brush;
+	Brush* result_with_brush;
+	
+	DECLARE_EVENT_TABLE();
+};
+
+/**
+ * Jump to position dialog
+ * Allows entry of 3 coordinates and goes there instantly
+ */
 class GotoPositionDialog : public wxDialog 
 {
 public:
@@ -218,6 +295,9 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
+/**
+ * The edit towns dialog, ugly as sin.
+ */
 class EditTownsDialog : public wxDialog 
 {
 public:

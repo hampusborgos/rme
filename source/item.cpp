@@ -113,6 +113,7 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 			return new_item;
 		}
 
+		std::queue<Container*> containers;
 		for(ItemVector::iterator item_iter = parent->items.begin();
 			item_iter != parent->items.end();
 			++item_iter)
@@ -124,8 +125,38 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 				parent->items.insert(item_iter, new_item);
 				return new_item;
 			}
+			
+			Container* c = dynamic_cast<Container*>(*item_iter);
+			if (c)
+				containers.push(c);
+		}
+
+		while(containers.size() > 0)
+		{
+			Container* container = containers.front();
+			ItemVector& v = container->getVector();
+			for(ItemVector::iterator item_iter = v.begin();
+					item_iter != v.end();
+					++item_iter)
+			{
+				Item* i = *item_iter;
+				Container* c = dynamic_cast<Container*>(i);
+				if(c)
+					containers.push(c);
+
+				if (i == old_item)
+				{
+					// Found it!
+					item_iter = v.erase(item_iter);
+					v.insert(item_iter, new_item);
+					return new_item;
+				}
+			}
+			containers.pop();
 		}
 	}
+
+	delete new_item;
 	return NULL;
 }
 
