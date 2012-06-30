@@ -6,6 +6,9 @@ rme.cfg
 *.MAP
 *.user
 *.APS
+*.opensdf
+*.sdf
+*.suo
 
 # Xcode
 *.xcuserdata
