@@ -49,9 +49,9 @@ WaypointPalettePanel::WaypointPalettePanel(wxWindow* parent, wxWindowID id) :
 	sidesizer->Add(waypoint_list, 1, wxEXPAND);
 
 	wxSizer* tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(add_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_ADD_WAYPOINT, wxT("Add"), wxDefaultPosition, wxSize(50, -1)), 0, wxRIGHT);
-	tmpsizer->Add(remove_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_REMOVE_WAYPOINT, wxT("Remove"), wxDefaultPosition, wxSize(70, -1)), 1, wxRIGHT);
-	sidesizer->Add(tmpsizer, 0, wxRIGHT);
+	tmpsizer->Add(add_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_ADD_WAYPOINT, wxT("Add"), wxDefaultPosition, wxSize(50, -1)), 1, wxEXPAND);
+	tmpsizer->Add(remove_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_REMOVE_WAYPOINT, wxT("Remove"), wxDefaultPosition, wxSize(70, -1)), 1, wxEXPAND);
+	sidesizer->Add(tmpsizer, 0, wxEXPAND);
 
 	SetSizerAndFit(sidesizer);
 }

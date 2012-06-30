@@ -1813,7 +1813,7 @@ void MainMenuBar::OnStartLive(wxCommandEvent& event)
 	wxDialog* live_host_dlg = newd wxDialog(frame, wxID_ANY, wxT("Host Live Server"), wxDefaultPosition, wxDefaultSize);
 
 	wxSizer* top_sizer = newd wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* gsizer = newd wxFlexGridSizer(4, 2, 10, 10);
+	wxFlexGridSizer* gsizer = newd wxFlexGridSizer(2, 10, 10);
 	gsizer->AddGrowableCol(0, 2);
 	gsizer->AddGrowableCol(1, 3);
 
@@ -1884,7 +1884,7 @@ void MainMenuBar::OnJoinLive(wxCommandEvent& event)
 	wxDialog* live_join_dlg = newd wxDialog(frame, wxID_ANY, wxT("Join Live Server"), wxDefaultPosition, wxDefaultSize);
 
 	wxSizer* top_sizer = newd wxBoxSizer(wxVERTICAL);
-	wxFlexGridSizer* gsizer = newd wxFlexGridSizer(3, 2, 10, 10);
+	wxFlexGridSizer* gsizer = newd wxFlexGridSizer(2, 10, 10);
 	gsizer->AddGrowableCol(0, 2);
 	gsizer->AddGrowableCol(1, 3);
 

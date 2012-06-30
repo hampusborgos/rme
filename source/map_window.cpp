@@ -40,7 +40,7 @@ MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
 
 	gem = newd DCButton(this, MAP_WINDOW_GEM, wxDefaultPosition, DC_BTN_NORMAL, RENDER_SIZE_16x16, EDITOR_SPRITE_SELECTION_GEM);
 
-	wxFlexGridSizer* topsizer = newd wxFlexGridSizer(2,2,0,0);
+	wxFlexGridSizer* topsizer = newd wxFlexGridSizer(2, 0, 0);
 
 	topsizer->AddGrowableCol(0);
 	topsizer->AddGrowableRow(0);

@@ -85,7 +85,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
 	only_one_instance_chkbox->SetToolTip(wxT("When checked, maps opened using the shell will all be opened in the same instance."));
 
 
-	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(3, 2, 10, 10);
+	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(2, 10, 10);
 	grid_sizer->AddGrowableCol(1);
 
 
@@ -184,7 +184,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 
 	sizer->Add(20,10);
 
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(5, 2, 10, 10);
+	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 	
 	// Icon background color
@@ -266,7 +266,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 		}
 		pane_sizer->AddSpacer(8);
 
-		wxFlexGridSizer* pane_grid_sizer = newd wxFlexGridSizer(2, 5, 10, 10);
+		wxFlexGridSizer* pane_grid_sizer = newd wxFlexGridSizer(2, 10, 10);
 		pane_grid_sizer->AddGrowableCol(1);
 
 		pane_grid_sizer->Add(tmp = newd wxStaticText(pane->GetPane(), wxID_ANY, wxT("Texture clean interval: ")), 0);
@@ -355,7 +355,6 @@ wxNotebookPage* PreferencesWindow::CreateUIPage() {
 		wxT("Terrain Palette Style:"),
 		wxT("Configures the look of the terrain palette."),
 		settings.getString(Config::PALETTE_TERRAIN_STYLE));
-	subsizer->Add(5, 5);
 	doodad_palette_style_choice = AddPaletteStyleChoice(
 		ui_page, subsizer,
 		wxT("Doodad Palette Style:"),
@@ -366,7 +365,6 @@ wxNotebookPage* PreferencesWindow::CreateUIPage() {
 		wxT("Item Palette Style:"),
 		wxT("Configures the look of the item palette."),
 		settings.getString(Config::PALETTE_ITEM_STYLE));
-	subsizer->Add(5, 5);
 	raw_palette_style_choice = AddPaletteStyleChoice(
 		ui_page, subsizer,
 		wxT("RAW Palette Style:"),
@@ -374,6 +372,7 @@ wxNotebookPage* PreferencesWindow::CreateUIPage() {
 		settings.getString(Config::PALETTE_RAW_STYLE));
 	
 	sizer->Add(subsizer);
+	sizer->AddSpacer(10);
 
 	sizer->Add(large_terrain_tools_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large terrain palette tool & size icons")));
 	large_terrain_tools_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_TERRAIN_TOOLBAR));
@@ -439,7 +438,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 	wxSizer* sizer = newd wxStaticBoxSizer(wxVERTICAL, client_page, wxT("Client Version"));
 
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(3 + versions.size(), 2, 10, 10);
+	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 
 	default_version_choice = newd wxChoice(client_page, wxID_ANY);

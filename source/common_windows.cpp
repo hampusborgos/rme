@@ -41,7 +41,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
-	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(6, 2, 10, 10);
+	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(2, 10, 10);
 	grid_sizer->AddGrowableCol(1);
 
 	// Description
