@@ -632,6 +632,7 @@ void MainFrame::OnExit(wxCloseEvent& event)
 			}
 		}
 	}
+	gui.aui_manager->UnInit();
 	((Application&)wxGetApp()).Unload();
 #ifdef __RELEASE__
 	// Hack, "crash" gracefully in release builds, let OS handle cleanup of windows
