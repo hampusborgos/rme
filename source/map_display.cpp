@@ -1513,6 +1513,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 		// Nothing
 	}
 
+
 	popup_menu->Update();
 	PopupMenu(popup_menu);
 
@@ -2130,9 +2131,9 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 	wxDialog* w = NULL;
 
 	if(new_tile->spawn && settings.getInteger(Config::SHOW_SPAWNS))
-		wxDialog* w = newd OldPropertiesWindow(gui.root, &editor.map, new_tile, new_tile->spawn);
+		w = newd OldPropertiesWindow(gui.root, &editor.map, new_tile, new_tile->spawn);
 	else if(new_tile->creature && settings.getInteger(Config::SHOW_CREATURES))
-		wxDialog* w = newd OldPropertiesWindow(gui.root, &editor.map, new_tile, new_tile->creature);
+		w = newd OldPropertiesWindow(gui.root, &editor.map, new_tile, new_tile->creature);
 	else
 	{
 		ItemVector selected_items = new_tile->getSelectedItems();
@@ -2393,6 +2394,13 @@ void MapPopupMenu::Update()
 			}
 			else
 			{
+
+				if(topCreature)
+					Append( MAP_POPUP_MENU_SELECT_CREATURE_BRUSH, wxT("Select Creature"), wxT("Uses the current creature as a creature brush"));
+
+				if(topSpawn)
+					Append( MAP_POPUP_MENU_SELECT_SPAWN_BRUSH, wxT("Select Spawn"), wxT("Select the spawn brush"));
+
 				Append( MAP_POPUP_MENU_SELECT_RAW_BRUSH, wxT("Select RAW"), wxT("Uses the top item as a RAW brush"));
 				if(hasWall)
 				{
@@ -2406,6 +2414,12 @@ void MapPopupMenu::Update()
 				if(tile->isHouseTile())
 				{
 					Append(MAP_POPUP_MENU_SELECT_HOUSE_BRUSH, wxT("Select House"), wxT("Draw with the house on this tile."));
+				}
+
+				if (tile->hasGround() || topCreature || topSpawn)
+				{
+					AppendSeparator();
+					Append( MAP_POPUP_MENU_PROPERTIES, wxT("&Properties"), wxT("Properties for the current object"));
 				}
 			}
 		}

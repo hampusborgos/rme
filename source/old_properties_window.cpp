@@ -346,24 +346,21 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* boxsizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Creature Properties"));
 
-	int num_items = 2;
-	//if(item->canHoldDescription()) num_items += 1;
-
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, num_items, 10, 10);
+	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 	
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Creature ")));
-	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(edit_creature->getName()) + wxT("\"")));
+	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(edit_creature->getName()) + wxT("\"")), wxSizerFlags(1).Expand());
 
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawn interval")));
 	count_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_creature->getSpawnTime()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 3600, edit_creature->getSpawnTime());
-	count_field->SetSelection(-1, -1);
+	// count_field->SetSelection(-1, -1);
 	subsizer->Add(count_field, wxSizerFlags(1).Expand());
 
 	boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 
 	topsizer->Add(boxsizer, wxSizerFlags(3).Expand().Border(wxALL, 20));
-	SetSize(220, 40 + num_items*40);
+	SetSize(220, 0);
 
 	wxSizer* std_sizer = newd wxBoxSizer(wxHORIZONTAL);
 	std_sizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
@@ -396,24 +393,23 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 	//if(item->canHoldDescription()) num_items += 1;
 
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 1, 10, 10);
+	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawn size")));
 	count_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_spawn->getSize()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, settings.getInteger(Config::MAX_SPAWN_RADIUS), edit_spawn->getSize());
-	count_field->SetSelection(-1, -1);
+	// count_field->SetSelection(-1, -1);
 	subsizer->Add(count_field, wxSizerFlags(1).Expand());
 
 	boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 
 	topsizer->Add(boxsizer, wxSizerFlags(3).Expand().Border(wxALL, 20));
-	SetSize(220, 100);
 
 	wxSizer* std_sizer = newd wxBoxSizer(wxHORIZONTAL);
 	std_sizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
 	std_sizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
 	topsizer->Add(std_sizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
-
+	
 	SetSizerAndFit(topsizer);
 }
 
