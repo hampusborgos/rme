@@ -89,7 +89,7 @@ typedef std::vector<ClientVersion*> ClientVersionList;
 class ClientVersion : boost::noncopyable
 {
 public:
-	ClientVersion(OtbVersion otb, wxString versionName, wxString path);
+	ClientVersion(OtbVersion otb, std::string versionName, wxString path);
 	~ClientVersion() {}
 	
 	static void loadVersions();
@@ -128,20 +128,22 @@ public:
 private:
 	OtbVersion otb;
 	
-	wxString name;
+	std::string name;
 	bool visible;
 	bool usesFuckedUpCharges;
 
 	std::vector<MapVersionID> map_versions_supported;
 	MapVersionID preferred_map_version;
 	std::vector<ClientData> data_versions;
+	std::vector<ClientVersion*> extension_versions;
 
 	wxString data_path;
 	FileName client_path;
 
 private:
-	static void loadOTBs(xmlNodePtr otb_nodes);
+	static void loadOTBInfo(xmlNodePtr otb_nodes);
 	static void loadVersion(xmlNodePtr client_node);
+	static void loadVersionExtensions(xmlNodePtr client_node);
 
 	// All versions
 	typedef std::map<ClientVersionID, ClientVersion*> VersionMap;

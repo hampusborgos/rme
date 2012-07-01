@@ -61,11 +61,26 @@ void ClientVersion::loadVersions()
 		for(xmlNodePtr childNode = root->children; childNode != NULL; childNode = childNode->next)
 		{
 			if(xmlStrcmp(childNode->name,(const xmlChar*)"otbs") == 0)
-				loadOTBs(childNode);
+			{
+				for(xmlNodePtr otbNode = childNode->children; otbNode != NULL; otbNode = otbNode->next)
+					if(xmlStrcmp(otbNode->name,(const xmlChar*)"otb") == 0)
+						loadOTBInfo(otbNode);
+			}
 			else if(xmlStrcmp(childNode->name,(const xmlChar*)"clients") == 0)
+			{
 				for(xmlNodePtr versionNode = childNode->children; versionNode != NULL; versionNode = versionNode->next)
 					if(xmlStrcmp(versionNode->name,(const xmlChar*)"client") == 0)
 						loadVersion(versionNode);
+			}
+		}
+
+		// Second-pass to load extension info
+		for(xmlNodePtr childNode = root->children; childNode != NULL; childNode = childNode->next)
+		{
+			if(xmlStrcmp(childNode->name,(const xmlChar*)"clients") == 0)
+				for(xmlNodePtr versionNode = childNode->children; versionNode != NULL; versionNode = versionNode->next)
+					if(xmlStrcmp(versionNode->name,(const xmlChar*)"client") == 0)
+						loadVersionExtensions(versionNode);
 		}
 	}
 
@@ -101,40 +116,37 @@ void ClientVersion::unloadVersions()
 
 }
 
-void ClientVersion::loadOTBs(xmlNodePtr otbsNode)
+void ClientVersion::loadOTBInfo(xmlNodePtr otbNode)
 {
-	for(xmlNodePtr otbNode = otbsNode->children; otbNode != NULL; otbNode = otbNode->next)
+	if(xmlStrcmp(otbNode->name,(const xmlChar*)"otb") == 0)
 	{
-		if(xmlStrcmp(otbNode->name,(const xmlChar*)"otb") == 0)
+		OtbVersion otb = {"", OTB_VERSION_3, CLIENT_VERSION_NONE};
+		if(!readXMLString(otbNode, "client", otb.name))
 		{
-			OtbVersion otb = {"", OTB_VERSION_3, CLIENT_VERSION_NONE};
-			if(!readXMLString(otbNode, "client", otb.name))
-			{
-				wxLogError(wxT("Node 'otb' must contain 'client' tag."));
-				continue;
-			}
-
-			if(!readXMLInteger(otbNode, "id", otb.id))
-			{
-				wxLogError(wxT("Node 'otb' must contain 'id' tag."));
-				continue;
-			}
-			int read_int;
-			if(!readXMLInteger(otbNode, "version", read_int))
-			{
-				wxLogError(wxT("Node 'otb' must contain 'version' tag."));
-				continue;
-			}
-
-			if (read_int < OTB_VERSION_1 || read_int > OTB_VERSION_3)
-			{
-				wxLogError(wxT("Node 'otb' unrecognized format version (version 1..3 supported)."));
-				continue;
-			}
-
-			otb.format_version = (OtbFormatVersion)read_int;
-			otb_versions[otb.name] = otb;
+			wxLogError(wxT("Node 'otb' must contain 'client' tag."));
+			return;
 		}
+
+		if(!readXMLInteger(otbNode, "id", otb.id))
+		{
+			wxLogError(wxT("Node 'otb' must contain 'id' tag."));
+			return;
+		}
+		int read_int;
+		if(!readXMLInteger(otbNode, "version", read_int))
+		{
+			wxLogError(wxT("Node 'otb' must contain 'version' tag."));
+			return;
+		}
+
+		if (read_int < OTB_VERSION_1 || read_int > OTB_VERSION_3)
+		{
+			wxLogError(wxT("Node 'otb' unrecognized format version (version 1..3 supported)."));
+			return;
+		}
+
+		otb.format_version = (OtbFormatVersion)read_int;
+		otb_versions[otb.name] = otb;
 	}
 }
 
@@ -158,7 +170,7 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 		return;
 	}
 
-	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], wxstr(versionName), wxstr(dataPath));
+	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], versionName, wxstr(dataPath));
 	
 	readXMLBoolean(versionNode, "visible", version->visible);
 
@@ -187,10 +199,6 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 				version->preferred_map_version = (MapVersionID)otbmVersion;
 
 			version->map_versions_supported.push_back((MapVersionID)otbmVersion);
-		}
-		else if(xmlStrcmp(childNode->name,(const xmlChar*)"extensions") == 0)
-		{
-			;
 		}
 		else if(xmlStrcmp(childNode->name,(const xmlChar*)"fucked_up_charges") == 0)
 		{
@@ -265,6 +273,56 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 	latest_version = version;
 }
 
+void ClientVersion::loadVersionExtensions(xmlNodePtr versionNode)
+{
+	std::string versionName;
+	if (!readXMLString(versionNode, "name", versionName))
+	{
+		// Error has already been displayed earlier, no need to show another error about the same thing
+		return;
+	}
+
+	ClientVersion* version = get(versionName);
+
+	if (!version)
+	{
+		// Same rationale as above
+		return;
+	}
+
+	for(xmlNodePtr childNode = versionNode->children; childNode != NULL; childNode = childNode->next)
+	{
+		if(xmlStrcmp(childNode->name,(const xmlChar*)"extensions") == 0)
+		{
+			std::string from, to;
+			
+			readXMLString(childNode, "from", from);
+			readXMLString(childNode, "to", to);
+			
+			ClientVersion* fromVersion = get(from);
+			ClientVersion* toVersion = get(to);
+
+			if ((from.empty() && to.empty()) || (!fromVersion && !toVersion))
+			{
+				wxLogError(wxT("Unknown client extension data."));
+				continue;
+			}
+			
+			if (fromVersion == NULL)
+				fromVersion = client_versions.begin()->second;
+			if (toVersion == NULL)
+				toVersion = client_versions.rbegin()->second;
+
+			for (VersionMap::const_iterator iter = client_versions.begin(); iter != client_versions.end(); ++iter)
+			{
+				if (iter->second->getID() >= fromVersion->getID() && iter->second->getID() <= toVersion->getID())
+				{
+					version->extension_versions.push_back(iter->second);
+				}
+			}
+		}
+	}
+}
 
 void ClientVersion::saveVersions()
 {
@@ -285,7 +343,7 @@ void ClientVersion::saveVersions()
 
 // Client version class
 
-ClientVersion::ClientVersion(OtbVersion otb, wxString versionName, wxString path) :
+ClientVersion::ClientVersion(OtbVersion otb, std::string versionName, wxString path) :
 	otb(otb),
 	name(versionName),
 	visible(false),
@@ -443,7 +501,7 @@ SprVersion ClientVersion::getSprVersionForSignature(uint32_t signature) const
 
 std::string ClientVersion::getName() const
 {
-	return nstr(name);
+	return name;
 }
 
 ClientVersionID ClientVersion::getID() const
