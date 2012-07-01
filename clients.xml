@@ -176,7 +176,7 @@
             <data datversion="8.6" sprversion="7.0" dat="0x4E12DAFF" spr="0x4E12DB27"/>
         </client>
 
-        <client name="9.20 - 9.31" otb="9.20" visible="true" data_directory="9.20">
+        <client name="9.20 - 9.31" otb="9.20" visible="true" data_directory="920">
             <otbm version="3"/>
             <extensions from="8.20"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4E807C08" spr="0x4E807C23"/>
