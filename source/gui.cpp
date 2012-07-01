@@ -59,7 +59,7 @@ GUI::GUI() :
 	loaded_version(CLIENT_VERSION_NONE),
 	mode(SELECTION_MODE),
 	pasting(false),
-	hotkeys_enabled(false),
+	hotkeys_enabled(true),
 
 	current_brush(NULL),
 	previous_brush(NULL),
