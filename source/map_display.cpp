@@ -1617,7 +1617,7 @@ void MapCanvas::OnGainMouse(wxMouseEvent& event)
 void MapCanvas::OnKeyDown(wxKeyEvent& event)
 {
 	char keycode = event.GetKeyCode();
-	std::cout << "Keycode " << keycode << std::endl;
+	// std::cout << "Keycode " << keycode << std::endl;
 	switch(event.GetKeyCode())
 	{
 	case WXK_NUMPAD_ADD: case WXK_PAGEUP:
@@ -1885,7 +1885,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		}
 	default:
 		{
-			event.Skip(true);
+			event.Skip();
 			break;
 		}
 	}
