@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures>
+  <creature name="Backpack_1" type="npc" looktype="130"/>
+  <creature name="boat_1" type="npc" looktype="130"/>
+  <creature name="Distance_1" type="npc" looktype="130"/>
+  <creature name="Food_1" type="npc" looktype="130"/>
+  <creature name="Frog" type="monster" looktype="130"/>
+  <creature name="Gems_1" type="npc" looktype="130"/>
+  <creature name="King_1" type="npc" looktype="130"/>
+  <creature name="Lootbuyer_1_1" type="npc" looktype="130"/>
+  <creature name="Oracle_1" type="npc" looktype="130"/>
+  <creature name="Pink Butterfly" type="monster" looktype="130"/>
+  <creature name="Postal_1_1" type="npc" looktype="130"/>
+  <creature name="Rook_Equipment" type="npc" looktype="130"/>
+  <creature name="Rook_food" type="npc" looktype="130"/>
+  <creature name="Rook_Temple" type="npc" looktype="130"/>
+  <creature name="Runes_1" type="npc" looktype="130"/>
+  <creature name="Tools_1" type="npc" looktype="130"/>
+  <creature name="Wands_Rods_Aol_1" type="npc" looktype="130"/>
+</creatures>
