@@ -1758,10 +1758,12 @@ long GUI::PopupDialog(wxString title, wxString text, long style, wxString config
 	return gui.PopupDialog(gui.root, title, text, style, configsavename, configsavevalue);
 }
 
-void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec)
+void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& param_items)
 {
-	if(vec.empty())
+	if(param_items.empty())
 		return;
+
+	wxArrayString list_items(param_items);
 
 	// Create the window
 	wxDialog* dlg = newd wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX);
@@ -1770,17 +1772,17 @@ void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec)
 	wxListBox* item_list = newd wxListBox(dlg, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SINGLE);
 	item_list->SetMinSize(wxSize(500, 300));
 
-	for(size_t i = 0; i != vec.GetCount();)
+	for(size_t i = 0; i != list_items.GetCount();)
 	{
-		wxString str = vec[i];
+		wxString str = list_items[i];
 		size_t pos = str.find(wxT("\n"));
 		if(pos != wxString::npos) {
 			// Split string!
 			item_list->Append(str.substr(0, pos));
-			vec[i] = str.substr(pos+1);
+			list_items[i] = str.substr(pos+1);
 			continue;
 		}
-		item_list->Append(vec[i]);
+		item_list->Append(list_items[i]);
 		++i;
 	}
 	sizer->Add(item_list, 1, wxEXPAND);
