@@ -1261,7 +1261,7 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	}
 	else if(cleared) 
 	{
-		dc.DrawText(wxT("Please enter your search string (minimum 2 characters)"), rect.GetX() + 40, rect.GetY() + 6);
+		dc.DrawText(wxT("Please enter your search string."), rect.GetX() + 40, rect.GetY() + 6);
 	} 
 	else
 	{
