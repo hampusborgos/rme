@@ -74,13 +74,14 @@ protected:
 	wxCheckBox* hide_items_when_zoomed_chkbox;
 	wxColourPickerCtrl* cursor_color_pick;
 	wxColourPickerCtrl* cursor_alt_color_pick;
-
+	/*
 	wxCheckBox* texture_managment_chkbox;
 	wxSpinCtrl* clean_interval_spin;
 	wxSpinCtrl* texture_longevity_spin;
 	wxSpinCtrl* texture_threshold_spin;
 	wxSpinCtrl* software_threshold_spin;
 	wxSpinCtrl* software_clean_amount_spin;
+	*/
 
 	// Interface
 	wxChoice* terrain_palette_style_choice;

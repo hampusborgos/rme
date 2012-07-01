@@ -59,7 +59,7 @@ PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_A
 
 	SetSizerAndFit(sizer);
 
-	FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
+	// FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
 }
 
 PreferencesWindow::~PreferencesWindow() {
@@ -68,7 +68,7 @@ PreferencesWindow::~PreferencesWindow() {
 wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
 	wxNotebookPage* general_page = newd wxPanel(book, wxID_ANY);
 
-	wxSizer* sizer = newd wxStaticBoxSizer(wxVERTICAL, general_page, wxT("Options"));
+	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxStaticText* tmptext;
 	
 	sizer->Add(always_make_backup_chkbox = newd wxCheckBox(general_page, wxID_ANY, wxT("Always make map backup")));
@@ -116,7 +116,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
 wxNotebookPage* PreferencesWindow::CreateEditorPage() {
 	wxNotebookPage* editor_page = newd wxPanel(book, wxID_ANY);
 
-	wxSizer* sizer = newd wxStaticBoxSizer(wxVERTICAL, editor_page, wxT("Interface"));
+	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	sizer->Add(group_actions_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Group same-type actions")));
 	group_actions_chkbox->SetValue(settings.getInteger(Config::GROUP_ACTIONS));
@@ -168,7 +168,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 	wxWindow* tmp;
 	wxNotebookPage* graphics_page = newd wxPanel(book, wxID_ANY);
 
-	wxSizer* sizer = newd wxStaticBoxSizer(wxVERTICAL, graphics_page, wxT("Graphic Options"));
+	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	sizer->Add(hide_items_when_zoomed_chkbox = newd wxCheckBox(graphics_page, wxID_ANY, wxT("Hide items when zoomed out")));
 	hide_items_when_zoomed_chkbox->SetValue(settings.getInteger(Config::HIDE_ITEMS_WHEN_ZOOMED));
@@ -256,6 +256,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 	sizer->Add(subsizer, 1, wxEXPAND);
 
 	// Advanced settings
+	/*
 	wxCollapsiblePane* pane = newd wxCollapsiblePane(graphics_page, PANE_ADVANCED_GRAPHICS, wxT("Advanced settings"));
 	{
 		wxSizer* pane_sizer = newd wxBoxSizer(wxVERTICAL);
@@ -302,6 +303,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 	}
 
 	sizer->Add(pane, 0);
+	*/
 
 	graphics_page->SetSizerAndFit(sizer);
 
@@ -346,7 +348,7 @@ void PreferencesWindow::SetPaletteStyleChoice(wxChoice* ctrl, int key) {
 wxNotebookPage* PreferencesWindow::CreateUIPage() {
 	wxNotebookPage* ui_page = newd wxPanel(book, wxID_ANY);
 
-	wxSizer* sizer = newd wxStaticBoxSizer(wxVERTICAL, ui_page, wxT("Interface"));
+	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
@@ -436,17 +438,32 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	ClientVersion::saveVersions();
     ClientVersionList versions = ClientVersion::getAll();
 
-	wxSizer* sizer = newd wxStaticBoxSizer(wxVERTICAL, client_page, wxT("Client Version"));
+	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
-	subsizer->AddGrowableCol(1);
+	wxFlexGridSizer* options_sizer = newd wxFlexGridSizer(2, 10, 10);
+	options_sizer->AddGrowableCol(1);
 
+	// Default client version choice control
 	default_version_choice = newd wxChoice(client_page, wxID_ANY);
     wxStaticText* default_client_tooltip = newd wxStaticText(client_page, wxID_ANY, wxT("Default Client version"));
-	subsizer->Add(default_client_tooltip, 0);
-	subsizer->Add(default_version_choice, 0);
+	options_sizer->Add(default_client_tooltip, 0);
+	options_sizer->Add(default_version_choice, 0);
 	SetWindowToolTip(default_client_tooltip, default_version_choice, wxT("This will decide what client version will be used when new maps are created."));
+	
+	// Check file sigs checkbox
+	options_sizer->Add(check_sigs_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Check file signatures")));
+	options_sizer->Add(10, 1);
+	check_sigs_chkbox->SetValue(settings.getInteger(Config::CHECK_SIGNATURES));
+	check_sigs_chkbox->SetToolTip(wxT("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs."));
     
+	// Add the grid sizer
+	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
+
+	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER);
+	wxFlexGridSizer* client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
+	client_list_sizer->AddGrowableCol(1);
+    client_list_window->SetVirtualSize( 500, 1000 );
+
 	int version_counter = 0;
     for (ClientVersionList::iterator version_iter = versions.begin();
          version_iter != versions.end();
@@ -460,11 +477,12 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
         
         wxString searchtip;
         searchtip << wxT("Version ") << wxstr(version->getName()) << wxT(" search path");
-        wxStaticText *tmp_text = newd wxStaticText(client_page, wxID_ANY, searchtip);
-        subsizer->Add(tmp_text, 0);
-		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_page, wxID_ANY, version->getClientPath().GetFullPath());
+        wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, searchtip);
+        client_list_sizer->Add(tmp_text, 0);
+
+		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, version->getClientPath().GetFullPath());
 		version_dir_pickers.push_back(dir_picker);
-        subsizer->Add(dir_picker, 0);
+        client_list_sizer->Add(dir_picker, 0);
         
         wxString tooltip;
         tooltip << wxT("The editor will look for ") << wxstr(version->getName()) << wxT(" Tibia.dat & Tibia.spr here.");
@@ -477,13 +495,10 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 		version_counter++;
     }
 
-	subsizer->Add(check_sigs_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Check file signatures")));
-	subsizer->Add(10, 1);
-	check_sigs_chkbox->SetValue(settings.getInteger(Config::CHECK_SIGNATURES));
-	check_sigs_chkbox->SetToolTip(wxT("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs."));
-     
-	sizer->Add(subsizer, 1, wxEXPAND);
-	client_page->SetSizerAndFit(sizer);
+	// Set the sizers
+    client_list_window->SetSizer(client_list_sizer);
+	topsizer->Add(client_list_window, wxSizerFlags(1));
+	client_page->SetSizerAndFit(topsizer);
 
 	return client_page;
 }
@@ -588,13 +603,14 @@ void PreferencesWindow::Apply()
 		//settings.setInteger(Config::CURSOR_ALT_ALPHA, clr.Alpha());
 
 	settings.setInteger(Config::HIDE_ITEMS_WHEN_ZOOMED, hide_items_when_zoomed_chkbox->GetValue());
+	/*
 	settings.setInteger(Config::TEXTURE_MANAGEMENT, texture_managment_chkbox->GetValue());
 	settings.setInteger(Config::TEXTURE_CLEAN_PULSE, clean_interval_spin->GetValue());
 	settings.setInteger(Config::TEXTURE_LONGEVITY, texture_longevity_spin->GetValue());
 	settings.setInteger(Config::TEXTURE_CLEAN_THRESHOLD, texture_threshold_spin->GetValue());
 	settings.setInteger(Config::SOFTWARE_CLEAN_THRESHOLD, software_threshold_spin->GetValue());
 	settings.setInteger(Config::SOFTWARE_CLEAN_SIZE, software_clean_amount_spin->GetValue());
-
+	*/
 
 	// Interface
 	SetPaletteStyleChoice(terrain_palette_style_choice, Config::PALETTE_TERRAIN_STYLE);
