@@ -116,9 +116,11 @@
         <item name="$Join Server" action="LIVE_JOIN" help="Join a live mapping session."/>
         <item name="$Leave Server" action="LIVE_CLOSE" help="Leave this live mapping session."/>
     </menu>
+    <!--
     <menu name="$Debug">
         <item name="$Debug .dat" action="DEBUG_VIEW_DAT" help="View all item sprites available."/>
     </menu>
+    -->
     <menu name="F$loor">
         <item name="Floor 0" action="FLOOR_0" help=""/>
         <item name="Floor 1" action="FLOOR_1" help=""/>
