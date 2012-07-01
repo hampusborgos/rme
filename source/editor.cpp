@@ -117,8 +117,8 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 
 	if(success)
 	{
-		/* TODO
 		success = map.open(nstr(fn.GetFullPath()), true);
+		/* TODO
 		if(success && ver.client == CLIENT_VERSION_854_BAD)
 		{
 			int ok = gui.PopupDialog(wxT("Incorrect OTB"), wxT("This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes."), wxYES | wxNO);
