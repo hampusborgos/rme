@@ -101,7 +101,7 @@ public:
 	static ClientVersionList getVisible(std::string from, std::string to);
 	static ClientVersionList getAll();
 	static ClientVersionList getAllVisible();
-	static ClientVersionList getAllForOTBMVersion(MapVersion map_version);
+	static ClientVersionList getAllForOTBMVersion(MapVersionID map_version);
 	static ClientVersion* getLatestVersion();
 
 	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}

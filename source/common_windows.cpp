@@ -38,7 +38,6 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	// Setup data variabels
 	Map& map = editor.map;
 
-
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
 	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(2, 10, 10);
@@ -131,7 +130,9 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	SetSizerAndFit(topsizer);
 	
 	UpdateProtocolList();
-	protocol_choice->SetStringSelection(wxstr(ClientVersion::get(map.getVersion().client)->getName()));
+
+	ClientVersion* current_version = ClientVersion::get(map.getVersion().client);
+	protocol_choice->SetStringSelection(wxstr(current_version->getName()));
 }
 
 void MapPropertiesWindow::UpdateProtocolList()
@@ -157,6 +158,10 @@ void MapPropertiesWindow::UpdateProtocolList()
 			map_version = MAP_OTBM_3;
 		else if(ver.Contains(wxT("0.7.0")))
 			map_version = MAP_OTBM_4;
+
+		ClientVersionList protocols = ClientVersion::getAllForOTBMVersion(map_version);
+		for (ClientVersionList::const_iterator p = protocols.begin(); p != protocols.end(); ++p)
+			protocol_choice->Append(wxstr((*p)->getName()));
 	}
 	protocol_choice->SetSelection(0);
 	protocol_choice->SetStringSelection(client);

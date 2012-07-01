@@ -158,7 +158,7 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 		return;
 	}
 
-	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], wxstr(versionName), dataPath);
+	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], wxstr(versionName), wxstr(dataPath));
 	
 	readXMLBoolean(versionNode, "visible", version->visible);
 
@@ -324,6 +324,17 @@ ClientVersionList ClientVersion::getAllVisible()
 	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
 		if (i->second->isVisible())
 			l.push_back(i->second);
+	return l;
+}
+
+ClientVersionList ClientVersion::getAllForOTBMVersion(MapVersionID id)
+{
+	ClientVersionList l;
+	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
+		if (i->second->isVisible())
+			for(std::vector<MapVersionID>::iterator v = i->second->map_versions_supported.begin(); v != i->second->map_versions_supported.end(); ++v)
+				if (*v == id)
+					l.push_back(i->second);
 	return l;
 }
 

@@ -144,9 +144,8 @@ bool Map::convert(MapVersion to, bool showdialog)
 
 	if(mapVersion.client == CLIENT_VERSION_854_BAD && to.client >= CLIENT_VERSION_854) 
 		convert(getReplacementMapFrom854To854(), showdialog);
-
-	mapVersion = to;
 	*/
+	mapVersion = to;
 
 	return true;
 }
