@@ -20,10 +20,7 @@ ClientVersion::OtbMap ClientVersion::otb_versions;
 void ClientVersion::loadVersions()
 {
 	// Clean up old stuff
-	for (VersionMap::iterator it = client_versions.begin(); it != client_versions.end(); ++it)
-		delete it->second;
-	client_versions.clear();
-	otb_versions.clear();
+	ClientVersion::unloadVersions();
 
 	// Locate the clients.xml file
 	wxFileName fn;
@@ -92,6 +89,16 @@ void ClientVersion::loadVersions()
 		// pass
 		;
 	}
+}
+
+void ClientVersion::unloadVersions()
+{
+	for (VersionMap::iterator it = client_versions.begin(); it != client_versions.end(); ++it)
+		delete it->second;
+	client_versions.clear();
+	latest_version = NULL;
+	otb_versions.clear();
+
 }
 
 void ClientVersion::loadOTBs(xmlNodePtr otbsNode)

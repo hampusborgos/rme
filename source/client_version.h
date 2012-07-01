@@ -91,8 +91,9 @@ class ClientVersion : boost::noncopyable
 public:
 	ClientVersion(OtbVersion otb, wxString versionName, wxString path);
 	~ClientVersion() {}
-
+	
 	static void loadVersions();
+	static void unloadVersions();
 	static void saveVersions();
 
 	static ClientVersion* get(ClientVersionID id);
