@@ -606,11 +606,11 @@
     <ClCompile Include="..\..\source\properties_window.cpp">
       <Filter>gui\dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\gui.cpp">
-      <Filter>gui\map window</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\templatemapclassic.cpp">
       <Filter>managers\templates</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gui.cpp">
+      <Filter>gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

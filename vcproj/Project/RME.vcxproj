@@ -71,8 +71,8 @@
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\Libs\lib\boost;F:\Libs\lib;F:\Libs\wxWidgets-2.9.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.8.10\include\msvc;F:\Libs\wxWidgets-2.8.10\include;F:\Libs\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Libs\lib;F:\Libs\lib\boost;F:\Libs\wxWidgets-2.8.10\lib\vc_lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.8.10\include\msvc;F:\Libs\wxWidgets-2.8.10\include;F:\Libs\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\lib;F:\Libs\lib\boost;F:\Libs\wxWidgets-2.8.10\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.9.1\include\msvc;F:\Libs\wxWidgets-2.9.1\include;F:\Libs\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\lib;F:\Libs\lib\boost;F:\Libs\wxWidgets-2.9.1\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -132,7 +132,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>C:\wxWidgets-2.8.8\include\msvc;G:\Alster\C++\include;C:\wxWidgets-2.8.8\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\wxWidgets-2.9.1\include\msvc;C:\wxWidgets-2.9.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;__RELEASE__;;__RELEASE__;__EXPERIMENTAL__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -144,7 +144,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libxml2.lib;comctl32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\wxWidgets-2.8.8\lib\vc_lib;G:\Alster\C++\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.1\lib\vc_lib;G:\Alster\C++\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
