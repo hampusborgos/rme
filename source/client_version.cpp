@@ -84,6 +84,10 @@ void ClientVersion::loadVersions()
 		}
 	}
 
+	// Assign a default if there isn't one.
+	if (latest_version == NULL && client_versions.size() > 0)
+		latest_version = client_versions.begin()->second;
+
 	// Load the data directory info
 	try
 	{
@@ -172,6 +176,8 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 
 	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], versionName, wxstr(dataPath));
 	
+	bool should_be_default = false;
+	readXMLBoolean(versionNode, "default", should_be_default);
 	readXMLBoolean(versionNode, "visible", version->visible);
 
 	for(xmlNodePtr childNode = versionNode->children; childNode != NULL; childNode = childNode->next)
@@ -270,7 +276,8 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 	}
 
 	client_versions[version->getID()] = version;
-	latest_version = version;
+	if (should_be_default)
+		latest_version = version;
 }
 
 void ClientVersion::loadVersionExtensions(xmlNodePtr versionNode)

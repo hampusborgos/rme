@@ -70,6 +70,9 @@
 
             Tag the ones that can be selected in the UI with visible
 
+            Tag the ONE that is the default when the editor opens up on the
+            first time with default="true"
+
             otbm - There can be multiple otbm subtags, list what map version
             that client version uses. If multiple, set one as default="true"
             and the editor will use that one as the default for new maps.
@@ -188,7 +191,7 @@
             <data datversion="8.6" sprversion="7.0" dat="0x4F6B341F" spr="0x4F5DCEF7"/>
         </client>
 
-        <client name="9.54" otb="9.54" visible="true" data_directory="954">
+        <client name="9.54" default="true" otb="9.54" visible="true" data_directory="954">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4FD5956B" spr="0x4FD595B7"/>
