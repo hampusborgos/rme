@@ -436,7 +436,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 	// Refresh settings
 	ClientVersion::saveVersions();
-    ClientVersionList versions = ClientVersion::getAll();
+    ClientVersionList versions = ClientVersion::getAllVisible();
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
@@ -637,7 +637,7 @@ void PreferencesWindow::Apply()
 	settings.setFloat(Config::ZOOM_SPEED, zoom_speed_slider->GetValue()/10.f);
 
 	// Client
-	ClientVersionList versions = ClientVersion::getAll();
+	ClientVersionList versions = ClientVersion::getAllVisible();
 	int version_counter = 0;
     for (ClientVersionList::iterator version_iter = versions.begin();
          version_iter != versions.end();
@@ -645,15 +645,12 @@ void PreferencesWindow::Apply()
     {
         ClientVersion* version = *version_iter;
 
-		if (version->isVisible())
-			continue;
-        
 		wxString dir = version_dir_pickers[version_counter]->GetPath();
 		if (dir.Length() > 0 && dir.Last() != wxT('/') && dir.Last() != wxT('\\'))
 			dir.Append(wxT("/"));
 		version->setClientPath(FileName(dir));
 		
-		if (version_counter == default_version_choice->GetSelection())
+		if (version->getName() == default_version_choice->GetStringSelection())
 			settings.setInteger(Config::DEFAULT_CLIENT_VERSION, version->getID());
 
 		version_counter++;
