@@ -382,7 +382,8 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 
 	uint16_t id = minclientID;
 	// loop through all ItemDatabase until we reach the end of file
-	while(id <= maxclientID) {
+	while(id <= maxclientID)
+	{
 		GameSprite* sType = newd GameSprite();
 		sprite_space[id] = sType;
 
@@ -406,7 +407,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		file.getU8(sType->frames); // Number of blendframes (some sprites consist of several merged sprites)
 		file.getU8(sType->xdiv);
 		file.getU8(sType->ydiv);
-		if(datVersion < 0x439D5A33UL) // Pre 7.6
+		if(datVersion == DAT_VERSION_74)
 			sType->zdiv = 1;
 		else
 			file.getU8(sType->zdiv); // Is this ever used? Maybe it means something else?
@@ -423,7 +424,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		{
 			uint32_t sprite_id;
 			if (datVersion == DAT_VERSION_96)
+			{
 				file.getU32(sprite_id);
+			}
 			else
 			{
 				uint16_t u16 = 0;
