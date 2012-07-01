@@ -56,16 +56,19 @@ struct OtbVersion
 // Formats for the .dat data file for Tibia
 enum DatVersion
 {
-	DAT_VERSION_740,
-	DAT_VERSION_760,
-	DAT_VERSION_860,
+	DAT_VERSION_UNKNOWN,
+	DAT_VERSION_74,
+	DAT_VERSION_76,
+	DAT_VERSION_78,
+	DAT_VERSION_86,
 };
 
 // Possible format for the .spr data file for Tibia
 enum SprVersion
 {
-	SPR_VERSION_700,
-	SPR_VERSION_960, // 32 bit sprids
+	SPR_VERSION_UNKNOWN,
+	SPR_VERSION_70,
+	SPR_VERSION_96, // 32 bit sprids
 };
 
 // Represents a client file version
@@ -107,13 +110,18 @@ public:
 	
 	bool isVisible() const;
 	std::string getName() const;
+
 	ClientVersionID getID() const;
 	MapVersionID getPrefferedMapVersionID() const;
 	OtbVersion getOTBVersion() const;
+	DatVersion getDatVersionForSignature(uint32_t signature) const;
+	SprVersion getSprVersionForSignature(uint32_t signature) const;
+	ClientVersionList getExtensionsSupported() const;
+
 	FileName getDataPath() const;
 	FileName getLocalDataPath() const;
 	FileName getClientPath() const;
-	ClientVersionList getExtensionsSupported() const;
+
 
 private:
 	OtbVersion otb;

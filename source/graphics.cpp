@@ -362,6 +362,17 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	// We don't load distance/effects, if we would, just add effect_count & distance_count here
 	uint maxclientID = item_count + creature_count;
 
+	bool (GraphicManager::*loadFlags)(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
+	switch (client_version->getDatVersionForSignature(datVersion))
+	{
+		case DAT_VERSION_74: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer74; break;
+		case DAT_VERSION_76: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer76; break;
+		case DAT_VERSION_78: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer78; break;
+		case DAT_VERSION_86: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
+		default:
+			error = wxT("Unknown .dat format version.");
+			return false;
+	}
 
 	uint16_t id = minclientID;
 	// loop through all ItemDatabase until we reach the end of file
@@ -371,573 +382,13 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 
 		sType->id = id;
 
-		// read the options until we find a 0xff
-		uint8_t lastopt;
-		uint8_t optbyte = 0xff;
-
-		do
+		// Load the sprite flags
+		if (!(this->*loadFlags)(file, sType, error, warnings))
 		{
-			lastopt = optbyte;
-			file.getByte(optbyte);
-			if(datVersion >= 0x4C2C7993UL)
-			{
-				// >= 8.6
-				switch(optbyte)
-				{
-					case 0x00: //is groundtile
-						file.skip(2); // speed modifier
-						//speed = read_short;
-						//sType->speed = speed;
-						//sType->group = ITEM_GROUP_GROUND;
-						break;
-					case 0x01: //all OnTop
-						//sType->alwaysOnTop = true;
-						//sType->alwaysOnTopOrder = 1;
-						break;
-					case 0x02: //can walk through
-						//sType->alwaysOnTop = true;
-						//sType->alwaysOnTopOrder = 2;
-						break;
-					case 0x03: //can walk through
-						//sType->alwaysOnTop = true;
-						//sType->alwaysOnTopOrder = 3;
-						break;
-					case 0x04: //is a container
-						//sType->group = ITEM_GROUP_CONTAINER;
-						break;
-					case 0x05: //is stackable
-						//sType->stackable = true;
-						break;
-					case 0x06: //ladders
-						break;
-					case 0x07: //is useable
-						//sType->useable = true;
-						break;
-					case 0x08: //writeable objects
-						//sType->group = ITEM_GROUP_WRITEABLE;
-						//sType->readable = true;
-						file.skip(2);
-						//file.getU16(); //maximum text length?
-						break;
-					case 0x09: //writeable objects that can't be edited
-						//sType->readable = true;
-						file.skip(2);
-						//file.getU16(); //maximum text length?
-						break;
-					case 0x0A: //can contain fluids
-						//sType->group = ITEM_GROUP_FLUID;
-						break;
-					case 0x0B: //liquid with states
-						//sType->group = ITEM_GROUP_SPLASH;
-						break;
-					case 0x0C: //is blocking
-						//sType->blockSolid = true;
-						break;
-					case 0x0D: //is not moveable
-						//sType->moveable = false;
-						break;
-					case 0x0E: //blocks missiles (walls, magic wall etc)
-						//sType->blockProjectile = true;
-						break;
-					case 0x0F: //blocks monster movement (flowers, parcels etc)
-						//sType->blockPathFind = true;
-						break;
-					case 0x10: //can be equipped
-						//sType->pickupable = true;
-						break;
-					case 0x11: //wall items
-						//sType->isHangable = true;
-						break;
-					case 0x12:
-						//sType->isHorizontal = true;
-						break;
-					case 0x13:
-						//sType->isVertical = true;
-						break;
-					case 0x14: //rotateable items
-						//sType->rotateable = true;
-						break;
-					case 0x15: //light info ..
-						file.skip(2);
-						file.skip(2);
-						//file.getU16(); // level
-						//file.getU16(); // color
-						//sType->lightColor = lightcolor;
-						break;
-					case 0x16: // No object has this...
-						break;
-					case 0x17: //floor change down
-						break;
-					case 0x18: { //Draw offset
-						uint16_t x;
-						uint16_t y;
-						file.getU16(x);
-						file.getU16(y);
-
-						sType->drawoffset_x = x;
-						sType->drawoffset_y = y;
-					} break;
-					case 0x19: {
-						uint16_t u16;
-						file.getU16(u16);
-						sType->draw_height = u16; // Height
-					} break;
-					case 0x1A://draw with height offset for all parts (2x2) of the sprite
-						break;
-					case 0x1B: // offset life-bar (for larger monsters)
-						break;
-					case 0x1C: { // Minimap color
-						uint16_t u16;
-						file.getU16(u16);
-						sType->minimap_color = u16;
-					} break;
-					case 0x1D:  {// Floor change?
-						file.skip(2);
-						//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
-						//file.getByte(); // always 4
-					} break;
-					case 0x1E:
-						break;
-					case 0x1F: // LookThrough
-						break;
-					// All stuff below is hacky speculation
-					case 0x20: // ??
-						file.skip(2);
-						break;
-						/*
-					case 0x56: // ??
-						file.skip(1);
-						break;
-					case 0x7f: // ??
-						break;
-					case 0x95: // ??
-						break;
-						*/
-					case 0xFF:
-						break;
-					default: {
-						wxString err;
-						err << wxT("Tibia.dat: Unknown optbyte '") 
-							<< (int)optbyte << wxT("'") << wxT(" after '") 
-							<< (int)lastopt << wxT("'");
-						warnings.push_back(err);
-
-						return false;
-					} break;
-				}
-			}
-			else if(datVersion > 0x439D5A34UL)
-			{
-				// > 7.6
-				switch(optbyte)
-				{
-					case 0x00: //is groundtile
-						file.skip(2); // speed modifier
-						//speed = read_short;
-						//sType->speed = speed;
-						//sType->group = ITEM_GROUP_GROUND;
-						break;
-					case 0x01: //all OnTop
-						//sType->alwaysOnTop = true;
-						//sType->alwaysOnTopOrder = 1;
-						break;
-					case 0x02: //can walk through
-						//sType->alwaysOnTop = true;
-						//sType->alwaysOnTopOrder = 2;
-						break;
-					case 0x03: //can walk through
-						//sType->alwaysOnTop = true;
-						//sType->alwaysOnTopOrder = 3;
-						break;
-					case 0x04: //is a container
-						//sType->group = ITEM_GROUP_CONTAINER;
-						break;
-					case 0x05: //is stackable
-						//sType->stackable = true;
-						break;
-					case 0x06: //ladders
-						break;
-					case 0x07: //is useable
-						//sType->useable = true;
-						break;
-					case 0x08: //runes
-						//sType->group = ITEM_GROUP_RUNE;
-						break;
-					case 0x09: //writeable objects
-						//sType->group = ITEM_GROUP_WRITEABLE;
-						//sType->readable = true;
-						file.skip(2);
-						//file.getU16(); //maximum text length?
-						break;
-					case 0x0A: //writeable objects that can't be edited
-						//sType->readable = true;
-						file.skip(2);
-						//file.getU16(); //maximum text length?
-						break;
-					case 0x0B: //can contain fluids
-						//sType->group = ITEM_GROUP_FLUID;
-						break;
-					case 0x0C: //liquid with states
-						//sType->group = ITEM_GROUP_SPLASH;
-						break;
-					case 0x0D: //is blocking
-						//sType->blockSolid = true;
-						break;
-					case 0x0E: //is not moveable
-						//sType->moveable = false;
-						break;
-					case 0x0F: //blocks missiles (walls, magic wall etc)
-						//sType->blockProjectile = true;
-						break;
-					case 0x10: //blocks monster movement (flowers, parcels etc)
-						//sType->blockPathFind = true;
-						break;
-					case 0x11: //can be equipped
-						//sType->pickupable = true;
-						break;
-					case 0x12: //wall items
-						//sType->isHangable = true;
-						break;
-					case 0x13:
-						//sType->isHorizontal = true;
-						break;
-					case 0x14:
-						//sType->isVertical = true;
-						break;
-					case 0x15: //rotateable items
-						//sType->rotateable = true;
-						break;
-					case 0x16: //light info ..
-						file.skip(2);
-						file.skip(2);
-						//file.getU16(); // level
-						//file.getU16(); // color
-						//sType->lightColor = lightcolor;
-						break;
-					case 0x17: // No object has this...
-						break;
-					case 0x18: //floor change down
-						break;
-					case 0x19: { //Draw offset
-						uint16_t x;
-						uint16_t y;
-						file.getU16(x);
-						file.getU16(y);
-
-						sType->drawoffset_x = x;
-						sType->drawoffset_y = y;
-					} break;
-					case 0x1A: {
-						uint16_t u16;
-						file.getU16(u16);
-						sType->draw_height = u16; // Height
-					} break;
-					case 0x1B://draw with height offset for all parts (2x2) of the sprite
-						break;
-					case 0x1C: // offset life-bar (for larger monsters)
-						break;
-					case 0x1D: { // Minimap color
-						uint16_t u16;
-						file.getU16(u16);
-						sType->minimap_color = u16;
-					} break;
-					case 0x1E:  {// Floor change?
-						file.skip(2);
-						//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
-						//file.getByte(); // always 4
-					} break;
-					case 0x1F:
-						break;
-					case 0x20: // LookThrough
-						break;
-					case 0xFF:
-						break;
-					default: {
-						wxString err;
-						err << wxT("Tibia.dat: Unknown optbyte '") 
-							<< (int)optbyte << wxT("'") << wxT(" after '") 
-							<< (int)lastopt << wxT("'");
-						warnings.push_back(err);
-
-						return false;
-					} break;
-				}
-			}
-			else if(datVersion == 0x439D5A33 || datVersion == 0x439D5A34UL)
-			{
-				// 7.6
-				switch (optbyte)
-				{
-					case 0x00: //is groundtile
-					{
-						file.skip(2);
-						break;
-					}
-					case 0x01: //all on top
-					{
-						//sType->alwaysOnTop = true;
-						break;
-					}
-					case 0x02: //can walk trough (open doors, arces, bug pen fence ??)
-					{
-						//sType->alwaysOnTop = true;
-						//sType->canWalkThrough = true;
-						break;
-					}
-					case 0x03: //is a container
-					{
-						//sType->group = ITEM_GROUP_CONTAINER;
-						break;
-					}
-					case 0x04: //is stackable
-					{
-						//sType->stackable = true;
-						break;
-					}
-					case 0x05: //is useable
-					{
-						//sType->useable = true;
-						break;
-					}
-					case 0x06: //ladder up (id 1386)   why a group for just 1 item ???   
-					{
-						//sType->ladderUp = true;
-						break;
-					}
-					case 0x07: //writtable objects
-					{
-						//file.skip(2); // Maximum length
-						break;
-					}
-					case 0x08: //writtable objects that can't be edited
-					{
-						file.skip(2);
-						break;
-					}
-					case 0x09: //can contain fluids
-					{
-						file.skip(2);
-						//sType->group = ITEM_GROUP_FLUID;
-						break;
-					}
-					case 0x0A: //liquid with states
-					{
-						//sType->group = ITEM_GROUP_SPLASH;
-						break;
-					}
-					case 0x0B: //is blocking
-					{
-						//sType->blockSolid = true;
-						break;
-					}
-					case 0x0C: //is not moveable
-					{
-						//sType->moveable = false;
-						break;
-					}
-					case 0x0D: //"visibility"- for drawing visible view
-					{
-						//sType->blockProjectile = true;
-						break;
-					}
-					case 0x0E: //blocks creature movement (flowers, parcels etc)
-					{
-						//sType->blockPathFind = true;
-						break;
-					}
-					case 0x0F: //can be equipped
-					{
-						//sType->pickupable = true;
-						break;
-					}
-					case 0x10: //makes light (skip 4 bytes)
-					{
-						break;
-					}
-					case 0x11: //can see what is under (ladder holes, stairs holes etc)
-					{
-						//sType->canSeeThrough = true;
-						break;
-					}
-					case 0x12: //ground tiles that don't cause level change
-					{
-						//sType->floorchange = false;
-						break;
-					}
-					case 0x13: // isVertical
-					{
-						break;
-					}
-					case 0x14: //sprite-drawing related
-					{
-						//sType->hasParameter14 = true;
-						break;
-					}
-					case 0x15:
-					{
-						file.skip(2); // lightlevel
-						file.skip(2); // lightcolor
-						break;
-					}
-					case 0x16: //minimap drawing
-					{
-						uint16_t u16;
-						file.getU16(u16);
-						sType->minimap_color = u16;
-						break;
-					}
-					case 0x17: //seems like decorables with 4 states of turning (exception first 4 are unique statues
-					{
-						//sType->rotable = true;
-						break;
-					}
-					case 0x18: //draw with height offset for all parts (2x2) of the sprite
-					{
-						file.skip(4);
-						break;
-					}
-					case 0x19: //hangable objects
-					{
-						file.skip(2);
-						break;
-					}
-					case 0x1A: //vertical objects (walls to hang objects on etc)
-					{
-						//sType->isHorizontal = true;
-						break;  
-					}
-					case 0x1B: //walls 2 types of them same material (total 4 pairs)
-					{
-						//sType->isVertical = true;
-						break;
-					}
-					case 0x1C: // minimap color
-					{
-						uint16_t u16;
-						file.getU16(u16);
-						sType->minimap_color = u16; // Height
-						break;
-					}
-					case 0x1D: //line spot ...
-					{
-						file.skip(2); // ...?
-						break;
-					}
-					case 0x1E: // ground items
-					{
-						break;
-					}
-					case 0xFF:
-					{
-						break;
-					}
-					default:
-					{
-						wxString err;
-						err << wxT("Tibia.dat: Unknown optbyte '") 
-							<< (int)optbyte << wxT("'") << wxT(" after '") 
-							<< (int)lastopt << wxT("'");
-						warnings.push_back(err);
-						break;
-					}
-				}
-			}
-			else
-			{
-				//7.4
-				switch(optbyte)
-				{
-					case 0x00:
-						//is groundtile
-						file.skip(2);
-						break;
-					case 0x01: // all OnTop
-						break;
-					case 0x02: // can walk trough (open doors, arces, bug pen fence ??)
-						break;
-					case 0x03:
-						//is a container
-						break;
-					case 0x04:
-						//is stackable
-						break;
-					case 0x05:
-						//is useable
-						break;
-					case 0x06: // ladder up (id 1386)   why a group for just 1 item ???   
-						break;
-					case 0x07: // writtable objects
-						file.skip(2);
-						break;
-					case 0x08: // writtable objects that can't be edited 
-						file.skip(2);
-						break;
-					case 0x09: //can contain fluids
-						break;
-					case 0x0A:
-						//is multitype !!! wrong definition (only water splash on floor)
-						break;
-					case 0x0B:
-						//is blocking
-						break;
-					case 0x0C:
-						//is on moveable
-						break;
-					case 0x0D: // blocks missiles (walls, magic wall etc)
-						//iType->blockingProjectile = true;
-						break;
-					case 0x0E: // blocks monster movement (flowers, parcels etc)
-						break;
-					case 0x0F:
-						//can be equipped
-						break;
-					case 0x10:
-						//makes light (skip 4 bytes)
-						file.skip(4);
-						break;
-					case 0x11: // can see what is under (ladder holes, stairs holes etc)
-						break;
-					case 0x12: // ground tiles that don't cause level change
-						//iType->noFloorChange = true;
-						break;
-					case 0x13: // mostly blocking items, but also items that can pile up in level (boxes, chairs etc)
-						file.skip(2);
-						break;
-					case 0x14: // player color templates
-						break;
-					case 0x18: // cropses that don't decay
-						break;
-					case 0x16: // ground, blocking items and mayby some more 
-						file.skip(2);
-						break;
-					case 0x17:  // seems like decorables with 4 states of turning (exception first 4 are unique statues)
-						break;
-					case 0x19:  // wall items
-						break;
-					case 0x1A: 
-						//7.4 (change no data ?? ) action that can be performed (doors-> open, hole->open, book->read) not all included ex. wall torches
-						break;
-					case 0x1B:  // walls 2 types of them same material (total 4 pairs)
-						break;
-					case 0x1C:  // ?? 
-						break;
-					case 0x1D:  // line spot ...
-						file.skip(2);
-						break;
-					case 0xFF:
-						break;
-					default:
-					{
-						wxString err;
-						err << wxT("Tibia.dat: Unknown optbyte '") 
-							<< optbyte << wxT("'") << wxT(" after '") 
-							<< lastopt << wxT("'");
-						warnings.push_back(err);
-						break;
-					}
-				}
-			}
-		} while(optbyte != 0xFF);
+			wxString msg;
+			msg << wxT("Failed to load flags for sprite ") << sType->id;
+			warnings.push_back(msg);
+		}
 
 		// Size and GameSprite data
 		file.getByte(sType->width);
@@ -975,6 +426,604 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		++id;
 	}
 
+	return true;
+}
+
+bool GraphicManager::loadSpriteMetadataFlagsVer74(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+{
+	// read the options until we find a 0xff
+	uint8_t lastopt;
+	uint8_t optbyte = 0xff;
+
+	do
+	{
+		lastopt = optbyte;
+		file.getByte(optbyte);
+		switch(optbyte)
+		{
+			case 0x00:
+				//is groundtile
+				file.skip(2);
+				break;
+			case 0x01: // all OnTop
+				break;
+			case 0x02: // can walk trough (open doors, arces, bug pen fence ??)
+				break;
+			case 0x03:
+				//is a container
+				break;
+			case 0x04:
+				//is stackable
+				break;
+			case 0x05:
+				//is useable
+				break;
+			case 0x06: // ladder up (id 1386)   why a group for just 1 item ???   
+				break;
+			case 0x07: // writtable objects
+				file.skip(2);
+				break;
+			case 0x08: // writtable objects that can't be edited 
+				file.skip(2);
+				break;
+			case 0x09: //can contain fluids
+				break;
+			case 0x0A:
+				//is multitype !!! wrong definition (only water splash on floor)
+				break;
+			case 0x0B:
+				//is blocking
+				break;
+			case 0x0C:
+				//is on moveable
+				break;
+			case 0x0D: // blocks missiles (walls, magic wall etc)
+				//iType->blockingProjectile = true;
+				break;
+			case 0x0E: // blocks monster movement (flowers, parcels etc)
+				break;
+			case 0x0F:
+				//can be equipped
+				break;
+			case 0x10:
+				//makes light (skip 4 bytes)
+				file.skip(4);
+				break;
+			case 0x11: // can see what is under (ladder holes, stairs holes etc)
+				break;
+			case 0x12: // ground tiles that don't cause level change
+				//iType->noFloorChange = true;
+				break;
+			case 0x13: // mostly blocking items, but also items that can pile up in level (boxes, chairs etc)
+				file.skip(2);
+				break;
+			case 0x14: // player color templates
+				break;
+			case 0x18: // cropses that don't decay
+				break;
+			case 0x16: // ground, blocking items and mayby some more 
+				file.skip(2);
+				break;
+			case 0x17:  // seems like decorables with 4 states of turning (exception first 4 are unique statues)
+				break;
+			case 0x19:  // wall items
+				break;
+			case 0x1A: 
+				//7.4 (change no data ?? ) action that can be performed (doors-> open, hole->open, book->read) not all included ex. wall torches
+				break;
+			case 0x1B:  // walls 2 types of them same material (total 4 pairs)
+				break;
+			case 0x1C:  // ?? 
+				break;
+			case 0x1D:  // line spot ...
+				file.skip(2);
+				break;
+			case 0xFF:
+				break;
+			default:
+			{
+				wxString err;
+				err << wxT("Tibia.dat: Unknown optbyte '") 
+					<< optbyte << wxT("'") << wxT(" after '") 
+					<< lastopt << wxT("'");
+				warnings.push_back(err);
+				break;
+			}
+		}
+	} while (optbyte != 0xff);
+	return true;
+}
+
+bool GraphicManager::loadSpriteMetadataFlagsVer76(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+{
+	// read the options until we find a 0xff
+	uint8_t lastopt;
+	uint8_t optbyte = 0xff;
+
+	do
+	{
+		lastopt = optbyte;
+		file.getByte(optbyte);
+		switch (optbyte)
+		{
+			case 0x00: //is groundtile
+			{
+				file.skip(2);
+				break;
+			}
+			case 0x01: //all on top
+			{
+				//sType->alwaysOnTop = true;
+				break;
+			}
+			case 0x02: //can walk trough (open doors, arces, bug pen fence ??)
+			{
+				//sType->alwaysOnTop = true;
+				//sType->canWalkThrough = true;
+				break;
+			}
+			case 0x03: //is a container
+			{
+				//sType->group = ITEM_GROUP_CONTAINER;
+				break;
+			}
+			case 0x04: //is stackable
+			{
+				//sType->stackable = true;
+				break;
+			}
+			case 0x05: //is useable
+			{
+				//sType->useable = true;
+				break;
+			}
+			case 0x06: //ladder up (id 1386)   why a group for just 1 item ???   
+			{
+				//sType->ladderUp = true;
+				break;
+			}
+			case 0x07: //writtable objects
+			{
+				//file.skip(2); // Maximum length
+				break;
+			}
+			case 0x08: //writtable objects that can't be edited
+			{
+				file.skip(2);
+				break;
+			}
+			case 0x09: //can contain fluids
+			{
+				file.skip(2);
+				//sType->group = ITEM_GROUP_FLUID;
+				break;
+			}
+			case 0x0A: //liquid with states
+			{
+				//sType->group = ITEM_GROUP_SPLASH;
+				break;
+			}
+			case 0x0B: //is blocking
+			{
+				//sType->blockSolid = true;
+				break;
+			}
+			case 0x0C: //is not moveable
+			{
+				//sType->moveable = false;
+				break;
+			}
+			case 0x0D: //"visibility"- for drawing visible view
+			{
+				//sType->blockProjectile = true;
+				break;
+			}
+			case 0x0E: //blocks creature movement (flowers, parcels etc)
+			{
+				//sType->blockPathFind = true;
+				break;
+			}
+			case 0x0F: //can be equipped
+			{
+				//sType->pickupable = true;
+				break;
+			}
+			case 0x10: //makes light (skip 4 bytes)
+			{
+				break;
+			}
+			case 0x11: //can see what is under (ladder holes, stairs holes etc)
+			{
+				//sType->canSeeThrough = true;
+				break;
+			}
+			case 0x12: //ground tiles that don't cause level change
+			{
+				//sType->floorchange = false;
+				break;
+			}
+			case 0x13: // isVertical
+			{
+				break;
+			}
+			case 0x14: //sprite-drawing related
+			{
+				//sType->hasParameter14 = true;
+				break;
+			}
+			case 0x15:
+			{
+				file.skip(2); // lightlevel
+				file.skip(2); // lightcolor
+				break;
+			}
+			case 0x16: //minimap drawing
+			{
+				uint16_t u16;
+				file.getU16(u16);
+				sType->minimap_color = u16;
+				break;
+			}
+			case 0x17: //seems like decorables with 4 states of turning (exception first 4 are unique statues
+			{
+				//sType->rotable = true;
+				break;
+			}
+			case 0x18: //draw with height offset for all parts (2x2) of the sprite
+			{
+				file.skip(4);
+				break;
+			}
+			case 0x19: //hangable objects
+			{
+				file.skip(2);
+				break;
+			}
+			case 0x1A: //vertical objects (walls to hang objects on etc)
+			{
+				//sType->isHorizontal = true;
+				break;  
+			}
+			case 0x1B: //walls 2 types of them same material (total 4 pairs)
+			{
+				//sType->isVertical = true;
+				break;
+			}
+			case 0x1C: // minimap color
+			{
+				uint16_t u16;
+				file.getU16(u16);
+				sType->minimap_color = u16; // Height
+				break;
+			}
+			case 0x1D: //line spot ...
+			{
+				file.skip(2); // ...?
+				break;
+			}
+			case 0x1E: // ground items
+			{
+				break;
+			}
+			case 0xFF:
+			{
+				break;
+			}
+			default:
+			{
+				wxString err;
+				err << wxT("Tibia.dat: Unknown optbyte '") 
+					<< (int)optbyte << wxT("'") << wxT(" after '") 
+					<< (int)lastopt << wxT("'");
+				warnings.push_back(err);
+				break;
+			}
+		}
+	} while (optbyte != 0xff);
+	return true;
+}
+
+bool GraphicManager::loadSpriteMetadataFlagsVer78(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+{
+	// read the options until we find a 0xff
+	uint8_t lastopt;
+	uint8_t optbyte = 0xff;
+
+	do
+	{
+		lastopt = optbyte;
+		file.getByte(optbyte);
+		// > 7.6
+		switch(optbyte)
+		{
+			case 0x00: //is groundtile
+				file.skip(2); // speed modifier
+				//speed = read_short;
+				//sType->speed = speed;
+				//sType->group = ITEM_GROUP_GROUND;
+				break;
+			case 0x01: //all OnTop
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 1;
+				break;
+			case 0x02: //can walk through
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 2;
+				break;
+			case 0x03: //can walk through
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 3;
+				break;
+			case 0x04: //is a container
+				//sType->group = ITEM_GROUP_CONTAINER;
+				break;
+			case 0x05: //is stackable
+				//sType->stackable = true;
+				break;
+			case 0x06: //ladders
+				break;
+			case 0x07: //is useable
+				//sType->useable = true;
+				break;
+			case 0x08: //runes
+				//sType->group = ITEM_GROUP_RUNE;
+				break;
+			case 0x09: //writeable objects
+				//sType->group = ITEM_GROUP_WRITEABLE;
+				//sType->readable = true;
+				file.skip(2);
+				//file.getU16(); //maximum text length?
+				break;
+			case 0x0A: //writeable objects that can't be edited
+				//sType->readable = true;
+				file.skip(2);
+				//file.getU16(); //maximum text length?
+				break;
+			case 0x0B: //can contain fluids
+				//sType->group = ITEM_GROUP_FLUID;
+				break;
+			case 0x0C: //liquid with states
+				//sType->group = ITEM_GROUP_SPLASH;
+				break;
+			case 0x0D: //is blocking
+				//sType->blockSolid = true;
+				break;
+			case 0x0E: //is not moveable
+				//sType->moveable = false;
+				break;
+			case 0x0F: //blocks missiles (walls, magic wall etc)
+				//sType->blockProjectile = true;
+				break;
+			case 0x10: //blocks monster movement (flowers, parcels etc)
+				//sType->blockPathFind = true;
+				break;
+			case 0x11: //can be equipped
+				//sType->pickupable = true;
+				break;
+			case 0x12: //wall items
+				//sType->isHangable = true;
+				break;
+			case 0x13:
+				//sType->isHorizontal = true;
+				break;
+			case 0x14:
+				//sType->isVertical = true;
+				break;
+			case 0x15: //rotateable items
+				//sType->rotateable = true;
+				break;
+			case 0x16: //light info ..
+				file.skip(2);
+				file.skip(2);
+				//file.getU16(); // level
+				//file.getU16(); // color
+				//sType->lightColor = lightcolor;
+				break;
+			case 0x17: // No object has this...
+				break;
+			case 0x18: //floor change down
+				break;
+			case 0x19: { //Draw offset
+				uint16_t x;
+				uint16_t y;
+				file.getU16(x);
+				file.getU16(y);
+
+				sType->drawoffset_x = x;
+				sType->drawoffset_y = y;
+			} break;
+			case 0x1A: {
+				uint16_t u16;
+				file.getU16(u16);
+				sType->draw_height = u16; // Height
+			} break;
+			case 0x1B://draw with height offset for all parts (2x2) of the sprite
+				break;
+			case 0x1C: // offset life-bar (for larger monsters)
+				break;
+			case 0x1D: { // Minimap color
+				uint16_t u16;
+				file.getU16(u16);
+				sType->minimap_color = u16;
+			} break;
+			case 0x1E:  {// Floor change?
+				file.skip(2);
+				//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
+				//file.getByte(); // always 4
+			} break;
+			case 0x1F:
+				break;
+			case 0x20: // LookThrough
+				break;
+			case 0xFF:
+				break;
+			default: {
+				wxString err;
+				err << wxT("Tibia.dat: Unknown optbyte '") 
+					<< (int)optbyte << wxT("'") << wxT(" after '") 
+					<< (int)lastopt << wxT("'");
+				warnings.push_back(err);
+
+				return false;
+			} break;
+		}
+	} while (optbyte != 0xff);
+	return true;
+}
+bool GraphicManager::loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+{
+	// read the options until we find a 0xff
+	uint8_t lastopt;
+	uint8_t optbyte = 0xff;
+
+	do
+	{
+		lastopt = optbyte;
+		file.getByte(optbyte);
+		switch(optbyte)
+		{
+			case 0x00: //is groundtile
+				file.skip(2); // speed modifier
+				//speed = read_short;
+				//sType->speed = speed;
+				//sType->group = ITEM_GROUP_GROUND;
+				break;
+			case 0x01: //all OnTop
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 1;
+				break;
+			case 0x02: //can walk through
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 2;
+				break;
+			case 0x03: //can walk through
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 3;
+				break;
+			case 0x04: //is a container
+				//sType->group = ITEM_GROUP_CONTAINER;
+				break;
+			case 0x05: //is stackable
+				//sType->stackable = true;
+				break;
+			case 0x06: //ladders
+				break;
+			case 0x07: //is useable
+				//sType->useable = true;
+				break;
+			case 0x08: //writeable objects
+				//sType->group = ITEM_GROUP_WRITEABLE;
+				//sType->readable = true;
+				file.skip(2);
+				//file.getU16(); //maximum text length?
+				break;
+			case 0x09: //writeable objects that can't be edited
+				//sType->readable = true;
+				file.skip(2);
+				//file.getU16(); //maximum text length?
+				break;
+			case 0x0A: //can contain fluids
+				//sType->group = ITEM_GROUP_FLUID;
+				break;
+			case 0x0B: //liquid with states
+				//sType->group = ITEM_GROUP_SPLASH;
+				break;
+			case 0x0C: //is blocking
+				//sType->blockSolid = true;
+				break;
+			case 0x0D: //is not moveable
+				//sType->moveable = false;
+				break;
+			case 0x0E: //blocks missiles (walls, magic wall etc)
+				//sType->blockProjectile = true;
+				break;
+			case 0x0F: //blocks monster movement (flowers, parcels etc)
+				//sType->blockPathFind = true;
+				break;
+			case 0x10: //can be equipped
+				//sType->pickupable = true;
+				break;
+			case 0x11: //wall items
+				//sType->isHangable = true;
+				break;
+			case 0x12:
+				//sType->isHorizontal = true;
+				break;
+			case 0x13:
+				//sType->isVertical = true;
+				break;
+			case 0x14: //rotateable items
+				//sType->rotateable = true;
+				break;
+			case 0x15: //light info ..
+				file.skip(2);
+				file.skip(2);
+				//file.getU16(); // level
+				//file.getU16(); // color
+				//sType->lightColor = lightcolor;
+				break;
+			case 0x16: // No object has this...
+				break;
+			case 0x17: //floor change down
+				break;
+			case 0x18: { //Draw offset
+				uint16_t x;
+				uint16_t y;
+				file.getU16(x);
+				file.getU16(y);
+
+				sType->drawoffset_x = x;
+				sType->drawoffset_y = y;
+			} break;
+			case 0x19: {
+				uint16_t u16;
+				file.getU16(u16);
+				sType->draw_height = u16; // Height
+			} break;
+			case 0x1A://draw with height offset for all parts (2x2) of the sprite
+				break;
+			case 0x1B: // offset life-bar (for larger monsters)
+				break;
+			case 0x1C: { // Minimap color
+				uint16_t u16;
+				file.getU16(u16);
+				sType->minimap_color = u16;
+			} break;
+			case 0x1D:  {// Floor change?
+				file.skip(2);
+				//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
+				//file.getByte(); // always 4
+			} break;
+			case 0x1E:
+				break;
+			case 0x1F: // LookThrough
+				break;
+			// All stuff below is hacky speculation
+			case 0x20: // ??
+				file.skip(2);
+				break;
+				/*
+			case 0x56: // ??
+				file.skip(1);
+				break;
+			case 0x7f: // ??
+				break;
+			case 0x95: // ??
+				break;
+				*/
+			case 0xFF:
+				break;
+			default: {
+				wxString err;
+				err << wxT("Tibia.dat: Unknown optbyte '") 
+					<< (int)optbyte << wxT("'") << wxT(" after '") 
+					<< (int)lastopt << wxT("'");
+				warnings.push_back(err);
+
+				return false;
+			} break;
+		}
+	} while (optbyte != 0xff);
 	return true;
 }
 

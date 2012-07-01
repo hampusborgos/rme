@@ -191,7 +191,7 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 		}
 		else if(xmlStrcmp(childNode->name,(const xmlChar*)"data") == 0)
 		{
-			ClientData client_data = {DAT_VERSION_740, SPR_VERSION_700, 0, 0};
+			ClientData client_data = {DAT_VERSION_74, SPR_VERSION_70, 0, 0};
 
 			std::string datVersion, sprVersion;
 
@@ -202,21 +202,23 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 			}
 
 			if (datVersion == "7.4")
-				client_data.datVersion = DAT_VERSION_740;
+				client_data.datVersion = DAT_VERSION_74;
 			else if (datVersion == "7.6")
-				client_data.datVersion = DAT_VERSION_760;
+				client_data.datVersion = DAT_VERSION_76;
+			else if (datVersion == "7.8")
+				client_data.datVersion = DAT_VERSION_78;
 			else if (datVersion == "8.6")
-				client_data.datVersion = DAT_VERSION_860;
+				client_data.datVersion = DAT_VERSION_86;
 			else
 			{
-				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6 and 8.6 are supported)"));
+				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6, 7.8 and 8.6 are supported)"));
 				continue;
 			}
 
 			if (sprVersion == "7.0")
-				client_data.sprVersion = SPR_VERSION_700;
+				client_data.sprVersion = SPR_VERSION_70;
 			else if (sprVersion == "9.6")
-				client_data.sprVersion = SPR_VERSION_960;
+				client_data.sprVersion = SPR_VERSION_96;
 			else
 			{
 				wxLogError(wxT("Node 'data' 'sprversion' is invalid (7.0 and 9.6 are supported)"));
@@ -395,6 +397,28 @@ bool ClientVersion::loadValidPaths()
 	ClientVersion::saveVersions();
 
 	return true;
+}
+
+DatVersion ClientVersion::getDatVersionForSignature(uint32_t signature) const
+{
+	for(std::vector<ClientData>::const_iterator iter = data_versions.begin(); iter != data_versions.end(); ++iter)
+	{
+		if(iter->datSignature == signature)
+			return iter->datVersion;
+	}
+
+	return DAT_VERSION_UNKNOWN;
+}
+
+SprVersion ClientVersion::getSprVersionForSignature(uint32_t signature) const
+{
+	for(std::vector<ClientData>::const_iterator iter = data_versions.begin(); iter != data_versions.end(); ++iter)
+	{
+		if(iter->sprSignature == signature)
+			return iter->sprVersion;
+	}
+
+	return SPR_VERSION_UNKNOWN;
 }
 
 std::string ClientVersion::getName() const

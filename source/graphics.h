@@ -33,6 +33,8 @@ enum SpriteSize {
 
 class MapCanvas;
 class GraphicManager;
+class FileReadHandle;
+class ClientVersion;
 
 class Sprite {
 public:
@@ -195,15 +197,19 @@ public:
 	// Metadata should be loaded first
 	// This fills the item / creature adress space
 	bool loadSpriteMetadata(const FileName& datafile, wxString& error, wxArrayString& warnings);
+	bool loadSpriteMetadataFlagsVer74(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
+	bool loadSpriteMetadataFlagsVer76(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
+	bool loadSpriteMetadataFlagsVer78(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
+	bool loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
 	bool loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings);
-
-	
 
 	// Cleans old & unused textures according to config settings
 	void garbageCollection();
 	void addSpriteToCleanup(GameSprite* spr);
 
 	bool isUnloaded() const;
+
+	ClientVersion *client_version;
 
 private:
 	bool unloaded;

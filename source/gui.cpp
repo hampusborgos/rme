@@ -317,6 +317,8 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 		error = wxT("Couldn't establish working directory...");
 		return false;
 	}
+
+	gui.gfx.client_version = getLoadedVersion();
 	
 	gui.CreateLoadBar(wxT("Loading data files"));
 	gui.SetLoadDone(0, wxT("Loading Tibia.dat ..."));
