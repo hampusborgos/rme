@@ -57,7 +57,10 @@ static uint32_t TemplateOutfitLookupTable[] = {
 };
 
 GraphicManager::GraphicManager() :
+	client_version(NULL),
 	unloaded(true),
+	datVersion(DAT_VERSION_UNKNOWN),
+	sprVersion(SPR_VERSION_UNKNOWN),
 	loaded_textures(0),
 	lastclean(0)
 {
@@ -350,8 +353,8 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 
 	uint16_t effect_count, distance_count;
 
-	uint32_t datVersion;
-	file.getU32(datVersion);
+	uint32_t datSignature;
+	file.getU32(datSignature);
 	//get max id
 	file.getU16(item_count);
 	file.getU16(creature_count);
@@ -363,12 +366,15 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	uint maxclientID = item_count + creature_count;
 
 	bool (GraphicManager::*loadFlags)(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	switch (client_version->getDatVersionForSignature(datVersion))
+	datVersion = client_version->getDatVersionForSignature(datSignature);
+	switch (datVersion)
 	{
 		case DAT_VERSION_74: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer74; break;
 		case DAT_VERSION_76: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer76; break;
 		case DAT_VERSION_78: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer78; break;
 		case DAT_VERSION_86: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
+			// Same .dat loader, the change is only sprite id -> u32
+		case DAT_VERSION_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
 		default:
 			error = wxT("Unknown .dat format version.");
 			return false;
@@ -413,10 +419,20 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			(int)sType->animation_length;
 
 		// Read the sprite ids
-		for(uint i = 0; i < sType->numsprites; ++i) {
-			uint16_t sprite_id;
-			file.getU16(sprite_id);
-			if(image_space[sprite_id] == NULL) {
+		for(uint i = 0; i < sType->numsprites; ++i)
+		{
+			uint32_t sprite_id;
+			if (datVersion == DAT_VERSION_96)
+				file.getU32(sprite_id);
+			else
+			{
+				uint16_t u16 = 0;
+				file.getU16(u16);
+				sprite_id = u16;
+			}
+			
+			if(image_space[sprite_id] == NULL)
+			{
 				GameSprite::NormalImage* img = newd GameSprite::NormalImage();
 				img->id = sprite_id;
 				image_space[sprite_id] = img;
@@ -999,18 +1015,20 @@ bool GraphicManager::loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSpri
 			case 0x1F: // LookThrough
 				break;
 			// All stuff below is hacky speculation
-			case 0x20: // ??
-				file.skip(2);
+			case 0x20: // Cloth slot
+				file.skip(2); // clothSlot
 				break;
-				/*
-			case 0x56: // ??
-				file.skip(1);
-				break;
-			case 0x7f: // ??
-				break;
-			case 0x95: // ??
-				break;
-				*/
+			case 0x21: // Market
+				{
+				/* marketCategory = */ file.skip(2);
+                /* marketTradeAs  = */ file.skip(2);
+                /* marketShowAs = */ file.skip(2);
+				std::string marketName;
+				file.getString(marketName);
+                /* marketRestrictProfession = */ file.skip(2);
+                /* marketRestrictLevel = */ file.skip(2);
+                break;
+			}
 			case 0xFF:
 				break;
 			default: {
@@ -1044,25 +1062,34 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 	} while(false)
 
 	
-	uint32_t sprVersion = 0;
-	safe_get(U32, sprVersion);
+	uint32_t sprSignature;
+	safe_get(U32, sprSignature);
+	
+	uint32_t total_pics = 0;
+	sprVersion = client_version->getSprVersionForSignature(sprSignature);
+	switch (sprVersion)
+	{
+		case SPR_VERSION_70:
+		{
+			uint16_t u16 = 0;
+			safe_get(U16, u16);
+			total_pics = u16;
+
+			break;
+		}
+		case SPR_VERSION_96:
+			safe_get(U32, total_pics);
+			break;
+
+		default:
+			error = wxT("Unrecognized spr signature");
+			return false;
+	}
 
 	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES) == false) {
 		spritefile = nstr(datafile.GetFullPath());
 		unloaded = false;
 		return true;
-	}
-	
-	uint32_t total_pics = 0;
-	if (sprVersion < 0x19) // before 9.5
-	{
-		uint16_t u16 = 0;
-		safe_get(U16, u16);
-		total_pics = u16;
-	}
-	else
-	{
-		safe_get(U32, total_pics);
 	}
 
 	std::vector<uint> sprite_indexes;
@@ -1071,8 +1098,8 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		safe_get(U32, index);
 		sprite_indexes.push_back(index);
 	}
-	// Read all header data, now read individual sprites
 
+	// Now read individual sprites
 	int id = 1;
 	for(std::vector<uint>::iterator sprite_iter = sprite_indexes.begin();
 			sprite_iter != sprite_indexes.end();
@@ -1115,6 +1142,7 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 {
 	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES))
 		return false;
+
 	if(sprite_id == 0)
 	{
 		// Empty GameSprite
@@ -1127,8 +1155,26 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 	if(fh.isOk() == false)
 		return false;
 	unloaded = false;
-	if(!fh.seek(2 + sprite_id * sizeof(uint32_t)))
-		return false;
+
+	switch (sprVersion)
+	{
+		case SPR_VERSION_70:
+			// Sprite ids start at 1, so signature is implicitly skipped
+			// Then skip the 2 byte total_pics
+			if(!fh.seek(2 + sprite_id * sizeof(uint32_t)))
+				return false;
+			break;
+
+		case SPR_VERSION_96:
+			// Sprite ids start at 1, so signature is implicitly skipped
+			// Then skip the 4 byte total_pics
+			if(!fh.seek(4 + sprite_id * sizeof(uint32_t)))
+				return false;
+			break;
+
+		default:
+			return false;
+	}
 
 	uint32_t to_seek = 0;
 	if(fh.getU32(to_seek))

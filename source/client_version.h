@@ -61,6 +61,7 @@ enum DatVersion
 	DAT_VERSION_76,
 	DAT_VERSION_78,
 	DAT_VERSION_86,
+	DAT_VERSION_96,
 };
 
 // Possible format for the .spr data file for Tibia

@@ -209,9 +209,11 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 				client_data.datVersion = DAT_VERSION_78;
 			else if (datVersion == "8.6")
 				client_data.datVersion = DAT_VERSION_86;
+			else if (datVersion == "9.6")
+				client_data.datVersion = DAT_VERSION_96;
 			else
 			{
-				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6, 7.8 and 8.6 are supported)"));
+				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6, 7.8, 8.6 and 9.6 are supported)"));
 				continue;
 			}
 

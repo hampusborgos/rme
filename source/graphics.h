@@ -24,6 +24,8 @@
 #include "outfit.h"
 #include <deque>
 
+#include "client_version.h"
+
 enum SpriteSize {
 	SPRITE_SIZE_16x16,
 	//SPRITE_SIZE_24x24,
@@ -34,7 +36,6 @@ enum SpriteSize {
 class MapCanvas;
 class GraphicManager;
 class FileReadHandle;
-class ClientVersion;
 
 class Sprite {
 public:
@@ -223,6 +224,8 @@ private:
 	ImageMap image_space;
 	std::deque<GameSprite*> cleanup_list;
 
+	DatVersion datVersion;
+	SprVersion sprVersion;
 	uint16_t item_count;
 	uint16_t creature_count;
 
