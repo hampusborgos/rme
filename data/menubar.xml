@@ -111,11 +111,13 @@
         <item name="$Waypoint Palette" hotkey="W" action="SELECT_WAYPOINT" help="Select the Waypoint palette."/>
         <item name="$RAW Palette" hotkey="R" action="SELECT_RAW" help="Select the RAW palette."/>
     </menu>
+    <!--
     <menu name="$Live">
         <item name="$Host Server" action="LIVE_START" help="Start a live mapping session (as the host)."/>
         <item name="$Join Server" action="LIVE_JOIN" help="Join a live mapping session."/>
         <item name="$Leave Server" action="LIVE_CLOSE" help="Leave this live mapping session."/>
     </menu>
+    -->
     <!--
     <menu name="$Debug">
         <item name="$Debug .dat" action="DEBUG_VIEW_DAT" help="View all item sprites available."/>

@@ -134,9 +134,11 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SELECT_WAYPOINT, wxITEM_NORMAL, OnSelectWaypointPalette);
 	MAKE_ACTION(SELECT_RAW, wxITEM_NORMAL, OnSelectRawPalette);
 
+	/*
 	MAKE_ACTION(LIVE_START, wxITEM_NORMAL, OnStartLive);
 	MAKE_ACTION(LIVE_JOIN, wxITEM_NORMAL, OnJoinLive);
 	MAKE_ACTION(LIVE_CLOSE, wxITEM_NORMAL, OnCloseLive);
+	*/
 
 	MAKE_ACTION(FLOOR_0, wxITEM_RADIO, OnChangeFloor);
 	MAKE_ACTION(FLOOR_1, wxITEM_RADIO, OnChangeFloor);
@@ -880,7 +882,7 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 		}
 
 		wxString msg;
-		msg << wxT("Replaced ") << finder.found.size() << " items.";
+		msg << wxT("Replaced ") << finder.found.size() << wxT(" items.");
 		gui.SetStatusText(msg);
 
 		gui.DestroyLoadBar();
