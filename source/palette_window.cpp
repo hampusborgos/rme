@@ -31,6 +31,7 @@
 #include "palette_waypoints.h"
 
 #include "house_brush.h"
+#include "map.h"
 
 // ============================================================================
 // Palette window
@@ -68,15 +69,11 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 	item_palette = static_cast<BrushPalettePanel*>(CreateItemPalette(tmp_choicebook, tilesets));
 	tmp_choicebook->AddPage(item_palette, item_palette->GetName());
 
-	if(gui.GetCurrentVersionID() > CLIENT_VERSION_760 || settings.getInteger(Config::USE_760_HOUSES) || settings.getInteger(Config::USE_OTBM_4_FOL_ALL_MAPS)) {
-		house_palette = static_cast<HousePalettePanel*>(CreateHousePalette(tmp_choicebook, tilesets));
-		tmp_choicebook->AddPage(house_palette, house_palette->GetName());
-	}
+	house_palette = static_cast<HousePalettePanel*>(CreateHousePalette(tmp_choicebook, tilesets));
+	tmp_choicebook->AddPage(house_palette, house_palette->GetName());
 
-	if(gui.GetCurrentVersionID() >= CLIENT_VERSION_840 || settings.getInteger(Config::USE_OTBM_4_FOL_ALL_MAPS)) {
-		waypoint_palette = static_cast<WaypointPalettePanel*>(CreateWaypointPalette(tmp_choicebook, tilesets));
-		tmp_choicebook->AddPage(waypoint_palette, waypoint_palette->GetName());
-	}
+	waypoint_palette = static_cast<WaypointPalettePanel*>(CreateWaypointPalette(tmp_choicebook, tilesets));
+	tmp_choicebook->AddPage(waypoint_palette, waypoint_palette->GetName());
 	
 	creature_palette = static_cast<CreaturePalettePanel*>(CreateCreaturePalette(tmp_choicebook, tilesets));
 	tmp_choicebook->AddPage(creature_palette, creature_palette->GetName());

@@ -131,6 +131,8 @@ bool Map::convert(MapVersion to, bool showdialog)
 		return true;
 	}
 
+	/* TODO
+
 	if(to.otbm == MAP_OTBM_4 && to.client < CLIENT_VERSION_850)
 		return false;
 
@@ -144,6 +146,7 @@ bool Map::convert(MapVersion to, bool showdialog)
 		convert(getReplacementMapFrom854To854(), showdialog);
 
 	mapVersion = to;
+	*/
 
 	return true;
 }

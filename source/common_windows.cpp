@@ -111,9 +111,6 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 		house_filename_ctrl = 
 			newd wxTextCtrl(this, wxID_ANY, wxstr(map.getHouseFilename())), 1, wxEXPAND
 		);
-	house_filename_ctrl->Enable(
-		gui.GetCurrentVersionID() > CLIENT_VERSION_760 || settings.getInteger(Config::USE_760_HOUSES)
-		);
 
 	grid_sizer->Add(
 		newd wxStaticText(this, wxID_ANY, wxT("External Spawnfile"))
@@ -143,54 +140,23 @@ void MapPropertiesWindow::UpdateProtocolList()
 	wxString client = protocol_choice->GetStringSelection();
 
 	protocol_choice->Clear();
-
-	if (settings.getInteger(Config::USE_OTBM_4_FOL_ALL_MAPS))
+	
+	ClientVersionList versions;
+	if (settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS))
 	{
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_740)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_760)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_800)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_810)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_820)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_840)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_850)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_854)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_860)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_870)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_910)->getName()));
-		protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_920)->getName()));
+		versions = ClientVersion::getAllVisible();
 	}
 	else
 	{
+		MapVersionID map_version = MAP_OTBM_1;
 		if(ver.Contains(wxT("0.5.0")))
-		{
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_740)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_760)->getName()));
-		}
+			map_version = MAP_OTBM_1;
 		else if(ver.Contains(wxT("0.6.0")))
-		{
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_800)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_810)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_820)->getName()));
-		}
+			map_version = MAP_OTBM_2;
 		else if(ver.Contains(wxT("0.6.1")))
-		{
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_840)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_850)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_854)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_860)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_870)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_910)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_920)->getName()));
-		}
+			map_version = MAP_OTBM_3;
 		else if(ver.Contains(wxT("0.7.0")))
-		{
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_850)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_854)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_860)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_870)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_910)->getName()));
-			protocol_choice->Append(wxstr(ClientVersion::get(CLIENT_VERSION_920)->getName()));
-		}
+			map_version = MAP_OTBM_4;
 	}
 	protocol_choice->SetSelection(0);
 	protocol_choice->SetStringSelection(client);
@@ -227,9 +193,6 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	{
 		new_ver.otbm = MAP_OTBM_4;
 	}
-
-	if(new_ver.client == CLIENT_VERSION_811)
-		new_ver.client = CLIENT_VERSION_810;
 
 	if(new_ver.client != old_ver.client)
 	{

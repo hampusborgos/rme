@@ -986,8 +986,6 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		error = wxT("Failed to open file for reading");
 		return false;
 	}
-	uint32_t sprVersion = 0;
-	uint16_t total_pics = 0;
 
 #define safe_get(func, ...) do {\
 		if(!fh.get##func(__VA_ARGS__)) {\
@@ -996,7 +994,8 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		} \
 	} while(false)
 
-
+	
+	uint32_t sprVersion = 0;
 	safe_get(U32, sprVersion);
 
 	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES) == false) {
@@ -1004,8 +1003,19 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		unloaded = false;
 		return true;
 	}
+	
+	uint32_t total_pics = 0;
+	if (sprVersion < 0x19) // before 9.5
+	{
+		uint16_t u16 = 0;
+		safe_get(U16, u16);
+		total_pics = u16;
+	}
+	else
+	{
+		safe_get(U32, total_pics);
+	}
 
-	safe_get(U16, total_pics);
 	std::vector<uint> sprite_indexes;
 	for(uint i = 0; i < total_pics; ++i) {
 		uint32_t index;

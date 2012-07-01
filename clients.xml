@@ -1,55 +1,210 @@
-<clients>
-	<client version="7.40">
-		<data dat="0x41BF619C" spr="0x41B9EA86"/>
-	</client>
-	<client version="7.60">
-		<data dat="0x439D5A33" spr="0x439852BE"/>
-	</client>
-	<client version="8.00">
-		<data dat="0x467FD7E6" spr="0x467F9E74"/>
-	</client>
-	<client version="8.10">
-		<data dat="0x475D3747" spr="0x475D0B01"/>
-		<data dat="0x47F60E37" spr="0x47EBB9B2"/>
-	</client>
-	<client version="8.20 - 8.31">
-		<data dat="0x486905AA" spr="0x4868ECC9"/>
-		<data dat="0x486CCA2B" spr="0x4868ECC9"/>
-		<data dat="0x489980A1" spr="0x489980A5"/>
-		<data dat="0x48DA1FB6" spr="0x48C8E712"/>
-	</client>
-	<client version="8.40">
-		<data dat="0x493D607A" spr="0x493D4E7C"/>
-		<data dat="0x49B7CC19" spr="0x49B140EA"/>
-		<data dat="0x49C233C9" spr="0x49B140EA"/>
-	</client>
-	<client version="8.50">
-		<data dat="0x4A49C5EB" spr="0x4A44FD4E"/>
-		<data dat="0x4A4CC0DC" spr="0x4A44FD4E"/>
-		<data dat="0x4AE97492" spr="0x4A44FD4E"/>
-	</client>
-	<client version="8.54 (bad)" hidden="true">
-		<data dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
-		<data dat="0x4B28B89E" spr="0x4B1E2C87"/>
-	</client>
-	<client version="8.54">
-		<data dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
-		<data dat="0x4B28B89E" spr="0x4B1E2C87"/>
-	</client>
-	<client version="8.60 (old)" hidden="true">
-		<data dat="0x4C2C7993" spr="0x4C220594"/>
-	</client>
-	<client version="8.60">
-		<data dat="0x4C2C7993" spr="0x4C220594"/>
-		<data dat="0x4C6A4CBC" spr="0x4C63F145"/>
-	</client>
-  <client version="8.70">
-    <data dat="0x4CFE22C5" spr="0x4CFD078A"/>
-  </client>
-  <client version="9.10">
-    <data dat="0x4E12DAFF" spr="0x4E12DB27"/>
-  </client>
-  <client version="9.20 - 9.31">
-    <data dat="0x4E807C08" spr="0x4E807C23"/>
-  </client>
-</clients>
+<client_config>
+    <!--
+        This file should only be edited by OT mainters.
+        If you don't know what you're doing, changing anything
+        in this file
+
+        ** CAN BREAK ANY MAP YOU OPEN PERMANENTLY. **
+
+    -->
+
+    <otbs>
+        <!--
+            Just list all OTB versions here 
+            This is only used as a mapping for parsing the versions later on
+        -->
+        <otb client="7.40" version="1" id="1"/>
+        <otb client="7.50" version="1" id="1"/>
+        <otb client="7.55" version="1" id="2"/>
+        <otb client="7.60" version="1" id="3"/>
+        <otb client="7.70" version="1" id="3"/>
+        <otb client="7.80" version="1" id="4"/>
+        <otb client="7.90" version="1" id="5"/>
+        <otb client="7.92" version="1" id="6"/>
+        <otb client="8.00" version="2" id="7"/>
+        <otb client="8.10" version="2" id="8"/>
+        <otb client="8.11" version="2" id="9"/>
+        <otb client="8.20" version="3" id="10"/>
+        <otb client="8.30" version="3" id="11"/>
+        <otb client="8.40" version="3" id="12"/>
+        <otb client="8.41" version="3" id="13"/>
+        <otb client="8.42" version="3" id="14"/>
+        <otb client="8.50" version="3" id="15"/>
+        <otb client="8.54 (bad)" version="3" id="16"/>
+        <otb client="8.54" version="3" id="17"/>
+        <otb client="8.55" version="3" id="18"/>
+        <otb client="8.60 (old)" version="3" id="19"/>
+        <otb client="8.60" version="3" id="20"/>
+        <otb client="8.61" version="3" id="21"/>
+        <otb client="8.62" version="3" id="22"/>
+        <otb client="8.70" version="3" id="23"/>
+        <otb client="8.71" version="3" id="24"/>
+        <otb client="8.72" version="3" id="25"/>
+        <otb client="8.73" version="3" id="26"/>
+        <otb client="8.74" version="3" id="26"/>
+        <otb client="9.00" version="3" id="27"/>
+        <otb client="9.10" version="3" id="28"/>
+        <otb client="9.20" version="3" id="29"/>
+        <!-- No 9.30 OTB -->
+        <otb client="9.40" version="3" id="30"/>
+        <otb client="9.44" version="3" id="31"/>
+        <otb client="9.44.v2" version="3" id="32"/>
+        <otb client="9.44.v3" version="3" id="33"/>
+        <otb client="9.44.v4" version="3" id="34"/>
+        <otb client="9.46" version="3" id="35"/>
+        <otb client="9.50" version="3" id="36"/>
+        <otb client="9.52" version="3" id="37"/>
+        <otb client="9.53" version="3" id="38"/>
+        <otb client="9.54" version="3" id="39"/>
+        <otb client="9.60" version="3" id="40"/>
+    </otbs>
+
+    <clients>
+        <!--
+            List all client versions here
+            
+            name is the name that's displayed in the UI for this version.
+            
+            otb is what otb file it uses (see above). More than one client
+            using the same otb version WILL NOT WORK
+
+            Tag the ones that can be selected in the UI with visible
+
+            otbm - There can be multiple otbm subtags, list what map version
+            that client version uses. If multiple, set one as default="true"
+            and the editor will use that one as the default for new maps.
+            Otherwise the first one will be preferred.
+
+            extensions - Tag with range of extensions that version should load.
+            If you set it for to=8.20 for example, all made extension for 8.20
+            and later will be loaded
+
+            data - The .dat / .spr id (first four bytes). Used to recognize
+            the client data files. The datversion / sprversion is what version
+            of the loader the editor should use (ie. last time data format
+            changed)
+
+         -->
+
+        <client name="7.4" otb="7.40" visible="true" data_directory="740">
+            <otbm version="1"/>
+            <extensions from="7.40" to="7.40"/>
+            <data datversion="7.4" sprversion="7.0" dat="0x41BF619C" spr="0x41B9EA86"/>
+        </client>
+
+        <client name="7.6" otb="7.60" visible="true" data_directory="760">
+            <otbm version="1"/>
+            <extensions from="7.60" to="7.60"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x439D5A33" spr="0x439852BE"/>
+        </client>
+
+        <client name="8.00" otb="8.00" visible="true" data_directory="800">
+            <otbm version="2"/>
+            <extensions from="8.00" to="8.00"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x467FD7E6" spr="0x467F9E74"/>
+        </client>
+
+        <client name="8.10" otb="8.10" visible="true" data_directory="810">
+            <otbm version="2"/>
+            <extensions from="8.10" to="8.10"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x475D3747" spr="0x475D0B01"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x47F60E37" spr="0x47EBB9B2"/>
+        </client>
+
+        <client name="8.20 - 8.31" otb="8.20" visible="true" data_directory="820">
+            <otbm version="2"/>
+            <extensions from="8.20"/>
+            <fucked_up_charges/> <!-- Special tag, only for this version -->
+
+            <data datversion="7.6" sprversion="7.0" dat="0x486905AA" spr="0x4868ECC9"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x486CCA2B" spr="0x4868ECC9"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x489980A1" spr="0x489980A5"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x48DA1FB6" spr="0x48C8E712"/>
+        </client>
+
+        <client name="8.40" otb="8.40" visible="true" data_directory="840">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x493D607A" spr="0x493D4E7C"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x49B7CC19" spr="0x49B140EA"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x49C233C9" spr="0x49B140EA"/>
+        </client>
+
+        <client name="8.50" otb="8.50" visible="true" data_directory="850">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4A49C5EB" spr="0x4A44FD4E"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4A4CC0DC" spr="0x4A44FD4E"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4AE97492" spr="0x4A44FD4E"/>
+        </client>
+
+        <client name="8.54 (bad)" otb="8.54 (bad)" visible="false" data_directory="854">
+            <otbm version="3"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4B28B89E" spr="0x4B1E2C87"/>
+        </client>
+
+        <client name="8.54" otb="8.54" visible="true" data_directory="854">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
+            <data datversion="7.6" sprversion="7.0" dat="0x4B28B89E" spr="0x4B1E2C87"/>
+        </client>
+
+        <client name="8.60 (old)" otb="8.60 (old)" visible="false" data_directory="860">
+            <otbm version="3"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4C2C7993" spr="0x4C220594"/>
+        </client>
+
+        <client name="8.60" otb="8.60" visible="true" data_directory="860">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4C2C7993" spr="0x4C220594"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4C6A4CBC" spr="0x4C63F145"/>
+        </client>
+
+        <client name="8.70" otb="8.70" visible="true" data_directory="870">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4CFE22C5" spr="0x4CFD078A"/>
+        </client>
+
+        <client name="9.10" otb="9.10" visible="true" data_directory="910">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4E12DAFF" spr="0x4E12DB27"/>
+        </client>
+
+        <client name="9.20 - 9.31" otb="9.20" visible="true" data_directory="9.20">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4E807C08" spr="0x4E807C23"/>
+        </client>
+
+        <client name="9.46" otb="9.46" visible="true" data_directory="946">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4F6B341F" spr="0x4F5DCEF7"/>
+        </client>
+
+        <client name="9.54" otb="9.54" visible="true" data_directory="954">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <data datversion="8.6" sprversion="7.0" dat="0x4FD5956B" spr="0x4FD595B7"/>
+        </client>
+
+        <client name="9.60" otb="9.60" visible="false" data_directory="960">
+            <otbm version="3"/>
+            <extensions from="8.20"/>
+            <!-- <data datversion="8.6" sprversion="9.6" dat="0x0" spr="0x0"/> -->
+        </client>
+    </clients>
+
+    <conversions>
+        <!-- Used by the editor to figure out when to run conversions -->
+        <convert after="760" using="760to740"/>
+        <convert before="810" using="800to810"/>
+        <convert at="854" using="854badto854"/>
+    </conversions>
+
+</client_config>

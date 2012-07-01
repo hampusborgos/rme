@@ -1,22 +1,6 @@
 //////////////////////////////////////////////////////////////////////
 // Remere's Map Editor - An opensource map editor for OpenTibia
 //////////////////////////////////////////////////////////////////////
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// as published by the Free Software Foundation; either version 2
-// of the License, or (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software Foundation,
-// Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-//////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/client_version.h $
-// $Id: client_version.h 306 2010-02-24 10:38:25Z admin $
 
 #ifndef RME_CLIENT_VERSION_H_
 #define RME_CLIENT_VERSION_H_
@@ -24,50 +8,25 @@
 #include "main.h"
 #include "settings.h"
 
-enum ClientVersionID {
-	CLIENT_VERSION_NONE= 0,
-	CLIENT_VERSION_740 = 1, // HACK
-	CLIENT_VERSION_750 = 1,
-	CLIENT_VERSION_755 = 2,
-	CLIENT_VERSION_760 = 3,
-	CLIENT_VERSION_770 = 3,
-	CLIENT_VERSION_780 = 4,
-	CLIENT_VERSION_790 = 5,
-	CLIENT_VERSION_792 = 6,
-	CLIENT_VERSION_800 = 7,
-	CLIENT_VERSION_810 = 8,
-	CLIENT_VERSION_811 = 9,
-	CLIENT_VERSION_820 = 10,
-	CLIENT_VERSION_830 = 11,
-	CLIENT_VERSION_840 = 12,
-	CLIENT_VERSION_841 = 13,
-	CLIENT_VERSION_842 = 14,
-	CLIENT_VERSION_850 = 15,
-	CLIENT_VERSION_854_BAD = 16,
-	CLIENT_VERSION_854 = 17,
-	CLIENT_VERSION_855 = 18,
-	CLIENT_VERSION_860_OLD = 19,
-	CLIENT_VERSION_860 = 20,
-	CLIENT_VERSION_861 = 21,
-	CLIENT_VERSION_862 = 22,
-	CLIENT_VERSION_870 = 23,
-	CLIENT_VERSION_871 = 24,
-	CLIENT_VERSION_872 = 25,
-	CLIENT_VERSION_873 = 26,
-	CLIENT_VERSION_874 = 26,
-	CLIENT_VERSION_900 = 27,
-	CLIENT_VERSION_910 = 28,
-	CLIENT_VERSION_920 = 29
-};
+typedef int ClientVersionID;
 
+#define CLIENT_VERSION_NONE -1
+#define CLIENT_VERSION_ALL  -2
+
+// After this version, OTBM stores charges as an attribute
+#define CLIENT_VERSION_820 10
+
+// OTBM versions
 enum MapVersionID
 {
+	MAP_OTBM_UNKNOWN = -1,
 	MAP_OTBM_1 = 0,
 	MAP_OTBM_2 = 1,
 	MAP_OTBM_3 = 2,
 	MAP_OTBM_4 = 3,
 };
 
+// The composed version of a otbm file (otbm version, client version)
 struct MapVersion
 {
 	MapVersion() : otbm(MAP_OTBM_1), client(CLIENT_VERSION_NONE) {}
@@ -76,50 +35,112 @@ struct MapVersion
 	ClientVersionID client;
 };
 
+enum OtbFormatVersion
+{
+	OTB_VERSION_1 = 1,
+	OTB_VERSION_2 = 2,
+	OTB_VERSION_3 = 3,
+};
+
+// Represents an OTB version
+struct OtbVersion
+{
+	// '8.60', '7.40' etc.
+	std::string name;
+	// What file format the OTB is in (version 1..3)
+	OtbFormatVersion format_version;
+	// The minor version ID of the OTB (maps to CLIENT_VERSION in OTServ)
+	ClientVersionID id;
+};
+
+// Formats for the .dat data file for Tibia
+enum DatVersion
+{
+	DAT_VERSION_740,
+	DAT_VERSION_760,
+	DAT_VERSION_860,
+};
+
+// Possible format for the .spr data file for Tibia
+enum SprVersion
+{
+	SPR_VERSION_700,
+	SPR_VERSION_960, // 32 bit sprids
+};
+
+// Represents a client file version
+struct ClientData
+{
+	DatVersion datVersion;
+	SprVersion sprVersion;
+	uint32_t datSignature;
+	uint32_t sprSignature;
+};
+
+// typedef the client version
 class ClientVersion;
 typedef std::vector<ClientVersion*> ClientVersionList;
 
-class ClientVersion {
+
+class ClientVersion : boost::noncopyable
+{
 public:
-	ClientVersion() : ver_id(CLIENT_VERSION_NONE) {}
-	ClientVersion(ClientVersionID id, wxString versionName, wxString path, bool hidden = false);
-	ClientVersion(const ClientVersion& other);
+	ClientVersion(OtbVersion otb, wxString versionName, wxString path);
 	~ClientVersion() {}
 
 	static void loadVersions();
 	static void saveVersions();
-	static void addVersion(const ClientVersion& ver);
 
 	static ClientVersion* get(ClientVersionID id);
 	static ClientVersion* get(std::string name);
+	static ClientVersionList getVisible(std::string from, std::string to);
 	static ClientVersionList getAll();
+	static ClientVersionList getAllVisible();
+	static ClientVersionList getAllForOTBMVersion(MapVersion map_version);
+	static ClientVersion* getLatestVersion();
 
-	bool operator==(const ClientVersion& o) const {return ver_id == o.ver_id;}
+	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}
 	
 	bool hasValidPaths() const;
 	bool loadValidPaths();
 	void setClientPath(const FileName& dir);
 	
-	bool isHidden() const;
-	void setHidden(bool hidden);
+	bool isVisible() const;
 	std::string getName() const;
 	ClientVersionID getID() const;
+	MapVersionID getPrefferedMapVersionID() const;
+	OtbVersion getOTBVersion() const;
 	FileName getDataPath() const;
 	FileName getLocalDataPath() const;
 	FileName getClientPath() const;
-	MapVersionID getMapVersionID() const;
+	ClientVersionList getExtensionsSupported() const;
 
 private:
-	ClientVersionID ver_id;
-	bool hidden;
+	OtbVersion otb;
+	
 	wxString name;
-	std::vector<std::pair<uint32_t, uint32_t> > version_id_list;
+	bool visible;
+	bool usesFuckedUpCharges;
+
+	std::vector<MapVersionID> map_versions_supported;
+	MapVersionID preferred_map_version;
+	std::vector<ClientData> data_versions;
+
 	wxString data_path;
 	FileName client_path;
 
+private:
+	static void loadOTBs(xmlNodePtr otb_nodes);
+	static void loadVersion(xmlNodePtr client_node);
+
 	// All versions
-	typedef std::map<ClientVersionID, ClientVersion> VersionMap;
-	static VersionMap versions;
+	typedef std::map<ClientVersionID, ClientVersion*> VersionMap;
+	static VersionMap client_versions;
+	static ClientVersion* latest_version;
+
+	// All otbs
+	typedef std::map<std::string, OtbVersion> OtbMap;
+	static OtbMap otb_versions;
 };
 
 #endif

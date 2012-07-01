@@ -79,7 +79,7 @@ BEGIN_EVENT_TABLE(MapScrollBar, wxScrollBar)
 	EVT_MOUSEWHEEL(MapScrollBar::OnWheel)
 END_EVENT_TABLE()
 
-IMPLEMENT_APP(Application)
+wxIMPLEMENT_APP(Application);
 
 Application::~Application()
 {
@@ -268,6 +268,10 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 		return;
 	startup = false;
 
+	// Don't try to create a map if we didn't load the client map.
+	if (ClientVersion::getLatestVersion() == NULL)
+		return;
+
 	// Handle any command line argument (open map...)
 	std::pair<bool, FileName> ff = ParseCommandLineMap();
 	if(ff.first) 
@@ -295,9 +299,9 @@ void Application::FixVersionDiscrapencies()
 		settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, 0);
 	}
 
-	if(settings.getInteger(Config::VERSION_ID) < MAKE_VERSION_ID(2, 0, 0)) 
+	if(settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__) 
 	{
-		settings.setInteger(Config::DEFAULT_CLIENT_VERSION, CLIENT_VERSION_860);
+		settings.setInteger(Config::DEFAULT_CLIENT_VERSION, ClientVersion::getLatestVersion()->getID());
 	}
 
 	wxString ss = wxstr(settings.getString(Config::SCREENSHOT_DIRECTORY));

@@ -157,6 +157,17 @@ bool readXMLString(xmlNodePtr node, const char* tag, std::string& value)
 	return false;
 }
 
+bool readXMLBoolean(xmlNodePtr node, const char* tag, bool& value)
+{
+	std::string str_val;
+	if(readXMLString(node, tag, str_val))
+	{
+		value = isTrueString(str_val);
+		return true;
+	}
+	return false;
+}
+
 bool isFalseString(std::string& str) {
 	if(str == "false" || str == "0" || str == "" || str == "no" || str == "not") {
 		return true;

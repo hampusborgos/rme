@@ -771,8 +771,6 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 			error = wxstr(f.getErrorMessage());
 			return false;
 		}
-		if(MinorVersion == CLIENT_VERSION_854_BAD)
-			warnings.push_back(wxString(wxT("items.otb: Incorrect OTB version (")) << wxstr(csd) << wxT(")"));
 	}
 	else
 	{
@@ -781,27 +779,9 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 
 	if(settings.getInteger(Config::CHECK_SIGNATURES))
 	{
-		try
+		if(gui.GetCurrentVersion().getOTBVersion().format_version != MajorVersion)
 		{
-			if(gui.GetCurrentVersionID() == CLIENT_VERSION_760)
-			{
-				if(MajorVersion != 1)
-					throw MajorVersion;
-			}
-			else if(gui.GetCurrentVersionID() >= CLIENT_VERSION_800 && gui.GetCurrentVersionID() < CLIENT_VERSION_820)
-			{
-				if(MajorVersion != 2)
-					throw MajorVersion;
-			}
-			else if(gui.GetCurrentVersionID() == CLIENT_VERSION_820)
-			{
-				if(MajorVersion != 3)
-					throw MajorVersion;
-			}
-		}
-		catch(uint32_t v)
-		{
-			error = wxT("Unsupported items.otb version (version ") + i2ws(v) + wxT(")");
+			error = wxT("Unsupported items.otb version (version ") + i2ws(MajorVersion) + wxT(")");
 			return false;
 		}
 	}

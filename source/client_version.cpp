@@ -1,8 +1,6 @@
 //////////////////////////////////////////////////////////////////////
 // This file is part of Remere's Map Editor
 //////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/client_version.hpp $
-// $Id: client_version.hpp 315 2010-02-28 15:30:22Z admin $
 
 #include "main.h"
 
@@ -15,32 +13,25 @@
 
 // Static methods to load/save
 
-ClientVersion::VersionMap ClientVersion::versions;
+ClientVersion::VersionMap ClientVersion::client_versions;
+ClientVersion* ClientVersion::latest_version = NULL;
+ClientVersion::OtbMap ClientVersion::otb_versions;
 
 void ClientVersion::loadVersions()
 {
-	versions.clear();
+	// Clean up old stuff
+	for (VersionMap::iterator it = client_versions.begin(); it != client_versions.end(); ++it)
+		delete it->second;
+	client_versions.clear();
+	otb_versions.clear();
 
-	addVersion(ClientVersion(CLIENT_VERSION_740, wxT("7.40"), wxT("740")));
-	addVersion(ClientVersion(CLIENT_VERSION_760, wxT("7.60"), wxT("760")));
-	addVersion(ClientVersion(CLIENT_VERSION_800, wxT("8.00"), wxT("800")));
-	addVersion(ClientVersion(CLIENT_VERSION_810, wxT("8.10"), wxT("810")));
-	addVersion(ClientVersion(CLIENT_VERSION_820, wxT("8.20 - 8.31"), wxT("820")));
-	addVersion(ClientVersion(CLIENT_VERSION_840, wxT("8.40"), wxT("840")));
-	addVersion(ClientVersion(CLIENT_VERSION_850, wxT("8.50"), wxT("850")));
-	addVersion(ClientVersion(CLIENT_VERSION_854_BAD, wxT("8.54 (bad)"), wxT("854")));
-	addVersion(ClientVersion(CLIENT_VERSION_854, wxT("8.54"), wxT("854")));
-	addVersion(ClientVersion(CLIENT_VERSION_860_OLD, wxT("8.60 (old)"), wxT("860")));
-	addVersion(ClientVersion(CLIENT_VERSION_860, wxT("8.60"), wxT("860")));
-	addVersion(ClientVersion(CLIENT_VERSION_870, wxT("8.70"), wxT("870")));
-	addVersion(ClientVersion(CLIENT_VERSION_910, wxT("9.10"), wxT("910")));
-	addVersion(ClientVersion(CLIENT_VERSION_920, wxT("9.20 - 9.31"), wxT("920")));
-
+	// Locate the clients.xml file
 	wxFileName fn;
 	fn.Assign(gui.GetLocalDirectory());
 	fn.SetFullName(wxT("clients.xml"));
 	if(!fn.FileExists())
 	{
+		// Try alternate filepath
 		wxFileName fn2;
 		fn2.Assign(gui.GetExecDirectory());
 		fn2.SetFullName(wxT("clients.xml"));
@@ -56,13 +47,13 @@ void ClientVersion::loadVersions()
 		fn = fn2;
 	}
 
+	// Parse the file
 	xmlDocPtr doc = xmlParseFile(fn.GetFullPath().mb_str());
-
 	if(doc)
 	{
 		xmlNodePtr root = xmlDocGetRootElement(doc);
 
-		if(xmlStrcmp(root->name,(const xmlChar*)"clients") != 0)
+		if(xmlStrcmp(root->name,(const xmlChar*)"client_config") != 0)
 		{
 			xmlFreeDoc(doc);
 			wxLogError(wxT("Could not load clients.xml (syntax error), editor will NOT be able to load any client data files."));
@@ -70,45 +61,18 @@ void ClientVersion::loadVersions()
 		}
 
 		
-		for(xmlNodePtr versionNode = root->children; versionNode != NULL; versionNode = versionNode->next)
+		for(xmlNodePtr childNode = root->children; childNode != NULL; childNode = childNode->next)
 		{
-			if(xmlStrcmp(versionNode ->name,(const xmlChar*)"client") == 0)
-			{
-				std::string versionName;
-				readXMLString(versionNode, "version", versionName);
-				ClientVersion* version = const_cast<ClientVersion*>(get(versionName));
-				
-				if(!version)
-					continue;
-
-				std::string hidden;
-				readXMLString(versionNode, "hidden", hidden);
-				version->setHidden(isTrueString(hidden));
-
-				for(xmlNodePtr dataNode = versionNode->children; dataNode != NULL; dataNode = dataNode->next)
-				{
-					if(xmlStrcmp(dataNode ->name,(const xmlChar*)"data") == 0)
-					{
-						std::string id;
-						wxString xc;
-						long datID, sprID;
-
-						readXMLString(dataNode, "dat", id);
-						xc = wxstr(id);
-						xc.ToLong(&datID, 16);
-
-						readXMLString(dataNode, "spr", id);
-						xc = wxstr(id);
-						xc.ToLong(&sprID, 16);
-
-						version->version_id_list.push_back(std::make_pair(datID, sprID));
-					}
-				}
-			}
+			if(xmlStrcmp(childNode->name,(const xmlChar*)"otbs") == 0)
+				loadOTBs(childNode);
+			else if(xmlStrcmp(childNode->name,(const xmlChar*)"clients") == 0)
+				for(xmlNodePtr versionNode = childNode->children; versionNode != NULL; versionNode = versionNode->next)
+					if(xmlStrcmp(versionNode->name,(const xmlChar*)"client") == 0)
+						loadVersion(versionNode);
 		}
 	}
 
-	// TODO LOAD
+	// Load the data directory info
 	try
 	{
 		json::mValue read_obj;
@@ -130,13 +94,174 @@ void ClientVersion::loadVersions()
 	}
 }
 
+void ClientVersion::loadOTBs(xmlNodePtr otbsNode)
+{
+	for(xmlNodePtr otbNode = otbsNode->children; otbNode != NULL; otbNode = otbNode->next)
+	{
+		if(xmlStrcmp(otbNode->name,(const xmlChar*)"otb") == 0)
+		{
+			OtbVersion otb = {"", OTB_VERSION_3, CLIENT_VERSION_NONE};
+			if(!readXMLString(otbNode, "client", otb.name))
+			{
+				wxLogError(wxT("Node 'otb' must contain 'client' tag."));
+				continue;
+			}
+
+			if(!readXMLInteger(otbNode, "id", otb.id))
+			{
+				wxLogError(wxT("Node 'otb' must contain 'id' tag."));
+				continue;
+			}
+			int read_int;
+			if(!readXMLInteger(otbNode, "version", read_int))
+			{
+				wxLogError(wxT("Node 'otb' must contain 'version' tag."));
+				continue;
+			}
+
+			if (read_int < OTB_VERSION_1 || read_int > OTB_VERSION_3)
+			{
+				wxLogError(wxT("Node 'otb' unrecognized format version (version 1..3 supported)."));
+				continue;
+			}
+
+			otb.format_version = (OtbFormatVersion)read_int;
+			otb_versions[otb.name] = otb;
+		}
+	}
+}
+
+void ClientVersion::loadVersion(xmlNodePtr versionNode)
+{
+	std::string versionName;
+	std::string otbVersionName;
+	std::string dataPath;
+
+	if (!readXMLString(versionNode, "name", versionName) ||
+		!readXMLString(versionNode, "data_directory", dataPath) ||
+		!readXMLString(versionNode, "otb", otbVersionName))
+	{
+		wxLogError(wxT("Node 'client' must contain 'name', 'data_directory' and 'otb' tags."));
+		return;
+	}
+
+	if (otb_versions.find(otbVersionName) == otb_versions.end())
+	{
+		wxLogError(wxT("Node 'client' 'otb' tag is invalid (couldn't find this otb version)."));
+		return;
+	}
+
+	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], wxstr(versionName), dataPath);
+	
+	readXMLBoolean(versionNode, "visible", version->visible);
+
+	for(xmlNodePtr childNode = versionNode->children; childNode != NULL; childNode = childNode->next)
+	{
+		if(xmlStrcmp(childNode->name,(const xmlChar*)"otbm") == 0)
+		{
+			int otbmVersion;
+			if (!readXMLInteger(childNode, "version", otbmVersion))
+			{
+				wxLogError(wxT("Node 'otbm' missing version."));
+				continue;
+			}
+			otbmVersion -= 1;
+
+			if (otbmVersion < MAP_OTBM_1 || otbmVersion > MAP_OTBM_4)
+			{
+				wxLogError(wxT("Node 'otbm' unsupported version."));
+				continue;
+			}
+			
+			bool preferred = false;
+			if (readXMLBoolean(childNode, "preffered", preferred) && preferred)
+				version->preferred_map_version = (MapVersionID)otbmVersion;
+			if (version->preferred_map_version == MAP_OTBM_UNKNOWN)
+				version->preferred_map_version = (MapVersionID)otbmVersion;
+
+			version->map_versions_supported.push_back((MapVersionID)otbmVersion);
+		}
+		else if(xmlStrcmp(childNode->name,(const xmlChar*)"extensions") == 0)
+		{
+			;
+		}
+		else if(xmlStrcmp(childNode->name,(const xmlChar*)"fucked_up_charges") == 0)
+		{
+			version->usesFuckedUpCharges = true;
+		}
+		else if(xmlStrcmp(childNode->name,(const xmlChar*)"data") == 0)
+		{
+			ClientData client_data = {DAT_VERSION_740, SPR_VERSION_700, 0, 0};
+
+			std::string datVersion, sprVersion;
+
+			if (!readXMLString(childNode, "datversion", datVersion) || !readXMLString(childNode, "sprversion", sprVersion))
+			{
+				wxLogError(wxT("Node 'data' does not have 'datversion' / 'sprversion' tags."));
+				continue;
+			}
+
+			if (datVersion == "7.4")
+				client_data.datVersion = DAT_VERSION_740;
+			else if (datVersion == "7.6")
+				client_data.datVersion = DAT_VERSION_760;
+			else if (datVersion == "8.6")
+				client_data.datVersion = DAT_VERSION_860;
+			else
+			{
+				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6 and 8.6 are supported)"));
+				continue;
+			}
+
+			if (sprVersion == "7.0")
+				client_data.sprVersion = SPR_VERSION_700;
+			else if (sprVersion == "9.6")
+				client_data.sprVersion = SPR_VERSION_960;
+			else
+			{
+				wxLogError(wxT("Node 'data' 'sprversion' is invalid (7.0 and 9.6 are supported)"));
+				continue;
+			}
+
+			std::string read_string;
+
+			if (!(readXMLString(childNode, "dat", read_string) && wxstr(read_string).ToULong((unsigned long*)&client_data.datSignature, 16)))
+			{
+				wxLogError(wxT("Node 'data' 'dat' tag is not hex-formatted."));
+				continue;
+			}
+			
+			if (!(readXMLString(childNode, "spr", read_string) && wxstr(read_string).ToULong((unsigned long*)&client_data.sprSignature, 16)))
+			{
+				wxLogError(wxT("Node 'data' 'spr' tag is not hex-formatted."));
+				continue;
+			}
+
+			version->data_versions.push_back(client_data);
+		}
+	}
+
+	if (client_versions[version->getID()] != NULL)
+	{
+		wxString error;
+		error << wxT("Duplicate version id ") << version->getID() << wxT(", discarding version '") << version->name << wxT("'.");
+		wxLogError(error);
+		delete version;
+		return;
+	}
+
+	client_versions[version->getID()] = version;
+	latest_version = version;
+}
+
+
 void ClientVersion::saveVersions()
 {
 	json::Array vers_obj;
 
-	for(VersionMap::iterator i = versions.begin(); i != versions.end(); ++i)
+	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
 	{
-		ClientVersion* version = &i->second;
+		ClientVersion* version = i->second;
 		json::Object ver_obj;
 		ver_obj.push_back(json::Pair("id", version->getName()));
 		ver_obj.push_back(json::Pair("path", nstr(version->getClientPath().GetFullPath())));
@@ -147,52 +272,53 @@ void ClientVersion::saveVersions()
 	settings.setString(Config::TIBIA_DATA_DIRS, out.str());
 }
 
-void ClientVersion::addVersion(const ClientVersion& ver) {
-	ASSERT(ver.ver_id != CLIENT_VERSION_NONE);
-	versions[ver.ver_id] = ver;
-}
-
 // Client version class
 
-ClientVersion::ClientVersion(ClientVersionID id, wxString versionName, wxString path, bool hidden) :
-	ver_id(id),
-	hidden(hidden),
+ClientVersion::ClientVersion(OtbVersion otb, wxString versionName, wxString path) :
+	otb(otb),
 	name(versionName),
+	visible(false),
+	preferred_map_version(MAP_OTBM_UNKNOWN),
 	data_path(path)
-{
-}
-
-ClientVersion::ClientVersion(const ClientVersion& other) :
-	ver_id(other.ver_id),
-	name(other.name),
-	version_id_list(other.version_id_list),
-	data_path(other.data_path),
-	client_path(other.client_path)
 {
 }
 
 ClientVersion* ClientVersion::get(ClientVersionID id)
 {
-	VersionMap::iterator i = versions.find(id);
-	if(i == versions.end())
+	VersionMap::iterator i = client_versions.find(id);
+	if(i == client_versions.end())
 		return NULL;
-	return &i->second;
+	return i->second;
 }
 
 ClientVersion* ClientVersion::get(std::string id)
 {
-	for(VersionMap::iterator i = versions.begin(); i != versions.end(); ++i)
-		if(i->second.getName() == id)
-			return &i->second;
+	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
+		if(i->second->getName() == id)
+			return i->second;
 	return NULL;
 }
 
 ClientVersionList ClientVersion::getAll()
 {
 	ClientVersionList l;
-	for(VersionMap::iterator i = versions.begin(); i != versions.end(); ++i)
-		l.push_back(&i->second);
+	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
+		l.push_back(i->second);
 	return l;
+}
+
+ClientVersionList ClientVersion::getAllVisible()
+{
+	ClientVersionList l;
+	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
+		if (i->second->isVisible())
+			l.push_back(i->second);
+	return l;
+}
+
+ClientVersion* ClientVersion::getLatestVersion()
+{
+	return latest_version;
 }
 
 FileName ClientVersion::getDataPath() const
@@ -229,8 +355,8 @@ bool ClientVersion::hasValidPaths() const
 	if(dat_file.isOk() == false)
 		return false;
 
-	uint32_t datVersionR;
-	dat_file.getU32(datVersionR);
+	uint32_t datSignature;
+	dat_file.getU32(datSignature);
 	
 	dat_file.close();
 
@@ -239,17 +365,15 @@ bool ClientVersion::hasValidPaths() const
 	if(spr_file.isOk() == false)
 		return false;
 
-	uint32_t sprVersionR;
-	spr_file.getU32(sprVersionR);
+	uint32_t sprSignature;
+	spr_file.getU32(sprSignature);
 	
 	spr_file.close();
 
-	for(std::vector<std::pair<uint32_t, uint32_t> >::const_iterator iter = version_id_list.begin(); iter != version_id_list.end(); ++iter)
+	for(std::vector<ClientData>::const_iterator iter = data_versions.begin(); iter != data_versions.end(); ++iter)
 	{
-		if(iter->first == datVersionR && iter->second == sprVersionR)
-		{
+		if(iter->datSignature == datSignature && iter->sprSignature == sprSignature)
 			return true;
-		}
 	}
 
 	return false;
@@ -280,17 +404,12 @@ std::string ClientVersion::getName() const
 
 ClientVersionID ClientVersion::getID() const
 {
-	return ver_id;
+	return otb.id;
 }
 
-void ClientVersion::setHidden(bool hidden)
+bool ClientVersion::isVisible() const
 {
-	this->hidden = hidden;
-}
-
-bool ClientVersion::isHidden() const
-{
-	return hidden;
+	return visible;
 }
 
 FileName ClientVersion::getClientPath() const
@@ -303,46 +422,17 @@ void ClientVersion::setClientPath(const FileName& dir)
 	client_path.Assign(dir);
 }
 
-MapVersionID ClientVersion::getMapVersionID() const
+MapVersionID ClientVersion::getPrefferedMapVersionID() const
 {
-	switch(ver_id)
-	{
-		case CLIENT_VERSION_740:
-		//case CLIENT_VERSION_750:
-		case CLIENT_VERSION_755:
-		case CLIENT_VERSION_760:
-		//case CLIENT_VERSION_770:
-		case CLIENT_VERSION_780:
-		case CLIENT_VERSION_790:
-		case CLIENT_VERSION_792:
-			return MAP_OTBM_1;
-		case CLIENT_VERSION_800:
-		case CLIENT_VERSION_810:
-		case CLIENT_VERSION_811:
-		case CLIENT_VERSION_820:
-		case CLIENT_VERSION_830:
-			return MAP_OTBM_2;
-		case CLIENT_VERSION_840:
-		case CLIENT_VERSION_841:
-		case CLIENT_VERSION_842:
-		case CLIENT_VERSION_850:
-		case CLIENT_VERSION_854_BAD:
-		case CLIENT_VERSION_854:
-		case CLIENT_VERSION_855:
-		case CLIENT_VERSION_860_OLD:
-		case CLIENT_VERSION_860:
-		case CLIENT_VERSION_861:
-		case CLIENT_VERSION_862:
-		case CLIENT_VERSION_870:
-		case CLIENT_VERSION_871:
-		case CLIENT_VERSION_872:
-		case CLIENT_VERSION_873:
-		// case CLIENT_VERSION_870: // same as 873
-		case CLIENT_VERSION_900:
-		case CLIENT_VERSION_910:
-		case CLIENT_VERSION_920:
-		default:
-			// OTServ 0.7.0 is not default yet for 8.50+
-			return MAP_OTBM_3;
-	}
+	return preferred_map_version;
+}
+
+OtbVersion ClientVersion::getOTBVersion() const
+{
+	return otb;
+}
+
+ClientVersionList ClientVersion::getExtensionsSupported() const
+{
+	return ClientVersionList();
 }

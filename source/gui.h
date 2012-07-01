@@ -222,7 +222,7 @@ public:
 	const ClientVersion& GetCurrentVersion() const;
 	ClientVersionID GetCurrentVersionID() const;
 	// If any version is loaded at all
-	bool IsVersionLoaded() const {return bool(loaded_version);}
+	bool IsVersionLoaded() const {return loaded_version != CLIENT_VERSION_NONE;}
 
 	// Centers current view on position
 	void CenterOnPosition(Position pos);
@@ -259,14 +259,13 @@ public:
 	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(wxT("")), showdialog);}
 	bool NewMap();
 	bool LoadMap(FileName fn);
-
+	
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);
-	ClientVersionID loaded_version;
 	ClientVersion* getLoadedVersion() const {
-		return ClientVersion::get(loaded_version);
+		return loaded_version == CLIENT_VERSION_NONE ? NULL : ClientVersion::get(loaded_version);
 	}
-	
+
 	//=========================================================================
 	// Palette Interface
 public:
@@ -296,13 +295,9 @@ protected:
 	void DestroyPalettes();
 	PaletteWindow* CreatePalette();
 
-	typedef std::list<PaletteWindow*> PaletteList;
-	PaletteList palettes;
-
-	wxGLContext* OGLContext;
-
 	//=========================================================================
 	// Public members
+	//=========================================================================
 public:
 	wxAuiManager* aui_manager;
 	MapTabbook* tabbook;
@@ -317,28 +312,10 @@ public:
 	BaseMap* secondary_map; // A buffer map
 	BaseMap* doodad_buffer_map; // The map in which doodads are temporarily stored
 
-protected:
-	// Brush data
-	Brush* current_brush;
-	Brush* previous_brush;
-	BrushShape brush_shape;
-	int brush_size;
-	int brush_variation;
-	int creature_spawntime;
+	//=========================================================================
+	// Brush references
+	//=========================================================================
 
-	bool use_custom_thickness;
-	float custom_thickness_mod;
-	
-	wxString progressText;
-	wxProgressDialog* progressBar;
-	int progressFrom;
-	int progressTo;
-	wxWindowDisabler* winDisabler;
-
-	int disabled_counter;
-public:
-
-	// Static brushes
 	HouseBrush* house_brush;
 	HouseExitBrush* house_exit_brush;
 	WaypointBrush* waypoint_brush;
@@ -357,12 +334,44 @@ public:
 	FlagBrush* pvp_brush;
 
 protected:
+	
+	//=========================================================================
+	// Global GUI state
+	//=========================================================================
+	typedef std::list<PaletteWindow*> PaletteList;
+	PaletteList palettes;
+
+	wxGLContext* OGLContext;
+	
+	ClientVersionID loaded_version;
+	EditorMode mode;
+	bool pasting;
+	
 	Hotkey hotkeys[10];
 	bool hotkeys_enabled;
 
-protected:
-	bool pasting;
-	EditorMode mode;
+	//=========================================================================
+	// Internal brush data
+	//=========================================================================
+	Brush* current_brush;
+	Brush* previous_brush;
+	BrushShape brush_shape;
+	int brush_size;
+	int brush_variation;
+	int creature_spawntime;
+
+	bool use_custom_thickness;
+	float custom_thickness_mod;
+	
+	//=========================================================================
+	// Progress bar tracking
+	//=========================================================================
+	wxString progressText;
+	wxProgressDialog* progressBar;
+	int progressFrom;
+	int progressTo;
+	wxWindowDisabler* winDisabler;
+	int disabled_counter;
 
 	friend class RenderingLock;
 	friend MapTab::MapTab(MapTabbook*, Editor*);

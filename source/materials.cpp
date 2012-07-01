@@ -174,6 +174,9 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				{
 					me->addVersion(*iter);
 				}
+
+				std::sort(me->versionList.begin(), me->versionList.end());
+				std::unique(me->versionList.begin(), me->versionList.end());
 			}
 			else
 			{
@@ -403,101 +406,44 @@ MaterialsExtension::~MaterialsExtension()
 
 void MaterialsExtension::addVersion(std::string verStr)
 {
-	// We should go through the "real" version list and look through the names there instead
-	// But as that list doesn't exist yet, this'll do for the moment
 	if(verStr == "all")
-		versionList.push_back(0);
-	else if(verStr == "7.60" || verStr == "7.6")
-		versionList.push_back(CLIENT_VERSION_760);
-	else if(verStr == "8.00" || verStr == "8.0")
-		versionList.push_back(CLIENT_VERSION_800);
-	else if(verStr == "8.10" || verStr == "8.1" || verStr == "8.11")
-		versionList.push_back(CLIENT_VERSION_810);
-	else if(verStr == "8.20" || verStr == "8.21" || verStr == "8.22" || verStr == "8.30" || verStr == "8.31")
 	{
-		versionList.push_back(CLIENT_VERSION_820);
-		versionList.push_back(CLIENT_VERSION_840);
-		versionList.push_back(CLIENT_VERSION_850);
-		versionList.push_back(CLIENT_VERSION_854);
-		versionList.push_back(CLIENT_VERSION_860);
-		versionList.push_back(CLIENT_VERSION_870);
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
+		for_all_versions = true;
 	}
-	else if(verStr == "8.40")
+	else
 	{
-		versionList.push_back(CLIENT_VERSION_840);
-		versionList.push_back(CLIENT_VERSION_850);
-		versionList.push_back(CLIENT_VERSION_854);
-		versionList.push_back(CLIENT_VERSION_860);
-		versionList.push_back(CLIENT_VERSION_870);
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
-	}
-	else if(verStr == "8.50")
-	{
-		versionList.push_back(CLIENT_VERSION_850);
-		versionList.push_back(CLIENT_VERSION_854);
-		versionList.push_back(CLIENT_VERSION_860);
-		versionList.push_back(CLIENT_VERSION_870);
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
-	}
-	else if(verStr == "8.54")
-	{
-		versionList.push_back(CLIENT_VERSION_854);
-		versionList.push_back(CLIENT_VERSION_860);
-		versionList.push_back(CLIENT_VERSION_870);
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
-	}
-	else if(verStr == "8.60")
-	{
-		versionList.push_back(CLIENT_VERSION_860);
-		versionList.push_back(CLIENT_VERSION_870);
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
-	}
-	else if(verStr == "8.70")
-	{
-		versionList.push_back(CLIENT_VERSION_870);
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
-	}
-	else if(verStr == "9.10")
-	{
-		versionList.push_back(CLIENT_VERSION_910);
-		versionList.push_back(CLIENT_VERSION_920);
-	}
-	else if(verStr == "9.20")
-	{
-		versionList.push_back(CLIENT_VERSION_920);
+		ClientVersion* client = ClientVersion::get(verStr);
+		if(client)
+		{
+			ClientVersionList supported_versions = client->getExtensionsSupported();
+			versionList.insert(versionList.end(), supported_versions.begin(), supported_versions.end());
+		}
 	}
 }
 
 bool MaterialsExtension::isForVersion(uint16_t ver_id)
 {
-	for(std::vector<uint16_t>::iterator iter = versionList.begin();
+	if (for_all_versions)
+		return true;
+
+	for(ClientVersionList::iterator iter = versionList.begin();
 			iter != versionList.end();
 			++iter)
 	{
-		if(*iter == 0)
-		{
+		if((*iter)->getID() == ver_id)
 			return true;
-		}
-		else if(*iter == ver_id)
-		{
-			return true;
-		}
 	}
 	return false;
 }
 
 std::string MaterialsExtension::getVersionString()
 {
+	if (for_all_versions)
+		return "All";
+
 	std::string versions;
 	std::string last;
-	for(std::vector<uint16_t>::iterator iter = versionList.begin();
+	for(ClientVersionList::iterator iter = versionList.begin();
 			iter != versionList.end();
 			++iter)
 	{
@@ -508,27 +454,10 @@ std::string MaterialsExtension::getVersionString()
 			else
 				versions = last;
 		}
-		if(*iter == 0)
-			return "All";
-		else if(*iter == CLIENT_VERSION_740)
-			last = "7.40";
-		else if(*iter == CLIENT_VERSION_760)
-			last = "7.60";
-		else if(*iter == CLIENT_VERSION_800)
-			last = "8.00";
-		else if(*iter == CLIENT_VERSION_810)
-			last = "8.10";
-		else if(*iter == CLIENT_VERSION_820)
-			last = "8.20 & 8.30";
-		else if(*iter == CLIENT_VERSION_840)
-			last = "8.40";
-		else if(*iter == CLIENT_VERSION_850)
-			last = "8.50";
-		else if(*iter == CLIENT_VERSION_854)
-			last = "8.54";
-		else if(*iter == CLIENT_VERSION_860)
-			last = "8.60";
+
+		last = (*iter)->getName();
 	}
+
 	if(last.size())
 	{
 		if(versions.size())

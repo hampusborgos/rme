@@ -453,7 +453,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
          ++version_iter)
     {
         const ClientVersion* version = *version_iter;
-		if (version->isHidden())
+		if (!version->isVisible())
 			continue;
         
         default_version_choice->Append(wxstr(version->getName()));
@@ -476,12 +476,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 		version_counter++;
     }
-    
-	subsizer->Add(use_760_houses_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Use houses for old maps")));
-	subsizer->Add(10, 1);
-	use_760_houses_chkbox->SetValue(settings.getInteger(Config::USE_760_HOUSES));
-	use_760_houses_chkbox->SetToolTip(wxT("When this option is checked, maps saved using version 7.6 and earlier will use modern housefiles (might not work with all servers)."));
-     
+
 	subsizer->Add(check_sigs_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Check file signatures")));
 	subsizer->Add(10, 1);
 	check_sigs_chkbox->SetValue(settings.getInteger(Config::CHECK_SIGNATURES));
@@ -634,7 +629,7 @@ void PreferencesWindow::Apply()
     {
         ClientVersion* version = *version_iter;
 
-		if (version->isHidden())
+		if (version->isVisible())
 			continue;
         
 		wxString dir = version_dir_pickers[version_counter]->GetPath();
@@ -647,7 +642,6 @@ void PreferencesWindow::Apply()
 
 		version_counter++;
     }
-	settings.setInteger(Config::USE_760_HOUSES, use_760_houses_chkbox->GetValue());
 	settings.setInteger(Config::CHECK_SIGNATURES, check_sigs_chkbox->GetValue());
 
 	// Make sure to reload client paths

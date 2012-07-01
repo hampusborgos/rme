@@ -40,9 +40,12 @@ Editor::Editor(CopyBuffer& copybuffer) :
 	wxString error;
 	wxArrayString warnings;
 	bool ok = true;
-	if(gui.GetCurrentVersionID() != ClientVersionID(settings.getInteger(Config::DEFAULT_CLIENT_VERSION))) {
+	ClientVersionID defaultVersion = ClientVersionID(settings.getInteger(Config::DEFAULT_CLIENT_VERSION));
+	if (defaultVersion == CLIENT_VERSION_NONE)
+		defaultVersion = ClientVersion::getLatestVersion()->getID();
+	if(gui.GetCurrentVersionID() != defaultVersion) {
 		if(gui.CloseAllEditors()) {
-			ok = gui.LoadVersion(ClientVersionID(settings.getInteger(Config::DEFAULT_CLIENT_VERSION)), error, warnings);
+			ok = gui.LoadVersion(defaultVersion, error, warnings);
 			gui.PopupDialog(wxT("Error"), error, wxOK);
 			gui.ListDialog(wxT("Warnings"), warnings);
 		} else {
@@ -54,7 +57,7 @@ Editor::Editor(CopyBuffer& copybuffer) :
 		throw std::runtime_error("Couldn't load client version");
 
 	MapVersion version;
-	version.otbm = gui.GetCurrentVersion().getMapVersionID();
+	version.otbm = gui.GetCurrentVersion().getPrefferedMapVersionID();
 	version.client = gui.GetCurrentVersionID();
 	map.convert(version);
 
@@ -114,16 +117,18 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 
 	if(success)
 	{
+		/* TODO
 		success = map.open(nstr(fn.GetFullPath()), true);
 		if(success && ver.client == CLIENT_VERSION_854_BAD)
 		{
-			int ok = gui.PopupDialog(wxT("Incorrect OTB"), wxT("This map has been saved with an incorrect OTB version, do you want to convert it to the newd OTB version?\n\nIf you are not sure, click Yes."), wxYES | wxNO);
+			int ok = gui.PopupDialog(wxT("Incorrect OTB"), wxT("This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes."), wxYES | wxNO);
 			
 			if(ok == wxID_YES){
 				ver.client = CLIENT_VERSION_854;
 				map.convert(ver);
 			}
 		}
+		*/
 	}
 
 	valid_state = success;

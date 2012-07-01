@@ -247,9 +247,13 @@ protected:
 	// Checks the items in the menus according to the settings (in config)
 	void LoadValues();
 protected:
+
 	MainFrame* frame;
 	wxMenuBar* menubar;
+
+	// Used so that calling Check on menu items don't trigger events (avoids infinite recursion)
 	bool checking_programmaticly;
+
 	std::map<MenuBar::ActionID, std::list<wxMenuItem*> > items;
 
 	// Hardcoded recent files

@@ -559,14 +559,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 
 	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MinorVersion) // OTB minor version
 	{
-		if(u32 == CLIENT_VERSION_811 && item_db.MinorVersion == CLIENT_VERSION_810)
-		{
-			// Hack for 8.10/8.11
-		}
-		else
-		{
-			warning(wxT("This editor needs an updated items.otb version"));
-		}
+		warning(wxT("This editor needs an updated items.otb version"));
 	}
 	version.client = (ClientVersionID)u32;
 
@@ -871,13 +864,10 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 	if(!f.isOk())
 		warning(wxstr(f.getErrorMessage()));
 
-	if(gui.GetCurrentVersionID() > CLIENT_VERSION_760 || settings.getInteger(Config::USE_760_HOUSES))
+	if(!loadHouses(map, identifier))
 	{
-		if(!loadHouses(map, identifier))
-		{
-			warning(wxT("Failed to load houses."));
-			map.housefile = nstr(identifier.GetName()) + "-house.xml";
-		}
+		warning(wxT("Failed to load houses."));
+		map.housefile = nstr(identifier.GetName()) + "-house.xml";
 	}
 	if(!loadSpawns(map, identifier))
 	{
@@ -1169,12 +1159,9 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 			FileName fn(wxstr(map.spawnfile));
 			f.addString(std::string((const char*)fn.GetFullName().mb_str(wxConvUTF8)));
 			
-			if(gui.GetCurrentVersionID() > CLIENT_VERSION_760 || settings.getInteger(Config::USE_760_HOUSES))
-			{
-				f.addU8(OTBM_ATTR_EXT_HOUSE_FILE);
-				fn.Assign(wxstr(map.housefile));
-				f.addString(std::string((const char*)fn.GetFullName().mb_str(wxConvUTF8)));
-			}
+			f.addU8(OTBM_ATTR_EXT_HOUSE_FILE);
+			fn.Assign(wxstr(map.housefile));
+			f.addString(std::string((const char*)fn.GetFullName().mb_str(wxConvUTF8)));
 
 			// Start writing tiles
 			uint tiles_saved = 0;
@@ -1328,15 +1315,13 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 	} f.endNode();
 
 	if(showdialog)
-		gui.SetLoadDone(100, wxT("Saving spawns..."));
+		gui.SetLoadDone(99, wxT("Saving spawns..."));
 	saveSpawns(map, identifier);
 
-	if(gui.GetCurrentVersionID() > CLIENT_VERSION_760 || settings.getInteger(Config::USE_760_HOUSES))
-	{
-		if(showdialog)
-			gui.SetLoadDone(100, wxT("Saving houses..."));
-		saveHouses(map, identifier);
-	}
+	if(showdialog)
+		gui.SetLoadDone(99, wxT("Saving houses..."));
+	saveHouses(map, identifier);
+
 	return true;
 }
 

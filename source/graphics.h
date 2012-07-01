@@ -74,6 +74,7 @@ public:
 	int getDrawHeight() const;
 	std::pair<int, int> getDrawOffset() const;
 	uint8_t getMiniMapColor() const;
+
 protected:
 	class Image;
 	class NormalImage;
@@ -81,6 +82,7 @@ protected:
 
 	wxMemoryDC* getDC(SpriteSize sz);
 	TemplateImage* getTemplateImage(int sprite_index, const Outfit& outfit);
+
 	class Image {
 	public:
 		Image();
@@ -106,7 +108,7 @@ protected:
 		virtual ~NormalImage();
 
 		// We use the sprite id as GL texture id
-		uint16_t id;
+		uint32_t id;
 
 		// This contains the pixel data
 		uint16_t size;
@@ -145,7 +147,7 @@ protected:
 		virtual void unloadGLTexture(GLuint ignored = 0);
 	};
 
-	unsigned short id;
+	uint32_t id;
 	wxMemoryDC* dc[SPRITE_SIZE_COUNT];
 
 public:

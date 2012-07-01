@@ -105,7 +105,6 @@ protected:
 	// Client info
 	wxChoice* default_version_choice;
 	std::vector<wxDirPickerCtrl*> version_dir_pickers;
-	wxCheckBox* use_760_houses_chkbox;
 	wxCheckBox* check_sigs_chkbox;
 	
 	// Create controls

@@ -45,6 +45,7 @@ std::string as_upper_str(const std::string& other);
 // Returns the value through the third argument, return value is true if the value is valid (and exists)
 bool readXMLInteger(xmlNodePtr node, const char* tag, int& value);
 bool readXMLFloat(xmlNodePtr node, const char* tag, float& value);
+bool readXMLBoolean(xmlNodePtr node, const char* tag, bool& value);
 bool readXMLString(xmlNodePtr node, const char* tag, std::string& value);
 // Aliases to the above
 inline bool readXMLValue(xmlNodePtr node, const char* tag, int& value) {return readXMLInteger(node, tag, value);}

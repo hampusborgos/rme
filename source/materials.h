@@ -21,6 +21,7 @@
 #define RME_MATERIALS_H_
 
 #include "tileset.h"
+#include "client_version.h"
 
 class Brush;
 class ItemType;
@@ -39,7 +40,7 @@ public:
 	std::string author;
 	std::string description;
 	bool for_all_versions;
-	std::vector<uint16_t> versionList;
+	ClientVersionList versionList;
 private:
 	MaterialsExtension(const MaterialsExtension&);
 	MaterialsExtension& operator=(const MaterialsExtension&);

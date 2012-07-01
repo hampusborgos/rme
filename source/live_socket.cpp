@@ -12,7 +12,7 @@
 #include "live_tab.h"
 #include "editor.h"
 
-LiveSocket::LiveSocket() : bn_reader(NULL, 0), map_version(MapVersion(MAP_OTBM_4, CLIENT_VERSION_860)), log(NULL) {
+LiveSocket::LiveSocket() : bn_reader(NULL, 0), map_version(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(NULL) {
 }
 
 LiveSocket::~LiveSocket() {

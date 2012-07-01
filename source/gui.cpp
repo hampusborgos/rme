@@ -42,19 +42,7 @@ GUI::GUI() :
 	search_result_window(NULL),
 	secondary_map(NULL),
 	doodad_buffer_map(NULL),
-
-	current_brush(NULL),
-	previous_brush(NULL),
-	brush_shape(BRUSHSHAPE_SQUARE),
-	brush_size(0),
-	brush_variation(0),
-
-	creature_spawntime(0),
-	use_custom_thickness(false),
-	custom_thickness_mod(0.0),
-	progressBar(NULL),
-	disabled_counter(0),
-
+	
 	house_brush(NULL),
 	house_exit_brush(NULL),
 	waypoint_brush(NULL),
@@ -66,12 +54,26 @@ GUI::GUI() :
 	quest_door_brush(NULL),
 	hatch_door_brush(NULL),
 	window_door_brush(NULL),
-	mode(SELECTION_MODE),
 
-	pasting(false)
+	OGLContext(NULL),
+	loaded_version(CLIENT_VERSION_NONE),
+	mode(SELECTION_MODE),
+	pasting(false),
+	hotkeys_enabled(false),
+
+	current_brush(NULL),
+	previous_brush(NULL),
+	brush_shape(BRUSHSHAPE_SQUARE),
+	brush_size(0),
+	brush_variation(0),
+
+	creature_spawntime(0),
+	use_custom_thickness(false),
+	custom_thickness_mod(0.0),
+	progressBar(NULL),
+	disabled_counter(0)
 {
 	doodad_buffer_map = newd BaseMap();
-	hotkeys_enabled = true;
 }
 
 GUI::~GUI()
@@ -282,7 +284,7 @@ bool GUI::AreHotkeysEnabled() const
 }
 
 ClientVersionID GUI::GetCurrentVersionID() const {
-	if(loaded_version) {
+	if(loaded_version != CLIENT_VERSION_NONE) {
 		return getLoadedVersion()->getID();
 	}
 	return CLIENT_VERSION_NONE;
