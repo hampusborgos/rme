@@ -299,7 +299,7 @@ void Application::FixVersionDiscrapencies()
 		settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, 0);
 	}
 
-	if(settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__) 
+	if(settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__ && ClientVersion::getLatestVersion() != NULL)
 	{
 		settings.setInteger(Config::DEFAULT_CLIENT_VERSION, ClientVersion::getLatestVersion()->getID());
 	}
