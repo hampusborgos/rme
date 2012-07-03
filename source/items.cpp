@@ -990,7 +990,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 				}
 
 				for(int id = fromid; id <= toid; ++id)
-					if(!loadItemFromGameXml(itemNode, intValue))
+					if(!loadItemFromGameXml(itemNode, id))
 						return false;
 			}
 

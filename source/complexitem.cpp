@@ -37,9 +37,15 @@ Container::~Container() {
 }
 
 Item* Container::deepCopy() const {
-	Container* copy = static_cast<Container*>(Item::deepCopy());
-	for(ItemVector::const_iterator it = contents.begin(); it != contents.end(); ++it) {
-		copy->contents.push_back((*it)->deepCopy());
+	Item* copy = Item::deepCopy();
+
+	// If the map has been converted, it might not be a container
+	Container* copy_container =dynamic_cast<Container*>(copy);
+	if (copy_container)
+	{
+		for(ItemVector::const_iterator it = contents.begin(); it != contents.end(); ++it) {
+			copy_container->contents.push_back((*it)->deepCopy());
+		}
 	}
 	return copy;
 }
@@ -114,7 +120,9 @@ Depot::~Depot() {
 }
 
 Item* Depot::deepCopy() const {
-	Depot* copy = static_cast<Depot*>(Item::deepCopy());
-	copy->depotid = depotid;
+	Item* copy = Item::deepCopy();
+	Depot* copy_depot = dynamic_cast<Depot*>(copy);
+	if (copy_depot)
+		copy_depot->depotid = depotid;
 	return copy;
 }
