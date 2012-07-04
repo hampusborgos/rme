@@ -1135,7 +1135,9 @@ bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
 					bool isNpc = (xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0);
 					if(!readXMLValue(creatureNode, "name", name))
 					{
-						warning(wxT("No name of monster spawn at %d:%d:%d"), spawnpos.x, spawnpos.y, spawnpos.z);
+						wxString err;
+						err <<  "Bad creature position data, discarding creature at spawn " << spawnpos.x << ":" << spawnpos.y << ":" << spawnpos.z << " due missing name.";
+						warnings.Add(err);
 						break;
 					}
 					if(name == "")
@@ -1146,13 +1148,18 @@ bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
 					posok = true;
 
 					if(readXMLInteger(creatureNode, "x", intVal))
-						creaturepos.x += intVal; else posok = false;
+						creaturepos.x += intVal;
+					else posok = false;
+
 					if(readXMLInteger(creatureNode, "y", intVal))
-						creaturepos.y += intVal; else posok = false;
+						creaturepos.y += intVal;
+					else posok = false;
 
 					if(posok == false)
 					{
-						warning(wxT("Bad creature position data, discarding creature \"%s\" spawn %d:%d:%d..."), name.c_str(), spawnpos.x, spawnpos.y, spawnpos.z);
+						wxString err;
+						err <<  "Bad creature position data, discarding creature \"" << name << "\" at spawn " << spawnpos.x << ":" << spawnpos.y << ":" << spawnpos.z << " due to invalid position.";
+						warnings.Add(err);
 						break;
 					}
 
@@ -1171,12 +1178,16 @@ bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
 
 					if(!creature_tile)
 					{
-						warning(wxT("Discarding creature \"%s\" at %d:%d:%d due to invalid position"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
+						wxString err;
+						err <<  "Discarding creature \"" << name << "\" at " << creaturepos.x << ":" << creaturepos.y << ":" << creaturepos.z << " due to invalid position.";
+						warnings.Add(err);
 						break;
 					}
 					if(creature_tile->creature)
 					{
-						warning(wxT("Duplicate creature \"%s\" at %d:%d:%d, discarding"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
+						wxString err;
+						err <<  "Duplicate creature \"" << name << "\" at " << creaturepos.x << ":" << creaturepos.y << ":" << creaturepos.z << " was discarded.";
+						warnings.Add(err);
 						break;
 					}
 					CreatureType* type = creature_db[name];
@@ -1271,7 +1282,7 @@ bool IOMapOTBM::loadHouses(Map& map, xmlDocPtr doc)
 			}
 			else
 			{
-				warning(wxT("House %s has no town! House was removed."), house->name.c_str());
+				warning(wxT("House %d has no town! House was removed."), house->id);
 				map.houses.removeHouse(house);
 			}
 		} while(false);
@@ -1368,7 +1379,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		MemoryNodeFileWriteHandle otbmWriter;
 		saveMap(map, otbmWriter);
 
-		gui.SetLoadDone(0, wxT("Compressing..."));
+		gui.SetLoadDone(100, wxT("Compressing..."));
 		tar.PutNextEntry("world" + sep + "map.otbm", wxDateTime::Now(), otbmWriter.getSize() + 4);
 		// Don't forget the OTBM identifier
 		dat.Write32(0);

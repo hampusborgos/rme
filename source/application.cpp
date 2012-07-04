@@ -212,7 +212,8 @@ bool Application::OnInit()
 #endif
 
 	FileName save_failed_file = gui.GetLocalDataDirectory();
-	save_failed_file.SetName(wxT("saving"));
+	save_failed_file.SetName(wxT(".saving.txt"));
+	std::string argh = nstr(save_failed_file.GetFullPath());
 	if(save_failed_file.FileExists())
 	{
 		std::ifstream f(nstr(save_failed_file.GetFullPath()).c_str(), std::ios::in);
@@ -243,11 +244,19 @@ bool Application::OnInit()
 			if(ret == wxID_YES)
 			{
 				// Recover if the user so wishes
+				std::remove(backup_otbm.substr(0, backup_otbm.size() - 1).c_str());
 				std::rename(backup_otbm.c_str(), backup_otbm.substr(0, backup_otbm.size() - 1).c_str());
+
 				if(backup_house.size())
+				{
+					std::remove(backup_house.substr(0, backup_house.size() - 1).c_str());
 					std::rename(backup_house.c_str(), backup_house.substr(0, backup_house.size() - 1).c_str());
+				}
 				if(backup_spawn.size())
+				{
+					std::remove(backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
 					std::rename(backup_spawn.c_str(), backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
+				}
 				
 				// Load the map
 				gui.LoadMap(wxstr(backup_otbm.substr(0, backup_otbm.size() - 1)));

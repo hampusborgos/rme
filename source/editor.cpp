@@ -238,7 +238,7 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 
 	// Save the map
 	{
-		std::string n = nstr(gui.GetLocalDataDirectory()) + "saving";
+		std::string n = nstr(gui.GetLocalDataDirectory()) + ".saving.txt";
 		std::ofstream f(n.c_str(), std::ios::trunc | std::ios::out);
 		f << 
 			backup_otbm << std::endl << 
@@ -294,7 +294,7 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		
 		// Remove temporary save runfile
 		{
-			std::string n = nstr(gui.GetLocalDataDirectory()) + "saving";
+			std::string n = nstr(gui.GetLocalDataDirectory()) + ".saving.txt";
 			std::remove(n.c_str());
 		}
 

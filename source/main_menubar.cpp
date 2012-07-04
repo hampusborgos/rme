@@ -34,8 +34,11 @@
 #include "live_client.h"
 #include "live_server.h"
 
-#define MAP_LOAD_FILE_WILDCARD wxT("OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz")
-#define MAP_SAVE_FILE_WILDCARD wxT("OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz")
+#define MAP_LOAD_FILE_WILDCARD_OTGZ wxT("OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz")
+#define MAP_SAVE_FILE_WILDCARD_OTGZ wxT("OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz")
+
+#define MAP_LOAD_FILE_WILDCARD wxT("OpenTibia Binary Map (*.otbm)|*.otbm")
+#define MAP_SAVE_FILE_WILDCARD wxT("OpenTibia Binary Map (*.otbm)|*.otbm")
 
 BEGIN_EVENT_TABLE(MainMenuBar, wxEvtHandler)
 END_EVENT_TABLE()
@@ -605,7 +608,8 @@ void MainMenuBar::OnOpenRecent(wxCommandEvent& event)
 
 void MainMenuBar::OnOpen(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""), wxT(""), MAP_LOAD_FILE_WILDCARD, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxString wildcard = (settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_LOAD_FILE_WILDCARD_OTGZ : MAP_LOAD_FILE_WILDCARD);
+	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""), wxT(""), wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 	int ok = filedlg.ShowModal();
 
@@ -629,7 +633,8 @@ void MainMenuBar::OnSave(wxCommandEvent& WXUNUSED(event))
 	} 
 	else 
 	{
-		wxFileDialog file(frame, wxT("Save..."), wxT(""), wxT(""), MAP_SAVE_FILE_WILDCARD, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		wxString wildcard = (settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
+		wxFileDialog file(frame, wxT("Save..."), wxT(""), wxT(""), wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		int ok = file.ShowModal();
 
 		if(ok == wxID_OK)
@@ -641,8 +646,9 @@ void MainMenuBar::OnSaveAs(wxCommandEvent& WXUNUSED(event))
 {
 	if(!gui.IsEditorOpen())
 		return;
-
-	wxFileDialog file(frame, wxT("Save As..."), wxT(""), wxT(""), MAP_SAVE_FILE_WILDCARD, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	
+	wxString wildcard = (settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
+	wxFileDialog file(frame, wxT("Save As..."), wxT(""), wxT(""), wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	int ok = file.ShowModal();
 
 	if(ok == wxID_OK) 

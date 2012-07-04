@@ -234,6 +234,7 @@ void Settings::IO(IOMode mode) {
 	Int(USE_UPDATER, -1);
 	Int(ONLY_ONE_INSTANCE, 1);
 	Int(USE_OTBM_4_FOR_ALL_MAPS, 0);
+	Int(USE_OTGZ, 0);
 
 	section("Graphics");
 	Int(TEXTURE_MANAGEMENT, 1);
