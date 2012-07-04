@@ -467,7 +467,7 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 		{
 			wxString entryName = entry->GetName(wxPATH_UNIX);
 
-			if (entryName == wxT("map/map.otbm"))
+			if (entryName == wxT("world/map.otbm"))
 			{
 				// Read the OTBM header into temporary memory
 				uint8_t buffer[8096];
@@ -554,7 +554,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 		{
 			wxString entryName = entry->GetName(wxPATH_UNIX);
 
-			if (entryName == wxT("map/map.otbm"))
+			if (entryName == wxT("world/map.otbm"))
 			{
 				// Read the entire OTBM file into a memory region
 				size_t otbm_size = tar.GetSize();
@@ -587,7 +587,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 				otbm_loaded = true;
 			}
-			else if (entryName == wxT("map/houses.xml"))
+			else if (entryName == wxT("world/houses.xml"))
 			{
 				house_buffer_size = tar.GetSize();
 				house_buffer.reset(new uint8_t[house_buffer_size]);
@@ -602,7 +602,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 					warning(wxT("Failed to decompress houses."));
 				}
 			}
-			else if (entryName == wxT("map/spawns.xml"))
+			else if (entryName == wxT("world/spawns.xml"))
 			{
 				spawn_buffer_size = tar.GetSize();
 				spawn_buffer.reset(new uint8_t[spawn_buffer_size]);
@@ -1292,8 +1292,11 @@ int writeXmlToMemoryWriteCallback(void* context, const char* buffer, int len)
 {
 	xmlToMemoryContext* ctx = (xmlToMemoryContext*)context;
 	if (ctx->position + len > ctx->length)
+	{
 		// Quite aggressive growth, but we don't want too many moves here
-		realloc(ctx->data, ctx->length * 4);
+		ctx->data = (uint8_t*)realloc(ctx->data, ctx->length * 4);
+		ctx->length *= 4;
+	}
 	memcpy(ctx->data + ctx->position, buffer, len);
 	ctx->position += len;
 	return len;
@@ -1336,7 +1339,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			xmlSaveClose(xmlContext);
 
 			// Write to the output file
-			tar.PutNextEntry("map" + sep + "spawns.xml", wxDateTime::Now(), xmlSaveData.position);
+			tar.PutNextEntry("world" + sep + "spawns.xml", wxDateTime::Now(), xmlSaveData.position);
 			dat.Write8(xmlSaveData.data, xmlSaveData.position);
 
 			xmlFreeDoc(spawnDoc);
@@ -1352,7 +1355,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			xmlSaveClose(xmlContext);
 
 			// Write to the output file
-			tar.PutNextEntry("map" + sep + "houses.xml", wxDateTime::Now(), xmlSaveData.position);
+			tar.PutNextEntry("world" + sep + "houses.xml", wxDateTime::Now(), xmlSaveData.position);
 			dat.Write8(xmlSaveData.data, xmlSaveData.position);
 
 			xmlFreeDoc(houseDoc);
@@ -1366,7 +1369,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		saveMap(map, otbmWriter);
 
 		gui.SetLoadDone(0, wxT("Compressing..."));
-		tar.PutNextEntry("map" + sep + "map.otbm", wxDateTime::Now(), otbmWriter.getSize() + 4);
+		tar.PutNextEntry("world" + sep + "map.otbm", wxDateTime::Now(), otbmWriter.getSize() + 4);
 		// Don't forget the OTBM identifier
 		dat.Write32(0);
 		dat.Write8(otbmWriter.getMemory(), otbmWriter.getSize());
