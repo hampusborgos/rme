@@ -26,7 +26,6 @@ public:
 	Editor(CopyBuffer& copybuffer);
 	~Editor();
 protected:
-	bool valid_state;
 	
 	// Live Server
 	LiveServer* live_server;
@@ -64,7 +63,6 @@ public: // Functions
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 
-	bool valid() const {return valid_state;}
 	wxString getLoaderError() const {return map.getError();}
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);

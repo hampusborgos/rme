@@ -521,21 +521,13 @@ bool GUI::LoadMap(FileName name)
 	MapTab* edit = newd MapTab(tabbook, ed);
 	edit->OnSwitchEditorMode(mode);
 
-	if(edit->GetEditor()->valid())
-	{
-		root->AddRecentFile(name);
+	root->AddRecentFile(name);
 		
-		edit->GetView()->FitToMap();
-		UpdateTitle();
-		ListDialog(wxT("Map loader errors"), edit->GetMap()->getWarnings());
-		root->DoQueryImportCreatures();
-	}
-	else
-	{
-		wxMessageBox(wxT("Error loading map!\n") + edit->GetEditor()->getLoaderError(), wxT("Error"), wxOK | wxICON_INFORMATION, root);
-		tabbook->DeleteTab(tabbook->GetTabIndex(edit));
-		return false;
-	}
+	edit->GetView()->FitToMap();
+	UpdateTitle();
+	ListDialog(wxT("Map loader errors"), edit->GetMap()->getWarnings());
+	root->DoQueryImportCreatures();
+
 	FitViewToMap(edit);
 	root->UpdateMenubar();
 	return true;

@@ -29,7 +29,6 @@
 #include "live_action.h"
 
 Editor::Editor(CopyBuffer& copybuffer) :
-	valid_state(true),
 	live_client(NULL),
 	live_server(NULL),
 	actionQueue(newd ActionQueue(*this)),
@@ -77,7 +76,6 @@ Editor::Editor(CopyBuffer& copybuffer) :
 }
 
 Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
-	valid_state(true),
 	live_client(NULL),
 	live_server(NULL),
 	actionQueue(newd ActionQueue(*this)),
@@ -88,8 +86,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 	MapVersion ver;
 	if(!IOMapOTBM::getVersionInfo(fn, ver)) {
 		// gui.PopupDialog(wxT("Error"), wxT("Could not open file \"") + fn.GetFullPath() + wxT("\"."), wxOK);
-		valid_state = false;
-		return;
+		throw std::runtime_error("Could not open file \"" + nstr(fn.GetFullPath()) + "\".\nThis is not a valid OTBM file or it does not exist.");
 	}
 
 	/*
@@ -133,12 +130,9 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		}
 		*/
 	}
-
-	valid_state = success;
 }
 
 Editor::Editor(CopyBuffer& copybuffer, LiveClient* client) :
-	valid_state(true),
 	live_server(NULL),
 	live_client(client),
 	actionQueue(newd NetworkedActionQueue(*this)),
