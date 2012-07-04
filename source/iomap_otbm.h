@@ -132,15 +132,17 @@ public:
 protected:
 	static bool getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver);
 
-	virtual bool loadMap(Map& map, NodeFileReadHandle& handle, const FileName& identifier);
+	virtual bool loadMap(Map& map, NodeFileReadHandle& handle);
 	bool loadSpawns(Map& map, const FileName& dir);
-	bool loadHouses(Map& map, const FileName& dir);
 	bool loadSpawns(Map& map, xmlDocPtr doc);
+	bool loadHouses(Map& map, const FileName& dir);
 	bool loadHouses(Map& map, xmlDocPtr doc);
 
-	virtual bool saveMap(Map& map, NodeFileWriteHandle& handle, const FileName& identifier);
+	virtual bool saveMap(Map& map, NodeFileWriteHandle& handle);
 	bool saveSpawns(Map& map, const FileName& dir);
+	xmlDocPtr saveSpawns(Map& map);
 	bool saveHouses(Map& map, const FileName& dir);
+	xmlDocPtr saveHouses(Map& map);
 };
 
 #endif

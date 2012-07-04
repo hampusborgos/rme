@@ -238,7 +238,8 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		bool success = mapsaver.saveMap(map, fn);
 		if (showdialog)
 			gui.DestroyLoadBar();
-		if(!success) {
+		if(!success)
+		{
 			gui.PopupDialog(wxT("Error"), wxT("Could not save, unable to open target for writing."), wxOK);
 			
 			// Must rename temporary backup files

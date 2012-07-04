@@ -76,6 +76,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 
 // The actual locations might be libxml2/libxml/xx.h
 #include <libxml/xmlmemory.h>
+#include <libxml/xmlsave.h>
 #include <libxml/parser.h>
 
 // This has annoyed me one time too many

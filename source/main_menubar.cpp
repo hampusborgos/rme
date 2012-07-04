@@ -34,6 +34,9 @@
 #include "live_client.h"
 #include "live_server.h"
 
+#define MAP_LOAD_FILE_WILDCARD wxT("OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz")
+#define MAP_SAVE_FILE_WILDCARD wxT("OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz")
+
 BEGIN_EVENT_TABLE(MainMenuBar, wxEvtHandler)
 END_EVENT_TABLE()
 
@@ -602,7 +605,7 @@ void MainMenuBar::OnOpenRecent(wxCommandEvent& event)
 
 void MainMenuBar::OnOpen(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""),wxT(""),wxT("*.otbm|*.otgz"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""), wxT(""), MAP_LOAD_FILE_WILDCARD, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 	int ok = filedlg.ShowModal();
 
@@ -626,7 +629,7 @@ void MainMenuBar::OnSave(wxCommandEvent& WXUNUSED(event))
 	} 
 	else 
 	{
-		wxFileDialog file(frame, wxT("Save..."), wxT(""),wxT(""),wxT("*.otbm"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+		wxFileDialog file(frame, wxT("Save..."), wxT(""), wxT(""), MAP_SAVE_FILE_WILDCARD, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		int ok = file.ShowModal();
 
 		if(ok == wxID_OK)
@@ -639,7 +642,7 @@ void MainMenuBar::OnSaveAs(wxCommandEvent& WXUNUSED(event))
 	if(!gui.IsEditorOpen())
 		return;
 
-	wxFileDialog file(frame, wxT("Save As..."), wxT(""),wxT(""),wxT("*.otbm"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+	wxFileDialog file(frame, wxT("Save As..."), wxT(""), wxT(""), MAP_SAVE_FILE_WILDCARD, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	int ok = file.ShowModal();
 
 	if(ok == wxID_OK) 

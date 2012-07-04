@@ -22,6 +22,8 @@
 #include <wx/wfstream.h>
 #include <wx/tarstrm.h>
 #include <wx/zstream.h>
+#include <wx/mstream.h>
+#include <wx/datstrm.h>
 
 #include "settings.h"
 #include "gui.h" // Loadbar
@@ -577,7 +579,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 					new MemoryNodeFileReadHandle(otbm_buffer.get() + 4, tar.LastRead() - 4));
 
 				// Read the version info
-				if (!loadMap(map, *f.get(), filename))
+				if (!loadMap(map, *f.get()))
 				{
 					error(wxT("Could not load OTBM file inside archive"));
 					return false;
@@ -663,7 +665,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 			return false;
 		}
 
-		if (!loadMap(map, f, filename))
+		if (!loadMap(map, f))
 			return false;
 		
 		// Read auxilliary files
@@ -682,7 +684,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 	}
 }
 
-bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identifier)
+bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 {
 	BinaryNode* root = f.getRootNode();
 	if(!root)
@@ -1279,22 +1281,125 @@ bool IOMapOTBM::loadHouses(Map& map, xmlDocPtr doc)
 	return true;
 }
 
-bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
+struct xmlToMemoryContext
 {
-	DiskNodeFileWriteHandle f(std::string(identifier.GetFullPath().mb_str(wxConvUTF8)));
-	
-	if(f.isOk() == false)
-	{
-		error(wxT("Can not open file %s for writing"), (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
-		return false;
-	}
+	uint8_t* data;
+	size_t position;
+	size_t length;
+};
 
-	bool ret = saveMap(map, f, identifier);
-
-	return ret;
+int writeXmlToMemoryWriteCallback(void* context, const char* buffer, int len)
+{
+	xmlToMemoryContext* ctx = (xmlToMemoryContext*)context;
+	if (ctx->position + len > ctx->length)
+		// Quite aggressive growth, but we don't want too many moves here
+		realloc(ctx->data, ctx->length * 4);
+	memcpy(ctx->data + ctx->position, buffer, len);
+	ctx->position += len;
+	return len;
 }
 
-bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identifier)
+int writeXmlToMemoryCloseCallback(void* context)
+{
+	return 0;
+}
+
+bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
+{
+	if (identifier.GetExt() == "otgz")
+	{
+		wxFFileOutputStream out(identifier.GetFullPath());
+		wxZlibOutputStream gz(out);
+		wxTarOutputStream tar(gz);
+		wxDataOutputStream dat(tar);
+
+		if (!dat.IsOk())
+			return false;
+
+		wxString sep(wxFileName::GetPathSeparator());
+
+		// Start out at 100kb memory for the XML files
+		xmlToMemoryContext xmlSaveData = {
+			(uint8_t*)malloc(1024*100),
+			0,
+			1024*100
+		};
+
+
+		gui.SetLoadDone(0, wxT("Saving spawns..."));
+		if(xmlDocPtr spawnDoc = saveSpawns(map))
+		{
+			// Write the data
+			xmlSaveData.position = 0;
+			xmlSaveCtxt* xmlContext = xmlSaveToIO(writeXmlToMemoryWriteCallback, writeXmlToMemoryCloseCallback, &xmlSaveData, "UTF-8", XML_SAVE_FORMAT);
+			xmlSaveDoc(xmlContext, spawnDoc);
+			xmlSaveClose(xmlContext);
+
+			// Write to the output file
+			tar.PutNextEntry("map" + sep + "spawns.xml", wxDateTime::Now(), xmlSaveData.position);
+			dat.Write8(xmlSaveData.data, xmlSaveData.position);
+
+			xmlFreeDoc(spawnDoc);
+		}
+		
+		gui.SetLoadDone(0, wxT("Saving houses..."));
+		if (xmlDocPtr houseDoc = saveHouses(map))
+		{
+			// Write the data
+			xmlSaveData.position = 0;
+			xmlSaveCtxt* xmlContext = xmlSaveToIO(writeXmlToMemoryWriteCallback, writeXmlToMemoryCloseCallback, &xmlSaveData, "UTF-8", XML_SAVE_FORMAT);
+			xmlSaveDoc(xmlContext, houseDoc);
+			xmlSaveClose(xmlContext);
+
+			// Write to the output file
+			tar.PutNextEntry("map" + sep + "houses.xml", wxDateTime::Now(), xmlSaveData.position);
+			dat.Write8(xmlSaveData.data, xmlSaveData.position);
+
+			xmlFreeDoc(houseDoc);
+		}
+		
+		// Free the xml context
+		free(xmlSaveData.data);
+
+		gui.SetLoadDone(0, wxT("Saving OTBM map..."));
+		MemoryNodeFileWriteHandle otbmWriter;
+		saveMap(map, otbmWriter);
+
+		gui.SetLoadDone(0, wxT("Compressing..."));
+		tar.PutNextEntry("map" + sep + "map.otbm", wxDateTime::Now(), otbmWriter.getSize() + 4);
+		// Don't forget the OTBM identifier
+		dat.Write32(0);
+		dat.Write8(otbmWriter.getMemory(), otbmWriter.getSize());
+
+		return true;
+	}
+	else
+	{
+		DiskNodeFileWriteHandle f(std::string(identifier.GetFullPath().mb_str(wxConvUTF8)));
+	
+		if(f.isOk() == false)
+		{
+			error(wxT("Can not open file %s for writing"), (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
+			return false;
+		}
+
+		if (!saveMap(map, f))
+			return false;
+
+		gui.SetLoadDone(99, wxT("Saving spawns..."));
+		saveSpawns(map, identifier);
+
+		gui.SetLoadDone(99, wxT("Saving houses..."));
+		saveHouses(map, identifier);
+
+		return true;
+	}
+
+	// No way to save with this extension
+	return false;
+}
+
+bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 {
 	/* STOP!
 	 * Before you even think about modifying this, please reconsider.
@@ -1485,25 +1590,32 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 		} f.endNode();
 	} f.endNode();
 
-	gui.SetLoadDone(99, wxT("Saving spawns..."));
-	saveSpawns(map, identifier);
-
-	gui.SetLoadDone(99, wxT("Saving houses..."));
-	saveHouses(map, identifier);
-
 	return true;
 }
 
 bool IOMapOTBM::saveSpawns(Map& map, const FileName& dir)
 {
-	xmlNodePtr creature_child, spawn_child, root;
-
 	wxString wpath = dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME);
 	std::string filename = std::string(wpath.mb_str(wxConvUTF8)) + map.spawnfile;
 
+	// Create the XML file
+	if (xmlDocPtr doc = saveSpawns(map))
+	{
+		// Store it on disk
+		bool result = xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
+		xmlFreeDoc(doc);
+		return result;
+	}
+
+	return false;
+}
+
+xmlDocPtr IOMapOTBM::saveSpawns(Map& map)
+{
 	xmlDocPtr doc = xmlNewDoc((const xmlChar*)"1.0");
 	doc->children = xmlNewDocNode(doc, NULL, (const xmlChar*)"spawns", NULL);
-	root = doc->children;
+
+	xmlNodePtr root = doc->children;
 
 	Spawns& spawns = map.spawns;
 	CreatureList creature_list;
@@ -1515,7 +1627,7 @@ bool IOMapOTBM::saveSpawns(Map& map, const FileName& dir)
 		ASSERT(tile);
 		Spawn* spawn = tile->spawn;
 		ASSERT(spawn);
-		spawn_child = xmlNewNode(NULL,(const xmlChar*)"spawn");
+		xmlNodePtr spawn_child = xmlNewNode(NULL,(const xmlChar*)"spawn");
 
 		xmlSetProp(spawn_child, (const xmlChar*)"centerx", (const xmlChar*)i2s(iter->x).c_str());
 		xmlSetProp(spawn_child, (const xmlChar*)"centery", (const xmlChar*)i2s(iter->y).c_str());
@@ -1532,7 +1644,7 @@ bool IOMapOTBM::saveSpawns(Map& map, const FileName& dir)
 					Creature* c = creature_tile->creature;
 					if(c && c->isSaved() == false)
 					{
-						creature_child = xmlNewNode(NULL,(const xmlChar*)(c->isNpc()? "npc" : "monster"));
+						xmlNodePtr creature_child = xmlNewNode(NULL,(const xmlChar*)(c->isNpc()? "npc" : "monster"));
 
 						xmlSetProp(creature_child, (const xmlChar*)"name", (const xmlChar*)c->getName().c_str());
 						xmlSetProp(creature_child, (const xmlChar*)"x", (const xmlChar*)i2s(x).c_str());
@@ -1558,31 +1670,40 @@ bool IOMapOTBM::saveSpawns(Map& map, const FileName& dir)
 	{
 		(*iter)->reset();
 	}
-	
-	bool result = xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
-	xmlFreeDoc(doc);
 
-	return result;
+	return doc;
 }
 
 bool IOMapOTBM::saveHouses(Map& map, const FileName& dir)
 {
-	xmlNodePtr child, root;
-
 	wxString wpath = dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME);
 	std::string filename = std::string(wpath.mb_str(wxConvUTF8)) + map.housefile;
 
+	// Create the XML file
+	if (xmlDocPtr doc = saveHouses(map))
+	{
+		// Store it on disk
+		bool result = xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
+		xmlFreeDoc(doc);
+		return result;
+	}
+
+	return false;
+}
+
+xmlDocPtr IOMapOTBM::saveHouses(Map& map)
+{
 	xmlDocPtr doc = xmlNewDoc((const xmlChar*)"1.0");
 	doc->children = xmlNewDocNode(doc, NULL, (const xmlChar*)"houses", NULL);
-	root = doc->children;
 
+	xmlNodePtr root = doc->children;
 
 	for(HouseMap::const_iterator house_iter = map.houses.begin();
 			house_iter != map.houses.end();
 			++house_iter)
 	{
 		const House* house = house_iter->second;
-		child = xmlNewNode(NULL,(const xmlChar*)"house");
+		xmlNodePtr child = xmlNewNode(NULL,(const xmlChar*)"house");
 
 		xmlSetProp(child, (const xmlChar*)"name", (const xmlChar*)house->name.c_str());
 		xmlSetProp(child, (const xmlChar*)"houseid", (const xmlChar*)i2s(house->id).c_str());
@@ -1601,8 +1722,5 @@ bool IOMapOTBM::saveHouses(Map& map, const FileName& dir)
 		xmlAddChild(root, child);
 	}
 
-	bool result = xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
-	xmlFreeDoc(doc);
-
-	return result;
+	return doc;
 }
