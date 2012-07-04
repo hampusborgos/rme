@@ -163,18 +163,23 @@ void Editor::addAction(Action* action, int stacking_delay ) {
 }
 
 void Editor::saveMap(FileName filename, bool showdialog) {
-	wxString w = filename.GetFullPath();
-	std::string savefile = (const char*)w.mb_str(wxConvUTF8);
-	if(savefile == "") {
+	std::string savefile = filename.GetFullPath().mb_str(wxConvUTF8);
+	bool save_as = false;
+	bool save_otgz = false;
+
+	if(savefile.empty())
+	{
 		savefile = map.filename;
+		
+		FileName c1(wxstr(savefile));
+		FileName c2(wxstr(map.filename));
+		save_as = c1 != c2;
 	}
 
-	FileName c1(wxstr(savefile));
-	FileName c2(wxstr(map.filename));
-	bool save_as = c1 != c2;
 
-
-	if(map.unnamed) {
+	// If not named yet, propagate the file name to the auxilliary files
+	if(map.unnamed)
+	{
 		FileName _name(filename);
 		_name.SetExt(wxT("xml"));
 
@@ -182,6 +187,8 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		map.spawnfile = nstr(_name.GetFullName());
 		_name.SetName(filename.GetName() + wxT("-house"));
 		map.housefile = nstr(_name.GetFullName());
+
+		map.unnamed = false;
 	}
 	
 	// File object to convert between local paths etc.
@@ -193,27 +200,40 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 	//converter.Assign(wxstr(savefile));
 	std::string backup_otbm, backup_house, backup_spawn;
 
-	if(converter.FileExists())
+	if (converter.GetExt() == "otgz")
 	{
-		backup_otbm = map_path + nstr(converter.GetName()) + ".otbm~";
-		std::remove(backup_otbm.c_str());
-		std::rename(savefile.c_str(), backup_otbm.c_str());
+		save_otgz = true;
+		if(converter.FileExists())
+		{
+			backup_otbm = map_path + nstr(converter.GetName()) + ".otgz~";
+			std::remove(backup_otbm.c_str());
+			std::rename(savefile.c_str(), backup_otbm.c_str());
+		}
 	}
-
-	converter.SetFullName(wxstr(map.housefile));
-	if(converter.FileExists())
+	else
 	{
-		backup_house = map_path + nstr(converter.GetName()) + ".xml~";
-		std::remove(backup_house.c_str());
-		std::rename((map_path + map.housefile).c_str(), backup_house.c_str());
-	}
+		if(converter.FileExists())
+		{
+			backup_otbm = map_path + nstr(converter.GetName()) + ".otbm~";
+			std::remove(backup_otbm.c_str());
+			std::rename(savefile.c_str(), backup_otbm.c_str());
+		}
 
-	converter.SetFullName(wxstr(map.spawnfile));
-	if(converter.FileExists())
-	{
-		backup_spawn = map_path + nstr(converter.GetName()) + ".xml~";
-		std::remove(backup_spawn.c_str());
-		std::rename((map_path + map.spawnfile).c_str(), backup_spawn.c_str());
+		converter.SetFullName(wxstr(map.housefile));
+		if(converter.FileExists())
+		{
+			backup_house = map_path + nstr(converter.GetName()) + ".xml~";
+			std::remove(backup_house.c_str());
+			std::rename((map_path + map.housefile).c_str(), backup_house.c_str());
+		}
+
+		converter.SetFullName(wxstr(map.spawnfile));
+		if(converter.FileExists())
+		{
+			backup_spawn = map_path + nstr(converter.GetName()) + ".xml~";
+			std::remove(backup_spawn.c_str());
+			std::rename((map_path + map.spawnfile).c_str(), backup_spawn.c_str());
+		}
 	}
 
 	// Save the map
@@ -227,27 +247,31 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 	}
 
 	{
-		IOMapOTBM mapsaver(map.getVersion());
 
+		// Set up the Map paths
 		wxFileName fn = wxstr(savefile);
 		map.filename = fn.GetFullPath().mb_str(wxConvUTF8);
 		map.name = fn.GetFullName().mb_str(wxConvUTF8);
 
 		if (showdialog)
 			gui.CreateLoadBar("Saving OTBM map...");
+		
+		// Perform the actual save
+		IOMapOTBM mapsaver(map.getVersion());
 		bool success = mapsaver.saveMap(map, fn);
+
 		if (showdialog)
 			gui.DestroyLoadBar();
+
+		// Check for errors...
 		if(!success)
 		{
-			gui.PopupDialog(wxT("Error"), wxT("Could not save, unable to open target for writing."), wxOK);
-			
-			// Must rename temporary backup files
+			// Rename the temporary backup files back to their previous names
 			if(!backup_otbm.empty())
 			{
 				converter.SetFullName(wxstr(savefile));
 				std::string otbm_filename = map_path + nstr(converter.GetName());
-				std::rename(backup_otbm.c_str(), std::string(otbm_filename + ".otbm").c_str());
+				std::rename(backup_otbm.c_str(), std::string(otbm_filename + (save_otgz ? ".otgz" : ".otbm")).c_str());
 			}
 
 			if(!backup_house.empty())
@@ -263,6 +287,9 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 				std::string spawn_filename = map_path + nstr(converter.GetName());
 				std::rename(backup_spawn.c_str(), std::string(spawn_filename + ".xml").c_str());
 			}
+
+			// Display the error
+			gui.PopupDialog(wxT("Error"), wxT("Could not save, unable to open target for writing."), wxOK);
 		}
 		
 		// Remove temporary save runfile
@@ -300,7 +327,7 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		{
 			converter.SetFullName(wxstr(savefile));
 			std::string otbm_filename = map_path + nstr(converter.GetName());
-			std::rename(backup_otbm.c_str(), std::string(otbm_filename + "." + date.str() + ".otbm").c_str());
+			std::rename(backup_otbm.c_str(), std::string(otbm_filename + "." + date.str() + (save_otgz ? ".otgz" : ".otbm")).c_str());
 		}
 
 		if(!backup_house.empty())
@@ -328,17 +355,21 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 	map.clearChanges();
 }
 
-bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset) {
+bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset)
+{
 	return false;
 }
 
-bool Editor::exportMiniMap(FileName filename, int floor /*= 7*/, bool displaydialog) {
+bool Editor::exportMiniMap(FileName filename, int floor /*= 7*/, bool displaydialog)
+{
 	return map.exportMinimap(filename, floor, displaydialog);
 	return false;
 }
 
 
-bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type) {selection.clear();
+bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type)
+{
+	selection.clear();
 	actionQueue->clear();
 
 	Map imported_map;

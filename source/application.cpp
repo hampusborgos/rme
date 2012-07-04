@@ -228,7 +228,7 @@ bool Application::OnInit()
 		std::remove(nstr(save_failed_file.GetFullPath()).c_str());
 
 		// Query file retrieval if possible
-		if(backup_otbm.empty() == false)
+		if(!backup_otbm.empty())
 		{
 			int ret = gui.PopupDialog(
 				wxT("Editor Crashed"),
