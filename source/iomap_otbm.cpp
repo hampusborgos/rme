@@ -453,10 +453,11 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
-	if (filename.GetExt() == wxT("tar"))
+	if (filename.GetExt() == wxT("otgz"))
 	{
 		wxFFileInputStream in(filename.GetFullPath());
-		wxTarInputStream tar(in);
+		wxZlibInputStream gz(in);
+		wxTarInputStream tar(gz);
 
 		// Loop over the archive entries until we find the otbm file
 		std::shared_ptr<wxArchiveEntry> entry(tar.GetNextEntry());
@@ -529,10 +530,11 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 
 bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
-	if (filename.GetExt() == wxT("tar"))
+	if (filename.GetExt() == wxT("otgz"))
 	{
 		wxFFileInputStream in(filename.GetFullPath());
-		wxTarInputStream tar(in);
+		wxZlibInputStream gz(in);
+		wxTarInputStream tar(gz);
 
 		// Memory buffers for the houses & spawns
 		std::shared_ptr<uint8_t> house_buffer;

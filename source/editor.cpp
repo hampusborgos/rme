@@ -119,7 +119,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 
 	if(success)
 	{
-		ScopedLoadingBar LoadingBar("Loading map");
+		ScopedLoadingBar LoadingBar("Loading OTBM map...");
 		success = map.open(nstr(fn.GetFullPath()));
 		/* TODO
 		if(success && ver.client == CLIENT_VERSION_854_BAD)
