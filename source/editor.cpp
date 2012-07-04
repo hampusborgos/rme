@@ -85,9 +85,9 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 	copybuffer(copybuffer),
 	replace_brush(NULL)
 {
-	MapVersion ver = IOMapOTBM::getVersionInfo(fn);
-	if(ver.client == CLIENT_VERSION_NONE) {
-		gui.PopupDialog(wxT("Error"), wxT("Could not open file \"") + fn.GetFullPath() + wxT("\"."), wxOK);
+	MapVersion ver;
+	if(!IOMapOTBM::getVersionInfo(fn, ver)) {
+		// gui.PopupDialog(wxT("Error"), wxT("Could not open file \"") + fn.GetFullPath() + wxT("\"."), wxOK);
 		valid_state = false;
 		return;
 	}
@@ -108,8 +108,10 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		wxArrayString warnings;
 		if(gui.CloseAllEditors()) {
 			success = gui.LoadVersion(ver.client, error, warnings);
-			gui.PopupDialog(wxT("Error"), error, wxOK);
-			gui.ListDialog(wxT("Warnings"), warnings);
+			if (!success)
+				gui.PopupDialog(wxT("Error"), error, wxOK);
+			else
+				gui.ListDialog(wxT("Warnings"), warnings);
 		} else {
 			throw std::runtime_error("All maps of different versions were not closed.");
 		}
@@ -117,7 +119,8 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 
 	if(success)
 	{
-		success = map.open(nstr(fn.GetFullPath()), true);
+		ScopedLoadingBar LoadingBar("Loading map");
+		success = map.open(nstr(fn.GetFullPath()));
 		/* TODO
 		if(success && ver.client == CLIENT_VERSION_854_BAD)
 		{
@@ -236,7 +239,11 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		map.filename = fn.GetFullPath().mb_str(wxConvUTF8);
 		map.name = fn.GetFullName().mb_str(wxConvUTF8);
 
-		bool success = mapsaver.saveMap(map, fn, showdialog);
+		if (showdialog)
+			gui.CreateLoadBar("Saving OTBM map...");
+		bool success = mapsaver.saveMap(map, fn);
+		if (showdialog)
+			gui.DestroyLoadBar();
 		if(!success) {
 			gui.PopupDialog(wxT("Error"), wxT("Could not save, unable to open target for writing."), wxOK);
 			
@@ -340,7 +347,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	actionQueue->clear();
 
 	Map imported_map;
-	bool loaded = imported_map.open(nstr(filename.GetFullPath()), true);
+	bool loaded = imported_map.open(nstr(filename.GetFullPath()));
 
 	if(!loaded) {
 		gui.PopupDialog(wxT("Error"), wxT("Error loading map!\n") + imported_map.getError(), wxOK | wxICON_INFORMATION);

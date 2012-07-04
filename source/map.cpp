@@ -44,7 +44,7 @@ Map::~Map()
 	// ...
 }
 
-bool Map::open(const std::string file, bool showdialog)
+bool Map::open(const std::string file)
 {
 	if(file == filename)
 		return true; // Do not reopen ourselves!
@@ -53,15 +53,17 @@ bool Map::open(const std::string file, bool showdialog)
 
 	IOMapOTBM maploader(getVersion());
 
-	bool success = maploader.loadMap(*this, wxstr(file), showdialog);
+	bool success = maploader.loadMap(*this, wxstr(file));
 	
 	mapVersion = maploader.version;
 
 	warnings = maploader.getWarnings();
-	error = maploader.getError();
-
+	
 	if(!success)
+	{
+		error = maploader.getError();
 		return false;
+	}
 	
 	has_changed = false;
 

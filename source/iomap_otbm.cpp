@@ -19,6 +19,10 @@
 
 #include "main.h"
 
+#include <wx/wfstream.h>
+#include <wx/tarstrm.h>
+#include <wx/zstream.h>
+
 #include "settings.h"
 #include "gui.h" // Loadbar
 
@@ -447,18 +451,60 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 	|--- OTBM_ITEM_DEF (not implemented)
 */
 
-MapVersion IOMapOTBM::getVersionInfo(const FileName& filename)
+bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
-	MapVersion ver;
+	if (filename.GetExt() == wxT("tar"))
+	{
+		wxFFileInputStream in(filename.GetFullPath());
+		wxTarInputStream tar(in);
 
-	wxString wpath = filename.GetFullPath();
-	DiskNodeFileReadHandle f((const char*)wpath.mb_str(wxConvUTF8));
-	if(f.isOk() == false)
-		return ver;
+		// Loop over the archive entries until we find the otbm file
+		std::shared_ptr<wxArchiveEntry> entry(tar.GetNextEntry());
+		while (entry.get() != NULL)
+		{
+			wxString entryName = entry->GetName(wxPATH_UNIX);
 
-	BinaryNode* root = f.getRootNode();
+			if (entryName == wxT("map/map.otbm"))
+			{
+				// Read the OTBM header into temporary memory
+				uint8_t buffer[8096];
+				memset(buffer, 0, 8096);
+				tar.Read(buffer, 8096);
+				
+				// Check so it at least contains the 4-byte file id
+				if (tar.LastRead() <= 4)
+					return false;
+				
+				// Create a read handle on it
+				std::shared_ptr<NodeFileReadHandle> f(new MemoryNodeFileReadHandle(buffer + 4, tar.LastRead() - 4));
+
+				// Read the version info
+				return getVersionInfo(f.get(), out_ver);
+			}
+
+			// Read the next entry
+			entry.reset(tar.GetNextEntry());
+		}
+
+		// Didn't find OTBM file, lame
+		return false;
+	}
+	else
+	{
+		// Just open a disk-based read handle
+		wxString wpath = filename.GetFullPath();
+		DiskNodeFileReadHandle f((const char*)wpath.mb_str(wxConvUTF8));
+		if(f.isOk() == false)
+			return false;
+		return getVersionInfo(&f, out_ver);
+	}
+}
+
+bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
+{
+	BinaryNode* root = f->getRootNode();
 	if(!root)
-		return ver;
+		return false;
 
 	root->skip(1); // Skip the type byte
 
@@ -466,39 +512,175 @@ MapVersion IOMapOTBM::getVersionInfo(const FileName& filename)
 	uint32_t u32;
 
 	if(!root->getU32(u32)) // Version
-		return ver;
-	ver.otbm = (MapVersionID)u32;
+		return false;
+	out_ver.otbm = (MapVersionID)u32;
 
 
 	root->getU16(u16);
 	root->getU16(u16);
 	root->getU32(u32);
 
-	if(root->getU32(u32)) // OTB minor version
-		ver.client = ClientVersionID(u32);
-
-	return ver;
-}
-
-bool IOMapOTBM::loadMap(Map& map, const FileName& identifier, bool showdialog)
-{
-	if(showdialog) gui.CreateLoadBar(wxT("Loading OTBM map..."));
-	DiskNodeFileReadHandle f(nstr(identifier.GetFullPath()));
-	if(f.isOk() == false)
-	{
-		error(wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage()));
+	if(!root->getU32(u32)) // OTB minor version
 		return false;
-	}
 
-	bool ret = loadMap(map, f, identifier, showdialog);
-
-	if(showdialog)
-		gui.DestroyLoadBar();
-
-	return ret;
+	out_ver.client = ClientVersionID(u32);
+	return true;
 }
 
-bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identifier, bool showdialog)
+bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
+{
+	if (filename.GetExt() == wxT("tar"))
+	{
+		wxFFileInputStream in(filename.GetFullPath());
+		wxTarInputStream tar(in);
+
+		// Memory buffers for the houses & spawns
+		std::shared_ptr<uint8_t> house_buffer;
+		std::shared_ptr<uint8_t> spawn_buffer;
+		size_t house_buffer_size = 0;
+		size_t spawn_buffer_size = 0;
+
+		// See if the otbm file has been loaded
+		bool otbm_loaded = false;
+
+		// Loop over the archive entries until we find the otbm file
+		gui.SetLoadDone(0, wxT("Decompressing archive..."));
+		std::shared_ptr<wxArchiveEntry> entry(tar.GetNextEntry());
+		while (entry.get() != NULL)
+		{
+			wxString entryName = entry->GetName(wxPATH_UNIX);
+
+			if (entryName == wxT("map/map.otbm"))
+			{
+				// Read the entire OTBM file into a memory region
+				size_t otbm_size = tar.GetSize();
+				std::shared_ptr<uint8_t> otbm_buffer(new uint8_t[otbm_size]);
+
+				tar.Read(otbm_buffer.get(), otbm_size);
+				
+				// Check so it at least contains the 4-byte file id
+				if (tar.LastRead() <= 4)
+					return false;
+
+				if (tar.LastRead() < otbm_size)
+				{
+					error(wxT("Could not read file."));
+					return false;
+				}
+
+				gui.SetLoadDone(0, wxT("Loading OTBM map..."));
+
+				// Create a read handle on it
+				std::shared_ptr<NodeFileReadHandle> f(
+					new MemoryNodeFileReadHandle(otbm_buffer.get() + 4, tar.LastRead() - 4));
+
+				// Read the version info
+				if (!loadMap(map, *f.get(), filename))
+				{
+					error(wxT("Could not load OTBM file inside archive"));
+					return false;
+				}
+
+				otbm_loaded = true;
+			}
+			else if (entryName == wxT("map/houses.xml"))
+			{
+				house_buffer_size = tar.GetSize();
+				house_buffer.reset(new uint8_t[house_buffer_size]);
+
+				tar.Read(house_buffer.get(), house_buffer_size);
+				
+				// Check so it at least contains the 4-byte file id
+				if (tar.LastRead() < house_buffer_size)
+				{
+					house_buffer.reset();
+					house_buffer_size = 0;
+					warning(wxT("Failed to decompress houses."));
+				}
+			}
+			else if (entryName == wxT("map/spawns.xml"))
+			{
+				spawn_buffer_size = tar.GetSize();
+				spawn_buffer.reset(new uint8_t[spawn_buffer_size]);
+
+				tar.Read(spawn_buffer.get(), spawn_buffer_size);
+				
+				// Check so it at least contains the 4-byte file id
+				if (tar.LastRead() < spawn_buffer_size)
+				{
+					spawn_buffer.reset();
+					spawn_buffer_size = 0;
+					warning(wxT("Failed to decompress spawns."));
+				}
+			}
+
+			// Read the next entry
+			entry.reset(tar.GetNextEntry());
+		}
+
+		if (!otbm_loaded)
+		{
+			error(wxT("OTBM file not found inside archive."));
+			return false;
+		}
+
+		// Load the houses from the stored buffer
+		if (house_buffer.get() && house_buffer_size > 0)
+		{
+			xmlDocPtr doc = xmlParseMemory((const char*)house_buffer.get(), house_buffer_size);
+			if (doc)
+			{
+				if (!loadHouses(map, doc))
+					warning(wxT("Failed to load houses."));
+			}
+			else
+				warning(wxT("Failed to load houses due to XML parse error."));
+		}
+
+		// Load the spawns from the stored buffer
+		if (spawn_buffer.get() && spawn_buffer_size > 0)
+		{
+			xmlDocPtr doc = xmlParseMemory((const char*)spawn_buffer.get(), spawn_buffer_size);
+			if (doc)
+			{
+				if (!loadSpawns(map, doc))
+					warning(wxT("Failed to load spawns."));
+			}
+			else
+				warning(wxT("Failed to load spawns due to XML parse error."));
+		}
+
+		return true;
+	}
+	else
+	{
+		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()));
+		if(f.isOk() == false)
+		{
+			error(wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage()));
+			return false;
+		}
+
+		if (!loadMap(map, f, filename))
+			return false;
+		
+		// Read auxilliary files
+		if(!loadHouses(map, filename))
+		{
+			warning(wxT("Failed to load houses."));
+			map.housefile = nstr(filename.GetName()) + "-house.xml";
+		}
+		if(!loadSpawns(map, filename))
+		{
+			warning(wxT("Failed to load spawns."));
+			map.spawnfile = nstr(filename.GetName())+ "-spawn.xml";
+		}
+
+		return true;
+	}
+}
+
+bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identifier)
 {
 	BinaryNode* root = f.getRootNode();
 	if(!root)
@@ -610,7 +792,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 	for(BinaryNode* mapNode = mapHeaderNode->getChild(); mapNode != NULL; mapNode = mapNode->advance())
 	{
 		++nodes_loaded;
-		if(showdialog && nodes_loaded % 15 == 0)
+		if(nodes_loaded % 15 == 0)
 			gui.SetLoadDone(int(100.0 * f.tell() / f.size()));
 		
 		uint8_t node_type;
@@ -863,17 +1045,6 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 
 	if(!f.isOk())
 		warning(wxstr(f.getErrorMessage()));
-
-	if(!loadHouses(map, identifier))
-	{
-		warning(wxT("Failed to load houses."));
-		map.housefile = nstr(identifier.GetName()) + "-house.xml";
-	}
-	if(!loadSpawns(map, identifier))
-	{
-		warning(wxT("Failed to load spawns."));
-		map.spawnfile = nstr(identifier.GetName())+ "-spawn.xml";
-	}
 	return true;
 }
 
@@ -886,146 +1057,147 @@ bool IOMapOTBM::loadSpawns(Map& map, const FileName& dir)
 		return false;
 
 	xmlDocPtr doc = xmlParseFile(fn.c_str());
-	if(doc)
-	{
-		xmlNodePtr root = xmlDocGetRootElement(doc);
-
-		if(xmlStrcmp(root->name,(const xmlChar*)"spawns") != 0)
-			return false;
-
-
-		int intVal;
-		std::string strVal;
-
-		xmlNodePtr spawnNode = root->children;
-		while(spawnNode) 
-		{
-			do if(xmlStrcmp(spawnNode->name,(const xmlChar*)"spawn") == 0)
-			{
-				bool posok = true;
-				Position spawnpos;
-
-				if(readXMLInteger(spawnNode, "centerx", intVal))
-					spawnpos.x = intVal; else posok = false;
-				if(readXMLInteger(spawnNode, "centery", intVal))
-					spawnpos.y = intVal; else posok = false;
-				if(readXMLInteger(spawnNode, "centerz", intVal))
-					spawnpos.z = intVal; else posok = false;
-
-				if(posok == false)
-				{
-					warning(wxT("Bad position data on one spawn, discarding..."));
-					break;
-				}
-
-				int radius = 1;
-				if(readXMLInteger(spawnNode, "radius", intVal))
-				{
-					radius = max(1, intVal);	
-				}
-				else
-				{
-					warning(wxT("Couldn't read radius of spawn.. discarding spawn..."));
-					continue;
-				}
-
-				Tile* tile = map.getTile(spawnpos);
-				if(tile && tile->spawn)
-				{
-					warning(wxT("Duplicate spawn on position %d:%d:%d\n"), tile->getX(), tile->getY(), tile->getZ());
-					break;
-				}
-
-				Spawn* spawn = newd Spawn(radius);
-				if(!tile)
-				{
-					tile = map.allocator(map.createTileL(spawnpos));
-					map.setTile(spawnpos, tile);
-				}
-				tile->spawn = spawn;
-				map.addSpawn(tile);
-
-				xmlNodePtr creatureNode = spawnNode->children;
-				while(creatureNode)
-				{
-					if(xmlStrcmp(creatureNode->name,(const xmlChar*)"monster") == 0 || xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0) 
-					do {
-						std::string name;
-						int spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
-						bool isNpc = (xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0);
-						if(!readXMLValue(creatureNode, "name", name))
-						{
-							warning(wxT("No name of monster spawn at %d:%d:%d"), spawnpos.x, spawnpos.y, spawnpos.z);
-							break;
-						}
-						if(name == "")
-							break;
-
-						readXMLValue(creatureNode, "spawntime", spawntime);
-						Position creaturepos(spawnpos);
-						posok = true;
-
-						if(readXMLInteger(creatureNode, "x", intVal))
-							creaturepos.x += intVal; else posok = false;
-						if(readXMLInteger(creatureNode, "y", intVal))
-							creaturepos.y += intVal; else posok = false;
-
-						if(posok == false)
-						{
-							warning(wxT("Bad creature position data, discarding creature \"%s\" spawn %d:%d:%d..."), name.c_str(), spawnpos.x, spawnpos.y, spawnpos.z);
-							break;
-						}
-
-						if(abs(creaturepos.x - spawnpos.x) > radius)
-							radius = abs(creaturepos.x - spawnpos.x);
-						if(abs(creaturepos.y - spawnpos.y) > radius)
-							radius = abs(creaturepos.y - spawnpos.y);
-
-						radius = min(radius, settings.getInteger(Config::MAX_SPAWN_RADIUS));
-
-						Tile* creature_tile;
-						if(creaturepos == spawnpos)
-							creature_tile = tile;
-						else
-							creature_tile = map.getTile(creaturepos);
-
-						if(!creature_tile)
-						{
-							warning(wxT("Discarding creature \"%s\" at %d:%d:%d due to invalid position"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
-							break;
-						}
-						if(creature_tile->creature)
-						{
-							warning(wxT("Duplicate creature \"%s\" at %d:%d:%d, discarding"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
-							break;
-						}
-						CreatureType* type = creature_db[name];
-						if(!type)
-							type = creature_db.addMissingCreatureType(name, isNpc);
-
-						Creature* creature = newd Creature(type);
-						creature->setSpawnTime(spawntime);
-						creature_tile->creature = creature;
-
-						if(creature_tile->getLocation()->getSpawnCount() == 0)
-						{
-							// No spawn, create a newd one
-							ASSERT(creature_tile->spawn == NULL);
-							Spawn* spawn = newd Spawn(5);
-							creature_tile->spawn = spawn;
-							map.addSpawn(creature_tile);
-						}
-					} while(false);
-					creatureNode = creatureNode->next;
-				}
-			} while(false);
-			spawnNode = spawnNode->next;
-		}
-	}
-	else
-	{
+	if (!doc)
 		return false;
+	return loadSpawns(map, doc);
+}
+
+bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
+{
+	xmlNodePtr root = xmlDocGetRootElement(doc);
+
+	if(xmlStrcmp(root->name,(const xmlChar*)"spawns") != 0)
+		return false;
+
+
+	int intVal;
+	std::string strVal;
+
+	xmlNodePtr spawnNode = root->children;
+	while(spawnNode) 
+	{
+		do if(xmlStrcmp(spawnNode->name,(const xmlChar*)"spawn") == 0)
+		{
+			bool posok = true;
+			Position spawnpos;
+
+			if(readXMLInteger(spawnNode, "centerx", intVal))
+				spawnpos.x = intVal; else posok = false;
+			if(readXMLInteger(spawnNode, "centery", intVal))
+				spawnpos.y = intVal; else posok = false;
+			if(readXMLInteger(spawnNode, "centerz", intVal))
+				spawnpos.z = intVal; else posok = false;
+
+			if(posok == false)
+			{
+				warning(wxT("Bad position data on one spawn, discarding..."));
+				break;
+			}
+
+			int radius = 1;
+			if(readXMLInteger(spawnNode, "radius", intVal))
+			{
+				radius = max(1, intVal);	
+			}
+			else
+			{
+				warning(wxT("Couldn't read radius of spawn.. discarding spawn..."));
+				continue;
+			}
+
+			Tile* tile = map.getTile(spawnpos);
+			if(tile && tile->spawn)
+			{
+				warning(wxT("Duplicate spawn on position %d:%d:%d\n"), tile->getX(), tile->getY(), tile->getZ());
+				break;
+			}
+
+			Spawn* spawn = newd Spawn(radius);
+			if(!tile)
+			{
+				tile = map.allocator(map.createTileL(spawnpos));
+				map.setTile(spawnpos, tile);
+			}
+			tile->spawn = spawn;
+			map.addSpawn(tile);
+
+			xmlNodePtr creatureNode = spawnNode->children;
+			while(creatureNode)
+			{
+				if(xmlStrcmp(creatureNode->name,(const xmlChar*)"monster") == 0 || xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0) 
+				do {
+					std::string name;
+					int spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
+					bool isNpc = (xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0);
+					if(!readXMLValue(creatureNode, "name", name))
+					{
+						warning(wxT("No name of monster spawn at %d:%d:%d"), spawnpos.x, spawnpos.y, spawnpos.z);
+						break;
+					}
+					if(name == "")
+						break;
+
+					readXMLValue(creatureNode, "spawntime", spawntime);
+					Position creaturepos(spawnpos);
+					posok = true;
+
+					if(readXMLInteger(creatureNode, "x", intVal))
+						creaturepos.x += intVal; else posok = false;
+					if(readXMLInteger(creatureNode, "y", intVal))
+						creaturepos.y += intVal; else posok = false;
+
+					if(posok == false)
+					{
+						warning(wxT("Bad creature position data, discarding creature \"%s\" spawn %d:%d:%d..."), name.c_str(), spawnpos.x, spawnpos.y, spawnpos.z);
+						break;
+					}
+
+					if(abs(creaturepos.x - spawnpos.x) > radius)
+						radius = abs(creaturepos.x - spawnpos.x);
+					if(abs(creaturepos.y - spawnpos.y) > radius)
+						radius = abs(creaturepos.y - spawnpos.y);
+
+					radius = min(radius, settings.getInteger(Config::MAX_SPAWN_RADIUS));
+
+					Tile* creature_tile;
+					if(creaturepos == spawnpos)
+						creature_tile = tile;
+					else
+						creature_tile = map.getTile(creaturepos);
+
+					if(!creature_tile)
+					{
+						warning(wxT("Discarding creature \"%s\" at %d:%d:%d due to invalid position"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
+						break;
+					}
+					if(creature_tile->creature)
+					{
+						warning(wxT("Duplicate creature \"%s\" at %d:%d:%d, discarding"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
+						break;
+					}
+					CreatureType* type = creature_db[name];
+					if(!type)
+						type = creature_db.addMissingCreatureType(name, isNpc);
+
+					Creature* creature = newd Creature(type);
+					creature->setSpawnTime(spawntime);
+					creature_tile->creature = creature;
+
+					if(creature_tile->getLocation()->getSpawnCount() == 0)
+					{
+						// No spawn, create a newd one
+						ASSERT(creature_tile->spawn == NULL);
+						Spawn* spawn = newd Spawn(5);
+						creature_tile->spawn = spawn;
+						map.addSpawn(creature_tile);
+					}
+				} while(false);
+				creatureNode = creatureNode->next;
+			}
+		} while(false);
+		spawnNode = spawnNode->next;
 	}
+
 	return true;
 }
 
@@ -1035,78 +1207,77 @@ bool IOMapOTBM::loadHouses(Map& map, const FileName& dir)
 	fn += map.housefile;
 	FileName filename(wxstr(fn));
 	if(filename.FileExists() == false)
-	{
 		return false;
-	}
 
 	xmlDocPtr doc = xmlParseFile(fn.c_str());
-	if(doc)
-	{
-		xmlNodePtr root = xmlDocGetRootElement(doc);
-
-		if(xmlStrcmp(root->name,(const xmlChar*)"houses") != 0)
-			return false;
-
-		int intVal;
-		std::string strVal;
-
-		xmlNodePtr houseNode = root->children;
-		while(houseNode)
-		{
-			do if(xmlStrcmp(houseNode->name,(const xmlChar*)"house") == 0)
-			{
-				House* house = NULL;
-				if(readXMLInteger(houseNode, "houseid", intVal))
-				{
-					house = map.houses.getHouse(intVal);
-					if(!house)
-						break;
-				}
-
-				if(readXMLString(houseNode, "name", strVal))
-					house->name = strVal;
-				else
-					house->name = "House #" + house->id;
-
-				bool posok = true;
-				Position houseexit;
-
-				if(readXMLInteger(houseNode, "entryx", intVal))
-					houseexit.x = intVal; else posok = false;
-				if(readXMLInteger(houseNode, "entryy", intVal))
-					houseexit.y = intVal; else posok = false;
-				if(readXMLInteger(houseNode, "entryz", intVal))
-					houseexit.z = intVal; else posok = false;
-				if(posok)
-					house->setExit(houseexit);
-
-				if(readXMLInteger(houseNode, "rent", intVal))
-					house->rent = intVal;
-
-				if(readXMLInteger(houseNode, "guildhall", intVal))
-					house->guildhall = (intVal != 0);
-
-				if(readXMLInteger(houseNode, "townid", intVal))
-				{
-					house->townid = intVal;
-				}
-				else
-				{
-					warning(wxT("House %s has no town! House was removed."), house->name.c_str());
-					map.houses.removeHouse(house);
-				}
-			} while(false);
-			houseNode = houseNode->next;
-		}
-	}
-	else
-	{
+	if (!doc)
 		return false;
+	return loadHouses(map, doc);
+}
+
+bool IOMapOTBM::loadHouses(Map& map, xmlDocPtr doc)
+{
+	xmlNodePtr root = xmlDocGetRootElement(doc);
+
+	if(xmlStrcmp(root->name,(const xmlChar*)"houses") != 0)
+		return false;
+
+	int intVal;
+	std::string strVal;
+
+	xmlNodePtr houseNode = root->children;
+	while(houseNode)
+	{
+		do if(xmlStrcmp(houseNode->name,(const xmlChar*)"house") == 0)
+		{
+			House* house = NULL;
+			if(readXMLInteger(houseNode, "houseid", intVal))
+			{
+				house = map.houses.getHouse(intVal);
+				if(!house)
+					break;
+			}
+
+			if(readXMLString(houseNode, "name", strVal))
+				house->name = strVal;
+			else
+				house->name = "House #" + house->id;
+
+			bool posok = true;
+			Position houseexit;
+
+			if(readXMLInteger(houseNode, "entryx", intVal))
+				houseexit.x = intVal; else posok = false;
+			if(readXMLInteger(houseNode, "entryy", intVal))
+				houseexit.y = intVal; else posok = false;
+			if(readXMLInteger(houseNode, "entryz", intVal))
+				houseexit.z = intVal; else posok = false;
+			if(posok)
+				house->setExit(houseexit);
+
+			if(readXMLInteger(houseNode, "rent", intVal))
+				house->rent = intVal;
+
+			if(readXMLInteger(houseNode, "guildhall", intVal))
+				house->guildhall = (intVal != 0);
+
+			if(readXMLInteger(houseNode, "townid", intVal))
+			{
+				house->townid = intVal;
+			}
+			else
+			{
+				warning(wxT("House %s has no town! House was removed."), house->name.c_str());
+				map.houses.removeHouse(house);
+			}
+		} while(false);
+		houseNode = houseNode->next;
 	}
+
 	return true;
 }
 
-bool IOMapOTBM::saveMap(Map& map, const FileName& identifier, bool showdialog)
+bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
 	DiskNodeFileWriteHandle f(std::string(identifier.GetFullPath().mb_str(wxConvUTF8)));
 	
@@ -1116,14 +1287,12 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier, bool showdialog)
 		return false;
 	}
 
-	if(showdialog) gui.CreateLoadBar(wxT("Saving OTBM map..."));
-	bool ret = saveMap(map, f, identifier, showdialog);
-	if(showdialog) gui.DestroyLoadBar();
+	bool ret = saveMap(map, f, identifier);
 
 	return ret;
 }
 
-bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identifier, bool showdialog)
+bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identifier)
 {
 	/* STOP!
 	 * Before you even think about modifying this, please reconsider.
@@ -1174,7 +1343,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 			{
 				// Update progressbar
 				++tiles_saved;
-				if(showdialog && tiles_saved % 8192 == 0)
+				if(tiles_saved % 8192 == 0)
 					gui.SetLoadDone(int(tiles_saved / double(map.getTileCount()) * 100.0));
 
 				// Get tile
@@ -1314,12 +1483,10 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 		} f.endNode();
 	} f.endNode();
 
-	if(showdialog)
-		gui.SetLoadDone(99, wxT("Saving spawns..."));
+	gui.SetLoadDone(99, wxT("Saving spawns..."));
 	saveSpawns(map, identifier);
 
-	if(showdialog)
-		gui.SetLoadDone(99, wxT("Saving houses..."));
+	gui.SetLoadDone(99, wxT("Saving houses..."));
 	saveHouses(map, identifier);
 
 	return true;

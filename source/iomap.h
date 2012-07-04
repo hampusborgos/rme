@@ -22,7 +22,8 @@
 
 #include "client_version.h"
 
-enum ImportType {
+enum ImportType
+{
 	IMPORT_DONT,
 	IMPORT_MERGE,
 	IMPORT_SMART_MERGE,
@@ -31,7 +32,8 @@ enum ImportType {
 
 class Map;
 
-class IOMap {
+class IOMap
+{
 protected:
 	wxArrayString warnings;
 	wxString errorstr;
@@ -51,8 +53,8 @@ public:
 	wxArrayString& getWarnings() {return warnings;}
 	wxString& getError() {return errorstr;}
 
-	virtual bool loadMap(Map& map, const FileName& identifier, bool showdialog) = 0;
-	virtual bool saveMap(Map& map, const FileName& identifier, bool showdialog) = 0;
+	virtual bool loadMap(Map& map, const FileName& identifier) = 0;
+	virtual bool saveMap(Map& map, const FileName& identifier) = 0;
 };
 
 
@@ -62,8 +64,8 @@ public:
 		version = v;
 	}
 
-	virtual bool loadMap(Map& map, const FileName& identifier, bool showdialog) {return false;}
-	virtual bool saveMap(Map& map, const FileName& identifier, bool showdialog) {return false;}
+	virtual bool loadMap(Map& map, const FileName& identifier) {return false;}
+	virtual bool saveMap(Map& map, const FileName& identifier) {return false;}
 };
 
 #endif

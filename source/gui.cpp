@@ -1094,7 +1094,7 @@ void GUI::SetLoadScale(int from, int to)
 	progressTo = to;
 }
 
-bool GUI::SetLoadDone(unsigned int done, wxString newmessage)
+bool GUI::SetLoadDone(int done, wxString newmessage)
 {
 	if(newmessage != wxT(""))
 		progressText = newmessage;

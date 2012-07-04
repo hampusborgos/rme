@@ -218,7 +218,7 @@ void HousePalettePanel::SelectTown(size_t index) {
 		SelectHouse(0);
 		town_choice->SetSelection(index);
 		add_house_button->Enable(what_town != NULL);
-		ASSERT(what_town == NULL || add_house_button->IsEnabled());
+		ASSERT(what_town == NULL || add_house_button->IsEnabled() || IsEnabled() == false);
 	}
 }
 

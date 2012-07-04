@@ -113,13 +113,42 @@ private:
 	GUI& operator=(const GUI& gui); // Don't assign me
 	bool operator==(const GUI& gui); // Don't compare me
 
-public: // Function interface
+public:
+	/**
+	 * Saves the perspective to the configuration file
+	 * This is the position of all windows etc. in the editor
+	 */
 	void SavePerspective();
+
+	/**
+	 * Loads the stored perspective from the configuration file
+	 */
 	void LoadPerspective();
 
+	/**
+	 * Creates a loading bar with the specified message, title is always "Loading"
+	 * The default scale is 0 - 100
+	 */
 	void CreateLoadBar(wxString message, bool canCancel = false);
-	bool SetLoadDone(unsigned int done, wxString newmessage = wxT(""));
+
+	/**
+	 * Sets how much of the load has completed, the scale can be set with
+	 * SetLoadScale.
+	 * If this returns false, the user has hit the quit button and you should
+	 * abort the loading.
+	 */
+	bool SetLoadDone(int done, wxString newmessage = wxT(""));
+
+	/**
+	 * Sets the scale of the loading bar.
+	 * Calling this with (50, 80) means that setting 50 as 'done',
+	 * it will display as 0% loaded, 80 will display as 100% loaded.
+	 */
 	void SetLoadScale(int from, int to);
+
+	/**
+	 * Destroys (hides) the current loading bar.
+	 */
 	void DestroyLoadBar();
 
 	bool IsRenderingEnabled() const {return disabled_counter == 0;}
@@ -396,6 +425,34 @@ public:
 	{
 		gui.EnableRendering();
 		acquired = false;
+	}
+};
+
+/**
+ * Will push a loading bar when it is constructed
+ * which will the be popped when it destructs.
+ * Look in the GUI class for documentation of what the methods mean.
+ */
+class ScopedLoadingBar
+{
+public:
+	ScopedLoadingBar(wxString message, bool canCancel = false)
+	{
+		gui.CreateLoadBar(message, canCancel);
+	}
+	~ScopedLoadingBar()
+	{
+		gui.DestroyLoadBar();
+	}
+
+	void SetLoadDone(int done, wxString newmessage = wxT(""))
+	{
+		gui.SetLoadDone(done, newmessage);
+	}
+
+	void SetLoadScale(int from, int to)
+	{
+		gui.SetLoadScale(from, to);
 	}
 };
 

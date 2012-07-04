@@ -602,7 +602,7 @@ void MainMenuBar::OnOpenRecent(wxCommandEvent& event)
 
 void MainMenuBar::OnOpen(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""),wxT(""),wxT("*.otbm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""),wxT(""),wxT("*.otbm|*.tar"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 	int ok = filedlg.ShowModal();
 
