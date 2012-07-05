@@ -61,7 +61,7 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 
 	//sidesizer->Add(180, 1, wxEXPAND);
 
-	wxFlexGridSizer* grid = newd wxFlexGridSizer(2, 10, 10);
+	wxFlexGridSizer* grid = newd wxFlexGridSizer(3, 10, 10);
 	grid->AddGrowableCol(1);
 
 	grid->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawntime")));
