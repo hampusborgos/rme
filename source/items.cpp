@@ -910,18 +910,18 @@ bool ItemDatabase::loadItemFromGameXml(xmlNodePtr itemNode, int id)
 				if(readXMLInteger(itemAttributesNode, "value", intValue))
 					it.volume = intValue;
 			}
-			/*
 			else if(strValue == "readable")
 			{
 				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.canReadText = true;
+					it.canReadText = intValue != 0;
 			}
-			*/
 			else if(strValue == "writeable")
 			{
 				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.canWriteText = true;
-					it.canReadText = true;
+				{
+					it.canWriteText = intValue != 0;
+					it.canReadText = intValue != 0;
+				}
 			}
 			else if(strValue == "decayTo")
 			{
