@@ -457,36 +457,38 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
 	if (filename.GetExt() == wxT("otgz"))
 	{
-		wxFFileInputStream in(filename.GetFullPath());
-		wxZlibInputStream gz(in);
-		wxTarInputStream tar(gz);
+		// Open the archive
+		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
+		archive_read_support_filter_all(a.get());
+		archive_read_support_format_all(a.get());
+		if (archive_read_open_filename(a.get(), nstr(filename.GetFullPath()).c_str(), 10240) != ARCHIVE_OK)
+			 return false;
 
 		// Loop over the archive entries until we find the otbm file
-		std::shared_ptr<wxArchiveEntry> entry(tar.GetNextEntry());
-		while (entry.get() != NULL)
+		struct archive_entry* entry;
+		while (archive_read_next_header(a.get(), &entry) == ARCHIVE_OK)
 		{
-			wxString entryName = entry->GetName(wxPATH_UNIX);
+			std::string entryName = archive_entry_pathname(entry);
 
-			if (entryName == wxT("world/map.otbm"))
+			if (entryName == "world/map.otbm")
 			{
 				// Read the OTBM header into temporary memory
 				uint8_t buffer[8096];
 				memset(buffer, 0, 8096);
-				tar.Read(buffer, 8096);
+
+				// Read from the archive
+				int read_bytes = archive_read_data(a.get(), buffer, 8096);
 				
 				// Check so it at least contains the 4-byte file id
-				if (tar.LastRead() <= 4)
+				if (read_bytes < 4)
 					return false;
 				
 				// Create a read handle on it
-				std::shared_ptr<NodeFileReadHandle> f(new MemoryNodeFileReadHandle(buffer + 4, tar.LastRead() - 4));
+				std::shared_ptr<NodeFileReadHandle> f(new MemoryNodeFileReadHandle(buffer + 4, read_bytes - 4));
 
 				// Read the version info
 				return getVersionInfo(f.get(), out_ver);
 			}
-
-			// Read the next entry
-			entry.reset(tar.GetNextEntry());
 		}
 
 		// Didn't find OTBM file, lame
@@ -534,9 +536,12 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
 	if (filename.GetExt() == wxT("otgz"))
 	{
-		wxFFileInputStream in(filename.GetFullPath());
-		wxZlibInputStream gz(in);
-		wxTarInputStream tar(gz);
+		// Open the archive
+		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
+		archive_read_support_filter_all(a.get());
+		archive_read_support_format_all(a.get());
+		if (archive_read_open_filename(a.get(), nstr(filename.GetFullPath()).c_str(), 10240) != ARCHIVE_OK)
+			 return false;
 
 		// Memory buffers for the houses & spawns
 		std::shared_ptr<uint8_t> house_buffer;
@@ -549,24 +554,25 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 		// Loop over the archive entries until we find the otbm file
 		gui.SetLoadDone(0, wxT("Decompressing archive..."));
-		std::shared_ptr<wxArchiveEntry> entry(tar.GetNextEntry());
-		while (entry.get() != NULL)
+		struct archive_entry* entry;
+		while (archive_read_next_header(a.get(), &entry) == ARCHIVE_OK)
 		{
-			wxString entryName = entry->GetName(wxPATH_UNIX);
+			std::string entryName = archive_entry_pathname(entry);
 
-			if (entryName == wxT("world/map.otbm"))
+			if (entryName == "world/map.otbm")
 			{
 				// Read the entire OTBM file into a memory region
-				size_t otbm_size = tar.GetSize();
+				size_t otbm_size = archive_entry_size(entry);
 				std::shared_ptr<uint8_t> otbm_buffer(new uint8_t[otbm_size]);
-
-				tar.Read(otbm_buffer.get(), otbm_size);
+				
+				// Read from the archive
+				size_t read_bytes = archive_read_data(a.get(), otbm_buffer.get(), otbm_size);
 				
 				// Check so it at least contains the 4-byte file id
-				if (tar.LastRead() <= 4)
+				if (read_bytes < 4)
 					return false;
 
-				if (tar.LastRead() < otbm_size)
+				if (read_bytes < otbm_size)
 				{
 					error(wxT("Could not read file."));
 					return false;
@@ -576,7 +582,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 				// Create a read handle on it
 				std::shared_ptr<NodeFileReadHandle> f(
-					new MemoryNodeFileReadHandle(otbm_buffer.get() + 4, tar.LastRead() - 4));
+					new MemoryNodeFileReadHandle(otbm_buffer.get() + 4, otbm_size - 4));
 
 				// Read the version info
 				if (!loadMap(map, *f.get()))
@@ -587,39 +593,38 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 				otbm_loaded = true;
 			}
-			else if (entryName == wxT("world/houses.xml"))
+			else if (entryName == "world/houses.xml")
 			{
-				house_buffer_size = tar.GetSize();
+				house_buffer_size = archive_entry_size(entry);
 				house_buffer.reset(new uint8_t[house_buffer_size]);
-
-				tar.Read(house_buffer.get(), house_buffer_size);
+				
+				// Read from the archive
+				size_t read_bytes = archive_read_data(a.get(), house_buffer.get(), house_buffer_size);
 				
 				// Check so it at least contains the 4-byte file id
-				if (tar.LastRead() < house_buffer_size)
+				if (read_bytes < house_buffer_size)
 				{
 					house_buffer.reset();
 					house_buffer_size = 0;
 					warning(wxT("Failed to decompress houses."));
 				}
 			}
-			else if (entryName == wxT("world/spawns.xml"))
+			else if (entryName == "world/spawns.xml")
 			{
-				spawn_buffer_size = tar.GetSize();
+				spawn_buffer_size = archive_entry_size(entry);
 				spawn_buffer.reset(new uint8_t[spawn_buffer_size]);
-
-				tar.Read(spawn_buffer.get(), spawn_buffer_size);
+				
+				// Read from the archive
+				size_t read_bytes = archive_read_data(a.get(), spawn_buffer.get(), spawn_buffer_size);
 				
 				// Check so it at least contains the 4-byte file id
-				if (tar.LastRead() < spawn_buffer_size)
+				if (read_bytes < spawn_buffer_size)
 				{
 					spawn_buffer.reset();
 					spawn_buffer_size = 0;
 					warning(wxT("Failed to decompress spawns."));
 				}
 			}
-
-			// Read the next entry
-			entry.reset(tar.GetNextEntry());
 		}
 
 		if (!otbm_loaded)
@@ -1322,15 +1327,14 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
 	if (identifier.GetExt() == "otgz")
 	{
-		wxFFileOutputStream out(identifier.GetFullPath());
-		wxZlibOutputStream gz(out);
-		wxTarOutputStream tar(gz);
-		wxDataOutputStream dat(tar);
 
-		if (!dat.IsOk())
-			return false;
+		// Create the archive
+		struct archive* a = archive_write_new();
+		struct archive_entry* entry = NULL;
 
-		wxString sep(wxFileName::GetPathSeparator());
+		archive_write_set_compression_gzip(a);
+		archive_write_set_format_pax_restricted(a);
+		archive_write_open_filename(a, nstr(identifier.GetFullPath()).c_str());
 
 		// Start out at 100kb memory for the XML files
 		xmlToMemoryContext xmlSaveData = {
@@ -1338,7 +1342,6 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			0,
 			1024*100
 		};
-
 
 		gui.SetLoadDone(0, wxT("Saving spawns..."));
 		if(xmlDocPtr spawnDoc = saveSpawns(map))
@@ -1348,12 +1351,22 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			xmlSaveCtxt* xmlContext = xmlSaveToIO(writeXmlToMemoryWriteCallback, writeXmlToMemoryCloseCallback, &xmlSaveData, "UTF-8", XML_SAVE_FORMAT);
 			xmlSaveDoc(xmlContext, spawnDoc);
 			xmlSaveClose(xmlContext);
-
-			// Write to the output file
-			tar.PutNextEntry("world" + sep + "spawns.xml", wxDateTime::Now(), xmlSaveData.position);
-			dat.Write8(xmlSaveData.data, xmlSaveData.position);
-
 			xmlFreeDoc(spawnDoc);
+			spawnDoc = NULL;
+
+			// Write to the arhive
+			entry = archive_entry_new();
+			archive_entry_set_pathname(entry, "world/spawns.xml");
+			archive_entry_set_size(entry, xmlSaveData.position);
+			archive_entry_set_filetype(entry, AE_IFREG);
+			archive_entry_set_perm(entry, 0644);
+			archive_write_header(a, entry);
+
+			// Write to the archive
+			archive_write_data(a, xmlSaveData.data, xmlSaveData.position);
+			
+			// Free the entry
+			archive_entry_free(entry);
 		}
 		
 		gui.SetLoadDone(0, wxT("Saving houses..."));
@@ -1364,12 +1377,22 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			xmlSaveCtxt* xmlContext = xmlSaveToIO(writeXmlToMemoryWriteCallback, writeXmlToMemoryCloseCallback, &xmlSaveData, "UTF-8", XML_SAVE_FORMAT);
 			xmlSaveDoc(xmlContext, houseDoc);
 			xmlSaveClose(xmlContext);
-
-			// Write to the output file
-			tar.PutNextEntry("world" + sep + "houses.xml", wxDateTime::Now(), xmlSaveData.position);
-			dat.Write8(xmlSaveData.data, xmlSaveData.position);
-
 			xmlFreeDoc(houseDoc);
+			houseDoc = NULL;
+
+			// Write to the arhive
+			entry = archive_entry_new();
+			archive_entry_set_pathname(entry, "world/houses.xml");
+			archive_entry_set_size(entry, xmlSaveData.position);
+			archive_entry_set_filetype(entry, AE_IFREG);
+			archive_entry_set_perm(entry, 0644);
+			archive_write_header(a, entry);
+
+			// Write to the archive
+			archive_write_data(a, xmlSaveData.data, xmlSaveData.position);
+			
+			// Free the entry
+			archive_entry_free(entry);
 		}
 		
 		// Free the xml context
@@ -1380,10 +1403,27 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		saveMap(map, otbmWriter);
 
 		gui.SetLoadDone(100, wxT("Compressing..."));
-		tar.PutNextEntry("world" + sep + "map.otbm", wxDateTime::Now(), otbmWriter.getSize() + 4);
-		// Don't forget the OTBM identifier
-		dat.Write32(0);
-		dat.Write8(otbmWriter.getMemory(), otbmWriter.getSize());
+		
+		// Create an archive entry for the otbm file
+		entry = archive_entry_new();
+		archive_entry_set_pathname(entry, "world/map.otbm");
+		archive_entry_set_size(entry, otbmWriter.getSize() + 4); // 4 bytes extra for header
+		archive_entry_set_filetype(entry, AE_IFREG);
+		archive_entry_set_perm(entry, 0644);
+		archive_write_header(a, entry);
+		
+		// Write the version header
+		char otbm_identifier[] = "OTBM";
+		archive_write_data(a, otbm_identifier, 4);
+
+		// Write the OTBM data
+		archive_write_data(a, otbmWriter.getMemory(), otbmWriter.getSize());
+
+		archive_entry_free(entry);
+
+		// Free / close the archive
+		archive_write_close(a); 
+		archive_write_free(a);
 
 		return true;
 	}

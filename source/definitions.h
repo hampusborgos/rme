@@ -48,6 +48,8 @@
 #endif
 // OS
 
+#define OTGZ_SUPPORT 1
+
 #ifdef __VISUALC__
 #pragma warning(disable:4996) // Stupid MSVC complaining 'bout "unsafe" functions
 #pragma warning(disable:4800) // Bool conversion warning
