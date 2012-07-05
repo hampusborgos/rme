@@ -1284,15 +1284,26 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int re
 	}
 }
 
-void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, int red, int green, int blue, int alpha) {
-	if(outfit.lookItem != 0) {
+void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, int red, int green, int blue, int alpha)
+{
+	if(outfit.lookItem != 0)
+	{
 		ItemType& it = item_db[outfit.lookItem];
 		BlitSpriteType(screenx, screeny, it.clientID, red, green, blue, alpha);
-		return;
 	}
-	if(outfit.lookType != 0) {
+	else
+	{
 		GameSprite* spr = gui.gfx.getCreatureSprite(outfit.lookType);
-		if(!spr) return;
+		if(!spr || outfit.lookType == 0)
+		{
+			return;
+			/*
+			spr = gui.gfx.getCreatureSprite(138);
+			if (!spr)
+				return;
+			 */
+		}
+
 		int tme = 0; //GetTime() % itype->FPA;
 		for(int cx = 0; cx != spr->width; ++cx) {
 			for(int cy = 0; cy != spr->height; ++cy) {
@@ -1303,8 +1314,10 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, int
 	}
 }
 
-void MapDrawer::BlitCreature(int screenx, int screeny, const Creature* c, int red, int green, int blue, int alpha) {
-	if(!options.ingame && c->isSelected()) {
+void MapDrawer::BlitCreature(int screenx, int screeny, const Creature* c, int red, int green, int blue, int alpha)
+{
+	if(!options.ingame && c->isSelected())
+	{
 		red /= 2;
 		green /= 2;
 		blue /= 2;

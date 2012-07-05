@@ -172,6 +172,35 @@ void MapPropertiesWindow::OnChangeVersion(wxCommandEvent&)
 	UpdateProtocolList();
 }
 
+struct MapConversionContext
+{
+	struct CreatureInfo
+	{
+		std::string name;
+		bool is_npc;
+		Outfit outfit;
+	};
+	typedef std::map<std::string, CreatureInfo> CreatureMap;
+	CreatureMap creature_types;
+
+	void operator()(Map& map, Tile* tile, long long done)
+	{
+		if (tile->creature)
+		{
+			CreatureMap::iterator f = creature_types.find(tile->creature->getName());
+			if (f == creature_types.end())
+			{
+				CreatureInfo info = {
+					tile->creature->getName(),
+					tile->creature->isNpc(),
+					tile->creature->getLookType()
+				};
+				creature_types[tile->creature->getName()] = info;
+			}
+		}
+	}
+};
+
 void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event)) 
 {
 	Map& map = editor.map;
@@ -222,10 +251,16 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			{
 				return;
 			}
+			UnnamedRenderingLock();
 
+			// Remember all creatures types on the map
+			MapConversionContext conversion_context;
+			foreach_TileOnMap(map, conversion_context);
+
+			// Perform the conversion			
 			map.convert(new_ver, true);
 
-			UnnamedRenderingLock();
+			// Load the new version
 			if(!gui.LoadVersion(new_ver.client, error, warnings)) 
 			{
 				gui.ListDialog(this, wxT("Warnings"), warnings);
@@ -234,6 +269,31 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 				EndModal(0);
 				return;
+			}
+
+			// Remove all creatures that were present are present in the new version
+			for (MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin();
+					cs != conversion_context.creature_types.end();)
+			{
+				if (creature_db[cs->first])
+					cs = conversion_context.creature_types.erase(cs);
+				else
+					++cs;
+			}
+
+			if (conversion_context.creature_types.size() > 0)
+			{
+				int add = gui.PopupDialog(this, wxT("Unrecognized creatures"), wxT("There were creatures on the old version that are not present in this and were on the map, do you want to add them to this version as well?"), wxYES | wxNO);
+				if (add == wxID_YES)
+				{
+					for (MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin();
+							cs != conversion_context.creature_types.end();
+							++cs)
+					{
+						MapConversionContext::CreatureInfo info = cs->second;
+						creature_db.addCreatureType(info.name, info.is_npc, info.outfit);
+					}
+				}
 			}
 
 			map.cleanInvalidTiles(true);

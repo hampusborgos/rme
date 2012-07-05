@@ -32,6 +32,7 @@ public:
 	CreatureBrush* getBrush() const;
 	int getSpawnTime() const {return spawntime;}
 	void setSpawnTime(int spawntime) {this->spawntime = spawntime;}
+
 protected:
 	std::string type_name;
 	int spawntime;

@@ -39,6 +39,7 @@ Editor::Editor(CopyBuffer& copybuffer) :
 	wxString error;
 	wxArrayString warnings;
 	bool ok = true;
+
 	ClientVersionID defaultVersion = ClientVersionID(settings.getInteger(Config::DEFAULT_CLIENT_VERSION));
 	if (defaultVersion == CLIENT_VERSION_NONE)
 		defaultVersion = ClientVersion::getLatestVersion()->getID();

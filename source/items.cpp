@@ -927,10 +927,13 @@ bool ItemDatabase::loadItemFromGameXml(xmlNodePtr itemNode, int id)
 			{
 				it.decays = true;
 			}
-			else if(strValue == "maxTextLen")
+			else if(strValue == "maxTextLen" || strValue == "maxTextLength")
 			{
 				if(readXMLInteger(itemAttributesNode, "value", intValue))
+				{
+					it.canReadText = intValue > 0;
 					it.maxTextLen = intValue;
+				}
 			}/*
 			else if(strValue == "writeOnceItemId")
 			{

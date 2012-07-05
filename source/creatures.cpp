@@ -220,7 +220,7 @@ void CreatureDatabase::clear()
 	creature_map.clear();
 }
 
-CreatureType* CreatureDatabase::operator[](std::string name)
+CreatureType* CreatureDatabase::operator[](const std::string& name)
 {
 	CreatureMap::iterator iter = creature_map.find(as_lower_str(name));
 	if(iter != creature_map.end()) {
@@ -229,7 +229,7 @@ CreatureType* CreatureDatabase::operator[](std::string name)
 	return NULL;
 }
 
-CreatureType* CreatureDatabase::addMissingCreatureType(std::string name, bool isNpc)
+CreatureType* CreatureDatabase::addMissingCreatureType(const std::string& name, bool isNpc)
 {
 	assert((*this)[name] == NULL);
 	
@@ -238,6 +238,20 @@ CreatureType* CreatureDatabase::addMissingCreatureType(std::string name, bool is
 	ct->isNpc = isNpc;
 	ct->missing = true;
 	ct->outfit.lookType = 130;
+
+	creature_map.insert(std::make_pair(as_lower_str(name), ct));
+	return ct;
+}
+
+CreatureType* CreatureDatabase::addCreatureType(const std::string& name, bool isNpc, const Outfit& outfit)
+{
+	assert((*this)[name] == NULL);
+	
+	CreatureType* ct = newd CreatureType();
+	ct->name = name;
+	ct->isNpc = isNpc;
+	ct->missing = false;
+	ct->outfit = outfit;
 
 	creature_map.insert(std::make_pair(as_lower_str(name), ct));
 	return ct;
@@ -280,7 +294,7 @@ bool CreatureDatabase::loadFromXML(const FileName& filename, bool standard, wxSt
 					ct->standard = standard;
 					if((*this)[ct->name])
 					{
-						warnings.push_back(wxT("Duplicate creature name \"") + wxstr(ct->name) + wxT("\"! Discarding..."));
+						warnings.push_back(wxT("Duplicate creature type name \"") + wxstr(ct->name) + wxT("\"! Discarding..."));
 						delete ct;
 					}
 					else
