@@ -543,5 +543,6 @@ OtbVersion ClientVersion::getOTBVersion() const
 
 ClientVersionList ClientVersion::getExtensionsSupported() const
 {
-	return ClientVersionList();
+	return extension_versions;
 }
+
