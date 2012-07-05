@@ -40,6 +40,7 @@ std::string FileHandle::getErrorMessage() {
 	switch(error_code) {
 		case FILE_NO_ERROR: return "No error";
 		case FILE_COULD_NOT_OPEN: return "Could not open file";
+		case FILE_INVALID_IDENTIFIER: return "File magic number not recognized";
 		case FILE_STRING_TOO_LONG: return "Too long string encountered";
 		case FILE_READ_ERROR: return "Failed to read from file";
 		case FILE_WRITE_ERROR: return "Failed to write to file";
@@ -58,7 +59,7 @@ std::string FileHandle::getErrorMessage() {
 //=============================================================================
 // File read handle
 
-FileReadHandle::FileReadHandle(std::string name) : file_size(0) {
+FileReadHandle::FileReadHandle(const std::string& name) : file_size(0) {
 #if defined __VISUALC__ && defined _UNICODE
 	file = _wfopen(string2wstring(name).c_str(), L"rb");
 #else
@@ -206,7 +207,7 @@ BinaryNode* MemoryNodeFileReadHandle::getRootNode() {
 //=============================================================================
 // File based node file read handle
 
-DiskNodeFileReadHandle::DiskNodeFileReadHandle(std::string name) :
+DiskNodeFileReadHandle::DiskNodeFileReadHandle(const std::string& name, const std::vector<std::string>& acceptable_identifiers) :
 	file_size(0)
 {
 #if defined __VISUALC__ && defined _UNICODE
@@ -217,13 +218,36 @@ DiskNodeFileReadHandle::DiskNodeFileReadHandle(std::string name) :
 	if(!file || ferror(file)) {
 		error_code = FILE_COULD_NOT_OPEN;
 	} else {
-		uint32_t ver;
-		fread(&ver, 4, 1, file);
-		if(ver != 0x00000000) {
+		char ver[4];
+		if (fread(ver, 1, 4, file) != 4)
+		{
 			fclose(file);
 			error_code = FILE_SYNTAX_ERROR;
 			return;
 		}
+		
+		// 0x00 00 00 00 is accepted as a wildcard version
+
+		if(ver[0] != 0 || ver[1] != 0 || ver[2] != 0 || ver[3] != 0)
+		{
+			bool accepted = false;
+			for (std::vector<std::string>::const_iterator id_iter = acceptable_identifiers.begin(); id_iter != acceptable_identifiers.end(); ++id_iter)
+			{
+				if (memcmp(ver, id_iter->c_str(), 4) == 0)
+				{
+					accepted = true;
+					break;
+				}
+			}
+
+			if (!accepted)
+			{
+				fclose(file);
+				error_code = FILE_SYNTAX_ERROR;
+				return;
+			}
+		}
+
 		fseek(file, 0, SEEK_END);
 		file_size = ftell(file);
 		fseek(file, 4, SEEK_SET);
@@ -456,7 +480,7 @@ void BinaryNode::load() {
 //=============================================================================
 // node file binary write handle
 
-FileWriteHandle::FileWriteHandle(std::string name) {
+FileWriteHandle::FileWriteHandle(const std::string& name) {
 #if defined __VISUALC__ && defined _UNICODE
 	file = _wfopen(string2wstring(name).c_str(), L"wb");
 #else
@@ -510,19 +534,23 @@ bool FileWriteHandle::addRAW(const uint8_t* ptr, size_t sz) {
 //=============================================================================
 // Disk based node file write handle
 
-DiskNodeFileWriteHandle::DiskNodeFileWriteHandle(std::string name) {
+DiskNodeFileWriteHandle::DiskNodeFileWriteHandle(const std::string& name, const std::string& identifier) {
 #if defined __VISUALC__ && defined _UNICODE
 	file = _wfopen(string2wstring(name).c_str(), L"wb");
 #else
 	file = fopen(name.c_str(), "wb");
 #endif
-	if(!file) return;
-	if(ferror(file)) {
+	if(!file || ferror(file)) {
 		error_code = FILE_COULD_NOT_OPEN;
 		return;
 	}
-	uint32_t ver = 0;
-	fwrite(&ver, 4, 1, file);
+	if (identifier.length() != 4)
+	{
+		error_code = FILE_INVALID_IDENTIFIER;
+		return;
+	}
+
+	fwrite(identifier.c_str(), 1, 4, file);
 	if(!cache) {
 		cache = (uint8_t*)malloc(cache_size+1);
 	}

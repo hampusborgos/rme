@@ -728,7 +728,7 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings)
 {
 	std::string filename = nstr((datafile.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + datafile.GetFullName()));
-	DiskNodeFileReadHandle f(filename);
+	DiskNodeFileReadHandle f(filename, StringVector(1, "OTBI"));
 
 	if(f.isOk() == false)
 	{

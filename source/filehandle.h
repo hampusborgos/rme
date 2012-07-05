@@ -52,6 +52,7 @@ typedef unsigned int uint;
 enum FileHandleError {
 	FILE_NO_ERROR,
 	FILE_COULD_NOT_OPEN,
+	FILE_INVALID_IDENTIFIER,
 	FILE_STRING_TOO_LONG,
 	FILE_READ_ERROR,
 	FILE_WRITE_ERROR,
@@ -65,7 +66,8 @@ enum NodeType {
 	ESCAPE_CHAR = 0xfd,
 };
 
-class FileHandle {
+class FileHandle : boost::noncopyable
+{
 public:
 	FileHandle() : error_code(FILE_NO_ERROR), file(NULL) {}
 	virtual ~FileHandle() {close();}
@@ -79,9 +81,10 @@ public:
 	FILE* file;
 };
 
-class FileReadHandle : public FileHandle {
+class FileReadHandle : public FileHandle
+{
 public:
-	FileReadHandle(std::string name);
+	explicit FileReadHandle(const std::string& name);
 	virtual ~FileReadHandle();
 
 	FORCEINLINE bool getU8(uint8_t& u8) {return getType(u8);}
@@ -113,7 +116,8 @@ class NodeFileReadHandle;
 class DiskNodeFileReadHandle;
 class MemoryNodeFileReadHandle;
 
-class BinaryNode {
+class BinaryNode
+{
 public:
 	BinaryNode(NodeFileReadHandle* file, BinaryNode* parent);
 	~BinaryNode();
@@ -162,7 +166,8 @@ protected:
 	friend class MemoryNodeFileReadHandle;
 };
 
-class NodeFileReadHandle : public FileHandle {
+class NodeFileReadHandle : public FileHandle
+{
 public:
 	NodeFileReadHandle();
 	virtual ~NodeFileReadHandle();
@@ -190,9 +195,10 @@ protected:
 	friend class BinaryNode;
 };
 
-class DiskNodeFileReadHandle : public NodeFileReadHandle {
+class DiskNodeFileReadHandle : public NodeFileReadHandle
+{
 public:
-	DiskNodeFileReadHandle(std::string name);
+	DiskNodeFileReadHandle(const std::string& name, const std::vector<std::string>& acceptable_identifiers);
 	virtual ~DiskNodeFileReadHandle();
 
 	virtual void close();
@@ -206,7 +212,8 @@ protected:
 	size_t file_size;
 };
 
-class MemoryNodeFileReadHandle : public NodeFileReadHandle {
+class MemoryNodeFileReadHandle : public NodeFileReadHandle
+{
 public:
 	// Does NOT claim ownership of the memory it is given.
 	MemoryNodeFileReadHandle(const uint8_t* data, size_t size);
@@ -226,9 +233,10 @@ protected:
 	uint8_t* index;
 };
 
-class FileWriteHandle : public FileHandle {
+class FileWriteHandle : public FileHandle
+{
 public:
-	FileWriteHandle(std::string name);
+	explicit FileWriteHandle(const std::string& name);
 	virtual ~FileWriteHandle();
 
 	FORCEINLINE bool addU8(uint8_t u8) {return addType(u8);}
@@ -249,7 +257,8 @@ protected:
 	}
 };
 
-class NodeFileWriteHandle : public FileHandle {
+class NodeFileWriteHandle : public FileHandle
+{
 public:
 	NodeFileWriteHandle();
 	virtual ~NodeFileWriteHandle();
@@ -300,7 +309,7 @@ protected:
 
 class DiskNodeFileWriteHandle : public NodeFileWriteHandle {
 public:
-	DiskNodeFileWriteHandle(std::string name);
+	DiskNodeFileWriteHandle(const std::string& name, const std::string& identifier);
 	virtual ~DiskNodeFileWriteHandle();
 
 	virtual void close();

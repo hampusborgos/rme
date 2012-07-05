@@ -497,8 +497,7 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 	else
 	{
 		// Just open a disk-based read handle
-		wxString wpath = filename.GetFullPath();
-		DiskNodeFileReadHandle f((const char*)wpath.mb_str(wxConvUTF8));
+		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
 		if(f.isOk() == false)
 			return false;
 		return getVersionInfo(&f, out_ver);
@@ -663,7 +662,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 	}
 	else
 	{
-		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()));
+		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
 		if(f.isOk() == false)
 		{
 			error(wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage()));
@@ -1429,7 +1428,10 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 	}
 	else
 	{
-		DiskNodeFileWriteHandle f(std::string(identifier.GetFullPath().mb_str(wxConvUTF8)));
+		DiskNodeFileWriteHandle f(
+			nstr(identifier.GetFullPath()),
+			(settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : "\0\0\0\0")
+		);
 	
 		if(f.isOk() == false)
 		{
