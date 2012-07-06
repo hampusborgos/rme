@@ -1430,7 +1430,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 	{
 		DiskNodeFileWriteHandle f(
 			nstr(identifier.GetFullPath()),
-			(settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : "\0\0\0\0")
+			(settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
 		);
 	
 		if(f.isOk() == false)
