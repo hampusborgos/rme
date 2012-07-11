@@ -22,8 +22,8 @@
 
 // Version info
 // xxyyzzt (major, minor, subversion)
-#define __RME_VERSION_MAJOR__      3
-#define __RME_VERSION_MINOR__      0
+#define __RME_VERSION_MAJOR__      2
+#define __RME_VERSION_MINOR__      2
 #define __RME_SUBVERSION__         0
 
 #define __LIVE_NET_VERSION__       5
