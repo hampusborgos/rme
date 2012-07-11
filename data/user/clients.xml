@@ -200,7 +200,7 @@
         <client name="9.60" otb="9.60" visible="false" data_directory="960">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31"/>
-            <!-- <data datversion="8.6" sprversion="9.6" dat="0x0" spr="0x0"/> -->
+            <!-- <data datversion="9.6" sprversion="9.6" dat="0x0" spr="0x0"/> -->
         </client>
     </clients>
 
