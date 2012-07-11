@@ -13,4 +13,5 @@ data/user
 *.obj
 
 # Xcode
-*.xcuserdata
+xcuserdata
+.DS_STORE
