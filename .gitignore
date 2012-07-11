@@ -1,6 +1,7 @@
 
 # RME
 rme.cfg
+data/user
 
 # Visual Studio
 *.MAP
