@@ -479,8 +479,16 @@ bool ClientVersion::loadValidPaths()
 {
 	while(hasValidPaths() == false)
 	{
-		gui.PopupDialog(wxT("Error"), wxT("Could not locate Tibia.dat and/or Tibia.spr, please navigate to your Tibia ") + name + wxT(" installation folder."), wxOK);
-		wxDirDialog file_dlg(NULL, wxT("Select Tibia directory..."), wxT(""), wxDD_DIR_MUST_EXIST);
+		gui.PopupDialog(
+			wxT("Error"),
+			wxT("Could not locate Tibia.dat and/or Tibia.spr, please navigate to your Tibia ") +
+				name + wxT(" installation folder."),
+			wxOK);
+
+		wxString dirHelpText(wxT("Select Tibia "));
+		dirHelpText << name << " directory.";
+
+		wxDirDialog file_dlg(NULL, dirHelpText, wxT(""), wxDD_DIR_MUST_EXIST);
 		int ok = file_dlg.ShowModal();
 		if(ok == wxID_CANCEL)
 			return false;
