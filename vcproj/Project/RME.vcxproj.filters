@@ -615,6 +615,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\data\menubar.xml" />
-    <None Include="..\..\clients.xml" />
+    <None Include="..\..\data\clients.xml" />
   </ItemGroup>
 </Project>

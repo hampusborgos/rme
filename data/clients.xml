@@ -168,7 +168,9 @@
 
         <client name="8.70" otb="8.70" visible="true" data_directory="870">
             <otbm version="3"/>
+            <!-- Experimental
             <otbm version="4"/>
+            -->
             <extensions from="8.20 - 8.31"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4CFE22C5" spr="0x4CFD078A"/>
         </client>
@@ -200,7 +202,7 @@
         <client name="9.60" otb="9.60" visible="false" data_directory="960">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31"/>
-            <!-- <data datversion="9.6" sprversion="9.6" dat="0x0" spr="0x0"/> -->
+            <!-- <data datversion="9.6" sprversion="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/> -->
         </client>
     </clients>
 

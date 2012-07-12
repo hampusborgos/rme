@@ -376,9 +376,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\clients.xml">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="..\..\data\clients.xml" />
     <None Include="..\..\data\menubar.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

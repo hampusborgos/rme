@@ -23,29 +23,38 @@ void ClientVersion::loadVersions()
 	ClientVersion::unloadVersions();
 
 	// Locate the clients.xml file
-	wxFileName fn;
-	fn.Assign(gui.GetLocalDirectory());
-	fn.SetFullName(wxT("clients.xml"));
-	if(!fn.FileExists())
+	wxFileName file_to_load;
+
+	wxFileName exec_dir_client_xml;
+	exec_dir_client_xml.Assign(gui.GetExecDirectory());
+	exec_dir_client_xml.SetFullName(wxT("clients.xml"));
+	
+	wxFileName data_dir_client_xml;
+	data_dir_client_xml.Assign(gui.GetDataDirectory());
+	data_dir_client_xml.SetFullName(wxT("clients.xml"));
+
+	file_to_load = exec_dir_client_xml;
+	if (!file_to_load.FileExists())
 	{
-		// Try alternate filepath
-		wxFileName fn2;
-		fn2.Assign(gui.GetExecDirectory());
-		fn2.SetFullName(wxT("clients.xml"));
-		if(!fn2.FileExists()){
-			wxLogError(wxString() +
-				wxT("Could not load clients.xml, editor will NOT be able to load any client data files.\n") +
-				wxT("Checked paths:\n") +
-				fn.GetFullPath() + wxT("\n") +
-				fn2.GetFullPath()
-			);
-			return;
-		}
-		fn = fn2;
+		file_to_load = data_dir_client_xml;
+		if (!file_to_load.FileExists())
+			file_to_load.Clear();
 	}
 
+	if (!file_to_load.FileExists())
+	{
+		wxLogError(wxString() +
+			wxT("Could not load clients.xml, editor will NOT be able to load any client data files.\n") +
+			wxT("Checked paths:\n") +
+			exec_dir_client_xml.GetFullPath() + "\n" +
+			data_dir_client_xml.GetFullPath()
+		);
+		return;
+	}
+
+
 	// Parse the file
-	xmlDocPtr doc = xmlParseFile(fn.GetFullPath().mb_str());
+	xmlDocPtr doc = xmlParseFile(file_to_load.GetFullPath().mb_str());
 	if(doc)
 	{
 		xmlNodePtr root = xmlDocGetRootElement(doc);
