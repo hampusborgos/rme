@@ -12,6 +12,18 @@ data/user
 *.suo
 *.obj
 
+vcproj/ipch/
+vcproj/Beta Release/
+vcproj/Debug/
+vcproj/Release/
+vcproj/Project/Beta Release/
+vcproj/Project/Debug/
+vcproj/Project/Release/
+vcproj/Installer/Beta Release/
+vcproj/Installer/Debug/
+vcproj/Installer/Release/
+
+
 # Xcode
 xcuserdata
 .DS_STORE
