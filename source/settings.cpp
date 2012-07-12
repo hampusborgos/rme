@@ -231,7 +231,6 @@ void Settings::IO(IOMode mode) {
 	Int(CREATE_MAP_ON_STARTUP, 1);
 	Int(DEFAULT_CLIENT_VERSION, CLIENT_VERSION_NONE);
 	Int(RAW_LIKE_SIMONE, 1);
-	Int(USE_UPDATER, -1);
 	Int(ONLY_ONE_INSTANCE, 1);
 	Int(USE_OTBM_4_FOR_ALL_MAPS, 0);
 	Int(USE_OTGZ, 1);
@@ -290,6 +289,7 @@ void Settings::IO(IOMode mode) {
 
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);
+	Int(USE_UPDATER, -1);
 #undef section
 #undef Int
 #undef IntToSave
