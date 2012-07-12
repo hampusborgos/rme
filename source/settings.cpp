@@ -289,7 +289,7 @@ void Settings::IO(IOMode mode) {
 
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);
-	Int(USE_UPDATER, -1);
+	Int(USE_UPDATER, 1);
 #undef section
 #undef Int
 #undef IntToSave

@@ -209,19 +209,10 @@ wxString GUI::GetExtensionsDirectory()
 	}
 
 	// Silently reset directory
-	FileName exec_directory;
-	try
-	{
-		exec_directory = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetExecutablePath();
-	}
-	catch(std::bad_cast)
-	{
-		throw; // Crash application (this should never happend anyways...)
-	}
-
-	exec_directory.AppendDir(wxT("extensions"));
-	exec_directory.Mkdir(0755, wxPATH_MKDIR_FULL);
-	return exec_directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
+	FileName local_directory = GetLocalDirectory();
+	local_directory.AppendDir(wxT("extensions"));
+	local_directory.Mkdir(0755, wxPATH_MKDIR_FULL);
+	return local_directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 }
 
 bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force)
