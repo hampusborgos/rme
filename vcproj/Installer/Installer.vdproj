@@ -681,12 +681,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B6FC8BF5BB7E474ABDCA4D49DBD92A5F"
-        "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B7787217D54A441BA320F19D3696662C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -707,12 +701,6 @@
         {
         "MsmKey" = "8:_BD33415442D888574A506BC5D7D51239"
         "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BED1C110026A400A81DB26EE3766065F"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -767,6 +755,12 @@
         {
         "MsmKey" = "8:_CF1F33CF85874EDF97F23F41B1B196AF"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_D02718D3AF7D4CB7B85425E5FB9FCAF2"
+        "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1081,7 +1075,7 @@
             "SourcePath" = "8:..\\..\\extensions\\new_doodads_by_uforoid.xml"
             "TargetName" = "8:new_doodads_by_uforoid.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1281,7 +1275,7 @@
             "SourcePath" = "8:..\\..\\extensions\\beach.xml"
             "TargetName" = "8:beach.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1461,7 +1455,7 @@
             "SourcePath" = "8:..\\..\\extensions\\underwater_800.xml"
             "TargetName" = "8:underwater_800.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1561,7 +1555,7 @@
             "SourcePath" = "8:..\\..\\extensions\\better_creatures.xml"
             "TargetName" = "8:better_creatures.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1741,7 +1735,7 @@
             "SourcePath" = "8:..\\..\\extensions\\frozen furniture.xml"
             "TargetName" = "8:frozen furniture.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1801,7 +1795,7 @@
             "SourcePath" = "8:..\\..\\extensions\\tent_wall_fix.xml"
             "TargetName" = "8:tent_wall_fix.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2261,7 +2255,7 @@
             "SourcePath" = "8:..\\..\\extensions\\sample.xml"
             "TargetName" = "8:sample.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2341,7 +2335,7 @@
             "SourcePath" = "8:..\\..\\extensions\\jungle doodads.xml"
             "TargetName" = "8:jungle doodads.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2461,7 +2455,7 @@
             "SourcePath" = "8:..\\..\\extensions\\better_creatures 760.xml"
             "TargetName" = "8:better_creatures 760.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2541,7 +2535,7 @@
             "SourcePath" = "8:..\\..\\extensions\\8.4 additions.xml"
             "TargetName" = "8:8.4 additions.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2861,7 +2855,7 @@
             "SourcePath" = "8:..\\..\\extensions\\smithing_by_sadza.xml"
             "TargetName" = "8:smithing_by_sadza.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3141,7 +3135,7 @@
             "SourcePath" = "8:..\\..\\extensions\\better_creatures 820.xml"
             "TargetName" = "8:better_creatures 820.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3161,7 +3155,7 @@
             "SourcePath" = "8:..\\..\\extensions\\weapons_fur_by_manolao.xml"
             "TargetName" = "8:weapons_fur_by_manolao.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3221,7 +3215,7 @@
             "SourcePath" = "8:..\\..\\extensions\\underwater_810.xml"
             "TargetName" = "8:underwater_810.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3301,7 +3295,7 @@
             "SourcePath" = "8:..\\..\\extensions\\new_walls_by_bobany.xml"
             "TargetName" = "8:new_walls_by_bobany.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3334,26 +3328,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BED1C110026A400A81DB26EE3766065F"
-            {
-            "SourcePath" = "8:..\\wd\\libxml2.dll"
-            "TargetName" = "8:libxml2.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_58006C1040204107B7CD8B705BFF292C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BF59EC30F31249FEB390125D88F5B6F1"
@@ -3441,7 +3415,7 @@
             "SourcePath" = "8:..\\..\\extensions\\wall_and_railing.xml"
             "TargetName" = "8:wall_and_railing.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3501,7 +3475,7 @@
             "SourcePath" = "8:..\\..\\extensions\\marquees.xml"
             "TargetName" = "8:marquees.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3721,7 +3695,7 @@
             "SourcePath" = "8:..\\..\\extensions\\better_creatures 840.xml"
             "TargetName" = "8:better_creatures 840.xml"
             "Tag" = "8:"
-            "Folder" = "8:_23B4F0E5A74E4DDBB7A6DC5701C11841"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -4063,6 +4037,17 @@
                     "Property" = "8:_DC127AAE17164A9A9F080B2F009A0169"
                         "Folders"
                         {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_16BA3640EDBD45AF964AB26ADBA5BB85"
+                            {
+                            "Name" = "8:extensions"
+                            "AlwaysCreate" = "11:TRUE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_E157DF6555284632B34F0CFA8B282024"
+                                "Folders"
+                                {
+                                }
+                            }
                         }
                     }
                 }
@@ -4099,17 +4084,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_23B4F0E5A74E4DDBB7A6DC5701C11841"
-                    {
-                    "Name" = "8:extensions"
-                    "AlwaysCreate" = "11:TRUE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_E157DF6555284632B34F0CFA8B282024"
-                        "Folders"
-                        {
-                        }
-                    }
                     "{9EF0B969-E518-4E46-987F-47570745A589}:_E9E36A38653F417CBE93C2E4C532DB00"
                     {
                     "Name" = "8:data"
@@ -4304,15 +4278,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Remere's Map Editor"
-        "ProductCode" = "8:{9CBEAEF3-C6BA-4F0F-8DC2-03B12BC8CF2F}"
-        "PackageCode" = "8:{9E8EB2B9-7E64-483C-8C00-8A918BA1362F}"
+        "ProductCode" = "8:{F13580B9-F450-4308-9A03-DD3489B03C3E}"
+        "PackageCode" = "8:{C6A1CD0B-D4D8-4741-BD32-1C27BF9106B7}"
         "UpgradeCode" = "8:{92DB0996-EE04-430A-80AA-888213E3C693}"
         "AspNetVersion" = "8:4.0.21006.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:2.1"
+        "ProductVersion" = "8:2.2"
         "Manufacturer" = "8:Remere"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -4417,6 +4391,14 @@
                                             "ValueTypes" = "3:3"
                                             "Value" = "3:1"
                                             }
+                                            "{ADCFDA98-8FDD-45E4-90BC-E3D20B029870}:_F7A44AE925894BF1A812B92303E18DC2"
+                                            {
+                                            "Name" = "8:USE_UPDATER"
+                                            "Condition" = "8:USE_UPDATER=0"
+                                            "Transitive" = "11:FALSE"
+                                            "ValueTypes" = "3:3"
+                                            "Value" = "3:0"
+                                            }
                                         }
                                     }
                                 }
@@ -4467,6 +4449,20 @@
             "Folder" = "8:_99BC8E6EA49240A6AB8DD2414CAF3FAD"
             "WorkingFolder" = "8:_58006C1040204107B7CD8B705BFF292C"
             "Icon" = "8:_FD1AE0212B9E4EB7A20D997AAFF68E4B"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_CEF6B799961D431698D36742879437E2"
+            {
+            "Name" = "8:Extensions Folder"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Folder" = "8:_F51373FDA4CF4EF790CBDD0CCDD3926B"
+            "WorkingFolder" = "8:_57EF61A1363D42578A7CA4A5BC01536D"
+            "Icon" = "8:"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D48F45918470430E96AC77DD7D4357E6"
@@ -5182,11 +5178,11 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_B6FC8BF5BB7E474ABDCA4D49DBD92A5F"
+            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_D02718D3AF7D4CB7B85425E5FB9FCAF2"
             {
             "UseDynamicProperties" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:Microsoft_VC100_DebugCRT_x86.msm"
+            "SourcePath" = "8:Microsoft_VC100_CRT_x86.msm"
                 "Properties"
                 {
                 }
@@ -5201,7 +5197,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_733912B9151247AAA3223F598541ECB9"
             {
-            "SourcePath" = "8:..\\Release\\RME.exe"
+            "SourcePath" = "8:..\\Debug\\RME.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_58006C1040204107B7CD8B705BFF292C"
