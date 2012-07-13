@@ -193,16 +193,16 @@
             <data datversion="8.6" sprversion="7.0" dat="0x4F6B341F" spr="0x4F5DCEF7"/>
         </client>
 
-        <client name="9.54" default="true" otb="9.54" visible="true" data_directory="954">
+        <client name="9.54" otb="9.54" visible="true" data_directory="954">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4FD5956B" spr="0x4FD595B7"/>
         </client>
 
-        <client name="9.60" otb="9.60" visible="false" data_directory="960">
+        <client name="9.60" default="true" visible="true" otb="9.60" data_directory="960">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31"/>
-            <!-- <data datversion="9.6" sprversion="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/> -->
+            <data datversion="9.6" sprversion="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/>
         </client>
     </clients>
 
