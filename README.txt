@@ -4,12 +4,13 @@ WINDOWS:
 	If you don't have them already, you will need the following dll files:
 	iconv.dll
 	libxml2.dll
-	MSVCP80.dll
-	msvcr80.dll
+	msvcp100.dll (SP1)
+	msvcr100.dll (SP1)
 	zlib1.dll
+	archive.dll
 	
 	Download them (google the filenames) and put them in the same folder as the RME.exe file.
-	If the mapeditor still won't load, you will need to install the NET 2.0 framework.
+	If the mapeditor still won't load, you will need to install the NET 2.0 framework (only relevant for Windows XP).
 	Download this from: http://www.microsoft.com/downloads/details.aspx?familyid=0856eacb-4362-4b0d-8edd-aab15c5e04f5&displaylang=en
 	
 LINUX (Ubuntu):
@@ -33,7 +34,7 @@ step-by-step guide:
 	
 	Then do:
 	sudo apt-get upgrade
-	sudo apt-get install libwxgtk2.8-0 libboost1.40-all-dev libxml2 libglu1-mesa libgl1-mesa-glx
+	sudo apt-get install libwxgtk2.9-0 libboost1.50-all-dev libxml2 libglu1-mesa libgl1-mesa-glx
 
 	Now extract the files from the mapeditors archive file. If you cannot open it, please download p7zip:
 	sudo aptitude install p7zip
@@ -41,7 +42,7 @@ step-by-step guide:
 	Then rightclick on the file called RME, go to properties, Rights and check the "Allow execution as a program" checkbox.
 
 OTHER LINUX DISTROS:
-	You need libwxgtk2.8.0, and opengl runtime libraries, you may have to compile this yourself depending on whether it's available
+	You need libwxgtk2.9.1, and opengl runtime libraries, you may have to compile this yourself depending on whether it's available
 	on your distribution from the start, you do NOT want the unicode version of these files.
 	
 	(If you have a guide to submit please contact me, Remere)
