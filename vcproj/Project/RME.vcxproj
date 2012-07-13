@@ -69,8 +69,8 @@
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">f:\Libs\include;F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.9.3\include\msvc;F:\Libs\wxWidgets-2.9.3\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">F:\Libs\lib\boost;F:\Libs\lib;F:\Libs\wxWidgets-2.9.3\lib\vc_lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">f:\Libs\include;F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.9.3\include\msvc;F:\Libs\wxWidgets-2.9.3\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Libs\lib\boost;F:\Libs\lib;F:\Libs\wxWidgets-2.9.3\lib\vc_lib;$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Projects\rme-git\dependencies\vs\include;F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.9.3\include\msvc;F:\Libs\wxWidgets-2.9.3\include;$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">F:\Libs\lib\boost;F:\Projects\rme-git\dependencies\vs\lib;F:\Libs\wxWidgets-2.9.3\lib\vc_lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">f:\Libs\include;F:\Libs\boost\boost_1_42_0;F:\Libs\wxWidgets-2.9.3\include\msvc;F:\Libs\wxWidgets-2.9.3\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">F:\Libs\lib;F:\Libs\lib\boost;F:\Libs\wxWidgets-2.9.3\lib\vc_lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>

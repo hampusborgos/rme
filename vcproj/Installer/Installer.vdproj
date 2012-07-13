@@ -39,6 +39,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_0C06B912FF8B3B6B3F38F036A4FA4FBD"
+        "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_0D22973339DF4A83B2D69799C6DC0C24"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -53,12 +59,6 @@
         {
         "MsmKey" = "8:_0DD02519CAD74612ADAE292B52011B51"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_0F0AEC021C7B69869BB6E874AF7D6166"
-        "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -293,6 +293,12 @@
         {
         "MsmKey" = "8:_5575061F08884FF69778BF0C1293B68B"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_55D93737794A7D27B700F83A297D8427"
+        "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1190,6 +1196,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0C06B912FF8B3B6B3F38F036A4FA4FBD"
+            {
+            "SourcePath" = "8:libxml2.dll"
+            "TargetName" = "8:libxml2.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_58006C1040204107B7CD8B705BFF292C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D22973339DF4A83B2D69799C6DC0C24"
             {
             "SourcePath" = "8:..\\..\\data\\946\\grounds.xml"
@@ -1248,26 +1274,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F0AEC021C7B69869BB6E874AF7D6166"
-            {
-            "SourcePath" = "8:libxml2.dll"
-            "TargetName" = "8:libxml2.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_58006C1040204107B7CD8B705BFF292C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F48ECA3415B4C71AD648D445814C274"
@@ -2048,6 +2054,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_55D93737794A7D27B700F83A297D8427"
+            {
+            "SourcePath" = "8:archive.dll"
+            "TargetName" = "8:archive.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_58006C1040204107B7CD8B705BFF292C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5698688F02B14AB9BA4592AAB5451B41"
@@ -4562,7 +4588,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Remere's Map Editor"
         "ProductCode" = "8:{0C0FE292-E7D0-4938-AA41-E6E5F72D21BC}"
-        "PackageCode" = "8:{523F2811-5335-4292-B7A2-FCB1D5023ACE}"
+        "PackageCode" = "8:{E529F21C-4877-441E-A52F-CF66DB4A7821}"
         "UpgradeCode" = "8:{92DB0996-EE04-430A-80AA-888213E3C693}"
         "AspNetVersion" = "8:4.0.21006.0"
         "RestartWWWService" = "11:FALSE"
