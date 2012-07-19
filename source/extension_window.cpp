@@ -86,7 +86,7 @@ wxString ExtensionsDialog::HTMLForExtension(MaterialsExtension* me) const
 
 		<< "< background='#ff0000'>"
 		<< "<td width='100px'><b>Extension</b></td>"
-		<< "<td class='val'>";
+		<< "<td>";
 	
 	if (me->url.empty())
 		markup << me->name;
@@ -99,7 +99,7 @@ wxString ExtensionsDialog::HTMLForExtension(MaterialsExtension* me) const
 
 		<< "<tr>"
 		<< "<td width='100px'><b>Author</b></td>"
-		<< "<td class='val'>";
+		<< "<td>";
 
 	if (me->author_url.empty())
 		markup << me->author;
@@ -112,12 +112,12 @@ wxString ExtensionsDialog::HTMLForExtension(MaterialsExtension* me) const
 
 		<< "<tr>"
 		<< "<td width='100px'><b>Description</b></td>"
-		<< "<td class='val'>" << me->getVersionString() << "</td>"
+		<< "<td>" << me->description << "</td>"
 		<< "</tr>"
 
 		<< "<tr>"
 		<< "<td width='100px'><b>Clients</b></td>"
-		<< "<td class='val'>" << me->description << "</td>"
+		<< "<td>" << me->getVersionString() << "</td>"
 		<< "</tr>"
 
 		<< "</table>"
