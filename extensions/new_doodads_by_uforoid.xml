@@ -1,4 +1,8 @@
-<materialsextension name="New Doodads" author="Uforoid" description="Adds the missing beds to the editor." client="8.10;8.20">
+<materialsextension
+	name="New Doodads"
+	author="Uforoid"
+	description="Adds the missing beds to the editor."
+	client="8.10;8.20 - 8.31">
 
 	<brush name="pirate statue" type="doodad" server_lookid="5671" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate> <item id="5671" chance="30"/> </alternate> -- south --

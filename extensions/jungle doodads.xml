@@ -1,4 +1,4 @@
-<materialsextension name="Jungle Doodads" author="Remere" description="This adds most of the missing Jungle doodads" client="8.00;8.10;8.20"> 
+<materialsextension name="Jungle Doodads" author="Remere" description="This adds most of the missing Jungle doodads" client="8.00;8.10;8.20 - 8.31"> 
 
     <brush name="jungle trees" type="doodad" server_lookid="4008" draggable="true" on_blocking="false" thickness="11/90"> 
         <item id="4007" chance="10"/> 

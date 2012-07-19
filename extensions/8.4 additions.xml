@@ -1,4 +1,10 @@
-<materialsextension name="8.4 additions" author="Xenios @otland" description="8.4 additions" client="8.40">
+<materialsextension
+	name="8.4 additions"
+	author="Xenios"
+	authorurl="http://otland.net/members/xenios/"
+	description="8.4 additions"
+	client="8.40">
+
 	<brush name="Yalahar wall" type="wall" server_lookid="9370">
 		<wall type="horizontal">
 			<item id="9373" chance="300"/>

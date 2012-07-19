@@ -1,4 +1,8 @@
-<materialsextension name="walls and railings" author="Marco/Heer Karel" description="Walls and railing extension" client="8.00;8.10;8.20">
+<materialsextension
+	name="walls and railings"
+	author="Marco/Heer Karel"
+	description="Walls and railing extension"
+	client="8.00;8.10;8.20 - 8.31">
 
 	<brush name="jungle stone wall" type="wall" server_lookid="3458">
 		<wall type="horizontal">

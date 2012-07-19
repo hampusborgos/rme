@@ -1,4 +1,4 @@
-<materialsextension name="Beach Doodads" author="Remere" description="This adds all the doodads related to the beach" client="8.10;8.20"> 
+<materialsextension name="Beach Doodads" author="Remere" description="This adds all the doodads related to the beach" client="8.10;8.20 - 8.31"> 
 	
 	<brush name="blue beach chair" type="doodad" server_lookid="7712" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate> <item id="7712" chance="30"/> </alternate> -- south --

@@ -1,4 +1,4 @@
-<materialsextension name="Frozen Furtunite" author="Dark Master" description="This adds frozen furtunite to the editor." client="8.00;8.10;8.20"> 
+<materialsextension name="Frozen Furtunite" author="Dark Master" description="This adds frozen furtunite to the editor." client="8.00;8.10;8.20 - 8.31"> 
 	<brush name="stone throne" type="doodad" server_lookid="7280" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
 			<composite chance="10">

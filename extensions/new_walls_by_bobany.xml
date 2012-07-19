@@ -1,4 +1,9 @@
-<materialsextension name="New Walls" author="Bobany" description="Additional walls" client="8.10;8.20">
+<materialsextension
+	name="New Walls"
+	author="Bobany"
+	description="Additional walls"
+	client="8.10;8.20 - 8.31">
+
 	<brush name="frozen wall" type="wall" server_lookid="6740">
 		<wall type="horizontal">
 			<item id="6740" chance="500"/>
@@ -95,6 +100,9 @@
 		</wall>
 		<wall type="corner">
 			<item id="7619" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="9060" chance="500"/>
 		</wall>
 		
 		<friend name="white tent wall" redirect="true"/>

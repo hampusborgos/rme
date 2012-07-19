@@ -1,4 +1,4 @@
-<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="7.60"> 
+<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="7.6"> 
 	<tileset name="Water creatures">
 		<creatures>
 			<creature name="Azure Frog"/>

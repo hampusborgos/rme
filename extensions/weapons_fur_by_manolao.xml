@@ -1,4 +1,4 @@
-<materialsextension name="Fur Walls, Weapon doodads" author="Manolo" description="Adds Fur Walls and weapon related doodads to the palette." client="8.00;8.10;8.20"> 
+<materialsextension name="Fur Walls, Weapon doodads" author="Manolo" description="Adds Fur Walls and weapon related doodads to the palette." client="8.00;8.10;8.20 - 8.31"> 
 	<brush name="Fur Wall" type="wall" server_lookid="6774"> 
 		<wall type="horizontal"> 
 			<item id="6774" chance="500"/> 

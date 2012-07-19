@@ -1,4 +1,4 @@
-<materialsextension name="Marquees" author="Remere" description="This adds all the roof marquees" client="8.00;8.10;8.20"> 
+<materialsextension name="Marquees" author="Remere" description="This adds all the roof marquees" client="8.00;8.10;8.20 - 8.31"> 
 
 	<border id="88400"> -- red striped marquee horizontal border --	
 		<borderitem edge="n"   item="5166"/>
