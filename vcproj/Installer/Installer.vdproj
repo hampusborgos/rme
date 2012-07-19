@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_082638B11F074FB3A890AC295DCC9CB5"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0A1AE88E3E1741D082C56A596C147428"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -34,6 +28,12 @@
         "Entry"
         {
         "MsmKey" = "8:_0A720C13A1274BD3A37CA0052216A1C0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0AA1FF5669FB49E08157CD442D888E10"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -81,13 +81,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_1241D5C558444A6F8CA77DAB5AE007B0"
+        "MsmKey" = "8:_1351798D9A2B4126BFA1C0A754BD57EF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_1351798D9A2B4126BFA1C0A754BD57EF"
+        "MsmKey" = "8:_14062CBC43E84E70A655C2BF8C0A3B30"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -117,6 +117,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1DBE474BC3264644A9D0A663B751AD14"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1E146C33D24E44238A21BE31C6E4050A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -130,12 +136,6 @@
         "Entry"
         {
         "MsmKey" = "8:_214979C037D64B6CB4CB42A5D29E5BBF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_22A09DAA2B1149C9875EE5EB2B3BE957"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -165,13 +165,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2DB365CA693D43D1841D9DEBC31746A5"
+        "MsmKey" = "8:_2C43F7769A5A47928B2B1EEA20E21FA0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_30F0E7356C5E4292B53A75C76CB7ABCB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3207A176F5C2407A8A34BAB0B57D6FE5"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -219,12 +225,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3FFC583AA5934AAC8AF63CB26FA470C8"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_40223522C918478D85DE3983E5F99658"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -239,12 +239,6 @@
         {
         "MsmKey" = "8:_4656D1E052F3001E431E45F50432D6A3"
         "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_480E3DDA14EB4821BB1DF2DDC977BED4"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -273,6 +267,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4DEB4DAB2A7247A6B598F4DFAF9DE27D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_505EBF8C7D324368A757933C9C6CEE97"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -280,6 +280,18 @@
         "Entry"
         {
         "MsmKey" = "8:_5064AEAD45F946518AE976A8CEAAEDEF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_506F882BB960467C9ED36C4140F7AC0A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_51026A4C312749B3A0ED912056B00D98"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -316,6 +328,12 @@
         "Entry"
         {
         "MsmKey" = "8:_575CC32B39E84D50A04D5EC93EBA3645"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5930E57B64514643B0F6646A7C13E7D7"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -393,7 +411,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_6E9BD7B0006C4E52B0BCA1377B85E2B5"
+        "MsmKey" = "8:_6CD66BD5631C45BEBE7AF25792DD3BEA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -423,7 +441,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7986C9CDDBFE4D2681234CC2C03D80F1"
+        "MsmKey" = "8:_7362F44AA6724B71A7134C9F4F9CD0E0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -459,7 +477,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_7D74B89D8ABC4FB084529F1858D5D7F1"
+        "MsmKey" = "8:_7E85AAF436CE4561948242E9B3A6C6D2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -484,12 +502,6 @@
         "Entry"
         {
         "MsmKey" = "8:_80DC74E38135451BA4A88CED392050C6"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_80F7EBC18674459FB0EF738B267363A9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -526,6 +538,12 @@
         "Entry"
         {
         "MsmKey" = "8:_87FFBBA2A1EA444CA5C4B1E4A35D4772"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8973CFCF712F44E9B12CDC220ADFBFE0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -579,6 +597,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_96EEA48D5A884B3A801D8D4574DA0B23"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9A5B0E5240E2473B97D15F2B049FC37C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -597,12 +621,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_9C797C6DC25F4445B553ED3C53DC421B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9DCF90E10A254BDA9CBEDDF85BF893A1"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -610,6 +628,12 @@
         "Entry"
         {
         "MsmKey" = "8:_9DE4D1F222614169A55B4F9D94C68E8D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9E1657A9B72046E1AC05AB1C848D9333"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -687,18 +711,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_AE06B2418DF94191947E83A965BFDAB1"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B3AA2FE4B0034417B13FD146A26E4B8E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B4DBF605A5C14292B41173C4B1492A28"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -706,12 +718,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B52A99ECA27C47C5A47DFF935C7BBC99"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B58C6858D76C4B5FA27CBA129B04B0D2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -730,12 +736,6 @@
         "Entry"
         {
         "MsmKey" = "8:_B7CE8491B37C404EB303EBA987A4932E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B85C223A3D9542038B18DF86926BA97F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -765,6 +765,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_C1BFE452A4D34A4C843A5DA97CE189CF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C2701EB31BDA495CAF978808FD28EDAA"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -777,31 +783,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C6D678A44EC94F169AED200CA396FA9E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C9CC236BD52D4B1DAA1BCEBD4F237B38"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_CA5317A7686E434090C714838136CA10"
-        "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_CD640E91C07A41A29AF2667EE8955996"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CED0CF07FDC14A5FA3FB2EDFCEFB995D"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -873,12 +861,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E18D44BB91A442D494ADCA03958E05EF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E47E20400D924BFF8E6806A70B9E8FA6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -899,6 +881,12 @@
         {
         "MsmKey" = "8:_E7C166444A27C924F5F6A6D30FFBB5AF"
         "OwnerKey" = "8:_733912B9151247AAA3223F598541ECB9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EF84312A970C44AF95AE5FB735428C89"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -933,6 +921,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F32E967DFCF4499ABBB1EBA6EDAB3801"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_F5389B9DBFA54F70AEE5C8E5B54E0C02"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -958,6 +952,12 @@
         "Entry"
         {
         "MsmKey" = "8:_FC06A462D46B400FAB643038E60CE63D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FC275DE744554541A8E9CC94C86ED769"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1136,26 +1136,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_082638B11F074FB3A890AC295DCC9CB5"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\new_doodads_by_uforoid.xml"
-            "TargetName" = "8:new_doodads_by_uforoid.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0A1AE88E3E1741D082C56A596C147428"
             {
             "SourcePath" = "8:..\\..\\data\\854\\items.xml"
@@ -1182,6 +1162,26 @@
             "TargetName" = "8:grounds.xml"
             "Tag" = "8:"
             "Folder" = "8:_B22E11D5C80B4F35BF2D788ED6D5B45B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0AA1FF5669FB49E08157CD442D888E10"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\8.5_by_marcotrimmers.xml"
+            "TargetName" = "8:8.5_by_marcotrimmers.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1336,12 +1336,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1241D5C558444A6F8CA77DAB5AE007B0"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1351798D9A2B4126BFA1C0A754BD57EF"
             {
-            "SourcePath" = "8:..\\..\\extensions\\beach.xml"
-            "TargetName" = "8:beach.xml"
+            "SourcePath" = "8:..\\..\\data\\946\\creatures.xml"
+            "TargetName" = "8:creatures.xml"
             "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Folder" = "8:_200EA8A06C1F4D8F92C2B505803ACC9B"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1356,12 +1356,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1351798D9A2B4126BFA1C0A754BD57EF"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_14062CBC43E84E70A655C2BF8C0A3B30"
             {
-            "SourcePath" = "8:..\\..\\data\\946\\creatures.xml"
-            "TargetName" = "8:creatures.xml"
+            "SourcePath" = "8:..\\..\\extensions\\better_creatures 840.xml"
+            "TargetName" = "8:better_creatures 840.xml"
             "Tag" = "8:"
-            "Folder" = "8:_200EA8A06C1F4D8F92C2B505803ACC9B"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1456,6 +1456,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1DBE474BC3264644A9D0A663B751AD14"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\marquees.xml"
+            "TargetName" = "8:marquees.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1E146C33D24E44238A21BE31C6E4050A"
             {
             "SourcePath" = "8:..\\..\\data\\870\\doodads.xml"
@@ -1502,26 +1522,6 @@
             "TargetName" = "8:grounds.xml"
             "Tag" = "8:"
             "Folder" = "8:_C5A1FA4F075D43B39B777B3360890029"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_22A09DAA2B1149C9875EE5EB2B3BE957"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\underwater_800.xml"
-            "TargetName" = "8:underwater_800.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1616,10 +1616,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2DB365CA693D43D1841D9DEBC31746A5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C43F7769A5A47928B2B1EEA20E21FA0"
             {
-            "SourcePath" = "8:..\\..\\extensions\\better_creatures.xml"
-            "TargetName" = "8:better_creatures.xml"
+            "SourcePath" = "8:..\\..\\extensions\\better_creatures 760.xml"
+            "TargetName" = "8:better_creatures 760.xml"
             "Tag" = "8:"
             "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
@@ -1642,6 +1642,26 @@
             "TargetName" = "8:grounds.xml"
             "Tag" = "8:"
             "Folder" = "8:_62BBECD7894D4A6AA759AEB990CD9C4F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3207A176F5C2407A8A34BAB0B57D6FE5"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\SlayingWorld Additions.xml"
+            "TargetName" = "8:SlayingWorld Additions.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -1796,26 +1816,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3FFC583AA5934AAC8AF63CB26FA470C8"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\frozen furniture.xml"
-            "TargetName" = "8:frozen furniture.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_40223522C918478D85DE3983E5F99658"
             {
             "SourcePath" = "8:..\\wd\\msvcr100.dll"
@@ -1874,26 +1874,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_480E3DDA14EB4821BB1DF2DDC977BED4"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\tent_wall_fix.xml"
-            "TargetName" = "8:tent_wall_fix.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4928460E1DDB4C02A52992BFFBAAD99A"
@@ -1976,6 +1956,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4DEB4DAB2A7247A6B598F4DFAF9DE27D"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\weapons_fur_by_manolao.xml"
+            "TargetName" = "8:weapons_fur_by_manolao.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_505EBF8C7D324368A757933C9C6CEE97"
             {
             "SourcePath" = "8:..\\..\\data\\910\\walls.xml"
@@ -2002,6 +2002,46 @@
             "TargetName" = "8:materials.xml"
             "Tag" = "8:"
             "Folder" = "8:_06FA40430BC34CD5B560E0810CC45F8E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_506F882BB960467C9ED36C4140F7AC0A"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\better_creatures.xml"
+            "TargetName" = "8:better_creatures.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_51026A4C312749B3A0ED912056B00D98"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\wall_and_railing.xml"
+            "TargetName" = "8:wall_and_railing.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2122,6 +2162,26 @@
             "TargetName" = "8:tilesets.xml"
             "Tag" = "8:"
             "Folder" = "8:_62BBECD7894D4A6AA759AEB990CD9C4F"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5930E57B64514643B0F6646A7C13E7D7"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\underwater_810.xml"
+            "TargetName" = "8:underwater_810.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2376,10 +2436,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6E9BD7B0006C4E52B0BCA1377B85E2B5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6CD66BD5631C45BEBE7AF25792DD3BEA"
             {
-            "SourcePath" = "8:..\\..\\extensions\\sample.xml"
-            "TargetName" = "8:sample.xml"
+            "SourcePath" = "8:..\\..\\extensions\\beach.xml"
+            "TargetName" = "8:beach.xml"
             "Tag" = "8:"
             "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
@@ -2456,10 +2516,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7986C9CDDBFE4D2681234CC2C03D80F1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7362F44AA6724B71A7134C9F4F9CD0E0"
             {
-            "SourcePath" = "8:..\\..\\extensions\\jungle doodads.xml"
-            "TargetName" = "8:jungle doodads.xml"
+            "SourcePath" = "8:..\\..\\extensions\\more stuff 9.10_by_the_next.xml"
+            "TargetName" = "8:more stuff 9.10_by_the_next.xml"
             "Tag" = "8:"
             "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
@@ -2576,10 +2636,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7D74B89D8ABC4FB084529F1858D5D7F1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7E85AAF436CE4561948242E9B3A6C6D2"
             {
-            "SourcePath" = "8:..\\..\\extensions\\better_creatures 760.xml"
-            "TargetName" = "8:better_creatures 760.xml"
+            "SourcePath" = "8:..\\..\\extensions\\new_walls_by_bobany.xml"
+            "TargetName" = "8:new_walls_by_bobany.xml"
             "Tag" = "8:"
             "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
@@ -2662,26 +2722,6 @@
             "TargetName" = "8:items.otb"
             "Tag" = "8:"
             "Folder" = "8:_62BBECD7894D4A6AA759AEB990CD9C4F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_80F7EBC18674459FB0EF738B267363A9"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\8.4 additions.xml"
-            "TargetName" = "8:8.4 additions.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2802,6 +2842,26 @@
             "TargetName" = "8:grounds.xml"
             "Tag" = "8:"
             "Folder" = "8:_06FA40430BC34CD5B560E0810CC45F8E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8973CFCF712F44E9B12CDC220ADFBFE0"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\frozen furniture.xml"
+            "TargetName" = "8:frozen furniture.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -2976,6 +3036,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_96EEA48D5A884B3A801D8D4574DA0B23"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\underwater_800.xml"
+            "TargetName" = "8:underwater_800.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9A5B0E5240E2473B97D15F2B049FC37C"
             {
             "SourcePath" = "8:..\\..\\data\\810\\creatures.xml"
@@ -3036,26 +3116,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C797C6DC25F4445B553ED3C53DC421B"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\smithing_by_sadza.xml"
-            "TargetName" = "8:smithing_by_sadza.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9DCF90E10A254BDA9CBEDDF85BF893A1"
             {
             "SourcePath" = "8:..\\..\\data\\850\\grounds.xml"
@@ -3082,6 +3142,26 @@
             "TargetName" = "8:doodads.xml"
             "Tag" = "8:"
             "Folder" = "8:_C5A1FA4F075D43B39B777B3360890029"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9E1657A9B72046E1AC05AB1C848D9333"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\smithing_by_sadza.xml"
+            "TargetName" = "8:smithing_by_sadza.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3336,46 +3416,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AE06B2418DF94191947E83A965BFDAB1"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\better_creatures 820.xml"
-            "TargetName" = "8:better_creatures 820.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B3AA2FE4B0034417B13FD146A26E4B8E"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\weapons_fur_by_manolao.xml"
-            "TargetName" = "8:weapons_fur_by_manolao.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B4DBF605A5C14292B41173C4B1492A28"
             {
             "SourcePath" = "8:..\\..\\data\\954\\creatures.xml"
@@ -3402,26 +3442,6 @@
             "TargetName" = "8:items.otb"
             "Tag" = "8:"
             "Folder" = "8:_D4FB0417CF8A41308426721E0D599A5F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B58C6858D76C4B5FA27CBA129B04B0D2"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\underwater_810.xml"
-            "TargetName" = "8:underwater_810.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3482,26 +3502,6 @@
             "TargetName" = "8:items.xml"
             "Tag" = "8:"
             "Folder" = "8:_080F8E74165647AAB600C95DC3802B06"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B85C223A3D9542038B18DF86926BA97F"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\new_walls_by_bobany.xml"
-            "TargetName" = "8:new_walls_by_bobany.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3596,6 +3596,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C1BFE452A4D34A4C843A5DA97CE189CF"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\sample.xml"
+            "TargetName" = "8:sample.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C2701EB31BDA495CAF978808FD28EDAA"
             {
             "SourcePath" = "8:..\\..\\data\\820\\creatures.xml"
@@ -3636,26 +3656,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C6D678A44EC94F169AED200CA396FA9E"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\wall_and_railing.xml"
-            "TargetName" = "8:wall_and_railing.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C9CC236BD52D4B1DAA1BCEBD4F237B38"
             {
             "SourcePath" = "8:..\\..\\data\\910\\creatures.xml"
@@ -3682,26 +3682,6 @@
             "TargetName" = "8:creatures.xml"
             "Tag" = "8:"
             "Folder" = "8:_D2E39C760040490780E08D2F5EF85D9A"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CED0CF07FDC14A5FA3FB2EDFCEFB995D"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\marquees.xml"
-            "TargetName" = "8:marquees.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -3936,26 +3916,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E18D44BB91A442D494ADCA03958E05EF"
-            {
-            "SourcePath" = "8:..\\..\\extensions\\better_creatures 840.xml"
-            "TargetName" = "8:better_creatures 840.xml"
-            "Tag" = "8:"
-            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E47E20400D924BFF8E6806A70B9E8FA6"
             {
             "SourcePath" = "8:..\\..\\LICENSE.rtf"
@@ -4034,6 +3994,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EF84312A970C44AF95AE5FB735428C89"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\8.4 additions.xml"
+            "TargetName" = "8:8.4 additions.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EFE35E1E7009432688D1D07DE08EF052"
@@ -4136,6 +4116,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F32E967DFCF4499ABBB1EBA6EDAB3801"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\new_doodads_by_uforoid.xml"
+            "TargetName" = "8:new_doodads_by_uforoid.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F5389B9DBFA54F70AEE5C8E5B54E0C02"
             {
             "SourcePath" = "8:..\\..\\data\\960\\items.xml"
@@ -4222,6 +4222,26 @@
             "TargetName" = "8:items.xml"
             "Tag" = "8:"
             "Folder" = "8:_CD12056D0A35485194B13CD4EB31ED41"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FC275DE744554541A8E9CC94C86ED769"
+            {
+            "SourcePath" = "8:..\\..\\extensions\\jungle doodads.xml"
+            "TargetName" = "8:jungle doodads.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_16BA3640EDBD45AF964AB26ADBA5BB85"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -5487,20 +5507,6 @@
         }
         "MergeModule"
         {
-            "{CEE29DC0-9FBA-4B99-8D47-5BC643D9B626}:_CA5317A7686E434090C714838136CA10"
-            {
-            "UseDynamicProperties" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "SourcePath" = "8:Microsoft_VC100_CRT_x86.msm"
-                "Properties"
-                {
-                }
-            "LanguageId" = "3:0"
-            "Exclude" = "11:TRUE"
-            "Folder" = "8:"
-            "Feature" = "8:"
-            "IsolateTo" = "8:"
-            }
         }
         "ProjectOutput"
         {
