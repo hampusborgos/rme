@@ -79,6 +79,7 @@ namespace MenuBar
 		MAP_PROPERTIES,
 		MAP_STATISTICS,
 		NEW_VIEW,
+		TOGGLE_FULLSCREEN,
 		SHOW_SHADE,
 		SHOW_ALL_FLOORS,
 		GHOST_ITEMS,
@@ -213,6 +214,7 @@ public:
 
 	// View Menu
 	void OnNewView(wxCommandEvent& event);
+	void OnToggleFullscreen(wxCommandEvent& event);
 	void OnChangeViewSettings(wxCommandEvent& event);
 
 	// Network menu

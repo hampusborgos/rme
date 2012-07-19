@@ -81,7 +81,8 @@
     </menu>
     <menu name="$View">
         <item name="$New View" hotkey="Ctrl+Shift+N" action="NEW_VIEW" help="Creates a new view of the current map."/>
-        <item name="$Take Screenshot" hotkey="F11" action="TAKE_SCREENSHOT" help="Saves the current view to the disk."/>
+        <item name="$Enter Fullscreen" hotkey="F11" action="TOGGLE_FULLSCREEN" help="Changes between fullscreen mode and windowed mode."/>
+        <item name="$Take Screenshot" hotkey="F10" action="TAKE_SCREENSHOT" help="Saves the current view to the disk."/>
         <separator/>
         <item name="$Show shade" hotkey="Q" action="SHOW_SHADE" help="Shade lower floors."/>
         <item name="Show $all floors" hotkey="Ctrl+W" action="SHOW_ALL_FLOORS" help="If not checked other floors are hidden."/>

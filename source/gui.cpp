@@ -1058,7 +1058,7 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	progressText = message;
 	progressFrom = 0;
 	progressTo = 100;
-	progressBar = newd wxProgressDialog(wxT("Loading"), progressText + wxT(" (0%)"), 100, NULL,
+	progressBar = newd wxProgressDialog(wxT("Loading"), progressText + wxT(" (0%)"), 100, root,
 		wxPD_APP_MODAL | wxPD_SMOOTH | (canCancel ? wxPD_CAN_ABORT : 0)
 	);
 	progressBar->SetSize(280, -1);
@@ -1108,7 +1108,6 @@ void GUI::DestroyLoadBar()
 {
 	if(progressBar)
 	{
-		progressBar->Show(false);
 		progressBar->Destroy();
 		progressBar = NULL;
 		if(!root->IsActive())

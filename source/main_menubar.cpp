@@ -112,6 +112,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(MAP_STATISTICS, wxITEM_NORMAL, OnMapStatistics);
 
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
+	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
 
 	MAKE_ACTION(SHOW_SHADE, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_ALL_FLOORS, wxITEM_CHECK, OnChangeViewSettings);
@@ -1726,6 +1727,14 @@ void MainMenuBar::OnNewView(wxCommandEvent& WXUNUSED(event))
 	gui.NewMapView();
 }
 
+void MainMenuBar::OnToggleFullscreen(wxCommandEvent& WXUNUSED(event)) 
+{
+	if (frame->IsFullScreen())
+		frame->ShowFullScreen(false);
+	else
+		frame->ShowFullScreen(true, wxFULLSCREEN_NOBORDER | wxFULLSCREEN_NOCAPTION);
+}
+
 void MainMenuBar::OnTakeScreenshot(wxCommandEvent& WXUNUSED(event)) 
 {
 	wxString path = wxstr(settings.getString(Config::SCREENSHOT_DIRECTORY));
@@ -1737,7 +1746,6 @@ void MainMenuBar::OnTakeScreenshot(wxCommandEvent& WXUNUSED(event))
 	);
 
 }
- 
 
 void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event) 
 {
