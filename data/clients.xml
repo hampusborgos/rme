@@ -116,7 +116,7 @@
 
         <client name="8.20 - 8.31" otb="8.20" visible="true" data_directory="820">
             <otbm version="2"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="8.20 - 8.31"/>
             <fucked_up_charges/> <!-- Special tag, only for this version -->
 
             <data datversion="7.8" sprversion="7.0" dat="0x486905AA" spr="0x4868ECC9"/>
@@ -127,7 +127,7 @@
 
         <client name="8.40" otb="8.40" visible="true" data_directory="840">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="8.40"/>
             <data datversion="7.8" sprversion="7.0" dat="0x493D607A" spr="0x493D4E7C"/>
             <data datversion="7.8" sprversion="7.0" dat="0x49B7CC19" spr="0x49B140EA"/>
             <data datversion="7.8" sprversion="7.0" dat="0x49C233C9" spr="0x49B140EA"/>
@@ -135,7 +135,7 @@
 
         <client name="8.50" otb="8.50" visible="true" data_directory="850">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="8.50"/>
             <data datversion="7.8" sprversion="7.0" dat="0x4A49C5EB" spr="0x4A44FD4E"/>
             <data datversion="7.8" sprversion="7.0" dat="0x4A4CC0DC" spr="0x4A44FD4E"/>
             <data datversion="7.8" sprversion="7.0" dat="0x4AE97492" spr="0x4A44FD4E"/>
@@ -149,7 +149,7 @@
 
         <client name="8.54" otb="8.54" visible="true" data_directory="854">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="8.54"/>
             <data datversion="7.8" sprversion="7.0" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
             <data datversion="7.8" sprversion="7.0" dat="0x4B28B89E" spr="0x4B1E2C87"/>
         </client>
@@ -161,7 +161,7 @@
 
         <client name="8.60" otb="8.60" visible="true" data_directory="860">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="8.60"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4C2C7993" spr="0x4C220594"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4C6A4CBC" spr="0x4C63F145"/>
         </client>
@@ -171,37 +171,37 @@
             <!-- Experimental
             <otbm version="4"/>
             -->
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="8.70"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4CFE22C5" spr="0x4CFD078A"/>
         </client>
 
         <client name="9.10" otb="9.10" visible="true" data_directory="910">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="9.10"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4E12DAFF" spr="0x4E12DB27"/>
         </client>
 
         <client name="9.20 - 9.31" otb="9.20" visible="true" data_directory="920">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="9.20 - 9.31"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4E807C08" spr="0x4E807C23"/>
         </client>
 
         <client name="9.46" otb="9.46" visible="true" data_directory="946">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="9.46"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4F6B341F" spr="0x4F5DCEF7"/>
         </client>
 
         <client name="9.54" otb="9.54" visible="true" data_directory="954">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="9.54"/>
             <data datversion="8.6" sprversion="7.0" dat="0x4FD5956B" spr="0x4FD595B7"/>
         </client>
 
         <client name="9.60" default="true" visible="true" otb="9.60" data_directory="960">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31"/>
+            <extensions from="8.20 - 8.31" to="9.60"/>
             <data datversion="9.6" sprversion="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/>
         </client>
     </clients>
