@@ -26,6 +26,7 @@
 #include "minimap_window.h"
 #include "dat_debug_view.h"
 #include "result_window.h"
+#include "extension_window.h"
 
 #include "gui.h"
 
@@ -739,23 +740,8 @@ void MainMenuBar::OnReloadDataFiles(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnListExtensions(wxCommandEvent& WXUNUSED(event)) 
 {
-	wxString os;
-
-	MaterialsExtensionList list = materials.getExtensions();
-	
-	for(MaterialsExtensionList::const_iterator iter = list.begin();
-			iter != list.end();
-			++iter)
-	{
-		MaterialsExtension* me = *iter;
-		os << wxT("Extension '") << wxstr(me->name) << wxT("'\n");
-		os << wxT("\tClient version(s):") << wxstr(me->getVersionString()) << wxT("\n");
-		os << wxT("\tAuthor: ") << wxstr(me->author) << wxT("\n");
-		os << wxT("\tDescription: ") << wxstr(me->description) << wxT("\n");
-		os << wxT("\n");
-	}
-
-	gui.ShowTextBox(wxT("Extensions"), os);
+	ExtensionsDialog exts(frame);
+	exts.ShowModal();
 }
 
 void MainMenuBar::OnGotoWebsite(wxCommandEvent& WXUNUSED(event)) 

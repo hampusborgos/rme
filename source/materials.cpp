@@ -136,7 +136,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				warnings.push_back(filename + wxT(": Invalid rootheader."));
 				continue;
 			}
-			std::string ext_name, ext_author, ext_desc, ext_client_str;
+			std::string ext_name, ext_url, ext_author, ext_author_link, ext_desc, ext_client_str;
 			StringVector clientVersions;
 			if(
 				!readXMLValue(root, "name", ext_name) ||
@@ -147,7 +147,16 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				continue;
 			}
 
+
+			readXMLValue(root, "url", ext_url);
+			std::remove(ext_url.begin(), ext_url.end(), '\'');
+			readXMLValue(root, "authorurl", ext_author_link);
+			std::remove(ext_author_link.begin(), ext_author_link.end(), '\'');
+
 			MaterialsExtension* me = newd MaterialsExtension(ext_name, ext_author, ext_desc);
+			me->url = ext_url;
+			me->author_url = ext_author_link;
+
 			if(readXMLValue(root, "client", ext_client_str))
 			{
 				size_t last_pos = std::numeric_limits<size_t>::max();
@@ -175,8 +184,8 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 					me->addVersion(*iter);
 				}
 
-				std::sort(me->versionList.begin(), me->versionList.end());
-				std::unique(me->versionList.begin(), me->versionList.end());
+				std::sort(me->version_list.begin(), me->version_list.end());
+				std::unique(me->version_list.begin(), me->version_list.end());
 			}
 			else
 			{
@@ -388,85 +397,4 @@ bool Materials::isInTileset(Brush* brush, std::string tilesetName) const
 	Tileset* tileset = tilesetiter->second;
 
 	return tileset->containsBrush(brush);
-}
-
-MaterialsExtension::MaterialsExtension(std::string name, std::string author, std::string description) :
-	name(name),
-	author(author),
-	description(description),
-	for_all_versions(false)
-{
-	// ...
-}
-
-MaterialsExtension::~MaterialsExtension()
-{
-	// ...
-}
-
-void MaterialsExtension::addVersion(std::string verStr)
-{
-	if(verStr == "all")
-	{
-		for_all_versions = true;
-	}
-	else
-	{
-		ClientVersion* client = ClientVersion::get(verStr);
-		if(client)
-		{
-			ClientVersionList supported_versions = client->getExtensionsSupported();
-			versionList.insert(versionList.end(), supported_versions.begin(), supported_versions.end());
-		}
-	}
-}
-
-bool MaterialsExtension::isForVersion(uint16_t ver_id)
-{
-	if (for_all_versions)
-		return true;
-
-	for(ClientVersionList::iterator iter = versionList.begin();
-			iter != versionList.end();
-			++iter)
-	{
-		if((*iter)->getID() == ver_id)
-			return true;
-	}
-	return false;
-}
-
-std::string MaterialsExtension::getVersionString()
-{
-	if (for_all_versions)
-		return "All";
-
-	std::string versions;
-	std::string last;
-	for(ClientVersionList::iterator iter = versionList.begin();
-			iter != versionList.end();
-			++iter)
-	{
-		if(last.size())
-		{
-			if(versions.size())
-				versions += ", " + last;
-			else
-				versions = last;
-		}
-
-		last = (*iter)->getName();
-	}
-
-	if(last.size())
-	{
-		if(versions.size())
-			versions += " and " + last;
-		else
-			versions = last;
-	}
-	else
-		return "None";
-
-	return versions;
 }

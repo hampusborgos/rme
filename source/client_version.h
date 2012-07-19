@@ -102,6 +102,7 @@ public:
 	static ClientVersionList getAll();
 	static ClientVersionList getAllVisible();
 	static ClientVersionList getAllForOTBMVersion(MapVersionID map_version);
+	static ClientVersionList getAllVersionsSupportedForClientVersion(ClientVersion* v);
 	static ClientVersion* getLatestVersion();
 
 	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}

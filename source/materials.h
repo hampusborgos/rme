@@ -1,52 +1,11 @@
 //////////////////////////////////////////////////////////////////////
 // This file is part of Remere's Map Editor
 //////////////////////////////////////////////////////////////////////
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-// 
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-// 
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-//////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/materials.h $
-// $Id: materials.h 298 2010-02-23 17:09:13Z admin $
 
 #ifndef RME_MATERIALS_H_
 #define RME_MATERIALS_H_
 
-#include "tileset.h"
-#include "client_version.h"
-
-class Brush;
-class ItemType;
-class TerrainBrush;
-
-class MaterialsExtension {
-public:
-	MaterialsExtension(std::string name, std::string author, std::string description);
-	~MaterialsExtension();
-
-	void addVersion(std::string str);
-	bool isForVersion(uint16_t ver_id);
-	std::string getVersionString();
-
-	std::string name;
-	std::string author;
-	std::string description;
-	bool for_all_versions;
-	ClientVersionList versionList;
-private:
-	MaterialsExtension(const MaterialsExtension&);
-	MaterialsExtension& operator=(const MaterialsExtension&);
-};
-
-typedef std::vector<MaterialsExtension*> MaterialsExtensionList;
+#include "extension.h"
 
 class Materials {
 public:

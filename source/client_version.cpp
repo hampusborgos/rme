@@ -563,3 +563,20 @@ ClientVersionList ClientVersion::getExtensionsSupported() const
 	return extension_versions;
 }
 
+ClientVersionList ClientVersion::getAllVersionsSupportedForClientVersion(ClientVersion* v)
+{
+	ClientVersionList vs;
+	for (VersionMap::iterator iv = client_versions.begin(); iv != client_versions.end(); ++iv)
+	{
+		ClientVersionList extvs = iv->second->getExtensionsSupported();
+		for (ClientVersionList::iterator ev = extvs.begin(); ev != extvs.end(); ++ev)
+		{
+			if (v == *ev)
+			{
+				vs.push_back(iv->second);
+				break;
+			}
+		}
+	}
+	return vs;
+}

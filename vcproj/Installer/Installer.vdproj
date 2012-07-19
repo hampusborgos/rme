@@ -2892,7 +2892,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -4032,7 +4032,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -5506,7 +5506,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_733912B9151247AAA3223F598541ECB9"
             {
-            "SourcePath" = "8:..\\Release\\RME.exe"
+            "SourcePath" = "8:..\\Debug\\RME.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_58006C1040204107B7CD8B705BFF292C"

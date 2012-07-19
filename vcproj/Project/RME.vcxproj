@@ -174,7 +174,11 @@
     <ClInclude Include="..\..\source\doodad_brush.h" />
     <ClCompile Include="..\..\source\doodad_brush.cpp" />
     <ClCompile Include="..\..\source\eraser_brush.cpp" />
+    <ClInclude Include="..\..\source\extension.h" />
+    <ClInclude Include="..\..\source\extension_window.h" />
     <ClInclude Include="..\..\source\filehandle.h" />
+    <ClCompile Include="..\..\source\extension.cpp" />
+    <ClCompile Include="..\..\source\extension_window.cpp" />
     <ClCompile Include="..\..\source\filehandle.cpp" />
     <ClInclude Include="..\..\source\ground_brush.h" />
     <ClCompile Include="..\..\source\ground_brush.cpp" />
