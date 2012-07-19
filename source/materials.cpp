@@ -184,7 +184,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 					me->addVersion(*iter);
 				}
 
-				std::sort(me->version_list.begin(), me->version_list.end());
+				std::sort(me->version_list.begin(), me->version_list.end(), VersionComparisonPredicate);
 				std::unique(me->version_list.begin(), me->version_list.end());
 			}
 			else

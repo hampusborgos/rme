@@ -288,7 +288,6 @@ void ClientVersion::loadVersion(xmlNodePtr versionNode)
 	if (should_be_default)
 		latest_version = version;
 }
-
 void ClientVersion::loadVersionExtensions(xmlNodePtr versionNode)
 {
 	std::string versionName;
@@ -336,6 +335,8 @@ void ClientVersion::loadVersionExtensions(xmlNodePtr versionNode)
 					version->extension_versions.push_back(iter->second);
 				}
 			}
+
+			std::sort(version->extension_versions.begin(), version->extension_versions.end(), VersionComparisonPredicate);
 		}
 	}
 }
@@ -578,5 +579,6 @@ ClientVersionList ClientVersion::getAllVersionsSupportedForClientVersion(ClientV
 			}
 		}
 	}
+	std::sort(vs.begin(), vs.end(), VersionComparisonPredicate);
 	return vs;
 }

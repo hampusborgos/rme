@@ -64,6 +64,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <wx/arrstr.h>
 #include <wx/slider.h>
 #include <wx/spinctrl.h>
+#include <wx/wxhtml.h>
 #include <wx/vlbox.h>
 #include <wx/stdpaths.h>
 #include <wx/url.h>

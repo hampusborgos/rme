@@ -4,8 +4,6 @@
 
 #include "main.h"
 
-#include <wx/htmllbox.h>
-
 #include "extension_window.h"
 
 #include "gui.h"
