@@ -685,18 +685,20 @@ void GUI::NewMapView()
 
 void GUI::LoadPerspective()
 {
-	if(settings.getInteger(Config::WINDOW_MAXIMIZED))
+
+	if(IsVersionLoaded() == false)
 	{
-		root->Maximize();
+		if(settings.getInteger(Config::WINDOW_MAXIMIZED))
+		{
+			root->Maximize();
+		}
+		else
+		{
+			root->SetSize(wxSize(settings.getInteger(Config::WINDOW_WIDTH), settings.getInteger(Config::WINDOW_HEIGHT)));
+		}
 	}
 	else
 	{
-		root->SetSize(wxSize(settings.getInteger(Config::WINDOW_WIDTH), settings.getInteger(Config::WINDOW_HEIGHT)));
-	}
-	if(IsVersionLoaded() == false)
-		return;
-
-	{ // Load palette(s)
 		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
 		std::vector<std::string> palette_list;
 
@@ -745,47 +747,48 @@ void GUI::LoadPerspective()
 				}
 			}
 		}
-	}
 
-	if(settings.getInteger(Config::MINIMAP_VISIBLE))
-	{
-		if(!minimap)
+		if(settings.getInteger(Config::MINIMAP_VISIBLE))
 		{
-			wxAuiPaneInfo info;
-			wxString data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
-			aui_manager->LoadPaneInfo(data, info);
-			minimap = newd MinimapWindow(root);
-			aui_manager->AddPane(minimap, info);
-		}
-		else
-		{
-			wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
-			wxString data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
-			aui_manager->LoadPaneInfo(data, info);
-		}
-		wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
-
-		if(info.IsFloatable())
-		{
-			bool offscreen = true;
-			for(uint index = 0; index < wxDisplay::GetCount(); ++index)
+			if(!minimap)
 			{
-				wxDisplay display(index);
-				wxRect rect = display.GetClientArea();
-				if(rect.Contains(info.floating_pos))
+				wxAuiPaneInfo info;
+				wxString data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
+				aui_manager->LoadPaneInfo(data, info);
+				minimap = newd MinimapWindow(root);
+				aui_manager->AddPane(minimap, info);
+			}
+			else
+			{
+				wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
+				wxString data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
+				aui_manager->LoadPaneInfo(data, info);
+			}
+			wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
+
+			if(info.IsFloatable())
+			{
+				bool offscreen = true;
+				for(uint index = 0; index < wxDisplay::GetCount(); ++index)
 				{
-					offscreen = false;
-					break;
+					wxDisplay display(index);
+					wxRect rect = display.GetClientArea();
+					if(rect.Contains(info.floating_pos))
+					{
+						offscreen = false;
+						break;
+					}
+				}
+				if(offscreen)
+				{
+					info.Dock();
 				}
 			}
-			if(offscreen)
-			{
-				info.Dock();
-			}
 		}
+
+		aui_manager->Update();
+		root->UpdateMenubar();
 	}
-	aui_manager->Update();
-	root->UpdateMenubar();
 }
 
 void GUI::SavePerspective()
@@ -1110,7 +1113,9 @@ void GUI::DestroyLoadBar()
 	{
 		progressBar->Destroy();
 		progressBar = NULL;
-		if(!root->IsActive())
+		if(root->IsActive())
+			root->Raise();
+		else
 			root->RequestUserAttention();
 	}
 }
