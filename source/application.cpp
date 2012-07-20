@@ -356,7 +356,7 @@ std::pair<bool, FileName> Application::ParseCommandLineMap()
 	if(argc == 2) 
 	{
 		FileName f = wxString(argv[1]);
-		if(f.GetExt() == wxT("otbm")) 
+		if(f.GetExt() == "otbm" || f.GetExt() == "otgz") 
 		{
 			return std::make_pair(true, f);
 		}

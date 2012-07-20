@@ -396,7 +396,7 @@ protected:
 	// Progress bar tracking
 	//=========================================================================
 	wxString progressText;
-	wxProgressDialog* progressBar;
+	wxGenericProgressDialog* progressBar;
 	int progressFrom;
 	int progressTo;
 	wxWindowDisabler* winDisabler;

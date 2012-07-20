@@ -1061,10 +1061,11 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	progressText = message;
 	progressFrom = 0;
 	progressTo = 100;
-	progressBar = newd wxProgressDialog(wxT("Loading"), progressText + wxT(" (0%)"), 100, root,
+	progressBar = newd wxGenericProgressDialog(wxT("Loading"), progressText + wxT(" (0%)"), 100, root,
 		wxPD_APP_MODAL | wxPD_SMOOTH | (canCancel ? wxPD_CAN_ABORT : 0)
 	);
 	progressBar->SetSize(280, -1);
+	progressBar->Show(true);
 	
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx)
 	{
@@ -1072,6 +1073,7 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 		if (mt && mt->GetEditor()->IsLiveServer())
 			mt->GetEditor()->GetLiveServer()->StartOperation(progressText);
 	}
+	progressBar->Update(0);
 }
 
 void GUI::SetLoadScale(int from, int to)
@@ -1111,8 +1113,10 @@ void GUI::DestroyLoadBar()
 {
 	if(progressBar)
 	{
+		progressBar->Show(false);
 		progressBar->Destroy();
 		progressBar = NULL;
+
 		if(root->IsActive())
 			root->Raise();
 		else
