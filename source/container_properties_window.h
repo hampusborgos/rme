@@ -7,6 +7,7 @@
 
 #include "common_windows.h"
 
+class Container;
 class ContainerItemButton;
 
 // Right-click popup menu
@@ -31,6 +32,8 @@ public:
 	void OnEditItem(wxCommandEvent& event);
 	void OnRemoveItem(wxCommandEvent& event);
 
+	void UpdateParentContainerWindow();
+	Container* getParentContainer();
 	void setItem(Item* item);
 private:
 	static std::auto_ptr<ContainerItemPopupMenu> popup_menu;

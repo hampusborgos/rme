@@ -1356,6 +1356,47 @@ wxCoord FindDialogListBox::OnMeasureItem(size_t n) const
 }
 
 // ============================================================================
+// Object properties base
+
+ObjectPropertiesWindowBase::ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Item* item, wxPoint position /* = wxDefaultPosition */) :
+wxDialog(parent, wxID_ANY, title,
+	position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER),
+	edit_map(map),
+	edit_tile(tile),
+	edit_item(item),
+	edit_creature(NULL),
+	edit_spawn(NULL)
+{
+}
+
+ObjectPropertiesWindowBase::ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Creature* creature, wxPoint position /* = wxDefaultPosition */) :
+wxDialog(parent, wxID_ANY, title,
+	position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER),
+	edit_map(map),
+	edit_tile(tile),
+	edit_item(NULL),
+	edit_creature(creature),
+	edit_spawn(NULL)
+{
+}
+
+ObjectPropertiesWindowBase::ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Spawn* spawn, wxPoint position /* = wxDefaultPosition */) :
+wxDialog(parent, wxID_ANY, title,
+	position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER),
+	edit_map(map),
+	edit_tile(tile),
+	edit_item(NULL),
+	edit_creature(NULL),
+	edit_spawn(spawn)
+{
+}
+
+Item* ObjectPropertiesWindowBase::getItemBeingEdited()
+{
+	return edit_item;
+}
+
+// ============================================================================
 // Edit Towns Dialog
 
 BEGIN_EVENT_TABLE(EditTownsDialog, wxDialog)

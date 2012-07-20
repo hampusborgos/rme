@@ -30,9 +30,9 @@ public:
 
 	virtual Item* deepCopy() const;
 	
-	Item* getItem(uint index);
-	uint getItemCount() const {return contents.size();}
-	uint getVolume() const {return item_db[id].volume;}
+	Item* getItem(int index);
+	int getItemCount() const {return contents.size();}
+	int getVolume() const {return item_db[id].volume;}
 	ItemVector& getVector();
 	virtual double getWeight();
 

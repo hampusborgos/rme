@@ -12,7 +12,7 @@
 class ContainerItemButton;
 class ContainerItemPopupMenu;
 
-class OldPropertiesWindow : public wxDialog
+class OldPropertiesWindow : public ObjectPropertiesWindowBase
 {
 public:
 	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Item* item, wxPoint = wxDefaultPosition);
@@ -39,11 +39,6 @@ protected:
 	wxTextCtrl* text_field;
 	wxTextCtrl* description_field;
 	std::vector<ContainerItemButton*> container_items;
-	const Map* edit_map;
-	const Tile* edit_tile;
-	Item* edit_item;
-	Creature* edit_creature;
-	Spawn* edit_spawn;
 
 	friend class ContainerItemButton;
 	friend class ContainerItemPopupMenu;

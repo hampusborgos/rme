@@ -54,8 +54,8 @@ ItemVector& Container::getVector() {
 	return contents;
 }
 
-Item* Container::getItem(uint index) {
-	if(index >= contents.size()) {
+Item* Container::getItem(int index) {
+	if((size_t)index >= contents.size()) {
 		return NULL;
 	}
 	return contents.at(index);

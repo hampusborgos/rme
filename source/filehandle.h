@@ -126,15 +126,7 @@ public:
 	FORCEINLINE bool getByte(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getU16(uint16_t& u16) {return getType(u16);}
 	FORCEINLINE bool getU32(uint32_t& u32) {return getType(u32);}
-	FORCEINLINE bool getU64(uint64_t& u64) {
-		uint32_t a, b;
-		if (getU32(a) && getU32(b))
-		{
-			u64 = uint64_t(a) << 32ull | b;
-			return true;
-		}
-		return false;
-	}
+	FORCEINLINE bool getU64(uint64_t& u64) {return getType(u64);}
 	FORCEINLINE bool skip(size_t sz) {
 		if(read_offset + sz > data.size()) {
 			read_offset = data.size();

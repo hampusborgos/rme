@@ -29,7 +29,7 @@ BEGIN_EVENT_TABLE(OldPropertiesWindow, wxDialog)
 END_EVENT_TABLE()
 
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
-	wxDialog(win_parent, wxID_ANY, wxT("Object properties"), pos, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
+	ObjectPropertiesWindowBase(win_parent, wxT("Item Properties"), map, tile_parent, item, pos),
 	count_field(NULL),
 	action_id_field(NULL),
 	unique_id_field(NULL),
@@ -37,12 +37,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	depot_id_field(NULL),
 	splash_type_field(NULL),
 	text_field(NULL),
-	description_field(NULL),
-	edit_map(map),
-	edit_tile(tile_parent),
-	edit_item(item),
-	edit_creature(NULL),
-	edit_spawn(NULL)
+	description_field(NULL)
 {
 	ASSERT(edit_item);
 	
@@ -74,14 +69,12 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		wxSizer* horizontal_sizer = NULL;
 		const int additional_height_increment = (use_large_sprites? 40 : 24);
 		int additional_height = 0;
-		for(uint i = 1; i <= container->getVolume(); ++i) {
+		for (int i = 1; i <= container->getVolume(); ++i)
+		{
 			if(horizontal_sizer == NULL) {
 				horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
 			}
-			Item* item = NULL;
-			if(container->getItem(i - 1)) {
-				item = container->getItem(i - 1);
-			}
+			Item* item = container->getItem(i - 1);
 			
 			container_items.push_back(newd ContainerItemButton(this, use_large_sprites, i - 1, map, item));
 			horizontal_sizer->Add(container_items.back());
@@ -326,7 +319,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 }
 
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Creature* creature, wxPoint pos) :
-	wxDialog(win_parent, wxID_ANY, wxT("Object properties"), pos, wxDefaultSize),
+	ObjectPropertiesWindowBase(win_parent, wxT("Creature Properties"), map, tile_parent, creature, pos),
 	count_field(NULL),
 	action_id_field(NULL),
 	unique_id_field(NULL),
@@ -334,12 +327,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	depot_id_field(NULL),
 	splash_type_field(NULL),
 	text_field(NULL),
-	description_field(NULL),
-	edit_map(map),
-	edit_tile(tile_parent),
-	edit_item(NULL),
-	edit_creature(creature),
-	edit_spawn(NULL)
+	description_field(NULL)
 {
 	ASSERT(edit_creature);
 	
@@ -371,7 +359,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 }
 
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Spawn* spawn, wxPoint pos) :
-	wxDialog(win_parent, wxID_ANY, wxT("Object properties"), pos, wxDefaultSize),
+	ObjectPropertiesWindowBase(win_parent, wxT("Spawn Properties"), map, tile_parent, spawn, pos),
 	count_field(NULL),
 	action_id_field(NULL),
 	unique_id_field(NULL),
@@ -379,12 +367,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	depot_id_field(NULL),
 	splash_type_field(NULL),
 	text_field(NULL),
-	description_field(NULL),
-	edit_map(map),
-	edit_tile(tile_parent),
-	edit_item(NULL),
-	edit_creature(NULL),
-	edit_spawn(spawn)
+	description_field(NULL)
 {
 	ASSERT(edit_spawn);
 	

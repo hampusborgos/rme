@@ -8,6 +8,7 @@
 
 #include "gui_ids.h"
 #include "complexitem.h"
+#include "container_properties_window.h"
 
 #include <wx/grid.h>
 
@@ -24,18 +25,15 @@ BEGIN_EVENT_TABLE(PropertiesWindow, wxDialog)
 END_EVENT_TABLE()
 
 PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
-	wxDialog(parent, wxID_ANY, wxT("Object properties"), pos, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER),
-	currentPanel(NULL),
-	edit_map(map),
-	edit_tile(tile_parent),
-	edit_item(item)
+	ObjectPropertiesWindowBase(parent, "Item Properties", map, tile_parent, item, pos),
+	currentPanel(NULL)
 {
 	ASSERT(edit_item);
 	
 	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
 	notebook = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxSize(600, 300));
 
-	notebook->AddPage(createGeneralPanel(notebook), wxT("General"), true);
+	notebook->AddPage(createGeneralPanel(notebook), wxT("Simple"), true);
 	if (dynamic_cast<Container*>(item))
 		notebook->AddPage(createContainerPanel(notebook), wxT("Contents"));
 	notebook->AddPage(createAttributesPanel(notebook), wxT("Advanced"));
@@ -54,10 +52,20 @@ PropertiesWindow::~PropertiesWindow()
 {
 	;
 }
+void PropertiesWindow::Update()
+{
+	wxDialog::Update();
+	Container *edit_container = dynamic_cast<Container *>(edit_item);
+	if (NULL != edit_container)
+	{
+		for (int i = 0; i < edit_container->getVolume(); ++i)
+			container_items[i]->setItem(edit_container->getItem(i));
+	}
+}
 
 wxWindow* PropertiesWindow::createGeneralPanel(wxWindow* parent)
 {
-	wxPanel* panel = new wxPanel(parent, ITEM_PROPERTIES_GENERAL_TAB);
+	wxPanel* panel = newd wxPanel(parent, ITEM_PROPERTIES_GENERAL_TAB);
 	wxFlexGridSizer* gridsizer = newd wxFlexGridSizer(2, 10, 10);
 	gridsizer->AddGrowableCol(1);
 
@@ -79,16 +87,37 @@ wxWindow* PropertiesWindow::createGeneralPanel(wxWindow* parent)
 
 wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 {
-	wxPanel* panel = new wxPanel(parent, ITEM_PROPERTIES_CONTAINER_TAB);
+	Container* container = (Container*)edit_item;
+	wxPanel* panel = newd wxPanel(parent, ITEM_PROPERTIES_CONTAINER_TAB);
+	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
+	
+	wxSizer* gridSizer = newd wxGridSizer(6, 5, 5);
 
+	bool use_large_sprites = settings.getInteger(Config::USE_LARGE_CONTAINER_ICONS);
+	for (int i = 1; i <= container->getVolume(); ++i)
+	{
+		Item* item = container->getItem(i - 1);
+		container_items.push_back(newd ContainerItemButton(panel, use_large_sprites, i - 1, edit_map, item));
+		gridSizer->Add(container_items.back(), wxSizerFlags(0));
+	}
 
+	topSizer->Add(gridSizer, wxSizerFlags(1).Expand());
+
+	/*
+	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
+	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_ADD_ATTRIBUTE, wxT("Add Item")), wxSizerFlags(0).Center());
+	// optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, wxT("Remove Attribute")), wxSizerFlags(0).Center());
+	topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
+	*/
+
+	panel->SetSizer(topSizer);
 
 	return panel;
 }
 
 wxWindow* PropertiesWindow::createAttributesPanel(wxWindow* parent)
 {
-	wxPanel* panel = new wxPanel(parent, wxID_ANY);
+	wxPanel* panel = newd wxPanel(parent, wxID_ANY);
 	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
 
 	attributesGrid = newd wxGrid(panel, ITEM_PROPERTIES_ADVANCED_TAB, wxDefaultPosition, wxSize(-1, 160));

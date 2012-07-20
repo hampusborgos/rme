@@ -7,8 +7,10 @@
 #include "container_properties_window.h"
 
 #include "old_properties_window.h"
+#include "properties_window.h"
 #include "gui.h"
 #include "complexitem.h"
+#include "map.h"
 
 // ============================================================================
 // Container Item Button
@@ -43,12 +45,9 @@ ContainerItemButton::~ContainerItemButton()
 
 void ContainerItemButton::OnMouseDoubleLeftClick(wxMouseEvent& WXUNUSED(event))
 {
-	OldPropertiesWindow* parent = dynamic_cast<OldPropertiesWindow*>(GetParent());
-	ASSERT(parent);
-	Container* container = dynamic_cast<Container*>(parent->edit_item);
-	ASSERT(container);
+	Container* container = getParentContainer();
 
-	bool can_add = container->getVolume() > container->getVector().size();
+	bool can_add = container->getVolume() > (int)container->getVector().size();
 
 	if(edit_item) {
 		wxCommandEvent unused;
@@ -82,15 +81,9 @@ void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 
 	if(id != 0)
 	{
-		// We got an item!
-		// Fetch some important data
-		OldPropertiesWindow* parent = dynamic_cast<OldPropertiesWindow*>(this->GetParent());
-		ASSERT(parent);
-		Container* container = dynamic_cast<Container*>(parent->edit_item);
-		ASSERT(container);
+		Container* container = getParentContainer();
 
 		// Find the position where we should insert the item
-
 		ItemVector& v = container->getVector();
 		ItemVector::iterator item_index = v.begin();
 		int i = 0;
@@ -112,38 +105,54 @@ void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 		v.insert(item_index, item);
 
 		// Update view
-		for(uint i = 1; i <= container->getVolume(); ++i)
-		{
-			Item* item = NULL;
-			if(container->getItem(i - 1))
-			{
-				item = container->getItem(i - 1);
-			}
-
-			parent->container_items[i - 1]->setItem(item);
-		}
+		UpdateParentContainerWindow();
 	}
 }
 
 void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
 {
 	ASSERT(edit_item);
-	wxDialog* w = newd OldPropertiesWindow(this, edit_map, NULL, edit_item, this->GetParent()->GetPosition() + wxPoint(10,10));
-	w->ShowModal();
-	w->Destroy();
+
+	wxPoint newDialogAt;
+	wxWindow* w = this;
+	while (w = w->GetParent())
+	{
+		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
+		{
+			newDialogAt = o->GetPosition();
+			break;
+		}
+	}
+
+	newDialogAt += wxPoint(20, 20);
+
+	wxDialog* d;
+
+	if (edit_map->getVersion().otbm >= MAP_OTBM_4)
+		d = newd PropertiesWindow(
+			this, edit_map, NULL, edit_item,
+			newDialogAt
+		);
+	else
+		d = newd OldPropertiesWindow(
+			this, edit_map, NULL, edit_item,
+			newDialogAt
+		);
+	d->ShowModal();
+	d->Destroy();
 }
 
 void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 {
 	ASSERT(edit_item);
-	int ret = gui.PopupDialog(GetParent(), wxT("Remove Item"), wxT("Are you sure you want to remove this item from the container?"), wxYES | wxNO);
+	int ret = gui.PopupDialog(GetParent(),
+		wxT("Remove Item"),
+		wxT("Are you sure you want to remove this item from the container?"),
+		wxYES | wxNO);
+
 	if(ret == wxID_YES)
 	{
-		OldPropertiesWindow* parent = dynamic_cast<OldPropertiesWindow*>(this->GetParent());
-		ASSERT(parent);
-		Container* container = dynamic_cast<Container*>(parent->edit_item);
-		ASSERT(container);
-
+		Container* container = getParentContainer();
 		ItemVector& v = container->getVector();
 		ItemVector::iterator item_index = v.begin();
 		while(item_index != v.end())
@@ -159,20 +168,7 @@ void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 		v.erase(item_index);
 		delete edit_item;
 
-		for(uint i = 1; i <= container->getVolume(); ++i)
-		{
-			Item* item = NULL;
-			if(container->getItem(i - 1))
-			{
-				item = container->getItem(i - 1);
-			}
-
-			parent->container_items[i - 1]->setItem(item);
-		}
-	}
-	else
-	{
-		// ...
+		UpdateParentContainerWindow();
 	}
 }
 
@@ -183,6 +179,32 @@ void ContainerItemButton::setItem(Item* item)
 		SetSprite(edit_item->getClientID());
 	else
 		SetSprite(0);
+}
+
+Container* ContainerItemButton::getParentContainer()
+{
+	Container* parentContainer = NULL;
+
+	wxWindow* w = this;
+	while (w = w->GetParent())
+	{
+		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
+			return dynamic_cast<Container*>(o->getItemBeingEdited());
+	}
+	return NULL;
+}
+
+void ContainerItemButton::UpdateParentContainerWindow()
+{
+	wxWindow* w = this;
+	while (w = w->GetParent())
+	{
+		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
+		{
+			o->Update();
+			return;
+		}
+	}
 }
 
 // ============================================================================
@@ -208,11 +230,6 @@ void ContainerItemPopupMenu::Update(ContainerItemButton* btn)
 		Delete(m_item);
 	}
 
-	OldPropertiesWindow* parent = dynamic_cast<OldPropertiesWindow*>(btn->GetParent());
-	ASSERT(parent);
-	Container* container = dynamic_cast<Container*>(parent->edit_item);
-	ASSERT(container);
-
 	wxMenuItem* addItem = NULL;
 	if(btn->edit_item)
 	{
@@ -224,8 +241,8 @@ void ContainerItemPopupMenu::Update(ContainerItemButton* btn)
 	{
 		addItem = Append( CONTAINER_POPUP_MENU_ADD, wxT("&Add Item"), wxT("Add a newd item to the container"));
 	}
-	if(container->getVolume() <= container->getVector().size())
-	{
+
+	Container* parentContainer = btn->getParentContainer();
+	if(parentContainer->getVolume() <= (int)parentContainer->getVector().size())
 		addItem->Enable(false);
-	}
 }
