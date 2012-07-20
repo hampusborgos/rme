@@ -26,6 +26,8 @@
 
 #include "filehandle.h"
 
+#include <boost/static_assert.hpp>
+
 class IOMap;
 class ItemAttribute;
 
@@ -38,7 +40,7 @@ public:
 	ItemAttribute();
 	ItemAttribute(const std::string& str);
 	ItemAttribute(int32_t i);
-	ItemAttribute(float f);
+	ItemAttribute(double f);
 	ItemAttribute(bool b);
 	ItemAttribute(const ItemAttribute& o);
 	ItemAttribute& operator=(const ItemAttribute& o);
@@ -49,6 +51,7 @@ public:
 		INTEGER = 2,
 		FLOAT = 3,
 		BOOLEAN = 4,
+		DOUBLE = 5,
 		NONE = 0
 	} type;
 
@@ -59,17 +62,21 @@ public:
 
 	void set(const std::string& str);
 	void set(int32_t i);
-	void set(float f);
+	void set(double f);
 	void set(bool b);
 
 	const std::string* getString() const;
 	const int32_t* getInteger() const;
-	const float* getFloat() const;
+	const double* getFloat() const;
 	const bool* getBoolean() const;
 
 private:
 	char data[sizeof(std::string)];
 };
+
+// Must be large enough to fit both double & string
+BOOST_STATIC_ASSERT(sizeof(std::string) >= sizeof(double));
+
 
 typedef std::map<std::string, ItemAttribute> ItemAttributeMap;
 
@@ -85,15 +92,18 @@ public:
 	bool unserializeAttributeMap(const IOMap& maphandle, BinaryNode* node);
 
 public:
+	void setAttribute(const std::string& key, const ItemAttribute& attr);
 	void setAttribute(const std::string& key, const std::string& value);
 	void setAttribute(const std::string& key, int32_t value);
-	void setAttribute(const std::string& key, float value);
+	void setAttribute(const std::string& key, double value);
 	void setAttribute(const std::string& key, bool set);
+
 	// returns NULL if the attribute is not set
 	const std::string* getStringAttribute(const std::string& key) const;
 	const int32_t* getIntegerAttribute(const std::string& key) const;
-	const float* getFloatAttribute(const std::string& key) const;
+	const double* getFloatAttribute(const std::string& key) const;
 	const bool* getBooleanAttribute(const std::string& key) const;
+	
 	// Returns true if the attribute (of that type) exists
 	bool hasStringAttribute(const std::string& key) const;
 	bool hasIntegerAttribute(const std::string& key) const;
@@ -102,6 +112,7 @@ public:
 
 	void eraseAttribute(const std::string& key);
 
+	void clearAllAttributes();
 	ItemAttributeMap getAttributes() const;
 
 protected:

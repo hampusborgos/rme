@@ -20,7 +20,7 @@ ItemAttributes::ItemAttributes(const ItemAttributes& o)
 
 ItemAttributes::~ItemAttributes()
 {
-	delete attributes;
+	clearAllAttributes();
 }
 
 void ItemAttributes::createAttributes()
@@ -29,11 +29,24 @@ void ItemAttributes::createAttributes()
 		attributes = newd ItemAttributeMap;
 }
 
+void ItemAttributes::clearAllAttributes()
+{
+	if (attributes)
+		delete attributes;
+	attributes = NULL;
+}
+
 ItemAttributeMap ItemAttributes::getAttributes() const
 {
 	if (attributes)
 		return *attributes;
 	return ItemAttributeMap();
+}
+
+void ItemAttributes::setAttribute(const std::string& key, const ItemAttribute& value)
+{
+	createAttributes();
+	(*attributes)[key] = value;
 }
 
 void ItemAttributes::setAttribute(const std::string& key, const std::string& value)
@@ -48,7 +61,7 @@ void ItemAttributes::setAttribute(const std::string& key, int32_t value)
 	(*attributes)[key].set(value);
 }
 
-void ItemAttributes::setAttribute(const std::string& key, float value)
+void ItemAttributes::setAttribute(const std::string& key, double value)
 {
 	createAttributes();
 	(*attributes)[key].set(value);
@@ -93,7 +106,7 @@ const int32_t* ItemAttributes::getIntegerAttribute(const std::string& key) const
 	return NULL;
 }
 
-const float* ItemAttributes::getFloatAttribute(const std::string& key) const
+const double* ItemAttributes::getFloatAttribute(const std::string& key) const
 {
 	if(!attributes)
 		return NULL;
@@ -155,9 +168,9 @@ ItemAttribute::ItemAttribute(int32_t i) : type(ItemAttribute::INTEGER)
 	*reinterpret_cast<int*>(data) = i;
 }
 
-ItemAttribute::ItemAttribute(float f) : type(ItemAttribute::FLOAT)
+ItemAttribute::ItemAttribute(double f) : type(ItemAttribute::DOUBLE)
 {
-	*reinterpret_cast<float*>(data) = f;
+	*reinterpret_cast<double*>(data) = f;
 }
 
 ItemAttribute::ItemAttribute(bool b)
@@ -183,6 +196,8 @@ ItemAttribute& ItemAttribute::operator=(const ItemAttribute& o)
 		*reinterpret_cast<int32_t*>(data) = *reinterpret_cast<const int32_t*>(&o.data);
 	else if(type == FLOAT)
 		*reinterpret_cast<float*>(data) = *reinterpret_cast<const float*>(&o.data);
+	else if(type == DOUBLE)
+		*reinterpret_cast<double*>(data) = *reinterpret_cast<const double*>(&o.data);
 	else if(type == BOOLEAN)
 		*reinterpret_cast<bool*>(data) = *reinterpret_cast<const bool*>(&o.data);
 	else
@@ -219,11 +234,11 @@ void ItemAttribute::set(int32_t i)
 	*reinterpret_cast<int32_t*>(&data) = i;
 }
 
-void ItemAttribute::set(float y)
+void ItemAttribute::set(double y)
 {
 	clear();
-	type = FLOAT;
-	*reinterpret_cast<float*>(&data) = y;
+	type = DOUBLE;
+	*reinterpret_cast<double*>(&data) = y;
 }
 
 void ItemAttribute::set(bool b)
@@ -232,7 +247,6 @@ void ItemAttribute::set(bool b)
 	type = BOOLEAN;
 	*reinterpret_cast<bool*>(&data) = b;
 }
-
 
 const std::string* ItemAttribute::getString() const
 {
@@ -248,10 +262,10 @@ const int32_t* ItemAttribute::getInteger() const
 	return NULL;
 }
 
-const float* ItemAttribute::getFloat() const
+const double* ItemAttribute::getFloat() const
 {
-	if(type == FLOAT)
-		return reinterpret_cast<const float*>(&data);
+	if(type == DOUBLE)
+		return reinterpret_cast<const double*>(&data);
 	return NULL;
 }
 
@@ -308,7 +322,8 @@ bool ItemAttribute::unserialize(const IOMap& maphandle, BinaryNode* stream)
 	stream->getU8(rtype);
 
 	// Read contents
-	switch(rtype){
+	switch(rtype)
+	{
 		case STRING:
 		{
 			std::string str;
@@ -318,17 +333,27 @@ bool ItemAttribute::unserialize(const IOMap& maphandle, BinaryNode* stream)
 			break;
 		}
 		case INTEGER:
+		{
 			uint32_t u32;
 			if(!stream->getU32(u32))
 				return false;
 			set(*reinterpret_cast<int32_t*>(&u32));
 			break;
+		}
 		case FLOAT:
 		{
 			uint32_t u32;
 			if(!stream->getU32(u32))
 				return false;
-			set(*reinterpret_cast<float*>(&u32));
+			set((double)*reinterpret_cast<float*>(&u32));
+			break;
+		}
+		case DOUBLE:
+		{
+			uint64_t u64;
+			if(!stream->getU64(u64))
+				return false;
+			set(*reinterpret_cast<double*>(&u64));
 			break;
 		}
 		case BOOLEAN:
@@ -357,8 +382,8 @@ void ItemAttribute::serialize(const IOMap& maphandle, NodeFileWriteHandle& f) co
 		case INTEGER:
 			f.addU32(*(uint32_t*)getInteger());
 			break;
-		case FLOAT:
-			f.addU32(*(uint32_t*)getFloat());
+		case DOUBLE:
+			f.addU64(*(uint64_t*)getFloat());
 			break;
 		case BOOLEAN:
 			f.addU8(*(uint8_t*)getBoolean());

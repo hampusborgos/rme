@@ -126,6 +126,15 @@ public:
 	FORCEINLINE bool getByte(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getU16(uint16_t& u16) {return getType(u16);}
 	FORCEINLINE bool getU32(uint32_t& u32) {return getType(u32);}
+	FORCEINLINE bool getU64(uint64_t& u64) {
+		uint32_t a, b;
+		if (getU32(a) && getU32(b))
+		{
+			u64 = uint64_t(a) << 32ull | b;
+			return true;
+		}
+		return false;
+	}
 	FORCEINLINE bool skip(size_t sz) {
 		if(read_offset + sz > data.size()) {
 			read_offset = data.size();
@@ -243,12 +252,14 @@ public:
 	FORCEINLINE bool addByte(uint8_t u8) {return addType(u8);}
 	FORCEINLINE bool addU16(uint16_t u16) {return addType(u16);}
 	FORCEINLINE bool addU32(uint32_t u32) {return addType(u32);}
+	FORCEINLINE bool addU64(uint64_t u64) {return addType(u64);}
 	bool addString(const std::string& str);
 	bool addString(const char* str);
 	bool addLongString(const std::string& str);
 	bool addRAW(const std::string& str);
 	bool addRAW(const uint8_t* ptr, size_t sz);
 	bool addRAW(const char* c) {return addRAW(reinterpret_cast<const uint8_t*>(c), strlen(c));}
+
 protected:
 	template<class T>
 	bool addType(T ref) {
@@ -270,6 +281,7 @@ public:
 	bool addByte(uint8_t u8);
 	bool addU16(uint16_t u16);
 	bool addU32(uint32_t u32);
+	bool addU64(uint64_t u64);
 	bool addString(const std::string& str);
 	bool addLongString(const std::string& str);
 	bool addRAW(std::string& str);

@@ -690,6 +690,11 @@ bool NodeFileWriteHandle::addU32(uint32_t u32) {
 	return error_code == FILE_NO_ERROR;
 }
 
+bool NodeFileWriteHandle::addU64(uint64_t u64) {
+	writeBytes(reinterpret_cast<uint8_t*>(&u64), sizeof(u64));
+	return error_code == FILE_NO_ERROR;
+}
+
 bool NodeFileWriteHandle::addString(const std::string& str) {
 	if(str.size() > 0xFFFF) {
 		error_code = FILE_STRING_TOO_LONG;

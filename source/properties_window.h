@@ -11,32 +11,39 @@
 
 class ContainerItemButton;
 class ContainerItemPopupMenu;
+class ItemAttribute;
 
 class PropertiesWindow : public wxDialog
 {
 public:
-	PropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Item* item, wxPoint = wxDefaultPosition);
+	PropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Item* item, wxPoint position = wxDefaultPosition);
 	virtual ~PropertiesWindow();
 
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
+	void OnClickAddAttribute(wxCommandEvent&);
+	void OnClickRemoveAttribute(wxCommandEvent&);
 
 	void OnResize(wxSizeEvent&);
 	void OnNotebookPageChanged(wxNotebookEvent&);
+	void OnGridValueChanged(wxGridEvent&);
 
 protected:
 	wxWindow* createGeneralPanel(wxWindow* parent);
-	void saveGeneralPanel(wxWindow* panel);
+	void saveGeneralPanel();
 
 	wxWindow* createContainerPanel(wxWindow* parent);
-	void saveContainerPanel(wxWindow* panel);
+	void saveContainerPanel();
 
 	wxWindow* createAttributesPanel(wxWindow *parent);
-	void saveAttributesPanel(wxWindow* panel);
+	void saveAttributesPanel();
+
+	void SetGridValue(wxGrid* grid, int rowIndex, std::string name, const ItemAttribute& attr);
 
 protected:
 	wxNotebook* notebook;
 	wxWindow* currentPanel;
+	wxGrid* attributesGrid;
 	const Map* edit_map;
 	const Tile* edit_tile;
 	Item* edit_item;
