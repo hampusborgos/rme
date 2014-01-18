@@ -192,18 +192,10 @@ void NetworkMessage::Reset() {
 
 void NetworkMessage::OnSend()
 {
-	for(std::vector<uint8_t>::iterator b = buffer.begin(); b != buffer.end(); ++b)
-	{
-		*b = ((*b ^ 134) << 5) | (*b >> 3); *b ^= 9;
-	}
 }
 
 void NetworkMessage::OnReceive()
 {
-	for(std::vector<uint8_t>::iterator b = buffer.begin(); b != buffer.end(); ++b)
-	{
-		*b ^= 9; *b = (((*b  >> 5) ^ 134) & 0x1f) | ((*b << 3));
-	}
 }
 
 void NetworkMessage::AddByte(uint8_t u8) {
