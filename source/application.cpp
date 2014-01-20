@@ -160,9 +160,6 @@ bool Application::OnInit()
 	//wxHandleFatalExceptions(true);
 #endif
 	// Load all the dependency files
-	std::string error;
-	StringVector warnings;
-
 
 	gui.root = newd MainFrame(wxT("Remere's Map Editor"), wxDefaultPosition, wxSize(700,500) );
 	SetTopWindow(gui.root);
@@ -213,7 +210,6 @@ bool Application::OnInit()
 
 	FileName save_failed_file = gui.GetLocalDataDirectory();
 	save_failed_file.SetName(wxT(".saving.txt"));
-	std::string argh = nstr(save_failed_file.GetFullPath());
 	if(save_failed_file.FileExists())
 	{
 		std::ifstream f(nstr(save_failed_file.GetFullPath()).c_str(), std::ios::in);

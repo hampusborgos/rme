@@ -1079,7 +1079,6 @@ bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
 
 
 	int intVal;
-	std::string strVal;
 
 	xmlNodePtr spawnNode = root->children;
 	while(spawnNode) 

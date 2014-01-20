@@ -199,8 +199,6 @@ void TableBrush::doTables(BaseMap* map, Tile* tile) {
 	int y = tile->getPosition().y;
 	int z = tile->getPosition().z;
 
-	ItemVector items_to_add;
-
 	for(ItemVector::const_iterator item_iter = tile->items.begin();
 			item_iter != tile->items.end();
 			++item_iter)

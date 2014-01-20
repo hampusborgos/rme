@@ -73,9 +73,6 @@ MaterialsExtensionList Materials::getExtensionsByVersion(uint16_t version_id)
 bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings)
 {
 	xmlDocPtr doc = xmlParseFile(identifier.GetFullPath().mb_str());
-	std::string strValue;
-	std::string warning;
-
 	if(doc)
 	{
 		xmlNodePtr root = xmlDocGetRootElement(doc);
@@ -127,8 +124,6 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 
 		if(doc)
 		{
-			std::string strVal;
-
 			xmlNodePtr root = xmlDocGetRootElement(doc);
 			
 			if(xmlStrcmp(root->name,(const xmlChar*)"materialsextension") != 0){
@@ -212,7 +207,6 @@ bool Materials::unserializeMaterials(const FileName& filename, xmlNodePtr root, 
 {
 	xmlNodePtr materialNode = root->children;
 	wxString warning;
-	std::string strValue;
 
 	while(materialNode)
 	{

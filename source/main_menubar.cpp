@@ -428,8 +428,6 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 	if(doc)
 	{
 		// Load succeded
-		std::string strVal;
-
 		xmlNodePtr root = xmlDocGetRootElement(doc);
 		
 		if(xmlStrcmp(root->name,(const xmlChar*)"menubar") != 0)

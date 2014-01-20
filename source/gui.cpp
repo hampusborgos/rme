@@ -702,7 +702,6 @@ void GUI::LoadPerspective()
 		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
 		std::vector<std::string> palette_list;
 
-		std::string::const_iterator last_iterator = layout.begin();
 		std::string tmp;
 		size_t i = 0;
 		while(i  < layout.size())
