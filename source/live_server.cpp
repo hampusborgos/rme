@@ -504,7 +504,11 @@ void LiveServer::OnReceiveNodeRequest(LivePeer* connection, NetworkMessage* nmsg
 		int ndx = ind >> 18;
 		int ndy = (ind >> 4) & 0x3FFF;
 		bool underground = ind & 1;
-		SendNode(connection, editor->map.createLeaf(ndx*4, ndy*4), ndx, ndy, underground? 0xff00 : 0x00ff);
+
+		QTreeNode* node = editor->map.createLeaf(ndx * 4, ndy * 4);
+		if (node) {
+			SendNode(connection, node, ndx, ndy, underground? 0xff00 : 0x00ff);
+		}
 	}
 }
 
