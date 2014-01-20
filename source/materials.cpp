@@ -149,9 +149,9 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 
 
 			readXMLValue(root, "url", ext_url);
-			std::remove(ext_url.begin(), ext_url.end(), '\'');
+			ext_url.erase(std::remove(ext_url.begin(), ext_url.end(), '\''), ext_url.end());
 			readXMLValue(root, "authorurl", ext_author_link);
-			std::remove(ext_author_link.begin(), ext_author_link.end(), '\'');
+			ext_author_link.erase(std::remove(ext_author_link.begin(), ext_author_link.end(), '\''), ext_author_link.end());
 
 			MaterialsExtension* me = newd MaterialsExtension(ext_name, ext_author, ext_desc);
 			me->url = ext_url;
@@ -185,7 +185,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				}
 
 				std::sort(me->version_list.begin(), me->version_list.end(), VersionComparisonPredicate);
-				std::unique(me->version_list.begin(), me->version_list.end());
+				me->version_list.erase(std::unique(me->version_list.begin(), me->version_list.end()), me->version_list.end());
 			}
 			else
 			{
