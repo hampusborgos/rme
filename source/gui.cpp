@@ -643,7 +643,7 @@ bool GUI::CloseAllEditors()
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(i));
 		if(mt)
 		{
-			if(mt && mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged())
+			if(mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged())
 			{
 				tabbook->SetFocusedTab(i);
 				if(!root->DoQuerySave(false))
@@ -1599,6 +1599,10 @@ void GUI::FillDoodadPreviewBuffer()
 						if(distance < gui.GetBrushSize()+0.005)
 						{
 							found_pos = true;
+						}
+						else
+						{
+							++pos_retries;
 						}
 					}
 				}
