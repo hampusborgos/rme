@@ -960,7 +960,6 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 {
 	xmlDocPtr doc = xmlParseFile(identifier.GetFullPath().mb_str());
 	int intValue;
-	std::string strValue;
 
 	if(doc)
 	{

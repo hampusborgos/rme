@@ -425,7 +425,7 @@ int DoodadBrush::getSingleChance(int ab) const {
 }
 
 int DoodadBrush::getTotalChance(int ab) const {
-	if(alternatives.empty()) return false;
+	if(alternatives.empty()) return 0;
 	ab %= alternatives.size();
 	const AlternativeBlock* ab_ptr = alternatives[ab];
 	ASSERT(ab_ptr);
