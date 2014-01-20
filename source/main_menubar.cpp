@@ -428,8 +428,6 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 	if(doc)
 	{
 		// Load succeded
-		std::string strVal;
-
 		xmlNodePtr root = xmlDocGetRootElement(doc);
 		
 		if(xmlStrcmp(root->name,(const xmlChar*)"menubar") != 0)
@@ -1738,7 +1736,7 @@ void MainMenuBar::OnToggleFullscreen(wxCommandEvent& WXUNUSED(event))
 void MainMenuBar::OnTakeScreenshot(wxCommandEvent& WXUNUSED(event)) 
 {
 	wxString path = wxstr(settings.getString(Config::SCREENSHOT_DIRECTORY));
-	if (path.size() > 0 && (path.Last() == wxT('/') || path.Last() == wxT('/')))
+	if (path.size() > 0 && (path.Last() == wxT('/') || path.Last() == wxT('\\')))
 		path = path + wxT("/");
 
 	gui.GetCurrentMapTab()->GetView()->GetCanvas()->TakeScreenshot(

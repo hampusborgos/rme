@@ -73,9 +73,6 @@ MaterialsExtensionList Materials::getExtensionsByVersion(uint16_t version_id)
 bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings)
 {
 	xmlDocPtr doc = xmlParseFile(identifier.GetFullPath().mb_str());
-	std::string strValue;
-	std::string warning;
-
 	if(doc)
 	{
 		xmlNodePtr root = xmlDocGetRootElement(doc);
@@ -127,8 +124,6 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 
 		if(doc)
 		{
-			std::string strVal;
-
 			xmlNodePtr root = xmlDocGetRootElement(doc);
 			
 			if(xmlStrcmp(root->name,(const xmlChar*)"materialsextension") != 0){
@@ -149,9 +144,9 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 
 
 			readXMLValue(root, "url", ext_url);
-			std::remove(ext_url.begin(), ext_url.end(), '\'');
+			ext_url.erase(std::remove(ext_url.begin(), ext_url.end(), '\''), ext_url.end());
 			readXMLValue(root, "authorurl", ext_author_link);
-			std::remove(ext_author_link.begin(), ext_author_link.end(), '\'');
+			ext_author_link.erase(std::remove(ext_author_link.begin(), ext_author_link.end(), '\''), ext_author_link.end());
 
 			MaterialsExtension* me = newd MaterialsExtension(ext_name, ext_author, ext_desc);
 			me->url = ext_url;
@@ -185,7 +180,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				}
 
 				std::sort(me->version_list.begin(), me->version_list.end(), VersionComparisonPredicate);
-				std::unique(me->version_list.begin(), me->version_list.end());
+				me->version_list.erase(std::unique(me->version_list.begin(), me->version_list.end()), me->version_list.end());
 			}
 			else
 			{
@@ -212,7 +207,6 @@ bool Materials::unserializeMaterials(const FileName& filename, xmlNodePtr root, 
 {
 	xmlNodePtr materialNode = root->children;
 	wxString warning;
-	std::string strValue;
 
 	while(materialNode)
 	{

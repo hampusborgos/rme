@@ -562,7 +562,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 			{
 				// Read the entire OTBM file into a memory region
 				size_t otbm_size = archive_entry_size(entry);
-				std::shared_ptr<uint8_t> otbm_buffer(new uint8_t[otbm_size]);
+				std::shared_ptr<uint8_t> otbm_buffer(new uint8_t[otbm_size], [](uint8_t* p) { delete[] p; });
 				
 				// Read from the archive
 				size_t read_bytes = archive_read_data(a.get(), otbm_buffer.get(), otbm_size);
@@ -1079,7 +1079,6 @@ bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
 
 
 	int intVal;
-	std::string strVal;
 
 	xmlNodePtr spawnNode = root->children;
 	while(spawnNode) 

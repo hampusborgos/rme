@@ -859,6 +859,7 @@ void Editor::clearInvalidHouseTiles(bool showdialog) {
 				tile->setHouse(NULL);
 			}
 		}
+		++tiles_done;
 	}
 
 	if(showdialog) {
@@ -884,6 +885,7 @@ void Editor::clearModifiedTileState(bool showdialog) {
 		Tile* tile = (*map_iter)->get();
 		ASSERT(tile);
 		tile->unmodify();
+		++tiles_done;
 	}
 
 	if(showdialog) {

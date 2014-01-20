@@ -296,8 +296,13 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 		*map_y = (start_y + screen_y) / 32;
 	else
 		*map_y = int(start_y + (screen_y*zoom)) / 32;
-	if(floor <= 7) *map_x += 7 - floor; //else *map_x += 15-floor;
-	if(floor <= 7) *map_y += 7 - floor; //else *map_y += 15-floor;
+	if(floor <= 7) {
+		*map_x += 7 - floor;
+		*map_y += 7 - floor;
+	}/* else {
+		*map_x += 15-floor;
+		*map_y += 15-floor;
+	}*/
 }
 
 void MapCanvas::GetScreenCenter(int* map_x, int* map_y)

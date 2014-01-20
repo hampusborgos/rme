@@ -739,7 +739,7 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 				size_t n = item_list->GetSelection();
 				if(n == wxNOT_FOUND) 
 					n = 0;
-				else if(n - amount > 0 && n - amount < n) // latter is needed for unsigned overflow
+				else if(n != amount && n - amount < n) // latter is needed for unsigned overflow
 					n -= amount;
 				else
 					n = 0;
@@ -1145,7 +1145,7 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 				size_t n = item_list->GetSelection();
 				if(n == wxNOT_FOUND) 
 					n = 0;
-				else if(n - amount > 0 && n - amount < n) // latter is needed for unsigned overflow
+				else if(n != amount && n - amount < n) // latter is needed for unsigned overflow
 					n -= amount;
 				else
 					n = 0;

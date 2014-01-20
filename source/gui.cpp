@@ -643,7 +643,7 @@ bool GUI::CloseAllEditors()
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(i));
 		if(mt)
 		{
-			if(mt && mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged())
+			if(mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged())
 			{
 				tabbook->SetFocusedTab(i);
 				if(!root->DoQuerySave(false))
@@ -702,7 +702,6 @@ void GUI::LoadPerspective()
 		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
 		std::vector<std::string> palette_list;
 
-		std::string::const_iterator last_iterator = layout.begin();
 		std::string tmp;
 		size_t i = 0;
 		while(i  < layout.size())
@@ -1599,6 +1598,10 @@ void GUI::FillDoodadPreviewBuffer()
 						if(distance < gui.GetBrushSize()+0.005)
 						{
 							found_pos = true;
+						}
+						else
+						{
+							++pos_retries;
 						}
 					}
 				}

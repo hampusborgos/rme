@@ -184,7 +184,7 @@ protected:
 class ActionQueue {
 public:
 	ActionQueue(Editor& editor);
-	~ActionQueue();
+	virtual ~ActionQueue();
 	
 	typedef std::deque<BatchAction*> ActionList;
 
