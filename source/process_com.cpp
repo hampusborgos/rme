@@ -36,7 +36,7 @@ wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic) {
 	if(topic == wxT("rme_talk")) {
 		return newd RMEProcessConnection();
 	}
-	return false;
+	return NULL;
 }
 
 // Client!
