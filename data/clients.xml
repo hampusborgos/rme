@@ -57,6 +57,22 @@
         <otb client="9.53" version="3" id="38"/>
         <otb client="9.54" version="3" id="39"/>
         <otb client="9.60" version="3" id="40"/>
+        <otb client="9.61" version="3" id="41"/>
+        <otb client="9.63" version="3" id="42"/>
+        <otb client="9.70" version="3" id="43"/>
+        <otb client="9.80" version="3" id="44"/>
+        <otb client="9.81" version="3" id="45"/>
+        <otb client="9.82" version="3" id="46"/>
+        <otb client="9.83" version="3" id="47"/>
+        <otb client="9.85" version="3" id="48"/>
+        <otb client="9.86" version="3" id="49"/>
+        <!-- it require new format for 
+        <otb client="10.10" version="3" id="50"/>
+        <otb client="10.20" version="3" id="51"/>
+        <otb client="10.21" version="3" id="52"/>
+        <otb client="10.30" version="3" id="53"/>
+        <otb client="10.31" version="3" id="54"/>
+        -->
     </otbs>
 
     <clients>
@@ -197,10 +213,22 @@
             <data datversion="8.6" sprversion="7.0" dat="0x4FD5956B" spr="0x4FD595B7"/>
         </client>
 
-        <client name="9.60" default="true" visible="true" otb="9.60" data_directory="960">
+        <client name="9.60" otb="9.60" visible="true" data_directory="960">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31" to="9.60"/>
             <data datversion="9.6" sprversion="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/>
+        </client>
+
+        <client name="9.70" otb="9.60" visible="true" data_directory="970">
+            <otbm version="3"/>
+            <extensions from="8.20 - 8.31" to="9.60"/>
+            <data datversion="9.6" sprversion="9.6" dat="0x5072A490" spr="0x5072A567"/>
+        </client>
+
+        <client name="9.86" otb="9.60" default="true" visible="true" data_directory="986">
+            <otbm version="3"/>
+            <extensions from="8.20 - 8.31" to="9.60"/>
+            <data datversion="9.6" sprversion="9.6" dat="0x5170E904" spr="0x5170E96F"/>
         </client>
     </clients>
 
