@@ -62,6 +62,9 @@ public:
 
 	void set(const std::string& str);
 	void set(int32_t i);
+#ifdef __x86_64
+	void set(long l);
+#endif
 	void set(double f);
 	void set(bool b);
 

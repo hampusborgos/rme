@@ -164,7 +164,7 @@ void Editor::addAction(Action* action, int stacking_delay ) {
 }
 
 void Editor::saveMap(FileName filename, bool showdialog) {
-	std::string savefile = filename.GetFullPath().mb_str(wxConvUTF8);
+	std::string savefile = filename.GetFullPath().mb_str(wxConvUTF8).data();
 	bool save_as = false;
 	bool save_otgz = false;
 

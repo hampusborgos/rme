@@ -55,6 +55,8 @@ void ExtensionsDialog::OnClickOpenFolder(wxCommandEvent& evt)
 	cmd << "explorer";
 #elif defined __OSX__
 	cmd << "open";
+#elif defined __linux
+	cmd << "xdg-open";
 #else
 #error "NOT IMPLEMENTED"
 #endif
