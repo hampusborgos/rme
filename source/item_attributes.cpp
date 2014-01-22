@@ -233,7 +233,14 @@ void ItemAttribute::set(int32_t i)
 	type = INTEGER;
 	*reinterpret_cast<int32_t*>(&data) = i;
 }
-
+#ifdef __x86_64
+void ItemAttribute::set(long l)
+{
+	clear();
+	type = INTEGER;
+	*reinterpret_cast<int32_t*>(&data) = l;
+}
+#endif
 void ItemAttribute::set(double y)
 {
 	clear();

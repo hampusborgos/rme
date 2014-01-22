@@ -665,7 +665,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
 		if(f.isOk() == false)
 		{
-			error(wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage()));
+			error((wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage())).wc_str());
 			return false;
 		}
 
@@ -1052,7 +1052,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	}
 
 	if(!f.isOk())
-		warning(wxstr(f.getErrorMessage()));
+		warning(wxstr(f.getErrorMessage()).wc_str());
 	return true;
 }
 
