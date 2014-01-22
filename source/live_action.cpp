@@ -47,9 +47,9 @@ void NetworkedBatchAction::addAndCommitAction(Action* action)
 		dirty_list.owner = netact->owner;
 
 	// Add it!
-	action->commit(type != ACTION_SELECT? &dirty_list : NULL);
+	action->commit(type != ACTION_SELECT? &dirty_list : nullptr);
 	batch.push_back(action);
-	timestamp = time(NULL);
+	timestamp = time(nullptr);
 
 	// Broadcast changes!
 	queue.broadcast(dirty_list);
@@ -65,7 +65,7 @@ void NetworkedBatchAction::commit()
 		NetworkedAction* action = static_cast<NetworkedAction*>(*it);
 		if(!action->isCommited())
 		{
-			action->commit(type != ACTION_SELECT? &dirty_list : NULL);
+			action->commit(type != ACTION_SELECT? &dirty_list : nullptr);
 			if(action->owner != 0)
 				dirty_list.owner = action->owner;
 		}
@@ -82,7 +82,7 @@ void NetworkedBatchAction::undo()
 	for(ActionVector::reverse_iterator it = batch.rbegin();
 		it != batch.rend(); ++it)
 	{
-		(*it)->undo(type != ACTION_SELECT? &dirty_list : NULL);
+		(*it)->undo(type != ACTION_SELECT? &dirty_list : nullptr);
 	}
 	// Broadcast changes!
 	queue.broadcast(dirty_list);

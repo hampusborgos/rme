@@ -65,7 +65,7 @@ extern const wxEventType EVT_UPDATE_MENUS;
     DECLARE_EVENT_TABLE_ENTRY( \
         EVT_UPDATE_MENUS, id, wxID_ANY, \
         (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) NULL \
+        (wxObject *) nullptr \
     ),
 
 class Hotkey
@@ -172,9 +172,9 @@ public:
 	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint configsavevalue = 0);
 	long PopupDialog(wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint configsavevalue = 0);
 	void ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec);
-	void ListDialog(wxString title, const wxArrayString& vec) {ListDialog(NULL, title, vec);}
+	void ListDialog(wxString title, const wxArrayString& vec) {ListDialog(nullptr, title, vec);}
 	void ShowTextBox(wxWindow* parent, wxString title, wxString contents);
-	void ShowTextBox(wxString title, wxString contents) {ShowTextBox(NULL, title, contents);}
+	void ShowTextBox(wxString title, wxString contents) {ShowTextBox(nullptr, title, contents);}
 
 	// Get the current GL context
 	// Param is required if the context is to be created.
@@ -292,7 +292,7 @@ public:
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);
 	ClientVersion* getLoadedVersion() const {
-		return loaded_version == CLIENT_VERSION_NONE ? NULL : ClientVersion::get(loaded_version);
+		return loaded_version == CLIENT_VERSION_NONE ? nullptr : ClientVersion::get(loaded_version);
 	}
 
 	//=========================================================================
@@ -305,7 +305,7 @@ public:
 	// Rebuild forces palette to reload the entire contents
 	void RebuildPalettes();
 	// Refresh only updates the content (such as house/waypoint list)
-	void RefreshPalettes(Map* m = NULL, bool usedfault = true);
+	void RefreshPalettes(Map* m = nullptr, bool usedfault = true);
 	// Won't refresh the palette in the parameter
 	void RefreshOtherPalettes(PaletteWindow* p);
 	// If no palette is shown, this displays the primary palette

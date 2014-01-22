@@ -17,7 +17,7 @@ RAWBrush::RAWBrush(uint16_t itemid) :
 {
 	ItemType& it = item_db[itemid];
 	if(it.id == 0)
-		itemtype = NULL;
+		itemtype = nullptr;
 	else
 		itemtype = &it;
 }
@@ -45,7 +45,7 @@ std::string RAWBrush::getName() const {
 void RAWBrush::undraw(BaseMap* map, Tile* tile) {
 	if(tile->ground && tile->ground->getID() == itemtype->id) {
 		delete tile->ground;
-		tile->ground = NULL;
+		tile->ground = nullptr;
 	}
 	for(ItemVector::iterator iter = tile->items.begin();
 			iter != tile->items.end();)

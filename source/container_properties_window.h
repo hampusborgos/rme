@@ -38,7 +38,7 @@ public:
 private:
 	static std::auto_ptr<ContainerItemPopupMenu> popup_menu;
 	static ContainerItemPopupMenu* getMenu() {
-		if(popup_menu.get() == NULL) popup_menu.reset(newd ContainerItemPopupMenu());
+		if(popup_menu.get() == nullptr) popup_menu.reset(newd ContainerItemPopupMenu());
 		return popup_menu.get();
 	}
 	const Map* edit_map;

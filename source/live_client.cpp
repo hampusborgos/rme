@@ -10,9 +10,9 @@
 #include "editor.h"
 
 LiveClient::LiveClient() :
-	connection(NULL),
-	client(NULL),
-	editor(NULL)
+	connection(nullptr),
+	client(nullptr),
+	editor(nullptr)
 {
 }
 
@@ -45,7 +45,7 @@ bool LiveClient::Connect()
 			log->Disconnect();
 		last_err = wxT("Connection timed out.");
 		client->Destroy();
-		client = NULL;
+		client = nullptr;
 		delete connection;
 		return false;
 	}
@@ -56,7 +56,7 @@ bool LiveClient::Connect()
 			log->Disconnect();
 		last_err = wxT("Connection refused by peer.");
 		client->Destroy();
-		client = NULL;
+		client = nullptr;
 		delete connection;
 		return false;
 	}
@@ -83,12 +83,12 @@ void LiveClient::Close()
 	{
 		log->Message(wxT("Disconnected from server."));
 		log->Disconnect();
-		log = NULL;
+		log = nullptr;
 	}
 	if(connection)
 	{
 		connection->Close();
-		connection = NULL;
+		connection = nullptr;
 	}
 	delete reinterpret_cast<NetworkConnection*>(client->GetClientData());
 	LiveSocket::Close();
@@ -269,7 +269,7 @@ void LiveClient::OnReceiveHello(NetworkConnection* connection, NetworkMessage* n
 	uint16_t width = nmsg->ReadU16();
 	uint16_t height = nmsg->ReadU16();
 
-	ASSERT(editor == NULL);
+	ASSERT(editor == nullptr);
 	editor = newd Editor(gui.copybuffer, this);
 	editor->map.setWidth(width);
 	editor->map.setHeight(height);

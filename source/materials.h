@@ -27,8 +27,8 @@ public:
 	bool isInTileset(Brush* brush, std::string tileset) const;
 
 protected:
-	bool unserializeMaterials(const FileName& filename, xmlNodePtr node, wxString& error, wxArrayString& warnings);
-	bool unserializeTileset(xmlNodePtr node, wxArrayString& warnings);
+	bool unserializeMaterials(const FileName& filename, pugi::xml_node node, wxString& error, wxArrayString& warnings);
+	bool unserializeTileset(pugi::xml_node node, wxArrayString& warnings);
 	
 	MaterialsExtensionList extensions;
 

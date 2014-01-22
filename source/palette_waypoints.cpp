@@ -38,7 +38,7 @@ END_EVENT_TABLE()
 
 WaypointPalettePanel::WaypointPalettePanel(wxWindow* parent, wxWindowID id) :
 	PalettePanel(parent, id),
-	map(NULL)
+	map(nullptr)
 {
 	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Waypoints"));
 
@@ -88,7 +88,7 @@ Brush* WaypointPalettePanel::GetSelectedBrush() const
     long item = waypoint_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	gui.waypoint_brush->setWaypoint(
 		item == -1? 
-			NULL : 
+			nullptr : 
 			map->waypoints.getWaypoint(nstr(waypoint_list->GetItemText(item)))
 	);
 	return gui.waypoint_brush;

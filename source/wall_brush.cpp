@@ -7,12 +7,13 @@
 #include "wall_brush.h"
 #include "items.h"
 #include "basemap.h"
+#include "pugicast.h"
 
 uint32_t WallBrush::full_border_types[16];
 uint32_t WallBrush::half_border_types[16];
 
 WallBrush::WallBrush() :
-	redirect_to(NULL)
+	redirect_to(nullptr)
 {
 
 }
@@ -21,250 +22,215 @@ WallBrush::~WallBrush() {
 
 }
 
-bool WallBrush::load(xmlNodePtr node, wxArrayString& warnings) {
-	std::string strVal;
-	int intVal;
-
-	if(readXMLValue(node, "lookid", intVal)) {
-		look_id = intVal;
-	}
-	if(readXMLValue(node, "server_lookid", intVal)) {
-		look_id = item_db[intVal].clientID;
+bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
+{
+	pugi::xml_attribute attribute;
+	if ((attribute = node.attribute("lookid"))) {
+		look_id = pugi::cast<uint16_t>(attribute.value());
 	}
 
-	xmlNodePtr child = node->children;
-	while(child) {
-		if(xmlStrcmp(child->name,(const xmlChar*)"wall") == 0) {
-			uint alignment;
-			if(readXMLValue(child, "type", strVal)) {
-				if(strVal == "vertical") {
-					alignment = WALL_VERTICAL;
-				} else if(strVal == "horizontal") {
-					alignment = WALL_HORIZONTAL;
-				} else if(strVal == "corner") {
-					alignment = WALL_NORTHWEST_DIAGONAL;
-				} else if(strVal == "pole") {
-					alignment = WALL_POLE;
-				} else if(strVal == "south end") {
-					alignment = WALL_SOUTH_END;
-				} else if(strVal == "east end") {
-					alignment = WALL_EAST_END;
-				} else if(strVal == "north end") {
-					alignment = WALL_NORTH_END;
-				} else if(strVal == "west end") {
-					alignment = WALL_WEST_END;
-				} else if(strVal == "south T") {
-					alignment = WALL_SOUTH_T;
-				} else if(strVal == "east T") {
-					alignment = WALL_EAST_T;
-				} else if(strVal == "west T") {
-					alignment = WALL_WEST_T;
-				} else if(strVal == "north T") {
-					alignment = WALL_NORTH_T;
-				} else if(strVal == "northwest diagonal") {
-					alignment = WALL_NORTHWEST_DIAGONAL;
-				} else if(strVal == "northeast diagonal") {
-					alignment = WALL_NORTHEAST_DIAGONAL;
-				} else if(strVal == "southwest diagonal") {
-					alignment = WALL_SOUTHWEST_DIAGONAL;
-				} else if(strVal == "southeast diagonal") {
-					alignment = WALL_SOUTHEAST_DIAGONAL;
-				} else if(strVal == "intersection") {
-					alignment = WALL_INTERSECTION;
-				} else if(strVal == "untouchable") {
-					alignment = WALL_UNTOUCHABLE;
-				} else {
-					wxString warning;
-					warning << wxT("Unknown wall alignment '") + wxstr(strVal) + wxT("'\n");
-					warnings.push_back(warning);
-					child = child->next;
-					continue;
-				}
-			} else {
-				wxString warning;
-				warning << wxT("Could not read type tag of wall node\n");
-				warnings.push_back(warning);
-				child = child->next;
+	if ((attribute = node.attribute("server_lookid"))) {
+		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+	}
+
+	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		const std::string& childName = as_lower_str(childNode.name());
+		if (childName == "wall") {
+			const std::string& typeString = childNode.attribute("type").as_string();
+			if (typeString.empty()) {
+				warnings.push_back(wxT("Could not read type tag of wall node\n"));
 				continue;
 			}
 
-			xmlNodePtr subchild = child->children;
-			while(subchild) {
-				do {
-					if(xmlStrcmp(subchild->name,(const xmlChar*)"item") == 0) {
-						int id, chance = 0;
-						if(!readXMLValue(subchild, "id", id)) {
-							wxString warning;
-							warning << wxT("Could not read id tag of item node\n");
-							warnings.push_back(warning);
-							break;
-						}
-						readXMLValue(subchild, "chance", chance);
-
-						ItemType& it = item_db[id];
-						if(it.id == 0) {
-							wxString warning;
-							warning << wxT("There is no itemtype with id ") << id;
-							warnings.push_back(warning);
-							return false;
-						}
-						if(it.brush != NULL && it.brush != this) {
-							wxString warning;
-							warning << wxT("Itemtype id ") << id << wxT(" already has a brush");
-							warnings.push_back(warning);
-							return false;
-						}
-						it.isWall = true;
-						it.brush = this;
-						it.border_alignment = ::BorderType(alignment);
-
-						WallType wt;
-						wall_items[alignment].total_chance += chance;
-						wt.chance = wall_items[alignment].total_chance;
-
-						wt.id  = uint16_t(id);
-						wall_items[alignment].items.push_back(wt);
-					} else if(xmlStrcmp(subchild->name,(const xmlChar*)"door") == 0) {
-						std::string type;
-						int id;
-						int chance = 0;
-						bool isOpen;
-						bool hate = false;
-
-						if(!readXMLValue(subchild, "id", id)) {
-							wxString warning;
-							warning << wxT("Could not read id tag of item node\n");
-							warnings.push_back(warning);
-							break;
-						}
-						readXMLValue(subchild, "id", chance);
-						if(readXMLValue(subchild, "type", strVal)) {
-							type = strVal;
-							if(readXMLValue(subchild, "open", strVal)) {
-								isOpen = isTrueString(strVal);
-							} else {
-								isOpen = true;
-								if(type != "window" && type != "any window" && type != "hatch window") {
-									wxString warning;
-									warning << wxT("Could not read open tag of item node\n");
-									warnings.push_back(warning);
-									break;
-								}
-							}
-						} else {
-							wxString warning;
-							warning << wxT("Could not read type tag of item node\n");
-							warnings.push_back(warning);
-							break;
-						}
-
-						if(readXMLValue(subchild, "hate", strVal)) {
-							hate = isTrueString(strVal);
-						}
-
-						ItemType& it = item_db[id];
-						if(it.id == 0) {
-							wxString warning;
-							warning << wxT("There is no itemtype with id ") << id;
-							warnings.push_back(warning);
-							return false;
-						}
-						if(it.brush != NULL && it.brush != this) {
-							wxString warning;
-							warning << wxT("Itemtype id ") << id << wxT(" already has a brush");
-							warnings.push_back(warning);
-							return false;
-						}
-						it.isWall = true;
-						it.brush = this;
-						it.isBrushDoor = true;
-						it.wall_hate_me = hate;
-						it.isOpen = isOpen;
-						it.border_alignment = ::BorderType(alignment);
-
-						DoorType dt;
-						bool all_windows = false;
-						bool all_doors = false;
-						if(type == "normal") {
-							dt.type = WALL_DOOR_NORMAL;
-						} else if(type == "locked") {
-							dt.type = WALL_DOOR_LOCKED;
-						} else if(type == "quest") {
-							dt.type = WALL_DOOR_QUEST;
-						} else if(type == "magic") {
-							dt.type = WALL_DOOR_MAGIC;
-						} else if(type == "archway") {
-							dt.type = WALL_ARCHWAY;
-						} else if(type == "window") {
-							dt.type = WALL_WINDOW;
-						} else if(type == "hatch_window" || type == "hatch window") {
-							dt.type = WALL_HATCH_WINDOW;
-						} else if(type == "any door") {
-							all_doors = true;
-						} else if(type == "any window") {
-							all_windows = true;
-						} else if(type == "any") {
-							all_windows = true;
-							all_doors = true;
-						} else {
-							wxString warning;
-							warning << wxT("Unknown door type '") << wxstr(type) << wxT("'\n");
-							warnings.push_back(warning);
-							break;
-						}
-						dt.id = id;
-						if(all_windows) {
-							dt.type = WALL_WINDOW;       door_items[alignment].push_back(dt);
-							dt.type = WALL_HATCH_WINDOW; door_items[alignment].push_back(dt);
-						}
-						if(all_doors) {
-							dt.type = WALL_ARCHWAY;     door_items[alignment].push_back(dt);
-							dt.type = WALL_DOOR_NORMAL; door_items[alignment].push_back(dt);
-							dt.type = WALL_DOOR_LOCKED; door_items[alignment].push_back(dt);
-							dt.type = WALL_DOOR_QUEST;  door_items[alignment].push_back(dt);
-							dt.type = WALL_DOOR_MAGIC;  door_items[alignment].push_back(dt);
-						}
-
-						if(!all_doors && !all_windows) {
-							door_items[alignment].push_back(dt);
-						}
-					}
-				} while(false);
-				subchild = subchild->next;
+			uint32_t alignment;
+			if (typeString == "vertical") {
+				alignment = WALL_VERTICAL;
+			} else if (typeString == "horizontal") {
+				alignment = WALL_HORIZONTAL;
+			} else if (typeString == "corner") {
+				alignment = WALL_NORTHWEST_DIAGONAL;
+			} else if (typeString == "pole") {
+				alignment = WALL_POLE;
+			} else if (typeString == "south end") {
+				alignment = WALL_SOUTH_END;
+			} else if (typeString == "east end") {
+				alignment = WALL_EAST_END;
+			} else if (typeString == "north end") {
+				alignment = WALL_NORTH_END;
+			} else if (typeString == "west end") {
+				alignment = WALL_WEST_END;
+			} else if (typeString == "south T") {
+				alignment = WALL_SOUTH_T;
+			} else if (typeString == "east T") {
+				alignment = WALL_EAST_T;
+			} else if (typeString == "west T") {
+				alignment = WALL_WEST_T;
+			} else if (typeString == "north T") {
+				alignment = WALL_NORTH_T;
+			} else if (typeString == "northwest diagonal") {
+				alignment = WALL_NORTHWEST_DIAGONAL;
+			} else if (typeString == "northeast diagonal") {
+				alignment = WALL_NORTHEAST_DIAGONAL;
+			} else if (typeString == "southwest diagonal") {
+				alignment = WALL_SOUTHWEST_DIAGONAL;
+			} else if (typeString == "southeast diagonal") {
+				alignment = WALL_SOUTHEAST_DIAGONAL;
+			} else if (typeString == "intersection") {
+				alignment = WALL_INTERSECTION;
+			} else if (typeString == "untouchable") {
+				alignment = WALL_UNTOUCHABLE;
+			} else {
+				warnings.push_back(wxT("Unknown wall alignment '") + wxstr(typeString) + wxT("'\n"));
+				continue;
 			}
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"friend") == 0) {
-			if(readXMLValue(child, "name", strVal)) {
-				if(strVal == "all") {
-					//friends.push_back(-1);
-				} else {
-					Brush* brush = brushes.getBrush(strVal);
-					if(brush) {
-						friends.push_back(brush->getID());
-					} else {
-						wxString warning;
-						warning << wxT("Brush '") + wxstr(strVal) + wxT("' is not defined.");
-						warnings.push_back(warning);
+
+			for (pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
+				const std::string& subChildName = as_lower_str(subChildNode.name());
+				if (subChildName == "item") {
+					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
+					if (id == 0) {
+						warnings.push_back(wxT("Could not read id tag of item node\n"));
+						break;
 					}
-					if(readXMLValue(child, "redirect", strVal) && isTrueString(strVal)) {
-						WallBrush* rd = dynamic_cast<WallBrush*>(brush);
-						if(rd == NULL) {
-							wxString warning;
-							warning << wxT("Wall brush redirect link: '") + wxstr(strVal) + wxT("' is not a wall brush.");
-							warnings.push_back(warning);
-						} else if(redirect_to == NULL) {
-							redirect_to = rd;
-						} else {
-							wxString warning;
-							warning << wxT("Wall brush '") + wxstr(getName()) + wxT("' has more than one redirect link.");
-							warnings.push_back(warning);
+
+					ItemType& it = item_db[id];
+					if (it.id == 0) {
+						warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+						return false;
+					} else if (it.brush && it.brush != this) {
+						warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+						return false;
+					}
+
+					it.isWall = true;
+					it.brush = this;
+					it.border_alignment = ::BorderType(alignment);
+
+					WallType wt;
+					wt.id = id;
+
+					wall_items[alignment].total_chance += pugi::cast<int32_t>(subChildNode.attribute("chance").value());
+					wt.chance = wall_items[alignment].total_chance;
+
+					wall_items[alignment].items.push_back(wt);
+				} else if (subChildName == "door") {
+					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
+					if (id == 0) {
+						warnings.push_back(wxT("Could not read id tag of door node\n"));
+						break;
+					}
+
+					const std::string& type = subChildNode.attribute("type").as_string();
+					if (type.empty()) {
+						warnings.push_back(wxT("Could not read type tag of door node\n"));
+						continue;
+					}
+
+					bool isOpen;
+					pugi::xml_attribute openAttribute = subChildNode.attribute("open");
+					if (openAttribute) {
+						isOpen = openAttribute.as_bool();
+					} else {
+						isOpen = true;
+						if (type != "window" && type != "any window" && type != "hatch window") {
+							warnings.push_back(wxT("Could not read open tag of door node\n"));
+							break;
 						}
+					}
+
+					ItemType& it = item_db[id];
+					if(it.id == 0) {
+						warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+						return false;
+					} else if (it.brush && it.brush != this) {
+						warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+						return false;
+					}
+
+					it.isWall = true;
+					it.brush = this;
+					it.isBrushDoor = true;
+					it.wall_hate_me = subChildNode.attribute("hate").as_bool();
+					it.isOpen = isOpen;
+					it.border_alignment = ::BorderType(alignment);
+
+					DoorType dt;
+					bool all_windows = false;
+					bool all_doors = false;
+					if(type == "normal") {
+						dt.type = WALL_DOOR_NORMAL;
+					} else if(type == "locked") {
+						dt.type = WALL_DOOR_LOCKED;
+					} else if(type == "quest") {
+						dt.type = WALL_DOOR_QUEST;
+					} else if(type == "magic") {
+						dt.type = WALL_DOOR_MAGIC;
+					} else if(type == "archway") {
+						dt.type = WALL_ARCHWAY;
+					} else if(type == "window") {
+						dt.type = WALL_WINDOW;
+					} else if(type == "hatch_window" || type == "hatch window") {
+						dt.type = WALL_HATCH_WINDOW;
+					} else if(type == "any door") {
+						all_doors = true;
+					} else if(type == "any window") {
+						all_windows = true;
+					} else if(type == "any") {
+						all_windows = true;
+						all_doors = true;
+					} else {
+						warnings.push_back(wxT("Unknown door type '") + wxstr(type) + wxT("'\n"));
+						break;
+					}
+
+					dt.id = id;
+					if(all_windows) {
+						dt.type = WALL_WINDOW;       door_items[alignment].push_back(dt);
+						dt.type = WALL_HATCH_WINDOW; door_items[alignment].push_back(dt);
+					}
+
+					if(all_doors) {
+						dt.type = WALL_ARCHWAY;     door_items[alignment].push_back(dt);
+						dt.type = WALL_DOOR_NORMAL; door_items[alignment].push_back(dt);
+						dt.type = WALL_DOOR_LOCKED; door_items[alignment].push_back(dt);
+						dt.type = WALL_DOOR_QUEST;  door_items[alignment].push_back(dt);
+						dt.type = WALL_DOOR_MAGIC;  door_items[alignment].push_back(dt);
+					}
+
+					if(!all_doors && !all_windows) {
+						door_items[alignment].push_back(dt);
+					}
+				}
+			}
+		} else if (childName == "friend") {
+			const std::string& name = childNode.attribute("name").as_string();
+			if (name.empty()) {
+				continue;
+			}
+
+			if (name == "all") {
+				//friends.push_back(-1);
+			} else {
+				Brush* brush = brushes.getBrush(name);
+				if (brush) {
+					friends.push_back(brush->getID());
+				} else {
+					warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
+				}
+
+				if (childNode.attribute("redirect").as_bool()) {
+					WallBrush* rd = dynamic_cast<WallBrush*>(brush);
+					if (!rd) {
+						warnings.push_back(wxT("Wall brush redirect link: '") + wxstr(name) + wxT("' is not a wall brush."));
+					} else if (!redirect_to) {
+						redirect_to = rd;
+					} else {
+						warnings.push_back( wxT("Wall brush '") + wxstr(getName()) + wxT("' has more than one redirect link."));
 					}
 				}
 			}
 		}
-		child = child->next;
 	}
-
 	return true;
 }
 
@@ -291,7 +257,7 @@ void WallBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 					WallBrush* try_brush = this;
 					while(true) {
 						if(id != 0) break;
-						if(try_brush == NULL) return;
+						if(try_brush == nullptr) return;
 
 						for(int i = alignment + 1; i != alignment; ++i) {
 							if(i == 16) i = 0;
@@ -333,7 +299,7 @@ void WallBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 
 	while(true) {
 		if(id != 0) break;
-		if(try_brush == NULL) return;
+		if(try_brush == nullptr) return;
 
 		for(int i = 0; i < 16; ++i) {
 			WallNode& wn = try_brush->wall_items[i];
@@ -523,7 +489,7 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile) {
 				WallBrush* try_brush = wall_brush;
 
 				while(true) {
-					if(try_brush == NULL) break;
+					if(try_brush == nullptr) break;
 					if(id != 0) break;
 
 					WallNode& wn = try_brush->wall_items[int(bt)];
@@ -551,7 +517,7 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile) {
 					try_brush = try_brush->redirect_to;
 					if(try_brush == wall_brush) break; // To prevent infinite loop
 				}
-				if(try_brush == NULL && id == 0) {
+				if(try_brush == nullptr && id == 0) {
 					if(i == 1) {
 						++it;
 					}
@@ -622,7 +588,7 @@ bool WallBrush::hasWall(Item* item) {
 
 	WallBrush* test_wall = this;
 
-	while(test_wall != NULL) {
+	while(test_wall != nullptr) {
 		for(std::vector<WallType>::const_iterator it = test_wall->wall_items[int(bt)].items.begin();
 				it != test_wall->wall_items[int(bt)].items.end();
 				++it)

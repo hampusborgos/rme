@@ -25,12 +25,6 @@
 #include "math.h"
 #include <sstream>
 
-#ifdef XML_GCC_FREE
-	#define xmlFree(s)	free(s)
-#else
-	#define xmlFree(s)	xmlFree(s)
-#endif
-
 std::string i2s(const int _i) {
 	static std::stringstream ss;
 	ss.str("");
@@ -119,53 +113,6 @@ std::string as_upper_str(const std::string& other) {
 	std::string ret = other;
 	to_upper_str(ret);
 	return ret;
-}
-
-bool readXMLInteger(xmlNodePtr node, const char* tag, int& value)
-{
-	char* nodeValue = (char*)xmlGetProp(node, (xmlChar*)tag);
-	if(nodeValue){
-		value = atoi(nodeValue);
-		xmlFree(nodeValue);
-		return true;
-	}
-
-	return false;
-}
-
-bool readXMLFloat(xmlNodePtr node, const char* tag, float& value)
-{
-	char* nodeValue = (char*)xmlGetProp(node, (xmlChar*)tag);
-	if(nodeValue){
-		value = float(atof(nodeValue));
-		xmlFree(nodeValue);
-		return true;
-	}
-
-	return false;
-}
-
-bool readXMLString(xmlNodePtr node, const char* tag, std::string& value)
-{
-	char* nodeValue = (char*)xmlGetProp(node, (xmlChar*)tag);
-	if(nodeValue){
-		value = nodeValue;
-		xmlFree(nodeValue);
-		return true;
-	}
-
-	return false;
-}
-
-bool readXMLBoolean(xmlNodePtr node, const char* tag, bool& value)
-{
-	std::string str_val;
-	if(readXMLString(node, tag, str_val))
-	{
-		value = isTrueString(str_val);
-		return true;
-	}
-	return false;
 }
 
 bool isFalseString(std::string& str) {

@@ -12,10 +12,10 @@
 
 LiveServer::LiveServer(Editor& editor) : 
 	editor(&editor),
-	serv(NULL),
+	serv(nullptr),
 	client_mask(0)
 {
-	log = NULL;
+	log = nullptr;
 }
 
 LiveServer::~LiveServer()
@@ -74,12 +74,12 @@ void LiveServer::Close()
 	if(log) {
 		log->Message(wxT("Server was shutdown."));
 		log->Disconnect();
-		log = NULL;
+		log = nullptr;
 	}
 	if(serv)
 	{
 		serv->Destroy();
-		serv = NULL;
+		serv = nullptr;
 	}
 
 	LiveSocket::Close();

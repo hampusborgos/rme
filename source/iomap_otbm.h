@@ -134,15 +134,15 @@ protected:
 
 	virtual bool loadMap(Map& map, NodeFileReadHandle& handle);
 	bool loadSpawns(Map& map, const FileName& dir);
-	bool loadSpawns(Map& map, xmlDocPtr doc);
+	bool loadSpawns(Map& map, pugi::xml_document& doc);
 	bool loadHouses(Map& map, const FileName& dir);
-	bool loadHouses(Map& map, xmlDocPtr doc);
+	bool loadHouses(Map& map, pugi::xml_document& doc);
 
 	virtual bool saveMap(Map& map, NodeFileWriteHandle& handle);
 	bool saveSpawns(Map& map, const FileName& dir);
-	xmlDocPtr saveSpawns(Map& map);
+	bool saveSpawns(Map& map, pugi::xml_document& doc);
 	bool saveHouses(Map& map, const FileName& dir);
-	xmlDocPtr saveHouses(Map& map);
+	bool saveHouses(Map& map, pugi::xml_document& doc);
 };
 
 #endif

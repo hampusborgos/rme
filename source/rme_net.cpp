@@ -46,9 +46,9 @@ bool RMENet::Connect()
 	{
 		if(socket)
 			socket->Destroy();
-		socket = NULL;
+		socket = nullptr;
 		delete connection;
-		connection = NULL;
+		connection = nullptr;
 		return false;
 	}
  
@@ -65,11 +65,11 @@ bool RMENet::Connect()
 void RMENet::Close()
 {
 	delete connection;
-	connection = NULL;
+	connection = nullptr;
 	if(socket)
 	{
 		socket->Destroy();
-		socket = NULL;
+		socket = nullptr;
 	}
 
 	// Delayed destruction: the socket will be deleted during the next
@@ -78,7 +78,7 @@ void RMENet::Close()
 	//m_beingDeleted = true;
 
 	// schedule this object for deletion
-	wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : NULL;
+	wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : nullptr;
 	if ( traits )
 	{
 		// let the traits object decide what to do with us

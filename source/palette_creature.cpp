@@ -49,10 +49,10 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
 	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Creatures"));
-	tileset_choice = newd wxChoice(this, PALETTE_CREATURE_TILESET_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)NULL);
+	tileset_choice = newd wxChoice(this, PALETTE_CREATURE_TILESET_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)nullptr);
 	sidesizer->Add(tileset_choice, 0, wxEXPAND);
 
-	creature_list = newd wxListBox(this, PALETTE_CREATURE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SINGLE | wxLB_NEEDED_SB | wxLB_SORT);
+	creature_list = newd wxListBox(this, PALETTE_CREATURE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB | wxLB_SORT);
 	sidesizer->Add(creature_list, 1, wxEXPAND);
 	topsizer->Add(sidesizer, 1, wxEXPAND);
 
@@ -98,7 +98,7 @@ void CreaturePalettePanel::SelectFirstBrush() {
 Brush* CreaturePalettePanel::GetSelectedBrush() const {
 	if(creature_brush_button->GetValue()) {
 		if(creature_list->GetCount() == 0) {
-			return NULL;
+			return nullptr;
 		}
 		Brush* creature_brush = reinterpret_cast<Brush*>(creature_list->GetClientData(creature_list->GetSelection()));
 		if(dynamic_cast<CreatureBrush*>(creature_brush)) {
@@ -110,7 +110,7 @@ Brush* CreaturePalettePanel::GetSelectedBrush() const {
 		settings.setInteger(Config::DEFAULT_SPAWNTIME, creature_spawntime_spin->GetValue());
 		return gui.spawn_brush;
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush) {

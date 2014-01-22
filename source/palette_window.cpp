@@ -46,48 +46,46 @@ END_EVENT_TABLE()
 
 PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets) :
 	wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(230, 250)),
-	choicebook(NULL),
-	terrain_palette(NULL),
-	doodad_palette(NULL),
-	item_palette(NULL),
-	creature_palette(NULL),
-	house_palette(NULL),
-	waypoint_palette(NULL),
-	raw_palette(NULL)
+	choicebook(nullptr),
+	terrain_palette(nullptr),
+	doodad_palette(nullptr),
+	item_palette(nullptr),
+	creature_palette(nullptr),
+	house_palette(nullptr),
+	waypoint_palette(nullptr),
+	raw_palette(nullptr)
 {
 	SetMinSize(wxSize(225, 250));
 
 	// Create choicebook
-	wxChoicebook* tmp_choicebook = newd wxChoicebook(this, PALETTE_CHOICEBOOK, wxDefaultPosition, wxSize(230, 250));
+	choicebook = newd wxChoicebook(this, PALETTE_CHOICEBOOK, wxDefaultPosition, wxSize(230, 250));
 	
-	terrain_palette = static_cast<BrushPalettePanel*>(CreateTerrainPalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(terrain_palette, terrain_palette->GetName());
+	terrain_palette = static_cast<BrushPalettePanel*>(CreateTerrainPalette(choicebook, tilesets));
+	choicebook->AddPage(terrain_palette, terrain_palette->GetName());
 
-	doodad_palette = static_cast<BrushPalettePanel*>(CreateDoodadPalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(doodad_palette, doodad_palette->GetName());
+	doodad_palette = static_cast<BrushPalettePanel*>(CreateDoodadPalette(choicebook, tilesets));
+	choicebook->AddPage(doodad_palette, doodad_palette->GetName());
 
-	item_palette = static_cast<BrushPalettePanel*>(CreateItemPalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(item_palette, item_palette->GetName());
+	item_palette = static_cast<BrushPalettePanel*>(CreateItemPalette(choicebook, tilesets));
+	choicebook->AddPage(item_palette, item_palette->GetName());
 
-	house_palette = static_cast<HousePalettePanel*>(CreateHousePalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(house_palette, house_palette->GetName());
+	house_palette = static_cast<HousePalettePanel*>(CreateHousePalette(choicebook, tilesets));
+	choicebook->AddPage(house_palette, house_palette->GetName());
 
-	waypoint_palette = static_cast<WaypointPalettePanel*>(CreateWaypointPalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(waypoint_palette, waypoint_palette->GetName());
+	waypoint_palette = static_cast<WaypointPalettePanel*>(CreateWaypointPalette(choicebook, tilesets));
+	choicebook->AddPage(waypoint_palette, waypoint_palette->GetName());
 	
-	creature_palette = static_cast<CreaturePalettePanel*>(CreateCreaturePalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(creature_palette, creature_palette->GetName());
+	creature_palette = static_cast<CreaturePalettePanel*>(CreateCreaturePalette(choicebook, tilesets));
+	choicebook->AddPage(creature_palette, creature_palette->GetName());
 
-	raw_palette = static_cast<BrushPalettePanel*>(CreateRAWPalette(tmp_choicebook, tilesets));
-	tmp_choicebook->AddPage(raw_palette, raw_palette->GetName());
+	raw_palette = static_cast<BrushPalettePanel*>(CreateRAWPalette(choicebook, tilesets));
+	choicebook->AddPage(raw_palette, raw_palette->GetName());
 	
 	// Setup sizers
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
-	tmp_choicebook->SetMinSize(wxSize(225, 300));
-	sizer->Add(tmp_choicebook, 1, wxEXPAND);
+	choicebook->SetMinSize(wxSize(225, 300));
+	sizer->Add(choicebook, 1, wxEXPAND);
 	SetSizer(sizer);
-
-	choicebook = tmp_choicebook;
 
 	// Load first page
 	LoadCurrentContents();
@@ -241,7 +239,7 @@ void PaletteWindow::SelectPage(PaletteType id) {
 }
 
 Brush* PaletteWindow::GetSelectedBrush() const {
-	if(!choicebook) return NULL;
+	if(!choicebook) return nullptr;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	return panel->GetSelectedBrush();
 }
@@ -385,7 +383,7 @@ void PaletteWindow::OnUpdate(Map* map) {
 }
 
 void PaletteWindow::OnKey(wxKeyEvent& event) {
-	if(gui.GetCurrentTab() != NULL) {
+	if(gui.GetCurrentTab() != nullptr) {
 		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}
 }

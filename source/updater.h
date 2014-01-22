@@ -30,7 +30,7 @@ extern const wxEventType EVT_UPDATE_CHECK_FINISHED;
     DECLARE_EVENT_TABLE_ENTRY( \
         EVT_UPDATE_CHECK_FINISHED, id, wxID_ANY, \
         (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) NULL \
+        (wxObject *) nullptr \
     ),
 
 

@@ -25,16 +25,17 @@
 
 #include "items.h"
 #include "item.h"
+#include "pugicast.h"
 
 ItemDatabase item_db;
 
 ItemType::ItemType() :
-	sprite(NULL),
+	sprite(nullptr),
 	id(0),
 	clientID(0),
-	brush(NULL),
-	doodad_brush(NULL),
-	raw_brush(NULL),
+	brush(nullptr),
+	doodad_brush(nullptr),
+	raw_brush(nullptr),
 	is_metaitem(false),
 	has_raw(false),
 	in_other_tileset(false),
@@ -128,7 +129,7 @@ void ItemDatabase::clear()
 	for(uint i = 0; i < items.size(); i++)
 	{
 		delete items[i];
-		items.set(i, NULL);
+		items.set(i, nullptr);
 	}
 }
 
@@ -136,7 +137,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 {
 	uint8_t u8;
 	
-	for( ; itemNode != NULL; itemNode = itemNode->advance())
+	for( ; itemNode != nullptr; itemNode = itemNode->advance())
 	{
 		if(!itemNode->getU8(u8))
 		{
@@ -411,7 +412,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArrayString& warnings)
 {
 	uint8_t u8;
-	for( ; itemNode != NULL; itemNode = itemNode->advance())
+	for( ; itemNode != nullptr; itemNode = itemNode->advance())
 	{
 		if(!itemNode->getU8(u8))
 		{
@@ -571,7 +572,7 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 
 bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArrayString& warnings) {
 	uint8_t u8;
-	for( ; itemNode != NULL; itemNode = itemNode->advance())
+	for( ; itemNode != nullptr; itemNode = itemNode->advance())
 	{
 		if(!itemNode->getU8(u8))
 		{
@@ -796,13 +797,11 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 	return true;
 }
 
-bool ItemDatabase::loadItemFromGameXml(xmlNodePtr itemNode, int id)
+bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 {
-	if(id > 20000 && id < 20100){
+	if (id > 20000 && id < 20100) {
 		// WTF is the use of this shit? :P
-
-		itemNode = itemNode->next;
-
+		itemNode = itemNode.next_sibling();
 		return true;
 
 #if 0
@@ -817,214 +816,152 @@ bool ItemDatabase::loadItemFromGameXml(xmlNodePtr itemNode, int id)
 
 	ItemType& it = getItemType(id);
 
-	readXMLString(itemNode, "name", it.name);
+	it.name = itemNode.attribute("name").as_string();
+	it.editorsuffix = itemNode.attribute("editorsuffix").as_string();
 
-	readXMLString(itemNode, "editorsuffix", it.editorsuffix);
-
-	xmlNodePtr itemAttributesNode = itemNode->children;
-
-	std::string strValue;
-	int intValue;
-	while(itemAttributesNode)
-	{
-		if(readXMLString(itemAttributesNode, "key", strValue))
-		{
-			if(strValue == "type")
-			{
-				if(readXMLString(itemAttributesNode, "value", strValue))
-				{
-					if(strValue == "magicfield")
-					{
-						it.group = ITEM_GROUP_MAGICFIELD;
-						it.type = ITEM_TYPE_MAGICFIELD;
-					}
-					else if(strValue == "key")
-					{
-						it.type = ITEM_TYPE_KEY;
-					}
-					else if(strValue == "depot")
-					{
-						it.type = ITEM_TYPE_DEPOT;
-					}
-					else if(strValue == "teleport")
-					{
-						it.type = ITEM_TYPE_TELEPORT;
-					}
-					else if(strValue == "bed")
-					{
-						it.type = ITEM_TYPE_BED;
-					}
-					else if(strValue == "door")
-					{
-						it.type = ITEM_TYPE_DOOR;
-					}
-					else
-					{
-						// We ignore many types, no need to complain
-						//warnings.push_back("items.xml: Unknown type " + strValue);
-					}
-				}
-			}
-			else if(strValue == "name")
-			{
-				if(readXMLString(itemAttributesNode, "value", strValue))
-					it.name = strValue;
-			}
-			else if(strValue == "description")
-			{
-				if(readXMLString(itemAttributesNode, "value", strValue))
-					it.description = strValue;
-			}/*
-			else if(strValue == "runeSpellName")
-			{
-				if(readXMLString(itemAttributesNode, "value", strValue))
-					it.runeSpellName = strValue;
-			}*/
-			else if(strValue == "weight")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.weight = intValue / 100.f;
-			}
-			else if(strValue == "armor")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.armor = intValue;
-			}
-			else if(strValue == "defense")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.defense = intValue;
-			}
-			else if(strValue == "attack")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.attack = intValue;
-			}
-			else if(strValue == "rotateTo")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.rotateTo = intValue;
-			}
-			else if(strValue == "containerSize")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.volume = intValue;
-			}
-			else if(strValue == "readable")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.canReadText = intValue != 0;
-			}
-			else if(strValue == "writeable")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-				{
-					it.canWriteText = intValue != 0;
-					it.canReadText = intValue != 0;
-				}
-			}
-			else if(strValue == "decayTo")
-			{
-				it.decays = true;
-			}
-			else if(strValue == "maxTextLen" || strValue == "maxTextLength")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-				{
-					it.canReadText = intValue > 0;
-					it.maxTextLen = intValue;
-				}
-			}/*
-			else if(strValue == "writeOnceItemId")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-					it.writeOnceItemId = intValue;
-			}*/
-			else if(strValue == "charges")
-			{
-				if(readXMLInteger(itemAttributesNode, "value", intValue))
-				{
-					it.charges = intValue;
-					it.extra_chargeable = true;
-				}
-			}
+	pugi::xml_attribute attribute;
+	for (pugi::xml_node itemAttributesNode = itemNode.first_child(); itemAttributesNode; itemAttributesNode = itemAttributesNode.next_sibling()) {
+		if (!(attribute = itemAttributesNode.attribute("key"))) {
+			continue;
 		}
 
-		itemAttributesNode = itemAttributesNode->next;
-	}
+		const std::string& key = attribute.as_string();
+		if (key == "type") {
+			if (!(attribute = itemAttributesNode.attribute("value"))) {
+				continue;
+			}
 
+			const std::string& typeValue = attribute.as_string();
+			if (typeValue == "magicfield") {
+				it.group = ITEM_GROUP_MAGICFIELD;
+				it.type = ITEM_TYPE_MAGICFIELD;
+			} else if (typeValue == "key") {
+				it.type = ITEM_TYPE_KEY;
+			} else if (typeValue == "depot") {
+				it.type = ITEM_TYPE_DEPOT;
+			} else if (typeValue == "teleport") {
+				it.type = ITEM_TYPE_TELEPORT;
+			} else if (typeValue == "bed") {
+				it.type = ITEM_TYPE_BED;
+			} else if (typeValue == "door") {
+				it.type = ITEM_TYPE_DOOR;
+			} else {
+				// We ignore many types, no need to complain
+				//warnings.push_back("items.xml: Unknown type " + typeValue);
+			}
+		} else if (key == "name") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.name = attribute.as_string();
+			}
+		} else if (key == "description") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.description = attribute.as_string();
+			}
+		}else if (key == "runeSpellName") {
+			/*if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.runeSpellName = attribute.as_string();
+			}*/
+		} else if (key == "weight") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.weight = pugi::cast<int32_t>(attribute.value()) / 100.f;
+			}
+		} else if (key == "armor") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.armor = pugi::cast<int32_t>(attribute.value());
+			}
+		} else if (key == "defense") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.defense = pugi::cast<int32_t>(attribute.value());
+			}
+		} else if (key == "rotateTo") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.rotateTo = pugi::cast<int32_t>(attribute.value());
+			}
+		} else if (key == "containerSize") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.volume = pugi::cast<int32_t>(attribute.value());
+			}
+		} else if (key == "readable") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.canReadText = attribute.as_bool();
+			}
+		} else if (key == "writeable") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.canWriteText = it.canReadText = attribute.as_bool();
+			}
+		} else if (key == "decayTo") {
+			it.decays = true;
+		} else if (key == "maxTextLen" || key == "maxTextLength") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.maxTextLen = pugi::cast<int32_t>(attribute.value());
+				it.canReadText = it.maxTextLen > 0;
+			}
+		} else if (key == "writeOnceItemId") {
+			/*if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.writeOnceItemId = pugi::cast<int32_t>(attribute.value());
+			}*/
+		} else if (key == "charges") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.charges = pugi::cast<int32_t>(attribute.value());
+				it.extra_chargeable = true;
+			}
+		}
+	}
 	return true;
 }
 
 bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, wxArrayString& warnings)
 {
-	xmlDocPtr doc = xmlParseFile(identifier.GetFullPath().mb_str());
-	int intValue;
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(identifier.GetFullPath().mb_str());
+	if (!result) {
+		error = wxT("Could not load items.xml (Syntax error?)");
+		return false;
+	}
 
-	if(doc)
-	{
-		xmlNodePtr root = xmlDocGetRootElement(doc);
+	pugi::xml_node node = doc.child("items");
+	if (!node) {
+		error = wxT("items.xml, invalid root node.");
+		return false;
+	}
 
-		if(xmlStrcmp(root->name,(const xmlChar*)"items") != 0)
-		{
-			xmlFreeDoc(doc);
-			error = wxT("items.xml, invalid root node.");
+	for (pugi::xml_node itemNode = node.first_child(); itemNode; itemNode = itemNode.next_sibling()) {
+		if (as_lower_str(itemNode.name()) != "item") {
+			continue;
+		}
+
+		int32_t fromId = pugi::cast<int32_t>(itemNode.attribute("fromid").value());
+		int32_t toId = pugi::cast<int32_t>(itemNode.attribute("toid").value());
+		if (pugi::xml_attribute attribute = itemNode.attribute("id")) {
+			fromId = toId = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if (fromId == 0 || toId == 0) {
+			error = wxT("Could not read item id from item node.");
 			return false;
 		}
 
-		xmlNodePtr itemNode = root->children;
-		while(itemNode)
-		{
-			if(xmlStrcmp(itemNode->name,(const xmlChar*)"item") == 0)
-			{
-				int fromid = 0, toid = 0;
-
-				readXMLInteger(itemNode, "fromid", fromid);
-				readXMLInteger(itemNode, "toid", toid);
-
-				if(readXMLInteger(itemNode, "id", intValue))
-					fromid = toid = intValue;
-
-				if(fromid == 0 || toid == 0)
-				{
-					error = wxT("Could not read item id from item node.");
-					return false;
-				}
-
-				for(int id = fromid; id <= toid; ++id)
-					if(!loadItemFromGameXml(itemNode, id))
-						return false;
+		for (int32_t id = fromId; id <= toId; ++id) {
+			if (!loadItemFromGameXml(itemNode, id)) {
+				return false;
 			}
-
-			itemNode = itemNode->next;
 		}
-
-		xmlFreeDoc(doc);
-	}
-	else
-	{
-		error = wxT("Could not load items.xml (Syntax error?)");
-		return false;
 	}
 	return true;
 }
 
-bool ItemDatabase::loadMetaItem(xmlNodePtr node)
+bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 {
-	int id;
-	if(readXMLInteger(node, "id", id))
-	{
-		if(items[id] != NULL)
-		{
+	if (pugi::xml_attribute attribute = node.attribute("id")) {
+		int32_t id = pugi::cast<int32_t>(attribute.value());
+		if (items[id]) {
 			//std::cout << "Occupied ID " << id << " : " << items[id]->id << ":" << items[id]->name << std::endl;
 			return false;
 		}
 		items.set(id, newd ItemType());
 		items[id]->is_metaitem = true;
 		items[id]->id = id;
-	}
-	else
-	{
+	} else {
 		return false;
 	}
 	return true;
@@ -1045,5 +982,5 @@ ItemType& ItemDatabase::getItemType(int id)
 bool ItemDatabase::typeExists(int id) const
 {
 	ItemType* it = items[id];
-	return it != NULL;
+	return it != nullptr;
 }

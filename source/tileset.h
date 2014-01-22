@@ -42,7 +42,7 @@ public:
 	TilesetCategoryType getType() const {return type;}
 	size_t size() const {return brushlist.size();}
 
-	void loadBrush(xmlNodePtr node, wxArrayString& warnings);
+	void loadBrush(pugi::xml_node node, wxArrayString& warnings);
 	void clear();
 
 	bool containsBrush(Brush* brush) const;
@@ -68,7 +68,7 @@ public:
 	TilesetCategory* getCategory(TilesetCategoryType type);
 	const TilesetCategory* getCategory(TilesetCategoryType type) const;
 
-	void loadCategory(xmlNodePtr node, wxArrayString& warnings);
+	void loadCategory(pugi::xml_node node, wxArrayString& warnings);
 	void clear();
 
 	bool containsBrush(Brush* brush) const;

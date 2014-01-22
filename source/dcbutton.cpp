@@ -33,12 +33,12 @@ END_EVENT_TABLE()
 IMPLEMENT_DYNAMIC_CLASS(DCButton, wxPanel)
 
 DCButton::DCButton() :
-	wxPanel(NULL, wxID_ANY, wxDefaultPosition, wxSize(36, 36)),
+	wxPanel(nullptr, wxID_ANY, wxDefaultPosition, wxSize(36, 36)),
 	type(DC_BTN_NORMAL),
 	state(false),
 	size(RENDER_SIZE_16x16),
-	sprite(NULL),
-	overlay(NULL)
+	sprite(nullptr),
+	overlay(nullptr)
 {
 	SetSprite(0);
 }
@@ -48,8 +48,8 @@ DCButton::DCButton(wxWindow* parent, wxWindowID id, wxPoint pos, int type, Rende
 	type(type),
 	state(false),
 	size(sz),
-	sprite(NULL),
-	overlay(NULL)
+	sprite(nullptr),
+	overlay(nullptr)
 {
 	SetSprite(sprite_id);
 }
@@ -62,7 +62,7 @@ void DCButton::SetSprite(int _sprid) {
 	if(_sprid != 0) {
 		sprite = gui.gfx.getSprite(_sprid);
 	} else {
-		sprite = NULL;
+		sprite = nullptr;
 	}
 	Refresh();
 }
@@ -81,7 +81,7 @@ void DCButton::SetValue(bool val) {
 		if(GetValue() && settings.getInteger(Config::USE_GUI_SELECTION_SHADOW)) {
 			SetOverlay(gui.gfx.getSprite(EDITOR_SPRITE_SELECTION_MARKER));
 		} else {
-			SetOverlay(NULL);
+			SetOverlay(nullptr);
 		}
 		Refresh();
 	}
@@ -104,10 +104,10 @@ void DCButton::OnPaint(wxPaintEvent& event) {
 	static std::auto_ptr<wxPen> light_shadow_pen;
 	static std::auto_ptr<wxPen> shadow_pen;
 
-	if(highlight_pen.get() == NULL)      highlight_pen.reset(newd wxPen(wxColor(0xFF,0xFF,0xFF), 1, wxSOLID));
-	if(dark_highlight_pen.get() == NULL) dark_highlight_pen.reset(newd wxPen(wxColor(0xD4,0xD0,0xC8), 1, wxSOLID));
-	if(light_shadow_pen.get() == NULL)   light_shadow_pen.reset(newd wxPen(wxColor(0x80,0x80,0x80), 1, wxSOLID));
-	if(shadow_pen.get() == NULL)         shadow_pen.reset(newd wxPen(wxColor(0x40,0x40,0x40), 1, wxSOLID));
+	if(highlight_pen.get() == nullptr)      highlight_pen.reset(newd wxPen(wxColor(0xFF,0xFF,0xFF), 1, wxSOLID));
+	if(dark_highlight_pen.get() == nullptr) dark_highlight_pen.reset(newd wxPen(wxColor(0xD4,0xD0,0xC8), 1, wxSOLID));
+	if(light_shadow_pen.get() == nullptr)   light_shadow_pen.reset(newd wxPen(wxColor(0x80,0x80,0x80), 1, wxSOLID));
+	if(shadow_pen.get() == nullptr)         shadow_pen.reset(newd wxPen(wxColor(0x40,0x40,0x40), 1, wxSOLID));
 
 	int size_x = 20, size_y = 20;
 

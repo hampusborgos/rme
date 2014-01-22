@@ -159,7 +159,7 @@ END_EVENT_TABLE()
 
 AboutWindow::AboutWindow(wxWindow* parent) :
 	wxDialog(parent, wxID_ANY, wxT("About"), wxDefaultPosition, wxSize(300, 320), wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
-	game_panel(NULL)
+	game_panel(nullptr)
 {
 	wxString about;
 	
@@ -325,10 +325,10 @@ const wxBrush& TetrisPanel::GetBrush(Color color) const {
 	static std::auto_ptr<wxBrush> yellow_brush;
 	static std::auto_ptr<wxBrush> purple_brush;
 
-	if(yellow_brush.get() == NULL) yellow_brush.reset(newd wxBrush(wxColor(255, 255, 0)));
-	if(purple_brush.get() == NULL) purple_brush.reset(newd wxBrush(wxColor(128, 0, 255)));
+	if(yellow_brush.get() == nullptr) yellow_brush.reset(newd wxBrush(wxColor(255, 255, 0)));
+	if(purple_brush.get() == nullptr) purple_brush.reset(newd wxBrush(wxColor(128, 0, 255)));
 
-	const wxBrush* brush = NULL;
+	const wxBrush* brush = nullptr;
 	switch(color) {
 		case RED: brush = wxRED_BRUSH; break;
 		case BLUE: brush = wxCYAN_BRUSH; break;

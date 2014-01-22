@@ -24,6 +24,7 @@
 #include "brush.h"
 #include "creatures.h"
 #include "creature_brush.h"
+#include "pugicast.h"
 
 CreatureDatabase creature_db;
 
@@ -33,7 +34,7 @@ CreatureType::CreatureType() :
 	in_other_tileset(false),
 	standard(false),
 	name(""),
-	brush(NULL)
+	brush(nullptr)
 {
 }
 
@@ -64,140 +65,125 @@ CreatureType::~CreatureType()
 {
 }
 
-CreatureType* CreatureType::loadFromXML(xmlNodePtr node, wxArrayString& warnings)
+CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warnings)
 {
-	std::string tmp_name, tmp_type;
-	if(!readXMLValue(node, "type", tmp_type)) {
+	pugi::xml_attribute attribute;
+	if (!(attribute = node.attribute("type"))) {
 		warnings.push_back(wxT("Couldn't read type tag of creature node."));
-		return NULL;
+		return nullptr;
 	}
-	if(tmp_type != "monster" && tmp_type != "npc") {
-		warnings.push_back(wxT("Invalid type tag of creature node \"") + wxstr(tmp_type) + wxT("\""));
-		return NULL;
-	}
-	if(!readXMLValue(node, "name", tmp_name)) {
-		warnings.push_back(wxT("Couldn't read name tag of creature node."));
-		return NULL;
-	}
-	CreatureType* ct = newd CreatureType();
-	ct->name = tmp_name;
-	ct->isNpc = (tmp_type == "npc");
-	
-	int intVal;
 
-	if(readXMLValue(node, "looktype", intVal)) {
-		ct->outfit.lookType = intVal;
-		if(gui.gfx.getCreatureSprite(intVal) == NULL) {
-			wxString war;
-			war << wxT("Invalid creature \"") << wxstr(tmp_name) << wxT("\" look type #");
-			war << intVal;
-			warnings.push_back(war);
+	const std::string& tmpType = attribute.as_string();
+	if (tmpType != "monster" && tmpType != "npc") {
+		warnings.push_back(wxT("Invalid type tag of creature node \"") + wxstr(tmpType) + wxT("\""));
+		return nullptr;
+	}
+
+	if (!(attribute = node.attribute("name"))) {
+		warnings.push_back(wxT("Couldn't read name tag of creature node."));
+		return nullptr;
+	}
+
+	CreatureType* ct = newd CreatureType();
+	ct->name = attribute.as_string();
+	ct->isNpc = tmpType == "npc";
+
+	if ((attribute = node.attribute("looktype"))) {
+		ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
+		if(gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
+			warnings.push_back(wxT("Invalid creature \"") + wxstr(ct->name) + wxT("\" look type #") + std::to_string(ct->outfit.lookType));
 		}
 	}
-	if(readXMLValue(node, "lookitem", intVal)) {
-		ct->outfit.lookItem = intVal;
-	}
-	if(readXMLValue(node, "lookaddon", intVal)) {
-		ct->outfit.lookAddon = intVal;
-	}
-	if(readXMLValue(node, "lookhead", intVal)) {
-		ct->outfit.lookHead = intVal;
-	}
-	if(readXMLValue(node, "lookbody", intVal)) {
-		ct->outfit.lookBody = intVal;
-	}
-	if(readXMLValue(node, "looklegs", intVal)) {
-		ct->outfit.lookLegs = intVal;
-	}
-	if(readXMLValue(node, "lookfeet", intVal)) {
-		ct->outfit.lookFeet = intVal;
+
+	if ((attribute = node.attribute("lookitem"))) {
+		ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
 	}
 
+	if ((attribute = node.attribute("lookaddon"))) {
+		ct->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
+	}
+
+	if ((attribute = node.attribute("lookhead"))) {
+		ct->outfit.lookHead = pugi::cast<int32_t>(attribute.value());
+	}
+
+	if ((attribute = node.attribute("lookbody"))) {
+		ct->outfit.lookBody = pugi::cast<int32_t>(attribute.value());
+	}
+
+	if ((attribute = node.attribute("looklegs"))) {
+		ct->outfit.lookLegs = pugi::cast<int32_t>(attribute.value());
+	}
+
+	if ((attribute = node.attribute("lookfeet"))) {
+		ct->outfit.lookFeet = pugi::cast<int32_t>(attribute.value());
+	}
 	return ct;
 }
 
-CreatureType* CreatureType::loadFromOTXML(const FileName& filename, xmlDocPtr doc, wxArrayString& warnings)
+CreatureType* CreatureType::loadFromOTXML(const FileName& filename, pugi::xml_document& doc, wxArrayString& warnings)
 {
-	ASSERT(doc != NULL);
-	xmlNodePtr root = xmlDocGetRootElement(doc);
+	ASSERT(doc != nullptr);
 
-	bool valid = false;
-	bool isNpc = false;
-
-	if(xmlStrcmp(root->name,(const xmlChar*)"monster") == 0)
-		valid = true;
-	
-	if(xmlStrcmp(root->name,(const xmlChar*)"npc") == 0)
-	{
-		valid = true;
+	bool isNpc;
+	pugi::xml_node node;
+	if ((node = doc.child("monster"))) {
+		isNpc = false;
+	} else if ((node = doc.child("npc"))) {
 		isNpc = true;
-	}
-
-	if(valid) {
-		std::string tmp_name;
-		if(!readXMLValue(root, "name", tmp_name)) {
-			warnings.push_back(wxT("Couldn't read name tag of creature node."));
-			xmlFreeDoc(doc);
-			return NULL;
-		}
-		CreatureType* ct = newd CreatureType();
-		if(isNpc)
-			ct->name = nstr(filename.GetName());
-		else
-			ct->name = tmp_name;
-		ct->isNpc = isNpc;
-
-		xmlNodePtr optionNode = root->children;
-		while(optionNode) {
-			if(xmlStrcmp(optionNode->name,(const xmlChar*)"look") == 0) {
-				int intVal;
-
-				if(readXMLValue(optionNode, "type", intVal)) {
-					ct->outfit.lookType = intVal;
-				}
-				if(readXMLValue(optionNode, "item", intVal) || readXMLValue(optionNode, "lookex", intVal)) {
-					ct->outfit.lookItem = intVal;
-				}
-				if(readXMLValue(optionNode, "addon", intVal)) {
-					ct->outfit.lookAddon = intVal;
-				}
-				if(readXMLValue(optionNode, "head", intVal)) {
-					ct->outfit.lookHead = intVal;
-				}
-				if(readXMLValue(optionNode, "body", intVal)) {
-					ct->outfit.lookBody = intVal;
-				}
-				if(readXMLValue(optionNode, "legs", intVal)) {
-					ct->outfit.lookLegs = intVal;
-				}
-				if(readXMLValue(optionNode, "feet", intVal)) {
-					ct->outfit.lookFeet = intVal;
-				}
-			}
-			optionNode = optionNode->next;
-		}
-		xmlFreeDoc(doc);
-		return ct;
 	} else {
-		xmlFreeDoc(doc);
 		warnings.push_back(wxT("This file is not a monster/npc file"));
-		return NULL;
+		return nullptr;
 	}
-}
 
-xmlNodePtr CreatureType::saveToXML()
-{
-	xmlNodePtr node =  xmlNewNode(NULL,(const xmlChar*)"creature");
-	xmlSetProp(node, (const xmlChar*)"name", (const xmlChar*)name.c_str());
-	xmlSetProp(node, (const xmlChar*)"type", (const xmlChar*)(isNpc? "npc" : "monster"));
-	if(outfit.lookType != 0) xmlSetProp(node, (const xmlChar*)"looktype", (const xmlChar*)i2s(outfit.lookType).c_str());
-	if(outfit.lookItem != 0) xmlSetProp(node, (const xmlChar*)"lookitem", (const xmlChar*)i2s(outfit.lookItem).c_str());
-	if(outfit.lookAddon!= 0) xmlSetProp(node, (const xmlChar*)"lookaddon",(const xmlChar*)i2s(outfit.lookAddon).c_str());
-	if(outfit.lookHead != 0) xmlSetProp(node, (const xmlChar*)"lookhead", (const xmlChar*)i2s(outfit.lookHead).c_str());
-	if(outfit.lookBody != 0) xmlSetProp(node, (const xmlChar*)"lookbody", (const xmlChar*)i2s(outfit.lookBody).c_str());
-	if(outfit.lookLegs != 0) xmlSetProp(node, (const xmlChar*)"looklegs", (const xmlChar*)i2s(outfit.lookLegs).c_str());
-	if(outfit.lookFeet != 0) xmlSetProp(node, (const xmlChar*)"lookfeet", (const xmlChar*)i2s(outfit.lookFeet).c_str());
-	return node;
+	pugi::xml_attribute attribute;
+	if (!(attribute = node.attribute("name"))) {
+		warnings.push_back(wxT("Couldn't read name tag of creature node."));
+		return nullptr;
+	}
+
+	CreatureType* ct = newd CreatureType();
+	if (isNpc) {
+		ct->name = nstr(filename.GetName());
+	} else {
+		ct->name = attribute.as_string();
+	}
+	ct->isNpc = isNpc;
+
+	for (pugi::xml_node optionNode = node.first_child(); optionNode; optionNode = optionNode.next_sibling()) {
+		if (as_lower_str(optionNode.name()) != "look") {
+			continue;
+		}
+
+		if ((attribute = optionNode.attribute("type"))) {
+			ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("item")) || (attribute = optionNode.attribute("lookex"))) {
+			ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("addon"))) {
+			ct->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("head"))) {
+			ct->outfit.lookHead = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("body"))) {
+			ct->outfit.lookBody = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("legs"))) {
+			ct->outfit.lookLegs = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("feet"))) {
+			ct->outfit.lookFeet = pugi::cast<int32_t>(attribute.value());
+		}
+	}
+	return ct;
 }
 
 CreatureDatabase::CreatureDatabase()
@@ -226,12 +212,12 @@ CreatureType* CreatureDatabase::operator[](const std::string& name)
 	if(iter != creature_map.end()) {
 		return iter->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 CreatureType* CreatureDatabase::addMissingCreatureType(const std::string& name, bool isNpc)
 {
-	assert((*this)[name] == NULL);
+	assert((*this)[name] == nullptr);
 	
 	CreatureType* ct = newd CreatureType();
 	ct->name = name;
@@ -245,7 +231,7 @@ CreatureType* CreatureDatabase::addMissingCreatureType(const std::string& name, 
 
 CreatureType* CreatureDatabase::addCreatureType(const std::string& name, bool isNpc, const Outfit& outfit)
 {
-	assert((*this)[name] == NULL);
+	assert((*this)[name] == nullptr);
 	
 	CreatureType* ct = newd CreatureType();
 	ct->name = name;
@@ -273,157 +259,151 @@ bool CreatureDatabase::hasMissing() const
 
 bool CreatureDatabase::loadFromXML(const FileName& filename, bool standard, wxString& error, wxArrayString& warnings)
 {
-	xmlDocPtr doc = xmlParseFile(filename.GetFullPath().mb_str());
-	if(doc)
-	{
-		xmlNodePtr root = xmlDocGetRootElement(doc);
-
-		if(xmlStrcmp(root->name,(const xmlChar*)"creatures") != 0) {
-			error = wxT("Invalid file signature, this file is not a valid creatures file.");
-			xmlFreeDoc(doc);
-			return false;
-		}
-		xmlNodePtr creatureNode = root->children;
-		while(creatureNode)
-		{
-			if(xmlStrcmp(creatureNode->name, (const xmlChar*)"creature") == 0)
-			{
-				CreatureType* ct = CreatureType::loadFromXML(creatureNode, warnings);
-				if(ct)
-				{
-					ct->standard = standard;
-					if((*this)[ct->name])
-					{
-						warnings.push_back(wxT("Duplicate creature type name \"") + wxstr(ct->name) + wxT("\"! Discarding..."));
-						delete ct;
-					}
-					else
-					{
-						creature_map[as_lower_str(ct->name)] = ct;
-					}
-				}
-			}
-			creatureNode = creatureNode->next;
-		}
-		xmlFreeDoc(doc);
-		return true;
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(filename.GetFullPath().mb_str());
+	if (!result) {
+		error = wxT("Couldn't open file \"") + filename.GetFullName() + wxT("\", invalid format?");
+		return false;
 	}
-	error = wxT("Couldn't open file \"") + filename.GetFullName() + wxT("\", invalid format?");
-	return false;
+
+	pugi::xml_node node = doc.child("creatures");
+	if (!node) {
+		error = wxT("Invalid file signature, this file is not a valid creatures file.");
+		return false;
+	}
+
+	for (pugi::xml_node creatureNode = node.first_child(); creatureNode; creatureNode = creatureNode.next_sibling()) {
+		if (as_lower_str(creatureNode.name()) != "creature") {
+			continue;
+		}
+
+		CreatureType* creatureType = CreatureType::loadFromXML(creatureNode, warnings);
+		if (creatureType) {
+			creatureType->standard = standard;
+			if ((*this)[creatureType->name]) {
+				warnings.push_back(wxT("Duplicate creature type name \"") + wxstr(creatureType->name) + wxT("\"! Discarding..."));
+				delete creatureType;
+			} else {
+				creature_map[as_lower_str(creatureType->name)] = creatureType;
+			}
+		}
+	}
+	return true;
 }
 
 bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error, wxArrayString& warnings)
 {
-	xmlDocPtr doc = xmlParseFile(filename.GetFullPath().mb_str());
-	if(doc)
-	{
-		xmlNodePtr root = xmlDocGetRootElement(doc);
-
-		if(xmlStrcmp(root->name,(const xmlChar*)"monsters") == 0)
-		{
-			xmlNodePtr monsterNode = root->children;
-			while(monsterNode)
-			{
-				if(xmlStrcmp(monsterNode->name, (const xmlChar*)"monster") == 0)
-				{
-					std::string fn;
-					if(readXMLValue(monsterNode, "file", fn))
-					{
-						FileName monster_fn(filename);
-						monster_fn.SetFullName(wxstr(fn));
-
-						xmlDocPtr monster_doc = xmlParseFile(monster_fn.GetFullPath().mb_str());
-						if(monster_doc)
-						{
-							CreatureType* ct = CreatureType::loadFromOTXML(monster_fn, monster_doc, warnings);
-							if(ct)
-							{
-								CreatureType* current = (*this)[ct->name];
-
-								if(current)
-								{
-									*current = *ct;
-									delete ct;
-								}
-								else
-								{
-									creature_map[as_lower_str(ct->name)] = ct;
-									Tileset* ts = NULL;
-									if(ct->isNpc)
-										ts = materials.tilesets["NPCs"];
-									else
-										ts = materials.tilesets["Others"];
-									
-									ASSERT(ts);
-									Brush* brush = newd CreatureBrush(ct);
-									brushes.addBrush(brush);
-									TilesetCategory* tsc = ts->getCategory(TILESET_CREATURE);
-									tsc->brushlist.push_back(brush);
-								}
-							}
-						}
-					}
-				}
-				monsterNode = monsterNode->next;
-			}
-			xmlFreeDoc(doc);
-		}
-		else if(xmlStrcmp(root->name,(const xmlChar*)"monster") == 0 || xmlStrcmp(root->name,(const xmlChar*)"npc") == 0)
-		{
-			CreatureType* ct = CreatureType::loadFromOTXML(filename, doc, warnings);
-			if(ct)
-			{
-				CreatureType* current = (*this)[ct->name];
-
-				if(current)
-				{
-					*current = *ct;
-					delete ct;
-				}
-				else
-				{
-					creature_map[as_lower_str(ct->name)] = ct;
-					Tileset* ts = NULL;
-					if(ct->isNpc)
-						ts = materials.tilesets["NPCs"];
-					 else
-						ts = materials.tilesets["Others"];
-
-					ASSERT(ts);
-					Brush* brush = newd CreatureBrush(ct);
-					brushes.addBrush(brush);
-					TilesetCategory* tsc = ts->getCategory(TILESET_CREATURE);
-					tsc->brushlist.push_back(brush);
-				}
-			}
-		}
-		else
-		{
-			xmlFreeDoc(doc);
-			error = wxT("This is not valid OT npc/monster data file.");
-			return false;
-		}
-		return true;
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(filename.GetFullPath().mb_str());
+	if (!result) {
+		error = wxT("Couldn't open file \"") + filename.GetFullName() + wxT("\", invalid format?");
+		return false;
 	}
-	error = wxT("Couldn't open file \"") + filename.GetFullName() + wxT("\", invalid format?");
-	return false;
+
+	pugi::xml_node node;
+	if ((node = doc.child("monsters"))) {
+		for (pugi::xml_node monsterNode = node.first_child(); monsterNode; monsterNode = monsterNode.next_sibling()) {
+			if (as_lower_str(monsterNode.name()) != "monster") {
+				continue;
+			}
+
+			pugi::xml_attribute attribute;
+			if (!(attribute = monsterNode.attribute("file"))) {
+				continue;
+			}
+
+			FileName monsterFile(filename);
+			monsterFile.SetFullName(wxString(attribute.as_string(), wxConvUTF8));
+
+			pugi::xml_document monsterDoc;
+			pugi::xml_parse_result monsterResult = monsterDoc.load_file(monsterFile.GetFullPath().mb_str());
+			if (!result) {
+				continue;
+			}
+
+			CreatureType* creatureType = CreatureType::loadFromOTXML(monsterFile, monsterDoc, warnings);
+			if (creatureType) {
+				CreatureType* current = (*this)[creatureType->name];
+				if (current) {
+					*current = *creatureType;
+					delete creatureType;
+				} else {
+					creature_map[as_lower_str(creatureType->name)] = creatureType;
+
+					Tileset* tileSet = nullptr;
+					if (creatureType->isNpc) {
+						tileSet = materials.tilesets["NPCs"];
+					} else {
+						tileSet = materials.tilesets["Others"];
+					}
+					ASSERT(ts != nullptr);
+					
+					Brush* brush = newd CreatureBrush(creatureType);
+					brushes.addBrush(brush);
+
+					TilesetCategory* tileSetCategory = tileSet->getCategory(TILESET_CREATURE);
+					tileSetCategory->brushlist.push_back(brush);
+				}
+			}
+		}
+	} else if ((node = doc.child("monster")) || (node = doc.child("npc"))) {
+		CreatureType* creatureType = CreatureType::loadFromOTXML(filename, doc, warnings);
+		if (creatureType) {
+			CreatureType* current = (*this)[creatureType->name];
+
+			if (current) {
+				*current = *creatureType;
+				delete creatureType;
+			} else {
+				creature_map[as_lower_str(creatureType->name)] = creatureType;
+
+				Tileset* tileSet = nullptr;
+				if (creatureType->isNpc) {
+					tileSet = materials.tilesets["NPCs"];
+				} else {
+					tileSet = materials.tilesets["Others"];
+				}
+				ASSERT(ts != nullptr);
+
+				Brush* brush = newd CreatureBrush(creatureType);
+				brushes.addBrush(brush);
+
+				TilesetCategory* tileSetCategory = tileSet->getCategory(TILESET_CREATURE);
+				tileSetCategory->brushlist.push_back(brush);
+			}
+		}
+	} else {
+		error = wxT("This is not valid OT npc/monster data file.");
+		return false;
+	}
+	return true;
 }
 
 bool CreatureDatabase::saveToXML(const FileName& filename)
 {
-	xmlDocPtr doc = xmlNewDoc((const xmlChar*)"1.0");
-	doc->children = xmlNewDocNode(doc, NULL, (const xmlChar*)"creatures", NULL);
+	pugi::xml_document doc;
+	
+	pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
+	decl.append_attribute("version") = "1.0";
 
-	for(CreatureMap::iterator iter = creature_map.begin();
-			iter != creature_map.end();
-			++iter)
-	{
-		if(!iter->second->standard)
-		{
-			xmlAddChild(doc->children, (iter->second)->saveToXML());
+	pugi::xml_node creatureNodes = doc.append_child("creatures");
+	for (const auto& creatureEntry : creature_map) {
+		CreatureType* creatureType = creatureEntry.second;
+		if (!creatureType->standard) {
+			pugi::xml_node creatureNode = creatureNodes.append_child("creature");
+
+			creatureNode.append_attribute("name") = creatureType->name.c_str();
+			creatureNode.append_attribute("type") = creatureType->isNpc ? "npc" : "monster";
+
+			const Outfit& outfit = creatureType->outfit;
+			creatureNode.append_attribute("looktype") = outfit.lookType;
+			creatureNode.append_attribute("lookitem") = outfit.lookItem;
+			creatureNode.append_attribute("lookaddon") = outfit.lookAddon;
+			creatureNode.append_attribute("lookhead") = outfit.lookHead;
+			creatureNode.append_attribute("lookbody") = outfit.lookBody;
+			creatureNode.append_attribute("looklegs") = outfit.lookLegs;
+			creatureNode.append_attribute("lookfeet") = outfit.lookFeet;
 		}
 	}
-	bool result = xmlSaveFormatFileEnc(filename.GetFullPath().mb_str(), doc, "UTF-8", 1);
-	xmlFreeDoc(doc);
-	return result;
+	return doc.save_file(filename.GetFullPath().mb_str(), "\t", pugi::format_default, pugi::encoding_utf8);
 }

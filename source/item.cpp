@@ -31,11 +31,12 @@
 #include "carpet_brush.h"
 #include "table_brush.h"
 #include "wall_brush.h"
+#include "pugicast.h"
 
 Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 {
-	if(_type == 0) return NULL;
-	Item* newItem = NULL;
+	if(_type == 0) return nullptr;
+	Item* newItem = nullptr;
 
 	const ItemType& it = item_db[_type];
 	
@@ -97,8 +98,8 @@ Item* Item::deepCopy() const
 
 Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 {
-	if(old_item == NULL)
-		return NULL;
+	if(old_item == nullptr)
+		return nullptr;
 
 	old_item->setID(new_id);
 	// Through the magic of deepCopy, this will now be a pointer to an item of the correct type.
@@ -157,7 +158,7 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 	}
 
 	delete new_item;
-	return NULL;
+	return nullptr;
 }
 
 uint Item::memsize() const
@@ -241,7 +242,7 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 
 std::pair<int, int> Item::getDrawOffset() const {
 	ItemType& it = item_db[id];
-	if(it.sprite != NULL) {
+	if(it.sprite != nullptr) {
 		return it.sprite->getDrawOffset();
 	}
 	return std::make_pair(0,0);
@@ -301,7 +302,7 @@ uint8_t Item::getMiniMapColor() const {
 GroundBrush* Item::getGroundBrush() const {
 	ItemType& it = item_db[id];
 	if(!it.isGroundTile()) {
-		return NULL;
+		return nullptr;
 	}
 	return dynamic_cast<GroundBrush*>(it.brush);
 }
@@ -309,7 +310,7 @@ GroundBrush* Item::getGroundBrush() const {
 TableBrush* Item::getTableBrush() const {
 	ItemType& it = item_db[id];
 	if(!it.isTable) {
-		return NULL;
+		return nullptr;
 	}
 	return dynamic_cast<TableBrush*>(it.brush);
 }
@@ -317,7 +318,7 @@ TableBrush* Item::getTableBrush() const {
 CarpetBrush* Item::getCarpetBrush() const {
 	ItemType& it = item_db[id];
 	if(!it.isCarpet) {
-		return NULL;
+		return nullptr;
 	}
 	return dynamic_cast<CarpetBrush*>(it.brush);
 }
@@ -325,10 +326,10 @@ CarpetBrush* Item::getCarpetBrush() const {
 DoorBrush* Item::getDoorBrush() const {
 	ItemType& it = item_db[id];
 	if(!it.isWall || !it.isBrushDoor) {
-		return NULL;
+		return nullptr;
 	}
 	WallBrush* wb = dynamic_cast<WallBrush*>(it.brush);
-	DoorBrush* db = NULL;
+	DoorBrush* db = nullptr;
 	// Quite a horrible dependency on a global here, meh.
 	switch(wb->getDoorTypeFromID(id)) {
 		case WALL_DOOR_NORMAL: {
@@ -358,7 +359,7 @@ DoorBrush* Item::getDoorBrush() const {
 WallBrush* Item::getWallBrush() const {
 	ItemType& it = item_db[id];
 	if(!it.isWall) {
-		return NULL;
+		return nullptr;
 	}
 	return dynamic_cast<WallBrush*>(it.brush);
 }
@@ -431,12 +432,20 @@ uint16_t Item::LiquidName2ID(std::string liquid) {
 // ============================================================================
 // XML Saving & loading
 
-Item* Item::Create(xmlNodePtr xml) {
-	int id = 0;
-	int count = 1;
-	readXMLValue(xml, "id", id);
-	readXMLValue(xml, "count", count);
-	readXMLValue(xml, "subtype", count);
+Item* Item::Create(pugi::xml_node xml)
+{
+	pugi::xml_attribute attribute;
+
+	int32_t id = 0;
+	if ((attribute = xml.attribute("id"))) {
+		id = pugi::cast<int32_t>(attribute.value());
+	}
+
+	int32_t count = 1;
+	if ((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
+		count = pugi::cast<int32_t>(attribute.value());
+	}
+
 	return Create(id, count);
 }
 

@@ -54,7 +54,7 @@ Position CopyBuffer::getPosition() const
 
 void CopyBuffer::clear() {
 	delete tiles;
-	tiles = NULL;
+	tiles = nullptr;
 }
 
 void CopyBuffer::copy(Editor& editor, int floor)
@@ -167,13 +167,13 @@ void CopyBuffer::cut(Editor& editor, int floor)
 		if(newtile->creature && newtile->creature->isSelected())
 		{
 			copied_tile->creature = newtile->creature;
-			newtile->creature = NULL;
+			newtile->creature = nullptr;
 		}
 
 		if(newtile->spawn && newtile->spawn->isSelected())
 		{
 			copied_tile->spawn = newtile->spawn;
-			newtile->spawn = NULL;
+			newtile->spawn = nullptr;
 		}
 
 		tiles->setTile(copied_tile->getPosition(), copied_tile);
@@ -261,7 +261,7 @@ void CopyBuffer::paste(Editor& editor, Position topos)
 		TileLocation* location = editor.map.createTileL(pos);
 		Tile* copy_tile = buffer_tile->deepCopy(editor.map);
 		Tile* old_dest_tile = location->get();
-		Tile* new_dest_tile = NULL;
+		Tile* new_dest_tile = nullptr;
 		copy_tile->setLocation(location);
 
 		if(settings.getInteger(Config::MERGE_PASTE) || !copy_tile->ground)

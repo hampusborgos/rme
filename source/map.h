@@ -200,7 +200,7 @@ inline long long remove_if_TileOnMap(Map& map, RemoveIfType& remove_if)
 		Tile* tile = (*tileiter)->get();
 		if(remove_if(map, tile, removed, done, total))
 		{
-			map.setTile(tile->getPosition(), NULL, true);
+			map.setTile(tile->getPosition(), nullptr, true);
 			++removed;
 		}
 		++tileiter;
@@ -227,7 +227,7 @@ inline long long remove_if_ItemOnMap(Map& map, RemoveIfType& remove_if) {
 			if(remove_if(map, tile->ground, removed, done))
 			{
 				delete tile->ground;
-				tile->ground = NULL;
+				tile->ground = nullptr;
 				++removed;
 			}
 		}

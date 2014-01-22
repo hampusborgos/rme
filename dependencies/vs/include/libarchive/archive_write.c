@@ -232,6 +232,10 @@ __archive_write_filter(struct archive_write_filter *f,
 	int r;
 	if (length == 0)
 		return(ARCHIVE_OK);
+	if (f->write == NULL)
+		/* If unset, a fatal error has already ocuured, so this filter
+		 * didn't open. We cannot write anything. */
+		return(ARCHIVE_FATAL);
 	r = (f->write)(f, buff, length);
 	f->bytes_written += length;
 	return (r);
@@ -380,7 +384,7 @@ archive_write_client_write(struct archive_write_filter *f,
 		}
 	}
 
-	while ((size_t)remaining > state->buffer_size) {
+	while ((size_t)remaining >= state->buffer_size) {
 		/* Write out full blocks directly to client. */
 		bytes_written = (a->client_writer)(&a->archive,
 		    a->client_data, buff, state->buffer_size);
@@ -437,6 +441,8 @@ archive_write_client_close(struct archive_write_filter *f)
 		(*a->client_closer)(&a->archive, a->client_data);
 	free(state->buffer);
 	free(state);
+	/* Clear the close handler myself not to be called again. */
+	f->close = NULL;
 	a->client_data = NULL;
 	return (ret);
 }
@@ -623,7 +629,7 @@ _archive_write_header(struct archive *_a, struct archive_entry *entry)
 	if (a->skip_file_set &&
 	    archive_entry_dev_is_set(entry) &&
 	    archive_entry_ino_is_set(entry) &&
-	    archive_entry_dev(entry) == a->skip_file_dev &&
+	    archive_entry_dev(entry) == (dev_t)a->skip_file_dev &&
 	    archive_entry_ino64(entry) == a->skip_file_ino) {
 		archive_set_error(&a->archive, 0,
 		    "Can't add archive to itself");

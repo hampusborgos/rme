@@ -55,7 +55,7 @@ public:
 
 	T at(size_t index) const {
 		if(index >= sz) {
-			return NULL;
+			return nullptr;
 		}
 		return start[index];
 	}

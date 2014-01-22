@@ -37,6 +37,7 @@
 #include "town.h"
 
 #include "iomap_otbm.h"
+#include "pugicast.h"
 
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
@@ -70,7 +71,7 @@ Item* Item::Create_OTBM(const IOMap& maphandle, BinaryNode* stream)
 {
 	uint16_t _id;
 	if(!stream->getU16(_id))
-		return NULL;
+		return nullptr;
 
 	uint8_t _count = 0;
 
@@ -633,29 +634,29 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 		}
 
 		// Load the houses from the stored buffer
-		if (house_buffer.get() && house_buffer_size > 0)
-		{
-			xmlDocPtr doc = xmlParseMemory((const char*)house_buffer.get(), house_buffer_size);
-			if (doc)
-			{
-				if (!loadHouses(map, doc))
+		if (house_buffer.get() && house_buffer_size > 0) {
+			pugi::xml_document doc;
+			pugi::xml_parse_result result = doc.load_buffer(house_buffer.get(), house_buffer_size);
+			if (result) {
+				if (!loadHouses(map, doc)) {
 					warning(wxT("Failed to load houses."));
-			}
-			else
+				}
+			} else {
 				warning(wxT("Failed to load houses due to XML parse error."));
+			}
 		}
 
 		// Load the spawns from the stored buffer
-		if (spawn_buffer.get() && spawn_buffer_size > 0)
-		{
-			xmlDocPtr doc = xmlParseMemory((const char*)spawn_buffer.get(), spawn_buffer_size);
-			if (doc)
-			{
-				if (!loadSpawns(map, doc))
+		if (spawn_buffer.get() && spawn_buffer_size > 0) {
+			pugi::xml_document doc;
+			pugi::xml_parse_result result = doc.load_buffer(spawn_buffer.get(), spawn_buffer_size);
+			if (result) {
+				if (!loadSpawns(map, doc)) {
 					warning(wxT("Failed to load spawns."));
-			}
-			else
+				}
+			} else {
 				warning(wxT("Failed to load spawns due to XML parse error."));
+			}
 		}
 
 		return true;
@@ -754,7 +755,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	version.client = (ClientVersionID)u32;
 
 	BinaryNode* mapHeaderNode = root->getChild();
-	if(mapHeaderNode == NULL || !mapHeaderNode->getByte(u8) || u8 != OTBM_MAP_DATA)
+	if(mapHeaderNode == nullptr || !mapHeaderNode->getByte(u8) || u8 != OTBM_MAP_DATA)
 	{
 		error(wxT("Could not get root child node. Cannot recover from fatal error!"));
 		return false;
@@ -797,7 +798,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	
 	int nodes_loaded = 0;
 
-	for(BinaryNode* mapNode = mapHeaderNode->getChild(); mapNode != NULL; mapNode = mapNode->advance())
+	for(BinaryNode* mapNode = mapHeaderNode->getChild(); mapNode != nullptr; mapNode = mapNode->advance())
 	{
 		++nodes_loaded;
 		if(nodes_loaded % 15 == 0)
@@ -821,9 +822,9 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				continue;
 			}
 
-			for(BinaryNode* tileNode = mapNode->getChild(); tileNode != NULL; tileNode = tileNode->advance())
+			for(BinaryNode* tileNode = mapNode->getChild(); tileNode != nullptr; tileNode = tileNode->advance())
 			{
-				Tile* tile = NULL;
+				Tile* tile = nullptr;
 				uint8_t tile_type;
 				if(!tileNode->getByte(tile_type))
 				{
@@ -848,7 +849,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					}
 					
 					tile = map.allocator(map.createTileL(pos));
-					House* house = NULL;
+					House* house = nullptr;
 					if(tile_type == OTBM_HOUSETILE)
 					{
 						uint32_t house_id;
@@ -891,7 +892,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							case OTBM_ATTR_ITEM:
 							{
 								Item* item = Item::Create_OTBM(*this, tileNode);
-								if(item == NULL)
+								if(item == nullptr)
 								{
 									warning(wxT("Invalid item at tile %d:%d:%d"), pos.x, pos.y, pos.z);
 								}
@@ -907,9 +908,9 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					//printf("Didn't die in loop\n");
 
 					
-					for(BinaryNode* itemNode = tileNode->getChild(); itemNode != NULL; itemNode = itemNode->advance())
+					for(BinaryNode* itemNode = tileNode->getChild(); itemNode != nullptr; itemNode = itemNode->advance())
 					{
-						Item* item = NULL;
+						Item* item = nullptr;
 						uint8_t item_type;
 						if(!itemNode->getByte(item_type))
 						{
@@ -949,9 +950,9 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 		}
 		else if(node_type == OTBM_TOWNS)
 		{
-			for(BinaryNode* townNode = mapNode->getChild(); townNode != NULL; townNode = townNode->advance())
+			for(BinaryNode* townNode = mapNode->getChild(); townNode != nullptr; townNode = townNode->advance())
 			{
-				Town* town = NULL;
+				Town* town = nullptr;
 				uint8_t town_type;
 				if(!townNode->getByte(town_type))
 				{
@@ -1011,7 +1012,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 		}
 		else if(node_type == OTBM_WAYPOINTS)
 		{
-			for(BinaryNode* waypointNode = mapNode->getChild(); waypointNode != NULL; waypointNode = waypointNode->advance())
+			for(BinaryNode* waypointNode = mapNode->getChild(); waypointNode != nullptr; waypointNode = waypointNode->advance())
 			{
 				uint8_t waypoint_type;
 				if(!waypointNode->getByte(waypoint_type))
@@ -1060,162 +1061,141 @@ bool IOMapOTBM::loadSpawns(Map& map, const FileName& dir)
 {
 	std::string fn = (const char*)(dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME).mb_str(wxConvUTF8));
 	fn += map.spawnfile;
+
 	FileName filename(wxstr(fn));
 	if(filename.FileExists() == false)
 		return false;
 
-	xmlDocPtr doc = xmlParseFile(fn.c_str());
-	if (!doc)
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(fn.c_str());
+	if (!result) {
 		return false;
+	}
 	return loadSpawns(map, doc);
 }
 
-bool IOMapOTBM::loadSpawns(Map& map, xmlDocPtr doc)
+bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 {
-	xmlNodePtr root = xmlDocGetRootElement(doc);
-
-	if(xmlStrcmp(root->name,(const xmlChar*)"spawns") != 0)
+	pugi::xml_node node = doc.child("spawns");
+	if (!node) {
+		warnings.push_back(wxT("IOMapOTBM::loadSpawns: Invalid rootheader."));
 		return false;
+	}
 
+	for (pugi::xml_node spawnNode = node.first_child(); spawnNode; spawnNode = spawnNode.next_sibling()) {
+		if (as_lower_str(spawnNode.name()) != "spawn") {
+			continue;
+		}
 
-	int intVal;
+		Position spawnPosition;
+		spawnPosition.x = pugi::cast<int32_t>(spawnNode.attribute("centerx").value());
+		spawnPosition.y = pugi::cast<int32_t>(spawnNode.attribute("centery").value());
+		spawnPosition.z = pugi::cast<int32_t>(spawnNode.attribute("centerz").value());
 
-	xmlNodePtr spawnNode = root->children;
-	while(spawnNode) 
-	{
-		do if(xmlStrcmp(spawnNode->name,(const xmlChar*)"spawn") == 0)
-		{
-			bool posok = true;
-			Position spawnpos;
+		if (spawnPosition.x == 0 || spawnPosition.y == 0 || spawnPosition.z == 0) {
+			warning(wxT("Bad position data on one spawn, discarding..."));
+			continue;
+		}
 
-			if(readXMLInteger(spawnNode, "centerx", intVal))
-				spawnpos.x = intVal; else posok = false;
-			if(readXMLInteger(spawnNode, "centery", intVal))
-				spawnpos.y = intVal; else posok = false;
-			if(readXMLInteger(spawnNode, "centerz", intVal))
-				spawnpos.z = intVal; else posok = false;
+		int32_t radius = pugi::cast<int32_t>(spawnNode.attribute("radius").value());
+		if (radius < 1) {
+			warning(wxT("Couldn't read radius of spawn.. discarding spawn..."));
+			continue;
+		}
 
-			if(posok == false)
-			{
-				warning(wxT("Bad position data on one spawn, discarding..."));
-				break;
-			}
+		Tile* tile = map.getTile(spawnPosition);
+		if (tile && tile->spawn) {
+			warning(wxT("Duplicate spawn on position %d:%d:%d\n"), tile->getX(), tile->getY(), tile->getZ());
+			continue;
+		}
 
-			int radius = 1;
-			if(readXMLInteger(spawnNode, "radius", intVal))
-			{
-				radius = max(1, intVal);	
-			}
-			else
-			{
-				warning(wxT("Couldn't read radius of spawn.. discarding spawn..."));
+		Spawn* spawn = newd Spawn(radius);
+		if (!tile) {
+			tile = map.allocator(map.createTileL(spawnPosition));
+			map.setTile(spawnPosition, tile);
+		}
+
+		tile->spawn = spawn;
+		map.addSpawn(tile);
+
+		for (pugi::xml_node creatureNode = spawnNode.first_child(); creatureNode; creatureNode = creatureNode.next_sibling()) {
+			const std::string& creatureNodeName = as_lower_str(creatureNode.name());
+			if (creatureNodeName != "monster" && creatureNodeName != "npc") {
 				continue;
 			}
 
-			Tile* tile = map.getTile(spawnpos);
-			if(tile && tile->spawn)
-			{
-				warning(wxT("Duplicate spawn on position %d:%d:%d\n"), tile->getX(), tile->getY(), tile->getZ());
+			bool isNpc = creatureNodeName == "npc";
+			const std::string& name = creatureNode.attribute("name").as_string();
+			if (name.empty()) {
+				wxString err;
+				err << "Bad creature position data, discarding creature at spawn " << spawnPosition.x << ":" << spawnPosition.y << ":" << spawnPosition.z << " due missing name.";
+				warnings.Add(err);
 				break;
 			}
 
-			Spawn* spawn = newd Spawn(radius);
-			if(!tile)
-			{
-				tile = map.allocator(map.createTileL(spawnpos));
-				map.setTile(spawnpos, tile);
+			int32_t spawntime = pugi::cast<int32_t>(creatureNode.attribute("spawntime").value());
+			if (spawntime == 0) {
+				spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
 			}
-			tile->spawn = spawn;
-			map.addSpawn(tile);
 
-			xmlNodePtr creatureNode = spawnNode->children;
-			while(creatureNode)
-			{
-				if(xmlStrcmp(creatureNode->name,(const xmlChar*)"monster") == 0 || xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0) 
-				do {
-					std::string name;
-					int spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
-					bool isNpc = (xmlStrcmp(creatureNode->name,(const xmlChar*)"npc") == 0);
-					if(!readXMLValue(creatureNode, "name", name))
-					{
-						wxString err;
-						err <<  "Bad creature position data, discarding creature at spawn " << spawnpos.x << ":" << spawnpos.y << ":" << spawnpos.z << " due missing name.";
-						warnings.Add(err);
-						break;
-					}
-					if(name == "")
-						break;
+			bool posok = true;
+			Position creaturePosition(spawnPosition);
 
-					readXMLValue(creatureNode, "spawntime", spawntime);
-					Position creaturepos(spawnpos);
-					posok = true;
-
-					if(readXMLInteger(creatureNode, "x", intVal))
-						creaturepos.x += intVal;
-					else posok = false;
-
-					if(readXMLInteger(creatureNode, "y", intVal))
-						creaturepos.y += intVal;
-					else posok = false;
-
-					if(posok == false)
-					{
-						wxString err;
-						err <<  "Bad creature position data, discarding creature \"" << name << "\" at spawn " << spawnpos.x << ":" << spawnpos.y << ":" << spawnpos.z << " due to invalid position.";
-						warnings.Add(err);
-						break;
-					}
-
-					if(abs(creaturepos.x - spawnpos.x) > radius)
-						radius = abs(creaturepos.x - spawnpos.x);
-					if(abs(creaturepos.y - spawnpos.y) > radius)
-						radius = abs(creaturepos.y - spawnpos.y);
-
-					radius = min(radius, settings.getInteger(Config::MAX_SPAWN_RADIUS));
-
-					Tile* creature_tile;
-					if(creaturepos == spawnpos)
-						creature_tile = tile;
-					else
-						creature_tile = map.getTile(creaturepos);
-
-					if(!creature_tile)
-					{
-						wxString err;
-						err <<  "Discarding creature \"" << name << "\" at " << creaturepos.x << ":" << creaturepos.y << ":" << creaturepos.z << " due to invalid position.";
-						warnings.Add(err);
-						break;
-					}
-					if(creature_tile->creature)
-					{
-						wxString err;
-						err <<  "Duplicate creature \"" << name << "\" at " << creaturepos.x << ":" << creaturepos.y << ":" << creaturepos.z << " was discarded.";
-						warnings.Add(err);
-						break;
-					}
-					CreatureType* type = creature_db[name];
-					if(!type)
-						type = creature_db.addMissingCreatureType(name, isNpc);
-
-					Creature* creature = newd Creature(type);
-					creature->setSpawnTime(spawntime);
-					creature_tile->creature = creature;
-
-					if(creature_tile->getLocation()->getSpawnCount() == 0)
-					{
-						// No spawn, create a newd one
-						ASSERT(creature_tile->spawn == NULL);
-						Spawn* spawn = newd Spawn(5);
-						creature_tile->spawn = spawn;
-						map.addSpawn(creature_tile);
-					}
-				} while(false);
-				creatureNode = creatureNode->next;
+			pugi::xml_attribute xAttribute = creatureNode.attribute("x");
+			pugi::xml_attribute yAttribute = creatureNode.attribute("y");
+			if (!xAttribute || !yAttribute) {
+				wxString err;
+				err << "Bad creature position data, discarding creature \"" << name << "\" at spawn " << creaturePosition.x << ":" << creaturePosition.y << ":" << creaturePosition.z << " due to invalid position.";
+				warnings.Add(err);
+				break;
 			}
-		} while(false);
-		spawnNode = spawnNode->next;
+
+			creaturePosition.x += pugi::cast<int32_t>(xAttribute.value());
+			creaturePosition.y += pugi::cast<int32_t>(yAttribute.value());
+
+			radius = std::max<int32_t>(radius, std::abs(creaturePosition.x - spawnPosition.x));
+			radius = std::max<int32_t>(radius, std::abs(creaturePosition.y - spawnPosition.y));
+			radius = std::min<int32_t>(radius, settings.getInteger(Config::MAX_SPAWN_RADIUS));
+
+			Tile* creatureTile;
+			if (creaturePosition == spawnPosition) {
+				creatureTile = tile;
+			} else {
+				creatureTile = map.getTile(creaturePosition);
+			}
+
+			if (!creatureTile) {
+				wxString err;
+				err << "Discarding creature \"" << name << "\" at " << creaturePosition.x << ":" << creaturePosition.y << ":" << creaturePosition.z << " due to invalid position.";
+				warnings.Add(err);
+				break;
+			}
+
+			if (creatureTile->creature) {
+				wxString err;
+				err << "Duplicate creature \"" << name << "\" at " << creaturePosition.x << ":" << creaturePosition.y << ":" << creaturePosition.z << " was discarded.";
+				warnings.Add(err);
+				break;
+			}
+
+			CreatureType* type = creature_db[name];
+			if (!type) {
+				type = creature_db.addMissingCreatureType(name, isNpc);
+			}
+
+			Creature* creature = newd Creature(type);
+			creature->setSpawnTime(spawntime);
+			creatureTile->creature = creature;
+
+			if (creatureTile->getLocation()->getSpawnCount() == 0) {
+				// No spawn, create a newd one
+				ASSERT(creatureTile->spawn == nullptr);
+				Spawn* spawn = newd Spawn(5);
+				creatureTile->spawn = spawn;
+				map.addSpawn(creatureTile);
+			}
+		}
 	}
-
 	return true;
 }
 
@@ -1227,181 +1207,136 @@ bool IOMapOTBM::loadHouses(Map& map, const FileName& dir)
 	if(filename.FileExists() == false)
 		return false;
 
-	xmlDocPtr doc = xmlParseFile(fn.c_str());
-	if (!doc)
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(fn.c_str());
+	if (!result) {
 		return false;
+	}
 	return loadHouses(map, doc);
 }
 
-bool IOMapOTBM::loadHouses(Map& map, xmlDocPtr doc)
+bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 {
-	xmlNodePtr root = xmlDocGetRootElement(doc);
-
-	if(xmlStrcmp(root->name,(const xmlChar*)"houses") != 0)
+	pugi::xml_node node = doc.child("houses");
+	if (!node) {
+		warnings.push_back(wxT("IOMapOTBM::loadHouses: Invalid rootheader."));
 		return false;
-
-	int intVal;
-	std::string strVal;
-
-	xmlNodePtr houseNode = root->children;
-	while(houseNode)
-	{
-		do if(xmlStrcmp(houseNode->name,(const xmlChar*)"house") == 0)
-		{
-			House* house = NULL;
-			if(readXMLInteger(houseNode, "houseid", intVal))
-			{
-				house = map.houses.getHouse(intVal);
-				if(!house)
-					break;
-			}
-
-			if(readXMLString(houseNode, "name", strVal))
-				house->name = strVal;
-			else
-				house->name = "House #" + house->id;
-
-			bool posok = true;
-			Position houseexit;
-
-			if(readXMLInteger(houseNode, "entryx", intVal))
-				houseexit.x = intVal; else posok = false;
-			if(readXMLInteger(houseNode, "entryy", intVal))
-				houseexit.y = intVal; else posok = false;
-			if(readXMLInteger(houseNode, "entryz", intVal))
-				houseexit.z = intVal; else posok = false;
-			if(posok)
-				house->setExit(houseexit);
-
-			if(readXMLInteger(houseNode, "rent", intVal))
-				house->rent = intVal;
-
-			if(readXMLInteger(houseNode, "guildhall", intVal))
-				house->guildhall = (intVal != 0);
-
-			if(readXMLInteger(houseNode, "townid", intVal))
-			{
-				house->townid = intVal;
-			}
-			else
-			{
-				warning(wxT("House %d has no town! House was removed."), house->id);
-				map.houses.removeHouse(house);
-			}
-		} while(false);
-		houseNode = houseNode->next;
 	}
 
+	pugi::xml_attribute attribute;
+	for (pugi::xml_node houseNode = node.first_child(); houseNode; houseNode = houseNode.next_sibling()) {
+		if (as_lower_str(houseNode.name()) != "house") {
+			continue;
+		}
+
+		House* house = nullptr;
+		if ((attribute = houseNode.attribute("houseid"))) {
+			house = map.houses.getHouse(pugi::cast<int32_t>(attribute.value()));
+			if (!house) {
+				break;
+			}
+		}
+
+		if ((attribute = houseNode.attribute("name"))) {
+			house->name = attribute.as_string();
+		} else {
+			house->name = "House #" + std::to_string(house->id);
+		}
+
+		Position exitPosition(
+			pugi::cast<int32_t>(houseNode.attribute("entryx").value()),
+			pugi::cast<int32_t>(houseNode.attribute("entryy").value()),
+			pugi::cast<int32_t>(houseNode.attribute("entryz").value())
+		);
+		if (exitPosition.x != 0 && exitPosition.y != 0 && exitPosition.z != 0) {
+			house->setExit(exitPosition);
+		}
+
+		if ((attribute = houseNode.attribute("rent"))) {
+			house->rent = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = houseNode.attribute("guildhall"))) {
+			house->guildhall = attribute.as_bool();
+		}
+
+		if ((attribute = houseNode.attribute("townid"))) {
+			house->townid = pugi::cast<int32_t>(attribute.value());
+		} else {
+			warning(wxT("House %d has no town! House was removed."), house->id);
+			map.houses.removeHouse(house);
+		}
+	}
 	return true;
-}
-
-struct xmlToMemoryContext
-{
-	uint8_t* data;
-	size_t position;
-	size_t length;
-};
-
-int writeXmlToMemoryWriteCallback(void* context, const char* buffer, int len)
-{
-	xmlToMemoryContext* ctx = (xmlToMemoryContext*)context;
-	if (ctx->position + len > ctx->length)
-	{
-		// Quite aggressive growth, but we don't want too many moves here
-		ctx->data = (uint8_t*)realloc(ctx->data, ctx->length * 4);
-		ctx->length *= 4;
-	}
-	memcpy(ctx->data + ctx->position, buffer, len);
-	ctx->position += len;
-	return len;
-}
-
-int writeXmlToMemoryCloseCallback(void* context)
-{
-	return 0;
 }
 
 bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
-	if (identifier.GetExt() == "otgz")
-	{
-
+	if (identifier.GetExt() == "otgz") {
 		// Create the archive
 		struct archive* a = archive_write_new();
-		struct archive_entry* entry = NULL;
+		struct archive_entry* entry = nullptr;
+		std::ostringstream streamData;
 
 		archive_write_set_compression_gzip(a);
 		archive_write_set_format_pax_restricted(a);
 		archive_write_open_filename(a, nstr(identifier.GetFullPath()).c_str());
 
-		// Start out at 100kb memory for the XML files
-		xmlToMemoryContext xmlSaveData = {
-			(uint8_t*)malloc(1024*100),
-			0,
-			1024*100
-		};
-
 		gui.SetLoadDone(0, wxT("Saving spawns..."));
-		if(xmlDocPtr spawnDoc = saveSpawns(map))
-		{
+
+		pugi::xml_document spawnDoc;
+		if (saveSpawns(map, spawnDoc)) {
 			// Write the data
-			xmlSaveData.position = 0;
-			xmlSaveCtxt* xmlContext = xmlSaveToIO(writeXmlToMemoryWriteCallback, writeXmlToMemoryCloseCallback, &xmlSaveData, "UTF-8", XML_SAVE_FORMAT);
-			xmlSaveDoc(xmlContext, spawnDoc);
-			xmlSaveClose(xmlContext);
-			xmlFreeDoc(spawnDoc);
-			spawnDoc = NULL;
+			spawnDoc.save(streamData, "", pugi::format_raw, pugi::encoding_utf8);
+			std::string xmlData = streamData.str();
 
 			// Write to the arhive
 			entry = archive_entry_new();
 			archive_entry_set_pathname(entry, "world/spawns.xml");
-			archive_entry_set_size(entry, xmlSaveData.position);
+			archive_entry_set_size(entry, xmlData.size());
 			archive_entry_set_filetype(entry, AE_IFREG);
 			archive_entry_set_perm(entry, 0644);
-			archive_write_header(a, entry);
 
 			// Write to the archive
-			archive_write_data(a, xmlSaveData.data, xmlSaveData.position);
-			
+			archive_write_header(a, entry);
+			archive_write_data(a, xmlData.data(), xmlData.size());
+
 			// Free the entry
 			archive_entry_free(entry);
+			streamData.str("");
 		}
-		
+
 		gui.SetLoadDone(0, wxT("Saving houses..."));
-		if (xmlDocPtr houseDoc = saveHouses(map))
-		{
+
+		pugi::xml_document houseDoc;
+		if (saveHouses(map, houseDoc)) {
 			// Write the data
-			xmlSaveData.position = 0;
-			xmlSaveCtxt* xmlContext = xmlSaveToIO(writeXmlToMemoryWriteCallback, writeXmlToMemoryCloseCallback, &xmlSaveData, "UTF-8", XML_SAVE_FORMAT);
-			xmlSaveDoc(xmlContext, houseDoc);
-			xmlSaveClose(xmlContext);
-			xmlFreeDoc(houseDoc);
-			houseDoc = NULL;
+			houseDoc.save(streamData, "", pugi::format_raw, pugi::encoding_utf8);
+			std::string xmlData = streamData.str();
 
 			// Write to the arhive
 			entry = archive_entry_new();
 			archive_entry_set_pathname(entry, "world/houses.xml");
-			archive_entry_set_size(entry, xmlSaveData.position);
+			archive_entry_set_size(entry, xmlData.size());
 			archive_entry_set_filetype(entry, AE_IFREG);
 			archive_entry_set_perm(entry, 0644);
-			archive_write_header(a, entry);
 
 			// Write to the archive
-			archive_write_data(a, xmlSaveData.data, xmlSaveData.position);
-			
+			archive_write_header(a, entry);
+			archive_write_data(a, xmlData.data(), xmlData.size());
+
 			// Free the entry
 			archive_entry_free(entry);
+			streamData.str("");
 		}
-		
-		// Free the xml context
-		free(xmlSaveData.data);
 
 		gui.SetLoadDone(0, wxT("Saving OTBM map..."));
+
 		MemoryNodeFileWriteHandle otbmWriter;
 		saveMap(map, otbmWriter);
 
-		gui.SetLoadDone(100, wxT("Compressing..."));
-		
+		gui.SetLoadDone(75, wxT("Compressing..."));
+
 		// Create an archive entry for the otbm file
 		entry = archive_entry_new();
 		archive_entry_set_pathname(entry, "world/map.otbm");
@@ -1409,31 +1344,28 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		archive_entry_set_filetype(entry, AE_IFREG);
 		archive_entry_set_perm(entry, 0644);
 		archive_write_header(a, entry);
-		
+
 		// Write the version header
 		char otbm_identifier[] = "OTBM";
 		archive_write_data(a, otbm_identifier, 4);
 
 		// Write the OTBM data
 		archive_write_data(a, otbmWriter.getMemory(), otbmWriter.getSize());
-
 		archive_entry_free(entry);
 
 		// Free / close the archive
-		archive_write_close(a); 
+		archive_write_close(a);
 		archive_write_free(a);
 
+		gui.DestroyLoadBar();
 		return true;
-	}
-	else
-	{
+	} else {
 		DiskNodeFileWriteHandle f(
 			nstr(identifier.GetFullPath()),
 			(settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
 		);
-	
-		if(f.isOk() == false)
-		{
+
+		if (f.isOk() == false) {
 			error(wxT("Can not open file %s for writing"), (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
 			return false;
 		}
@@ -1654,79 +1586,67 @@ bool IOMapOTBM::saveSpawns(Map& map, const FileName& dir)
 	std::string filename = std::string(wpath.mb_str(wxConvUTF8)) + map.spawnfile;
 
 	// Create the XML file
-	if (xmlDocPtr doc = saveSpawns(map))
-	{
-		// Store it on disk
-		bool result = xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
-		xmlFreeDoc(doc);
-		return result;
+	pugi::xml_document doc;
+	if (saveSpawns(map, doc)) {
+		return doc.save_file(filename.c_str(), "\t", pugi::format_default, pugi::encoding_utf8);
 	}
-
 	return false;
 }
 
-xmlDocPtr IOMapOTBM::saveSpawns(Map& map)
+bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 {
-	xmlDocPtr doc = xmlNewDoc((const xmlChar*)"1.0");
-	doc->children = xmlNewDocNode(doc, NULL, (const xmlChar*)"spawns", NULL);
+	pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
+	if (!decl) {
+		return false;
+	}
 
-	xmlNodePtr root = doc->children;
+	decl.append_attribute("version") = "1.0";
 
-	Spawns& spawns = map.spawns;
-	CreatureList creature_list;
-	for(SpawnPositionList::const_iterator iter = spawns.begin();
-			iter != spawns.end();
-			++iter)
-	{
-		Tile* tile = map.getTile(*iter);
+	CreatureList creatureList;
+
+	pugi::xml_node spawnNodes = doc.append_child("spawns");
+	for (const auto& spawnPosition : map.spawns) {
+		Tile* tile = map.getTile(spawnPosition);
 		ASSERT(tile);
 		Spawn* spawn = tile->spawn;
 		ASSERT(spawn);
-		xmlNodePtr spawn_child = xmlNewNode(NULL,(const xmlChar*)"spawn");
 
-		xmlSetProp(spawn_child, (const xmlChar*)"centerx", (const xmlChar*)i2s(iter->x).c_str());
-		xmlSetProp(spawn_child, (const xmlChar*)"centery", (const xmlChar*)i2s(iter->y).c_str());
-		xmlSetProp(spawn_child, (const xmlChar*)"centerz", (const xmlChar*)i2s(iter->z).c_str());
-		xmlSetProp(spawn_child, (const xmlChar*)"radius", (const xmlChar*)i2s(spawn->getSize()).c_str());
+		pugi::xml_node spawnNode = spawnNodes.append_child("spawn");
 
-		for(int y = -tile->spawn->getSize(); y <= tile->spawn->getSize(); ++y)
-		{
-			for(int x = -tile->spawn->getSize(); x <= tile->spawn->getSize(); ++x)
-			{
-				Tile* creature_tile = map.getTile(*iter + Position(x, y, 0));
-				if(creature_tile)
-				{
-					Creature* c = creature_tile->creature;
-					if(c && c->isSaved() == false)
-					{
-						xmlNodePtr creature_child = xmlNewNode(NULL,(const xmlChar*)(c->isNpc()? "npc" : "monster"));
+		spawnNode.append_attribute("centerx") = spawnPosition.x;
+		spawnNode.append_attribute("centery") = spawnPosition.y;
+		spawnNode.append_attribute("centerz") = spawnPosition.z;
 
-						xmlSetProp(creature_child, (const xmlChar*)"name", (const xmlChar*)c->getName().c_str());
-						xmlSetProp(creature_child, (const xmlChar*)"x", (const xmlChar*)i2s(x).c_str());
-						xmlSetProp(creature_child, (const xmlChar*)"y", (const xmlChar*)i2s(y).c_str());
-						xmlSetProp(creature_child, (const xmlChar*)"z", (const xmlChar*)i2s(iter->z).c_str());
-						xmlSetProp(creature_child, (const xmlChar*)"spawntime", (const xmlChar*)i2s(c->getSpawnTime()).c_str());
+		int32_t radius = spawn->getSize();
+		spawnNode.append_attribute("radius") = radius;
 
-						xmlAddChild(spawn_child, creature_child);
+		for (int32_t y = -radius; y <= radius; ++y) {
+			for (int32_t x = -radius; x <= radius; ++x) {
+				Tile* creature_tile = map.getTile(spawnPosition + Position(x, y, 0));
+				if (creature_tile) {
+					Creature* creature = creature_tile->creature;
+					if (creature && !creature->isSaved()) {
+						pugi::xml_node creatureNode = spawnNode.append_child(creature->isNpc() ? "npc" : "monster");
+
+						creatureNode.append_attribute("name") = creature->getName().c_str();
+						creatureNode.append_attribute("x") = x;
+						creatureNode.append_attribute("y") = y;
+						creatureNode.append_attribute("z") = spawnPosition.z;
+						creatureNode.append_attribute("spawntime") = creature->getSpawnTime();
 
 						// Mark as saved
-						c->save();
-						creature_list.push_back(c);
+						creature->save();
+						creatureList.push_back(creature);
 					}
 				}
 			}
 		}
-		xmlAddChild(root, spawn_child);
 	}
 
-	for(CreatureList::iterator iter = creature_list.begin();
-			iter != creature_list.end();
-			++iter)
-	{
-		(*iter)->reset();
+	for (Creature* creature : creatureList) {
+		creature->reset();
 	}
-
-	return doc;
+	return true;
 }
 
 bool IOMapOTBM::saveHouses(Map& map, const FileName& dir)
@@ -1735,47 +1655,42 @@ bool IOMapOTBM::saveHouses(Map& map, const FileName& dir)
 	std::string filename = std::string(wpath.mb_str(wxConvUTF8)) + map.housefile;
 
 	// Create the XML file
-	if (xmlDocPtr doc = saveHouses(map))
-	{
-		// Store it on disk
-		bool result = xmlSaveFormatFileEnc(filename.c_str(), doc, "UTF-8", 1);
-		xmlFreeDoc(doc);
-		return result;
+	pugi::xml_document doc;
+	if (saveHouses(map, doc)) {
+		return doc.save_file(filename.c_str(), "\t", pugi::format_default, pugi::encoding_utf8);
 	}
-
 	return false;
 }
 
-xmlDocPtr IOMapOTBM::saveHouses(Map& map)
+bool IOMapOTBM::saveHouses(Map& map, pugi::xml_document& doc)
 {
-	xmlDocPtr doc = xmlNewDoc((const xmlChar*)"1.0");
-	doc->children = xmlNewDocNode(doc, NULL, (const xmlChar*)"houses", NULL);
-
-	xmlNodePtr root = doc->children;
-
-	for(HouseMap::const_iterator house_iter = map.houses.begin();
-			house_iter != map.houses.end();
-			++house_iter)
-	{
-		const House* house = house_iter->second;
-		xmlNodePtr child = xmlNewNode(NULL,(const xmlChar*)"house");
-
-		xmlSetProp(child, (const xmlChar*)"name", (const xmlChar*)house->name.c_str());
-		xmlSetProp(child, (const xmlChar*)"houseid", (const xmlChar*)i2s(house->id).c_str());
-
-		xmlSetProp(child, (const xmlChar*)"entryx", (const xmlChar*)i2s(house->getExit().x).c_str());
-		xmlSetProp(child, (const xmlChar*)"entryy", (const xmlChar*)i2s(house->getExit().y).c_str());
-		xmlSetProp(child, (const xmlChar*)"entryz", (const xmlChar*)i2s(house->getExit().z).c_str());
-
-		xmlSetProp(child, (const xmlChar*)"rent", (const xmlChar*)i2s(house->rent).c_str());
-		if(house->guildhall)
-			xmlSetProp(child, (const xmlChar*)"guildhall", (const xmlChar*)"1");
-
-		xmlSetProp(child, (const xmlChar*)"townid", (const xmlChar*)i2s(house->townid).c_str());
-		xmlSetProp(child, (const xmlChar*)"size", (const xmlChar*)i2s(house->size()).c_str());
-
-		xmlAddChild(root, child);
+	pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
+	if (!decl) {
+		return false;
 	}
 
-	return doc;
+	decl.append_attribute("version") = "1.0";
+
+	pugi::xml_node houseNodes = doc.append_child("houses");
+	for (const auto& houseEntry : map.houses) {
+		const House* house = houseEntry.second;
+		pugi::xml_node houseNode = houseNodes.append_child("house");
+
+		houseNode.append_attribute("name") = house->name.c_str();
+		houseNode.append_attribute("houseid") = house->id;
+
+		const Position& exitPosition = house->getExit();
+		houseNode.append_attribute("entryx") = exitPosition.x;
+		houseNode.append_attribute("entryy") = exitPosition.y;
+		houseNode.append_attribute("entryz") = exitPosition.z;
+
+		houseNode.append_attribute("rent") = house->rent;
+		if (house->guildhall) {
+			houseNode.append_attribute("guildhall") = true;
+		}
+
+		houseNode.append_attribute("townid") = house->townid;
+		houseNode.append_attribute("size") = static_cast<int32_t>(house->size());
+	}
+	return true;
 }

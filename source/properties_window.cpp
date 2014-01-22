@@ -26,7 +26,7 @@ END_EVENT_TABLE()
 
 PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
 	ObjectPropertiesWindowBase(parent, "Item Properties", map, tile_parent, item, pos),
-	currentPanel(NULL)
+	currentPanel(nullptr)
 {
 	ASSERT(edit_item);
 	
@@ -56,7 +56,7 @@ void PropertiesWindow::Update()
 {
 	wxDialog::Update();
 	Container *edit_container = dynamic_cast<Container *>(edit_item);
-	if (NULL != edit_container)
+	if (nullptr != edit_container)
 	{
 		for (int i = 0; i < edit_container->getVolume(); ++i)
 			container_items[i]->setItem(edit_container->getItem(i));

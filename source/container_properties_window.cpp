@@ -130,12 +130,12 @@ void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
 
 	if (edit_map->getVersion().otbm >= MAP_OTBM_4)
 		d = newd PropertiesWindow(
-			this, edit_map, NULL, edit_item,
+			this, edit_map, nullptr, edit_item,
 			newDialogAt
 		);
 	else
 		d = newd OldPropertiesWindow(
-			this, edit_map, NULL, edit_item,
+			this, edit_map, nullptr, edit_item,
 			newDialogAt
 		);
 	d->ShowModal();
@@ -183,7 +183,7 @@ void ContainerItemButton::setItem(Item* item)
 
 Container* ContainerItemButton::getParentContainer()
 {
-	Container* parentContainer = NULL;
+	Container* parentContainer = nullptr;
 
 	wxWindow* w = this;
 	while (w = w->GetParent())
@@ -191,7 +191,7 @@ Container* ContainerItemButton::getParentContainer()
 		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
 			return dynamic_cast<Container*>(o->getItemBeingEdited());
 	}
-	return NULL;
+	return nullptr;
 }
 
 void ContainerItemButton::UpdateParentContainerWindow()
@@ -230,7 +230,7 @@ void ContainerItemPopupMenu::Update(ContainerItemButton* btn)
 		Delete(m_item);
 	}
 
-	wxMenuItem* addItem = NULL;
+	wxMenuItem* addItem = nullptr;
 	if(btn->edit_item)
 	{
 		Append( CONTAINER_POPUP_MENU_EDIT, wxT("&Edit Item"), wxT("Open the properties menu for this item"));

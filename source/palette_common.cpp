@@ -46,7 +46,7 @@ PalettePanel::~PalettePanel() {
 
 PaletteWindow* PalettePanel::GetParentPalette() const {	
 	const wxWindow* w = this;
-	while((w = w->GetParent()) && dynamic_cast<const PaletteWindow*>(w) == NULL);
+	while((w = w->GetParent()) && dynamic_cast<const PaletteWindow*>(w) == nullptr);
 	return const_cast<PaletteWindow*>(static_cast<const PaletteWindow*>(w));
 }
 
@@ -107,7 +107,7 @@ PaletteType PalettePanel::GetType() const {
 }
 
 Brush* PalettePanel::GetSelectedBrush() const {
-	return NULL;
+	return nullptr;
 }
 
 int PalettePanel::GetSelectedBrushSize() const {
@@ -179,22 +179,22 @@ BrushSizePanel::BrushSizePanel(wxWindow* parent) :
 	PalettePanel(parent, wxID_ANY),
 	loaded(false),
 	large_icons(true),
-	brushshapeSquareButton(NULL),
-	brushshapeCircleButton(NULL),
-	brushsize0Button(NULL),
-	brushsize1Button(NULL),
-	brushsize2Button(NULL),
-	brushsize4Button(NULL),
-	brushsize6Button(NULL),
-	brushsize8Button(NULL),
-	brushsize11Button(NULL)
+	brushshapeSquareButton(nullptr),
+	brushshapeCircleButton(nullptr),
+	brushsize0Button(nullptr),
+	brushsize1Button(nullptr),
+	brushsize2Button(nullptr),
+	brushsize4Button(nullptr),
+	brushsize6Button(nullptr),
+	brushsize8Button(nullptr),
+	brushsize11Button(nullptr)
 {
 }
 
 void BrushSizePanel::InvalidateContents() {
 	if(loaded) {
 		DestroyChildren();
-		SetSizer(NULL);
+		SetSizer(nullptr);
 
 		brushshapeSquareButton =
 		brushshapeCircleButton =
@@ -204,7 +204,7 @@ void BrushSizePanel::InvalidateContents() {
 		brushsize4Button =
 		brushsize6Button =
 		brushsize8Button =
-		brushsize11Button = NULL;
+		brushsize11Button = nullptr;
 
 		loaded = false;
 	}
@@ -372,18 +372,18 @@ BrushToolPanel::BrushToolPanel(wxWindow* parent) :
 	PalettePanel(parent, wxID_ANY),
 	loaded(false),
 	large_icons(true),
-	optionalBorderButton(NULL),
-	eraserButton(NULL),
-	normalDoorButton(NULL),
-	lockedDoorButton(NULL),
-	magicDoorButton(NULL),
-	questDoorButton(NULL),
-	hatchDoorButton(NULL),
-	windowDoorButton(NULL),
-	pzBrushButton(NULL),
-	nopvpBrushButton(NULL),
-	nologBrushButton(NULL),
-	pvpzoneBrushButton(NULL)
+	optionalBorderButton(nullptr),
+	eraserButton(nullptr),
+	normalDoorButton(nullptr),
+	lockedDoorButton(nullptr),
+	magicDoorButton(nullptr),
+	questDoorButton(nullptr),
+	hatchDoorButton(nullptr),
+	windowDoorButton(nullptr),
+	pzBrushButton(nullptr),
+	nopvpBrushButton(nullptr),
+	nologBrushButton(nullptr),
+	pvpzoneBrushButton(nullptr)
 {
 }
 
@@ -393,7 +393,7 @@ BrushToolPanel::~BrushToolPanel() {
 void BrushToolPanel::InvalidateContents() {
 	if(loaded) {
 		DestroyChildren();
-		SetSizer(NULL);
+		SetSizer(nullptr);
 
 		optionalBorderButton =
 		eraserButton =
@@ -406,7 +406,7 @@ void BrushToolPanel::InvalidateContents() {
 		pzBrushButton = 
 		nopvpBrushButton = 
 		nologBrushButton = 
-		pvpzoneBrushButton = NULL;
+		pvpzoneBrushButton = nullptr;
 
 		loaded = false;
 	}
@@ -602,11 +602,11 @@ Brush* BrushToolPanel::GetSelectedBrush() const {
 		return gui.nolog_brush;
 	if(pvpzoneBrushButton->GetValue())
 		return gui.pvp_brush;
-	return NULL;
+	return nullptr;
 }
 
 bool BrushToolPanel::SelectBrush(const Brush* whatbrush) {
-	BrushButton* button = NULL;
+	BrushButton* button = nullptr;
 	if(whatbrush == gui.optional_brush) {
 		button = optionalBorderButton;
 	} else if(whatbrush == gui.eraser) {

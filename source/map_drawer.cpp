@@ -278,7 +278,7 @@ void MapDrawer::DrawMap()
 			glEnable(GL_TEXTURE_2D);
 
 		// Draws the doodad preview or the paste preview (or import preview)
-		if(gui.secondary_map != NULL && options.ingame == false)
+		if(gui.secondary_map != nullptr && options.ingame == false)
 		{
 			Position normalPos;
 			Position to(mouse_map_x, mouse_map_y, floor);
@@ -1073,7 +1073,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 
 	if(it.isMetaItem())
 		return;
-	if(spr == NULL)
+	if(spr == nullptr)
 		return;
 	if(!ephemeral && it.pickupable && options.show_items == false)
 		return;
@@ -1173,7 +1173,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 
 	if(it.isMetaItem())
 		return;
-	if(spr == NULL)
+	if(spr == nullptr)
 		return;
 	if(!ephemeral && it.pickupable && options.show_items)
 		return;
@@ -1251,7 +1251,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, uint spriteid, int red, int green, int blue, int alpha) {
 	GameSprite* spr = item_db[spriteid].sprite;
-	if(spr == NULL) return;
+	if(spr == nullptr) return;
 	screenx -= spr->getDrawOffset().first;
 	screeny -= spr->getDrawOffset().second;
 
@@ -1268,7 +1268,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, uint spriteid, int red,
 }
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int red, int green, int blue, int alpha) {
-	if(spr == NULL) return;
+	if(spr == nullptr) return;
 	screenx -= spr->getDrawOffset().first;
 	screeny -= spr->getDrawOffset().second;
 

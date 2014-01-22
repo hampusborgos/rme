@@ -165,7 +165,7 @@ public:
 			intval = 0;
 		};
 		DynamicValue(DynamicType t) : type(t) {
-			if(t == TYPE_STR) strval = NULL;
+			if(t == TYPE_STR) strval = nullptr;
 			else if(t == TYPE_INT) intval = 0;
 			else if(t == TYPE_FLOAT) floatval = 0.0;
 			else intval = 0;

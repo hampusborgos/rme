@@ -14,11 +14,11 @@
 //**************** Tile Location **********************
 
 TileLocation::TileLocation() :
-	tile(NULL),
+	tile(nullptr),
 	position(0, 0, 0),
 	spawn_count(0),
 	waypoint_count(0),
-	house_exits(NULL)
+	house_exits(nullptr)
 {
 }
 
@@ -64,7 +64,7 @@ QTreeNode::QTreeNode(BaseMap& map) :
 {
 	// Doesn't matter if we're leaf or node
 	for(int i = 0; i < 16; ++i)
-		child[i] = NULL;
+		child[i] = nullptr;
 }
 
 QTreeNode::~QTreeNode()
@@ -130,11 +130,11 @@ QTreeNode* QTreeNode::getLeaf(int x, int y)
 			}
 			else
 			{
-				return NULL;
+				return nullptr;
 			}
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 QTreeNode* QTreeNode::getLeafForce(int x, int y)
@@ -172,7 +172,7 @@ QTreeNode* QTreeNode::getLeafForce(int x, int y)
 		level -= 1;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -251,7 +251,7 @@ TileLocation* QTreeNode::getTile(int x, int y, int z)
 	ASSERT(isLeaf);
 	Floor* f = array[z];
 	if(!f)
-		return NULL;
+		return nullptr;
 	return &f->locs[(x & 3) * 4 + (y & 3)];
 }
 

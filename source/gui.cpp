@@ -35,34 +35,34 @@ GUI gui;
 
 // GUI class implementation
 GUI::GUI() :
-	aui_manager(NULL),
-	root(NULL),
-	minimap(NULL),
-	gem(NULL),
-	search_result_window(NULL),
-	secondary_map(NULL),
-	doodad_buffer_map(NULL),
+	aui_manager(nullptr),
+	root(nullptr),
+	minimap(nullptr),
+	gem(nullptr),
+	search_result_window(nullptr),
+	secondary_map(nullptr),
+	doodad_buffer_map(nullptr),
 	
-	house_brush(NULL),
-	house_exit_brush(NULL),
-	waypoint_brush(NULL),
-	optional_brush(NULL),
-	eraser(NULL),
-	normal_door_brush(NULL),
-	locked_door_brush(NULL),
-	magic_door_brush(NULL),
-	quest_door_brush(NULL),
-	hatch_door_brush(NULL),
-	window_door_brush(NULL),
+	house_brush(nullptr),
+	house_exit_brush(nullptr),
+	waypoint_brush(nullptr),
+	optional_brush(nullptr),
+	eraser(nullptr),
+	normal_door_brush(nullptr),
+	locked_door_brush(nullptr),
+	magic_door_brush(nullptr),
+	quest_door_brush(nullptr),
+	hatch_door_brush(nullptr),
+	window_door_brush(nullptr),
 
-	OGLContext(NULL),
+	OGLContext(nullptr),
 	loaded_version(CLIENT_VERSION_NONE),
 	mode(SELECTION_MODE),
 	pasting(false),
 	hotkeys_enabled(true),
 
-	current_brush(NULL),
-	previous_brush(NULL),
+	current_brush(nullptr),
+	previous_brush(nullptr),
 	brush_shape(BRUSHSHAPE_SQUARE),
 	brush_size(0),
 	brush_variation(0),
@@ -70,7 +70,7 @@ GUI::GUI() :
 	creature_spawntime(0),
 	use_custom_thickness(false),
 	custom_thickness_mod(0.0),
-	progressBar(NULL),
+	progressBar(nullptr),
 	disabled_counter(0)
 {
 	doodad_buffer_map = newd BaseMap();
@@ -85,7 +85,7 @@ GUI::~GUI()
 
 wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
 {
-	if(OGLContext == NULL)
+	if(OGLContext == nullptr)
     {
 #ifdef __WXOSX__
         /*
@@ -95,7 +95,7 @@ wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
                     );
         */
         wxPalette unused;
-        OGLContext = new wxGLContext((AGLPixelFormat)AGL_RGBA, (wxGLCanvas*)NULL, unused, NULL);
+        OGLContext = new wxGLContext((AGLPixelFormat)AGL_RGBA, (wxGLCanvas*)nullptr, unused, nullptr);
 #else
 		OGLContext = newd wxGLContext(win);
 #endif
@@ -217,7 +217,7 @@ wxString GUI::GetExtensionsDirectory()
 
 bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force)
 {
-	if(ClientVersion::get(ver) == NULL)
+	if(ClientVersion::get(ver) == nullptr)
 	{
 		error = wxT("Unsupported client version! (8)");
 		return false;
@@ -225,7 +225,7 @@ bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warni
 	
 	if(ver != loaded_version || force)
 	{
-		if(getLoadedVersion() != NULL)
+		if(getLoadedVersion() != nullptr)
 			// There is another version loaded right now, save window layout
 			gui.SavePerspective();
 
@@ -388,20 +388,20 @@ void GUI::UnloadVersion()
 {
 	UnnamedRenderingLock();
 	gfx.clear();
-	current_brush = NULL;
-	previous_brush = NULL;
+	current_brush = nullptr;
+	previous_brush = nullptr;
 
-	house_brush = NULL;
-	house_exit_brush = NULL;
-	waypoint_brush = NULL;
-	optional_brush = NULL;
-	eraser = NULL;
-	normal_door_brush = NULL;
-	locked_door_brush = NULL;
-	magic_door_brush = NULL;
-	quest_door_brush = NULL;
-	hatch_door_brush = NULL;
-	window_door_brush = NULL;
+	house_brush = nullptr;
+	house_exit_brush = nullptr;
+	waypoint_brush = nullptr;
+	optional_brush = nullptr;
+	eraser = nullptr;
+	normal_door_brush = nullptr;
+	locked_door_brush = nullptr;
+	magic_door_brush = nullptr;
+	quest_door_brush = nullptr;
+	hatch_door_brush = nullptr;
+	window_door_brush = nullptr;
 
 	if(loaded_version != CLIENT_VERSION_NONE)
 	{
@@ -433,7 +433,7 @@ void GUI::SaveCurrentMap(FileName filename, bool showdialog)
 
 bool GUI::IsEditorOpen() const
 {
-	return tabbook != NULL && GetCurrentMapTab();
+	return tabbook != nullptr && GetCurrentMapTab();
 }
 
 double GUI::GetCurrentZoom()
@@ -529,7 +529,7 @@ Editor* GUI::GetCurrentEditor()
 	MapTab* etab = GetCurrentMapTab();
 	if(etab)
 		return etab->GetEditor();
-	return NULL;
+	return nullptr;
 }
 
 EditorTab* GUI::GetTab(int idx) {
@@ -554,7 +554,7 @@ MapTab* GUI::GetCurrentMapTab() const
 		MapTab* etab = dynamic_cast<MapTab*>(tab);
 		return etab;
 	}
-	return NULL;
+	return nullptr;
 }
 
 Map& GUI::GetCurrentMap()
@@ -702,6 +702,7 @@ void GUI::LoadPerspective()
 		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
 		std::vector<std::string> palette_list;
 
+		std::string::const_iterator last_iterator = layout.begin();
 		std::string tmp;
 		size_t i = 0;
 		while(i  < layout.size())
@@ -826,7 +827,7 @@ void GUI::HideSearchWindow()
 
 SearchResultWindow* GUI::ShowSearchWindow()
 {
-	if(search_result_window == NULL)
+	if(search_result_window == nullptr)
 	{
 		search_result_window = newd SearchResultWindow(root);
 		aui_manager->AddPane(search_result_window, wxAuiPaneInfo().Caption(wxT("Search Results")));
@@ -845,7 +846,7 @@ SearchResultWindow* GUI::ShowSearchWindow()
 PaletteWindow* GUI::GetPalette()
 {
 	if(palettes.empty())
-		return NULL;
+		return nullptr;
 	return palettes.front();
 }
 
@@ -860,7 +861,7 @@ void GUI::RefreshPalettes(Map* m, bool usedefault)
 		piter != palettes.end();
 		++piter)
 	{
-		(*piter)->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : NULL): NULL));
+		(*piter)->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : nullptr): nullptr));
 	}
 	SelectBrush();
 }
@@ -872,7 +873,7 @@ void GUI::RefreshOtherPalettes(PaletteWindow* p)
 		++piter)
 	{
 		if(*piter != p)
-			(*piter)->OnUpdate(IsEditorOpen()? &GetCurrentMap() : NULL);
+			(*piter)->OnUpdate(IsEditorOpen()? &GetCurrentMap() : nullptr);
 	}
 	SelectBrush();
 }
@@ -880,7 +881,7 @@ void GUI::RefreshOtherPalettes(PaletteWindow* p)
 PaletteWindow* GUI::CreatePalette()
 {
 	if(IsVersionLoaded() == false)
-		return NULL;
+		return nullptr;
 	
 	PaletteWindow* palette = newd PaletteWindow(root, materials.tilesets);
 	aui_manager->AddPane(palette, wxAuiPaneInfo().Caption(wxT("Palette")).TopDockable(false).BottomDockable(false));
@@ -909,7 +910,7 @@ void GUI::DestroyPalettes()
 		PaletteWindow* palette = *piter;
 		aui_manager->DetachPane(palette);
 		palette->Destroy();
-		palette = NULL;
+		palette = nullptr;
 	}
 	palettes.clear();
 	aui_manager->Update();
@@ -924,7 +925,7 @@ void GUI::RebuildPalettes()
 		piter != tmp.end();
 		++piter)
 	{
-		(*piter)->ReloadSettings(IsEditorOpen()? &GetCurrentMap() : NULL);
+		(*piter)->ReloadSettings(IsEditorOpen()? &GetCurrentMap() : nullptr);
 	}
 	aui_manager->Update();
 }
@@ -997,7 +998,7 @@ void GUI::DestroyMinimap()
 		aui_manager->DetachPane(minimap);
 		aui_manager->Update();
 		minimap->Destroy();
-		minimap = NULL;
+		minimap = nullptr;
 	}
 }
 
@@ -1083,23 +1084,25 @@ void GUI::SetLoadScale(int from, int to)
 
 bool GUI::SetLoadDone(int done, wxString newmessage)
 {
-	if(newmessage != wxT(""))
+	if (done == 100) {
+		DestroyLoadBar();
+		return true;
+	}
+
+	if (newmessage != wxT("")) {
 		progressText = newmessage;
+	}
 
-	int new_done = progressFrom + int((done/100.f) * (float(progressTo - progressFrom)));
-	wxString text;
-	text << progressText << wxT(" (") << new_done << wxT("%)");
-	if(new_done > 100)
-		new_done = 100;
-	if(new_done < 0)
-		new_done = 0;
-
-	bool skip = false;
-	if(progressBar)
-		progressBar->Update(new_done, text, &skip);
+	int32_t new_done = progressFrom + static_cast<int32_t>((done / 100.f) * (progressTo - progressFrom));
+	new_done = std::max<int32_t>(0, std::min<int32_t>(100, new_done));
 	
-	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx)
-	{
+	bool skip = false;
+	wxString text = progressText + wxT(" (") + std::to_string(new_done) + wxT("%)");
+	if (progressBar) {
+		progressBar->Update(new_done, text, &skip);
+	}
+
+	for (int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
 		if (mt && mt->GetEditor()->IsLiveServer())
 			mt->GetEditor()->GetLiveServer()->UpdateOperation(new_done);
@@ -1110,16 +1113,16 @@ bool GUI::SetLoadDone(int done, wxString newmessage)
 
 void GUI::DestroyLoadBar()
 {
-	if(progressBar)
-	{
+	if (progressBar) {
 		progressBar->Show(false);
 		progressBar->Destroy();
-		progressBar = NULL;
+		progressBar = nullptr;
 
-		if(root->IsActive())
+		if (root->IsActive()) {
 			root->Raise();
-		else
+		} else {
 			root->RequestUserAttention();
+		}
 	}
 }
 
@@ -1155,7 +1158,7 @@ void GUI::EndPasting()
 	if(pasting)
 	{
 		pasting = false;
-		secondary_map = NULL;
+		secondary_map = nullptr;
 	}
 }
 
@@ -1187,7 +1190,7 @@ void GUI::SetStatusText(wxString text)
 
 void GUI::SetTitle(wxString title)
 {
-	if(gui.root == NULL)
+	if(gui.root == nullptr)
 		return;
 
 #ifdef NIGHTLY_BUILD
@@ -1267,7 +1270,7 @@ void GUI::SetSelectionMode()
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
 	if(dbrush)
 	{
-		secondary_map = NULL;
+		secondary_map = nullptr;
 	}
 	
 	tabbook->OnSwitchEditorMode(SELECTION_MODE);
@@ -1303,7 +1306,7 @@ void GUI::SetDrawingMode()
 	}
 	else
 	{
-		secondary_map = NULL;
+		secondary_map = nullptr;
 	}
 	
 	tabbook->OnSwitchEditorMode(DRAWING_MODE);
@@ -1515,11 +1518,11 @@ bool GUI::SelectBrush(const Brush* whatbrush, PaletteType primary)
 void GUI::SelectBrushInternal(Brush* brush)
 {
 	// Fear no evil don't you say no evil
-	if(current_brush != brush && brush != NULL)
+	if(current_brush != brush && brush != nullptr)
 		previous_brush = current_brush;
 
 	current_brush = brush;
-	if(current_brush == NULL)
+	if(current_brush == nullptr)
 		return;
 
 	brush_variation = min(brush_variation, (brush? brush->getMaxVariation() : 0));
@@ -1595,12 +1598,9 @@ void GUI::FillDoodadPreviewBuffer()
 						xpos = random(-brush_size, brush_size);
 						ypos = random(-brush_size, brush_size);
 						float distance = sqrt(float(xpos*xpos) + float(ypos*ypos));
-						if(distance < gui.GetBrushSize()+0.005)
-						{
+						if (distance < gui.GetBrushSize() + 0.005) {
 							found_pos = true;
-						}
-						else
-						{
+						} else {
 							++pos_retries;
 						}
 					}
@@ -1763,7 +1763,7 @@ void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& para
 	wxDialog* dlg = newd wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX);
 
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
-	wxListBox* item_list = newd wxListBox(dlg, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, NULL, wxLB_SINGLE);
+	wxListBox* item_list = newd wxListBox(dlg, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE);
 	item_list->SetMinSize(wxSize(500, 300));
 
 	for(size_t i = 0; i != list_items.GetCount();)

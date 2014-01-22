@@ -30,14 +30,14 @@ END_EVENT_TABLE()
 
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Item Properties"), map, tile_parent, item, pos),
-	count_field(NULL),
-	action_id_field(NULL),
-	unique_id_field(NULL),
-	door_id_field(NULL),
-	depot_id_field(NULL),
-	splash_type_field(NULL),
-	text_field(NULL),
-	description_field(NULL)
+	count_field(nullptr),
+	action_id_field(nullptr),
+	unique_id_field(nullptr),
+	door_id_field(nullptr),
+	depot_id_field(nullptr),
+	splash_type_field(nullptr),
+	text_field(nullptr),
+	description_field(nullptr)
 {
 	ASSERT(edit_item);
 	
@@ -66,12 +66,12 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		wxSizer* contents_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Contents"));
 
 		bool use_large_sprites = settings.getInteger(Config::USE_LARGE_CONTAINER_ICONS);
-		wxSizer* horizontal_sizer = NULL;
+		wxSizer* horizontal_sizer = nullptr;
 		const int additional_height_increment = (use_large_sprites? 40 : 24);
 		int additional_height = 0;
 		for (int i = 1; i <= container->getVolume(); ++i)
 		{
-			if(horizontal_sizer == NULL) {
+			if(horizontal_sizer == nullptr) {
 				horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
 			}
 			Item* item = container->getItem(i - 1);
@@ -81,11 +81,11 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 			if(i % (use_large_sprites? 6 : 11) == 0) {
 				contents_sizer->Add(horizontal_sizer);
-				horizontal_sizer = NULL;
+				horizontal_sizer = nullptr;
 				additional_height += additional_height_increment;
 			}
 		}
-		if(horizontal_sizer != NULL) {
+		if(horizontal_sizer != nullptr) {
 			contents_sizer->Add(horizontal_sizer);
 			additional_height += additional_height_increment;
 		}
@@ -320,14 +320,14 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Creature* creature, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Creature Properties"), map, tile_parent, creature, pos),
-	count_field(NULL),
-	action_id_field(NULL),
-	unique_id_field(NULL),
-	door_id_field(NULL),
-	depot_id_field(NULL),
-	splash_type_field(NULL),
-	text_field(NULL),
-	description_field(NULL)
+	count_field(nullptr),
+	action_id_field(nullptr),
+	unique_id_field(nullptr),
+	door_id_field(nullptr),
+	depot_id_field(nullptr),
+	splash_type_field(nullptr),
+	text_field(nullptr),
+	description_field(nullptr)
 {
 	ASSERT(edit_creature);
 	
@@ -360,14 +360,14 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Spawn* spawn, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Spawn Properties"), map, tile_parent, spawn, pos),
-	count_field(NULL),
-	action_id_field(NULL),
-	unique_id_field(NULL),
-	door_id_field(NULL),
-	depot_id_field(NULL),
-	splash_type_field(NULL),
-	text_field(NULL),
-	description_field(NULL)
+	count_field(nullptr),
+	action_id_field(nullptr),
+	unique_id_field(nullptr),
+	door_id_field(nullptr),
+	depot_id_field(nullptr),
+	splash_type_field(nullptr),
+	text_field(nullptr),
+	description_field(nullptr)
 {
 	ASSERT(edit_spawn);
 	
@@ -570,7 +570,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			if(teleport) {
-				if(edit_map->getTile(new_dest) == NULL || edit_map->getTile(new_dest)->isBlocking()) {
+				if(edit_map->getTile(new_dest) == nullptr || edit_map->getTile(new_dest)->isBlocking()) {
 					int ret = gui.PopupDialog(this, wxT("Warning"), wxT("This teleport leads nowhere, or to an invalid location. Do you want to change the destination?"), wxYES | wxNO);
 					if(ret == wxID_YES) {
 						return;

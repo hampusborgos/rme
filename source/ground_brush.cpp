@@ -3,6 +3,7 @@
 #include "ground_brush.h"
 #include "items.h"
 #include "basemap.h"
+#include "pugicast.h"
 
 uint32_t GroundBrush::border_types[256];
 
@@ -35,65 +36,64 @@ int AutoBorder::edgeNameToID(std::string edgename) {
 	return BORDER_NONE;
 }
 
-bool AutoBorder::load(xmlNodePtr node, wxArrayString& warnings, GroundBrush* owner, uint16_t ground_equivalent) {
-	std::string orientation;
-	bool op_border = false;
-	int itemid;
-	ground = bool(owner);
+bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush* owner, uint16_t ground_equivalent)
+{
+	ASSERT(ground != nullptr ? ground_equivalent != 0 : true);
 
-	ASSERT(ground? ground_equivalent != 0 : true);
+	pugi::xml_attribute attribute;
 
-	std::string strVal;
-	int intVal;
-
-	if(readXMLValue(node, "type", strVal)) {
-		if(strVal == "optional") {
-			op_border = true;
+	bool optionalBorder = false;
+	if ((attribute = node.attribute("type"))) {
+		if (attribute.as_string() == "optional") {
+			optionalBorder = true;
 		}
 	}
 
-	if(readXMLValue(node, "group", intVal)) {
-		group = intVal;
+	if ((attribute = node.attribute("group"))) {
+		group = pugi::cast<uint16_t>(attribute.value());
 	}
 
-	xmlNodePtr child = node->children;
-	while(child) {
-		if(readXMLValue(child, "item", itemid) && readXMLValue(child, "edge", orientation)) {
-			ItemType& it = item_db[itemid];
-			if(it.id == 0) {
-				child = child->next;
-				warnings.push_back(wxString(wxT("Invalid item ID ")) << itemid << wxT(" for border ") << id);
-				continue;
-			}
+	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		if (!(attribute = childNode.attribute("item"))) {
+			continue;
+		}
 
-			if(ground) { // We are a ground border
-				it.group = ITEM_GROUP_NONE;
-				it.ground_equivalent = ground_equivalent;
-				it.brush = owner;
+		int32_t itemid = pugi::cast<int32_t>(attribute.value());
+		if (!(attribute = childNode.attribute("edge"))) {
+			continue;
+		}
 
-				ItemType& it2 = item_db[ground_equivalent];
-				if(it2.id == 0) {
-					// Do nothing
-				} else {
-					it2.has_equivalent = true;
-				}
-			}
-			it.alwaysOnBottom = true; // Never-ever place other items under this, will confuse the user something awful.
-			it.isBorder = true;
-			it.isOptionalBorder = it.isOptionalBorder? true : op_border;
-			if(group && !it.border_group) {
-				it.border_group = group;
-			}
+		const std::string& orientation = attribute.as_string();
 
-			int edge_id = edgeNameToID(orientation);
-			if(edge_id != BORDER_NONE) {
-				tiles[edge_id] = itemid;
-				if(it.border_alignment == BORDER_NONE) {
-					it.border_alignment = ::BorderType(edge_id);
-				}
+		ItemType& it = item_db[itemid];
+		if (it.id == 0) {
+			warnings.push_back(wxT("Invalid item ID ") + std::to_string(itemid) + wxT(" for border ") + std::to_string(id));
+			continue;
+		}
+
+		if (ground) { // We are a ground border
+			it.group = ITEM_GROUP_NONE;
+			it.ground_equivalent = ground_equivalent;
+			it.brush = owner;
+
+			ItemType& it2 = item_db[ground_equivalent];
+			it2.has_equivalent = it2.id != 0;
+		}
+
+		it.alwaysOnBottom = true; // Never-ever place other items under this, will confuse the user something awful.
+		it.isBorder = true;
+		it.isOptionalBorder = it.isOptionalBorder ? true : optionalBorder;
+		if (group && !it.border_group) {
+			it.border_group = group;
+		}
+
+		int32_t edge_id = edgeNameToID(orientation);
+		if (edge_id != BORDER_NONE) {
+			tiles[edge_id] = itemid;
+			if (it.border_alignment == BORDER_NONE) {
+				it.border_alignment = ::BorderType(edge_id);
 			}
 		}
-		child = child->next;
 	}
 	return true;
 }
@@ -104,7 +104,7 @@ GroundBrush::GroundBrush() :
 	has_zilch_inner_border(false),
 	has_outer_border(false),
 	has_inner_border(false),
-	optional_border(NULL),
+	optional_border(nullptr),
 	use_only_optional(false),
 	randomize(true),
 	total_chance(0)
@@ -133,380 +133,361 @@ GroundBrush::~GroundBrush() {
 	}
 }
 
-bool GroundBrush::load(xmlNodePtr node, wxArrayString& warnings) {
-	std::string strVal;
-	int intVal;
-
-	if(readXMLValue(node, "lookid", intVal)) {
-		look_id = intVal;
-	}
-	if(readXMLValue(node, "server_lookid", intVal)) {
-		look_id = item_db[intVal].clientID;
-	}
-	if(readXMLValue(node, "z-order", intVal)) {
-		z_order = intVal;
-	}
-	if(readXMLValue(node, "solo_optional", strVal)) {
-		use_only_optional = isTrueString(strVal);
-	}
-	if(readXMLValue(node, "randomize", strVal)) {
-		randomize = isTrueString(strVal);
+bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
+{
+	pugi::xml_attribute attribute;
+	if ((attribute = node.attribute("lookid"))) {
+		look_id = pugi::cast<uint16_t>(attribute.value());
 	}
 
-	xmlNodePtr child = node->children;
-	while(child) {
-		if(xmlStrcmp(child->name,(const xmlChar*)"item") == 0) {
-			uint16_t itemid = 0;
-			int chance = 0;
-			if(readXMLValue(child, "id", intVal)) {
-				itemid = intVal;
-			}
-			if(readXMLValue(child, "chance", intVal)) {
-				chance = intVal;
+	if ((attribute = node.attribute("server_lookid"))) {
+		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+	}
+
+	if ((attribute = node.attribute("z-order"))) {
+		z_order = pugi::cast<int32_t>(attribute.value());
+	}
+
+	if ((attribute = node.attribute("solo_optional"))) {
+		use_only_optional = attribute.as_bool();
+	}
+
+	if ((attribute = node.attribute("randomize"))) {
+		randomize = attribute.as_bool();
+	}
+
+	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		const std::string& childName = as_lower_str(childNode.name());
+		if (childName == "item") {
+			uint16_t itemId = pugi::cast<uint16_t>(childNode.attribute("id").value());
+			int32_t chance = pugi::cast<int32_t>(childNode.attribute("chance").value());
+
+			ItemType& it = item_db[itemId];
+			if (it.id == 0) {
+				warnings.push_back(wxT("\nInvalid item id ") + std::to_string(itemId));
+				return false;
 			}
 
-			ItemType& it = item_db[itemid];
-			if(it.id == 0) {
-				wxString warning;
-				warning << wxT("\nInvalid item id") << itemid;
-				warnings.push_back(warning);
+			if (!it.isGroundTile()) {
+				warnings.push_back(wxT("\nItem ") + std::to_string(itemId) + wxT(" is not ground item."));
 				return false;
 			}
-			if(it.isGroundTile() == false) {
-				wxString warning;
-				warning << wxT("\nItem ") << itemid << wxT(" is not ground item.");
-				warnings.push_back(warning);
+
+			if (it.brush && it.brush != this) {
+				warnings.push_back(wxT("\nItem ") + std::to_string(itemId) + wxT(" can not be member of two brushes"));
 				return false;
 			}
-			if(it.brush != NULL && it.brush != this) {
-				wxString warning;
-				warning << wxT("\nItem ") << itemid << wxT(" can not be member of two brushes");
-				warnings.push_back(warning);
-				return false;
-			}
+
 			it.brush = this;
+			total_chance += chance;
 
 			ItemChanceBlock ci;
-			ci.id = itemid;
-			ci.chance = total_chance + chance;
+			ci.id = itemId;
+			ci.chance = total_chance;
 			border_items.push_back(ci);
-			total_chance += chance;
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"optional") == 0) {
+		} else if (childName == "optional") {
 			// Mountain border!
-			if(optional_border) {
-				wxString warning;
-				warning << wxT("\nDuplicate optional borders!");
-				warnings.push_back(warning);
-				child = child->next;
+			if (optional_border) {
+				warnings.push_back(wxT("\nDuplicate optional borders!"));
 				continue;
 			}
-			
-			if(readXMLValue(child, "ground_equivalent", intVal)) {
+
+			if ((attribute = childNode.attribute("ground_equivalent"))) {
+				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
+
 				// Load from inline definition
-				ItemType& it = item_db[intVal];
-				if(it.id == 0)  {
-					wxString warning;
-					warning = wxT("Invalid id of ground dependency equivalent item.\n");
-					warnings.push_back(warning);
-				}
-				if(it.isGroundTile() == false)  {
-					wxString warning;
-					warning = wxT("Ground dependency equivalent is not a ground item.\n");
-					warnings.push_back(warning);
-				}
-				if(it.brush != this) {
-					wxString warning;
-					warning = wxT("Ground dependency equivalent does not use the same brush as ground border.\n");
-					warnings.push_back(warning);
+				ItemType& it = item_db[ground_equivalent];
+				if (it.id == 0) {
+					warnings.push_back(wxT("Invalid id of ground dependency equivalent item.\n"));
+					continue;
+				} else if (!it.isGroundTile()) {
+					warnings.push_back(wxT("Ground dependency equivalent is not a ground item.\n"));
+					continue;
+				} else if (it.brush && it.brush != this) {
+					warnings.push_back(wxT("Ground dependency equivalent does not use the same brush as ground border.\n"));
+					continue;
 				}
 
-				AutoBorder* ab = newd AutoBorder(0); // Empty id basically
-				ab->load(child, warnings, this, intVal);
-				optional_border = ab;
+				AutoBorder* autoBorder = newd AutoBorder(0); // Empty id basically
+				autoBorder->load(childNode, warnings, this, ground_equivalent);
+				optional_border = autoBorder;
 			} else {
 				// Load from ID
-				int id;
-				if(!readXMLValue(child, "id", id)) {
-					wxString warning;
-					warning << wxT("\nMissing tag id for border node");
-					warnings.push_back(warning);
-					child = child->next;
+				if (!(attribute = childNode.attribute("id"))) {
+					warnings.push_back(wxT("\nMissing tag id for border node"));
 					continue;
 				}
 
-				Brushes::BorderMap::iterator it = brushes.borders.find(id);
-				if(it == brushes.borders.end() || it->second == NULL) {
-					wxString warning;
-					warning << wxT("\nCould not find border id ") << id;
-					warnings.push_back(warning);
-					child = child->next;
+				uint16_t id = pugi::cast<uint16_t>(attribute.value());
+				auto it = brushes.borders.find(id);
+				if (it == brushes.borders.end() || !it->second) {
+					warnings.push_back(wxT("\nCould not find border id ") + std::to_string(id));
 					continue;
 				}
+
 				optional_border = it->second;
 			}
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"border") == 0) {
-			AutoBorder* ab;
-			int id;
-
-			if(!readXMLValue(child, "id", id)) {
-				if(readXMLValue(child, "ground_equivalent", intVal)) {
-					ItemType& it = item_db[intVal];
-					if(it.id == 0)  {
-						wxString warning;
-						warning = wxT("Invalid id of ground dependency equivalent item.\n");
-						warnings.push_back(warning);
-					}
-					if(it.isGroundTile() == false)  {
-						wxString warning;
-						warning = wxT("Ground dependency equivalent is not a ground item.\n");
-						warnings.push_back(warning);
-					}
-					if(it.brush != this) {
-						wxString warning;
-						warning = wxT("Ground dependency equivalent does not use the same brush as ground border.\n");
-						warnings.push_back(warning);
-					}
-
-					ab = newd AutoBorder(0); // Empty id basically
-					ab->load(child, warnings, this, intVal);
-				} else {
-					child = child->next;
+		} else if (childName == "border") {
+			AutoBorder* autoBorder;
+			if (!(attribute = childNode.attribute("id"))) {
+				if (!(attribute = childNode.attribute("ground_equivalent"))) {
 					continue;
 				}
-			} else if(id == 0) {
-				ab = NULL;
-			} else { // id != 0
-				Brushes::BorderMap::iterator it = brushes.borders.find(id);
-				if(it == brushes.borders.end() || it->second == NULL) {
-					wxString warning;
-					warning << wxT("\nCould not find border id ") << id;
-					warnings.push_back(warning);
-					child = child->next;
-					continue;
+
+				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
+				ItemType& it = item_db[ground_equivalent];
+				if (it.id == 0) {
+					warnings.push_back(wxT("Invalid id of ground dependency equivalent item.\n"));
 				}
-				ab = it->second;
-			}
 
-			BorderBlock* bb = newd BorderBlock;
-			bb->super = false;
-			bb->autoborder = ab;
+				if (!it.isGroundTile()) {
+					warnings.push_back(wxT("Ground dependency equivalent is not a ground item.\n"));
+				}
 
-			if(readXMLValue(child, "to", strVal)) {
-				if(strVal == "all") {
-					bb->to = 0xFFFFFFFF;
-				} else if(strVal == "none") {
-					bb->to = 0;
+				if (it.brush && it.brush != this) {
+					warnings.push_back(wxT("Ground dependency equivalent does not use the same brush as ground border.\n"));
+				}
+
+				autoBorder = newd AutoBorder(0); // Empty id basically
+				autoBorder->load(childNode, warnings, this, ground_equivalent);
+			} else {
+				int32_t id = pugi::cast<int32_t>(attribute.value());
+				if (id == 0) {
+					autoBorder = nullptr;
 				} else {
-					Brush* tobrush = brushes.getBrush(strVal);
-					if(tobrush) {
-						bb->to = tobrush->getID();
-					} else {
-						wxString warning;
-						warning = wxT("To brush ") + wxstr(strVal) + wxT(" doesn't exist.");
-						warnings.push_back(warning);
-						child = child->next;
+					auto it = brushes.borders.find(id);
+					if (it == brushes.borders.end() || !it->second) {
+						warnings.push_back(wxT("\nCould not find border id ") + std::to_string(id));
 						continue;
 					}
+					autoBorder = it->second;
+				}
+			}
+
+			BorderBlock* borderBlock = newd BorderBlock;
+			borderBlock->super = false;
+			borderBlock->autoborder = autoBorder;
+
+			if ((attribute = childNode.attribute("to"))) {
+				const std::string& value = attribute.as_string();
+				if (value == "all") {
+					borderBlock->to = 0xFFFFFFFF;
+				} else if (value == "none") {
+					borderBlock->to = 0;
+				} else {
+					Brush* tobrush = brushes.getBrush(value);
+					if (!tobrush) {
+						warnings.push_back(wxT("To brush ") + wxstr(value) + wxT(" doesn't exist."));
+						continue;
+					}
+					borderBlock->to = tobrush->getID();
 				}
 			} else {
-				bb->to = 0xFFFFFFFF;
+				borderBlock->to = 0xFFFFFFFF;
 			}
 
-			if(readXMLValue(child, "super", strVal)) {
-				if(isTrueString(strVal)) {
-					bb->super = true;
-				}
+			if ((attribute = childNode.attribute("super")) && attribute.as_bool()) {
+				borderBlock->super = true;
 			}
 
-			if(readXMLValue(child, "align", strVal)) {
-				if(strVal == "outer") {
-					bb->outer = true;
-				} else if(strVal == "inner") {
-					bb->outer = false;
+			if ((attribute = childNode.attribute("align"))) {
+				const std::string& value = attribute.as_string();
+				if (value == "outer") {
+					borderBlock->outer = true;
+				} else if (value == "inner") {
+					borderBlock->outer = false;
 				} else {
-					bb->outer = true;
+					borderBlock->outer = true;
 				}
 			}
-			if(bb->outer == true) {
-				if(bb->to == 0) {
+
+			if (borderBlock->outer) {
+				if (borderBlock->to == 0) {
 					has_zilch_outer_border = true;
 				} else {
 					has_outer_border = true;
 				}
 			} else {
-				if(bb->to == 0) {
+				if (borderBlock->to == 0) {
 					has_zilch_inner_border = true;
 				} else {
 					has_inner_border = true;
 				}
 			}
 
-			xmlNodePtr subChild = child->children;
-			while(subChild) {
-				if(xmlStrcmp(subChild->name,(const xmlChar*)"specific") == 0) {
-					xmlNodePtr superChild = subChild->children;
-					SpecificCaseBlock* scb = NULL;
+			for (pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
+				if (as_lower_str(subChildNode.name()) != "specific") {
+					continue;
+				}
 
-					while(superChild) {
-						if(xmlStrcmp(superChild->name,(const xmlChar*)"conditions") == 0) {
-							xmlNodePtr conditionChild = superChild->children;
-							while(conditionChild) {
-								if(xmlStrcmp(conditionChild->name,(const xmlChar*)"match_border") == 0) {
-									int border_id = 0;
-									std::string edge;
-
-									if(!readXMLValue(conditionChild, "id", border_id) ||
-											!readXMLValue(conditionChild, "edge", edge)) {
-										conditionChild = conditionChild->next;
-										continue;
-									}
-									int edge_id = AutoBorder::edgeNameToID(edge);
-
-									Brushes::BorderMap::iterator bit = brushes.borders.find(border_id);
-									if(bit == brushes.borders.end()) {
-										wxString warning;
-										warning = wxT("Unknown border id in specific case match block "); warning << border_id	;
-										warnings.push_back(warning);
-										conditionChild = conditionChild->next;
-										continue;
-									}
-									AutoBorder* ab = bit->second;
-									ASSERT(ab != NULL);
-
-									uint32_t match_itemid = ab->tiles[edge_id];
-
-									if(!scb) scb = newd SpecificCaseBlock();
-									scb->items_to_match.push_back(match_itemid);
-								} else if(xmlStrcmp(conditionChild->name,(const xmlChar*)"match_group") == 0) {
-									int group = 0;
-									std::string edge;
-
-									if(!readXMLValue(conditionChild, "group", group) ||
-											!readXMLValue(conditionChild, "edge", edge)) {
-										conditionChild = conditionChild->next;
-										continue;
-									}
-									int edge_id = AutoBorder::edgeNameToID(edge);
-
-									if(!scb) scb = newd SpecificCaseBlock();
-									scb->match_group = group;
-									scb->group_match_alignment = ::BorderType(edge_id);
-									scb->items_to_match.push_back(uint16_t(group));
-								} else if(xmlStrcmp(conditionChild->name,(const xmlChar*)"match_item") == 0) {
-									int match_itemid = 0;
-
-									if(!readXMLValue(conditionChild, "id", match_itemid)) {
-										conditionChild = conditionChild->next;
-										continue;
-									}
-
-									if(!scb) scb = newd SpecificCaseBlock();
-									scb->match_group = 0;
-									scb->items_to_match.push_back(match_itemid);
+				SpecificCaseBlock* specificCaseBlock = nullptr;
+				for (pugi::xml_node superChildNode = subChildNode.first_child(); superChildNode; superChildNode = superChildNode.next_sibling()) {
+					const std::string& superChildName = as_lower_str(superChildNode.name());
+					if (superChildName == "conditions") {
+						for (pugi::xml_node conditionChild = superChildNode.first_child(); conditionChild; conditionChild = conditionChild.next_sibling()) {
+							const std::string& conditionName = as_lower_str(conditionChild.name());
+							if (conditionName == "match_border") {
+								if (!(attribute = conditionChild.attribute("id"))) {
+									continue;
 								}
-								conditionChild = conditionChild->next;
-							}
-						} else if(xmlStrcmp(superChild->name,(const xmlChar*)"actions") == 0) {
-							xmlNodePtr actionChild = superChild->children;
-							while(actionChild) {
-								if(xmlStrcmp(actionChild->name,(const xmlChar*)"replace_border") == 0) {
-									int border_id = 0;
-									std::string edge;
-									int with_id = 0;
 
-									if(!readXMLValue(actionChild, "id", border_id) ||
-											!readXMLValue(actionChild, "edge", edge) ||
-											!readXMLValue(actionChild, "with", with_id)) {
-										actionChild = actionChild->next;
-										continue;
-									}
-									int edge_id = AutoBorder::edgeNameToID(edge);
-
-									Brushes::BorderMap::iterator bit = brushes.borders.find(border_id);
-									if(bit == brushes.borders.end()) {
-										wxString warning;
-										warning = wxT("Unknown border id in specific case match block "); warning << border_id;
-										warnings.push_back(warning);
-										actionChild = actionChild->next;
-										continue;
-									}
-									AutoBorder* ab = bit->second;
-									ASSERT(ab != NULL);
-
-									ItemType& it = item_db[with_id];
-									if(it.id == 0) {return false;}
-									it.isBorder = true;
-
-									if(!scb) scb = newd SpecificCaseBlock();
-									scb->to_replace_id = ab->tiles[edge_id];
-									scb->with_id = with_id;
-								} else if(xmlStrcmp(actionChild->name,(const xmlChar*)"replace_item") == 0) {
-									int to_replace_id = 0;
-									int with_id = 0;
-
-									if(!readXMLValue(actionChild, "id", to_replace_id) ||
-											!readXMLValue(actionChild, "with", with_id)) {
-										actionChild = actionChild->next;
-										continue;
-									}
-
-									ItemType& it = item_db[with_id];
-									if(it.id == 0) {return false;}
-									it.isBorder = true;
-
-									if(!scb) scb = newd SpecificCaseBlock();
-									scb->to_replace_id = to_replace_id;
-									scb->with_id = with_id;
-								} else if(xmlStrcmp(actionChild->name,(const xmlChar*)"delete_borders") == 0) {
-									if(!scb) scb = newd SpecificCaseBlock();
-									scb->delete_all = true;
+								int32_t border_id = pugi::cast<int32_t>(attribute.value());
+								if (!(attribute = conditionChild.attribute("edge"))) {
+									continue;
 								}
-								actionChild = actionChild->next;
+
+								int32_t edge_id = AutoBorder::edgeNameToID(attribute.as_string());
+								auto it = brushes.borders.find(border_id);
+								if (it == brushes.borders.end()) {
+									warnings.push_back(wxT("Unknown border id in specific case match block ") + std::to_string(border_id));
+									continue;
+								}
+
+								AutoBorder* autoBorder = it->second;
+								ASSERT(autoBorder != nullptr);
+
+								uint32_t match_itemid = autoBorder->tiles[edge_id];
+								if (!specificCaseBlock) {
+									specificCaseBlock = newd SpecificCaseBlock();
+								}
+								specificCaseBlock->items_to_match.push_back(match_itemid);
+							} else if (conditionName == "match_group") {
+								if (!(attribute = conditionChild.attribute("group"))) {
+									continue;
+								}
+
+								uint16_t group = pugi::cast<uint16_t>(attribute.value());
+								if (!(attribute = conditionChild.attribute("edge"))) {
+									continue;
+								}
+
+								int32_t edge_id = AutoBorder::edgeNameToID(attribute.as_string());
+								if (!specificCaseBlock) {
+									specificCaseBlock = newd SpecificCaseBlock();
+								}
+
+								specificCaseBlock->match_group = group;
+								specificCaseBlock->group_match_alignment = ::BorderType(edge_id);
+								specificCaseBlock->items_to_match.push_back(group);
+							} else if (conditionName == "match_item") {
+								if (!(attribute = conditionChild.attribute("id"))) {
+									continue;
+								}
+
+								int32_t match_itemid = pugi::cast<int32_t>(attribute.value());
+								if (!specificCaseBlock) {
+									specificCaseBlock = newd SpecificCaseBlock();
+								}
+
+								specificCaseBlock->match_group = 0;
+								specificCaseBlock->items_to_match.push_back(match_itemid);
 							}
 						}
-						superChild = superChild->next;
-					}
-					if(scb) {
-						bb->specific_cases.push_back(scb);
+					} else if (superChildName == "actions") {
+						for (pugi::xml_node actionChild = superChildNode.first_child(); actionChild; actionChild = actionChild.next_sibling()) {
+							const std::string& actionName = as_lower_str(actionChild.name());
+							if (actionName == "replace_border") {
+								if (!(attribute = actionChild.attribute("id"))) {
+									continue;
+								}
+
+								int32_t border_id = pugi::cast<int32_t>(attribute.value());
+								if (!(attribute = actionChild.attribute("edge"))) {
+									continue;
+								}
+
+								int32_t edge_id = AutoBorder::edgeNameToID(attribute.as_string());
+								if (!(attribute = actionChild.attribute("with"))) {
+									continue;
+								}
+
+								int32_t with_id = pugi::cast<int32_t>(attribute.value());
+								auto itt = brushes.borders.find(border_id);
+								if (itt == brushes.borders.end()) {
+									warnings.push_back(wxT("Unknown border id in specific case match block ") + std::to_string(border_id));
+									continue;
+								}
+
+								AutoBorder* autoBorder = itt->second;
+								ASSERT(autoBorder != nullptr);
+
+								ItemType& it = item_db[with_id];
+								if (it.id == 0) {
+									return false;
+								}
+
+								it.isBorder = true;
+								if (!specificCaseBlock) {
+									specificCaseBlock = newd SpecificCaseBlock();
+								}
+
+								specificCaseBlock->to_replace_id = autoBorder->tiles[edge_id];
+								specificCaseBlock->with_id = with_id;
+							} else if (actionName == "replace_item") {
+								if (!(attribute = actionChild.attribute("id"))) {
+									continue;
+								}
+
+								int32_t to_replace_id = pugi::cast<int32_t>(attribute.value());
+								if (!(attribute = actionChild.attribute("with"))) {
+									continue;
+								}
+
+								int32_t with_id = pugi::cast<int32_t>(attribute.value());
+								ItemType& it = item_db[with_id];
+								if (it.id == 0) {
+									return false;
+								}
+
+								it.isBorder = true;
+								if (!specificCaseBlock) {
+									specificCaseBlock = newd SpecificCaseBlock();
+								}
+
+								specificCaseBlock->to_replace_id = to_replace_id;
+								specificCaseBlock->with_id = with_id;
+							} else if (actionName == "delete_borders") {
+								if (!specificCaseBlock) {
+									specificCaseBlock = newd SpecificCaseBlock();
+								}
+								specificCaseBlock->delete_all = true;
+							}
+						}
 					}
 				}
-				subChild = subChild->next;
 			}
-
-			borders.push_back(bb);
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"friend") == 0) {
-			if(readXMLValue(child, "name", strVal)) {
-				if(strVal == "all") {
+			borders.push_back(borderBlock);
+		} else if (childName == "friend") {
+			const std::string& name = childNode.attribute("name").as_string();
+			if (!name.empty()) {
+				if (name == "all") {
 					friends.push_back(0xFFFFFFFF);
 				} else {
-					Brush* brush = brushes.getBrush(strVal);
-					if(brush) {
+					Brush* brush = brushes.getBrush(name);
+					if (brush) {
 						friends.push_back(brush->getID());
 					} else {
-						wxString warning;
-						warning << wxT("Brush '") + wxstr(strVal) + wxT("' is not defined.");
-						warnings.push_back(warning);
+						warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
 					}
 				}
 			}
 			hate_friends = false;
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"enemy") == 0) {
-			if(readXMLValue(child, "name", strVal)) {
-				if(strVal == "all") {
+		} else if (childName == "enemy") {
+			const std::string& name = childNode.attribute("name").as_string();
+			if (!name.empty()) {
+				if (name == "all") {
 					friends.push_back(0xFFFFFFFF);
 				} else {
-					Brush* brush = brushes.getBrush(strVal);
-					if(brush) {
+					Brush* brush = brushes.getBrush(name);
+					if (brush) {
 						friends.push_back(brush->getID());
 					} else {
-						wxString warning;
-						warning << wxT("Brush '") + wxstr(strVal) + wxT("' is not defined.");
-						warnings.push_back(warning);
+						warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
 					}
 				}
 			}
 			hate_friends = true;
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"clear_borders") == 0) {
+		} else if (childName == "clear_borders") {
 			for(std::vector<BorderBlock*>::iterator it = borders.begin();
 					it != borders.end();
 					++it)
@@ -526,15 +507,13 @@ bool GroundBrush::load(xmlNodePtr node, wxArrayString& warnings) {
 				delete bb;
 			}
 			borders.clear();
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"clear_friends") == 0) {
+		} else if (childName == "clear_friends") {
 			friends.clear();
 			hate_friends = false;
 		}
-
-		child = child->next;
 	}
 
-	if(total_chance == 0) {
+	if (total_chance == 0) {
 		randomize = false;
 	}
 	
@@ -545,7 +524,7 @@ void GroundBrush::undraw(BaseMap* map, Tile* tile) {
 	ASSERT(tile);
 	if(tile->hasGround() && tile->ground->getGroundBrush() == this) {
 		delete tile->ground;
-		tile->ground = NULL;
+		tile->ground = nullptr;
 	}
 }
 
@@ -553,11 +532,11 @@ void GroundBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 	ASSERT(tile);
 	if(border_items.empty()) return;
 
-	if(parameter != NULL) {
+	if(parameter != nullptr) {
 		std::pair<bool, GroundBrush*>& param = *reinterpret_cast<std::pair<bool, GroundBrush*>* >(parameter);
 		GroundBrush* other = tile->getGroundBrush();
 		if(param.first) { // Volatile? :)
-			if(other != NULL) {
+			if(other != nullptr) {
 				return;
 			}
 		} else if(other != param.second) {
@@ -644,18 +623,18 @@ const GroundBrush::BorderBlock* GroundBrush::getBrushTo(GroundBrush* first, Grou
 		}
 	}
 	//printf("None\n");
-	return NULL;
+	return nullptr;
 }
 
 inline GroundBrush* extractGroundBrushFromTile(BaseMap* map, uint x, uint y, uint z) {
 	Tile* t = map->getTile(x, y, z);
-	return t? t->getGroundBrush() : NULL;
+	return t? t->getGroundBrush() : nullptr;
 }
 
 void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 	ASSERT(tile);
 
-	GroundBrush* border_brush = (tile->ground? tile->ground->getGroundBrush() : NULL);
+	GroundBrush* border_brush = (tile->ground? tile->ground->getGroundBrush() : nullptr);
 
 	unsigned int x = tile->getPosition().x;
 	unsigned int y = tile->getPosition().y;
@@ -665,28 +644,28 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 
 	if(x == 0) {
 		if(y == 0) {
-			neighbours[0] = std::make_pair<bool, GroundBrush*>(false, NULL);
-			neighbours[1] = std::make_pair<bool, GroundBrush*>(false, NULL);
-			neighbours[2] = std::make_pair<bool, GroundBrush*>(false, NULL);
-			neighbours[3] = std::make_pair<bool, GroundBrush*>(false, NULL);
+			neighbours[0] = std::make_pair<bool, GroundBrush*>(false, nullptr);
+			neighbours[1] = std::make_pair<bool, GroundBrush*>(false, nullptr);
+			neighbours[2] = std::make_pair<bool, GroundBrush*>(false, nullptr);
+			neighbours[3] = std::make_pair<bool, GroundBrush*>(false, nullptr);
 			neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
-			neighbours[5] = std::make_pair<bool, GroundBrush*>(false, NULL);
+			neighbours[5] = std::make_pair<bool, GroundBrush*>(false, nullptr);
 			neighbours[6] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y + 1, z));
 			neighbours[7] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y + 1, z));
 		} else {
-			neighbours[0] = std::make_pair<bool, GroundBrush*>(false, NULL);
+			neighbours[0] = std::make_pair<bool, GroundBrush*>(false, nullptr);
 			neighbours[1] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y - 1, z));
 			neighbours[2] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y - 1, z));
-			neighbours[3] = std::make_pair<bool, GroundBrush*>(false, NULL);
+			neighbours[3] = std::make_pair<bool, GroundBrush*>(false, nullptr);
 			neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
-			neighbours[5] = std::make_pair<bool, GroundBrush*>(false, NULL);
+			neighbours[5] = std::make_pair<bool, GroundBrush*>(false, nullptr);
 			neighbours[6] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y + 1, z));
 			neighbours[7] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y + 1, z));
 		}
 	} else if(y == 0) {
-		neighbours[0] = std::make_pair<bool, GroundBrush*>(false, NULL);
-		neighbours[1] = std::make_pair<bool, GroundBrush*>(false, NULL);
-		neighbours[2] = std::make_pair<bool, GroundBrush*>(false, NULL);
+		neighbours[0] = std::make_pair<bool, GroundBrush*>(false, nullptr);
+		neighbours[1] = std::make_pair<bool, GroundBrush*>(false, nullptr);
+		neighbours[2] = std::make_pair<bool, GroundBrush*>(false, nullptr);
 		neighbours[3] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y, z));
 		neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
 		neighbours[5] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y + 1, z));
@@ -807,7 +786,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 					BorderCluster cluster;
 					cluster.alignment = tiledata;
 					cluster.z = 5000;
-					const BorderBlock* bb = getBrushTo(border_brush, NULL);
+					const BorderBlock* bb = getBrushTo(border_brush, nullptr);
 					if(!bb) {
 						continue;
 					}
@@ -837,7 +816,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 				BorderCluster cluster;
 				cluster.alignment = tiledata;
 				cluster.z = other->getZ();
-				const BorderBlock* bb = getBrushTo(NULL, other);
+				const BorderBlock* bb = getBrushTo(nullptr, other);
 				if(bb) {
 					cluster.border = bb->autoborder;
 					if(cluster.border) {
@@ -871,7 +850,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 	tile->cleanBorders();
 	while(border_list.empty() == false) {
 		BorderCluster& cluster = border_list.back();
-		if(cluster.border == NULL) {
+		if(cluster.border == nullptr) {
 			border_list.pop_back();
 			continue;
 		}

@@ -14,7 +14,7 @@ public:
 	HouseBrush();
 	virtual ~HouseBrush();
 	// Not used
-	virtual bool load(xmlNodePtr node, wxArrayString& warnings) {return true;}
+	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {return true;}
 
 	// You can always draw house tiles!
 	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}

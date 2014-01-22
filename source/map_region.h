@@ -66,8 +66,8 @@ public:
 	QTreeNode(BaseMap& map);
 	virtual ~QTreeNode();
 
-	QTreeNode* getLeaf(int x, int y); // Might return NULL
-	QTreeNode* getLeafForce(int x, int y); // Will never return NULL, it will create the node if it's not there
+	QTreeNode* getLeaf(int x, int y); // Might return nullptr
+	QTreeNode* getLeafForce(int x, int y); // Will never return nullptr, it will create the node if it's not there
 	
 	// Coordinates are NOT relative
 	TileLocation* createTile(int x, int y, int z);

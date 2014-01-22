@@ -69,7 +69,7 @@ Town* Towns::getTown(std::string& name) {
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 Town* Towns::getTown(uint32_t id) {
@@ -79,7 +79,7 @@ Town* Towns::getTown(uint32_t id) {
 		return it->second;
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void Town::setTemplePosition(const Position& pos) {

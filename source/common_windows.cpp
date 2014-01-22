@@ -694,7 +694,7 @@ END_EVENT_TABLE()
 FindDialog::FindDialog(wxWindow* parent, wxString title) :
 	wxDialog(gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
 	idle_input_timer(this),
-	result_brush(NULL),
+	result_brush(nullptr),
 	result_id(0)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -807,7 +807,7 @@ void FindDialog::RefreshContents()
 
 FindItemDialog::FindItemDialog(wxWindow* parent, wxString title) : FindDialog(parent, title) 
 {
-	extra_condition = NULL;
+	extra_condition = nullptr;
 	RefreshContents();
 }
 
@@ -841,7 +841,7 @@ void FindItemDialog::OnClickOKInternal()
 		}
 
 		RAWBrush* brush = dynamic_cast<RAWBrush*>(item_list->GetSelectedBrush());
-		if(brush == NULL)
+		if(brush == nullptr)
 		{
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
@@ -857,7 +857,7 @@ void FindItemDialog::OnClickOKInternal()
 						continue;
 
 					RAWBrush* raw = it.raw_brush;
-					if(raw == NULL)
+					if(raw == nullptr)
 						continue;
 
 					if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
@@ -895,7 +895,7 @@ void FindItemDialog::RefreshContentsInternal()
 				continue;
 
 			RAWBrush* raw = it.raw_brush;
-			if(raw == NULL)
+			if(raw == nullptr)
 				continue;
 
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
@@ -943,7 +943,7 @@ void FindBrushDialog::OnClickOKInternal()
 			item_list->SetSelection(0);
 		}
 		Brush* brush = item_list->GetSelectedBrush();
-		if(brush == NULL) 
+		if(brush == nullptr) 
 		{
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
@@ -979,7 +979,7 @@ void FindBrushDialog::OnClickOKInternal()
 							continue;
 
 						RAWBrush* raw = it.raw_brush;
-						if(raw == NULL)
+						if(raw == nullptr)
 							continue;
 
 						if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
@@ -1035,7 +1035,7 @@ void FindBrushDialog::RefreshContentsInternal()
 				continue;
 
 			RAWBrush* raw = it.raw_brush;
-			if(raw == NULL)
+			if(raw == nullptr)
 				continue;
 
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
@@ -1206,10 +1206,10 @@ void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		result_with_brush = dynamic_cast<RAWBrush*>(with_item_list->GetSelectedBrush());
 	}
 
-	if (result_find_brush == NULL || result_with_brush == NULL)
+	if (result_find_brush == nullptr || result_with_brush == nullptr)
 	{
-		result_find_brush = NULL;
-		result_with_brush = NULL;
+		result_find_brush = nullptr;
+		result_with_brush = nullptr;
 
 		gui.PopupDialog(wxT("Select both items"), wxT("You must select two items for the replacement to work."), wxOK);
 		return;
@@ -1241,7 +1241,7 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 				continue;
 
 			RAWBrush* raw = it.raw_brush;
-			if(raw == NULL)
+			if(raw == nullptr)
 				continue;
 
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
@@ -1314,7 +1314,7 @@ Brush* FindDialogListBox::GetSelectedBrush()
 {
 	size_t n = GetSelection();
 	if(n == wxNOT_FOUND || no_matches || cleared)
-		return NULL;
+		return nullptr;
 	return brushlist[n];
 }
 
@@ -1364,8 +1364,8 @@ wxDialog(parent, wxID_ANY, title,
 	edit_map(map),
 	edit_tile(tile),
 	edit_item(item),
-	edit_creature(NULL),
-	edit_spawn(NULL)
+	edit_creature(nullptr),
+	edit_spawn(nullptr)
 {
 }
 
@@ -1374,9 +1374,9 @@ wxDialog(parent, wxID_ANY, title,
 	position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER),
 	edit_map(map),
 	edit_tile(tile),
-	edit_item(NULL),
+	edit_item(nullptr),
 	edit_creature(creature),
-	edit_spawn(NULL)
+	edit_spawn(nullptr)
 {
 }
 
@@ -1385,8 +1385,8 @@ wxDialog(parent, wxID_ANY, title,
 	position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER),
 	edit_map(map),
 	edit_tile(tile),
-	edit_item(NULL),
-	edit_creature(NULL),
+	edit_item(nullptr),
+	edit_creature(nullptr),
 	edit_spawn(spawn)
 {
 }
@@ -1558,7 +1558,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 		{
 			uint32_t old_town_id = tmplong;
 
-			Town* old_town = NULL;
+			Town* old_town = nullptr;
 
 			for(std::vector<Town*>::iterator town_iter = town_list.begin();
 					town_iter != town_list.end();
@@ -1671,7 +1671,7 @@ void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 	{
 		uint32_t old_town_id = tmplong;
 
-		Town* town = NULL;
+		Town* town = nullptr;
 
 		std::vector<Town*>::iterator town_iter = town_list.begin();
 
@@ -1719,7 +1719,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		{
 			uint32_t old_town_id = tmplong;
 
-			Town* old_town = NULL;
+			Town* old_town = nullptr;
 
 			for(std::vector<Town*>::iterator town_iter = town_list.begin();
 					town_iter != town_list.end();
@@ -1841,7 +1841,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 
 	// We connect the OnTypeText handler from this window (using us as event object)
 	// this way we don't have to subclass
-	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), NULL, this);
+	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
 	tmpsizer->Add(ctrl, 2, wxCENTER);
 
 	// Add Y position spin ctrl
@@ -1850,7 +1850,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 		wxWANTS_CHARS, wxT("Y"), // style name
 		wxDefaultPosition, wxSize(70, -1));
 	
-	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), NULL, this);
+	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
 	tmpsizer->Add(ctrl, 2, wxCENTER);
 
 	// Add Z position spin ctrl
@@ -1859,7 +1859,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 		wxWANTS_CHARS, wxT("Z"), // style name
 		wxDefaultPosition, wxSize(40, -1));
 	
-	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), NULL, this);
+	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
 	tmpsizer->Add(ctrl, 1, wxCENTER);
 
 

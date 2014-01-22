@@ -101,7 +101,7 @@ public:
 	void setAttribute(const std::string& key, double value);
 	void setAttribute(const std::string& key, bool set);
 
-	// returns NULL if the attribute is not set
+	// returns nullptr if the attribute is not set
 	const std::string* getStringAttribute(const std::string& key) const;
 	const int32_t* getIntegerAttribute(const std::string& key) const;
 	const double* getFloatAttribute(const std::string& key) const;

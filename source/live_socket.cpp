@@ -12,7 +12,7 @@
 #include "live_tab.h"
 #include "editor.h"
 
-LiveSocket::LiveSocket() : bn_reader(NULL, 0), map_version(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(NULL) {
+LiveSocket::LiveSocket() : bn_reader(nullptr, 0), map_version(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(nullptr) {
 }
 
 LiveSocket::~LiveSocket() {
@@ -124,7 +124,7 @@ void LiveSocket::SendNode(LivePeer* connection, QTreeNode* nd, int ndx, int ndy,
 		Floor** floor_p = nd->getFloors();
 		uint16_t floors = 0;
 		for(int z = 0; z <= 15; ++z) {
-			if(floor_p[z] != NULL && (floormask & (1 << z)))
+			if(floor_p[z] != nullptr && (floormask & (1 << z)))
 				floors |= 1 << z;
 		}
 		omsg->AddU16(floors);
@@ -162,7 +162,7 @@ void LiveSocket::AddFloor(NetworkMessage* omsg, Floor* floor)
 				continue;
 			}
 			Tile* tile = floor->locs[x*4 + y].get();
-			AddTile(bn_writer, tile, NULL);
+			AddTile(bn_writer, tile, nullptr);
 		}
 	}
 	bn_writer.endNode(); // end root
@@ -288,7 +288,7 @@ Tile* LiveSocket::ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos)
 {
 	// We are receiving a tile! :)
 	ASSERT(tileNode);
-	Tile* tile = NULL;
+	Tile* tile = nullptr;
 	uint8_t tile_type;
 	tileNode->getByte(tile_type);
 
@@ -316,7 +316,7 @@ Tile* LiveSocket::ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos)
 			{
 				//warning(wxT("House tile without house data, discarding tile"));
 				delete tile;
-				return NULL;
+				return nullptr;
 			}
 			if(house_id)
 			{
@@ -348,7 +348,7 @@ Tile* LiveSocket::ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos)
 				case OTBM_ATTR_ITEM:
 				{
 					Item* item = Item::Create_OTBM(map_version, tileNode);
-					if(item == NULL)
+					if(item == nullptr)
 					{
 						//warning(wxT("Invalid item at tile %d:%d:%d"), pos.x, pos.y, pos.z);
 					}
@@ -366,13 +366,13 @@ Tile* LiveSocket::ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos)
 		BinaryNode* itemNode = tileNode->getChild();
 		if(itemNode) do
 		{
-			Item* item = NULL;
+			Item* item = nullptr;
 			uint8_t item_type;
 			if(!itemNode->getByte(item_type))
 			{
 				//warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
 				delete tile;
-				return NULL;
+				return nullptr;
 			}
 			if(item_type == OTBM_ITEM)
 			{
@@ -396,7 +396,7 @@ Tile* LiveSocket::ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos)
 	}
 	else
 	{
-		return NULL;
+		return nullptr;
 	}
 }
 

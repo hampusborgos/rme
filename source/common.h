@@ -41,17 +41,6 @@ void to_upper_str(std::string& source);
 std::string as_lower_str(const std::string& other);
 std::string as_upper_str(const std::string& other);
 
-// Reads an xml value
-// Returns the value through the third argument, return value is true if the value is valid (and exists)
-bool readXMLInteger(xmlNodePtr node, const char* tag, int& value);
-bool readXMLFloat(xmlNodePtr node, const char* tag, float& value);
-bool readXMLBoolean(xmlNodePtr node, const char* tag, bool& value);
-bool readXMLString(xmlNodePtr node, const char* tag, std::string& value);
-// Aliases to the above
-inline bool readXMLValue(xmlNodePtr node, const char* tag, int& value) {return readXMLInteger(node, tag, value);}
-inline bool readXMLValue(xmlNodePtr node, const char* tag, float& value) {return readXMLFloat(node, tag, value);}
-inline bool readXMLValue(xmlNodePtr node, const char* tag, std::string& value) {return readXMLString(node, tag, value);}
-
 // isFalseString returns true if the string is either "0", "false", "no", "not" or blank
 // isTrueString returns the opposite value of isFalseString
 bool isFalseString(std::string& str);

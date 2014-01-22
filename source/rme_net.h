@@ -46,7 +46,7 @@ extern const wxEventType EVT_RMENET_CONNECTION_ESTABLISHED;
     DECLARE_EVENT_TABLE_ENTRY( \
         EVT_RMENET_CONNECTION_ESTABLISHED, id, wxID_ANY, \
         (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) NULL \
+        (wxObject *) nullptr \
     ),
 
 extern const wxEventType EVT_RMENET_CONNECTION_LOST;
@@ -55,7 +55,7 @@ extern const wxEventType EVT_RMENET_CONNECTION_LOST;
     DECLARE_EVENT_TABLE_ENTRY( \
         EVT_RMENET_CONNECTION_LOST, id, wxID_ANY, \
         (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) NULL \
+        (wxObject *) nullptr \
     ),
 
 extern const wxEventType EVT_RMENET_SHOW_SERVLIST;
@@ -64,7 +64,7 @@ extern const wxEventType EVT_RMENET_SHOW_SERVLIST;
     DECLARE_EVENT_TABLE_ENTRY( \
         EVT_RMENET_SHOW_SERVLIST, id, wxID_ANY, \
         (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) NULL \
+        (wxObject *) nullptr \
     ),
 
 #endif

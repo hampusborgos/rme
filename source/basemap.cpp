@@ -49,7 +49,7 @@ void BaseMap::clear(bool del)
 			pos_iter != pos_vec.end();
 			++pos_iter)
 	{
-		setTile(*pos_iter, NULL, del);
+		setTile(*pos_iter, nullptr, del);
 	}
 }
 
@@ -80,7 +80,7 @@ TileLocation* BaseMap::getTileL(int x, int y, int z)
 		if(floor)
 			return &floor->locs[(x & 3)*4 + (y & 3)];
 	}
-	return NULL;
+	return nullptr;
 }
 
 const TileLocation* BaseMap::getTileL(int x, int y, int z) const
@@ -145,7 +145,7 @@ Tile* BaseMap::swapTile(int x, int y, int z, Tile* newtile)
 MapIterator::MapIterator(BaseMap* _map) :
 	local_i(0),
 	local_z(0),
-	current_tile(NULL),
+	current_tile(nullptr),
 	map(_map)
 {
 }

@@ -114,20 +114,6 @@
 #define nstr(str) std::string((const char*)(str.mb_str(wxConvUTF8)))
 #define wxstr(str) wxString((str).c_str(), wxConvUTF8)
 
-#ifdef __WINDOWS__
-#ifndef _STDINT_H
-typedef unsigned __int8 uint8_t;
-typedef unsigned __int16 uint16_t;
-typedef unsigned __int32 uint32_t;
-typedef unsigned __int64 uint64_t;
-typedef __int8 int8_t;
-typedef __int16 int16_t;
-typedef __int32 int32_t;
-typedef __int64 int64_t;
-#endif
 typedef unsigned int uint;
-#else
-typedef unsigned int uint;
-#endif
 
 #endif

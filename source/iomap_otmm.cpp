@@ -34,7 +34,7 @@ Item* Item::Create_OTMM(const IOMap& maphandle, BinaryNode* stream)
 {
 	uint16_t _id;
 	if(!stream->getU16(_id))
-		return NULL;
+		return nullptr;
 
 	return Item::Create(_id);
 }
@@ -395,7 +395,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 	}
 
 	BinaryNode* mapHeaderNode = root->getChild();
-	if(mapHeaderNode == NULL || !mapHeaderNode->getByte(u8) || u8 != OTMM_MAP_DATA) {
+	if(mapHeaderNode == nullptr || !mapHeaderNode->getByte(u8) || u8 != OTMM_MAP_DATA) {
 		error(wxT("Could not get root child node. Cannot recover from fatal error!"));
 		return false;
 	}
@@ -425,7 +425,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 			case OTMM_TILE_DATA: {
 				BinaryNode* tileNode = mapNode->getChild();
 				if(tileNode) do {
-					Tile* tile = NULL;
+					Tile* tile = nullptr;
 					uint8_t tile_type;
 					if(!tileNode->getByte(tile_type)) {
 						warning(wxT("Invalid tile type"));
@@ -454,7 +454,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					}
 					
 					tile = map.allocator(pos);
-					House* house = NULL;
+					House* house = nullptr;
 					if(tile_type == OTMM_HOUSETILE) {
 						uint32_t house_id;
 						if(!tileNode->getU32(house_id)) {
@@ -497,7 +497,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					
 					BinaryNode* itemNode = tileNode->getChild();
 					if(itemNode) do {
-						Item* item = NULL;
+						Item* item = nullptr;
 						uint8_t item_type;
 						if(!itemNode->getByte(item_type)) {
 							warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
@@ -648,7 +648,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						creature_tile->creature = creature;
 						if(creature_tile->spawn_count == 0) {
 							// No spawn, create a newd one (this happends if the radius of the spawn has been decreased due to settings)
-							ASSERT(creature_tile->spawn == NULL);
+							ASSERT(creature_tile->spawn == nullptr);
 							Spawn* spawn = newd Spawn(5);
 							creature_tile->spawn = spawn;
 							map.addSpawn(creature_tile);

@@ -68,15 +68,15 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	log->SetColMinimalWidth(2, 100);
 	log->SetColSize(2, 100);
 
-	log->Connect(wxEVT_SIZE, wxSizeEventHandler(LiveLogTab::OnResizeChat), NULL, this);
+	log->Connect(wxEVT_SIZE, wxSizeEventHandler(LiveLogTab::OnResizeChat), nullptr, this);
 	
 	left_sizer->Add(log, 1, wxEXPAND);
 
 	input = newd wxTextCtrl(left_pane, LIVE_CHAT_TEXTBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize);
 	left_sizer->Add(input, 0, wxEXPAND);
 	
-	input->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(LiveLogTab::OnSelectChatbox), NULL, this);
-	input->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(LiveLogTab::OnDeselectChatbox), NULL, this);
+	input->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(LiveLogTab::OnSelectChatbox), nullptr, this);
+	input->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(LiveLogTab::OnDeselectChatbox), nullptr, this);
 
 	left_pane->SetSizerAndFit(left_sizer);
 
@@ -125,9 +125,9 @@ wxString LiveLogTab::GetTitle() const
 
 void LiveLogTab::Disconnect()
 {
-	socket->log = NULL;
+	socket->log = nullptr;
 	input->SetWindowStyle(input->GetWindowStyle() | wxTE_READONLY);
-	socket = NULL;
+	socket = nullptr;
 	Refresh();
 }
 

@@ -32,10 +32,10 @@
 #include "table_brush.h"
 
 Tile::Tile(int x, int y, int z) :
-	location(NULL),
-	ground(NULL),
-	creature(NULL),
-	spawn(NULL),
+	location(nullptr),
+	ground(nullptr),
+	creature(nullptr),
+	spawn(nullptr),
 	house_id(0),
 	mapflags(0),
 	statflags(0)
@@ -44,9 +44,9 @@ Tile::Tile(int x, int y, int z) :
 
 Tile::Tile(TileLocation& loc) :
 	location(&loc),
-	ground(NULL),
-	creature(NULL),
-	spawn(NULL),
+	ground(nullptr),
+	creature(nullptr),
+	spawn(nullptr),
 	house_id(0),
 	mapflags(0),
 	statflags(0)
@@ -129,25 +129,25 @@ void Tile::merge(Tile* other) {
 	if(other->ground) {
 		delete ground;
 		ground = other->ground;
-		other->ground = NULL;
+		other->ground = nullptr;
 	}
 
 	if(other->creature) {
 		delete creature;
 		creature = other->creature;
-		other->creature = NULL;
+		other->creature = nullptr;
 	}
 
 	if(other->spawn) {
 		delete spawn;
 		spawn = other->spawn;
-		other->spawn = NULL;
+		other->spawn = nullptr;
 	}
 
 	if(other->creature) {
 		delete creature;
 		creature = other->creature;
-		other->creature = NULL;
+		other->creature = nullptr;
 	}
 
 	ItemVector::iterator it;
@@ -184,7 +184,7 @@ Item* Tile::getTopItem() {
 	if(ground && ground->isMetaItem() == false) {
 		return ground;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Tile::addItem(Item* item) {
@@ -277,7 +277,7 @@ Item* Tile::getTopSelectedItem() {
 	if(ground && ground->isSelected() && ground->isMetaItem() == false) {
 		return ground;
 	}
-	return NULL;
+	return nullptr;
 }
 
 ItemVector Tile::popSelectedItems() {
@@ -287,7 +287,7 @@ ItemVector Tile::popSelectedItems() {
 
 	if(ground && ground->isSelected()) {
 		pop_items.push_back(ground);
-		ground = NULL;
+		ground = nullptr;
 	}
 
 	ItemVector::iterator it;
@@ -420,7 +420,7 @@ void Tile::update()
 	}
 
 	if((statflags & TILESTATE_BLOCKING) == 0) {
-		if(ground == NULL && items.size() == 0) {
+		if(ground == nullptr && items.size() == 0) {
 			statflags |= TILESTATE_BLOCKING;
 		}
 	}
@@ -442,7 +442,7 @@ GroundBrush* Tile::getGroundBrush() const {
 			return ground->getGroundBrush();
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Tile::cleanBorders() {
@@ -473,7 +473,7 @@ Item* Tile::getWall() const {
 			return *it;
 		} ++it;
 	}
-	return NULL;
+	return nullptr;
 }
 
 Item* Tile::getCarpet() const {
@@ -485,7 +485,7 @@ Item* Tile::getCarpet() const {
 			return *it;
 		} ++it;
 	}
-	return NULL;
+	return nullptr;
 }
 
 Item* Tile::getTable() const {
@@ -497,7 +497,7 @@ Item* Tile::getTable() const {
 			return *it;
 		} ++it;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void Tile::addWallItem(Item* item) {

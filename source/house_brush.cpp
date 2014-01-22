@@ -14,7 +14,7 @@
 
 HouseBrush::HouseBrush() :
 	Brush(),
-	draw_house(NULL)
+	draw_house(nullptr)
 {
 	// ...
 }
@@ -37,7 +37,7 @@ void HouseBrush::undraw(BaseMap* map, Tile* tile) {
 	if(tile->isHouseTile()) {
 		tile->setPZ(false);
 	}
-	tile->setHouse(NULL);
+	tile->setHouse(nullptr);
 	if(settings.getInteger(Config::AUTO_ASSIGN_DOORID)) {
 		// Is there a door? If so, remove any door id it has
 		for(ItemVector::iterator it = tile->items.begin();

@@ -29,7 +29,7 @@ public:
 	virtual wxWindow* GetWindow() const {return (wxPanel*)this;}
 	virtual wxString GetTitle() const;
 
-	bool IsConnected() const {return socket != NULL;}
+	bool IsConnected() const {return socket != nullptr;}
 	void Disconnect();
 
 	LiveSocket* GetSocket() {return socket;}

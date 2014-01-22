@@ -70,7 +70,7 @@ float Settings::getFloat(uint key) const {
 std::string Settings::getString(uint key) const {
 	if(key > Config::LAST) return "";
 	const DynamicValue& dv = store[key];
-	if(dv.type == TYPE_STR && dv.strval != NULL)
+	if(dv.type == TYPE_STR && dv.strval != nullptr)
 		return *dv.strval;
 	return "";
 }
@@ -121,7 +121,7 @@ std::string Settings::DynamicValue::str() {
 }
 
 void Settings::IO(IOMode mode) {
-	wxConfigBase* conf = (mode == DEFAULT? NULL : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
+	wxConfigBase* conf = (mode == DEFAULT? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
 
 	using namespace Config;
 #define section(s) if(conf) conf->SetPath(wxT("/") wxT(s))
@@ -374,7 +374,7 @@ void Settings::save(bool endoftheworld)
 	if(endoftheworld)
 	{
 		wxConfigBase* conf = dynamic_cast<wxConfigBase*>(wxConfig::Get());
-		wxConfig::Set(NULL);
+		wxConfig::Set(nullptr);
 		delete conf;
 	}
 }

@@ -75,11 +75,8 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 // Boost libraries
 #include <boost/utility.hpp>
 
-// The actual locations might be libxml2/libxml/xx.h
-#include <libxml/xmlmemory.h>
-#include <libxml/xmlsave.h>
-#include <libxml/parser.h>
-
+// PugiXML
+#include "ext/pugixml.hpp"
 
 // Libarchive, for OTGZ
 #ifdef OTGZ_SUPPORT

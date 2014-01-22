@@ -245,7 +245,7 @@ public:
 
 protected:
 	// Load and returns a menu item, also sets accelerator
-	wxObject* LoadItem(xmlNodePtr node, wxMenu* parent, wxArrayString& warnings, wxString& error);
+	wxObject* LoadItem(pugi::xml_node node, wxMenu* parent, wxArrayString& warnings, wxString& error);
 	// Checks the items in the menus according to the settings (in config)
 	void LoadValues();
 protected:

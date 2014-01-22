@@ -11,7 +11,7 @@
 NetworkConnection::NetworkConnection(NetSocket* nsocket, wxSocketBase* socket) :
 	socket(socket),
 	nsocket(nsocket),
-	receiving_message(NULL)
+	receiving_message(nullptr)
 {
 }
 
@@ -29,7 +29,7 @@ void NetworkConnection::Close()
 	if(socket)
 	{
 		socket->Destroy();
-		socket = NULL;
+		socket = nullptr;
 	}
 }
 
@@ -112,17 +112,17 @@ NetworkMessage* NetworkConnection::Receive()
 		socket->Peek(&sz, 4);
 		if(socket->LastCount() < 4)
 		{
-			return NULL;
+			return nullptr;
 		}
 		if(socket->Error())
 		{
 			nsocket->Log(wxT("SOCKET READ ERROR (1)!"));
-			return NULL;
+			return nullptr;
 			//lsocket->Close();
 		}
 		if(sz > 256*1024) {
 			nsocket->Log(wxT("SOCKET OVERFLOW ERROR (2)!"));
-			return NULL;
+			return nullptr;
 		}
 		socket->Read(&sz, 4);
 
@@ -142,7 +142,7 @@ NetworkMessage* NetworkConnection::Receive()
 			nsocket->Log(wxT("SOCKET READ ERROR (2)!"));
 
 			//lsocketz->Close();
-			return NULL;
+			return nullptr;
 		}
 
 		read += socket->LastCount();
@@ -155,12 +155,12 @@ NetworkMessage* NetworkConnection::Receive()
 //		}
 		NetworkMessage* tmp = receiving_message;
 		read = 0;
-		receiving_message = NULL;
+		receiving_message = nullptr;
 		tmp->OnReceive();
 		return tmp;
 	}
 	// Complete message hasn't been read yet.
-	return NULL;
+	return nullptr;
 }
 
 

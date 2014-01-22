@@ -27,19 +27,7 @@
 #include <stack>
 #include <stdio.h>
 
-#if __VISUALC__
-typedef unsigned __int8 uint8_t;
-typedef unsigned __int16 uint16_t;
-typedef unsigned __int32 uint32_t;
-typedef unsigned __int64 uint64_t;
-typedef __int8 int8_t;
-typedef __int16 int16_t;
-typedef __int32 int32_t;
-typedef __int64 int64_t;
 typedef unsigned int uint;
-#else
-typedef unsigned int uint;
-#endif
 
 #ifndef FORCEINLINE
 #   ifdef _MSV_VER
@@ -69,11 +57,11 @@ enum NodeType {
 class FileHandle : boost::noncopyable
 {
 public:
-	FileHandle() : error_code(FILE_NO_ERROR), file(NULL) {}
+	FileHandle() : error_code(FILE_NO_ERROR), file(nullptr) {}
 	virtual ~FileHandle() {close();}
 
 	virtual void close();
-	virtual bool isOpen() {return file != NULL;}
+	virtual bool isOpen() {return file != nullptr;}
 	virtual bool isOk() {return isOpen() && error_code == FILE_NO_ERROR && ferror(file) == 0;}
 	std::string getErrorMessage();
 public:
@@ -141,7 +129,7 @@ public:
 	bool getLongString(std::string& str);
 
 	BinaryNode* getChild();
-	// Returns this on success, NULL on failure
+	// Returns this on success, nullptr on failure
 	BinaryNode* advance();
 protected:
 	template<class T>

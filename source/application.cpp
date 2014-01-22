@@ -88,19 +88,18 @@ Application::~Application()
 
 bool Application::OnInit()
 {
-#if defined __DEBUG_MODE__ && defined __WINDOWS__ 
+#if defined __DEBUG_MODE__ && defined __WINDOWS__
 	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
 	std::cout << "This is free software: you are free to change and redistribute it.\n";
 	std::cout << "There is NO WARRANTY, to the extent permitted by law. \n";
 	std::cout << "Review COPYING in RME distribution for details.\n";
-	mt_seed(time(NULL));
-	srand(time(NULL));
+	mt_seed(time(nullptr));
+	srand(time(nullptr));
 
 	// Tell that we are the real thing
 	wxAppConsole::SetInstance(this);
-
 	
 	// Load some internal stuff
 	settings.load();
@@ -109,7 +108,7 @@ bool Application::OnInit()
 	ClientVersion::loadVersions();
 
 #ifdef _USE_PROCESS_COM
-	proc_server = NULL;
+	proc_server = nullptr;
 	// Setup inter-process communice!
 	if(settings.getInteger(Config::ONLY_ONE_INSTANCE)) 
 	{
@@ -143,7 +142,7 @@ bool Application::OnInit()
 		{
 			// Another instance running!
 			delete proc_server;
-			proc_server = NULL;
+			proc_server = nullptr;
 		}
 	}
 #endif
@@ -160,6 +159,9 @@ bool Application::OnInit()
 	//wxHandleFatalExceptions(true);
 #endif
 	// Load all the dependency files
+	std::string error;
+	StringVector warnings;
+
 
 	gui.root = newd MainFrame(wxT("Remere's Map Editor"), wxDefaultPosition, wxSize(700,500) );
 	SetTopWindow(gui.root);
@@ -210,6 +212,7 @@ bool Application::OnInit()
 
 	FileName save_failed_file = gui.GetLocalDataDirectory();
 	save_failed_file.SetName(wxT(".saving.txt"));
+	std::string argh = nstr(save_failed_file.GetFullPath());
 	if(save_failed_file.FileExists())
 	{
 		std::ifstream f(nstr(save_failed_file.GetFullPath()).c_str(), std::ios::in);
@@ -274,7 +277,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 	startup = false;
 
 	// Don't try to create a map if we didn't load the client map.
-	if (ClientVersion::getLatestVersion() == NULL)
+	if (ClientVersion::getLatestVersion() == nullptr)
 		return;
 
 	// Handle any command line argument (open map...)
@@ -304,7 +307,7 @@ void Application::FixVersionDiscrapencies()
 		settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, 0);
 	}
 
-	if(settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__ && ClientVersion::getLatestVersion() != NULL)
+	if(settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__ && ClientVersion::getLatestVersion() != nullptr)
 	{
 		settings.setInteger(Config::DEFAULT_CLIENT_VERSION, ClientVersion::getLatestVersion()->getID());
 	}
@@ -333,7 +336,7 @@ void Application::Unload()
 	ClientVersion::saveVersions();
 	ClientVersion::unloadVersions();
 	settings.save(true);
-	gui.root = NULL;
+	gui.root = nullptr;
 }
 
 int Application::OnExit() {
@@ -361,7 +364,7 @@ std::pair<bool, FileName> Application::ParseCommandLineMap()
 }
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) :
-	wxFrame((wxFrame *)NULL, -1, title, pos, size, wxDEFAULT_FRAME_STYLE)
+	wxFrame((wxFrame *)nullptr, -1, title, pos, size, wxDEFAULT_FRAME_STYLE)
 {
 	// Receive idle events
 	SetExtraStyle(wxWS_EX_PROCESS_IDLE);

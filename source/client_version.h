@@ -142,9 +142,9 @@ private:
 	FileName client_path;
 
 private:
-	static void loadOTBInfo(xmlNodePtr otb_nodes);
-	static void loadVersion(xmlNodePtr client_node);
-	static void loadVersionExtensions(xmlNodePtr client_node);
+	static void loadOTBInfo(pugi::xml_node otb_nodes);
+	static void loadVersion(pugi::xml_node client_node);
+	static void loadVersionExtensions(pugi::xml_node client_node);
 
 	// All versions
 	typedef std::map<ClientVersionID, ClientVersion*> VersionMap;

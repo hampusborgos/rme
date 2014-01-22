@@ -20,8 +20,8 @@ END_EVENT_TABLE()
 BrushPalettePanel::BrushPalettePanel(wxWindow* parent, const TilesetContainer& tilesets, TilesetCategoryType category, wxWindowID id) :
 	PalettePanel(parent, id),
 	palette_type(category),
-	choicebook(NULL),
-	size_panel(NULL)
+	choicebook(nullptr),
+	size_panel(nullptr)
 {
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 	
@@ -94,10 +94,10 @@ void BrushPalettePanel::SetListType(wxString ltype) {
 }
 
 Brush* BrushPalettePanel::GetSelectedBrush() const {
-	if(!choicebook) return NULL;
+	if(!choicebook) return nullptr;
 	wxWindow* page = choicebook->GetCurrentPage();
 	BrushPanel* panel = dynamic_cast<BrushPanel*>(page);
-	Brush* res = NULL;
+	Brush* res = nullptr;
 	if(panel) {
 		for(ToolBarList::const_iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 			res = (*iter)->GetSelectedBrush();
@@ -115,33 +115,41 @@ void BrushPalettePanel::SelectFirstBrush() {
 	panel->SelectFirstBrush();
 }
 
-bool BrushPalettePanel::SelectBrush(const Brush* whatbrush) {
-	if(!choicebook) return false;
+bool BrushPalettePanel::SelectBrush(const Brush* whatbrush)
+{
+	if (!choicebook) {
+		return false;
+	}
+
 	BrushPanel* panel = dynamic_cast<BrushPanel*>(choicebook->GetCurrentPage());
-	
-	bool res = false;
-	for(ToolBarList::const_iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
-		res = (*iter)->SelectBrush(whatbrush);
-		if(res) {
-			panel->SelectBrush(NULL);
-			return res;
+	if (!panel) {
+		return false;
+	}
+
+	for (PalettePanel* toolBar : tool_bars) {
+		if (toolBar->SelectBrush(whatbrush)) {
+			panel->SelectBrush(nullptr);
+			return true;
 		}
 	}
 
-	if(panel->SelectBrush(whatbrush)) {
-		for(ToolBarList::const_iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
-			(*iter)->SelectBrush(NULL);
+	if (panel->SelectBrush(whatbrush)) {
+		for (PalettePanel* toolBar : tool_bars) {
+			toolBar->SelectBrush(nullptr);
 		}
 		return true;
 	}
 
-	for(size_t iz = 0; iz < choicebook->GetPageCount(); ++iz) {
-		if(iz == choicebook->GetSelection()) continue;
+	for (size_t iz = 0; iz < choicebook->GetPageCount(); ++iz) {
+		if (iz == choicebook->GetSelection()) {
+			continue;
+		}
+
 		panel = dynamic_cast<BrushPanel*>(choicebook->GetPage(iz));
-		if(panel->SelectBrush(whatbrush)) {
+		if (panel && panel->SelectBrush(whatbrush)) {
 			choicebook->ChangeSelection(iz);
-			for(ToolBarList::const_iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
-				(*iter)->SelectBrush(NULL);
+			for (PalettePanel* toolBar : tool_bars) {
+				toolBar->SelectBrush(nullptr);
 			}
 			return true;
 		}
@@ -201,8 +209,8 @@ END_EVENT_TABLE()
 
 BrushPanel::BrushPanel(wxWindow *parent) :
 	wxPanel(parent, wxID_ANY),
-	tileset(NULL),
-	brushbox(NULL),
+	tileset(nullptr),
+	brushbox(nullptr),
 	loaded(false),
 	list_type(BRUSHLIST_LISTBOX)
 {
@@ -242,29 +250,30 @@ void BrushPanel::SetListType(wxString ltype) {
 void BrushPanel::InvalidateContents() {
 	sizer->Clear(true);
 	loaded = false;
-	brushbox = NULL;
+	brushbox = nullptr;
 }
 
-void BrushPanel::LoadContents() {
-	if(loaded) {
+void BrushPanel::LoadContents()
+{
+	if (loaded) {
 		return;
 	}
 	loaded = true;
-	ASSERT(tileset != NULL);
-	switch(list_type) {
-		case BRUSHLIST_LARGE_ICONS: {
+	ASSERT(tileset != nullptr);
+	switch (list_type) {
+		case BRUSHLIST_LARGE_ICONS:
 			brushbox = newd BrushIconBox(this, tileset, RENDER_SIZE_32x32);
-		} break;
-		case BRUSHLIST_SMALL_ICONS: {
+			break;
+		case BRUSHLIST_SMALL_ICONS:
 			brushbox = newd BrushIconBox(this, tileset, RENDER_SIZE_16x16);
-		} break;
-		case BRUSHLIST_LISTBOX: {
+			break;
+		case BRUSHLIST_LISTBOX:
 			brushbox = newd BrushListBox(this, tileset);
-		} break;
-        default:
-            break;
+			break;
+		default:
+			break;
 	}
-	ASSERT(brushbox);
+	ASSERT(brushbox != nullptr);
 	sizer->Add(brushbox->GetSelfWindow(), 1, wxEXPAND);
 	Fit();
 	brushbox->SelectFirstBrush();
@@ -272,30 +281,35 @@ void BrushPanel::LoadContents() {
 
 void BrushPanel::SelectFirstBrush() {
 	if(loaded) {
-		ASSERT(brushbox);
+		ASSERT(brushbox != nullptr);
 		brushbox->SelectFirstBrush();
 	}
 }
 
-Brush* BrushPanel::GetSelectedBrush() const {
-	if(loaded) {
-		ASSERT(brushbox);
+Brush* BrushPanel::GetSelectedBrush() const
+{
+	if (loaded) {
+		ASSERT(brushbox != nullptr);
 		return brushbox->GetSelectedBrush();
 	}
-	if(tileset && tileset->size() > 0) {
+
+	if (tileset && tileset->size() > 0) {
 		return tileset->brushlist[0];
 	}
-	return NULL;
+	return nullptr;
 }
 
-bool BrushPanel::SelectBrush(const Brush* whatbrush) {
-	if(loaded) {
-		ASSERT(brushbox);
+bool BrushPanel::SelectBrush(const Brush* whatbrush)
+{
+	if (loaded) {
+		std::cout << loaded << std::endl;
+		std::cout << brushbox << std::endl;
+		ASSERT(brushbox != nullptr);
 		return brushbox->SelectBrush(whatbrush);
 	}
 
-	for(BrushVector::const_iterator iter = tileset->brushlist.begin(); iter != tileset->brushlist.end(); ++iter) {
-		if(*iter == whatbrush) {
+	for (BrushVector::const_iterator iter = tileset->brushlist.begin(); iter != tileset->brushlist.end(); ++iter) {
+		if (*iter == whatbrush) {
 			LoadContents();
 			return brushbox->SelectBrush(whatbrush);
 		}
@@ -303,11 +317,13 @@ bool BrushPanel::SelectBrush(const Brush* whatbrush) {
 	return false;
 }
 
-void BrushPanel::OnSwitchIn() {
+void BrushPanel::OnSwitchIn()
+{
 	LoadContents();
 }
 
-void BrushPanel::OnSwitchOut() {
+void BrushPanel::OnSwitchOut()
+{
 }
 
 void BrushPanel::OnClickListBoxRow(wxCommandEvent& event) {
@@ -318,7 +334,7 @@ void BrushPanel::OnClickListBoxRow(wxCommandEvent& event) {
 	
 	
 	wxWindow* w = this;
-	while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == NULL);
+	while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
 	
 	if(w)
 		gui.ActivatePalette(static_cast<PaletteWindow*>(w));
@@ -349,7 +365,7 @@ BrushIconBox::BrushIconBox(wxWindow *parent, const TilesetCategory *_tileset, Re
 
 	// Create buttons
 	wxSizer* stacksizer = newd wxBoxSizer(wxVERTICAL);
-	wxSizer* rowsizer = NULL;
+	wxSizer* rowsizer = nullptr;
 	int item_counter = 0;
 	for(BrushVector::const_iterator iter = tileset->brushlist.begin(); iter != tileset->brushlist.end(); ++iter) {
 		ASSERT(*iter);
@@ -365,7 +381,7 @@ BrushIconBox::BrushIconBox(wxWindow *parent, const TilesetCategory *_tileset, Re
 		
 		if(item_counter % width == 0) { // newd row
 			stacksizer->Add(rowsizer);
-			rowsizer = NULL;
+			rowsizer = nullptr;
 		}
 	}
 	if(rowsizer) {
@@ -390,7 +406,7 @@ void BrushIconBox::SelectFirstBrush() {
 
 Brush* BrushIconBox::GetSelectedBrush() const {
 	if(!tileset) {
-		return NULL;
+		return nullptr;
 	}
 
 	for(std::vector<BrushButton*>::const_iterator it = brush_buttons.begin(); it != brush_buttons.end(); ++it) {
@@ -398,7 +414,7 @@ Brush* BrushIconBox::GetSelectedBrush() const {
 			return (*it)->brush;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool BrushIconBox::SelectBrush(const Brush* whatbrush) {
@@ -429,13 +445,13 @@ void BrushIconBox::EnsureVisible(BrushButton* btn) {
 
 	wxRect rect = btn->GetRect();
 	int y;
-	CalcUnscrolledPosition(0, rect.y, NULL, &y);
+	CalcUnscrolledPosition(0, rect.y, nullptr, &y);
 
 	int maxScrollPos = windowSizeY / scrollUnitY;
 	int scrollPosY = std::min(maxScrollPos, (y / scrollUnitY));
 
 	int startScrollPosY;
-	GetViewStart(NULL, &startScrollPosY);
+	GetViewStart(nullptr, &startScrollPosY);
 
 	int clientSizeX, clientSizeY;
 	GetClientSize(&clientSizeX, &clientSizeY);
@@ -456,7 +472,7 @@ void BrushIconBox::OnClickBrushButton(wxCommandEvent& event) {
 	BrushButton* btn = dynamic_cast<BrushButton*>(obj);
 	if(btn) {
 		wxWindow* w = this;
-		while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == NULL);
+		while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
 		if(w)
 			gui.ActivatePalette(static_cast<PaletteWindow*>(w));
 		gui.SelectBrush(btn->brush, tileset->getType());
@@ -489,7 +505,7 @@ void BrushListBox::SelectFirstBrush() {
 
 Brush* BrushListBox::GetSelectedBrush() const {
 	if(!tileset) {
-		return NULL;
+		return nullptr;
 	}
 
 	int n = GetSelection();
@@ -498,7 +514,7 @@ Brush* BrushListBox::GetSelectedBrush() const {
 	} else if(tileset->size() > 0) {
 		return tileset->brushlist[0];
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool BrushListBox::SelectBrush(const Brush* whatbrush) {
@@ -544,7 +560,7 @@ void BrushListBox::OnKey(wxKeyEvent& event) {
 			event.Skip(true);
 			} else {
 		default:
-			if(gui.GetCurrentTab() != NULL) {
+			if(gui.GetCurrentTab() != nullptr) {
 				gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 			}
 		}

@@ -17,7 +17,7 @@ CreatureBrush::CreatureBrush(CreatureType* type) :
 	Brush(),
 	creature_type(type)
 {
-	ASSERT(type->brush == NULL);
+	ASSERT(type->brush == nullptr);
 	type->brush = this;
 }
 
@@ -63,7 +63,7 @@ bool CreatureBrush::canDraw(BaseMap* map, Position pos) const {
 
 void CreatureBrush::undraw(BaseMap* map, Tile* tile) {
 	delete tile->creature;
-	tile->creature = NULL;
+	tile->creature = nullptr;
 }
 
 void CreatureBrush::draw(BaseMap* map, Tile* tile, void* parameter) {

@@ -13,7 +13,7 @@ public:
 	WallBrush();
 	virtual ~WallBrush();
 
-	virtual bool load(xmlNodePtr node, wxArrayString& warnings);
+	virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 	
 	virtual bool canDraw(BaseMap* map, Position pos) const {return true;};
 

@@ -44,6 +44,7 @@
 #include "map.h"
 
 #include "gui.h"
+#include "pugicast.h"
 
 Brushes brushes;
 
@@ -89,99 +90,100 @@ void Brushes::init() {
 	CarpetBrush::init();
 }
 
-bool Brushes::unserializeBrush(xmlNodePtr node, wxArrayString& warnings) {
-	std::string strVal;
-	std::string brushname;
-	Brush* brush = NULL;
-
-	if(!readXMLValue(node, "name", brushname)) {
+bool Brushes::unserializeBrush(pugi::xml_node node, wxArrayString& warnings)
+{
+	pugi::xml_attribute attribute;
+	if (!(attribute = node.attribute("name"))) {
 		warnings.push_back(wxT("Brush node without name."));
 		return false;
 	}
 
-	if(brushname == "all" || brushname == "none") {
-		warnings.push_back(wxString(wxT("Using reserved brushname \"")) << wxstr(brushname) << wxT("\"."));
+	const std::string& brushName = attribute.as_string();
+	if (brushName == "all" || brushName == "none") {
+		warnings.push_back(wxString(wxT("Using reserved brushname \"")) << wxstr(brushName) << wxT("\"."));
 		return false;
 	}
 
-	if((brush = getBrush(brushname))) {
-		// Brush already forward-declared, later follows real declaration?
-	} else {
-		if(readXMLValue(node, "type", strVal)) {
-			if(strVal == "border" || strVal == "ground") {
-				brush = newd GroundBrush();
-			} else if(strVal == "wall") {
-				brush = newd WallBrush();
-			} else if(strVal == "wall decoration") {
-				brush = newd WallDecorationBrush();
-			} else if(strVal == "carpet") {
-				brush = newd CarpetBrush();
-			} else if(strVal == "table") {
-				brush = newd TableBrush();
-			} else if(strVal == "doodad") {
-				brush = newd DoodadBrush();
-			} else {
-				warnings.push_back(wxString(wxT("Unknown brush type ")) << wxstr(strVal));
-				return false;
-			}
-		} else {
+	Brush* brush = getBrush(brushName);
+	if (!brush) {
+		if (!(attribute = node.attribute("type"))) {
 			warnings.push_back(wxT("Couldn't read brush type"));
 			return false;
 		}
-		ASSERT(brush);
 
-		brush->setName(brushname);
-	}
-
-	if(node->children == NULL) {
-		// Forward declaration
-		brushes.insert(std::make_pair(brush->getName(), brush));
-	} else {
-		wxArrayString subwarnings;
-		brush->load(node, subwarnings);
-		if(subwarnings.size()) {
-			warnings.push_back(wxString(wxT("Errors while loading brush \"")) << wxstr(brush->getName()) << wxT("\""));
-			warnings.insert(warnings.end(), subwarnings.begin(), subwarnings.end());
-		}
-
-		if(brush->getName() == "all" || brush->getName() == "none") {
-			warnings.push_back(wxString(wxT("Using reserved brushname '")) << wxstr(brush->getName()) << wxT("'."));
-			delete brush;
+		const std::string brushType = attribute.as_string();
+		if (brushType == "border" || brushType == "ground") {
+			brush = newd GroundBrush();
+		} else if (brushType == "wall") {
+			brush = newd WallBrush();
+		} else if (brushType == "wall decoration") {
+			brush = newd WallDecorationBrush();
+		} else if (brushType == "carpet") {
+			brush = newd CarpetBrush();
+		} else if (brushType == "table") {
+			brush = newd TableBrush();
+		} else if (brushType == "doodad") {
+			brush = newd DoodadBrush();
+		} else {
+			warnings.push_back(wxString(wxT("Unknown brush type ")) << wxstr(brushType));
 			return false;
 		}
 
-		if(getBrush(brush->getName())) {
-			if(getBrush(brush->getName()) != brush) {
-				warnings.push_back(wxString(wxT("Duplicate brush name ")) << wxstr(brush->getName()) << wxT(". Undefined behaviour may ensue."));
-			} else {
-				// Don't insert
-				return true;
-			}
-		}
-		brushes.insert(std::make_pair(brush->getName(), brush));
+		ASSERT(brush);
+		brush->setName(brushName);
 	}
+
+	if (!node.first_child()) {
+		brushes.insert(std::make_pair(brush->getName(), brush));
+		return true;
+	}
+
+	wxArrayString subWarnings;
+	brush->load(node, subWarnings);
+
+	if(!subWarnings.empty()) {
+		warnings.push_back(wxString(wxT("Errors while loading brush \"")) << wxstr(brush->getName()) << wxT("\""));
+		warnings.insert(warnings.end(), subWarnings.begin(), subWarnings.end());
+	}
+
+	if(brush->getName() == "all" || brush->getName() == "none") {
+		warnings.push_back(wxString(wxT("Using reserved brushname '")) << wxstr(brush->getName()) << wxT("'."));
+		delete brush;
+		return false;
+	}
+
+	Brush* otherBrush = getBrush(brush->getName());
+	if(otherBrush) {
+		if(otherBrush != brush) {
+			warnings.push_back(wxString(wxT("Duplicate brush name ")) << wxstr(brush->getName()) << wxT(". Undefined behaviour may ensue."));
+		} else {
+			// Don't insert
+			return true;
+		}
+	}
+
+	brushes.insert(std::make_pair(brush->getName(), brush));
 	return true;
 }
 
-bool Brushes::unserializeBorder(xmlNodePtr node, wxArrayString& warnings) {
-	int id;
-	
-	if(readXMLValue(node, "id", id)) {
-		if(borders[id] != NULL) {
-			wxString warning = wxT("Border ID ");
-			warning << id << wxT(" already exists");
-			warnings.push_back(warning);
-			return false;
-		}
-		AutoBorder* border = newd AutoBorder(id);
-		border->load(node, warnings);
-		borders[id] = border;
-		return true;
+bool Brushes::unserializeBorder(pugi::xml_node node, wxArrayString& warnings)
+{
+	pugi::xml_attribute attribute = node.attribute("id");
+	if (!attribute) {
+		warnings.push_back(wxT("Couldn't read border id node"));
+		return false;
 	}
-	wxString warning = wxT("Couldn't read border id node");
-	warnings.push_back(warning);
-	return false;
 
+	int32_t id = pugi::cast<int32_t>(attribute.value());
+	if (borders[id]) {
+		warnings.push_back(wxT("Border ID ") + std::to_string(id) + wxT(" already exists"));
+		return false;
+	}
+
+	AutoBorder* border = newd AutoBorder(id);
+	border->load(node, warnings);
+	borders[id] = border;
+	return true;
 }
 
 void Brushes::addBrush(Brush *brush) {
@@ -192,7 +194,7 @@ Brush* Brushes::getBrush(std::string name) const {
 	BrushMap::const_iterator it = brushes.find(name);
 	if(it != brushes.end())
 		return it->second;
-	return NULL;
+	return nullptr;
 }
 
 uint Brush::id_counter = 0;
@@ -394,7 +396,7 @@ bool DoorBrush::canDraw(BaseMap* map, Position pos) const {
 			}
 		}
 		test_brush = test_brush->redirect_to;
-	} while(test_brush != wb && test_brush != NULL);
+	} while(test_brush != wb && test_brush != nullptr);
 	// If we've found no perfect match, use a close-to perfect
 	if(discarded_id) {
 		return true;
@@ -409,7 +411,7 @@ void DoorBrush::undraw(BaseMap* map, Tile* tile) {
 	{
 		Item* item = *it;
 		if(item->isBrushDoor()) {
-			item->getWallBrush()->draw(map, tile, NULL);
+			item->getWallBrush()->draw(map, tile, nullptr);
 			if(settings.getInteger(Config::USE_AUTOMAGIC)) {
 				tile->wallize(map);
 			}
@@ -478,7 +480,7 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 			if(perfect_match) {
 				break;
 			}
-		} while(test_brush != wb && test_brush != NULL);
+		} while(test_brush != wb && test_brush != nullptr);
 
 		// If we've found no perfect match, use a close-to perfect
 		if(perfect_match == false && discarded_id) {

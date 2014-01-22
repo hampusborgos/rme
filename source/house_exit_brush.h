@@ -13,7 +13,7 @@ public:
 	HouseExitBrush();
 	virtual ~HouseExitBrush();
 	// Not used
-	virtual bool load(xmlNodePtr node, wxArrayString& warnings) {return true;}
+	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {return true;}
 
 	virtual bool canDraw(BaseMap* map, Position pos) const;
 	// Will ASSERT

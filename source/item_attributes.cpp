@@ -8,7 +8,7 @@
 #include "filehandle.h"
 
 ItemAttributes::ItemAttributes() : 
-	attributes(NULL)
+	attributes(nullptr)
 {
 }
 
@@ -33,7 +33,7 @@ void ItemAttributes::clearAllAttributes()
 {
 	if (attributes)
 		delete attributes;
-	attributes = NULL;
+	attributes = nullptr;
 }
 
 ItemAttributeMap ItemAttributes::getAttributes() const
@@ -87,65 +87,65 @@ void ItemAttributes::eraseAttribute(const std::string& key)
 const std::string* ItemAttributes::getStringAttribute(const std::string& key) const
 {
 	if(!attributes)
-		return NULL;
+		return nullptr;
 
 	ItemAttributeMap::iterator iter = attributes->find(key);
 	if(iter != attributes->end())
 		return iter->second.getString();
-	return NULL;
+	return nullptr;
 }
 
 const int32_t* ItemAttributes::getIntegerAttribute(const std::string& key) const
 {
 	if(!attributes)
-		return NULL;
+		return nullptr;
 
 	ItemAttributeMap::iterator iter = attributes->find(key);
 	if(iter != attributes->end())
 		return iter->second.getInteger();
-	return NULL;
+	return nullptr;
 }
 
 const double* ItemAttributes::getFloatAttribute(const std::string& key) const
 {
 	if(!attributes)
-		return NULL;
+		return nullptr;
 
 	ItemAttributeMap::iterator iter = attributes->find(key);
 	if(iter != attributes->end())
 		return iter->second.getFloat();
-	return NULL;
+	return nullptr;
 }
 
 const bool* ItemAttributes::getBooleanAttribute(const std::string& key) const
 {
 	if(!attributes)
-		return NULL;
+		return nullptr;
 
 	ItemAttributeMap::iterator iter = attributes->find(key);
 	if(iter != attributes->end())
 		return iter->second.getBoolean();
-	return NULL;
+	return nullptr;
 }
 
 bool ItemAttributes::hasStringAttribute(const std::string& key) const
 {
-	return getStringAttribute(key) != NULL;
+	return getStringAttribute(key) != nullptr;
 }
 
 bool ItemAttributes::hasIntegerAttribute(const std::string& key) const
 {
-	return getIntegerAttribute(key) != NULL;
+	return getIntegerAttribute(key) != nullptr;
 }
 
 bool ItemAttributes::hasFloatAttribute(const std::string& key) const
 {
-	return getFloatAttribute(key) != NULL;
+	return getFloatAttribute(key) != nullptr;
 }
 
 bool ItemAttributes::hasBooleanAttribute(const std::string& key) const
 {
-	return getBooleanAttribute(key) != NULL;
+	return getBooleanAttribute(key) != nullptr;
 }
 
 
@@ -259,28 +259,28 @@ const std::string* ItemAttribute::getString() const
 {
 	if(type == STRING)
 		return reinterpret_cast<const std::string*>(&data);
-	return NULL;
+	return nullptr;
 }
 
 const int32_t* ItemAttribute::getInteger() const
 {
 	if(type == INTEGER)
 		return reinterpret_cast<const int32_t*>(&data);
-	return NULL;
+	return nullptr;
 }
 
 const double* ItemAttribute::getFloat() const
 {
 	if(type == DOUBLE)
 		return reinterpret_cast<const double*>(&data);
-	return NULL;
+	return nullptr;
 }
 
 const bool* ItemAttribute::getBoolean() const
 {
 	if(type == BOOLEAN)
 		return reinterpret_cast<const bool*>(&data);
-	return NULL;
+	return nullptr;
 }
 
 bool ItemAttributes::unserializeAttributeMap(const IOMap& maphandle, BinaryNode* stream)

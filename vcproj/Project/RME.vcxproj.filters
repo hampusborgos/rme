@@ -52,11 +52,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="RME.rc">
-      <Filter>resources</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\source\about_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
@@ -358,6 +353,7 @@
     <ClInclude Include="..\..\source\extension.h">
       <Filter>editor</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\pugicast.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -369,7 +365,6 @@
     <ClCompile Include="..\..\source\json\json_spirit_writer.cpp">
       <Filter>json</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\main.cpp" />
     <ClCompile Include="..\..\source\mkpch.cpp" />
     <ClCompile Include="..\..\source\pngfiles.cpp" />
     <ClCompile Include="..\..\source\action.cpp">
@@ -628,5 +623,10 @@
   <ItemGroup>
     <None Include="..\..\data\menubar.xml" />
     <None Include="..\..\data\clients.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="rme.rc">
+      <Filter>resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

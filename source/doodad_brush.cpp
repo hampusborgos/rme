@@ -2,6 +2,7 @@
 
 #include "doodad_brush.h"
 #include "basemap.h"
+#include "pugicast.h"
 
 //=============================================================================
 // Doodad brush
@@ -61,192 +62,168 @@ DoodadBrush::AlternativeBlock::~AlternativeBlock() {
 	}
 }
 
-bool DoodadBrush::loadAlternative(xmlNodePtr node, wxArrayString& warnings, AlternativeBlock* which) {
-	xmlNodePtr child = node->children;
-	AlternativeBlock* ab_ptr = NULL;
+bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, AlternativeBlock* which)
+{
+	AlternativeBlock* alternativeBlock;
+	if (which) {
+		alternativeBlock = which;
+	} else {
+		alternativeBlock = newd AlternativeBlock();
+	}
 
-#define ab (which? which : (ab_ptr? ab_ptr : ab_ptr = newd AlternativeBlock()))
-	while(child) {
-		if(xmlStrcmp(child->name,(const xmlChar*)"item") == 0) {
-			int chance;
-
-			if(!readXMLValue(child, "chance", chance)) {
-				wxString warning;
-				warning = wxT("Can't read chance tag of doodad item node.");
-				warnings.push_back(warning);
-				child = child->next;
+	pugi::xml_attribute attribute;
+	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		const std::string& childName = as_lower_str(childNode.name());
+		if (childName == "item") {
+			if (!(attribute = childNode.attribute("chance"))) {
+				warnings.push_back(wxT("Can't read chance tag of doodad item node."));
 				continue;
 			}
 
-			Item* item = Item::Create(child);
-			if(item == NULL) {
-				wxString warning;
-				warning = wxT("Can't create item from doodad item node.");
-				warnings.push_back(warning);
-				child = child->next;
+			Item* item = Item::Create(childNode);
+			if (!item) {
+				warnings.push_back(wxT("Can't create item from doodad item node."));
 				continue;
 			}
 
 			ItemType& it = item_db[item->getID()];
-			if(it.id != 0) {
+			if (it.id != 0) {
 				it.doodad_brush = this;
 			}
 
 			SingleBlock sb;
-			sb.chance = chance;
 			sb.item = item;
-			ab->single_items.push_back(sb);
-			ab->single_chance += chance;
-		} else if(xmlStrcmp(child->name,(const xmlChar*)"composite") == 0) {
-			CompositeBlock cb;
+			sb.chance = pugi::cast<int32_t>(attribute.value());
 
-			if(!readXMLValue(child, "chance", cb.chance)) {
-				wxString warning;
-				warning = wxT("Can't read chance tag of doodad composite node.");
-				warnings.push_back(warning);
-				child = child->next;
+			alternativeBlock->single_items.push_back(sb);
+			alternativeBlock->single_chance += sb.chance;
+		} else if (childName == "composite") {
+			if (!(attribute = childNode.attribute("chance"))) {
+				warnings.push_back(wxT("Can't read chance tag of doodad item node."));
 				continue;
 			}
-			ab->composite_chance += cb.chance;
-			cb.chance = ab->composite_chance;
 
-			xmlNodePtr composite_child = child->children;
-			while(composite_child) {
-				if(xmlStrcmp(composite_child->name, (const xmlChar*)"tile") == 0) {
-					int x = 0, y = 0, z = 0;
+			alternativeBlock->composite_chance += pugi::cast<int32_t>(attribute.value());
 
-					if(!readXMLValue(composite_child, "x", x)){
-						wxString warning;
-						warning = wxT("Couldn't read positionX values of composite tile node.");
-						warnings.push_back(warning);
-						composite_child = composite_child->next;
-						continue;
-					}
-					if(!readXMLValue(composite_child, "y", y)){
-						wxString warning;
-						warning = wxT("Couldn't read positionY values of composite tile node.");
-						warnings.push_back(warning);
-						composite_child = composite_child->next;
-						continue;
-					}
-					readXMLValue(composite_child, "z", z); // Don't halt on error
+			CompositeBlock cb;
+			cb.chance = alternativeBlock->composite_chance;
 
-					if(x <= -0x8000 || x >= +0x8000) {
-						wxString warning;
-						warning = wxT("Invalid range of x value on composite tile node.");
-						warnings.push_back(warning);
-						composite_child = composite_child->next;
-						continue;
-					}
-					if(y <= -0x8000 || y >= +0x8000) {
-						wxString warning;
-						warning = wxT("Invalid range of y value on composite tile node.");
-						warnings.push_back(warning);
-						composite_child = composite_child->next;
-						continue;
-					}
-					if(z <= -0x8 || z >= +0x8) {
-						wxString warning;
-						warning = wxT("Invalid range of z value on composite tile node.");
-						warnings.push_back(warning);
-						composite_child = composite_child->next;
-						continue;
-					}
-
-					ItemVector items;
-					xmlNodePtr itemNode = composite_child->children;
-					while(itemNode) {
-						if(xmlStrcmp(itemNode->name, (const xmlChar*)"item") == 0) {
-							Item* item= Item::Create(itemNode);
-							if(item) {
-								items.push_back(item);
-
-								ItemType& it = item_db[item->getID()];
-								if(it.id != 0) {
-									it.doodad_brush = this;
-								}
-							}
-						}
-						itemNode = itemNode->next;
-					}
-					if(items.size() > 0)
-						cb.items.push_back(std::make_pair(Position(x, y, z), items));
-
+			for (pugi::xml_node compositeNode = childNode.first_child(); compositeNode; compositeNode = compositeNode.next_sibling()) {
+				if (as_lower_str(compositeNode.name()) != "tile") {
+					continue;
 				}
-				composite_child = composite_child->next;
-			}
-			ab->composite_items.push_back(cb);
-		}
-		child = child->next;
-	}
-#undef ab
 
-	if(ab_ptr) {
-		alternatives.push_back(ab_ptr);
+				if (!(attribute = compositeNode.attribute("x"))) {
+					warnings.push_back(wxT("Couldn't read positionX values of composite tile node."));
+					continue;
+				}
+
+				int32_t x = pugi::cast<int32_t>(attribute.value());
+				if (!(attribute = compositeNode.attribute("y"))) {
+					warnings.push_back(wxT("Couldn't read positionY values of composite tile node."));
+					continue;
+				}
+
+				int32_t y = pugi::cast<int32_t>(attribute.value());
+				int32_t z = pugi::cast<int32_t>(compositeNode.attribute("z").value());
+				if (x < -0x7FFF || x > 0x7FFF) {
+					warnings.push_back(wxT("Invalid range of x value on composite tile node."));
+					continue;
+				} else if (y < -0x7FFF || y > 0x7FFF) {
+					warnings.push_back(wxT("Invalid range of y value on composite tile node."));
+					continue;
+				} else if (z < -0x7 || z > 0x7) {
+					warnings.push_back(wxT("Invalid range of z value on composite tile node."));
+					continue;
+				}
+
+				ItemVector items;
+				for (pugi::xml_node itemNode = compositeNode.first_child(); itemNode; itemNode = itemNode.next_sibling()) {
+					if (as_lower_str(itemNode.name()) != "item") {
+						continue;
+					}
+
+					Item* item = Item::Create(itemNode);
+					if (item) {
+						items.push_back(item);
+
+						ItemType& it = item_db[item->getID()];
+						if (it.id != 0) {
+							it.doodad_brush = this;
+						}
+					}
+				}
+
+				if (!items.empty()) {
+					cb.items.push_back(std::make_pair(Position(x, y, z), items));
+				}
+			}
+			alternativeBlock->composite_items.push_back(cb);
+		}
+	}
+
+	if (!which) {
+		alternatives.push_back(alternativeBlock);
 	}
 	return true;
 }
 
-bool DoodadBrush::load(xmlNodePtr node, wxArrayString& warnings) {
-	int intVal;
-	std::string strVal;
-
-	if(readXMLValue(node, "lookid", intVal)) {
-		look_id = intVal;
-	}
-	if(readXMLValue(node, "server_lookid", intVal)) {
-		look_id = item_db[intVal].clientID;
+bool DoodadBrush::load(pugi::xml_node node, wxArrayString& warnings)
+{
+	pugi::xml_attribute attribute;
+	if ((attribute = node.attribute("lookid"))) {
+		look_id = pugi::cast<uint16_t>(attribute.value());
 	}
 
-	if(readXMLValue(node, "on_blocking", strVal)) {
-		on_blocking = isTrueString(strVal);
+	if ((attribute = node.attribute("server_lookid"))) {
+		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
-	if(readXMLValue(node, "on_duplicate", strVal)) {
-		on_duplicate = isTrueString(strVal);
+	if ((attribute = node.attribute("on_blocking"))) {
+		on_blocking = attribute.as_bool();
 	}
 
-	if(readXMLValue(node, "redo_borders", strVal) || readXMLValue(node, "reborder", strVal)) {
-		do_new_borders = isTrueString(strVal);
+	if ((attribute = node.attribute("on_duplicate"))) {
+		on_duplicate = attribute.as_bool();
 	}
 
-	if(readXMLValue(node, "one_size", strVal)) {
-		one_size = isTrueString(strVal);
+	if ((attribute = node.attribute("redo_borders")) || (attribute = node.attribute("reborder"))) {
+		do_new_borders = attribute.as_bool();
 	}
 
-	if(readXMLValue(node, "draggable", strVal)) {
-		draggable = isTrueString(strVal);
+	if ((attribute = node.attribute("one_size"))) {
+		one_size = attribute.as_bool();
 	}
 
-	if(readXMLValue(node, "remove_optional_border", strVal)) {
-		if(do_new_borders == false) {
-			wxString warning;
-			warning << wxT("remove_optional_border will not work without redo_borders\n");
-			warnings.push_back(warning);
+	if ((attribute = node.attribute("draggable"))) {
+		draggable = attribute.as_bool();
+	}
+
+	if (node.attribute("remove_optional_border").as_bool()) {
+		if (!do_new_borders) {
+			warnings.push_back(wxT("remove_optional_border will not work without redo_borders\n"));
 		}
 		clear_statflags |= TILESTATE_OP_BORDER;
 	}
 
-	if(readXMLValue(node, "thickness", strVal)) {
-		size_t slash = strVal.find("/");
-		if(slash != std::string::npos) {
-			thickness = s2i(strVal.substr(0, max(0ul, slash)));
-			thickness_ceiling = max(thickness, s2i(strVal.substr(slash+1)));
-			//std::cout << "str:\"" << strVal << "\" -> " << thickness << " of " << thickness_ceiling << std::endl;
+	const std::string& thicknessString = node.attribute("thickness").as_string();
+	if (!thicknessString.empty()) {
+		size_t slash = thicknessString.find('/');
+		if (slash != std::string::npos) {
+			thickness = boost::lexical_cast<int32_t>(thicknessString.substr(0, slash));
+			thickness_ceiling = std::max<int32_t>(thickness, boost::lexical_cast<int32_t>(thicknessString.substr(slash + 1)));
 		}
 	}
 
-	xmlNodePtr child = node->children;
-	while(child) {
-		if(xmlStrcmp(child->name,(const xmlChar*)"alternate") == 0) {
-			if(loadAlternative(child, warnings) == false) {
-				return false;
-			}
+	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		if (as_lower_str(childNode.name()) != "alternate") {
+			continue;
 		}
-		child = child->next;
+		if (!loadAlternative(childNode, warnings)) {
+			return false;
+		}
 	}
-	loadAlternative(node, warnings, alternatives.size()? alternatives.back() : NULL);
-
+	loadAlternative(node, warnings, alternatives.empty() ? nullptr : alternatives.back());
 	return true;
 }
 
@@ -306,7 +283,7 @@ void DoodadBrush::undraw(BaseMap* map, Tile* tile) {
 			item_iter != tile->items.end();)
 	{
 		Item* item = *item_iter;
-		if(item->getDoodadBrush() != NULL) {
+		if(item->getDoodadBrush() != nullptr) {
 			if(item->isComplex() && settings.getInteger(Config::ERASER_LEAVE_UNIQUE)) {
 				++item_iter;
 			} else if (settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE)) {
@@ -325,20 +302,20 @@ void DoodadBrush::undraw(BaseMap* map, Tile* tile) {
 			++item_iter;
 		}
 	}
-	if(tile->ground && tile->ground->getDoodadBrush() != NULL)
+	if(tile->ground && tile->ground->getDoodadBrush() != nullptr)
 	{
 		if (settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE))
 		{
 			// Only delete items of the same doodad brush
 			if (ownsItem(tile->ground)) {
 				delete tile->ground;
-				tile->ground = NULL;
+				tile->ground = nullptr;
 			}
 		}
 		else
 		{
 			delete tile->ground;
-			tile->ground = NULL;
+			tile->ground = nullptr;
 		}
 	}
 }

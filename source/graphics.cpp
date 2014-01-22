@@ -57,7 +57,7 @@ static uint32_t TemplateOutfitLookupTable[] = {
 };
 
 GraphicManager::GraphicManager() :
-	client_version(NULL),
+	client_version(nullptr),
 	unloaded(true),
 	datVersion(DAT_VERSION_UNKNOWN),
 	sprVersion(SPR_VERSION_UNKNOWN),
@@ -123,7 +123,7 @@ void GraphicManager::clear()
 	item_count = 0;
 	creature_count = 0;
 	loaded_textures = 0;
-	lastclean = time(NULL);
+	lastclean = time(nullptr);
 	spritefile = "";
 
 	unloaded = true;
@@ -148,14 +148,14 @@ Sprite* GraphicManager::getSprite(int id)
 	{
 		return it->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 GameSprite* GraphicManager::getCreatureSprite(int id)
 {
 	if(id < 0)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	SpriteMap::iterator it = sprite_space.find(id+item_count);
@@ -163,7 +163,7 @@ GameSprite* GraphicManager::getCreatureSprite(int id)
 	{
 		return static_cast<GameSprite*>(it->second);
 	}
-	return NULL;
+	return nullptr;
 }
 
 
@@ -182,7 +182,7 @@ inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
 {
 	wxMemoryInputStream is(data, length);
 	wxImage img(is, wxT("image/png"));
-	if(!img.IsOk()) return NULL;
+	if(!img.IsOk()) return nullptr;
 	return newd wxBitmap(img, -1);
 }
 
@@ -330,12 +330,12 @@ bool GraphicManager::loadEditorSprites()
 	sprite_space[EDITOR_SPRITE_SELECTION_GEM] =
 		newd EditorSprite(
 			loadPNGFile(gem_edit_png),
-			NULL
+			nullptr
 		);
 	sprite_space[EDITOR_SPRITE_DRAWING_GEM] =
 		newd EditorSprite(
 			loadPNGFile(gem_move_png),
-			NULL
+			nullptr
 		);
 
 	return true;
@@ -434,7 +434,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 				sprite_id = u16;
 			}
 			
-			if(image_space[sprite_id] == NULL)
+			if(image_space[sprite_id] == nullptr)
 			{
 				GameSprite::NormalImage* img = newd GameSprite::NormalImage();
 				img->id = sprite_id;
@@ -1150,7 +1150,7 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 	{
 		// Empty GameSprite
 		size = 0;
-		target = NULL;
+		target = nullptr;
 		return true;
 	}
 
@@ -1193,7 +1193,7 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 				return true;
 			}
 			delete[] target;
-			target = NULL;
+			target = nullptr;
 		}
 	}
 	return false;
@@ -1217,7 +1217,7 @@ void GraphicManager::garbageCollection()
 {
 	if(settings.getInteger(Config::TEXTURE_MANAGEMENT))
 	{
-		int t = time(NULL);
+		int t = time(nullptr);
 		if(loaded_textures > settings.getInteger(Config::TEXTURE_CLEAN_THRESHOLD) &&
 				t - lastclean > settings.getInteger(Config::TEXTURE_CLEAN_PULSE))
 		{
@@ -1261,8 +1261,8 @@ void EditorSprite::unloadDC()
 {
 	delete bm[SPRITE_SIZE_16x16];
 	delete bm[SPRITE_SIZE_32x32];
-	bm[SPRITE_SIZE_16x16] = NULL;
-	bm[SPRITE_SIZE_32x32] = NULL;
+	bm[SPRITE_SIZE_16x16] = nullptr;
+	bm[SPRITE_SIZE_32x32] = nullptr;
 }
 
 GameSprite::GameSprite() :
@@ -1280,8 +1280,8 @@ GameSprite::GameSprite() :
 	drawoffset_y(0),
 	minimap_color(0)
 {
-	dc[SPRITE_SIZE_16x16] = NULL;
-	dc[SPRITE_SIZE_32x32] = NULL;
+	dc[SPRITE_SIZE_16x16] = nullptr;
+	dc[SPRITE_SIZE_32x32] = nullptr;
 }
 
 GameSprite::~GameSprite() {
@@ -1306,8 +1306,8 @@ void GameSprite::clean(int time) {
 void GameSprite::unloadDC() {
 	delete dc[SPRITE_SIZE_16x16];
 	delete dc[SPRITE_SIZE_32x32];
-	dc[SPRITE_SIZE_16x16] = NULL;
-	dc[SPRITE_SIZE_32x32] = NULL;
+	dc[SPRITE_SIZE_16x16] = nullptr;
+	dc[SPRITE_SIZE_32x32] = nullptr;
 }
 
 int GameSprite::getDrawHeight() const {
@@ -1384,7 +1384,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 	if(!dc[sz]) {
 		const int bgshade = settings.getInteger(Config::ICON_BACKGROUND);
 
-		uint8_t* rgb = NULL;
+		uint8_t* rgb = nullptr;
 		uint ht, wt;
 
 		if(width == 2 && height == 2) {
@@ -1518,7 +1518,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 				delete[] rgb32x32;
 			}
 		} else {
-			return NULL;
+			return nullptr;
 		}
 
 		// Now comes the resizing / antialiasing
@@ -1653,7 +1653,7 @@ void GameSprite::Image::unloadGLTexture(GLuint whatid) {
 }
 
 void GameSprite::Image::visit() {
-	lastaccess = time(NULL);
+	lastaccess = time(nullptr);
 }
 
 void GameSprite::Image::clean(int time) {
@@ -1665,7 +1665,7 @@ void GameSprite::Image::clean(int time) {
 GameSprite::NormalImage::NormalImage() :
 	id(0),
 	size(0),
-	dump(NULL)
+	dump(nullptr)
 {
 }
 
@@ -1677,17 +1677,17 @@ void GameSprite::NormalImage::clean(int time) {
 	Image::clean(time);
 	if(time - lastaccess > 5 && !settings.getInteger(Config::USE_MEMCACHED_SPRITES)) { // We keep dumps around for 5 seconds.
 		delete[] dump;
-		dump = NULL;
+		dump = nullptr;
 	}
 }
 
 uint8_t* GameSprite::NormalImage::getRGBData() {
-	if(dump == NULL) {
+	if(dump == nullptr) {
 		if(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
-			return NULL;
+			return nullptr;
 		} else {
 			if(!gui.gfx.loadSpriteDump(dump, size, id)) {
-				return NULL;
+				return nullptr;
 			}
 		}
 	}
@@ -1770,12 +1770,12 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 }
 
 uint8_t* GameSprite::NormalImage::getRGBAData() {
-	if(dump == NULL) {
+	if(dump == nullptr) {
 		if(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
-			return NULL;
+			return nullptr;
 		} else {
 			if(!gui.gfx.loadSpriteDump(dump, size, id)) {
-				return NULL;
+				return nullptr;
 			}
 		}
 	}
@@ -1904,11 +1904,11 @@ uint8_t* GameSprite::TemplateImage::getRGBData() {
 
 	if(!rgbdata) {
 		delete[] template_rgbdata;
-		return NULL;
+		return nullptr;
 	}
 	if(!template_rgbdata) {
 		delete[] rgbdata;
-		return NULL;
+		return nullptr;
 	}
 
 	if(lookHead > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
@@ -1955,11 +1955,11 @@ uint8_t* GameSprite::TemplateImage::getRGBAData() {
 
 	if(!rgbadata) {
 		delete[] template_rgbdata;
-		return NULL;
+		return nullptr;
 	}
 	if(!template_rgbdata) {
 		delete[] rgbadata;
-		return NULL;
+		return nullptr;
 	}
 
 	if(lookHead > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {

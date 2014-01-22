@@ -101,7 +101,7 @@ public: //Functions
 
 	bool hasProperty(enum ITEMPROPERTY prop) const;
 
-	Item* getTopItem(); // Returns the topmost item, or NULL if the tile is empty
+	Item* getTopItem(); // Returns the topmost item, or nullptr if the tile is empty
 	void addItem(Item* item);
 
 	void select();
@@ -204,7 +204,7 @@ typedef std::vector<Tile*> TileVector;
 typedef std::list<Tile*> TileList;
 
 inline bool Tile::hasWall() const {
-	return getWall() != NULL;
+	return getWall() != nullptr;
 }
 
 inline bool Tile::isHouseTile() const {

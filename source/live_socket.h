@@ -55,7 +55,7 @@ protected:
 	void ReceiveNode(NetworkMessage* nmsg, Editor& editor, Action* action, int ndx, int ndy, bool underground);
 	void ReceiveFloor(NetworkMessage* nmsg, Editor& editor, Action* action, int ndx, int ndy, int z, QTreeNode* nd, Floor* floor);
 	void ReceiveTile(BinaryNode* tileNode, Editor& editor, Action* action, const Position* pos);
-	Tile* ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos = NULL);
+	Tile* ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos = nullptr);
 
 	void SendNode(LivePeer* connection, QTreeNode* nd, int ndx, int ndy, uint32_t floormask);
 	void AddFloor(NetworkMessage* omsg, Floor* floor);

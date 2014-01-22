@@ -32,16 +32,17 @@ RMEProcessServer::RMEProcessServer() {
 RMEProcessServer::~RMEProcessServer() {
 }
 
-wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic) {
-	if(topic == wxT("rme_talk")) {
+wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic)
+{
+	if (topic == wxT("rme_talk")) {
 		return newd RMEProcessConnection();
 	}
-	return NULL;
+	return nullptr;
 }
 
 // Client!
 
-RMEProcessClient::RMEProcessClient() : proc(NULL) {
+RMEProcessClient::RMEProcessClient() : proc(nullptr) {
 }
 
 RMEProcessClient::~RMEProcessClient() {

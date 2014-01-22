@@ -40,7 +40,7 @@ Waypoint* Waypoints::getWaypoint(std::string name)
 	to_lower_str(name);
 	WaypointMap::iterator iter = waypoints.find(name);
 	if(iter == waypoints.end())
-		return NULL;
+		return nullptr;
 	return iter->second;
 }
 

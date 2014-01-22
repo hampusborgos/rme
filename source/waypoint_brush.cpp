@@ -32,7 +32,7 @@ std::string WaypointBrush::getWaypoint() const {
 
 
 bool WaypointBrush::canDraw(BaseMap* map, Position pos) const {
-	//if(tile == NULL) {
+	//if(tile == nullptr) {
 	//	return false;
 	//}
 	return true;

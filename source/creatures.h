@@ -73,9 +73,8 @@ public:
 	Outfit outfit;
 	CreatureBrush* brush;
 	
-	static CreatureType* loadFromXML(xmlNodePtr node, wxArrayString& warnings);
-	static CreatureType* loadFromOTXML(const FileName& filename, xmlDocPtr node, wxArrayString& warnings);
-	xmlNodePtr saveToXML();
+	static CreatureType* loadFromXML(pugi::xml_node node, wxArrayString& warnings);
+	static CreatureType* loadFromOTXML(const FileName& filename, pugi::xml_document& node, wxArrayString& warnings);
 };
 
 extern CreatureDatabase creature_db;

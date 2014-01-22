@@ -58,13 +58,13 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 			if(mt->GetMap()->hasChanged()) {
 				SetFocusedTab(evt.GetInt());
 				if(gui.root->DoQuerySave(false)) {
-					gui.RefreshPalettes(NULL, false);
+					gui.RefreshPalettes(nullptr, false);
 					gui.UpdateMenus();
 				} else {
 					evt.Veto();
 				}
 			} else {
-				gui.RefreshPalettes(NULL, false);
+				gui.RefreshPalettes(nullptr, false);
 				gui.UpdateMenus();
 			}
 		}
@@ -80,8 +80,8 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 {
 	gui.UpdateMinimap();
-	MapTab* mt_old = dynamic_cast<MapTab*>(evt.GetOldSelection() != -1? GetTab(evt.GetOldSelection()) : NULL);
-	MapTab* mt_new = dynamic_cast<MapTab*>(evt.GetSelection() != -1? GetTab(evt.GetSelection()) : NULL);
+	MapTab* mt_old = dynamic_cast<MapTab*>(evt.GetOldSelection() != -1? GetTab(evt.GetOldSelection()) : nullptr);
+	MapTab* mt_new = dynamic_cast<MapTab*>(evt.GetSelection() != -1? GetTab(evt.GetSelection()) : nullptr);
 
 	int old = evt.GetOldSelection();
 	int nnew = evt.GetSelection();
@@ -95,7 +95,7 @@ void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 	}
 	else if(!mt_new)
 	{
-		gui.RefreshPalettes(NULL);
+		gui.RefreshPalettes(nullptr);
 	}
 }
 
@@ -127,7 +127,7 @@ EditorTab* MapTabbook::GetInternalTab(int idx)
 EditorTab* MapTabbook::GetCurrentTab()
 {
 	if(GetTabCount() == 0)
-		return NULL;
+		return nullptr;
 
 	return dynamic_cast<EditorTab*>(GetInternalTab(GetSelection()));
 }
@@ -140,7 +140,7 @@ EditorTab* MapTabbook::GetTab(int idx)
 wxWindow* MapTabbook::GetCurrentPage()
 {
 	if(GetTabCount() == 0)
-		return NULL;
+		return nullptr;
 
 	return GetCurrentTab()->GetWindow();
 }

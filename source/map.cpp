@@ -99,7 +99,7 @@ bool Map::open(const std::string file)
 
 					if(old->ground && old->items.empty()) // Single item
 						out << "\treplacement_map.stm[" << old->ground->getID() << "] = vecval;\n\n";
-					else if(old->ground == NULL && old->items.size() == 1) // Single item
+					else if(old->ground == nullptr && old->items.size() == 1) // Single item
 						out << "\treplacement_map.stm[" << old->items.front()->getID() << "] = vecval;\n\n";
 					else
 					{
@@ -201,7 +201,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 			if(tile->ground && std::find(v.begin(), v.end(), tile->ground->getID()) != v.end())
 			{
 				delete tile->ground;
-				tile->ground = NULL;
+				tile->ground = nullptr;
 			}
 
 			for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end(); )
@@ -237,7 +237,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 				uint16_t aid = tile->ground->getActionID();
 				uint16_t uid = tile->ground->getUniqueID();
 				delete tile->ground;
-				tile->ground = NULL;
+				tile->ground = nullptr;
 
 				const std::vector<uint16_t>& v = cfstm->second;
 				//conversions << "Converted " << tile->getX() << ":" << tile->getY() << ":" << tile->getZ() << " " << id << " -> ";
@@ -438,7 +438,7 @@ void Map::removeSpawnInternal(Tile* tile)
 		for(int x = start_x; x <= end_x; ++x)
 		{
 			TileLocation* ctile_loc = getTileL(x, y, z);
-			if(ctile_loc != NULL && ctile_loc->getSpawnCount() > 0)
+			if(ctile_loc != nullptr && ctile_loc->getSpawnCount() > 0)
 				ctile_loc->decreaseSpawnCount();
 		}
 	}
@@ -515,7 +515,7 @@ SpawnList Map::getSpawnList(Tile* where)
 
 bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog)
 {
-	uint8_t* pic = NULL;
+	uint8_t* pic = nullptr;
 
 	try
 	{
@@ -529,7 +529,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 				mit != end();
 				++mit)
 		{
-			if((*mit)->get() == NULL || (*mit)->empty())
+			if((*mit)->get() == nullptr || (*mit)->empty())
 				continue;
 			
 			Position pos = (*mit)->getPosition();

@@ -24,7 +24,7 @@ class TileLocation;
 class MapIterator
 {
 public:
-	MapIterator(BaseMap* _map = NULL);
+	MapIterator(BaseMap* _map = nullptr);
 	~MapIterator();
 	MapIterator(const MapIterator& other);
 
@@ -91,7 +91,7 @@ public:
 	QTreeNode* getLeaf(int x, int y) {return root.getLeaf(x, y);}
 	QTreeNode* createLeaf(int x, int y) {return root.getLeafForce(x, y);}
 
-	// Assigns a tile, it might seem pointless to provide position, but it is not, as the passed tile may be NULL
+	// Assigns a tile, it might seem pointless to provide position, but it is not, as the passed tile may be nullptr
 	void setTile(int _x, int _y, int _z, Tile* newtile, bool remove = false);
 	void setTile(const Position& pos, Tile* newtile, bool remove = false) {setTile(pos.x, pos.y, pos.z, newtile, remove);}
 	void setTile(Tile* newtile, bool remove = false) {setTile(newtile->getX(), newtile->getY(), newtile->getZ(), newtile, remove);}
@@ -118,25 +118,25 @@ protected:
 inline Tile* BaseMap::getTile(int x, int y, int z)
 {
 	TileLocation* l = getTileL(x, y, z);
-	return l? l->get() : NULL;
+	return l? l->get() : nullptr;
 }
 
 inline Tile* BaseMap::getTile(const Position& pos)
 {
 	TileLocation* l = getTileL(pos);
-	return l? l->get() : NULL;
+	return l? l->get() : nullptr;
 }
 
 inline const Tile* BaseMap::getTile(int x, int y, int z) const
 {
 	const TileLocation* l = getTileL(x, y, z);
-	return l? l->get() : NULL;
+	return l? l->get() : nullptr;
 }
 
 inline const Tile* BaseMap::getTile(const Position& pos) const
 {
 	const TileLocation* l = getTileL(pos);
-	return l? l->get() : NULL;
+	return l? l->get() : nullptr;
 }
 
 #endif

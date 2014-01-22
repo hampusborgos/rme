@@ -96,7 +96,7 @@ __archive_rb_tree_init(struct archive_rb_tree *rbt,
     const struct archive_rb_tree_ops *ops)
 {
 	rbt->rbt_ops = ops;
-	*((const struct archive_rb_node **)&rbt->rbt_root) = RB_SENTINEL_NODE;
+	*((struct archive_rb_node **)&rbt->rbt_root) = RB_SENTINEL_NODE;
 }
 
 struct archive_rb_node *
@@ -237,6 +237,8 @@ __archive_rb_tree_reparent_nodes(
 	struct archive_rb_node * const new_father = old_child;
 	struct archive_rb_node * const new_child = old_father;
 
+	if (new_father == NULL)
+		return;
 	/*
 	 * Exchange descendant linkages.
 	 */
@@ -552,6 +554,8 @@ __archive_rb_tree_removal_rebalance(struct archive_rb_tree *rbt,
 		unsigned int other = which ^ RB_DIR_OTHER;
 		struct archive_rb_node *brother = parent->rb_nodes[other];
 
+		if (brother == NULL)
+			return;/* The tree may be broken. */
 		/*
 		 * For cases 1, 2a, and 2b, our brother's children must
 		 * be black and our father must be black
@@ -573,6 +577,8 @@ __archive_rb_tree_removal_rebalance(struct archive_rb_tree *rbt,
 				 */
 				__archive_rb_tree_reparent_nodes(parent, other);
 				brother = parent->rb_nodes[other];
+				if (brother == NULL)
+					return;/* The tree may be broken. */
 			} else {
 				/*
 				 * Both our parent and brother are black.
@@ -656,6 +662,8 @@ __archive_rb_tree_removal_rebalance(struct archive_rb_tree *rbt,
 			 * If we had two red nephews, then after the swap,
 			 * our former father would have a red grandson. 
 			 */
+			if (brother->rb_nodes[other] == NULL)
+				return;/* The tree may be broken. */
 			RB_MARK_BLACK(brother->rb_nodes[other]);
 			__archive_rb_tree_reparent_nodes(parent, other);
 			break;		/* We're done! */
@@ -683,7 +691,7 @@ __archive_rb_tree_iterate(struct archive_rb_tree *rbt,
 	 */
 	if (RB_SENTINEL_P(self->rb_nodes[direction])) {
 		while (!RB_ROOT_P(rbt, self)) {
-			if (other == RB_POSITION(self))
+			if (other == (unsigned int)RB_POSITION(self))
 				return RB_FATHER(self);
 			self = RB_FATHER(self);
 		}

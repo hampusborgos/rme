@@ -25,7 +25,7 @@
 #include "editor.h"
 #include "gui.h"
 
-Change::Change() : type(CHANGE_NONE), data(NULL)
+Change::Change() : type(CHANGE_NONE), data(nullptr)
 {
 	// ...
 }
@@ -89,7 +89,7 @@ void Change::clear()
 			break;
 	}
 	type = CHANGE_NONE;
-	data = NULL;
+	data = nullptr;
 }
 
 uint Change::memsize() const
@@ -361,7 +361,7 @@ void Action::undo(DirtyList* dirty_list)
 					else
 					{
 						// Set tile house to 0, house has been removed
-						newtile->setHouse(NULL);
+						newtile->setHouse(nullptr);
 					}
 
 					house = editor.map.houses.getHouse(oldtile->getHouseID());
@@ -499,7 +499,7 @@ void BatchAction::addAction(Action* action)
 
 	// Add it!
 	batch.push_back(action);
-	timestamp = time(NULL);
+	timestamp = time(nullptr);
 }
 
 void BatchAction::addAndCommitAction(Action* action)
@@ -517,26 +517,26 @@ void BatchAction::addAndCommitAction(Action* action)
 	}
 
 	// Add it!
-	action->commit(NULL);
+	action->commit(nullptr);
 	batch.push_back(action);
-	timestamp = time(NULL);
+	timestamp = time(nullptr);
 }
 
 void BatchAction::commit()
 {
 	for(ActionVector::iterator it = batch.begin(); it != batch.end(); it++)
 		if(!(*it)->isCommited())
-			(*it)->commit(NULL);
+			(*it)->commit(nullptr);
 }
 
 void BatchAction::undo() {
 	for(ActionVector::reverse_iterator it = batch.rbegin(); it != batch.rend(); ++it)
-		(*it)->undo(NULL);
+		(*it)->undo(nullptr);
 }
 
 void BatchAction::redo() {
 	for(ActionVector::iterator it = batch.begin(); it != batch.end(); ++it)
-		(*it)->redo(NULL);
+		(*it)->redo(nullptr);
 }
 
 void BatchAction::merge(BatchAction* other)
@@ -635,10 +635,10 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 		if(actions.empty() == false)
 		{
 			BatchAction* lastAction = actions.back();
-			if(lastAction->type == batch->type && settings.getInteger(Config::GROUP_ACTIONS) && time(NULL) - stacking_delay < lastAction->timestamp)
+			if(lastAction->type == batch->type && settings.getInteger(Config::GROUP_ACTIONS) && time(nullptr) - stacking_delay < lastAction->timestamp)
 			{
 				lastAction->merge(batch);
-				lastAction->timestamp = time(NULL);
+				lastAction->timestamp = time(nullptr);
 				memory_size -= lastAction->memsize();
 				memory_size += lastAction->memsize(true);
 				delete batch;
@@ -647,7 +647,7 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 		}
 		memory_size += batch->memsize();
 		actions.push_back(batch);
-		batch->timestamp = time(NULL);
+		batch->timestamp = time(nullptr);
 		current++;
 	} while(false);
 }

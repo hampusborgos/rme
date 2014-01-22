@@ -29,12 +29,12 @@
 #include "live_action.h"
 
 Editor::Editor(CopyBuffer& copybuffer) :
-	live_client(NULL),
-	live_server(NULL),
+	live_client(nullptr),
+	live_server(nullptr),
 	actionQueue(newd ActionQueue(*this)),
 	selection(*this),
 	copybuffer(copybuffer),
-	replace_brush(NULL)
+	replace_brush(nullptr)
 {
 	wxString error;
 	wxArrayString warnings;
@@ -77,12 +77,12 @@ Editor::Editor(CopyBuffer& copybuffer) :
 }
 
 Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
-	live_client(NULL),
-	live_server(NULL),
+	live_client(nullptr),
+	live_server(nullptr),
 	actionQueue(newd ActionQueue(*this)),
 	selection(*this),
 	copybuffer(copybuffer),
-	replace_brush(NULL)
+	replace_brush(nullptr)
 {
 	MapVersion ver;
 	if(!IOMapOTBM::getVersionInfo(fn, ver)) {
@@ -134,12 +134,12 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 }
 
 Editor::Editor(CopyBuffer& copybuffer, LiveClient* client) :
-	live_server(NULL),
+	live_server(nullptr),
 	live_client(client),
 	actionQueue(newd NetworkedActionQueue(*this)),
 	selection(*this),
 	copybuffer(copybuffer),
-	replace_brush(NULL)
+	replace_brush(nullptr)
 {
 	;
 }
@@ -309,7 +309,7 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 	if(save_as == false && settings.getInteger(Config::ALWAYS_MAKE_BACKUP))
 	{
 		// Move temporary backups to their proper files
-		time_t t = time(NULL);
+		time_t t = time(nullptr);
 		tm* current_time = localtime(&t);
 		ASSERT(current_time);
 
@@ -472,7 +472,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 			imported_house->townid = town_id_map[imported_house->townid];
 
 			Position oldexit = imported_house->getExit();
-			imported_house->setExit(NULL, Position()); // Reset it
+			imported_house->setExit(nullptr, Position()); // Reset it
 
 			switch(house_import_type) {
 				case IMPORT_MERGE: {
@@ -640,7 +640,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 			newsize_y = new_pos.y;
 		}
 
-		imported_map.setTile(import_tile->getPosition(), NULL);
+		imported_map.setTile(import_tile->getPosition(), nullptr);
 		TileLocation* location = map.createTileL(new_pos);
 
 		
@@ -672,7 +672,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 		if(old_tile) {
 			map.removeSpawn(old_tile);
 		}
-		import_tile->spawn = NULL;
+		import_tile->spawn = nullptr;
 
 		map.setTile(new_pos, import_tile, true);
 	}
@@ -761,7 +761,7 @@ void Editor::randomizeSelection() {
 		GroundBrush* gb = new_tile->getGroundBrush();
 		Item* old_ground = tile->ground;
 		if(gb && gb->isReRandomizable()) {
-			gb->draw(&map, new_tile, NULL);
+			gb->draw(&map, new_tile, nullptr);
 			Item* new_ground = new_tile->ground;
 			if(old_ground && new_ground) {
 				new_ground->setActionID(old_ground? old_ground->getActionID() : 0);
@@ -795,7 +795,7 @@ void Editor::randomizeMap(bool showdialog) {
 		uint16_t old_aid = old_ground? old_ground->getActionID() : 0;
 		uint16_t old_uid = old_ground? old_ground->getUniqueID() : 0;
 		if(gb) {
-			gb->draw(&map, tile, NULL);
+			gb->draw(&map, tile, nullptr);
 			Item* new_ground = tile->ground;
 			if(new_ground) {
 				new_ground->setActionID(old_aid);
@@ -821,7 +821,7 @@ void Editor::clearInvalidHouseTiles(bool showdialog) {
 	HouseMap::iterator iter = houses.begin();
 	while(iter != houses.end()) {
 		House* h = iter->second;
-		if(map.towns.getTown(h->townid) == NULL) {
+		if(map.towns.getTown(h->townid) == nullptr) {
 #ifdef __VISUALC__ // C++0x compliance to some degree :)
 			iter = houses.erase(iter);
 #else // Bulky, slow way
@@ -855,8 +855,8 @@ void Editor::clearInvalidHouseTiles(bool showdialog) {
 		Tile* tile = (*map_iter)->get();
 		ASSERT(tile);
 		if(tile->isHouseTile()) {
-			if(houses.getHouse(tile->getHouseID()) == NULL) {
-				tile->setHouse(NULL);
+			if(houses.getHouse(tile->getHouseID()) == nullptr) {
+				tile->setHouse(nullptr);
 			}
 		}
 		++tiles_done;
@@ -933,12 +933,12 @@ void Editor::moveSelection(Position offset)
 		// Move spawns
 		if(new_src_tile->spawn && new_src_tile->spawn->isSelected()) {
 			tmp_storage_tile->spawn = new_src_tile->spawn;
-			new_src_tile->spawn = NULL;
+			new_src_tile->spawn = nullptr;
 		}
 		// Move creatures
 		if(new_src_tile->creature && new_src_tile->creature->isSelected()) {
 			tmp_storage_tile->creature = new_src_tile->creature;
-			new_src_tile->creature = NULL;
+			new_src_tile->creature = nullptr;
 		}
 
 		// Move house data & tile status if ground is transferred
@@ -1017,7 +1017,7 @@ void Editor::moveSelection(Position offset)
 		// Create the duplicate dest tile, which will replace the old one later
 		TileLocation* location = map.createTileL(new_pos);
 		Tile* old_dest_tile = location->get();
-		Tile* new_dest_tile = NULL;
+		Tile* new_dest_tile = nullptr;
 
 		if(settings.getInteger(Config::MERGE_MOVE) || !tile->ground) {
 			// Move items
@@ -1125,12 +1125,12 @@ void Editor::destroySelection() {
 
 			if(newtile->creature && newtile->creature->isSelected()) {
 				delete newtile->creature;
-				newtile->creature = NULL;
+				newtile->creature = nullptr;
 			}
 
 			if(newtile->spawn && newtile->spawn->isSelected()) {
 				delete newtile->spawn;
-				newtile->spawn = NULL;
+				newtile->spawn = nullptr;
 			}
 
 			if(settings.getInteger(Config::USE_AUTOMAGIC)) {
@@ -1351,7 +1351,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 		Action* action = actionQueue->createAction(batch);
 		// This will only occur with a size 0, when clicking on a tile (not drawing)
 		Tile* t = map.getTile(offset);
-		Tile* new_tile = NULL;
+		Tile* new_tile = nullptr;
 		if(t) {
 			new_tile = t->deepCopy(map);
 		} else {
@@ -1369,7 +1369,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 		Action* action = actionQueue->createAction(batch);
 
 		Tile* t = map.getTile(offset);
-		Tile* new_tile = NULL;
+		Tile* new_tile = nullptr;
 		if(t) {
 			new_tile = t->deepCopy(map);
 		} else {
@@ -1496,11 +1496,11 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 							param.second = replace_brush;
 						} else {
 							param.first = true;
-							param.second = NULL;
+							param.second = nullptr;
 						}
 						gui.GetCurrentBrush()->draw(&map, new_tile, &param);
 					} else {
-						gui.GetCurrentBrush()->draw(&map, new_tile, NULL);
+						gui.GetCurrentBrush()->draw(&map, new_tile, nullptr);
 					}
 				else {
 					gui.GetCurrentBrush()->undraw(&map, new_tile);
@@ -1516,11 +1516,11 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 						param.second = replace_brush;
 					} else {
 						param.first = true;
-						param.second = NULL;
+						param.second = nullptr;
 					}
 					gui.GetCurrentBrush()->draw(&map, new_tile, &param);
 				} else {
-					gui.GetCurrentBrush()->draw(&map, new_tile, NULL);
+					gui.GetCurrentBrush()->draw(&map, new_tile, nullptr);
 				}
 				action->addChange(newd Change(new_tile));
 			}
@@ -1578,13 +1578,13 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 			if(tile) {
 				Tile* new_tile = tile->deepCopy(map);
 				if(dodraw)
-					gui.GetCurrentBrush()->draw(&map, new_tile, NULL);
+					gui.GetCurrentBrush()->draw(&map, new_tile, nullptr);
 				else
 					gui.GetCurrentBrush()->undraw(&map, new_tile);
 				action->addChange(newd Change(new_tile));
 			} else if(dodraw) {
 				Tile* new_tile = map.allocator(location);
-				gui.GetCurrentBrush()->draw(&map, new_tile, NULL);
+				gui.GetCurrentBrush()->draw(&map, new_tile, nullptr);
 				action->addChange(newd Change(new_tile));
 			}
 		}
@@ -1772,12 +1772,12 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 
 bool Editor::IsLiveClient() const
 {
-	return live_client != NULL;
+	return live_client != nullptr;
 }
 
 bool Editor::IsLiveServer() const
 {
-	return live_server != NULL;
+	return live_server != nullptr;
 }
 
 bool Editor::IsLive() const
@@ -1833,12 +1833,12 @@ void Editor::CloseLiveServer()
 	{
 		live_client->Close();
 
-		live_client = NULL;
+		live_client = nullptr;
 	}
 	else if(live_server)
 	{
 		live_server->Close();
-		live_server = NULL;
+		live_server = nullptr;
 
 		delete actionQueue;
 		actionQueue = newd ActionQueue(*this);

@@ -56,7 +56,7 @@ ItemVector& Container::getVector() {
 
 Item* Container::getItem(int index) {
 	if((size_t)index >= contents.size()) {
-		return NULL;
+		return nullptr;
 	}
 	return contents.at(index);
 }

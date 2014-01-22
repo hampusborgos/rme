@@ -81,7 +81,7 @@ BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 END_EVENT_TABLE()
 
 MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
-	wxGLCanvas(parent, wxID_ANY, NULL, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
+	wxGLCanvas(parent, wxID_ANY, nullptr, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
 	editor(editor),
 	floor(7),
 	zoom(1.0),
@@ -94,7 +94,7 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	dragging_draw(false),
 	replace_dragging(false),
 
-	screenshot_buffer(NULL),
+	screenshot_buffer(nullptr),
 
 	drag_start_x(-1),
 	drag_start_y(-1),
@@ -149,7 +149,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 	if(gui.IsRenderingEnabled())
 	{
 		DrawingOptions options;
-		if(screenshot_buffer != NULL)
+		if(screenshot_buffer != nullptr)
 		{
 			options.SetIngame();
 		}
@@ -180,7 +180,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 
 		drawer.Draw();
 
-		if(screenshot_buffer != NULL)
+		if(screenshot_buffer != nullptr)
 			drawer.TakeScreenshot(screenshot_buffer);
 	}
 
@@ -207,7 +207,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 	wxGLCanvas::Update(); // Forces immediate redraws the window.
 
 	// screenshot_buffer should now contain the screenbuffer
-	if(screenshot_buffer == NULL)
+	if(screenshot_buffer == nullptr)
 	{
 		gui.PopupDialog(wxT("Capture failed"), wxT("Image capture failed. Old Video Driver?"), wxOK);
 	}
@@ -218,7 +218,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		static_cast<MapWindow*>(GetParent())->GetViewSize(&screensize_x, &screensize_y);
 		wxImage screenshot(screensize_x, screensize_y, screenshot_buffer);
 
-		time_t t = time(NULL);
+		time_t t = time(nullptr);
 		struct tm* current_time = localtime(&t);
 		ASSERT(current_time);
 
@@ -280,7 +280,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 
 	Refresh();
 
-	screenshot_buffer = NULL;
+	screenshot_buffer = nullptr;
 }
 
 void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
@@ -288,14 +288,18 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 	int start_x, start_y;
 	static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 
-	if(screen_x < 0)
+	if (screen_x < 0) {
 		*map_x = (start_x + screen_x) / 32;
-	else
+	} else {
 		*map_x = int(start_x + (screen_x*zoom)) / 32;
-	if(screen_y < 0)
+	}
+
+	if (screen_y < 0) {
 		*map_y = (start_y + screen_y) / 32;
-	else
+	} else {
 		*map_y = int(start_y + (screen_y*zoom)) / 32;
+	}
+
 	if(floor <= 7) {
 		*map_x += 7 - floor;
 		*map_y += 7 - floor;
@@ -429,7 +433,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 				if(event.ControlDown())
 				{
 					PositionVector tilestodraw;
-					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, NULL);
+					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
 					editor.undraw(tilestodraw, event.ShiftDown() || event.AltDown());
 				} else {
 					editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
@@ -544,7 +548,7 @@ void MapCanvas::OnMouseLeftDoubleClick(wxMouseEvent& event)
 		if(tile && tile->size() > 0)
 		{
 			Tile* new_tile = tile->deepCopy(editor.map);
-			wxDialog* w = NULL;
+			wxDialog* w = nullptr;
 			if(new_tile->spawn && settings.getInteger(Config::SHOW_SPAWNS))
 				w = newd OldPropertiesWindow(gui.root, &editor.map, new_tile, new_tile->spawn);
 			else if(new_tile->creature && settings.getInteger(Config::SHOW_CREATURES))
@@ -831,7 +835,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					if(dynamic_cast<DoodadBrush*>(gui.GetCurrentBrush()))
 					{
 						PositionVector tilestodraw;
-						getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, NULL);
+						getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
 						editor.undraw(tilestodraw, event.AltDown());
 					} else {
 						editor.undraw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
@@ -850,7 +854,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					{
 						editor.replace_brush = draw_tile->getGroundBrush();
 					} else {
-						editor.replace_brush = NULL;
+						editor.replace_brush = nullptr;
 					}
 				}
 
@@ -885,7 +889,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 				} else {
 					PositionVector tilestodraw;
 
-					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, NULL);
+					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
 
 					if(event.ControlDown())
 					{
@@ -1253,7 +1257,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 		drawing = false;
 		dragging_draw = false;
 		replace_dragging = false;
-		editor.replace_brush = NULL;
+		editor.replace_brush = nullptr;
 	}
 	gui.RefreshView();
 	gui.UpdateMinimap();
@@ -1865,7 +1869,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 
 					std::string name = hk.GetBrushname();
 					Brush* brush = brushes.getBrush(name);
-					if(brush == NULL)
+					if(brush == nullptr)
 					{
 						gui.SetStatusText(wxT("Brush \"") + wxstr(name) + wxT("\" not found"));
 						return;
@@ -2133,7 +2137,7 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 	ASSERT(tile->isSelected());
 	Tile* new_tile = tile->deepCopy(editor.map);
 
-	wxDialog* w = NULL;
+	wxDialog* w = nullptr;
 
 	if(new_tile->spawn && settings.getInteger(Config::SHOW_SPAWNS))
 		w = newd OldPropertiesWindow(gui.root, &editor.map, new_tile, new_tile->spawn);
@@ -2143,7 +2147,7 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 	{
 		ItemVector selected_items = new_tile->getSelectedItems();
 
-		Item* item = NULL;
+		Item* item = nullptr;
 		int count = 0;
 		for(ItemVector::iterator it = selected_items.begin(); it != selected_items.end(); ++it)
 		{
@@ -2207,7 +2211,7 @@ void MapCanvas::EnterSelectionMode()
 	drawing = false;
 	dragging_draw = false;
 	replace_dragging = false;
-	editor.replace_brush = NULL;
+	editor.replace_brush = nullptr;
 	Refresh();
 }
 
@@ -2241,7 +2245,7 @@ void MapCanvas::Reset()
 	dragging_draw = false;
 
 	replace_dragging = false;
-	editor.replace_brush = NULL;
+	editor.replace_brush = nullptr;
 
 	drag_start_x = -1;
 	drag_start_y = -1;
@@ -2307,8 +2311,8 @@ void MapPopupMenu::Update()
 			bool hasWall = false;
 			bool hasCarpet = false;
 			bool hasTable = false;
-			Item* topItem = NULL;
-			Item* topSelectedItem = (selected_items.size() == 1? selected_items.back() : NULL);
+			Item* topItem = nullptr;
+			Item* topSelectedItem = (selected_items.size() == 1? selected_items.back() : nullptr);
 			Creature* topCreature = tile->creature;
 			Spawn* topSpawn = tile->spawn;
 

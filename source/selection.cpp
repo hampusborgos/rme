@@ -29,8 +29,8 @@
 Selection::Selection(Editor& editor) :
 	busy(false),
 	editor(editor),
-	session(NULL),
-	subsession(NULL)
+	session(nullptr),
+	subsession(nullptr)
 {
 }
 
@@ -281,7 +281,7 @@ void Selection::commit()
 		ASSERT(subsession);
 		// We need to step out of the session before we do the action, else peril awaits us!
 		BatchAction* tmp = session;
-		session = NULL;
+		session = nullptr;
 
 		// Do the action
 		tmp->addAndCommitAction(subsession);
@@ -300,7 +300,7 @@ void Selection::finish(SessionFlags flags)
 		if(flags & SUBTHREAD)
 		{
 			ASSERT(subsession);
-			subsession = NULL;
+			subsession = nullptr;
 		}
 		else
 		{
@@ -308,13 +308,13 @@ void Selection::finish(SessionFlags flags)
 			ASSERT(subsession);
 			// We need to exit the session before we do the action, else peril awaits us!
 			BatchAction* tmp = session;
-			session = NULL;
+			session = nullptr;
 
 			tmp->addAndCommitAction(subsession);
 			editor.addBatch(tmp, 2);
 
-			session = NULL;
-			subsession = NULL;
+			session = nullptr;
+			subsession = nullptr;
 		}
 	}
 	busy = false;
@@ -343,7 +343,7 @@ void Selection::join(SelectionThread* thread)
 
 	ASSERT(session);
 	session->addAction(thread->result);
-	thread->selection.subsession = NULL;
+	thread->selection.subsession = nullptr;
 
 	delete thread;
 }
@@ -354,7 +354,7 @@ SelectionThread::SelectionThread(Editor& editor, Position start, Position end) :
 	start(start),
 	end(end),
 	selection(editor),
-	result(NULL)
+	result(nullptr)
 {
 	
 }
@@ -394,5 +394,5 @@ wxThread::ExitCode SelectionThread::Entry()
 	result = selection.subsession;
 	selection.finish(Selection::SUBTHREAD);
 
-	return NULL;
+	return nullptr;
 }

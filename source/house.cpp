@@ -68,7 +68,7 @@ House* Houses::getHouse(uint32_t houseid)
 	if(it != houses.end()) {
 		return it->second;
 	}
-	return NULL;
+	return nullptr;
 }
 
 const House* Houses::getHouse(uint32_t houseid) const
@@ -77,7 +77,7 @@ const House* Houses::getHouse(uint32_t houseid) const
 	if(it != houses.end())
 		return it->second;
 
-	return NULL;
+	return nullptr;
 }
 
 House::House(Map& map) :
@@ -103,7 +103,7 @@ void House::clean()
 	{
 		Tile* tile = map->getTile(*pos_iter);
 		if(tile)
-			tile->setHouse(NULL);
+			tile->setHouse(nullptr);
 	}
 
 	Tile* tile = map->getTile(exit);
@@ -142,7 +142,7 @@ void House::removeTile(Tile* tile)
 		if(*tile_iter == tile->getPosition())
 		{
 			tiles.erase(tile_iter);
-			tile->setHouse(NULL);
+			tile->setHouse(nullptr);
 			return;
 		}
 	}

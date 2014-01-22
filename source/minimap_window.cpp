@@ -188,7 +188,7 @@ void MinimapWindow::OnMouseClick(wxMouseEvent& event) {
 }
 
 void MinimapWindow::OnKey(wxKeyEvent& event) {
-	if(gui.GetCurrentTab() != NULL) {
+	if(gui.GetCurrentTab() != nullptr) {
 		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}
 }

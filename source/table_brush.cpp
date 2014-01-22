@@ -8,6 +8,7 @@
 
 #include "items.h"
 #include "basemap.h"
+#include "pugicast.h"
 
 uint32_t TableBrush::table_types[256];
 
@@ -22,94 +23,75 @@ TableBrush::TableBrush() :
 TableBrush::~TableBrush() {
 }
 
-bool TableBrush::load(xmlNodePtr node, wxArrayString& warnings) {
-	std::string strVal;
-	int intVal;
-
-	if(readXMLValue(node, "lookid", intVal)) {
-		look_id = intVal;
-	}
-	if(readXMLValue(node, "server_lookid", intVal)) {
-		look_id = item_db[intVal].clientID;
+bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
+{
+	look_id = item_db[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].clientID;
+	if (look_id == 0) {
+		look_id = pugi::cast<uint16_t>(node.attribute("lookid").value());
 	}
 
-	xmlNodePtr child = node->children;
-	while(child) {
-		if(xmlStrcmp(child->name,(const xmlChar*)"table") == 0) {
-			uint alignment;
-			if(readXMLValue(child, "align", strVal)) {
-				if(strVal == "vertical") {
-					alignment = TABLE_VERTICAL;
-				} else if(strVal == "horizontal") {
-					alignment = TABLE_HORIZONTAL;
-				} else if(strVal == "south") {
-					alignment = TABLE_SOUTH_END;
-				} else if(strVal == "east") {
-					alignment = TABLE_EAST_END;
-				} else if(strVal == "north") {
-					alignment = TABLE_NORTH_END;
-				} else if(strVal == "west") {
-					alignment = TABLE_WEST_END;
-				} else if(strVal == "alone") {
-					alignment = TABLE_ALONE;
-				} else {
-					wxString warning;
-					warning = wxT("Unknown table alignment '") + wxstr(strVal) + wxT("'\n");
-					warnings.push_back(warning);
-					child = child->next;
-					continue;
-				}
-			} else {
-				wxString warning;
-				warning = wxT("Could not read type tag of table node\n");
-				warnings.push_back(warning);
-				child = child->next;
+	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		if (as_lower_str(childNode.name()) != "table") {
+			continue;
+		}
+
+		const std::string& alignString = childNode.attribute("align").as_string();
+		if (alignString.empty()) {
+			warnings.push_back(wxT("Could not read type tag of table node\n"));
+			continue;
+		}
+
+		uint32_t alignment;
+		if(alignString == "vertical") {
+			alignment = TABLE_VERTICAL;
+		} else if(alignString == "horizontal") {
+			alignment = TABLE_HORIZONTAL;
+		} else if(alignString == "south") {
+			alignment = TABLE_SOUTH_END;
+		} else if(alignString == "east") {
+			alignment = TABLE_EAST_END;
+		} else if(alignString == "north") {
+			alignment = TABLE_NORTH_END;
+		} else if(alignString == "west") {
+			alignment = TABLE_WEST_END;
+		} else if(alignString == "alone") {
+			alignment = TABLE_ALONE;
+		} else {
+			warnings.push_back(wxT("Unknown table alignment '") + wxstr(alignString) + wxT("'\n"));
+			continue;
+		}
+
+		for (pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
+			if (as_lower_str(subChildNode.name()) != "item") {
 				continue;
 			}
 
-			xmlNodePtr subchild = child->children;
-			while(subchild) {
-				do {
-					if(xmlStrcmp(subchild->name,(const xmlChar*)"item") == 0) {
-						int id, chance = 0;
-						if(!readXMLValue(subchild, "id", id)) {
-							wxString warning;
-							warning += wxT("Could not read id tag of item node\n");
-							warnings.push_back(warning);
-							break;
-						}
-						readXMLValue(subchild, "chance", chance);
-
-						ItemType& it = item_db[id];
-						if(it.id == 0) {
-							wxString warning;
-							warning << wxT("There is no itemtype with id ") << id;
-							warnings.push_back(warning);
-							return false;
-						}
-						if(it.brush != NULL && it.brush != this) {
-							wxString warning;
-							warning << wxT("Itemtype id ") << id << wxT(" already has a brush");
-							warnings.push_back(warning);
-							return false;
-						}
-						it.isTable = true;
-						it.brush = this;
-
-						TableType tt;
-						table_items[alignment].total_chance += chance;
-						tt.chance = chance;
-
-						tt.item_id  = uint16_t(id);
-						table_items[alignment].items.push_back(tt);
-					}
-				} while(false);
-				subchild = subchild->next;
+			uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
+			if (id == 0) {
+				warnings.push_back(wxT("Could not read id tag of item node\n"));
+				break;
 			}
-		}
-		child = child->next;
-	}
 
+			ItemType& it = item_db[id];
+			if (it.id == 0) {
+				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+				return false;
+			} else if (it.brush && it.brush != this) {
+				warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+				return false;
+			}
+
+			it.isTable = true;
+			it.brush = this;
+
+			TableType tt;
+			tt.item_id = id;
+			tt.chance = pugi::cast<int32_t>(subChildNode.attribute("chance").value());
+
+			table_items[alignment].total_chance += tt.chance;
+			table_items[alignment].items.push_back(tt);
+		}
+	}
 	return true;
 }
 
@@ -199,6 +181,8 @@ void TableBrush::doTables(BaseMap* map, Tile* tile) {
 	int y = tile->getPosition().y;
 	int z = tile->getPosition().z;
 
+	ItemVector items_to_add;
+
 	for(ItemVector::const_iterator item_iter = tile->items.begin();
 			item_iter != tile->items.end();
 			++item_iter)
@@ -206,7 +190,7 @@ void TableBrush::doTables(BaseMap* map, Tile* tile) {
 		Item* item = *item_iter;
 		ASSERT(item);
 		TableBrush* table_brush = item->getTableBrush();
-		if(table_brush == NULL) {
+		if(table_brush == nullptr) {
 			continue;
 		}
 

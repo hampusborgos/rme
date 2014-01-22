@@ -24,6 +24,7 @@
 #include "creature_brush.h"
 #include "items.h"
 #include "raw_brush.h"
+#include "pugicast.h"
 
 Tileset::Tileset(Brushes& brushes, const std::string& name) :
 	brushes(brushes),
@@ -88,90 +89,73 @@ const TilesetCategory* Tileset::getCategory(TilesetCategoryType type) const
 			return *iter;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
-void Tileset::loadCategory(xmlNodePtr node, wxArrayString &warnings)
+void Tileset::loadCategory(pugi::xml_node node, wxArrayString &warnings)
 {
-	TilesetCategory* category = NULL;
-	TilesetCategory* category2 = NULL;
+	TilesetCategory* category = nullptr;
+	TilesetCategory* subCategory = nullptr;
 
-	if(xmlStrcmp(node->name,(const xmlChar*)"terrain") == 0)
-	{
+	const std::string& nodeName = as_lower_str(node.name());
+	if (nodeName == "terrain") {
 		category = getCategory(TILESET_TERRAIN);
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"doodad") == 0)
-	{
+	} else if (nodeName == "doodad") {
 		category = getCategory(TILESET_DOODAD);
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"items") == 0)
-	{
+	} else if (nodeName == "items") {
 		category = getCategory(TILESET_ITEM);
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"raw") == 0)
-	{
+	} else if (nodeName == "raw") {
 		category = getCategory(TILESET_RAW);
-	} else if(xmlStrcmp(node->name,(const xmlChar*)"terrain_and_raw") == 0)
-	{
+	} else if (nodeName == "terrain_and_raw") {
 		category = getCategory(TILESET_TERRAIN);
-		category2 = getCategory(TILESET_RAW);
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"doodad_and_raw") == 0)
-	{
+		subCategory = getCategory(TILESET_RAW);
+	} else if (nodeName == "doodad_and_raw") {
 		category = getCategory(TILESET_DOODAD);
-		category2 = getCategory(TILESET_RAW);
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"items_and_raw") == 0)
-	{
+		subCategory = getCategory(TILESET_RAW);
+	} else if (nodeName == "items_and_raw") {
 		category = getCategory(TILESET_ITEM);
-		category2 = getCategory(TILESET_RAW);
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"creatures") == 0)
-	{
+		subCategory = getCategory(TILESET_RAW);
+	} else if (nodeName == "creatures") {
 		category = getCategory(TILESET_CREATURE);
-		for(xmlNodePtr brushNode = node->children; brushNode != NULL; brushNode = brushNode->next)
-		{
-			if(xmlStrcmp(brushNode->name,(const xmlChar*)"creature") == 0)
-			{
-				std::string creature_name;
-				if(!readXMLValue(brushNode, "name", creature_name))
-				{
-					warnings.push_back(wxT("Couldn't read creature name tag of creature tileset"));
-					continue;
-				}
+		for (pugi::xml_node brushNode = node.first_child(); brushNode; brushNode = brushNode.next_sibling()) {
+			const std::string& brushName = as_lower_str(brushNode.name());
+			if (brushName != "creature") {
+				continue;
+			}
+			
+			pugi::xml_attribute attribute;
+			if (!(attribute = brushNode.attribute("name"))) {
+				warnings.push_back(wxT("Couldn't read creature name tag of creature tileset"));
+				continue;
+			}
 
-				CreatureType* ctype = creature_db[creature_name];
-				if(ctype)
-				{
-					CreatureBrush* brush;
-					if(ctype->brush)
-					{
-						brush = ctype->brush;
-					}
-					else
-					{
-						brush = ctype->brush = newd CreatureBrush(ctype);
-						brushes.addBrush(brush);
-					}
-					brush->flagAsVisible();
-					category->brushlist.push_back(brush);
+			const std::string& creatureName = attribute.as_string();
+			CreatureType* ctype = creature_db[creatureName];
+			if (ctype) {
+				CreatureBrush* brush;
+				if (ctype->brush) {
+					brush = ctype->brush;
+				} else {
+					brush = ctype->brush = newd CreatureBrush(ctype);
+					brushes.addBrush(brush);
 				}
-				else
-				{
-					warnings.push_back(wxString(wxT("Unknown creature type \"")) << wxstr(creature_name) << wxT("\""));
-				}
+				brush->flagAsVisible();
+				category->brushlist.push_back(brush);
+			} else {
+				warnings.push_back(wxString(wxT("Unknown creature type \"")) << wxstr(creatureName) << wxT("\""));
 			}
 		}
 	}
-	
-	if(!category)
-		return;
 
-	for(xmlNodePtr brushNode = node->children; brushNode != NULL; brushNode = brushNode->next)
-	{
+	if (!category) {
+		return;
+	}
+
+	for (pugi::xml_node brushNode = node.first_child(); brushNode; brushNode = brushNode.next_sibling()) {
 		category->loadBrush(brushNode, warnings);
-		if(category2)
-			category2->loadBrush(brushNode, warnings);
+		if (subCategory) {
+			subCategory->loadBrush(brushNode, warnings);
+		}
 	}
 }
 
@@ -189,115 +173,90 @@ TilesetCategory::~TilesetCategory()
 
 bool TilesetCategory::isTrivial() const
 {
-	if(type == TILESET_ITEM)
-		return true;
-	if(type == TILESET_RAW)
-		return true;
-
-	return false;
+	return (type == TILESET_ITEM) || (type == TILESET_RAW);
 }
 
-void TilesetCategory::loadBrush(xmlNodePtr node, wxArrayString& warnings)
+void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 {
-	std::string strVal;
-	std::string brush_name;
-	int intVal = 0;
-	
-	readXMLValue(node, "after", brush_name);
-	if(readXMLValue(node, "afteritem", intVal))
-	{
-		ItemType& it = item_db[intVal];
-		if(it.id != 0)// Verify that we have a valid item
-		{
-			brush_name = (it.raw_brush? it.raw_brush->getName() : "");
+	pugi::xml_attribute attribute;
+
+	std::string brushName = node.attribute("after").as_string();
+	if ((attribute = node.attribute("afteritem"))) {
+		ItemType& it = item_db[pugi::cast<int32_t>(attribute.value())];
+		if (it.id != 0) {
+			brushName = it.raw_brush ? it.raw_brush->getName() : std::string();
 		}
 	}
 
-	if(xmlStrcmp(node->name,(const xmlChar*)"brush") == 0)
-	{
-		if(readXMLString(node, "name", strVal))
-		{
-			Brush* brush = tileset.brushes.getBrush(strVal);
-			if(brush)
-			{
-				std::vector<Brush*>::iterator insert_here = brushlist.end();
-				if(brush_name.size())
-				{
-					for(std::vector<Brush*>::iterator iter = brushlist.begin(); iter != brushlist.end(); ++iter)
-					{
-						if((*iter)->getName() == brush_name)
-						{
-							insert_here = ++iter;
-							break;
-						}
+	const std::string& nodeName = as_lower_str(node.name());
+	if (nodeName == "brush") {
+		if (!(attribute = node.attribute("name"))) {
+			return;
+		}
+
+		Brush* brush = tileset.brushes.getBrush(attribute.as_string());
+		if (brush) {
+			auto insertPosition = brushlist.end();
+			if (!brushName.empty()) {
+				for (auto itt = brushlist.begin(); itt != brushlist.end(); ++itt) {
+					if ((*itt)->getName() == brushName) {
+						insertPosition = ++itt;
+						break;
 					}
 				}
-				brush->flagAsVisible();
-				brushlist.insert(insert_here, brush);
 			}
-			else
-			{
-				warnings.push_back(wxT("Brush \"") + wxstr(strVal) + wxT("\" doesn't exist."));
-			}
+			brush->flagAsVisible();
+			brushlist.insert(insertPosition, brush);
+		} else {
+			warnings.push_back(wxT("Brush \"") + wxString(attribute.as_string(), wxConvUTF8) + wxT("\" doesn't exist."));
 		}
-	}
-	else if(xmlStrcmp(node->name,(const xmlChar*)"item") == 0)
-	{
-		int fromid = 0, toid = 0;
-		if(!readXMLInteger(node, "id", fromid))
-		{
-			if(!readXMLInteger(node, "fromid", fromid))
-			{
+	} else if (nodeName == "item") {
+		int32_t fromId = 0, toId = 0;
+		if (!(attribute = node.attribute("id"))) {
+			if (!(attribute = node.attribute("fromid"))) {
 				warnings.push_back(wxT("Couldn't read raw ids."));
 			}
-			readXMLInteger(node, "toid", toid);
+			toId = pugi::cast<int32_t>(node.attribute("toid").value());
 		}
-		toid = std::max(toid, fromid);
-		
-		std::vector<Brush*>::iterator insert_here = brushlist.end();
-		if(brush_name.size())
-		{
-			for(std::vector<Brush*>::iterator iter = brushlist.begin(); iter != brushlist.end(); ++iter)
-			{
-				if((*iter)->getName() == brush_name) 
-				{
-					insert_here = ++iter;
+
+		fromId = pugi::cast<int32_t>(attribute.value());
+		toId = std::max<int32_t>(fromId, toId);
+
+		std::vector<Brush*> tempBrushVector;
+		for (int32_t id = fromId; id <= toId; ++id) {
+			ItemType& it = item_db[id];
+			if (it.id == 0) {
+				warnings.push_back(wxString::Format(wxT("Brush: %s, From: %d, To: %d"), wxstr(brushName), fromId, toId));
+				warnings.push_back(wxT("Unknown item id #") + std::to_string(id) + wxT("."));
+				continue;
+			}
+
+			RAWBrush* brush;
+			if (it.raw_brush) {
+				brush = it.raw_brush;
+			} else {
+				brush = it.raw_brush = newd RAWBrush(it.id);
+				it.has_raw = true;
+				tileset.brushes.addBrush(brush); // This will take care of cleaning up afterwards
+			}
+
+			if (it.doodad_brush == nullptr && !isTrivial()) {
+				it.doodad_brush = brush;
+			}
+
+			brush->flagAsVisible();
+			tempBrushVector.push_back(brush);
+		}
+
+		auto insertPosition = brushlist.end();
+		if (!brushName.empty()) {
+			for (auto itt = brushlist.begin(); itt != brushlist.end(); ++itt) {
+				if ((*itt)->getName() == brushName) {
+					insertPosition = ++itt;
 					break;
 				}
 			}
 		}
-		
-		std::vector<Brush*> temp_vec;
-		for(int id = fromid; id <= toid; ++id)
-		{
-			ItemType& it = item_db[id];
-			if(it.id == 0) // Verify that we have a valid item
-			{
-				warnings.push_back(wxT("Unknown item id #") + i2ws(id) + wxT("."));
-			}
-			else
-			{
-				RAWBrush* brush;
-				if(it.raw_brush)
-				{
-					brush = it.raw_brush;
-				}
-				else
-				{
-					brush = it.raw_brush = newd RAWBrush(it.id);
-					it.has_raw = true;
-					tileset.brushes.addBrush(brush); // This will take care of cleaning up afterwards
-				}
-
-				if(it.doodad_brush == NULL && !isTrivial())
-				{
-					it.doodad_brush = brush;
-				}
-
-				brush->flagAsVisible();
-				temp_vec.push_back(brush);
-			}
-		}
-		brushlist.insert(insert_here, temp_vec.begin(), temp_vec.end());
+		brushlist.insert(insertPosition, tempBrushVector.begin(), tempBrushVector.end());
 	}
 }

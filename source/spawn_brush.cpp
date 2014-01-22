@@ -40,13 +40,13 @@ bool SpawnBrush::canDraw(BaseMap* map, Position pos) const {
 
 void SpawnBrush::undraw(BaseMap* map, Tile* tile) {
 	delete tile->spawn;
-	tile->spawn = NULL;
+	tile->spawn = nullptr;
 }
 
 void SpawnBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 	ASSERT(tile);
 	ASSERT(parameter); // Should contain an int which is the size of the newd spawn
-	if(tile->spawn == NULL) {
+	if(tile->spawn == nullptr) {
 		tile->spawn = newd Spawn(max(1, *(int*)parameter));
 	}
 }

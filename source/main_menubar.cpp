@@ -195,12 +195,12 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 		++ai)
 	{
 		frame->Connect(MAIN_FRAME_MENU + ai->second->id, wxEVT_COMMAND_MENU_SELECTED,
-			(wxObjectEventFunction)(wxEventFunction)(ai->second->handler), NULL, this);
+			(wxObjectEventFunction)(wxEventFunction)(ai->second->handler), nullptr, this);
 	}
 	for(size_t i = 0; i < 10; ++i)
 	{
 		frame->Connect(recentFiles.GetBaseId() + i, wxEVT_COMMAND_MENU_SELECTED,
-			wxCommandEventHandler(MainMenuBar::OnOpenRecent), NULL, this);
+			wxCommandEventHandler(MainMenuBar::OnOpenRecent), nullptr, this);
 	}
 }
 
@@ -280,7 +280,7 @@ void MainMenuBar::Update()
 	}
 
 	bool loaded = gui.IsVersionLoaded();
-	bool has_map = editor != NULL;
+	bool has_map = editor != nullptr;
 	bool is_live = editor && editor->IsLive();
 	bool is_host = has_map && !editor->IsLiveClient();
 	bool is_local = has_map && !is_live;
@@ -419,158 +419,137 @@ void MainMenuBar::UpdateFloorMenu()
 bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& error)
 {
 	// Open the XML file
-	xmlDocPtr doc = xmlParseFile(path.GetFullPath().mb_str());
-	
-	// Clear the menu
-	while(menubar->GetMenuCount() > 0)
-		menubar->Remove(0);
-	
-	if(doc)
-	{
-		// Load succeded
-		xmlNodePtr root = xmlDocGetRootElement(doc);
-		
-		if(xmlStrcmp(root->name,(const xmlChar*)"menubar") != 0)
-		{
-			xmlFreeDoc(doc);
-			error = path.GetFullName() + wxT(": Invalid rootheader.");
-			return false;
-		}
-
-		for(xmlNodePtr menuNode = root->children; menuNode; menuNode = menuNode->next)
-		{
-			// For each child node, load it
-			wxObject* i = LoadItem(menuNode, NULL, warnings, error);
-			wxMenu* m = dynamic_cast<wxMenu*>(i);
-			if(m)
-			{
-				menubar->Append(m, m->GetTitle());
-				m->SetTitle(wxT(""));
-			}
-			else if(i)
-			{
-				delete i;
-				warnings.push_back(path.GetFullName() + wxT(": Only menus can be subitems of main menu"));
-			}
-		}
-
-		/*
-		// Create accelerator table
-		accelerator_table = newd wxAcceleratorTable(accelerators.size(), &accelerators[0]);
-		
-		// Tell all clients of the renewed accelerators
-		RenewClients();
-		*/
-
-		recentFiles.AddFilesToMenu();
-		Update();
-		LoadValues();
-		return true;
-	} else {
+	pugi::xml_document doc;
+	pugi::xml_parse_result result = doc.load_file(path.GetFullPath().mb_str());
+	if (!result) {
 		error = wxT("Could not open ") + path.GetFullName() + wxT(" (file not found or syntax error)");
+		return false;
 	}
-	return false;
+
+	pugi::xml_node node = doc.child("menubar");
+	if (!node) {
+		error = path.GetFullName() + wxT(": Invalid rootheader.");
+		return false;
+	}
+
+	// Clear the menu
+	while (menubar->GetMenuCount() > 0) {
+		menubar->Remove(0);
+	}
+	
+	// Load succeded
+	for (pugi::xml_node menuNode = node.first_child(); menuNode; menuNode = menuNode.next_sibling()) {
+		// For each child node, load it
+		wxObject* i = LoadItem(menuNode, nullptr, warnings, error);
+		wxMenu* m = dynamic_cast<wxMenu*>(i);
+		if (m) {
+			menubar->Append(m, m->GetTitle());
+			m->SetTitle(wxT(""));
+		} else if (i) {
+			delete i;
+			warnings.push_back(path.GetFullName() + wxT(": Only menus can be subitems of main menu"));
+		}
+	}
+
+	/*
+	// Create accelerator table
+	accelerator_table = newd wxAcceleratorTable(accelerators.size(), &accelerators[0]);
+
+	// Tell all clients of the renewed accelerators
+	RenewClients();
+	*/
+
+	recentFiles.AddFilesToMenu();
+	Update();
+	LoadValues();
+	return true;
 }
 
-wxObject* MainMenuBar::LoadItem(xmlNodePtr node, wxMenu* parent, wxArrayString& warnings, wxString& error)
+wxObject* MainMenuBar::LoadItem(pugi::xml_node node, wxMenu* parent, wxArrayString& warnings, wxString& error)
 {
-	if(xmlStrcmp(node->name, (const xmlChar*)"menu") == 0)
-	{
-		std::string name;
-		if(readXMLValue(node, "name", name))
-		{
-			for(std::string::iterator iter = std::find(name.begin(), name.end(), '$');
-				iter != name.end(); 
-				iter = std::find(iter, name.end(), '$'))
-				*iter = '&';
+	pugi::xml_attribute attribute;
 
-			wxMenu* menu = newd wxMenu;
-
-			std::string special;
-			if(readXMLValue(node, "special", special) && special == "RECENT_FILES")
-			{
-				recentFiles.UseMenu(menu);
-			}
-			else
-			{
-				for(xmlNodePtr menuNode = node->children; menuNode; menuNode = menuNode->next)
-				{
-					// Load an add each item in order
-					LoadItem(menuNode, menu, warnings, error);
-				}
-			}
-
-			// If we have a parent, add ourselves.
-			// If not, we just return the item and the parent function
-			// is responsible for adding us to wherever
-			if(parent)
-				parent->AppendSubMenu(menu, wxstr(name));
-			else
-				menu->SetTitle(wxstr(name));
-			return menu;
+	const std::string& nodeName = as_lower_str(node.name());
+	if (nodeName == "menu") {
+		if (!(attribute = node.attribute("name"))) {
+			return nullptr;
 		}
-	}
-	else if(xmlStrcmp(node->name, (const xmlChar*)"item") == 0)
-	{
-		// We must have a parent when loading items
-		if(!parent)
-			return NULL;
 
-		std::string name;
-		std::string hotkey;
-		std::string action;
-		std::string helptext;
+		std::string name = attribute.as_string();
+		std::replace(name.begin(), name.end(), '$', '&');
 
-		if(
-			readXMLValue(node, "name", name) &&
-			readXMLValue(node, "action", action))
-		{
-			for(std::string::iterator iter = std::find(name.begin(), name.end(), '$');
-				iter != name.end(); 
-				iter = std::find(iter, name.end(), '$'))
-				*iter = '&';
-
-			readXMLValue(node, "hotkey", hotkey);
-			if(hotkey.size())
-				hotkey = "\t" + hotkey;
-			
-			readXMLValue(node, "help", helptext);
-
-			name = name + hotkey;
-
-			std::map<std::string, MenuBar::Action*>::const_iterator iter = actions.find(action);
-			if(iter == actions.end()){
-				warnings.push_back(wxT("Invalid action type '") + wxstr(action) + wxT("'."));
-				return NULL;
+		wxMenu* menu = newd wxMenu;
+		if ((attribute = node.attribute("special")) && attribute.as_string() == "RECENT_FILES") {
+			recentFiles.UseMenu(menu);
+		} else {
+			for (pugi::xml_node menuNode = node.first_child(); menuNode; menuNode = menuNode.next_sibling()) {
+				// Load an add each item in order
+				LoadItem(menuNode, menu, warnings, error);
 			}
-			
-			const MenuBar::Action& act = *iter->second;
-
-			wxAcceleratorEntry* entry = wxAcceleratorEntry::Create(wxstr(hotkey));
-			if(entry)
-				delete entry; // accelerators.push_back(entry);
-			else
-				warnings.push_back(wxT("Invalid hotkey."));
-			
-			wxMenuItem* tmp = parent->Append(
-				MAIN_FRAME_MENU + act.id, // ID
-				wxstr(name), // Title of button
-				wxstr(helptext), // Help text
-				act.kind // Kind of item
-			);
-			items[MenuBar::ActionID(act.id)].push_back(tmp);
-			return tmp;
 		}
-	}
-	else if(xmlStrcmp(node->name, (const xmlChar*)"separator") == 0)
-	{
-		// We must have a parent when loading items
-		if(!parent)
-			return NULL;
 
+		// If we have a parent, add ourselves.
+		// If not, we just return the item and the parent function
+		// is responsible for adding us to wherever
+		if (parent) {
+			parent->AppendSubMenu(menu, wxstr(name));
+		} else {
+			menu->SetTitle(wxstr(name));
+		}
+		return menu;
+	} else if (nodeName == "item") {
+		// We must have a parent when loading items
+		if (!parent) {
+			return nullptr;
+		} else if (!(attribute = node.attribute("name"))) {
+			return nullptr;
+		}
+
+		std::string name = attribute.as_string();
+		std::replace(name.begin(), name.end(), '$', '&');
+		if (!(attribute = node.attribute("action"))) {
+			return nullptr;
+		}
+
+		const std::string& action = attribute.as_string();
+		std::string hotkey = node.attribute("hotkey").as_string();
+		if (!hotkey.empty()) {
+			hotkey = '\t' + hotkey;
+		}
+
+		const std::string& help = node.attribute("help").as_string();
+		name += hotkey;
+
+		auto it = actions.find(action);
+		if (it == actions.end()) {
+			warnings.push_back(wxT("Invalid action type '") + wxstr(action) + wxT("'."));
+			return nullptr;
+		}
+			
+		const MenuBar::Action& act = *it->second;
+		wxAcceleratorEntry* entry = wxAcceleratorEntry::Create(wxstr(hotkey));
+		if (entry) {
+			delete entry; // accelerators.push_back(entry);
+		} else {
+			warnings.push_back(wxT("Invalid hotkey."));
+		}
+
+		wxMenuItem* tmp = parent->Append(
+			MAIN_FRAME_MENU + act.id, // ID
+			wxstr(name), // Title of button
+			wxstr(help), // Help text
+			act.kind // Kind of item
+		);
+		items[MenuBar::ActionID(act.id)].push_back(tmp);
+		return tmp;
+	} else if (nodeName == "separator") {
+		// We must have a parent when loading items
+		if (!parent) {
+			return nullptr;
+		}
 		return parent->AppendSeparator();
 	}
-	return NULL;
+	return nullptr;
 }
 
 void MainMenuBar::OnNew(wxCommandEvent& WXUNUSED(event)) 
@@ -1305,7 +1284,7 @@ namespace OnMapRemoveUnreachable
 
 		bool isReachable(Tile* tile)
 		{
-			if(tile == NULL)
+			if(tile == nullptr)
 				return false;
 			if(!tile->isBlocking())
 				return true;
@@ -1494,10 +1473,10 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	int town_count = map->towns.count();
 	int house_count = map->houses.count();
 	std::map<uint32_t, uint> town_sqm_count;
-	const Town* largest_town = NULL;
+	const Town* largest_town = nullptr;
 	uint64_t largest_town_size = 0;
 	uint64_t total_house_sqm = 0;
-	const House* largest_house = NULL;
+	const House* largest_house = nullptr;
 	uint64_t largest_house_size = 0;
 	double houses_per_town = 0.0;
 	double sqm_per_house = 0.0;

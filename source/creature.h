@@ -72,7 +72,7 @@ inline CreatureBrush* Creature::getBrush() const {
 	if(type) {
 		return type->brush;
 	}
-	return NULL;
+	return nullptr;
 }
 
 typedef std::vector<Creature*> CreatureVector;

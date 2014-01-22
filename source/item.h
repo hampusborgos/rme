@@ -25,9 +25,6 @@
 //#include "iomap_otmm.h"
 #include "item_attributes.h"
 
-#include <libxml/xmlmemory.h>
-#include <libxml/parser.h>
-
 class Creature;
 class Border;
 class Tile;
@@ -72,7 +69,7 @@ class Item : public ItemAttributes
 public:
 	//Factory member to create item of right type based on type
 	static Item* Create(uint16_t _type, uint16_t _subtype = 0xFFFF);
-	static Item* Create(xmlNodePtr);
+	static Item* Create(pugi::xml_node);
 	static Item* Create_OTBM(const IOMap& maphandle, BinaryNode* stream);
 	//static Item* Create_OTMM(const IOMap& maphandle, BinaryNode* stream);
 
@@ -88,18 +85,18 @@ public:
 	// Get memory footprint size
 	uint memsize() const;
 	/*
-	virtual Container* getContainer() {return NULL;};
-	virtual const Container* getContainer() const {return NULL;};
-	virtual Teleport* getTeleport() {return NULL;};
-	virtual const Teleport* getTeleport() const {return NULL;};
-	virtual TrashHolder* getTrashHolder() {return NULL;};
-	virtual const TrashHolder* getTrashHolder() const {return NULL;};
-	virtual Mailbox* getMailbox() {return NULL;};
-	virtual const Mailbox* getMailbox() const {return NULL;};
-	virtual Door* getDoor() {return NULL;};
-	virtual const Door* getDoor() const {return NULL;};
-	virtual MagicField* getMagicField() {return NULL;};
-	virtual const MagicField* getMagicField() const {return NULL;};
+	virtual Container* getContainer() {return nullptr;};
+	virtual const Container* getContainer() const {return nullptr;};
+	virtual Teleport* getTeleport() {return nullptr;};
+	virtual const Teleport* getTeleport() const {return nullptr;};
+	virtual TrashHolder* getTrashHolder() {return nullptr;};
+	virtual const TrashHolder* getTrashHolder() const {return nullptr;};
+	virtual Mailbox* getMailbox() {return nullptr;};
+	virtual const Mailbox* getMailbox() const {return nullptr;};
+	virtual Door* getDoor() {return nullptr;};
+	virtual const Door* getDoor() const {return nullptr;};
+	virtual MagicField* getMagicField() {return nullptr;};
+	virtual const MagicField* getMagicField() const {return nullptr;};
 	*/
 
 	// OTBM map interface
@@ -259,7 +256,7 @@ private:
 typedef std::vector<Item*> ItemVector;
 typedef std::list<Item*> ItemList;
 
-Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent = NULL);
+Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent = nullptr);
 
 
 inline int Item::getCount() const {

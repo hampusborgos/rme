@@ -349,8 +349,8 @@ public:
 
 	bool loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings);
 	bool loadFromGameXml(const FileName& datafile, wxString& error, wxArrayString& warnings);
-	bool loadItemFromGameXml(xmlNodePtr itemNode, int id);
-	bool loadMetaItem(xmlNodePtr node);
+	bool loadItemFromGameXml(pugi::xml_node itemNode, int id);
+	bool loadMetaItem(pugi::xml_node node);
 
 	// Version information
 	uint32_t MajorVersion;
