@@ -268,7 +268,7 @@ void PropertiesWindow::saveAttributesPanel()
 
 	for (int rowIndex = 0; rowIndex < attributesGrid->GetNumberRows(); ++rowIndex)
 	{
-		std::string label = attributesGrid->GetCellValue(rowIndex, 0);
+		std::string label = std::string(attributesGrid->GetCellValue(rowIndex, 0).mb_str());
 		wxString type = attributesGrid->GetCellValue(rowIndex, 1);
 		ItemAttribute attr;
 
@@ -309,7 +309,7 @@ void PropertiesWindow::OnGridValueChanged(wxGridEvent& event)
 			return;
 
 		// It did, cool cool
-		std::string label = attributesGrid->GetCellValue(event.GetRow(), 0);
+		std::string label = std::string(attributesGrid->GetCellValue(event.GetRow(), 0).mb_string());
 		ItemAttribute attr;
 		if (newType == "String")
 			attr.set("");
