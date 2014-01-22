@@ -79,6 +79,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include "ext/pugixml.hpp"
 
 // Libarchive, for OTGZ
+/*
 #ifdef OTGZ_SUPPORT
 #ifdef __linux
 #include <archive.h>
@@ -88,7 +89,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <libarchive/archive_entry.h>
 #endif
 #endif
-
+*/
 // This has annoyed me one time too many
 #define wxANY_ID (wxID_ANY)
 
