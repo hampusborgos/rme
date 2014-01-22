@@ -13,9 +13,7 @@ set(CMAKE_CXX_FLAGS_RELEASE        "-O4 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
 
 find_package(OpenGL REQUIRED)
-find_package(LibXml2 REQUIRED)
-find_package(LibArchive REQUIRED)
-find_package(Boost 1.42.0 COMPONENTS thread system REQUIRED)
+find_package(Boost 1.34.0 COMPONENTS thread system REQUIRED)
 
 find_package(wxWidgets COMPONENTS html aui gl adv core net base REQUIRED)
 include(${wxWidgets_USE_FILE})
@@ -23,5 +21,5 @@ include(${wxWidgets_USE_FILE})
 include(source/CMakeLists.txt)
 add_executable(rme ${rme_SRC})
 
-include_directories(${Boost_INCLUDE_DIRS} ${LIBXML2_INCLUDE_DIR} ${LibArchive_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
-target_link_libraries(rme ${wxWidgets_LIBRARIES} ${Boost_LIBRARIES} ${LIBXML2_LIBRARIES} ${LibArchive_LIBRARIES} ${OPENGL_LIBRARIES})
+include_directories(${Boost_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
+target_link_libraries(rme ${wxWidgets_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES})
