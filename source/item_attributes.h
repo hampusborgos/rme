@@ -74,12 +74,8 @@ public:
 	const bool* getBoolean() const;
 
 private:
-	char data[sizeof(std::string)];
+	char data[sizeof(std::string) > sizeof(double) ? sizeof(std::string) : sizeof(double)];
 };
-
-// Must be large enough to fit both double & string
-BOOST_STATIC_ASSERT(sizeof(std::string) >= sizeof(double));
-
 
 typedef std::map<std::string, ItemAttribute> ItemAttributeMap;
 
