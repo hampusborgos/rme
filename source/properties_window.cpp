@@ -265,35 +265,27 @@ void PropertiesWindow::saveContainerPanel()
 void PropertiesWindow::saveAttributesPanel()
 {
 	edit_item->clearAllAttributes();
-
-	for (int rowIndex = 0; rowIndex < attributesGrid->GetNumberRows(); ++rowIndex)
-	{
-		std::string label = attributesGrid->GetCellValue(rowIndex, 0);
-		wxString type = attributesGrid->GetCellValue(rowIndex, 1);
+	for (int32_t rowIndex = 0; rowIndex < attributesGrid->GetNumberRows(); ++rowIndex) {
 		ItemAttribute attr;
-
-		if (type == "String")
+		wxString type = attributesGrid->GetCellValue(rowIndex, 1);
+		if (type == "String") {
 			attr.set(nstr(attributesGrid->GetCellValue(rowIndex, 2)));
-		else if (type == "Float")
-		{
-			wxString s = attributesGrid->GetCellValue(rowIndex, 2);
-			double d;
-			if (s.ToDouble(&d))
-				attr.set(d);
-		}
-		else if (type == "Number")
-		{
-			wxString s = attributesGrid->GetCellValue(rowIndex, 2);
-			long l;
-			if (s.ToLong(&l, 10))
-				attr.set(l);
-		}
-		else if (type == "Boolean")
+		} else if (type == "Float") {
+			double value;
+			if (attributesGrid->GetCellValue(rowIndex, 2).ToDouble(&value)) {
+				attr.set(value);
+			}
+		} else if (type == "Number") {
+			long value;
+			if (attributesGrid->GetCellValue(rowIndex, 2).ToLong(&value)) {
+				attr.set(static_cast<int32_t>(value));
+			}
+		} else if (type == "Boolean") {
 			attr.set(attributesGrid->GetCellValue(rowIndex, 2) == "1");
-		else
+		} else {
 			continue;
-
-		edit_item->setAttribute(label, attr);
+		}
+		edit_item->setAttribute(nstr(attributesGrid->GetCellValue(rowIndex, 0)), attr);
 	}
 }
 
