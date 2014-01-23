@@ -458,7 +458,6 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
 	if (filename.GetExt() == wxT("otgz"))
 	{
-/*
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
 		archive_read_support_filter_all(a.get());
@@ -494,7 +493,6 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 		}
 
 		// Didn't find OTBM file, lame
-*/
 		return false;
 	}
 	else
@@ -538,7 +536,6 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
 	if (filename.GetExt() == wxT("otgz"))
 	{
-/*
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
 		archive_read_support_filter_all(a.get());
@@ -661,7 +658,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 				warning(wxT("Failed to load spawns due to XML parse error."));
 			}
 		}
-*/
+
 		return true;
 	}
 	else
@@ -1276,7 +1273,6 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
 	if (identifier.GetExt() == "otgz") {
-/*
 		// Create the archive
 		struct archive* a = archive_write_new();
 		struct archive_entry* entry = nullptr;
@@ -1362,7 +1358,6 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		archive_write_free(a);
 
 		gui.DestroyLoadBar();
-*/
 		return true;
 	} else {
 		DiskNodeFileWriteHandle f(
