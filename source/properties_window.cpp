@@ -291,28 +291,23 @@ void PropertiesWindow::saveAttributesPanel()
 
 void PropertiesWindow::OnGridValueChanged(wxGridEvent& event)
 {
-	if (event.GetCol() == 1)
-	{
-		// Selected type for the row changed
+	if (event.GetCol() == 1) {
 		wxString newType = attributesGrid->GetCellValue(event.GetRow(), 1);
-
-		// Check if the type changed
-		if (newType == event.GetString())
+		if (newType == event.GetString()) {
 			return;
+		}
 
-		// It did, cool cool
-		std::string label = attributesGrid->GetCellValue(event.GetRow(), 0);
 		ItemAttribute attr;
-		if (newType == "String")
+		if (newType == "String") {
 			attr.set("");
-		else if (newType == "Float")
+		} else if (newType == "Float") {
 			attr.set(0.0f);
-		else if (newType == "Number")
+		} else if (newType == "Number") {
 			attr.set(0);
-		else if (newType == "Boolean")
+		} else if (newType == "Boolean") {
 			attr.set(false);
-
-		SetGridValue(attributesGrid, event.GetRow(), label, attr);
+		}
+		SetGridValue(attributesGrid, event.GetRow(), nstr(attributesGrid->GetCellValue(event.GetRow(), 0)), attr);
 	}
 }
 
