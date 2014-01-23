@@ -80,9 +80,8 @@ public:
 protected:
 	typedef std::vector<PalettePanel*> ToolBarList;
 	ToolBarList tool_bars;
-	int last_brush_size;
-	
 	wxTimer refresh_timer;
+	int last_brush_size;
 
 	DECLARE_EVENT_TABLE();
 };
@@ -90,7 +89,7 @@ protected:
 class BrushSizePanel : public PalettePanel {
 public:
 	BrushSizePanel(wxWindow* parent);
-	~BrushSizePanel() {};
+	~BrushSizePanel() {}
 	
 
 	// Interface

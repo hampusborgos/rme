@@ -18,7 +18,7 @@
 // custom event handling for the right-click menu etcetera so we
 // need to define a custom class for it.
 
-std::auto_ptr<ContainerItemPopupMenu> ContainerItemButton::popup_menu;
+std::unique_ptr<ContainerItemPopupMenu> ContainerItemButton::popup_menu;
 
 BEGIN_EVENT_TABLE(ContainerItemButton, ItemButton)
 	EVT_LEFT_DOWN(ContainerItemButton::OnMouseDoubleLeftClick)
@@ -115,7 +115,7 @@ void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
 
 	wxPoint newDialogAt;
 	wxWindow* w = this;
-	while (w = w->GetParent())
+	while ((w = w->GetParent()))
 	{
 		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
 		{
@@ -183,10 +183,8 @@ void ContainerItemButton::setItem(Item* item)
 
 Container* ContainerItemButton::getParentContainer()
 {
-	Container* parentContainer = nullptr;
-
 	wxWindow* w = this;
-	while (w = w->GetParent())
+	while ((w = w->GetParent()))
 	{
 		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
 			return dynamic_cast<Container*>(o->getItemBeingEdited());
@@ -197,7 +195,7 @@ Container* ContainerItemButton::getParentContainer()
 void ContainerItemButton::UpdateParentContainerWindow()
 {
 	wxWindow* w = this;
-	while (w = w->GetParent())
+	while ((w = w->GetParent()))
 	{
 		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
 		{

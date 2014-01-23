@@ -205,10 +205,10 @@ public:
 	bool canRedo() {return current < actions.size();}
 	
 protected:
-	ActionList actions;
-	Editor& editor;
 	size_t current;
 	size_t memory_size;
+	Editor& editor;
+	ActionList actions;
 };
 
 #endif

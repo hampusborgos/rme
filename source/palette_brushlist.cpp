@@ -141,7 +141,7 @@ bool BrushPalettePanel::SelectBrush(const Brush* whatbrush)
 	}
 
 	for (size_t iz = 0; iz < choicebook->GetPageCount(); ++iz) {
-		if (iz == choicebook->GetSelection()) {
+		if ((int)iz == choicebook->GetSelection()) {
 			continue;
 		}
 

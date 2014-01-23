@@ -72,12 +72,12 @@ protected:
 	typedef std::vector<LivePeer*> PeerList;
 
 	Editor* const editor;
+	wxSocketServer* serv;
 	uint32_t client_mask;
 
 	wxString name;
 	wxString cd_key;
 
-	wxSocketServer* serv;
 	PeerList connecting_clients;
 	PeerList connected_clients;
 	LiveLogTab* log;

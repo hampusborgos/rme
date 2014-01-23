@@ -10,8 +10,8 @@
 
 LivePeer::LivePeer(LiveServer *server, wxSocketBase *socket) :
 	NetworkConnection(server, socket),
-	clientid(0),
-	parser(0)
+	parser(0),
+	clientid(0)
 {
 	lastColor = wxColor(0, 160, 0, 128);
 }

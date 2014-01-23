@@ -26,12 +26,12 @@
 #include <sstream>
 
 Map::Map() : BaseMap(),
-	waypoints(*this),
 	width(512),
 	height(512),
 	houses(*this),
 	has_changed(false),
-	unnamed(false)
+	unnamed(false),
+	waypoints(*this)
 {
 	// Earliest version possible
 	// Caller is responsible for converting us to proper version

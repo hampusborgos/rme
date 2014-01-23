@@ -479,7 +479,7 @@ wxObject* MainMenuBar::LoadItem(pugi::xml_node node, wxMenu* parent, wxArrayStri
 		std::replace(name.begin(), name.end(), '$', '&');
 
 		wxMenu* menu = newd wxMenu;
-		if ((attribute = node.attribute("special")) && attribute.as_string() == "RECENT_FILES") {
+		if ((attribute = node.attribute("special")) && std::string(attribute.as_string()) == "RECENT_FILES") {
 			recentFiles.UseMenu(menu);
 		} else {
 			for (pugi::xml_node menuNode = node.first_child(); menuNode; menuNode = menuNode.next_sibling()) {
@@ -887,10 +887,10 @@ namespace OnSearchForStuff
 				gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
 			}
 			Container* container;
-			if(search_unique && item->getUniqueID() > 0 ||
-					search_action && item->getActionID() > 0 ||
-					search_container && ((container = dynamic_cast<Container*>(item)) && container->getItemCount()) ||
-					search_writeable && item->getText().length() > 0)
+			if((search_unique && item->getUniqueID() > 0) ||
+					(search_action && item->getActionID() > 0) ||
+					(search_container && ((container = dynamic_cast<Container*>(item)) && container->getItemCount())) ||
+					(search_writeable && item->getText().length() > 0))
 			{
 				found.push_back(std::make_pair(tile, item));
 			}

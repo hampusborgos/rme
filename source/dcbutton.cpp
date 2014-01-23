@@ -99,10 +99,10 @@ void DCButton::OnPaint(wxPaintEvent& event) {
 		return;
 	}
 
-	static std::auto_ptr<wxPen> highlight_pen;
-	static std::auto_ptr<wxPen> dark_highlight_pen;
-	static std::auto_ptr<wxPen> light_shadow_pen;
-	static std::auto_ptr<wxPen> shadow_pen;
+	static std::unique_ptr<wxPen> highlight_pen;
+	static std::unique_ptr<wxPen> dark_highlight_pen;
+	static std::unique_ptr<wxPen> light_shadow_pen;
+	static std::unique_ptr<wxPen> shadow_pen;
 
 	if(highlight_pen.get() == nullptr)      highlight_pen.reset(newd wxPen(wxColor(0xFF,0xFF,0xFF), 1, wxSOLID));
 	if(dark_highlight_pen.get() == nullptr) dark_highlight_pen.reset(newd wxPen(wxColor(0xD4,0xD0,0xC8), 1, wxSOLID));

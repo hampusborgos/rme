@@ -421,15 +421,15 @@ void BrushToolPanel::LoadAllContents() {
 
 	wxSizer* size_sizer = newd wxBoxSizer(wxVERTICAL);;
 	wxSizer* sub_sizer = newd wxBoxSizer(wxHORIZONTAL);
-	RenderSize render_size;
 
+	/*RenderSize render_size;
 	if(large_icons) {
 		// 32x32
 		render_size = RENDER_SIZE_32x32;
 	} else {
 		// 16x16
 		render_size = RENDER_SIZE_16x16;
-	}
+	}*/
 	
 	if(large_icons) {
 		// Create the tool page with 32x32 icons

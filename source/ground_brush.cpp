@@ -38,13 +38,13 @@ int AutoBorder::edgeNameToID(std::string edgename) {
 
 bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush* owner, uint16_t ground_equivalent)
 {
-	ASSERT(ground != nullptr ? ground_equivalent != 0 : true);
+	ASSERT(ground ? ground_equivalent != 0 : true);
 
 	pugi::xml_attribute attribute;
 
 	bool optionalBorder = false;
 	if ((attribute = node.attribute("type"))) {
-		if (attribute.as_string() == "optional") {
+		if (std::string(attribute.as_string()) == "optional") {
 			optionalBorder = true;
 		}
 	}

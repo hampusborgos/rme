@@ -272,7 +272,7 @@ namespace MenuBar
 	{
 		Action() : id(0), kind(wxITEM_NORMAL) {}
 		Action(std::string s, int id, wxItemKind kind, wxCommandEventFunction handler)
-			: id(id), name(s), kind(kind), handler(handler), setting(0) {}
+			: id(id), setting(0), name(s), kind(kind), handler(handler) {}
 
 		int id;
 		int setting;

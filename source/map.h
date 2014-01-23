@@ -119,7 +119,6 @@ public:
 	Towns towns;
 	Houses houses;
 	Spawns spawns;
-	Waypoints waypoints;
 
 protected:
 	bool has_changed; // If the map has changed
@@ -128,6 +127,9 @@ protected:
 	friend class IOMapOTBM;
 	friend class IOMapOTMM;
 	friend class Editor;
+
+public:
+	Waypoints waypoints;
 };
 
 template <typename ForeachType>

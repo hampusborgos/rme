@@ -29,8 +29,8 @@
 #include "live_action.h"
 
 Editor::Editor(CopyBuffer& copybuffer) :
-	live_client(nullptr),
 	live_server(nullptr),
+	live_client(nullptr),
 	actionQueue(newd ActionQueue(*this)),
 	selection(*this),
 	copybuffer(copybuffer),
@@ -77,8 +77,8 @@ Editor::Editor(CopyBuffer& copybuffer) :
 }
 
 Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
-	live_client(nullptr),
 	live_server(nullptr),
+	live_client(nullptr),
 	actionQueue(newd ActionQueue(*this)),
 	selection(*this),
 	copybuffer(copybuffer),
@@ -909,7 +909,7 @@ void Editor::moveSelection(Position offset)
 	{
 		// First we get the old tile and it's position
 		Tile* tile = (*it);
-		const Position pos = tile->getPosition();
+		//const Position pos = tile->getPosition();
 
 		// Create the duplicate source tile, which will replace the old one later
 		Tile* old_src_tile = tile;

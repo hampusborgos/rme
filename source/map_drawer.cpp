@@ -331,7 +331,7 @@ void MapDrawer::DrawMap()
 							}
 							if(tile->isHouseTile() && options.show_houses)
 							{
-								if(tile->getHouseID() == current_house_id) {
+								if((int)tile->getHouseID() == current_house_id) {
 									r /= 2;
 								} else {
 									r /= 2;
@@ -544,7 +544,7 @@ void MapDrawer::DrawHigherFloors()
 				{
 					int draw_x = map_x*32 - view_scroll_x; if(map_z <= 7) draw_x -= (7-map_z)*32; else draw_x -= 32*(floor - map_z);
 					int draw_y = map_y*32 - view_scroll_y; if(map_z <= 7) draw_y -= (7-map_z)*32; else draw_y -= 32*(floor - map_z);
-					Position pos = tile->getPosition();
+					//Position pos = tile->getPosition();
 
 					if(tile->ground) {
 						if(tile->isPZ()) {
@@ -1401,7 +1401,7 @@ void MapDrawer::DrawTile(TileLocation* location) {
 
 		if(tile->isHouseTile() && options.show_houses)
 		{
-			if(tile->getHouseID() == current_house_id)
+			if((int)tile->getHouseID() == current_house_id)
 			{
 				r /= 2;
 			}
@@ -1518,7 +1518,7 @@ void MapDrawer::DrawTooltips()
 		int end_sy = tooltip->y + 16 - 7;
 
 
-		float vertexes [9][2] = {
+		int vertexes [9][2] = {
 			{tooltip->x,  start_sy},
 			{end_sx,      start_sy},
 			{end_sx,      end_sy},
@@ -1533,7 +1533,7 @@ void MapDrawer::DrawTooltips()
 		glColor4ub(255, 255, 225, 255);
 		glBegin(GL_POLYGON);
 		for(int i = 0; i < 8; ++i)
-			glVertex2f(vertexes[i][0], vertexes[i][1]);
+			glVertex2i(vertexes[i][0], vertexes[i][1]);
 		glEnd();
 		
 		glColor4ub(0, 0, 0, 255);
@@ -1541,8 +1541,8 @@ void MapDrawer::DrawTooltips()
 		glBegin(GL_LINES);
 		for(int i = 0; i < 8; ++i)
 		{
-			glVertex2f(vertexes[i  ][0], vertexes[i  ][1]);
-			glVertex2f(vertexes[i+1][0], vertexes[i+1][1]);
+			glVertex2i(vertexes[i  ][0], vertexes[i  ][1]);
+			glVertex2i(vertexes[i+1][0], vertexes[i+1][1]);
 		}
 		glEnd();
 	}

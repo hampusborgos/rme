@@ -69,10 +69,10 @@ public:
 	void DisconnectLog();
 
 protected:
-	LiveLogTab* log;
 	MemoryNodeFileReadHandle bn_reader;
 	MemoryNodeFileWriteHandle bn_writer;
 	VirtualIOMap map_version;
+	LiveLogTab* log;
 
 	wxString last_err;
 

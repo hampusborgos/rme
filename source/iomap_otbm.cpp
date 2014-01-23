@@ -46,10 +46,11 @@ typedef uint32_t flags_t;
 // H4X
 void reform(Map* map, Tile* tile, Item* item)
 {
+	/*
 	int aid = item->getActionID();
 	int id = item->getID();
 	int uid = item->getUniqueID();
-	/*
+
 	if (item->isDoor()) {
 		item->eraseAttribute("aid");
 		item->setAttribute("keyid", aid);
@@ -1138,7 +1139,6 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 				spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
 			}
 
-			bool posok = true;
 			Position creaturePosition(spawnPosition);
 
 			pugi::xml_attribute xAttribute = creatureNode.attribute("x");
