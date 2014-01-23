@@ -1,16 +1,15 @@
 What is this?
 =============
 
-This is a map editor for OpenTibia, which is an open source implementation of the MMORPG Tibia (which can be found at [tibia.net](http://tibia.net).
-You can find project for running your own server at [the otserv project](https://github.com/opentibia/server).
-The main fansite for instruction and help is [otland.net](http://otland.net).
-
+This is a map editor for OpenTibia, which is an open source implementation of the MMORPG Tibia (which can be found at [tibia.net](http://tibia.net)), the official website is [remeresmapeditor.com](http://remeresmapeditor.com).
+You can find the project for hosting your own server at [the otserv project](https://github.com/opentibia/server).
+The main fansite for help, discussion and servers is [otland.net](http://otland.net).
 
 I want to contribute
 ====================
 
 Contributions are very welcome, if you would like to make any changes, fork this project or request commit access.
-I’m liberal to allowing any and all help and my involvement will be restricted to reviewing changes for now.
+I (Remere) am liberal to allowing any and all help and my involvement will be restricted to reviewing changes for now.
 Please, if you would like to contribute anything, documentation, extensions or code speak up!
 
 Bugs
@@ -21,10 +20,9 @@ Have found a bug? Please create an issue in our [bug tracker](https://github.com
 Other Applications
 ==========
 
-To host your MMORPG game server, you can use [The Forgotten Server](https://github.com/otland/forgottenserver).
-To play your MMORPG game, you can use [OTClient](https://github.com/edubart/otclient)
-To map your MMORPG game, you can use this map editor.
-
+* To host your MMORPG game server, you can use [The Forgotten Server](https://github.com/otland/forgottenserver).
+* To play your MMORPG game, you can use [OTClient](https://github.com/edubart/otclient)
+* To map your MMORPG game, you can use this map editor.
 
 Download
 ========
