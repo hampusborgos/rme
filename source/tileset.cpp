@@ -27,8 +27,8 @@
 #include "pugicast.h"
 
 Tileset::Tileset(Brushes& brushes, const std::string& name) :
-	brushes(brushes),
-		name(name)
+	name(name),
+	brushes(brushes)
 {
 }
 
