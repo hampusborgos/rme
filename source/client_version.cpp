@@ -34,11 +34,18 @@ void ClientVersion::loadVersions()
 	data_dir_client_xml.Assign(gui.GetDataDirectory());
 	data_dir_client_xml.SetFullName(wxT("clients.xml"));
 
+	wxFileName work_dir_client_xml;
+	work_dir_client_xml.Assign(gui.getFoundDataDirectory());
+	work_dir_client_xml.SetFullName(wxT("clients.xml"));
+
 	file_to_load = exec_dir_client_xml;
 	if (!file_to_load.FileExists()) {
 		file_to_load = data_dir_client_xml;
 		if (!file_to_load.FileExists()) {
-			file_to_load.Clear();
+			file_to_load = work_dir_client_xml;
+			if(!file_to_load.FileExists()) {
+				file_to_load.Clear();
+			}
 		}
 	}
 
@@ -47,7 +54,8 @@ void ClientVersion::loadVersions()
 			wxT("Could not load clients.xml, editor will NOT be able to load any client data files.\n") +
 			wxT("Checked paths:\n") +
 			exec_dir_client_xml.GetFullPath() + "\n" +
-			data_dir_client_xml.GetFullPath()
+			data_dir_client_xml.GetFullPath() + "\n" +
+			work_dir_client_xml.GetFullPath()
 		);
 		return;
 	}
@@ -408,7 +416,10 @@ ClientVersion* ClientVersion::getLatestVersion()
 
 FileName ClientVersion::getDataPath() const
 {
-	return gui.GetDataDirectory() + data_path + FileName::GetPathSeparator();
+	wxString basePath = gui.GetDataDirectory();
+	if(!wxFileName(basePath).DirExists())
+		basePath = gui.getFoundDataDirectory();
+	return basePath + data_path + FileName::GetPathSeparator();
 }
 
 FileName ClientVersion::getLocalDataPath() const

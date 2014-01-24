@@ -239,7 +239,7 @@ struct writeableBlock3 {
 
 class ItemType {
 private:
-	ItemType(const ItemType&) {};
+	ItemType(const ItemType&) {}
 
 public:
 	ItemType();

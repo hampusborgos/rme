@@ -27,15 +27,15 @@ class Town
 public:
 	Town(uint32_t _id) : id(_id), name("") {}
 	Town(const Town& copy) : id(copy.id), name(copy.name), templepos(copy.templepos) {}
-	~Town() {};
+	~Town() {}
 
-	const std::string& getName() const {return name;};
-	void setName(std::string _name) {name = _name;};
+	const std::string& getName() const {return name;}
+	void setName(std::string _name) {name = _name;}
 
-	const Position& getTemplePosition() const {return templepos;};
+	const Position& getTemplePosition() const {return templepos;}
 	void setTemplePosition(const Position& _pos);
 
-	uint32_t getID() const {return id;};
+	uint32_t getID() const {return id;}
 	void setID(uint32_t _id) {id = _id;}
 private:
 	uint32_t id;

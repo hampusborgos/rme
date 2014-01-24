@@ -114,7 +114,7 @@ public:
 	TerrainBrush();
 	virtual ~TerrainBrush();
 	
-	virtual bool canDraw(BaseMap* map, Position pos) const {return true;};
+	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}
 
 	virtual std::string getName() const {return name;}
 	virtual void setName(std::string newname) {name = newname;}

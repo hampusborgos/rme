@@ -17,7 +17,7 @@ public:
 
 	bool Connect();
 	void Close();
-	void Log(wxString message) {};
+	void Log(wxString message) {}
 
 	void HandleEvent(wxSocketEvent& evt);
 

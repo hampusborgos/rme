@@ -92,11 +92,14 @@ bool Application::OnInit()
 	_CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
-	std::cout << "This is free software: you are free to change and redistribute it.\n";
-	std::cout << "There is NO WARRANTY, to the extent permitted by law. \n";
-	std::cout << "Review COPYING in RME distribution for details.\n";
+	std::cout << "This is free software: you are free to change and redistribute it." << std::endl;
+	std::cout << "There is NO WARRANTY, to the extent permitted by law." << std::endl;
+	std::cout << "Review COPYING in RME distribution for details." << std::endl;
 	mt_seed(time(nullptr));
 	srand(time(nullptr));
+
+	// Discover data directory
+	gui.discoverDataDirectory("clients.xml");
 
 	// Tell that we are the real thing
 	wxAppConsole::SetInstance(this);
@@ -212,7 +215,6 @@ bool Application::OnInit()
 
 	FileName save_failed_file = gui.GetLocalDataDirectory();
 	save_failed_file.SetName(wxT(".saving.txt"));
-	std::string argh = nstr(save_failed_file.GetFullPath());
 	if(save_failed_file.FileExists())
 	{
 		std::ifstream f(nstr(save_failed_file.GetFullPath()).c_str(), std::ios::in);
@@ -372,7 +374,17 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menu_bar = newd MainMenuBar(this);
 	wxArrayString warnings;
 	wxString error;
-	menu_bar->Load(FileName(gui.GetDataDirectory() + wxT("menubar.xml")), warnings, error);
+
+	wxFileName filename;
+	filename.Assign(gui.getFoundDataDirectory() + wxT("menubar.xml"));
+	if(!filename.FileExists())
+		filename = FileName(gui.GetDataDirectory() + wxT("menubar.xml"));
+
+	if(!menu_bar->Load(filename, warnings, error)) {
+		wxLogError(wxString() +
+			wxT("Could not load menubar.xml, editor will NOT be able to show its menu.\n")
+		);
+	}
 
 	wxStatusBar* statusbar = CreateStatusBar();
 	statusbar->SetFieldsCount(3);
