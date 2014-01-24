@@ -61,7 +61,7 @@ void NetworkConnection::Send()
 		NetworkMessage* current_msg = waiting_messages.front();
 		std::vector<uint8_t>& buffer = current_msg->buffer;
 		uint32_t& sent = current_msg->sent;
-		if(sent == ~0)
+		if(sent == (uint32_t)(~0))
 		{
 			// Gotta add 4 bytes size
 			uint32_t msgsize = buffer.size() - 4;

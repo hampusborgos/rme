@@ -722,7 +722,7 @@ void DirtyList::AddPosition(int x, int y, int z)
 	}
 	else 
 	{
-		ValueType v = {m, (1 << z)};
+		ValueType v = {m, (uint32_t)(1 << z)};
 		iset.insert(v);
 	}
 }

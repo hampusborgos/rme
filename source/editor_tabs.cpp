@@ -88,7 +88,7 @@ void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 
 	std::cout << old << nnew;
 
-	if(mt_old && mt_new && mt_old->HasSameReference(mt_new) == false || !mt_old && mt_new)
+	if((mt_old && mt_new && mt_old->HasSameReference(mt_new) == false) || (!mt_old && mt_new))
 	{
 		gui.RefreshPalettes(mt_new->GetMap());
 		gui.UpdateMenus();

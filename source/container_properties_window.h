@@ -36,7 +36,7 @@ public:
 	Container* getParentContainer();
 	void setItem(Item* item);
 private:
-	static std::auto_ptr<ContainerItemPopupMenu> popup_menu;
+	static std::unique_ptr<ContainerItemPopupMenu> popup_menu;
 	static ContainerItemPopupMenu* getMenu() {
 		if(popup_menu.get() == nullptr) popup_menu.reset(newd ContainerItemPopupMenu());
 		return popup_menu.get();

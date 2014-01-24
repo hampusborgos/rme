@@ -132,7 +132,7 @@ bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush) {
 		}
 		// Not in the current display, search the hidden one's
 		for(size_t i = 0; i < tileset_choice->GetCount(); ++i) {
-			if(current_index != i) {
+			if(current_index != (int)i) {
 				const TilesetCategory* tsc = reinterpret_cast<const TilesetCategory*>(tileset_choice->GetClientData(i));
 				for(BrushVector::const_iterator iter = tsc->brushlist.begin();
 						iter != tsc->brushlist.end();

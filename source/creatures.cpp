@@ -317,7 +317,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 
 			pugi::xml_document monsterDoc;
 			pugi::xml_parse_result monsterResult = monsterDoc.load_file(monsterFile.GetFullPath().mb_str());
-			if (!result) {
+			if (!monsterResult) {
 				continue;
 			}
 
@@ -336,7 +336,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 					} else {
 						tileSet = materials.tilesets["Others"];
 					}
-					ASSERT(ts != nullptr);
+					ASSERT(tileSet != nullptr);
 					
 					Brush* brush = newd CreatureBrush(creatureType);
 					brushes.addBrush(brush);
@@ -363,7 +363,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 				} else {
 					tileSet = materials.tilesets["Others"];
 				}
-				ASSERT(ts != nullptr);
+				ASSERT(tileSet != nullptr);
 
 				Brush* brush = newd CreatureBrush(creatureType);
 				brushes.addBrush(brush);

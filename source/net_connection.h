@@ -65,9 +65,9 @@ public:
 	void Send(NetworkMessage* nmsg); // Put a message on the send queue (might send immedietly)
 	void Send(); // Send waiting messages
 protected:
-	NetworkMessage* receiving_message;
 	wxSocketBase* socket;
 	NetSocket* nsocket;
+	NetworkMessage* receiving_message;
 	std::deque<NetworkMessage*> waiting_messages;
 };
 

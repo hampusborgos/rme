@@ -46,12 +46,14 @@ protected:
 	
 	virtual int getFPS() const = 0;
 protected:
-	bool dead;
 	wxStopWatch game_timer;
 private:
 	bool paused_val;
 
 	DECLARE_EVENT_TABLE()
+
+protected:
+	bool dead;
 };
 
 const int TETRIS_MAPHEIGHT = 20;
@@ -322,8 +324,8 @@ TetrisPanel::~TetrisPanel() {
 
 
 const wxBrush& TetrisPanel::GetBrush(Color color) const {
-	static std::auto_ptr<wxBrush> yellow_brush;
-	static std::auto_ptr<wxBrush> purple_brush;
+	static std::unique_ptr<wxBrush> yellow_brush;
+	static std::unique_ptr<wxBrush> purple_brush;
 
 	if(yellow_brush.get() == nullptr) yellow_brush.reset(newd wxBrush(wxColor(255, 255, 0)));
 	if(purple_brush.get() == nullptr) purple_brush.reset(newd wxBrush(wxColor(128, 0, 255)));
@@ -731,10 +733,10 @@ void SnakePanel::NewApple() {
 
 void SnakePanel::Move(int dir) {
 	if(
-			last_dir == NORTH && dir == SOUTH ||
-			last_dir == WEST && dir == EAST ||
-			last_dir == EAST && dir == WEST ||
-			last_dir == SOUTH && dir == NORTH) {
+			(last_dir == NORTH && dir == SOUTH) ||
+			(last_dir == WEST && dir == EAST) ||
+			(last_dir == EAST && dir == WEST) ||
+			(last_dir == SOUTH && dir == NORTH)) {
 		return;
 	}
 	int nx = 0, ny = 0;

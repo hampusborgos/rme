@@ -58,8 +58,8 @@ Floor::Floor(int sx, int sy, int z)
 //**************** QTreeNode **********************
 
 QTreeNode::QTreeNode(BaseMap& map) :
-	visible(0),
 	map(map),
+	visible(0),
 	isLeaf(false)
 {
 	// Doesn't matter if we're leaf or node

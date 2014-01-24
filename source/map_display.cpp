@@ -1625,7 +1625,7 @@ void MapCanvas::OnGainMouse(wxMouseEvent& event)
 
 void MapCanvas::OnKeyDown(wxKeyEvent& event)
 {
-	char keycode = event.GetKeyCode();
+	//char keycode = event.GetKeyCode();
 	// std::cout << "Keycode " << keycode << std::endl;
 	switch(event.GetKeyCode())
 	{
