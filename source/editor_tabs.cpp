@@ -86,7 +86,7 @@ void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 	int old = evt.GetOldSelection();
 	int nnew = evt.GetSelection();
 
-	std::cout << old << nnew;
+	//std::cout << old << nnew;
 
 	if((mt_old && mt_new && mt_old->HasSameReference(mt_new) == false) || (!mt_old && mt_new))
 	{

@@ -219,8 +219,11 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 {
 	wxString possiblePaths[] = {
 		GetExecDirectory(),
-		GetDataDirectory(),
 		wxGetCwd() + "/",
+
+		// these are used usually when running from build directories
+		GetExecDirectory() + "/../",
+		wxGetCwd() + "/../",
 	};
 
 	bool found = false;

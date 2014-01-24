@@ -51,5 +51,5 @@ Assuming that you have all required tools to compile (gcc, cmake, the libraries)
 mkdir build && cd build
 cmake ..
 make -j4
-cd .. && cp build/rme rme && ./rme
+./rme
 ```
