@@ -244,6 +244,9 @@ public:
 	static wxString GetLocalDirectory();
 	static wxString GetExtensionsDirectory();
 
+	void discoverDataDirectory(const wxString& existentFile);
+	wxString getFoundDataDirectory() { return m_dataDirectory; }
+
 	// Load/unload a client version (takes care of dialogs aswell)
 	void UnloadVersion();
 	bool LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force = false);
@@ -328,6 +331,7 @@ protected:
 	// Public members
 	//=========================================================================
 public:
+	wxString m_dataDirectory;
 	wxAuiManager* aui_manager;
 	MapTabbook* tabbook;
 	MainFrame* root; // The main frame

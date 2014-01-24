@@ -283,7 +283,7 @@ class GotoPositionDialog : public wxDialog
 {
 public:
 	GotoPositionDialog(wxWindow* parent, Editor& editor);
-	~GotoPositionDialog() {};
+	~GotoPositionDialog() {}
 
 	void OnTypeText(wxKeyEvent&);
 	void OnClickOK(wxCommandEvent&);

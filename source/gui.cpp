@@ -215,6 +215,27 @@ wxString GUI::GetExtensionsDirectory()
 	return local_directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 }
 
+void GUI::discoverDataDirectory(const wxString& existentFile)
+{
+	wxString possiblePaths[] = {
+		GetExecDirectory(),
+		GetDataDirectory(),
+		wxGetCwd() + "/",
+	};
+
+	bool found = false;
+	for(const wxString& path : possiblePaths) {
+		if(wxFileName(path + "data/" + existentFile).FileExists()) {
+			m_dataDirectory = path + "data/";
+			found = true;
+			break;
+		}
+	}
+
+	if(!found)
+		wxLogError(wxString() + wxT("Could not find data directory.\n"));
+}
+
 bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force)
 {
 	if(ClientVersion::get(ver) == nullptr)

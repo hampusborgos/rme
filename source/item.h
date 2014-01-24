@@ -85,18 +85,18 @@ public:
 	// Get memory footprint size
 	uint memsize() const;
 	/*
-	virtual Container* getContainer() {return nullptr;};
-	virtual const Container* getContainer() const {return nullptr;};
-	virtual Teleport* getTeleport() {return nullptr;};
-	virtual const Teleport* getTeleport() const {return nullptr;};
-	virtual TrashHolder* getTrashHolder() {return nullptr;};
-	virtual const TrashHolder* getTrashHolder() const {return nullptr;};
-	virtual Mailbox* getMailbox() {return nullptr;};
-	virtual const Mailbox* getMailbox() const {return nullptr;};
-	virtual Door* getDoor() {return nullptr;};
-	virtual const Door* getDoor() const {return nullptr;};
-	virtual MagicField* getMagicField() {return nullptr;};
-	virtual const MagicField* getMagicField() const {return nullptr;};
+	virtual Container* getContainer() {return nullptr;}
+	virtual const Container* getContainer() const {return nullptr;}
+	virtual Teleport* getTeleport() {return nullptr;}
+	virtual const Teleport* getTeleport() const {return nullptr;}
+	virtual TrashHolder* getTrashHolder() {return nullptr;}
+	virtual const TrashHolder* getTrashHolder() const {return nullptr;}
+	virtual Mailbox* getMailbox() {return nullptr;}
+	virtual const Mailbox* getMailbox() const {return nullptr;}
+	virtual Door* getDoor() {return nullptr;}
+	virtual const Door* getDoor() const {return nullptr;}
+	virtual MagicField* getMagicField() {return nullptr;}
+	virtual const MagicField* getMagicField() const {return nullptr;}
 	*/
 
 	// OTBM map interface
@@ -159,8 +159,8 @@ public:
 	DoorBrush* getDoorBrush() const;
 	TableBrush* getTableBrush() const;
 	CarpetBrush* getCarpetBrush() const;
-	Brush* getDoodadBrush() const {return item_db[id].doodad_brush;}; // This is not necessarily a doodad brush
-	RAWBrush* getRAWBrush() const {return item_db[id].raw_brush;};
+	Brush* getDoodadBrush() const {return item_db[id].doodad_brush;} // This is not necessarily a doodad brush
+	RAWBrush* getRAWBrush() const {return item_db[id].raw_brush;}
 	uint16_t getGroundEquivalent() const {return item_db[id].ground_equivalent;}
 	uint16_t hasBorderEquivalent() const {return item_db[id].has_equivalent;}
 	uint32_t getBorderGroup() const {return item_db[id].border_group;}

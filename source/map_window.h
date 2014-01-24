@@ -81,7 +81,7 @@ class MapScrollBar : public wxScrollBar
 public:
 	MapScrollBar(MapWindow* parent, wxWindowID id, long style, wxWindow* canvas) : 
 	  wxScrollBar(parent, id, wxDefaultPosition, wxDefaultSize, style), canvas(canvas) {}
-	virtual ~MapScrollBar() {};
+	virtual ~MapScrollBar() {}
 
 	void OnKey(wxKeyEvent& event) {canvas->GetEventHandler()->AddPendingEvent(event);}
 	void OnWheel(wxMouseEvent& event) {canvas->GetEventHandler()->AddPendingEvent(event);}
