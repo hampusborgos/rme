@@ -14,8 +14,8 @@ public:
 	MaterialsExtension(std::string name, std::string author, std::string description);
 	~MaterialsExtension();
 
-	void addVersion(std::string str);
-	bool isForVersion(uint16_t ver_id);
+	void addVersion(const std::string& versionString);
+	bool isForVersion(uint16_t versionId);
 	std::string getVersionString();
 
 	std::string name;

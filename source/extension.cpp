@@ -20,69 +20,60 @@ MaterialsExtension::~MaterialsExtension()
 	// ...
 }
 
-void MaterialsExtension::addVersion(std::string verStr)
+void MaterialsExtension::addVersion(const std::string& versionString)
 {
-	if(verStr == "all")
-	{
+	if (versionString == "all") {
 		for_all_versions = true;
-	}
-	else
-	{
-		ClientVersion* client = ClientVersion::get(verStr);
-		if(client)
-		{
+	} else {
+		ClientVersion* client = ClientVersion::get(versionString);
+		if (client) {
 			ClientVersionList supported_versions = ClientVersion::getAllVersionsSupportedForClientVersion(client);
 			version_list.insert(version_list.end(), supported_versions.begin(), supported_versions.end());
 		}
 	}
 }
 
-bool MaterialsExtension::isForVersion(uint16_t ver_id)
+bool MaterialsExtension::isForVersion(uint16_t versionId)
 {
-	if (for_all_versions)
+	if (for_all_versions) {
 		return true;
+	}
 
-	for(ClientVersionList::iterator iter = version_list.begin();
-		iter != version_list.end();
-		++iter)
-	{
-		if((*iter)->getID() == ver_id)
+	for (ClientVersion* version : version_list) {
+		if (version->getID() == versionId) {
 			return true;
+		}
 	}
 	return false;
 }
 
 std::string MaterialsExtension::getVersionString()
 {
-	if (for_all_versions)
+	if (for_all_versions) {
 		return "All";
+	}
 
 	std::string versions;
 	std::string last;
-	for(ClientVersionList::iterator iter = version_list.begin();
-		iter != version_list.end();
-		++iter)
-	{
-		if(last.size())
-		{
-			if(versions.size())
+	for (ClientVersion* version : version_list) {
+		if (!last.empty()) {
+			if (!versions.empty()) {
 				versions += ", " + last;
-			else
+			} else {
 				versions = last;
+			}
 		}
-
-		last = (*iter)->getName();
+		last = version->getName();
 	}
 
-	if(last.size())
-	{
-		if(versions.size())
+	if (!last.empty()) {
+		if (!versions.empty()) {
 			versions += " and " + last;
-		else
+		} else {
 			versions = last;
-	}
-	else
+		}
+	} else {
 		return "None";
-
+	}
 	return versions;
 }

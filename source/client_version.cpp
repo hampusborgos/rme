@@ -81,7 +81,7 @@ void ClientVersion::loadVersions()
 			} else if (childName == "clients") {
 				for (pugi::xml_node versionNode = childNode.first_child(); versionNode; versionNode = versionNode.next_sibling()) {
 					if (as_lower_str(versionNode.name()) == "client") {
-						loadVersionExtensions(versionNode);
+						loadVersion(versionNode);
 					}
 				}
 			}
@@ -94,7 +94,7 @@ void ClientVersion::loadVersions()
 
 			for (pugi::xml_node versionNode = childNode.first_child(); versionNode; versionNode = versionNode.next_sibling()) {
 				if (as_lower_str(versionNode.name()) == "client") {
-					loadVersion(versionNode);
+					loadVersionExtensions(versionNode);
 				}
 			}
 		}
@@ -144,12 +144,12 @@ void ClientVersion::loadOTBInfo(pugi::xml_node otbNode)
 	}
 
 	pugi::xml_attribute attribute;
-	OtbVersion otb = {"", OTB_VERSION_3, CLIENT_VERSION_NONE};
 	if (!(attribute = otbNode.attribute("client"))) {
 		wxLogError(wxT("Node 'otb' must contain 'client' tag."));
 		return;
 	}
 
+	OtbVersion otb = {"", OTB_VERSION_3, CLIENT_VERSION_NONE};
 	otb.name = attribute.as_string();
 	if (!(attribute = otbNode.attribute("id"))) {
 		wxLogError(wxT("Node 'otb' must contain 'id' tag."));
@@ -275,17 +275,16 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 		}
 	}
 
-	if (client_versions[version->getID()] != nullptr) {
-		wxString error;
-		error << wxT("Duplicate version id ") << version->getID() << wxT(", discarding version '") << version->name << wxT("'.");
-		wxLogError(error);
+	if (client_versions[version->getID()]) {
+		wxLogError(wxT("Duplicate version id ") + std::to_string(version->getID()) + wxT(", discarding version '") + version->name + wxT("'."));
 		delete version;
 		return;
 	}
 
 	client_versions[version->getID()] = version;
-	if (should_be_default)
+	if (should_be_default) {
 		latest_version = version;
+	}
 }
 
 void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
@@ -313,7 +312,7 @@ void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
 		ClientVersion* fromVersion = get(from);
 		ClientVersion* toVersion = get(to);
 
-		if ((from.empty() && to.empty()) || (!fromVersion && !toVersion)) {
+		if (!fromVersion && !toVersion) {
 			wxLogError(wxT("Unknown client extension data."));
 			continue;
 		}
@@ -565,21 +564,17 @@ ClientVersionList ClientVersion::getExtensionsSupported() const
 	return extension_versions;
 }
 
-ClientVersionList ClientVersion::getAllVersionsSupportedForClientVersion(ClientVersion* v)
+ClientVersionList ClientVersion::getAllVersionsSupportedForClientVersion(ClientVersion* clientVersion)
 {
-	ClientVersionList vs;
-	for (VersionMap::iterator iv = client_versions.begin(); iv != client_versions.end(); ++iv)
-	{
-		ClientVersionList extvs = iv->second->getExtensionsSupported();
-		for (ClientVersionList::iterator ev = extvs.begin(); ev != extvs.end(); ++ev)
-		{
-			if (v == *ev)
-			{
-				vs.push_back(iv->second);
-				break;
+	ClientVersionList versionList;
+	for (const auto& versionEntry : client_versions) {
+		ClientVersion* version = versionEntry.second;
+		for (ClientVersion* checkVersion : version->getExtensionsSupported()) {
+			if (clientVersion == checkVersion) {
+				versionList.push_back(version);
 			}
 		}
 	}
-	std::sort(vs.begin(), vs.end(), VersionComparisonPredicate);
-	return vs;
+	std::sort(versionList.begin(), versionList.end(), VersionComparisonPredicate);
+	return versionList;
 }
