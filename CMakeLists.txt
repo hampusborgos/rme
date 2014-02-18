@@ -14,6 +14,10 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
 
 find_package(OpenGL REQUIRED)
 find_package(LibArchive REQUIRED)
+
+if(WIN32)
+    set(Boost_THREADAPI win32)
+endif()
 find_package(Boost 1.34.0 COMPONENTS thread system REQUIRED)
 
 find_package(wxWidgets COMPONENTS html aui gl adv core net base REQUIRED)
