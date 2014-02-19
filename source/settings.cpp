@@ -310,7 +310,7 @@ void Settings::load() {
 		use_file_cfg = true;
 		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Use registry
-		conf = newd wxConfig(wxT("Remere's Map Editor"), wxT("Remere"), wxT(""), wxT(""), wxCONFIG_USE_GLOBAL_FILE);
+		conf = newd wxConfig(wxT("Remere's Map Editor 3"), wxT("Remere3"), wxT(""), wxT(""), wxCONFIG_USE_GLOBAL_FILE);
 		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #else
