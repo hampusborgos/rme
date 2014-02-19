@@ -126,7 +126,7 @@ EditorTab* MapTabbook::GetInternalTab(int idx)
 
 EditorTab* MapTabbook::GetCurrentTab()
 {
-	if(GetTabCount() == 0)
+	if(GetTabCount() == 0 || GetSelection() == -1)
 		return nullptr;
 
 	return dynamic_cast<EditorTab*>(GetInternalTab(GetSelection()));
