@@ -423,7 +423,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		for(uint i = 0; i < sType->numsprites; ++i)
 		{
 			uint32_t sprite_id;
-			if (datVersion == DAT_VERSION_96)
+			if (datVersion == DAT_VERSION_96 || settings.getInteger(Config::SPR_U32))
 			{
 				file.getU32(sprite_id);
 			}
