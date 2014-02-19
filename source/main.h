@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -80,13 +80,8 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 
 // Libarchive, for OTGZ
 #ifdef OTGZ_SUPPORT
-#ifdef __linux
 #include <archive.h>
 #include <archive_entry.h>
-#else
-#include <libarchive/archive.h>
-#include <libarchive/archive_entry.h>
-#endif
 #endif
 
 // This has annoyed me one time too many

@@ -37,7 +37,9 @@ BEGIN_EVENT_TABLE(PreferencesWindow, wxDialog)
 	EVT_COLLAPSIBLEPANE_CHANGED(wxID_ANY, PreferencesWindow::OnCollapsiblePane)
 END_EVENT_TABLE()
 
-PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Preferences"), wxDefaultPosition, wxSize(400, 400), wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX) {
+PreferencesWindow::PreferencesWindow(wxWindow* parent) :
+	wxDialog(parent, wxID_ANY, wxT("Preferences"), wxDefaultPosition, wxSize(400, 400), wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX)
+{
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
@@ -449,13 +451,25 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	options_sizer->Add(default_client_tooltip, 0);
 	options_sizer->Add(default_version_choice, 0);
 	SetWindowToolTip(default_client_tooltip, default_version_choice, wxT("This will decide what client version will be used when new maps are created."));
-	
+
 	// Check file sigs checkbox
 	options_sizer->Add(check_sigs_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Check file signatures")));
 	options_sizer->Add(10, 1);
 	check_sigs_chkbox->SetValue(settings.getInteger(Config::CHECK_SIGNATURES));
 	check_sigs_chkbox->SetToolTip(wxT("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs."));
-    
+
+	// Check file sigs checkbox
+	options_sizer->Add(sprU32_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Force U32 sprite size")));
+	options_sizer->Add(10, 1);
+	sprU32_chkbox->SetValue(settings.getInteger(Config::SPR_U32));
+	sprU32_chkbox->SetToolTip(wxT("When this option is checked, Spr will be able to load u32 sprites."));
+
+	// Check file sigs checkbox
+	options_sizer->Add(sprAlpha_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Force sprites with alpha channel")));
+	options_sizer->Add(10, 1);
+	sprAlpha_chkbox->SetValue(settings.getInteger(Config::SPR_ALPHA));
+	sprAlpha_chkbox->SetToolTip(wxT("When this option is checked, Spr will be able to load sprites with alpha channel."));
+
 	// Add the grid sizer
 	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
 
@@ -496,7 +510,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
     }
 
 	// Set the sizers
-    client_list_window->SetSizer(client_list_sizer);
+	client_list_window->SetSizer(client_list_sizer);
 	topsizer->Add(client_list_window, wxSizerFlags(1));
 	client_page->SetSizerAndFit(topsizer);
 
@@ -656,6 +670,8 @@ void PreferencesWindow::Apply()
 		version_counter++;
     }
 	settings.setInteger(Config::CHECK_SIGNATURES, check_sigs_chkbox->GetValue());
+	settings.setInteger(Config::SPR_U32, sprU32_chkbox->GetValue());
+	settings.setInteger(Config::SPR_ALPHA, sprAlpha_chkbox->GetValue());
 
 	// Make sure to reload client paths
 	ClientVersion::saveVersions();

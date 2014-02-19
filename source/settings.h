@@ -129,6 +129,9 @@ namespace Config {
 		NUMERICAL_HOTKEYS,
 		RECENT_FILES,
 
+		SPR_U32,
+		SPR_ALPHA,
+
 		LAST,
 	};
 }

@@ -83,8 +83,8 @@ void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 	MapTab* mt_old = dynamic_cast<MapTab*>(evt.GetOldSelection() != -1? GetTab(evt.GetOldSelection()) : nullptr);
 	MapTab* mt_new = dynamic_cast<MapTab*>(evt.GetSelection() != -1? GetTab(evt.GetSelection()) : nullptr);
 
-	int old = evt.GetOldSelection();
-	int nnew = evt.GetSelection();
+	//int old = evt.GetOldSelection();
+	//int nnew = evt.GetSelection();
 
 	//std::cout << old << nnew;
 
