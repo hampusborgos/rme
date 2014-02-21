@@ -12,12 +12,14 @@
 #include <stdlib.h>
 #include <cmath>
 #include <iomanip>
+#include <string>
 
 #include "mt_rand.h"
 
-namespace std {
-	typedef std::basic_string<wchar_t> wstring;
-};
+//
+inline bool testFlags(size_t flags, size_t test) {
+	return (flags & test) != 0;
+}
 
 // Function-like convertions between float, int and doubles
 std::string i2s(int i);

@@ -2,73 +2,67 @@
 #ifndef _RME_NET_CONNECTION_H_
 #define _RME_NET_CONNECTION_H_
 
-class LiveSocket;
-class LiveServer;
-class NetworkConnection;
+#include "position.h"
 
-class NetworkMessage {
-public:
+#include <string>
+#include <vector>
+#include <cstdint>
+#include <thread>
+#include <mutex>
+
+struct NetworkMessage
+{
 	NetworkMessage();
-	~NetworkMessage();
 
-	void Reset();
-	
-	void OnSend();
-	void OnReceive();
+	void clear();
+	void expand(const size_t length);
 
-	void AddByte(uint8_t u8);
-	void AddU8(uint8_t u8);
-	void AddU16(uint16_t u16);
-	void AddU32(uint32_t u32);
-	void AddString(const std::string& str);
-	void AddPosition(const Position& pos);
+	//
+	template<typename T> T read()
+	{
+		T& value = *reinterpret_cast<T*>(&buffer[position]);
+		position += sizeof(T);
+		return value;
+	}
 
-	uint8_t ReadByte();
-	uint8_t ReadU8();
-	uint16_t ReadU16();
-	uint32_t ReadU32();
-	std::string ReadString();
-	Position ReadPosition();
-protected:
+	template<typename T> void write(const T& value)
+	{
+		expand(sizeof(T));
+		memcpy(&buffer[position], &value, sizeof(T));
+		position += sizeof(T);
+	}
+
+	//
 	std::vector<uint8_t> buffer;
-	union {
-		uint32_t sent;
-		uint32_t read;
-	};
-
-	friend class NetworkConnection;
+	size_t position;
+	size_t size;
 };
 
-class NetSocket {
-public:
-	NetSocket() {}
-	virtual ~NetSocket() {}
+template<> std::string NetworkMessage::read<std::string>();
+template<> Position NetworkMessage::read<Position>();
+template<> void NetworkMessage::write<std::string>(const std::string& value);
+template<> void NetworkMessage::write<Position>(const Position& value);
 
-	NetworkMessage* AllocMessage();
-	void FreeMessage(NetworkMessage* msg);
-	
-	virtual void Log(wxString message) = 0;
-protected:
-	std::vector<NetworkMessage*> message_pool;
-};
+class NetworkConnection
+{
+	private:
+		NetworkConnection();
+		NetworkConnection(const NetworkConnection& copy) = delete;
 
-class NetworkConnection {
-public:
-	NetworkConnection(NetSocket* nsocket, wxSocketBase* socket);
-	~NetworkConnection();
+	public:
+		~NetworkConnection();
 
-	void Close();
+		static NetworkConnection& getInstance();
 
-	wxString GetHost() const;
+		bool start();
+		void stop();
 
-	NetworkMessage* Receive();
-	void Send(NetworkMessage* nmsg); // Put a message on the send queue (might send immedietly)
-	void Send(); // Send waiting messages
-protected:
-	wxSocketBase* socket;
-	NetSocket* nsocket;
-	NetworkMessage* receiving_message;
-	std::deque<NetworkMessage*> waiting_messages;
+		boost::asio::io_service& get_service();
+
+	private:
+		boost::asio::io_service* service;
+		std::thread thread;
+		bool stopped;
 };
 
 #endif

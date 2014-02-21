@@ -20,7 +20,10 @@
 #ifndef __POSITION_HPP__
 #define __POSITION_HPP__
 
-//This is an inline class, hence the .hpp suffix
+#include <ostream>
+#include <cstdint>
+#include <vector>
+#include <list>
 
 class SmallPosition;
 

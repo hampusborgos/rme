@@ -799,19 +799,13 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 
 bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 {
-	if (id > 20000 && id < 20100) {
-		// WTF is the use of this shit? :P
+	ClientVersionID clientVersion = gui.GetCurrentVersionID();
+	if (clientVersion < CLIENT_VERSION_980 && id > 20000 && id < 20100) {
 		itemNode = itemNode.next_sibling();
 		return true;
-
-#if 0
-		// What OT does...
-		id = id - 20000;
-
-		ItemType* iType = newd ItemType();
-		iType->id = id;
-		items[id] = iType;
-#endif
+	} else if (id > 30000 && id < 30100) {
+		itemNode = itemNode.next_sibling();
+		return true;
 	}
 
 	ItemType& it = getItemType(id);

@@ -375,6 +375,8 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		case DAT_VERSION_86: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
 			// Same .dat loader, the change is only sprite id -> u32
 		case DAT_VERSION_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
+		case DAT_VERSION_1010: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1010; break;
+		case DAT_VERSION_1021: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
 		default:
 			error = wxT("Unknown .dat format version.");
 			return false;
@@ -407,7 +409,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		file.getU8(sType->frames); // Number of blendframes (some sprites consist of several merged sprites)
 		file.getU8(sType->xdiv);
 		file.getU8(sType->ydiv);
-		if(datVersion == DAT_VERSION_74)
+		if(datVersion <= DAT_VERSION_74)
 			sType->zdiv = 1;
 		else
 			file.getU8(sType->zdiv); // Is this ever used? Maybe it means something else?
@@ -423,7 +425,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		for(uint i = 0; i < sType->numsprites; ++i)
 		{
 			uint32_t sprite_id;
-			if (datVersion == DAT_VERSION_96)
+			if (datVersion >= DAT_VERSION_96)
 			{
 				file.getU32(sprite_id);
 			}
@@ -889,6 +891,7 @@ bool GraphicManager::loadSpriteMetadataFlagsVer78(FileReadHandle& file, GameSpri
 	} while (optbyte != 0xff);
 	return true;
 }
+
 bool GraphicManager::loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
 {
 	// read the options until we find a 0xff
@@ -1046,6 +1049,233 @@ bool GraphicManager::loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSpri
 		}
 	} while (optbyte != 0xff);
 	return true;
+}
+
+bool GraphicManager::loadSpriteMetadataFlagsVer1010(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+{
+	uint8_t currentByte;
+	uint8_t lastByte = VER_1010_FLAG_LAST;
+	while (true) {
+		file.getByte(currentByte);
+		switch (currentByte) {
+			case VER_1010_FLAG_BANK:
+				file.skip(2);
+				break;
+			case VER_1010_FLAG_CLIP:
+				break;
+			case VER_1010_FLAG_BOTTOM:
+				break;
+			case VER_1010_FLAG_TOP:
+				break;
+			case VER_1010_FLAG_CONTAINER:
+				break;
+			case VER_1010_FLAG_CUMULATIVE:
+				break;
+			case VER_1010_FLAG_FORCEUSE:
+				break;
+			case VER_1010_FLAG_MULTIUSE:
+				break;
+			case VER_1010_FLAG_WRITE:
+			case VER_1010_FLAG_WRITEONCE:
+				file.skip(2);
+				break;
+			case VER_1010_FLAG_LIQUIDCONTAINER:
+				break;
+			case VER_1010_FLAG_LIQUIDPOOL:
+				break;
+			case VER_1010_FLAG_UNPASS:
+				break;
+			case VER_1010_FLAG_UNMOVE:
+				break;
+			case VER_1010_FLAG_UNSIGHT:
+				break;
+			case VER_1010_FLAG_AVOID:
+				break;
+			case VER_1010_FLAG_NOMOVEMENTANIMATION:
+				break;
+			case VER_1010_FLAG_TAKE:
+				break;
+			case VER_1010_FLAG_HANG:
+				break;
+			case VER_1010_FLAG_HOOKSOUTH:
+				break;
+			case VER_1010_FLAG_HOOKEAST:
+				break;
+			case VER_1010_FLAG_ROTATE:
+				break;
+			case VER_1010_FLAG_LIGHT: {
+				file.skip(2);
+				file.skip(2);
+				break;
+			}
+			case VER_1010_FLAG_DONTHIDE:
+				break;
+			case VER_1010_FLAG_TRANSLUCENT:
+				break;
+			case VER_1010_FLAG_SHIFT: {
+				file.getU16(sType->drawoffset_x);
+				file.getU16(sType->drawoffset_y);
+				break;
+			}
+			case VER_1010_FLAG_HEIGHT:
+				file.getU16(sType->draw_height);
+				break;
+			case VER_1010_FLAG_LYINGOBJECT:
+				break;
+			case VER_1010_FLAG_ANIMATEALWAYS:
+				break;
+			case VER_1010_FLAG_AUTOMAP:
+				file.getU16(sType->minimap_color);
+				break;
+			case VER_1010_FLAG_LENSHELP:
+				file.skip(2);
+				break;
+			case VER_1010_FLAG_FULLBANK:
+				break;
+			case VER_1010_FLAG_IGNORELOOK:
+				break;
+			case VER_1010_FLAG_CLOTHES:
+				file.skip(2);
+				break;
+			case VER_1010_FLAG_MARKET: {
+				/* marketCategory = */ file.skip(2);
+				/* marketTradeAs  = */ file.skip(2);
+				/* marketShowAs = */ file.skip(2);
+				std::string marketName;
+				file.getString(marketName);
+				/* marketRestrictProfession = */ file.skip(2);
+				/* marketRestrictLevel = */ file.skip(2);
+				break;
+			}
+			case VER_1010_FLAG_ANIMATION:
+				break;
+			case VER_1010_FLAG_LAST:
+				return true;
+			default: {
+				warnings.push_back(
+					wxT("Tibia.dat: Unknown optbyte '") + std::to_string(int32_t(currentByte)) + wxT("'") +
+					wxT(" after '") + std::to_string(int32_t(lastByte)) + wxT("'")
+				);
+				return false;
+			}
+		}
+		lastByte = currentByte;
+	}
+}
+
+bool GraphicManager::loadSpriteMetadataFlagsVer1021(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+{
+	uint8_t currentByte;
+	uint8_t lastByte = VER_1021_FLAG_LAST;
+	while (true) {
+		file.getByte(currentByte);
+		switch (currentByte) {
+			case VER_1021_FLAG_BANK:
+				file.skip(2);
+				break;
+			case VER_1021_FLAG_CLIP:
+				break;
+			case VER_1021_FLAG_BOTTOM:
+				break;
+			case VER_1021_FLAG_TOP:
+				break;
+			case VER_1021_FLAG_CONTAINER:
+				break;
+			case VER_1021_FLAG_CUMULATIVE:
+				break;
+			case VER_1021_FLAG_FORCEUSE:
+				break;
+			case VER_1021_FLAG_MULTIUSE:
+				break;
+			case VER_1021_FLAG_WRITE:
+			case VER_1021_FLAG_WRITEONCE:
+				file.skip(2);
+				break;
+			case VER_1021_FLAG_LIQUIDCONTAINER:
+				break;
+			case VER_1021_FLAG_LIQUIDPOOL:
+				break;
+			case VER_1021_FLAG_UNPASS:
+				break;
+			case VER_1021_FLAG_UNMOVE:
+				break;
+			case VER_1021_FLAG_UNSIGHT:
+				break;
+			case VER_1021_FLAG_AVOID:
+				break;
+			case VER_1021_FLAG_NOMOVEMENTANIMATION:
+				break;
+			case VER_1021_FLAG_TAKE:
+				break;
+			case VER_1021_FLAG_HANG:
+				break;
+			case VER_1021_FLAG_HOOKSOUTH:
+				break;
+			case VER_1021_FLAG_HOOKEAST:
+				break;
+			case VER_1021_FLAG_ROTATE:
+				break;
+			case VER_1021_FLAG_LIGHT: {
+				file.skip(2);
+				file.skip(2);
+				break;
+			}
+			case VER_1021_FLAG_DONTHIDE:
+				break;
+			case VER_1021_FLAG_TRANSLUCENT:
+				break;
+			case VER_1021_FLAG_SHIFT: {
+				file.getU16(sType->drawoffset_x);
+				file.getU16(sType->drawoffset_y);
+				break;
+			}
+			case VER_1021_FLAG_HEIGHT:
+				file.getU16(sType->draw_height);
+				break;
+			case VER_1021_FLAG_LYINGOBJECT:
+				break;
+			case VER_1021_FLAG_ANIMATEALWAYS:
+				break;
+			case VER_1021_FLAG_AUTOMAP:
+				file.getU16(sType->minimap_color);
+				break;
+			case VER_1021_FLAG_LENSHELP:
+				file.skip(2);
+				break;
+			case VER_1021_FLAG_FULLBANK:
+				break;
+			case VER_1021_FLAG_IGNORELOOK:
+				break;
+			case VER_1021_FLAG_CLOTHES:
+				file.skip(2);
+				break;
+			case VER_1021_FLAG_MARKET: {
+				/* marketCategory = */ file.skip(2);
+				/* marketTradeAs  = */ file.skip(2);
+				/* marketShowAs = */ file.skip(2);
+				std::string marketName;
+				file.getString(marketName);
+				/* marketRestrictProfession = */ file.skip(2);
+				/* marketRestrictLevel = */ file.skip(2);
+				break;
+			}
+			case VER_1021_FLAG_DEFAULT_ACTION:
+				file.skip(2);
+				break;
+			case VER_1021_FLAG_USABLE:
+				break;
+			case VER_1021_FLAG_LAST:
+				return true;
+			default: {
+				warnings.push_back(
+					wxT("Tibia.dat: Unknown optbyte '") + std::to_string(int32_t(currentByte)) + wxT("'") +
+					wxT(" after '") + std::to_string(int32_t(lastByte)) + wxT("'")
+				);
+				return false;
+			}
+		}
+		lastByte = currentByte;
+	}
 }
 
 bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings)

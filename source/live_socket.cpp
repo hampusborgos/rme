@@ -3,424 +3,395 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "main.h"
-
-#include <wx/apptrait.h>
 #include "live_socket.h"
-#include "live_peer.h"
 #include "map_region.h"
 #include "iomap_otbm.h"
 #include "live_tab.h"
 #include "editor.h"
 
-LiveSocket::LiveSocket() : bn_reader(nullptr, 0), map_version(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(nullptr) {
+LiveSocket::LiveSocket() :
+	cursors(), mapReader(nullptr, 0), mapWriter(),
+	mapVersion(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(nullptr),
+	name(wxT("User")), password(wxT(""))
+{
+	//
 }
 
-LiveSocket::~LiveSocket() {
-	while(message_pool.size() > 0) {
-		delete message_pool.back();
-		message_pool.pop_back();
-	}
+LiveSocket::~LiveSocket()
+{
+	//
 }
 
-wxString LiveSocket::GetLastError() const {
-	return last_err;
+wxString LiveSocket::getName() const
+{
+	return name;
 }
 
-void LiveSocket::Log(wxString message) {
-	if(log)
-		log->Message(message);
-}
-
-void LiveSocket::DisconnectLog() {
-	if(log)
-		log->Disconnect();
-}
-
-void LiveSocket::Close() {	
-	// Delayed destruction: the socket will be deleted during the next
-	// idle loop iteration. This ensures that all pending events have
-	// been processed.
-
-	// schedule this object for deletion
-	if(wxTheApp)
-	{
-		// let the traits object decide what to do with us
-		//wxTheApp->ScheduleForDestruction(this);
-		// ScheduleForDestruction(this);
-	}
-	else // no app or no traits
-	{
-		// in wxBase we might have no app object at all, don't leak memory
-		delete this;
-	}
-}
-
-bool LiveSocket::SetPassword(const wxString& npassword) {
-	if(npassword.length() > 32) {
-		last_err = wxT("Port is not a number.");
+bool LiveSocket::setName(const wxString& newName)
+{
+	if (newName.empty()) {
+		setLastError(wxT("Must provide a name."));
+		return false;
+	} else if (newName.length() > 32) {
+		setLastError(wxT("Name is too long."));
 		return false;
 	}
-	password = npassword;
+	name = newName;
 	return true;
 }
 
-bool LiveSocket::SetPort(long nport) {
-	if(nport < 1 || nport > 65535) {
-		last_err = wxT("Port must be a number in the range 1-65535.");
+wxString LiveSocket::getPassword() const
+{
+	return password;
+}
+
+bool LiveSocket::setPassword(const wxString& newPassword)
+{
+	if (newPassword.length() > 32) {
+		setLastError(wxT("Password is too long."));
 		return false;
 	}
-	ipaddr.Service((uint16_t)nport);
+	password = newPassword;
 	return true;
 }
 
-bool LiveSocket::SetIP(const wxString& nip) {
-	if(!ipaddr.Hostname(nip)) {
-		last_err = wxT("Not a valid IP Hostname.");
-		return false;
-	}
-	return true;
+wxString LiveSocket::getLastError() const
+{
+	return lastError;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Interface for common requests
-///////////////////////////////////////////////////////////////////////////////
-
-std::vector<LiveCursor> LiveSocket::GetCursorList() const
+void LiveSocket::setLastError(const wxString& error)
 {
-	std::vector<LiveCursor> l;
-	for(std::map<uint32_t, LiveCursor>::const_iterator cursor = cursors.begin(); cursor != cursors.end(); ++cursor)
-		l.push_back(cursor->second);
-	return l;
+	lastError = error;
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-// Network code after this point
-///////////////////////////////////////////////////////////////////////////////
-
-void LiveSocket::SendNode(LivePeer* connection, QTreeNode* nd, int ndx, int ndy, uint32_t floormask)
+std::string LiveSocket::getHostName() const
 {
-	// Update the node list with their knowledge of this node
-	bool underground = false;
-	if(floormask & 0xff00) // Underground floors included
-		underground = true;
-	if(floormask & 0x00ff) // Overground floors included
-		underground = false;
-	
-	nd->setVisible(connection->GetClientID(), underground, true);
-
-	// Message...
-	NetworkMessage* omsg = AllocMessage();
-	omsg->AddByte(PACKET_NODE); // NEW NODE
-
-	// We send it back with the reply.
-	omsg->AddU32((ndx << 18) | (ndy << 4) | (floormask & 0xff00? 1 : 0));
-
-	if(!nd) {
-		omsg->AddByte(0);
-	} else {
-		// Compensate for underground
-		// First byte tells what floors are included
-		Floor** floor_p = nd->getFloors();
-		uint16_t floors = 0;
-		for(int z = 0; z <= 15; ++z) {
-			if(floor_p[z] != nullptr && (floormask & (1 << z)))
-				floors |= 1 << z;
-		}
-		omsg->AddU16(floors);
-
-		// Now we tell, for each floor, which tiles are included, followed by the tiles themselves.
-		for(int z = 0; z <= 15; ++z) {
-			if(floors & (1 << z))
-				AddFloor(omsg, floor_p[z]);
-		}
-	}
-	connection->Send(omsg);
+	return "?";
 }
 
-void LiveSocket::AddFloor(NetworkMessage* omsg, Floor* floor)
+std::vector<LiveCursor> LiveSocket::getCursorList() const
 {
-	uint16_t tiles = 0;
-	for(int x = 0; x < 4; ++x) {
-		for(int y = 0; y < 4; ++y) {
-			Tile* tile = floor->locs[x*4 + y].get();
-			if(tile && tile->size() > 0) {
-				tiles |= (1 << (x*4+y));
-			}
-		}
+	std::vector<LiveCursor> cursorList;
+	for (auto& cursorEntry : cursors) {
+		cursorList.push_back(cursorEntry.second);
 	}
-	omsg->AddU16(tiles);
-	if(tiles == 0x0000)
+	return cursorList;
+}
+
+void LiveSocket::logMessage(const wxString& message)
+{
+	wxTheApp->CallAfter([this, message]() {
+		if (log) {
+			log->Message(message);
+		}
+	});
+}
+
+void LiveSocket::receiveNode(NetworkMessage& message, Editor& editor, Action* action, int32_t ndx, int32_t ndy, bool underground)
+{
+	QTreeNode* node = editor.map.getLeaf(ndx * 4, ndy * 4);
+	if (!node) {
+		log->Message(wxT("Warning: Received update for unknown tile (") + std::to_string(ndx * 4) + wxT("/") + std::to_string(ndy * 4) + wxT("/") + (underground ? "true" : "false") + wxT(")"));
 		return;
+	}
 
-	bn_writer.reset();
-	// Skip beginning node start
-	//bn_writer.addNode(0); // root node
-	for(int x = 0; x < 4; ++x) {
-		for(int y = 0; y < 4; ++y) {
-			if((tiles & (1 << (x*4+y))) == false) {
-				continue;
-			}
-			Tile* tile = floor->locs[x*4 + y].get();
-			AddTile(bn_writer, tile, nullptr);
+	node->setRequested(underground, false);
+	node->setVisible(underground, true);
+
+	uint16_t floorBits = message.read<uint16_t>();
+	if(floorBits == 0) {
+		return;
+	}
+
+	for (uint_fast8_t z = 0; z < 16; ++z) {
+		if (testFlags(floorBits, 1 << z)) {
+			receiveFloor(message, editor, action, ndx, ndy, z, node, node->getFloor(z));
 		}
 	}
-	bn_writer.endNode(); // end root
-
-	std::string s(
-		(const char*)bn_writer.getMemory(), 
-		bn_writer.getSize());
-	omsg->AddString(s);
 }
 
-void LiveSocket::AddTile(MemoryNodeFileWriteHandle& writer, Tile* tile, const Position* pos)
+void LiveSocket::sendNode(uint32_t clientId, QTreeNode* node, int32_t ndx, int32_t ndy, uint32_t floorMask)
 {
-	writer.addNode(tile->isHouseTile()? OTBM_HOUSETILE : OTBM_TILE);
-
-	if(pos) {
-		writer.addU16(pos->x);
-		writer.addU16(pos->y);
-		writer.addU8 (pos->z);
+	bool underground;
+	if (floorMask & 0xFF00) {
+		if (floorMask & 0x00FF) {
+			underground = false;
+		} else {
+			underground = true;
+		}
+	} else {
+		underground = false;
 	}
 
-	if(tile->isHouseTile())
-		writer.addU32(tile->getHouseID());
+	node->setVisible(clientId, underground, true);
+
+	// Send message
+	NetworkMessage message;
+	message.write<uint8_t>(PACKET_NODE);
+	message.write<uint32_t>((ndx << 18) | (ndy << 4) | ((floorMask & 0xFF00) ? 1 : 0));
+
+	if (!node) {
+		message.write<uint8_t>(0x00);
+	} else {
+		Floor** floors = node->getFloors();
+
+		uint16_t sendMask = 0;
+		for (uint32_t z = 0; z < 16; ++z) {
+			uint32_t bit = 1 << z;
+			if (floors[z] && testFlags(floorMask, bit)) {
+				sendMask |= bit;
+			}
+		}
+
+		message.write<uint16_t>(sendMask);
+		for (uint32_t z = 0; z < 16; ++z) {
+			if (testFlags(sendMask, 1 << z)) {
+				sendFloor(message, floors[z]);
+			}
+		}
+	}
+
+	send(message);
+}
+
+void LiveSocket::receiveFloor(NetworkMessage& message, Editor& editor, Action* action, int32_t ndx, int32_t ndy, int32_t z, QTreeNode* node, Floor* floor)
+{
+	Map& map = editor.map;
+
+	uint16_t tileBits = message.read<uint16_t>();
+	if (tileBits == 0) {
+		for (uint_fast8_t x = 0; x < 4; ++x) {
+			for (uint_fast8_t y = 0; y < 4; ++y) {
+				action->addChange(new Change(map.allocator(node->createTile(ndx * 4 + x, ndy * 4 + y, z))));
+			}
+		}
+		return;
+	}
 	
-	if(tile->getMapFlags()) {
+	// -1 on address since we skip the first START_NODE when sending
+	const std::string& data = message.read<std::string>();
+	mapReader.assign(reinterpret_cast<const uint8_t*>(data.c_str() - 1), data.size());
+
+	BinaryNode* rootNode = mapReader.getRootNode();
+	BinaryNode* tileNode = rootNode->getChild();
+
+	Position position(0, 0, z);
+	for (uint_fast8_t x = 0; x < 4; ++x) {
+		for (uint_fast8_t y = 0; y < 4; ++y) {
+			position.x = (ndx * 4) + x;
+			position.y = (ndy * 4) + y;
+
+			if (testFlags(tileBits, 1 << ((x * 4) + y))) {
+				receiveTile(tileNode, editor, action, &position);
+				tileNode->advance();
+			} else {
+				action->addChange(new Change(map.allocator(node->createTile(position.x, position.y, z))));
+			}
+		}
+	}
+	mapReader.close();
+}
+
+void LiveSocket::sendFloor(NetworkMessage& message, Floor* floor)
+{
+	uint16_t tileBits = 0;
+	for (uint_fast8_t x = 0; x < 4; ++x) {
+		for (uint_fast8_t y = 0; y < 4; ++y) {
+			uint_fast8_t index = (x * 4) + y;
+
+			Tile* tile = floor->locs[index].get();
+			if (tile && tile->size() > 0) {
+				tileBits |= (1 << index);
+			}
+		}
+	}
+
+	message.write<uint16_t>(tileBits);
+	if (tileBits == 0) {
+		return;
+	}
+
+	mapWriter.reset();
+	for (uint_fast8_t x = 0; x < 4; ++x) {
+		for (uint_fast8_t y = 0; y < 4; ++y) {
+			uint_fast8_t index = (x * 4) + y;
+			if (testFlags(tileBits, 1 << index)) {
+				sendTile(mapWriter, floor->locs[index].get(), nullptr);
+			}
+		}
+	}
+	mapWriter.endNode();
+
+	std::string stream(
+		reinterpret_cast<char*>(mapWriter.getMemory()),
+		mapWriter.getSize()
+	);
+	message.write<std::string>(stream);
+}
+
+void LiveSocket::receiveTile(BinaryNode* node, Editor& editor, Action* action, const Position* position)
+{
+	ASSERT(node != nullptr);
+
+	Tile* tile = readTile(node, editor, position);
+	if (tile) {
+		action->addChange(newd Change(tile));
+	}
+}
+
+void LiveSocket::sendTile(MemoryNodeFileWriteHandle& writer, Tile* tile, const Position* position)
+{
+	writer.addNode(tile->isHouseTile() ? OTBM_HOUSETILE : OTBM_TILE);
+	if (position) {
+		writer.addU16(position->x);
+		writer.addU16(position->y);
+		writer.addU8(position->z);
+	}
+
+	if (tile->isHouseTile()) {
+		writer.addU32(tile->getHouseID());
+	}
+
+	if (tile->getMapFlags()) {
 		writer.addByte(OTBM_ATTR_TILE_FLAGS);
 		writer.addU32(tile->getMapFlags());
 	}
 
-	if(tile->ground) {
-		Item* ground = tile->ground;
-		if(ground->isComplex()) {
-			ground->serializeItemNode_OTBM(map_version, writer);
+	Item* ground = tile->ground;
+	if (ground) {
+		if (ground->isComplex()) {
+			ground->serializeItemNode_OTBM(mapVersion, writer);
 		} else {
-			bn_writer.addByte(OTBM_ATTR_ITEM);
-			ground->serializeItemCompact_OTBM(map_version, writer);
+			writer.addByte(OTBM_ATTR_ITEM);
+			ground->serializeItemCompact_OTBM(mapVersion, writer);
 		}
 	}
 
-	for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); ++it) {
-		(*it)->serializeItemNode_OTBM(map_version, writer);
+	for (Item* item : tile->items) {
+		item->serializeItemNode_OTBM(mapVersion, writer);
 	}
+
 	writer.endNode();
 }
 
-
-void LiveSocket::ReceiveNode(NetworkMessage* nmsg, Editor& editor, Action* action, int ndx, int ndy, bool underground) {
-	Map& map = editor.map;
-
-	//
-	QTreeNode* nd = map.getLeaf(ndx*4, ndy*4);
-	
-	if(!nd) {
-		wxString str;
-		str << wxT("Warning: Received update for unknown tile (") << ndx*4 << wxT("/") << ndy*4 << wxT("/") << underground << wxT(")");
-		log->Message(str);
-		return;
-	}
-
-	// Update node state
-	nd->setRequested(underground, false);
-	nd->setVisible(underground, true);
-
-	// Figure out what floors are relevant
-	uint16_t floors = nmsg->ReadU16();
-
-	if(floors == 0x0000) {
-		return;
-	}
-
-	for(int z = 0; z <= 15; ++z)
-		if(floors & (1 << (z)))
-			ReceiveFloor(nmsg, editor, action, ndx, ndy, z, nd, nd->getFloor(z));
-}
-
-void LiveSocket::ReceiveFloor(NetworkMessage* nmsg, Editor& editor, Action* action, int ndx, int ndy, int z, QTreeNode* nd, Floor* floor) {
-	Map& map = editor.map;
-
-	//
-	uint16_t tiles = nmsg->ReadU16();
-	if(tiles == 0x0000) {
-		// No tiles on this floor
-		for(int x = 0; x < 4; ++x) {
-			for(int y = 0; y < 4; ++y) {
-				action->addChange(new Change(map.allocator(nd->createTile(ndx * 4 + x, ndy * 4 + y, z))));
-			}
-		}
-		return;
-	}
-	
-	std::string data = nmsg->ReadString();
-	// -1 on address since we skip the first START_NODE when sending
-	bn_reader.assign((uint8_t*)data.c_str() - 1, data.size());
-	BinaryNode* rootNode = bn_reader.getRootNode();
-	BinaryNode* tileNode = rootNode->getChild();
-
-	for(int x = 0; x < 4; ++x) {
-		for(int y = 0; y < 4; ++y) {
-			if((tiles & (1 << (x*4+y))) == false) {
-				action->addChange(new Change(map.allocator(nd->createTile(ndx * 4 + x, ndy * 4 + y, z))));
-				continue;
-			}
-			Position pos(ndx*4 + x, ndy*4 + y, z);
-			ReceiveTile(tileNode, editor, action, &pos);
-			tileNode->advance();
-		}
-	}
-	bn_reader.close();
-}
-
-void LiveSocket::ReceiveTile(BinaryNode* tileNode, Editor& editor, Action* action, const Position* pos)
+Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* position)
 {
+	ASSERT(node != nullptr);
+
 	Map& map = editor.map;
-	// We are receiving a tile! :)
-	ASSERT(tileNode);
-	Tile* tile = ReadTile(tileNode, map, pos);
 
-	if(tile)
-		action->addChange(newd Change(tile));
-}
+	uint8_t tileType;
+	node->getByte(tileType);
 
-
-Tile* LiveSocket::ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos)
-{
-	// We are receiving a tile! :)
-	ASSERT(tileNode);
-	Tile* tile = nullptr;
-	uint8_t tile_type;
-	tileNode->getByte(tile_type);
-
-	if(tile_type == OTBM_TILE || tile_type == OTBM_HOUSETILE)
-	{
-		Position pos;
-		if(mpos)
-		{
-			pos = *mpos;
-		}
-		else
-		{
-			uint16_t x; tileNode->getU16(x); pos.x = x;
-			uint16_t y; tileNode->getU16(y); pos.y = y;
-			uint8_t  z; tileNode->getU8 (z); pos.z = z;
-		}
-
-		TileLocation* loc = map.createTileL(pos);
-		tile = map.allocator(loc);
-
-		if(tile_type == OTBM_HOUSETILE)
-		{
-			uint32_t house_id;
-			if(!tileNode->getU32(house_id))
-			{
-				//warning(wxT("House tile without house data, discarding tile"));
-				delete tile;
-				return nullptr;
-			}
-			if(house_id)
-			{
-				House* house = map.houses.getHouse(house_id);
-				if(house)
-					tile->setHouse(house);
-			}
-			else
-			{
-				//warning(wxT("Invalid house id from tile %d:%d:%d"), pos.x, pos.y, pos.z);
-			}
-		}
-
-		uint8_t attribute;
-		while(tileNode->getU8(attribute))
-		{
-			switch(attribute)
-			{
-				case OTBM_ATTR_TILE_FLAGS:
-				{
-					uint32_t flags = 0;
-					if(!tileNode->getU32(flags))
-					{
-						//warning(wxT("Invalid tile flags of tile on %d:%d:%d"), pos.x, pos.y, pos.z);
-					}
-					tile->setMapFlags(flags);
-					break;
-				}
-				case OTBM_ATTR_ITEM:
-				{
-					Item* item = Item::Create_OTBM(map_version, tileNode);
-					if(item == nullptr)
-					{
-						//warning(wxT("Invalid item at tile %d:%d:%d"), pos.x, pos.y, pos.z);
-					}
-					tile->addItem(item);
-					break;
-				}
-				default:
-					{
-					//warning(wxT("Unknown tile attribute at %d:%d:%d"), pos.x, pos.y, pos.z);
-				}
-			}
-		}
-
-		
-		BinaryNode* itemNode = tileNode->getChild();
-		if(itemNode) do
-		{
-			Item* item = nullptr;
-			uint8_t item_type;
-			if(!itemNode->getByte(item_type))
-			{
-				//warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
-				delete tile;
-				return nullptr;
-			}
-			if(item_type == OTBM_ITEM)
-			{
-				item = Item::Create_OTBM(map_version, itemNode);
-				if(item)
-				{
-					if(item->unserializeItemNode_OTBM(map_version, itemNode) == false)
-					{
-						//warning(wxT("Couldn't unserialize item attributes at %d:%d:%d"), pos.x, pos.y, pos.z);
-					}
-					tile->addItem(item);
-				}
-			}
-			else
-			{
-				//warning(wxT("Unknown type of tile child node"));
-			}
-		} while(itemNode->advance());
-
-		return tile;
-	}
-	else
-	{
+	if (tileType != OTBM_TILE && tileType != OTBM_HOUSETILE) {
 		return nullptr;
 	}
+
+	Position pos;
+	if (position) {
+		pos = *position;
+	} else {
+		uint16_t x; node->getU16(x); pos.x = x;
+		uint16_t y; node->getU16(y); pos.y = y;
+		uint8_t z; node->getU8(z); pos.z = z;
+	}
+
+	Tile* tile = map.allocator(
+		map.createTileL(pos)
+	);
+
+	if (tileType == OTBM_HOUSETILE) {
+		uint32_t houseId;
+		if (!node->getU32(houseId)) {
+			//warning(wxT("House tile without house data, discarding tile"));
+			delete tile;
+			return nullptr;
+		}
+
+		if (houseId) {
+			House* house = map.houses.getHouse(houseId);
+			if (house) {
+				tile->setHouse(house);
+			}
+		} else {
+			//warning(wxT("Invalid house id from tile %d:%d:%d"), pos.x, pos.y, pos.z);
+		}
+	}
+
+	uint8_t attribute;
+	while (node->getU8(attribute)) {
+		switch (attribute) {
+			case OTBM_ATTR_TILE_FLAGS: {
+				uint32_t flags = 0;
+				if (!node->getU32(flags)) {
+					//warning(wxT("Invalid tile flags of tile on %d:%d:%d"), pos.x, pos.y, pos.z);
+				}
+				tile->setMapFlags(flags);
+				break;
+			}
+			case OTBM_ATTR_ITEM: {
+				Item* item = Item::Create_OTBM(mapVersion, node);
+				if (!item) {
+					//warning(wxT("Invalid item at tile %d:%d:%d"), pos.x, pos.y, pos.z);
+				}
+				tile->addItem(item);
+				break;
+			}
+			default:
+				//warning(wxT("Unknown tile attribute at %d:%d:%d"), pos.x, pos.y, pos.z);
+				break;
+		}
+	}
+
+	//for (BinaryNode* itemNode = node->getChild(); itemNode; itemNode->advance()) {
+	BinaryNode* itemNode = node->getChild();
+	if (itemNode) do {
+		uint8_t itemType;
+		if (!itemNode->getByte(itemType)) {
+			//warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
+			delete tile;
+			return nullptr;
+		}
+
+		if (itemType == OTBM_ITEM) {
+			Item* item = Item::Create_OTBM(mapVersion, itemNode);
+			if (item) {
+				if (!item->unserializeItemNode_OTBM(mapVersion, itemNode)) {
+					//warning(wxT("Couldn't unserialize item attributes at %d:%d:%d"), pos.x, pos.y, pos.z);
+				}
+				tile->addItem(item);
+			}
+		} else {
+			//warning(wxT("Unknown type of tile child node"));
+		}
+	//}
+	} while (itemNode->advance());
+
+	return tile;
 }
 
-void LiveSocket::AddCursor(NetworkMessage* nmsg, const LiveCursor& cursor)
+LiveCursor LiveSocket::readCursor(NetworkMessage& message)
 {
-	nmsg->AddU32(cursor.id);
-	nmsg->AddU8(cursor.color.Red());
-	nmsg->AddU8(cursor.color.Green());
-	nmsg->AddU8(cursor.color.Blue());
-	nmsg->AddU8(cursor.color.Alpha());
-	nmsg->AddPosition(cursor.pos);
+	LiveCursor cursor;
+	cursor.id = message.read<uint32_t>();
+	
+	uint8_t r = message.read<uint8_t>();
+	uint8_t g = message.read<uint8_t>();
+	uint8_t b = message.read<uint8_t>();
+	uint8_t a = message.read<uint8_t>();
+	cursor.color = wxColor(r, g, b, a);
+
+	cursor.pos = message.read<Position>();
+	return cursor;
 }
 
-LiveCursor LiveSocket::ReadCursor(NetworkMessage* nmsg)
+void LiveSocket::writeCursor(NetworkMessage& message, const LiveCursor& cursor)
 {
-	LiveCursor c;
-	c.id = nmsg->ReadU32();
-	uint8_t r, g, b, a;
-	r = nmsg->ReadByte();
-	g = nmsg->ReadByte();
-	b = nmsg->ReadByte();
-	a = nmsg->ReadByte();
-	c.color.Set(r, g, b, a);
-	c.pos = nmsg->ReadPosition();
-
-	return c;
+	message.write<uint32_t>(cursor.id);
+	message.write<uint8_t>(cursor.color.Red());
+	message.write<uint8_t>(cursor.color.Green());
+	message.write<uint8_t>(cursor.color.Blue());
+	message.write<uint8_t>(cursor.color.Alpha());
+	message.write<Position>(cursor.pos);
 }

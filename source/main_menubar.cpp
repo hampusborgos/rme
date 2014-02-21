@@ -134,6 +134,10 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(NEW_PALETTE, wxITEM_NORMAL, OnNewPalette);
 	MAKE_ACTION(TAKE_SCREENSHOT, wxITEM_NORMAL, OnTakeScreenshot);
 
+	MAKE_ACTION(LIVE_START, wxITEM_NORMAL, OnStartLive);
+	MAKE_ACTION(LIVE_JOIN, wxITEM_NORMAL, OnJoinLive);
+	MAKE_ACTION(LIVE_CLOSE, wxITEM_NORMAL, OnCloseLive);
+
 	MAKE_ACTION(SELECT_TERRAIN, wxITEM_NORMAL, OnSelectTerrainPalette);
 	MAKE_ACTION(SELECT_DOODAD, wxITEM_NORMAL, OnSelectDoodadPalette);
 	MAKE_ACTION(SELECT_ITEM, wxITEM_NORMAL, OnSelectItemPalette);
@@ -141,12 +145,6 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SELECT_HOUSE, wxITEM_NORMAL, OnSelectHousePalette);
 	MAKE_ACTION(SELECT_WAYPOINT, wxITEM_NORMAL, OnSelectWaypointPalette);
 	MAKE_ACTION(SELECT_RAW, wxITEM_NORMAL, OnSelectRawPalette);
-
-	/*
-	MAKE_ACTION(LIVE_START, wxITEM_NORMAL, OnStartLive);
-	MAKE_ACTION(LIVE_JOIN, wxITEM_NORMAL, OnJoinLive);
-	MAKE_ACTION(LIVE_CLOSE, wxITEM_NORMAL, OnCloseLive);
-	*/
 
 	MAKE_ACTION(FLOOR_0, wxITEM_RADIO, OnChangeFloor);
 	MAKE_ACTION(FLOOR_1, wxITEM_RADIO, OnChangeFloor);
@@ -300,7 +298,6 @@ void MainMenuBar::Update()
 
 	EnableItem(CUT, has_map);
 	EnableItem(COPY, has_map);
-
 
 	EnableItem(BORDERIZE_SELECTION, has_map);
 	EnableItem(BORDERIZE_MAP, is_local);
@@ -1869,27 +1866,23 @@ void MainMenuBar::OnStartLive(wxCommandEvent& event)
 		int ret = live_host_dlg->ShowModal();
 		if(ret == wxID_OK)
 		{
-			LiveServer* live_server = editor->StartLiveServer();
-			
-			live_server->SetName(hostname->GetValue());
-			live_server->SetPassword(password->GetValue());
-			live_server->SetPort(port->GetValue());
-			
-			wxString err = live_server->GetLastError();
-			if(err.length())
-			{
-				gui.PopupDialog(live_host_dlg, wxT("Error"), err, wxOK);
+			LiveServer* liveServer = editor->StartLiveServer();
+			liveServer->setName(hostname->GetValue());
+			liveServer->setPassword(password->GetValue());
+			liveServer->setPort(port->GetValue());
+
+			const wxString& error = liveServer->getLastError();
+			if (!error.empty()) {
+				gui.PopupDialog(live_host_dlg, wxT("Error"), error, wxOK);
 				editor->CloseLiveServer();
 				continue;
 			}
 
-			if(!live_server->Bind())
-			{
+			if (!liveServer->bind()) {
 				gui.PopupDialog(wxT("Socket Error"), wxT("Could not bind socket! Try another port?"), wxOK);
 				editor->CloseLiveServer();
-			} else
-			{
-				live_server->CreateLogWindow(gui.tabbook);
+			} else {
+				liveServer->createLogWindow(gui.tabbook);
 			}
 			break;
 		} else 
@@ -1909,10 +1902,13 @@ void MainMenuBar::OnJoinLive(wxCommandEvent& event)
 	gsizer->AddGrowableCol(1, 3);
 
 	// Data fields
-	//wxTextCtrl* hostname;
+	wxTextCtrl* name;
 	wxTextCtrl* ip;
 	wxSpinCtrl* port;
 	wxTextCtrl* password;
+
+	gsizer->Add(newd wxStaticText(live_join_dlg, wxID_ANY, wxT("Name:")));
+	gsizer->Add(name = newd wxTextCtrl(live_join_dlg, wxID_ANY, wxT("")), 0, wxEXPAND);
 
 	gsizer->Add(newd wxStaticText(live_join_dlg, wxID_ANY, wxT("IP:")));
 	gsizer->Add(ip = newd wxTextCtrl(live_join_dlg, wxID_ANY, wxT("localhost")), 0, wxEXPAND);
@@ -1936,27 +1932,31 @@ void MainMenuBar::OnJoinLive(wxCommandEvent& event)
 	{
 		int ret = live_join_dlg->ShowModal();
 		if(ret == wxID_OK) {
-			LiveClient* live_client = newd LiveClient();
+			LiveClient* liveClient = newd LiveClient();
+			liveClient->setPassword(password->GetValue());
+
+			wxString tmp = name->GetValue();
+			if (tmp.empty()) {
+				tmp = wxT("User");
+			}
+			liveClient->setName(tmp);
 			
-			live_client->SetIP(ip->GetValue());
-			live_client->SetPassword(password->GetValue());
-			live_client->SetPort(port->GetValue());
-			
-			wxString err = live_client->GetLastError();
-			if(err.length())
-			{
-				gui.PopupDialog(live_join_dlg, wxT("Error"), err, wxOK);
-				delete live_client;
+			const wxString& error = liveClient->getLastError();
+			if (!error.empty()) {
+				gui.PopupDialog(live_join_dlg, wxT("Error"), error, wxOK);
+				delete liveClient;
 				continue;
 			}
 
-			live_client->CreateLogWindow(gui.tabbook);
+			const wxString& address = ip->GetValue();
+			int32_t portNumber = port->GetValue();
 
-			if(!live_client->Connect())
-			{
-				gui.PopupDialog(wxT("Connection Error"), live_client->GetLastError(), wxOK);
-				delete live_client;
+			liveClient->createLogWindow(gui.tabbook);
+			if (!liveClient->connect(nstr(address), portNumber)) {
+				gui.PopupDialog(wxT("Connection Error"), liveClient->getLastError(), wxOK);
+				delete liveClient;
 			}
+
 			break;
 		} else 
 			break;

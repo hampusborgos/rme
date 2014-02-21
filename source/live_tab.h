@@ -10,13 +10,13 @@
 
 #include "editor_tabs.h"
 #include "application.h"
+#include "live_server.h"
 
 class wxGrid;
 
 class MapTabbook;
 class LiveSocket;
 class LiveServer;
-class LivePeer;
 
 class LiveLogTab : public EditorTab, public wxPanel {
 public:
@@ -34,7 +34,7 @@ public:
 
 	LiveSocket* GetSocket() {return socket;}
 
-	void UpdateClientList(std::vector<LivePeer*> users);
+	void UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>& updatedClients);
 
 	void OnSelectChatbox(wxFocusEvent& evt);
 	void OnDeselectChatbox(wxFocusEvent& evt);
@@ -50,7 +50,7 @@ protected:
 	wxTextCtrl* input;
 	wxGrid* user_list;
 
-	std::vector<LivePeer*> peers;
+	std::unordered_map<uint32_t, LivePeer*> clients;
 
 	DECLARE_EVENT_TABLE();
 };

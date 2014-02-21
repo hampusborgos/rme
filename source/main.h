@@ -40,6 +40,10 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 
 #endif
 
+// Boost libraries
+#include <boost/utility.hpp>
+#include <boost/asio.hpp>
+
 #include <wx/defs.h>
 #include "definitions.h"
 
@@ -71,9 +75,6 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <wx/ipc.h>
 #include <wx/grid.h>
 #include <wx/clipbrd.h>
-
-// Boost libraries
-#include <boost/utility.hpp>
 
 // PugiXML
 #include "ext/pugixml.hpp"

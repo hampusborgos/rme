@@ -362,9 +362,12 @@ void MapCanvas::UpdatePositionStatus(int x, int y)
 	} else {
 		ss << wxT("Nothing");
 	}
-	if(editor.IsLive())
-		editor.GetLive().UpdateCursor(Position(map_x, map_y, floor));
-	gui.root->SetStatusText(ss,1);
+
+	if (editor.IsLive()) {
+		editor.GetLive().updateCursor(Position(map_x, map_y, floor));
+	}
+
+	gui.root->SetStatusText(ss, 1);
 }
 
 void MapCanvas::OnMouseMove(wxMouseEvent& event)

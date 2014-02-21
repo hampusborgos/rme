@@ -477,7 +477,6 @@ void MainFrame::UpdateMenubar()
 bool MainFrame::DoQueryClose() {
 	Editor* editor = gui.GetCurrentEditor();
 	if(editor) {
-		/*
 		if(editor->IsLive()) {
 			long ret = gui.PopupDialog(
 				wxT("Must Close Server"),
@@ -489,108 +488,77 @@ bool MainFrame::DoQueryClose() {
 				return false;
 			}
 		}
-		*/
 	}
 	return true;
 }
 
 bool MainFrame::DoQuerySave(bool doclose) 
 {
-	if(gui.IsEditorOpen()) 
-	{
-		Editor& editor = *gui.GetCurrentEditor();
-		
-		if(editor.IsLiveClient())
-		{
-			long ret = gui.PopupDialog(
-				wxT("Disconnect"),
-				wxString(wxT("Do you want to disconnect?")),
-				wxYES | wxNO);
+	if (!gui.IsEditorOpen()) {
+		return true;
+	}
+	
+	Editor& editor = *gui.GetCurrentEditor();
+	if (editor.IsLiveClient()) {
+		long ret = gui.PopupDialog(
+			wxT("Disconnect"),
+			wxT("Do you want to disconnect?"),
+			wxYES | wxNO
+		);
 
-			if(ret == wxID_YES)
-			{
-				if(doclose) 
-				{
-					UnnamedRenderingLock();
-					gui.CloseCurrentEditor();
-				}
-				return true;
-			}
+		if (ret != wxID_YES) {
 			return false;
 		}
-		else if(editor.IsLiveServer())
-		{
-			long ret = gui.PopupDialog(
-				wxT("Shutdown"),
-				wxString(wxT("Do you want to shut down the server? (any clients will be disconnected)")),
-				wxYES | wxNO);
 
-			if(ret == wxID_YES)
-			{
-				editor.CloseLiveServer();
-				return DoQuerySave(doclose);
-			}
+		editor.CloseLiveServer();
+		return DoQuerySave(doclose);
+	} else if (editor.IsLiveServer()) {
+		long ret = gui.PopupDialog(
+			wxT("Shutdown"),
+			wxT("Do you want to shut down the server? (any clients will be disconnected)"),
+			wxYES | wxNO
+		);
+
+		if (ret != wxID_YES) {
 			return false;
 		}
-		else if(gui.ShouldSave()) 
-		{
-			long ret = gui.PopupDialog(
-				wxT("Save changes"),
-				wxString(wxT("Do you want to save your changes to \"")) +
-					wxstr(gui.GetCurrentMap().getName()) + wxT("\"?"),
-				wxYES | wxNO | wxCANCEL);
 
-			if(ret == wxID_YES) 
-			{
-				if(gui.GetCurrentMap().hasFile()) 
-				{
-					gui.SaveCurrentMap(true);
-					if(doclose) 
-					{
-						UnnamedRenderingLock();
-						gui.CloseCurrentEditor();
-					}
-				}
-				else 
-				{
-					wxFileDialog file(this, wxT("Save..."), wxT(""),wxT(""),wxT("*.otbm"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-					int ok = file.ShowModal();
+		editor.CloseLiveServer();
+		return DoQuerySave(doclose);
+	} else if (gui.ShouldSave()) {
+		long ret = gui.PopupDialog(
+			wxT("Save changes"),
+			wxT("Do you want to save your changes to \"") + wxstr(gui.GetCurrentMap().getName()) + wxT("\"?"),
+			wxYES | wxNO | wxCANCEL
+		);
 
-					if(ok == wxID_OK) 
-					{
-						gui.SaveCurrentMap(file.GetPath(), true);
-						if(doclose) {
-							UnnamedRenderingLock();
-							gui.CloseCurrentEditor();
-						}
-					} 
-					else 
-					{
-						return false;
-					}
+		if (ret == wxID_YES) {
+			if (gui.GetCurrentMap().hasFile()) {
+				gui.SaveCurrentMap(true);
+			} else {
+				wxFileDialog file(
+					this, wxT("Save..."),
+					wxT(""), wxT(""),
+					wxT("*.otbm"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT
+				);
+
+				int32_t result = file.ShowModal();
+				if (result == wxID_OK) {
+					gui.SaveCurrentMap(file.GetPath(), true);
+				} else {
+					return false;
 				}
 			}
-			else if(ret == wxID_NO) 
-			{
-				if(doclose) {
-					UnnamedRenderingLock();
-					gui.CloseCurrentEditor();
-				}
-			}
-			else 
-			{
-				return false;
-			}
-		}
-		else 
-		{
-			if(doclose) 
-			{
-				UnnamedRenderingLock();
-				gui.CloseCurrentEditor();
-			}
+		} else if (ret == wxID_CANCEL) {
+			return false;
 		}
 	}
+
+	if (doclose) {
+		UnnamedRenderingLock();
+		gui.CloseCurrentEditor();
+	}
+
 	return true;
 }
 

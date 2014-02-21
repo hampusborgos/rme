@@ -616,40 +616,48 @@ void MapDrawer::DrawSelectionBox()
 
 void MapDrawer::DrawLiveCursors()
 {
-	if(options.ingame)
+	if (options.ingame) {
 		return;
+	}
 
-	if(!editor.IsLive())
+	if (!editor.IsLive()) {
 		return;
+	}
 
-	std::vector<LiveCursor> cursors = editor.GetLive().GetCursorList();
-
-	for(std::vector<LiveCursor>::iterator cursor = cursors.begin(); cursor != cursors.end(); ++cursor)
-	{
-		bool halfAlpha = false;
-		if(cursor->pos.z <= 7 && floor > 7)
+	LiveSocket& live = editor.GetLive();
+	for (LiveCursor& cursor : live.getCursorList()) {
+		if (cursor.pos.z <= 7 && floor > 7) {
 			continue;
-		if(cursor->pos.z > 7 && floor <= 8)
+		}
+
+		if (cursor.pos.z > 7 && floor <= 8) {
 			continue;
-		if(cursor->pos.z < floor)
-			halfAlpha = true;
+		}
 
-		int draw_x = cursor->pos.x*32 - view_scroll_x;
-		if(cursor->pos.z <= 7)
-			draw_x -= (7-cursor->pos.z)*32;
-		else
-			draw_x -= 32*(floor-cursor->pos.z);
+		if (cursor.pos.z < floor) {
+			cursor.color = wxColor(
+				cursor.color.Red(),
+				cursor.color.Green(),
+				cursor.color.Blue(),
+				std::max<uint8_t>(cursor.color.Alpha() / 2, 64)
+			);
+		}
 
-		int draw_y = cursor->pos.y*32 - view_scroll_y;
-		if(cursor->pos.z <= 7)
-			draw_y -= (7-cursor->pos.z)*32;
-		else
-			draw_y -= 32*(floor-cursor->pos.z);
+		float draw_x = (cursor.pos.x * 32) - view_scroll_x;
+		if (cursor.pos.z <= 7) {
+			draw_x -= (7 - cursor.pos.z) * 32;
+		} else {
+			draw_x -= 32 * (floor - cursor.pos.z);
+		}
 
-		cursor->color = wxColor(
-			cursor->color.Red(), cursor->color.Green(), cursor->color.Blue(),
-			max((halfAlpha? cursor->color.Alpha() / 2 : cursor->color.Alpha()), 64));
-		glColor(cursor->color);
+		float draw_y = (cursor.pos.y * 32) - view_scroll_y;
+		if (cursor.pos.z <= 7) {
+			draw_y -= (7 - cursor.pos.z) * 32;
+		} else {
+			draw_y -= 32 * (floor - cursor.pos.z);
+		}
+
+		glColor(cursor.color);
 		glBegin(GL_QUADS);
 			glVertex2f(draw_x, draw_y);
 			glVertex2f(draw_x + 32, draw_y);

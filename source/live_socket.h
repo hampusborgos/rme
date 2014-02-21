@@ -11,9 +11,10 @@
 #include "filehandle.h"
 #include "iomap.h"
 
-class LivePeer;
+#include <memory>
+#include <unordered_map>
+
 class LiveLogTab;
-class NetworkMessage;
 class Action;
 
 struct LiveCursor
@@ -23,65 +24,67 @@ struct LiveCursor
 	Position pos;
 };
 
-class LiveSocket : public wxEvtHandler, public NetSocket
+class LiveSocket
 {
-public:
-	LiveSocket();
-	virtual ~LiveSocket();
+	public:
+		LiveSocket();
+		virtual ~LiveSocket();
 
-	bool SetPassword(const wxString& password);
-	bool SetPort(long port);
-	bool SetIP(const wxString& IP);
+		//
+		wxString getName() const;
+		bool setName(const wxString& newName);
 
-	virtual void Close();
-	
-	virtual LiveLogTab* CreateLogWindow(wxWindow* parent) = 0;
+		wxString getPassword() const;
+		bool setPassword(const wxString& newPassword);
 
-	virtual wxString GetHostName() const = 0;
-	wxString GetLastError() const;
+		wxString getLastError() const;
+		void setLastError(const wxString& error);
 
-	std::vector<LiveCursor> GetCursorList() const;
+		std::string getHostName() const;
+		std::vector<LiveCursor> getCursorList() const;
 
-public:
-	// Events that are common to both server and client
-	virtual void UpdateCursor(Position pos) = 0;
-	
+		//
+		void logMessage(const wxString& message);
 
-protected:
-	// Internal
-	virtual bool IsServer() const = 0;
-	bool IsClient() const {return ! IsServer();}
+		//
+		virtual void receiveHeader() = 0;
+		virtual void receive(uint32_t packetSize) = 0;
+		virtual void send(NetworkMessage& message) = 0;
 
-	void ReceiveNode(NetworkMessage* nmsg, Editor& editor, Action* action, int ndx, int ndy, bool underground);
-	void ReceiveFloor(NetworkMessage* nmsg, Editor& editor, Action* action, int ndx, int ndy, int z, QTreeNode* nd, Floor* floor);
-	void ReceiveTile(BinaryNode* tileNode, Editor& editor, Action* action, const Position* pos);
-	Tile* ReadTile(BinaryNode* tileNode, Map& map, const Position* mpos = nullptr);
+		//
+		virtual void updateCursor(const Position& position) = 0;
 
-	void SendNode(LivePeer* connection, QTreeNode* nd, int ndx, int ndy, uint32_t floormask);
-	void AddFloor(NetworkMessage* omsg, Floor* floor);
-	void AddTile(MemoryNodeFileWriteHandle& writer, Tile* tile, const Position* pos);
+	protected:
+		// receive / send methods
+		void receiveNode(NetworkMessage& message, Editor& editor, Action* action, int32_t ndx, int32_t ndy, bool underground);
+		void sendNode(uint32_t clientId, QTreeNode* node, int32_t ndx, int32_t ndy, uint32_t floorMask);
 
-	void AddCursor(NetworkMessage* nmsg, const LiveCursor& cursor);
-	LiveCursor ReadCursor(NetworkMessage* nmsg);
+		void receiveFloor(NetworkMessage& message, Editor& editor, Action* action, int32_t ndx, int32_t ndy, int32_t z, QTreeNode* node, Floor* floor);
+		void sendFloor(NetworkMessage& message, Floor* floor);
 
-public:
-	void Log(wxString message);
-	void DisconnectLog();
+		void receiveTile(BinaryNode* node, Editor& editor, Action* action, const Position* position);
+		void sendTile(MemoryNodeFileWriteHandle& writer, Tile* tile, const Position* position);
 
-protected:
-	MemoryNodeFileReadHandle bn_reader;
-	MemoryNodeFileWriteHandle bn_writer;
-	VirtualIOMap map_version;
-	LiveLogTab* log;
+		// read / write types
+		Tile* readTile(BinaryNode* node, Editor& editor, const Position* position);
 
-	wxString last_err;
+		LiveCursor readCursor(NetworkMessage& message);
+		void writeCursor(NetworkMessage& message, const LiveCursor& cursor);
 
-	wxString password;
-	wxIPV4address ipaddr;
+		//
+		std::unordered_map<uint32_t, LiveCursor> cursors;
 
-	std::map<uint32_t, LiveCursor> cursors;
+		MemoryNodeFileReadHandle mapReader;
+		MemoryNodeFileWriteHandle mapWriter;
+		VirtualIOMap mapVersion;
 
-	friend class LiveLogTab;
+		LiveLogTab* log;
+
+		wxString name;
+		wxString password;
+		wxString lastError;
+
+		friend class LiveLogTab;
 };
 
 #endif

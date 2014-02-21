@@ -1058,25 +1058,26 @@ bool GUI::IsMinimapVisible() const
 
 void GUI::RefreshView()
 {
-	std::vector<EditorTab*> ets;
-	MapTab* mt = dynamic_cast<MapTab*>(GetCurrentTab());
-	if(mt)
-	{
-		for(int n = 0; n < tabbook->GetTabCount(); ++n)
-		{
-			MapTab* mtn = dynamic_cast<MapTab*>(tabbook->GetTab(n));
-			if(mtn)
-				ets.push_back(mtn);
-		}
-	}
-	else if(GetCurrentTab())
-	{
-		ets.push_back(GetCurrentTab());
+	EditorTab* editorTab = GetCurrentTab();
+	if (!editorTab) {
+		return;
 	}
 
-	for(std::vector<EditorTab*>::iterator eti = ets.begin(); eti != ets.end(); ++eti)
-	{
-		(*eti)->GetWindow()->Refresh();
+	if (!dynamic_cast<MapTab*>(editorTab)) {
+		editorTab->GetWindow()->Refresh();
+		return;
+	}
+
+	std::vector<EditorTab*> editorTabs;
+	for (int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
+		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
+		if (mapTab) {
+			editorTabs.push_back(mapTab);
+		}
+	}
+
+	for (EditorTab* editorTab : editorTabs) {
+		editorTab->GetWindow()->Refresh();
 	}
 }
 
@@ -1095,7 +1096,7 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	{
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
 		if (mt && mt->GetEditor()->IsLiveServer())
-			mt->GetEditor()->GetLiveServer()->StartOperation(progressText);
+			mt->GetEditor()->GetLiveServer()->startOperation(progressText);
 	}
 	progressBar->Update(0);
 }
@@ -1129,7 +1130,7 @@ bool GUI::SetLoadDone(int done, wxString newmessage)
 	for (int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
 		if (mt && mt->GetEditor()->IsLiveServer())
-			mt->GetEditor()->GetLiveServer()->UpdateOperation(new_done);
+			mt->GetEditor()->GetLiveServer()->updateOperation(new_done);
 	}
 
 	return skip;

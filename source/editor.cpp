@@ -145,8 +145,9 @@ Editor::Editor(CopyBuffer& copybuffer, LiveClient* client) :
 }
 
 Editor::~Editor() {
-	if(IsLive())
+	if (IsLive()) {
 		CloseLiveServer();
+	}
 
 	UnnamedRenderingLock();
 	selection.clear();
@@ -1806,55 +1807,61 @@ LiveSocket& Editor::GetLive() const
 		return *live_server;
 	return *live_client;
 }
+
 LiveServer* Editor::StartLiveServer()
 {
-	ASSERT(IsLocal());
-	
+	ASSERT(IsLocal());	
 	live_server = newd LiveServer(*this);
+
 	delete actionQueue;
 	actionQueue = newd NetworkedActionQueue(*this);
-	
+
 	return live_server;
 }
 
-void Editor::BroadcastNodes(DirtyList& dirty_list)
+void Editor::BroadcastNodes(DirtyList& dirtyList)
 {
-	if(IsLiveClient())
-		live_client->SendChanges(dirty_list);
-	else
-		live_server->BroadcastNodes(dirty_list);
+	if (IsLiveClient()) {
+		live_client->sendChanges(dirtyList);
+	} else {
+		live_server->broadcastNodes(dirtyList);
+	}
 }
 
 void Editor::CloseLiveServer()
 {
 	ASSERT(IsLive());
-	
-	if(live_client)
-	{
-		live_client->Close();
+	if (live_client) {
+		live_client->close();
 
+		delete live_client;
 		live_client = nullptr;
 	}
-	else if(live_server)
-	{
-		live_server->Close();
+	
+	if (live_server) {
+		live_server->close();
+
+		delete live_server;
 		live_server = nullptr;
 
 		delete actionQueue;
 		actionQueue = newd ActionQueue(*this);
 	}
+
+	NetworkConnection& connection = NetworkConnection::getInstance();
+	connection.stop();
 }
 
 void Editor::QueryNode(int ndx, int ndy, bool underground)
 {
 	ASSERT(live_client);
-	live_client->QueryNode(ndx, ndy, underground);
+	live_client->queryNode(ndx, ndy, underground);
 }
 
 void Editor::SendNodeRequests()
 {
 	if(live_client) {
-		live_client->SendNodeRequests();
+		live_client->sendNodeRequests();
 	}
 }
 

@@ -38,26 +38,32 @@ MapTabbook::~MapTabbook()
 
 void MapTabbook::CycleTab(bool forward)
 {
-	if(!notebook)
+	if (!notebook) {
 		return;
+	}
+	
+	int32_t pageCount = notebook->GetPageCount();
+	int32_t currentSelection = notebook->GetSelection();
 
-	int s;
-	if (forward)
-		s = (notebook->GetSelection() + 1) % notebook->GetPageCount();
-	else
-		s = (notebook->GetSelection() - 1 + notebook->GetPageCount()) % notebook->GetPageCount();
-	notebook->SetSelection(s);
+	int32_t selection;
+	if (forward) {
+		selection = (currentSelection + 1) % pageCount;
+	} else {
+		selection = (currentSelection - 1 + pageCount) % pageCount;
+	}
+	notebook->SetSelection(selection);
 }
 
 void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 {
-	MapTab* mt = dynamic_cast<MapTab*>(GetTab(evt.GetInt()));
-	if(mt && mt->IsUniqueReference() && mt->GetMap())
-	{
-		if(mt->GetEditor()->IsLive()) {
-			if(mt->GetMap()->hasChanged()) {
+	EditorTab* editorTab = GetTab(evt.GetInt());
+
+	MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+	if (mapTab && mapTab->IsUniqueReference() && mapTab->GetMap()) {
+		if (mapTab->GetEditor()->IsLive()) {
+			if (mapTab->GetMap()->hasChanged()) {
 				SetFocusedTab(evt.GetInt());
-				if(gui.root->DoQuerySave(false)) {
+				if (gui.root->DoQuerySave(false)) {
 					gui.RefreshPalettes(nullptr, false);
 					gui.UpdateMenus();
 				} else {
@@ -71,8 +77,8 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 		return;
 	}
 
-	LiveLogTab* lt = dynamic_cast<LiveLogTab*>(GetTab(evt.GetInt()));
-	if(lt && lt->IsConnected()) {
+	LiveLogTab* lt = dynamic_cast<LiveLogTab*>(editorTab);
+	if (lt && lt->IsConnected()) {
 		evt.Veto();
 	}
 }
@@ -118,7 +124,6 @@ void MapTabbook::SetFocusedTab(int idx)
 	notebook->SetSelection(idx);
 }
 
-
 EditorTab* MapTabbook::GetInternalTab(int idx)
 {
 	return conv[notebook->GetPage(idx)];
@@ -126,9 +131,9 @@ EditorTab* MapTabbook::GetInternalTab(int idx)
 
 EditorTab* MapTabbook::GetCurrentTab()
 {
-	if(GetTabCount() == 0 || GetSelection() == -1)
+	if (GetTabCount() == 0 || GetSelection() == -1) {
 		return nullptr;
-
+	}
 	return dynamic_cast<EditorTab*>(GetInternalTab(GetSelection()));
 }
 
@@ -139,43 +144,56 @@ EditorTab* MapTabbook::GetTab(int idx)
 
 wxWindow* MapTabbook::GetCurrentPage()
 {
-	if(GetTabCount() == 0)
+	if (GetTabCount() == 0) {
 		return nullptr;
-
+	}
 	return GetCurrentTab()->GetWindow();
 }
 
 void MapTabbook::OnSwitchEditorMode(EditorMode mode)
 {
-	for(int i = 0; i < GetTabCount(); ++i)
-		if(GetTab(i))
-			GetTab(i)->OnSwitchEditorMode(mode);
+	for (int32_t i = 0; i < GetTabCount(); ++i) {
+		EditorTab* editorTab = GetTab(i);
+		if (editorTab) {
+			editorTab->OnSwitchEditorMode(mode);
+		}
+	}
 }
-
 
 void MapTabbook::SetTabLabel(int idx, wxString label)
 {
-	if(notebook)
+	if (notebook) {
 		notebook->SetPageText(idx, label);
+	}
 }
 
 void MapTabbook::DeleteTab(int idx)
 {
-	if(notebook)
+	if (notebook) {
 		notebook->DeletePage(idx);
+	}
 }
 
 int MapTabbook::GetTabCount()
 {
-	return notebook? notebook->GetPageCount() : 0;
+	if (notebook) {
+		return notebook->GetPageCount();
+	}
+	return 0;
 }
 
 int MapTabbook::GetTabIndex(wxWindow* w)
 {
-	return notebook? notebook->GetPageIndex(w) : 0;
+	if (notebook) {
+		return notebook->GetPageIndex(w);
+	}
+	return 0;
 }
 
 int MapTabbook::GetSelection()
 {
-	return notebook? notebook->GetSelection() : 0;
+	if (notebook) {
+		return notebook->GetSelection();
+	}
+	return 0;
 }

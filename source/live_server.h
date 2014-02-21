@@ -10,79 +10,66 @@
 #include "net_connection.h"
 #include "action.h"
 
+class LivePeer;
 class LiveLogTab;
 class QTreeNode;
 
-class LiveServer : public LiveSocket {
-public:
-	LiveServer(Editor& editor);
-	virtual ~LiveServer();
+class LiveServer : public LiveSocket
+{
+	public:
+		LiveServer(Editor& editor);
+		~LiveServer();
+		
+		//
+		bool bind();
+		void close();
 
-	bool SetName(const wxString& name);
-	bool SetVerification(const wxString& key);
+		void acceptClient();
+		void removeClient(uint32_t id);
 
-	void Close();
-	bool Bind();
+		//
+		void receiveHeader() {}
+		void receive(uint32_t packetSize) {}
+		void send(NetworkMessage& message) {}
 
-	LiveLogTab* CreateLogWindow(wxWindow* parent);
+		//
+		void updateCursor(const Position& position);
+		void updateClientList() const;
 
-	void HandleEvent(wxSocketEvent& evt);
-	
-	wxString GetHostName() const;
+		//
+		LiveLogTab* createLogWindow(wxWindow* parent);
 
-public:
-	// Broadcast interface
-	void BroadcastNodes(DirtyList& dirty_list);
-	void BroadcastChat(wxString speaker, wxString message);
-	void BroadcastCursor(const LiveCursor& cursor);
+		//
+		uint16_t getPort() const;
+		bool setPort(int32_t newPort);
 
-	// Operation displays load bar for all clients
-	void StartOperation(wxString msg);
-	void UpdateOperation(int percent);
+		Editor* getEditor() const {
+			return editor;
+		}
 
-	// Update interface
-	virtual void UpdateCursor(Position pos);
+		uint32_t getFreeClientId();
+		std::string getHostName() const;
 
-	// Parsing function, set in LivePeer::parser
-	void OnParseEditorPackets(LivePeer* connection, NetworkMessage* nmsg);
-	void OnParseLoginPackets(LivePeer* connection, NetworkMessage* nmsg);
+		//
+		void broadcastNodes(DirtyList& dirtyList);
+		void broadcastChat(const wxString& speaker, const wxString& chatMessage);
+		void broadcastCursor(const LiveCursor& cursor);
 
-protected:
-	// Packet handling functions
-	void OnReceiveHello(LivePeer* connection, NetworkMessage* nmsg);
-	void OnReceiveReady(LivePeer* connection, NetworkMessage* nmsg);
-	
-	void OnReceiveCursorUpdate(LivePeer* connection, NetworkMessage* nmsg);
+		void startOperation(const wxString& operationMessage);
+		void updateOperation(int32_t percent);
 
-	void OnReceiveChatMessage(LivePeer* connection, NetworkMessage* nmsg);
+	protected:
+		std::unordered_map<uint32_t, LivePeer*> clients;
+		
+		std::shared_ptr<boost::asio::ip::tcp::acceptor> acceptor;
+		std::shared_ptr<boost::asio::ip::tcp::socket> socket;
 
-	void OnReceiveNodeRequest(LivePeer* connection, NetworkMessage* nmsg);
-	void OnReceiveChanges(LivePeer* connection, NetworkMessage* nmsg);
-	void OnReceiveAddHouse(LivePeer* connection, NetworkMessage* nmsg);
-	void OnReceiveEditHouse(LivePeer* connection, NetworkMessage* nmsg);
-	void OnReceiveRemoveHouse(LivePeer* connection, NetworkMessage* nmsg);
-	
-protected:
-	// Read from packets
-	void ReceiveChanges(NetworkConnection* connection, NetworkMessage* nmsg);
+		Editor* editor;
 
-protected:
-	bool IsServer() const {return true;}
+		uint32_t clientIds;
+		uint16_t port;
 
-	typedef std::vector<LivePeer*> PeerList;
-
-	Editor* const editor;
-	wxSocketServer* serv;
-	uint32_t client_mask;
-
-	wxString name;
-	wxString cd_key;
-
-	PeerList connecting_clients;
-	PeerList connected_clients;
-	LiveLogTab* log;
+		bool stopped;
 };
-
-typedef void (LiveServer::*LiveServerPacketParser)(LivePeer* , NetworkMessage* );
 
 #endif
