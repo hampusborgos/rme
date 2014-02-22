@@ -1895,12 +1895,8 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			}
 			break;
 		}
-	default:
-		{
-			event.Skip();
-			break;
-		}
 	}
+	event.Skip();
 }
 
 void MapCanvas::OnCopy(wxCommandEvent& WXUNUSED(event))
