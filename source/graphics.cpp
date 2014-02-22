@@ -376,7 +376,6 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			// Same .dat loader, the change is only sprite id -> u32
 		case DAT_VERSION_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
 		case DAT_VERSION_1010: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1010; break;
-		case DAT_VERSION_1021: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
 		default:
 			error = wxT("Unknown .dat format version.");
 			return false;
@@ -1053,229 +1052,171 @@ bool GraphicManager::loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSpri
 
 bool GraphicManager::loadSpriteMetadataFlagsVer1010(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
 {
-	uint8_t currentByte;
-	uint8_t lastByte = VER_1010_FLAG_LAST;
-	while (true) {
-		file.getByte(currentByte);
-		switch (currentByte) {
-			case VER_1010_FLAG_BANK:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_CLIP:
-				break;
-			case VER_1010_FLAG_BOTTOM:
-				break;
-			case VER_1010_FLAG_TOP:
-				break;
-			case VER_1010_FLAG_CONTAINER:
-				break;
-			case VER_1010_FLAG_CUMULATIVE:
-				break;
-			case VER_1010_FLAG_FORCEUSE:
-				break;
-			case VER_1010_FLAG_MULTIUSE:
-				break;
-			case VER_1010_FLAG_WRITE:
-			case VER_1010_FLAG_WRITEONCE:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_LIQUIDCONTAINER:
-				break;
-			case VER_1010_FLAG_LIQUIDPOOL:
-				break;
-			case VER_1010_FLAG_UNPASS:
-				break;
-			case VER_1010_FLAG_UNMOVE:
-				break;
-			case VER_1010_FLAG_UNSIGHT:
-				break;
-			case VER_1010_FLAG_AVOID:
-				break;
-			case VER_1010_FLAG_NOMOVEMENTANIMATION:
-				break;
-			case VER_1010_FLAG_TAKE:
-				break;
-			case VER_1010_FLAG_HANG:
-				break;
-			case VER_1010_FLAG_HOOKSOUTH:
-				break;
-			case VER_1010_FLAG_HOOKEAST:
-				break;
-			case VER_1010_FLAG_ROTATE:
-				break;
-			case VER_1010_FLAG_LIGHT: {
-				file.skip(2);
-				file.skip(2);
-				break;
-			}
-			case VER_1010_FLAG_DONTHIDE:
-				break;
-			case VER_1010_FLAG_TRANSLUCENT:
-				break;
-			case VER_1010_FLAG_SHIFT: {
-				file.getU16(sType->drawoffset_x);
-				file.getU16(sType->drawoffset_y);
-				break;
-			}
-			case VER_1010_FLAG_HEIGHT:
-				file.getU16(sType->draw_height);
-				break;
-			case VER_1010_FLAG_LYINGOBJECT:
-				break;
-			case VER_1010_FLAG_ANIMATEALWAYS:
-				break;
-			case VER_1010_FLAG_AUTOMAP:
-				file.getU16(sType->minimap_color);
-				break;
-			case VER_1010_FLAG_LENSHELP:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_FULLBANK:
-				break;
-			case VER_1010_FLAG_IGNORELOOK:
-				break;
-			case VER_1010_FLAG_CLOTHES:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_MARKET: {
-				/* marketCategory = */ file.skip(2);
-				/* marketTradeAs  = */ file.skip(2);
-				/* marketShowAs = */ file.skip(2);
-				std::string marketName;
-				file.getString(marketName);
-				/* marketRestrictProfession = */ file.skip(2);
-				/* marketRestrictLevel = */ file.skip(2);
-				break;
-			}
-			case VER_1010_FLAG_ANIMATION:
-				break;
-			case VER_1010_FLAG_LAST:
-				return true;
-			default: {
-				warnings.push_back(
-					wxT("Tibia.dat: Unknown optbyte '") + std::to_string(int32_t(currentByte)) + wxT("'") +
-					wxT(" after '") + std::to_string(int32_t(lastByte)) + wxT("'")
-				);
-				return false;
-			}
-		}
-		lastByte = currentByte;
-	}
-}
+	// read the options until we find a 0xff
+	uint8_t lastopt;
+	uint8_t optbyte = 0xff;
 
-bool GraphicManager::loadSpriteMetadataFlagsVer1021(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
-{
-	uint8_t currentByte;
-	uint8_t lastByte = VER_1021_FLAG_LAST;
-	while (true) {
-		file.getByte(currentByte);
-		switch (currentByte) {
-			case VER_1021_FLAG_BANK:
+	do
+	{
+		lastopt = optbyte;
+		file.getByte(optbyte);
+		switch(optbyte)
+		{
+			case 0x00: //is groundtile
+				file.skip(2); // speed modifier
+				//speed = read_short;
+				//sType->speed = speed;
+				//sType->group = ITEM_GROUP_GROUND;
+				break;
+			case 0x01: //all OnTop
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 1;
+				break;
+			case 0x02: //can walk through
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 2;
+				break;
+			case 0x03: //can walk through
+				//sType->alwaysOnTop = true;
+				//sType->alwaysOnTopOrder = 3;
+				break;
+			case 0x04: //is a container
+				//sType->group = ITEM_GROUP_CONTAINER;
+				break;
+			case 0x05: //is stackable
+				//sType->stackable = true;
+				break;
+			case 0x06: //ladders
+				break;
+			case 0x07: //is useable
+				//sType->useable = true;
+				break;
+			case 0x08: //writeable objects
+				//sType->group = ITEM_GROUP_WRITEABLE;
+				//sType->readable = true;
 				file.skip(2);
+				//file.getU16(); //maximum text length?
 				break;
-			case VER_1021_FLAG_CLIP:
-				break;
-			case VER_1021_FLAG_BOTTOM:
-				break;
-			case VER_1021_FLAG_TOP:
-				break;
-			case VER_1021_FLAG_CONTAINER:
-				break;
-			case VER_1021_FLAG_CUMULATIVE:
-				break;
-			case VER_1021_FLAG_FORCEUSE:
-				break;
-			case VER_1021_FLAG_MULTIUSE:
-				break;
-			case VER_1021_FLAG_WRITE:
-			case VER_1021_FLAG_WRITEONCE:
+			case 0x09: //writeable objects that can't be edited
+				//sType->readable = true;
 				file.skip(2);
+				//file.getU16(); //maximum text length?
 				break;
-			case VER_1021_FLAG_LIQUIDCONTAINER:
+			case 0x0A: //can contain fluids
+				//sType->group = ITEM_GROUP_FLUID;
 				break;
-			case VER_1021_FLAG_LIQUIDPOOL:
+			case 0x0B: //liquid with states
+				//sType->group = ITEM_GROUP_SPLASH;
 				break;
-			case VER_1021_FLAG_UNPASS:
+			case 0x0C: //is blocking
+				//sType->blockSolid = true;
 				break;
-			case VER_1021_FLAG_UNMOVE:
+			case 0x0D: //is not moveable
+				//sType->moveable = false;
 				break;
-			case VER_1021_FLAG_UNSIGHT:
+			case 0x0E: //blocks missiles (walls, magic wall etc)
+				//sType->blockProjectile = true;
 				break;
-			case VER_1021_FLAG_AVOID:
+			case 0x0F: //blocks monster movement (flowers, parcels etc)
+				//sType->blockPathFind = true;
 				break;
-			case VER_1021_FLAG_NOMOVEMENTANIMATION:
+			case 0x10: //move animation
+				//sType->noMoveAnimation = true;
 				break;
-			case VER_1021_FLAG_TAKE:
+			case 0x11: //can be equipped
+				//sType->pickupable = true;
 				break;
-			case VER_1021_FLAG_HANG:
+			case 0x12: //wall items
+				//sType->isHangable = true;
 				break;
-			case VER_1021_FLAG_HOOKSOUTH:
+			case 0x13:
+				//sType->isHorizontal = true;
 				break;
-			case VER_1021_FLAG_HOOKEAST:
+			case 0x14:
+				//sType->isVertical = true;
 				break;
-			case VER_1021_FLAG_ROTATE:
+			case 0x15: //rotateable items
+				//sType->rotateable = true;
 				break;
-			case VER_1021_FLAG_LIGHT: {
+			case 0x16: //light info ..
 				file.skip(2);
 				file.skip(2);
+				//file.getU16(); // level
+				//file.getU16(); // color
+				//sType->lightColor = lightcolor;
 				break;
-			}
-			case VER_1021_FLAG_DONTHIDE:
+			case 0x17: // No object has this...
 				break;
-			case VER_1021_FLAG_TRANSLUCENT:
+			case 0x18: //floor change down
 				break;
-			case VER_1021_FLAG_SHIFT: {
-				file.getU16(sType->drawoffset_x);
-				file.getU16(sType->drawoffset_y);
+			case 0x19: { //Draw offset
+				uint16_t x;
+				uint16_t y;
+				file.getU16(x);
+				file.getU16(y);
+
+				sType->drawoffset_x = x;
+				sType->drawoffset_y = y;
+			} break;
+			case 0x1A: {
+				uint16_t u16;
+				file.getU16(u16);
+				sType->draw_height = u16; // Height
+			} break;
+			case 0x1B://draw with height offset for all parts (2x2) of the sprite
 				break;
-			}
-			case VER_1021_FLAG_HEIGHT:
-				file.getU16(sType->draw_height);
+			case 0x1C: // offset life-bar (for larger monsters)
 				break;
-			case VER_1021_FLAG_LYINGOBJECT:
-				break;
-			case VER_1021_FLAG_ANIMATEALWAYS:
-				break;
-			case VER_1021_FLAG_AUTOMAP:
-				file.getU16(sType->minimap_color);
-				break;
-			case VER_1021_FLAG_LENSHELP:
+			case 0x1D: { // Minimap color
+				uint16_t u16;
+				file.getU16(u16);
+				sType->minimap_color = u16;
+			} break;
+			case 0x1E:  {// Floor change?
 				file.skip(2);
+				//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
+				//file.getByte(); // always 4
+			} break;
+			case 0x1F:
 				break;
-			case VER_1021_FLAG_FULLBANK:
+			case 0x20: // LookThrough
 				break;
-			case VER_1021_FLAG_IGNORELOOK:
+			// All stuff below is hacky speculation
+			case 0x21: // Cloth slot
+				file.skip(2); // clothSlot
 				break;
-			case VER_1021_FLAG_CLOTHES:
-				file.skip(2);
-				break;
-			case VER_1021_FLAG_MARKET: {
+			case 0x22: // Market
+				{
 				/* marketCategory = */ file.skip(2);
-				/* marketTradeAs  = */ file.skip(2);
+                		/* marketTradeAs  = */ file.skip(2);
 				/* marketShowAs = */ file.skip(2);
 				std::string marketName;
 				file.getString(marketName);
 				/* marketRestrictProfession = */ file.skip(2);
 				/* marketRestrictLevel = */ file.skip(2);
 				break;
-			}
-			case VER_1021_FLAG_DEFAULT_ACTION:
-				file.skip(2);
+				}
+			case 0x23: //Default Action
+				{
+					file.skip(2);
+					break;
+				}
+			case 0xFE:
 				break;
-			case VER_1021_FLAG_USABLE:
+			case 0xFF:
 				break;
-			case VER_1021_FLAG_LAST:
-				return true;
 			default: {
-				warnings.push_back(
-					wxT("Tibia.dat: Unknown optbyte '") + std::to_string(int32_t(currentByte)) + wxT("'") +
-					wxT(" after '") + std::to_string(int32_t(lastByte)) + wxT("'")
-				);
+				wxString err;
+				err << wxT("Tibia.dat: Unknown optbyte '") 
+					<< (int)optbyte << wxT("'") << wxT(" after '") 
+					<< (int)lastopt << wxT("'");
+				warnings.push_back(err);
+
 				return false;
-			}
+			} break;
 		}
-		lastByte = currentByte;
-	}
+	} while (optbyte != 0xff);
+	return true;
 }
 
 bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings)
