@@ -65,13 +65,12 @@
 		<otb client="9.83" version="3" id="47"/>
 		<otb client="9.85" version="3" id="48"/>
 		<otb client="9.86" version="3" id="49"/>
-<!-- it require new format for 
 		<otb client="10.10" version="3" id="50"/>
 		<otb client="10.20" version="3" id="51"/>
 		<otb client="10.21" version="3" id="52"/>
 		<otb client="10.30" version="3" id="53"/>
 		<otb client="10.31" version="3" id="54"/>
--->
+		<otb client="10.35" version="3" id="55"/>
 	</otbs>
 
 	<clients>
@@ -223,10 +222,46 @@
 			<data datversion="9.6" sprversion="9.6" dat="0x5072A490" spr="0x5072A567"/>
 		</client>
 
-		<client name="9.86" otb="9.86" default="true" visible="true" data_directory="986">
+		<client name="9.86" otb="9.86" visible="true" data_directory="986">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.86"/>
 			<data datversion="9.6" sprversion="9.6" dat="0x5170E904" spr="0x5170E96F"/>
+		</client>
+		
+		<client name="10.10" otb="10.10" visible="true" data_directory="1010">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.10"/>
+			<data datversion="10.10" sprversion="9.6" dat="0x51E3F8C3" spr="0x51E3F8E9"/>
+		</client>
+		
+		<client name="10.20" otb="10.20" visible="true" data_directory="1020">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.20"/>
+			<data datversion="10.10" sprversion="9.6" dat="0x5236F129" spr="0x5236F14F"/>
+		</client>
+		
+		<client name="10.21" otb="10.21" visible="true" data_directory="1021">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.21"/>
+			<data datversion="10.21" sprversion="9.6" dat="0x526A5068" spr="0x526A5090"/>
+		</client>
+		
+		<client name="10.30" otb="10.30" visible="true" data_directory="1030">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.30"/>
+			<data datversion="10.21" sprversion="9.6" dat="0x52A59036" spr="0x52A5905F"/>
+		</client>
+		
+		<client name="10.31" otb="10.31" visible="true" data_directory="1031">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.31"/>
+			<data datversion="10.21" sprversion="9.6" dat="0x52AED581" spr="0x52AED5A7"/>
+		</client>
+		
+		<client name="10.35" otb="10.35" default="true" visible="true" data_directory="1035">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.35"/>
+			<data datversion="10.21" sprversion="9.6" dat="0x52FDFC2C" spr="0x52FDFC54"/>
 		</client>
 	</clients>
 
