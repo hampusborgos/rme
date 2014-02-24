@@ -850,7 +850,7 @@ void FindItemDialog::OnClickOKInternal()
 
 			if(do_search)
 			{
-				for(int id = 0; id < item_db.getMaxID(); ++id) 
+				for(int id = 0; id <= item_db.getMaxID(); ++id) 
 				{
 					ItemType& it = item_db[id];
 					if(it.id == 0 || (extra_condition && extra_condition(it) == false))
@@ -888,7 +888,7 @@ void FindItemDialog::RefreshContentsInternal()
 
 	if(do_search) 
 	{
-		for(int id = 0; id < item_db.getMaxID(); ++id) 
+		for(int id = 0; id <= item_db.getMaxID(); ++id) 
 		{
 			ItemType& it = item_db[id];
 			if(it.id == 0 || (extra_condition && extra_condition(it) == false))
@@ -972,7 +972,7 @@ void FindBrushDialog::OnClickOKInternal()
 				if(!result_brush)
 				{
 					// Then let's search the RAWs
-					for(int id = 0; id < item_db.getMaxID(); ++id)
+					for(int id = 0; id <= item_db.getMaxID(); ++id)
 					{
 						ItemType& it = item_db[id];
 						if(it.id == 0)
@@ -1028,7 +1028,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			item_list->AddBrush(const_cast<Brush*>(brush));
 		}
 
-		for(int id = 0; id < item_db.getMaxID(); ++id)
+		for(int id = 0; id <= item_db.getMaxID(); ++id)
 		{
 			ItemType& it = item_db[id];
 			if(it.id == 0)
@@ -1234,7 +1234,7 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 
 	if(do_search) 
 	{
-		for(int id = 0; id < item_db.getMaxID(); ++id) 
+		for(int id = 0; id <= item_db.getMaxID(); ++id) 
 		{
 			ItemType& it = item_db[id];
 			if(it.id == 0)
