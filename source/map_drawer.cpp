@@ -1257,7 +1257,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 	}
 }
 
-void MapDrawer::BlitSpriteType(int screenx, int screeny, uint spriteid, int red, int green, int blue, int alpha) {
+void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha) {
 	GameSprite* spr = item_db[spriteid].sprite;
 	if(spr == nullptr) return;
 	screenx -= spr->getDrawOffset().first;
@@ -1399,7 +1399,7 @@ void MapDrawer::DrawTile(TileLocation* location) {
 		if(location->getSpawnCount() > 0 && options.show_spawns)
 		{
 			float f = 1.0f;
-			for(uint i = 0; i < location->getSpawnCount(); ++i)
+			for(uint32_t i = 0; i < location->getSpawnCount(); ++i)
 			{
 				f *= 0.7f;
 			}

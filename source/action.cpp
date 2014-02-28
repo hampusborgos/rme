@@ -92,9 +92,9 @@ void Change::clear()
 	data = nullptr;
 }
 
-uint Change::memsize() const
+uint32_t Change::memsize() const
 {
-	uint mem = sizeof(*this);
+	uint32_t mem = sizeof(*this);
 	switch(type) {
 		case CHANGE_TILE:
 			ASSERT(data);
@@ -124,14 +124,14 @@ Action::~Action()
 
 size_t Action::approx_memsize() const
 {
-	uint mem = sizeof(*this);
+	uint32_t mem = sizeof(*this);
 	mem += changes.size() * (sizeof(Change) + sizeof(Tile) + sizeof(Item) + 6/* approx overhead*/);
 	return mem;
 }
 
 size_t Action::memsize() const
 {
-	uint mem = sizeof(*this);
+	uint32_t mem = sizeof(*this);
 	mem += sizeof(Change*) * 3 * changes.size();
 	ChangeList::const_iterator it = changes.begin();
 	while(it != changes.end())
@@ -465,7 +465,7 @@ size_t BatchAction::memsize(bool recalc) const
 {
 	// Expensive operation, only evaluate once (won't change anyways)
 	if(!recalc && memory_size > 0) return memory_size;
-	uint mem = sizeof(*this);
+	uint32_t mem = sizeof(*this);
 	mem += sizeof(Action*) * 3 * batch.size();
 
 	for(std::vector<Action*>::const_iterator it = batch.begin(); it != batch.end(); it++)

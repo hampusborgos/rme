@@ -755,7 +755,7 @@ void GUI::LoadPerspective()
 			if(info.IsFloatable())
 			{
 				bool offscreen = true;
-				for(uint index = 0; index < wxDisplay::GetCount(); ++index)
+				for(uint32_t index = 0; index < wxDisplay::GetCount(); ++index)
 				{
 					wxDisplay display(index);
 					wxRect rect = display.GetClientArea();
@@ -793,7 +793,7 @@ void GUI::LoadPerspective()
 			if(info.IsFloatable())
 			{
 				bool offscreen = true;
-				for(uint index = 0; index < wxDisplay::GetCount(); ++index)
+				for(uint32_t index = 0; index < wxDisplay::GetCount(); ++index)
 				{
 					wxDisplay display(index);
 					wxRect rect = display.GetClientArea();
@@ -1084,8 +1084,11 @@ void GUI::RefreshView()
 void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 {
 	progressText = message;
+	
 	progressFrom = 0;
 	progressTo = 100;
+	currentProgress = -1;
+
 	progressBar = newd wxGenericProgressDialog(wxT("Loading"), progressText + wxT(" (0%)"), 100, root,
 		wxPD_APP_MODAL | wxPD_SMOOTH | (canCancel ? wxPD_CAN_ABORT : 0)
 	);
@@ -1101,36 +1104,46 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	progressBar->Update(0);
 }
 
-void GUI::SetLoadScale(int from, int to)
+void GUI::SetLoadScale(int32_t from, int32_t to)
 {
 	progressFrom = from;
 	progressTo = to;
 }
 
-bool GUI::SetLoadDone(int done, wxString newmessage)
+bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 {
 	if (done == 100) {
 		DestroyLoadBar();
 		return true;
+	} else if (done == currentProgress) {
+		return true;
 	}
 
-	if (newmessage != wxT("")) {
-		progressText = newmessage;
+	if (!newMessage.empty()) {
+		progressText = newMessage;
 	}
 
-	int32_t new_done = progressFrom + static_cast<int32_t>((done / 100.f) * (progressTo - progressFrom));
-	new_done = std::max<int32_t>(0, std::min<int32_t>(100, new_done));
+	int32_t newProgress = progressFrom + static_cast<int32_t>((done / 100.f) * (progressTo - progressFrom));
+	newProgress = std::max<int32_t>(0, std::min<int32_t>(100, newProgress));
 	
 	bool skip = false;
-	wxString text = progressText + wxT(" (") + std::to_string(new_done) + wxT("%)");
 	if (progressBar) {
-		progressBar->Update(new_done, text, &skip);
+		progressBar->Update(
+			newProgress,
+			wxString::Format(wxT("%s (%d%%)"), progressText, newProgress),
+			&skip
+		);
+		currentProgress = newProgress;
 	}
 
-	for (int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
-		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
-		if (mt && mt->GetEditor()->IsLiveServer())
-			mt->GetEditor()->GetLiveServer()->updateOperation(new_done);
+	for (int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
+		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
+		if (mapTab && mapTab->GetEditor()) {
+			LiveServer* server = mapTab->GetEditor()->GetLiveServer();
+			if (server) {
+				server->updateOperation(newProgress);
+			}
+		}
 	}
 
 	return skip;
@@ -1140,6 +1153,8 @@ void GUI::DestroyLoadBar()
 {
 	if (progressBar) {
 		progressBar->Show(false);
+		currentProgress = -1;
+
 		progressBar->Destroy();
 		progressBar = nullptr;
 
@@ -1763,7 +1778,7 @@ void GUI::FillDoodadPreviewBuffer()
 	}
 }
 
-long GUI::PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString confisavename, uint configsavevalue)
+long GUI::PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString confisavename, uint32_t configsavevalue)
 {
 	if(text.empty())
 		return wxID_ANY;
@@ -1772,7 +1787,7 @@ long GUI::PopupDialog(wxWindow* parent, wxString title, wxString text, long styl
 	return dlg.ShowModal();
 }
 
-long GUI::PopupDialog(wxString title, wxString text, long style, wxString configsavename, uint configsavevalue)
+long GUI::PopupDialog(wxString title, wxString text, long style, wxString configsavename, uint32_t configsavevalue)
 {
 	return gui.PopupDialog(gui.root, title, text, style, configsavename, configsavevalue);
 }

@@ -140,13 +140,14 @@ public:
 	Settings();
 	~Settings();
 
-	int getInteger(uint key) const;
-	float getFloat(uint key) const;
-	std::string getString(uint key) const;
+	bool getBoolean(uint32_t key) const;
+	int getInteger(uint32_t key) const;
+	float getFloat(uint32_t key) const;
+	std::string getString(uint32_t key) const;
 	
-	void setInteger(uint key, int newval);
-	void setFloat(uint key, float newval);
-	void setString(uint key, std::string newval);
+	void setInteger(uint32_t key, int newval);
+	void setFloat(uint32_t key, float newval);
+	void setString(uint32_t key, std::string newval);
 	
 	wxConfigBase& getConfigObject();
 	void setDefaults() {IO(DEFAULT);}

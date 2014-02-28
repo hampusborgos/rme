@@ -57,7 +57,7 @@ public:
 	void* getData() const {return data;}
 
 	// Get memory footprint
-	uint memsize() const;
+	uint32_t memsize() const;
 
 	friend class Action;
 };
@@ -174,7 +174,7 @@ protected:
 
 	Editor& editor;
 	int timestamp;
-	uint memory_size;
+	uint32_t memory_size;
 	ActionIdentifier type;
 	ActionVector batch;
 

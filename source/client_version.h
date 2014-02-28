@@ -88,7 +88,7 @@ struct MapVersion
 	ClientVersionID client;
 };
 
-enum OtbFormatVersion
+enum OtbFormatVersion : uint32_t
 {
 	OTB_VERSION_1 = 1,
 	OTB_VERSION_2 = 2,

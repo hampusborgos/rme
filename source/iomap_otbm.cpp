@@ -802,8 +802,9 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	for(BinaryNode* mapNode = mapHeaderNode->getChild(); mapNode != nullptr; mapNode = mapNode->advance())
 	{
 		++nodes_loaded;
-		if(nodes_loaded % 15 == 0)
-			gui.SetLoadDone(int(100.0 * f.tell() / f.size()));
+		if (nodes_loaded % 15 == 0) {
+			gui.SetLoadDone(static_cast<int32_t>(100.0 * f.tell() / f.size()));
+		}
 		
 		uint8_t node_type;
 		if(!mapNode->getByte(node_type))
@@ -1427,7 +1428,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 			f.addString(std::string((const char*)fn.GetFullName().mb_str(wxConvUTF8)));
 
 			// Start writing tiles
-			uint tiles_saved = 0;
+			uint32_t tiles_saved = 0;
 			bool first = true;
 
 			int local_x = -1, local_y = -1, local_z = -1;

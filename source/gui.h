@@ -137,14 +137,14 @@ public:
 	 * If this returns false, the user has hit the quit button and you should
 	 * abort the loading.
 	 */
-	bool SetLoadDone(int done, wxString newmessage = wxT(""));
+	bool SetLoadDone(int32_t done, const wxString& newMessage = wxT(""));
 
 	/**
 	 * Sets the scale of the loading bar.
 	 * Calling this with (50, 80) means that setting 50 as 'done',
 	 * it will display as 0% loaded, 80 will display as 100% loaded.
 	 */
-	void SetLoadScale(int from, int to);
+	void SetLoadScale(int32_t from, int32_t to);
 
 	/**
 	 * Destroys (hides) the current loading bar.
@@ -169,8 +169,8 @@ public:
 	void UpdateTitle();
 	void UpdateMenus();
 	void SetStatusText(wxString text);
-	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint configsavevalue = 0);
-	long PopupDialog(wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint configsavevalue = 0);
+	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
+	long PopupDialog(wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
 	void ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec);
 	void ListDialog(wxString title, const wxArrayString& vec) {ListDialog(nullptr, title, vec);}
 	void ShowTextBox(wxWindow* parent, wxString title, wxString contents);
@@ -401,8 +401,11 @@ protected:
 	//=========================================================================
 	wxString progressText;
 	wxGenericProgressDialog* progressBar;
-	int progressFrom;
-	int progressTo;
+
+	int32_t progressFrom;
+	int32_t progressTo;
+	int32_t currentProgress;
+
 	wxWindowDisabler* winDisabler;
 	int disabled_counter;
 

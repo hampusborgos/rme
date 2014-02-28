@@ -102,11 +102,11 @@ PalettePanel* PaletteWindow::CreateTerrainPalette(wxWindow *parent, const Tilese
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_TERRAIN_STYLE)));
 
 	BrushToolPanel* tool_panel = newd BrushToolPanel(panel);
-	tool_panel->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_TERRAIN_TOOLBAR));
+	tool_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 	panel->AddToolPanel(tool_panel);
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_TERRAIN_TOOLBAR));
+	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
@@ -119,7 +119,7 @@ PalettePanel* PaletteWindow::CreateDoodadPalette(wxWindow *parent, const Tileset
 	panel->AddToolPanel(newd BrushThicknessPanel(panel));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_DOODAD_SIZEBAR));
+	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
@@ -130,7 +130,7 @@ PalettePanel* PaletteWindow::CreateItemPalette(wxWindow *parent, const TilesetCo
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_ITEM_STYLE)));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_ITEM_SIZEBAR));
+	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
@@ -140,7 +140,7 @@ PalettePanel* PaletteWindow::CreateHousePalette(wxWindow *parent, const TilesetC
 	HousePalettePanel* panel = newd HousePalettePanel(parent);
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_HOUSE_SIZEBAR));
+	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
@@ -161,7 +161,7 @@ PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetCon
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_RAW_STYLE)));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_RAW_SIZEBAR));
+	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
@@ -170,26 +170,26 @@ PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetCon
 void PaletteWindow::ReloadSettings(Map* map) {
 	if(terrain_palette) {
 		terrain_palette->SetListType(wxstr(settings.getString(Config::PALETTE_TERRAIN_STYLE)));
-		terrain_palette->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_TERRAIN_TOOLBAR));
+		terrain_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 	}
 	if(doodad_palette) {
 		doodad_palette->SetListType(wxstr(settings.getString(Config::PALETTE_DOODAD_STYLE)));
-		doodad_palette->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_DOODAD_SIZEBAR));
+		doodad_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
 	}
 	if(house_palette) {
 		house_palette->SetMap(map);
-		house_palette->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_HOUSE_SIZEBAR));
+		house_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
 	}
 	if(waypoint_palette) {
 		waypoint_palette->SetMap(map);
 	}
 	if(item_palette) {
 		item_palette->SetListType(wxstr(settings.getString(Config::PALETTE_ITEM_STYLE)));
-		item_palette->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_ITEM_SIZEBAR));
+		item_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
 	}
 	if(raw_palette) {
 		raw_palette->SetListType(wxstr(settings.getString(Config::PALETTE_RAW_STYLE)));
-		raw_palette->SetToolbarIconSize(settings.getInteger(Config::USE_LARGE_RAW_SIZEBAR));
+		raw_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
 	}
 	InvalidateContents();
 }

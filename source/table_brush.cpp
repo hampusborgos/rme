@@ -155,7 +155,7 @@ void TableBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 }
 
 
-bool hasMatchingTableBrushAtTile(BaseMap* map, TableBrush* table_brush, uint x, uint y, uint z) {
+bool hasMatchingTableBrushAtTile(BaseMap* map, TableBrush* table_brush, uint32_t x, uint32_t y, uint32_t z) {
 	Tile* t = map->getTile(x, y, z);
 	if(!t) return false;
 

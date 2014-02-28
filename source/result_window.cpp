@@ -41,7 +41,7 @@ SearchResultWindow::~SearchResultWindow() {
 }
 
 void SearchResultWindow::Clear() {
-	for(uint n = 0; n < result_list->GetCount(); ++n) {
+	for(uint32_t n = 0; n < result_list->GetCount(); ++n) {
 		delete reinterpret_cast<Position*>(result_list->GetClientData(n));
 	}
 	result_list->Clear();

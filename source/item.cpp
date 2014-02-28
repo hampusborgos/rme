@@ -161,9 +161,9 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 	return nullptr;
 }
 
-uint Item::memsize() const
+uint32_t Item::memsize() const
 {
-	uint mem = sizeof(*this);
+	uint32_t mem = sizeof(*this);
 	return mem;
 }
 

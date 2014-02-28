@@ -461,7 +461,7 @@ SpawnList Map::getSpawnList(Tile* where)
 	{
 		if(tile_loc->getSpawnCount() > 0)
 		{
-			uint found = 0;
+			uint32_t found = 0;
 			if(where->spawn)
 			{
 				++found;
@@ -571,7 +571,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 				continue;
 
 			//std::cout << "Pixel : " << (tile->getY() - min_y) * width + (tile->getX() - min_x) << std::endl;
-			uint pixelpos = (tile->getY() - min_y) * minimap_width + (tile->getX() - min_x);
+			uint32_t pixelpos = (tile->getY() - min_y) * minimap_width + (tile->getX() - min_x);
 			uint8_t& pixel = pic[pixelpos];
 
 			for(ItemVector::const_reverse_iterator item_iter = tile->items.rbegin();
@@ -603,7 +603,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 
 		// Store the file size
 		// We need to predict how large it will be
-		uint file_size =
+		uint32_t file_size =
 					14 // header
 					+40 // image data header
 					+256*4 // color palette

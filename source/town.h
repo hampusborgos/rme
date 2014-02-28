@@ -54,7 +54,7 @@ public:
 	// Clears the townmap
 	void clear();
 
-	uint count() const {return towns.size();}
+	uint32_t count() const {return towns.size();}
 
 	bool addTown(Town* town);
 	uint32_t getEmptyID();

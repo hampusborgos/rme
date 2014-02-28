@@ -127,9 +127,6 @@
     <ClInclude Include="..\..\source\iomap_otbm.h">
       <Filter>editor\io</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\iomap_otmm.h">
-      <Filter>editor\io</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\source\item.h">
       <Filter>objects</Filter>
     </ClInclude>
@@ -294,7 +291,6 @@
     <ClInclude Include="..\..\source\waypoints.h">
       <Filter>objects</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="..\..\source\ground_brush.h">
       <Filter>editor\brushes</Filter>
     </ClInclude>
@@ -589,9 +585,6 @@
     <ClCompile Include="..\..\source\iomap_otbm.cpp">
       <Filter>editor\io</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\iomap_otmm.cpp">
-      <Filter>editor\io</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\source\table_brush.cpp">
       <Filter>editor\brushes</Filter>
     </ClCompile>
@@ -619,10 +612,6 @@
     <ClCompile Include="..\..\source\extension.cpp">
       <Filter>editor</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\data\menubar.xml" />
-    <None Include="..\..\data\clients.xml" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="rme.rc">

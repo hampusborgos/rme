@@ -327,7 +327,7 @@ void WallBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 	tile->addWallItem(Item::Create(id));
 }
 
-bool hasMatchingWallBrushAtTile(BaseMap* map, WallBrush* wall_brush, uint x, uint y, uint z) {
+bool hasMatchingWallBrushAtTile(BaseMap* map, WallBrush* wall_brush, uint32_t x, uint32_t y, uint32_t z) {
 	Tile* t = map->getTile(x, y, z);
 	if(!t) return false;
 

@@ -86,22 +86,30 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 {
 	gui.UpdateMinimap();
-	MapTab* mt_old = dynamic_cast<MapTab*>(evt.GetOldSelection() != -1? GetTab(evt.GetOldSelection()) : nullptr);
-	MapTab* mt_new = dynamic_cast<MapTab*>(evt.GetSelection() != -1? GetTab(evt.GetSelection()) : nullptr);
 
-	int old = evt.GetOldSelection();
-	int nnew = evt.GetSelection();
+	int32_t oldSelection = evt.GetOldSelection();
+	int32_t newSelection = evt.GetSelection();
 
-	//std::cout << old << nnew;
-
-	if((mt_old && mt_new && mt_old->HasSameReference(mt_new) == false) || (!mt_old && mt_new))
-	{
-		gui.RefreshPalettes(mt_new->GetMap());
-		gui.UpdateMenus();
+	MapTab* oldMapTab;
+	if (oldSelection != -1) {
+		oldMapTab = dynamic_cast<MapTab*>(GetTab(oldSelection));
+	} else {
+		oldMapTab = nullptr;
 	}
-	else if(!mt_new)
-	{
+
+	MapTab* newMapTab;
+	if (newSelection != -1) {
+		newMapTab = dynamic_cast<MapTab*>(GetTab(newSelection));
+	} else {
+		newMapTab = nullptr;
+	}
+
+	// std::cout << oldSelection << " " << newSelection;
+	if (!newMapTab) {
 		gui.RefreshPalettes(nullptr);
+	} else if (!oldMapTab || !oldMapTab->HasSameReference(newMapTab)) {
+		gui.RefreshPalettes(newMapTab->GetMap());
+		gui.UpdateMenus();
 	}
 }
 

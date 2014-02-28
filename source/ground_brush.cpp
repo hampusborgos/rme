@@ -626,7 +626,7 @@ const GroundBrush::BorderBlock* GroundBrush::getBrushTo(GroundBrush* first, Grou
 	return nullptr;
 }
 
-inline GroundBrush* extractGroundBrushFromTile(BaseMap* map, uint x, uint y, uint z) {
+inline GroundBrush* extractGroundBrushFromTile(BaseMap* map, uint32_t x, uint32_t y, uint32_t z) {
 	Tile* t = map->getTile(x, y, z);
 	return t? t->getGroundBrush() : nullptr;
 }
@@ -904,7 +904,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 			//if(scb->with_id == 0) continue;
 			ItemVector::iterator it = tile->items.begin();
 
-			uint matches = 0;
+			uint32_t matches = 0;
 			while(it != tile->items.end()) {
 				Item* item = *it;
 				if(item->isBorder() == false) {

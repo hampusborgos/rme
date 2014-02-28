@@ -68,7 +68,7 @@ public:
 	Houses(Map& map);
 	~Houses();
 
-	uint count() const {return houses.size();}
+	uint32_t count() const {return houses.size();}
 
 	HouseMap::iterator begin() {return houses.begin();}
 	HouseMap::iterator end() {return houses.end();}

@@ -307,8 +307,8 @@ BinaryNode::~BinaryNode() {
 }
 
 BinaryNode* BinaryNode::getChild() {
-	assert(file);
-	assert(child == nullptr);
+	ASSERT(file);
+	ASSERT(child == nullptr);
 
 	if(file->last_was_start) {
 		child = file->getNode(this);
@@ -334,8 +334,7 @@ bool BinaryNode::getRAW(std::string& str, size_t sz) {
 		read_offset = data.size();
 		return false;
 	}
-	str.resize(sz);
-	memcpy(const_cast<char*>(str.data()), data.data() + read_offset, sz);
+	str.assign(data.data() + read_offset, sz);
 	read_offset += sz;
 	return true;
 }
@@ -345,14 +344,7 @@ bool BinaryNode::getString(std::string& str) {
 	if(!getU16(len)) {
 		return false;
 	}
-	if(read_offset + len > data.size()) {
-		read_offset = data.size();
-		return false;
-	}
-	str.resize(len);
-	memcpy(const_cast<char*>(str.data()), data.data() + read_offset, len);
-	read_offset += len;
-	return true;
+	return getRAW(str, len);
 }
 
 bool BinaryNode::getLongString(std::string& str) {
@@ -360,19 +352,12 @@ bool BinaryNode::getLongString(std::string& str) {
 	if(!getU32(len)) {
 		return false;
 	}
-	if(read_offset + len > data.size()) {
-		read_offset = data.size();
-		return false;
-	}
-	str.resize(len);
-	memcpy(const_cast<char*>(str.data()), data.data() + read_offset, len);
-	read_offset += len;
-	return true;
+	return getRAW(str, len);
 }
 
 BinaryNode* BinaryNode::advance() {
 	// Advance this to the next position
-	assert(file);
+	ASSERT(file);
 
 	if(file->error_code != FILE_NO_ERROR)
 		return nullptr;
@@ -430,7 +415,7 @@ BinaryNode* BinaryNode::advance() {
 }
 
 void BinaryNode::load() {
-	assert(file);
+	ASSERT(file);
 	// Read until next node starts
 	uint8_t*& cache = file->cache;
 	size_t& cache_length = file->cache_length;

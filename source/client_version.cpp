@@ -162,7 +162,7 @@ void ClientVersion::loadOTBInfo(pugi::xml_node otbNode)
 		return;
 	}
 
-	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(pugi::cast<int32_t>(attribute.value()));
+	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(pugi::cast<uint32_t>(attribute.value()));
 	if (versionId < OTB_VERSION_1 || versionId > OTB_VERSION_3) {
 		wxLogError(wxT("Node 'otb' unrecognized format version (version 1..3 supported)."));
 		return;

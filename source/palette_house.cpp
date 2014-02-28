@@ -155,12 +155,12 @@ bool HousePalettePanel::SelectBrush(const Brush* whatbrush) {
 				++house_iter)
 		{
 			if(house_iter->second->id == house_brush->getHouseID()) {
-				for(uint i = 0; i < town_choice->GetCount(); ++i) {
+				for(uint32_t i = 0; i < town_choice->GetCount(); ++i) {
 					Town* town = reinterpret_cast<Town*>(town_choice->GetClientData(i));
 					// If it's "No Town" (nullptr) select it, or if it has the same town ID as the house
 					if(town == nullptr || town->getID() == house_iter->second->townid) {
 						SelectTown(i);
-						for(uint j = 0; j < house_list->GetCount(); ++j) {
+						for(uint32_t j = 0; j < house_list->GetCount(); ++j) {
 							if(house_iter->second->id == reinterpret_cast<House*>(house_list->GetClientData(j))->id) {
 								SelectHouse(j);
 								return true;

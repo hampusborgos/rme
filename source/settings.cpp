@@ -50,7 +50,20 @@ wxConfigBase& Settings::getConfigObject()
 	return *dynamic_cast<wxConfigBase*>(wxConfig::Get());
 }
 
-int Settings::getInteger(uint key) const {
+bool Settings::getBoolean(uint32_t key) const
+{
+	if (key > Config::LAST) {
+		return false;
+	}
+
+	const DynamicValue& dv = store[key];
+	if (dv.type == TYPE_INT) {
+		return dv.intval != 0;
+	}
+	return false;
+}
+
+int Settings::getInteger(uint32_t key) const {
 	if(key > Config::LAST) return 0;
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_INT)
@@ -58,7 +71,7 @@ int Settings::getInteger(uint key) const {
 	return 0;
 }
 
-float Settings::getFloat(uint key) const {
+float Settings::getFloat(uint32_t key) const {
 	if(key > Config::LAST) return 0.0;
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_FLOAT) {
@@ -67,7 +80,7 @@ float Settings::getFloat(uint key) const {
 	return 0.0;
 }
 
-std::string Settings::getString(uint key) const {
+std::string Settings::getString(uint32_t key) const {
 	if(key > Config::LAST) return "";
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_STR && dv.strval != nullptr)
@@ -76,7 +89,7 @@ std::string Settings::getString(uint key) const {
 }
 
 
-void Settings::setInteger(uint key, int newval) {
+void Settings::setInteger(uint32_t key, int newval) {
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_INT) {
@@ -87,7 +100,7 @@ void Settings::setInteger(uint key, int newval) {
 	}
 }
 
-void Settings::setFloat(uint key, float newval) {
+void Settings::setFloat(uint32_t key, float newval) {
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_FLOAT) {
@@ -98,7 +111,7 @@ void Settings::setFloat(uint key, float newval) {
 	}
 }
 
-void Settings::setString(uint key, std::string newval) {
+void Settings::setString(uint32_t key, std::string newval) {
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_STR) {

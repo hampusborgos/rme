@@ -82,22 +82,28 @@ public: //Functions
 	void merge(Tile* other);
 
 	// Has tile been modified since the map was loaded/created?
-	bool isModified() const {return statflags & TILESTATE_MODIFIED;}
-	void modify() {statflags |= TILESTATE_MODIFIED;}
-	void unmodify() {statflags &= ~TILESTATE_MODIFIED;}
+	bool isModified() const { return testFlags(statflags, TILESTATE_MODIFIED); }
+	void modify() { statflags |= TILESTATE_MODIFIED; }
+	void unmodify() { statflags &= ~TILESTATE_MODIFIED; }
 
 	// Get memory footprint size
-	uint memsize() const;
+	uint32_t memsize() const;
 	// Get number of items on the tile
-	bool empty() const {return size() == 0;}
+	bool empty() const { return size() == 0; }
 	int size() const;
 
 	// Blocking?
-	bool isBlocking() const {return statflags & TILESTATE_BLOCKING;}
+	bool isBlocking() const { return testFlags(statflags, TILESTATE_BLOCKING); }
 
 	// PZ
-	bool isPZ() const {return mapflags & TILESTATE_PROTECTIONZONE;}
-	void setPZ(bool pz) {if(pz) mapflags |= TILESTATE_PROTECTIONZONE; else mapflags &= ~TILESTATE_PROTECTIONZONE;}
+	bool isPZ() const { return testFlags(mapflags, TILESTATE_PROTECTIONZONE); }
+	void setPZ(bool pz) {
+		if (pz) {
+			mapflags |= TILESTATE_PROTECTIONZONE;
+		} else {
+			mapflags &= ~TILESTATE_PROTECTIONZONE;
+		}
+	}
 
 	bool hasProperty(enum ITEMPROPERTY prop) const;
 
@@ -110,8 +116,8 @@ public: //Functions
 	void selectGround();
 	void deselectGround();
 
-	bool isSelected() const {return statflags & TILESTATE_SELECTED;}
-	bool hasUniqueItem() const {return statflags & TILESTATE_UNIQUE;}
+	bool isSelected() const { return testFlags(statflags, TILESTATE_SELECTED); }
+	bool hasUniqueItem() const { return testFlags(statflags, TILESTATE_UNIQUE); }
 
 	ItemVector popSelectedItems();
 	ItemVector getSelectedItems();
@@ -123,25 +129,37 @@ public: //Functions
 	uint8_t getMiniMapColor() const;
 
 	// Does this tile have ground?
-	bool hasGround() const {return ground;}
+	bool hasGround() const { return ground != nullptr; }
 	bool hasBorders() const {
 		return items.size() && items[0]->isBorder();
 	}
+
 	// Get the border brush of this tile
 	GroundBrush* getGroundBrush() const;
+
 	// Remove all borders (for autoborder)
 	void cleanBorders();
+
 	// Add a border item (added at the bottom of all items)
 	void addBorderItem(Item* item);
+
 	// Borderize this tile
 	void borderize(BaseMap* parent);
 
-	bool hasTable() const {return statflags & TILESTATE_HAS_TABLE;}
+	bool hasTable() const { return testFlags(statflags, TILESTATE_HAS_TABLE); }
 	Item* getTable() const;
-	bool hasCarpet() const {return statflags & TILESTATE_HAS_CARPET;}
+
+	bool hasCarpet() const { return testFlags(statflags, TILESTATE_HAS_CARPET); }
 	Item* getCarpet() const;
-	bool hasOptionalBorder() const {return statflags & TILESTATE_OP_BORDER;}
-	void setOptionalBorder(bool b) {if(b) statflags |= TILESTATE_OP_BORDER; else statflags &= ~TILESTATE_OP_BORDER;}
+
+	bool hasOptionalBorder() const { return testFlags(statflags, TILESTATE_OP_BORDER); }
+	void setOptionalBorder(bool b) {
+		if (b) {
+			statflags |= TILESTATE_OP_BORDER;
+		} else {
+			statflags &= ~TILESTATE_OP_BORDER;
+		}
+	}
 	
 	// Get the (first) wall of this tile
 	Item* getWall() const;
@@ -163,7 +181,7 @@ public: //Functions
 
 	// Has to do with houses
 	bool isHouseTile() const;
-	uint getHouseID() const;
+	uint32_t getHouseID() const;
 	void addHouseExit(House* h);
 	void removeHouseExit(House* h);
 	bool isHouseExit() const;
@@ -211,7 +229,7 @@ inline bool Tile::isHouseTile() const {
 	return house_id != 0;
 }
 
-inline uint Tile::getHouseID() const {
+inline uint32_t Tile::getHouseID() const {
 	return house_id;
 }
 

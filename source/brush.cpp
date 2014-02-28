@@ -197,7 +197,7 @@ Brush* Brushes::getBrush(std::string name) const {
 	return nullptr;
 }
 
-uint Brush::id_counter = 0;
+uint32_t Brush::id_counter = 0;
 
 Brush::Brush() :
 	id(++id_counter),
@@ -238,7 +238,7 @@ bool TerrainBrush::friendOf(TerrainBrush* other) {
 // Flag brush
 // draws pz etc.
 
-FlagBrush::FlagBrush(uint _flag) : flag(_flag) {
+FlagBrush::FlagBrush(uint32_t _flag) : flag(_flag) {
 }
 
 FlagBrush::~FlagBrush() {
@@ -589,9 +589,9 @@ bool OptionalBorderBrush::canDraw(BaseMap* map, Position pos) const {
 		}
 	}
 
-	uint x = pos.x;
-	uint y = pos.y;
-	uint z = pos.z;
+	uint32_t x = pos.x;
+	uint32_t y = pos.y;
+	uint32_t z = pos.z;
 
 	tile = map->getTile(x - 1, y - 1, z);
 	if(tile) if(GroundBrush* bb = tile->getGroundBrush()) if(bb->hasOptionalBorder()) return true;

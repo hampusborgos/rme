@@ -365,7 +365,6 @@ bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, i
 bool Editor::exportMiniMap(FileName filename, int floor /*= 7*/, bool displaydialog)
 {
 	return map.exportMinimap(filename, floor, displaydialog);
-	return false;
 }
 
 

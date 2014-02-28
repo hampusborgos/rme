@@ -155,23 +155,23 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 		}
 		else
 		{
-			options.transparent_floors = settings.getInteger(Config::TRANSPARENT_FLOORS);
-			options.transparent_items = settings.getInteger(Config::TRANSPARENT_ITEMS);
-			options.show_ingame_box = settings.getInteger(Config::SHOW_INGAME_BOX);
+			options.transparent_floors = settings.getBoolean(Config::TRANSPARENT_FLOORS);
+			options.transparent_items = settings.getBoolean(Config::TRANSPARENT_ITEMS);
+			options.show_ingame_box = settings.getBoolean(Config::SHOW_INGAME_BOX);
 			options.show_grid = settings.getInteger(Config::SHOW_GRID);
-			options.ingame = settings.getInteger(Config::SHOW_EXTRA) == 0;
-			options.show_all_floors = settings.getInteger(Config::SHOW_ALL_FLOORS);
-			options.show_creatures = settings.getInteger(Config::SHOW_CREATURES);
-			options.show_spawns = settings.getInteger(Config::SHOW_SPAWNS);
-			options.show_houses = settings.getInteger(Config::SHOW_HOUSES);
-			options.show_shade = settings.getInteger(Config::SHOW_SHADE);
-			options.show_special_tiles = settings.getInteger(Config::SHOW_SPECIAL_TILES);
-			options.show_items = settings.getInteger(Config::SHOW_ITEMS);
-			options.highlight_items = settings.getInteger(Config::HIGHLIGHT_ITEMS);
-			options.show_blocking = settings.getInteger(Config::SHOW_BLOCKING);
-			options.show_only_colors = settings.getInteger(Config::SHOW_ONLY_TILEFLAGS);
-			options.show_only_modified = settings.getInteger(Config::SHOW_ONLY_MODIFIED_TILES);
-			options.hide_items_when_zoomed = settings.getInteger(Config::HIDE_ITEMS_WHEN_ZOOMED);
+			options.ingame = !settings.getBoolean(Config::SHOW_EXTRA);
+			options.show_all_floors = settings.getBoolean(Config::SHOW_ALL_FLOORS);
+			options.show_creatures = settings.getBoolean(Config::SHOW_CREATURES);
+			options.show_spawns = settings.getBoolean(Config::SHOW_SPAWNS);
+			options.show_houses = settings.getBoolean(Config::SHOW_HOUSES);
+			options.show_shade = settings.getBoolean(Config::SHOW_SHADE);
+			options.show_special_tiles = settings.getBoolean(Config::SHOW_SPECIAL_TILES);
+			options.show_items = settings.getBoolean(Config::SHOW_ITEMS);
+			options.highlight_items = settings.getBoolean(Config::HIGHLIGHT_ITEMS);
+			options.show_blocking = settings.getBoolean(Config::SHOW_BLOCKING);
+			options.show_only_colors = settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
+			options.show_only_modified = settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
+			options.hide_items_when_zoomed = settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
 		}
 
 		options.dragging = boundbox_selection;
@@ -266,7 +266,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		wxFileOutputStream of(path.GetFullPath());
 		if(of.IsOk())
 		{
-			if(screenshot.SaveFile(of, type))
+			if(screenshot.SaveFile(of, static_cast<wxBitmapType>(type)))
 				gui.SetStatusText(wxT("Took screenshot and saved as ") + path.GetFullName());
 			else
 				gui.PopupDialog(wxT("File error"), wxT("Couldn't save image file correctly."), wxOK);

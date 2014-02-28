@@ -88,7 +88,7 @@ public:
 	virtual void undraw(BaseMap* map, Tile* tile) = 0;
 	virtual bool canDraw(BaseMap* map, Position pos) const = 0;
 	
-	uint getID() const {return id;}
+	uint32_t getID() const {return id;}
 	virtual std::string getName() const = 0;
 	virtual void setName(std::string newname) {ASSERT(_MSG("setName attempted on nameless brush!"));}
 	virtual int getLookID() const = 0;
@@ -101,9 +101,9 @@ public:
 	void flagAsVisible() {visible = true;}
 
 protected:
-	uint id;
+	uint32_t id;
 	bool visible; // Visible in any palette?
-	static uint id_counter;
+	static uint32_t id_counter;
 };
 
 //=============================================================================
@@ -135,7 +135,7 @@ protected:
 
 class FlagBrush : public Brush {
 public:
-	FlagBrush(uint _flag);
+	FlagBrush(uint32_t _flag);
 	virtual ~FlagBrush();
 
 	virtual bool canDraw(BaseMap* map, Position pos) const;
@@ -146,7 +146,7 @@ public:
 	virtual int getLookID() const;
 	virtual std::string getName() const;
 protected:
-	uint flag;
+	uint32_t flag;
 };
 
 //=============================================================================

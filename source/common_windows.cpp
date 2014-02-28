@@ -756,7 +756,7 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 				size_t itemcount = item_list->GetItemCount();
 				if(n == wxNOT_FOUND)
 					n = 0;
-				else if(uint(n) < itemcount - amount && itemcount - amount < itemcount)
+				else if(static_cast<uint32_t>(n) < itemcount - amount && itemcount - amount < itemcount)
 					n += amount;
 				else
 					n = item_list->GetItemCount() - 1;
@@ -1162,7 +1162,7 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 				size_t itemcount = item_list->GetItemCount();
 				if(n == wxNOT_FOUND)
 					n = 0;
-				else if(uint(n) < itemcount - amount && itemcount - amount < itemcount)
+				else if(static_cast<uint32_t>(n) < itemcount - amount && itemcount - amount < itemcount)
 					n += amount;
 				else
 					n = item_list->GetItemCount() - 1;

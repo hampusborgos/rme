@@ -27,8 +27,6 @@
 #include <stack>
 #include <stdio.h>
 
-typedef unsigned int uint;
-
 #ifndef FORCEINLINE
 #   ifdef _MSV_VER
 #       define FORCEINLINE __forceinline

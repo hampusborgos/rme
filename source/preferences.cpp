@@ -119,44 +119,44 @@ wxNotebookPage* PreferencesWindow::CreateEditorPage() {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	sizer->Add(group_actions_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Group same-type actions")));
-	group_actions_chkbox->SetValue(settings.getInteger(Config::GROUP_ACTIONS));
+	group_actions_chkbox->SetValue(settings.getBoolean(Config::GROUP_ACTIONS));
 	group_actions_chkbox->SetToolTip(wxT("This will group actions of the same type (drawing, selection..) when several take place in consecutive order."));
 
 	sizer->Add(duplicate_id_warn_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Warn for duplicate IDs")));
-	duplicate_id_warn_chkbox->SetValue(settings.getInteger(Config::WARN_FOR_DUPLICATE_ID));
+	duplicate_id_warn_chkbox->SetValue(settings.getBoolean(Config::WARN_FOR_DUPLICATE_ID));
 	duplicate_id_warn_chkbox->SetToolTip(wxT("Warns for most kinds of duplicate IDs."));
 
 	sizer->Add(house_remove_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("House brush removes items")));
-	house_remove_chkbox->SetValue(settings.getInteger(Config::HOUSE_BRUSH_REMOVE_ITEMS));
+	house_remove_chkbox->SetValue(settings.getBoolean(Config::HOUSE_BRUSH_REMOVE_ITEMS));
 	house_remove_chkbox->SetToolTip(wxT("When this option is checked, the house brush will automaticly remove items that will respawn every time the map is loaded."));
 
 	sizer->Add(auto_assign_doors_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Auto-assign door ids")));
-	auto_assign_doors_chkbox->SetValue(settings.getInteger(Config::AUTO_ASSIGN_DOORID));
+	auto_assign_doors_chkbox->SetValue(settings.getBoolean(Config::AUTO_ASSIGN_DOORID));
 	auto_assign_doors_chkbox->SetToolTip(wxT("This will auto-assign unique door ids to all doors placed with the door brush (or doors painted over with the house brush).\nDoes NOT affect doors placed using the RAW palette."));
 	
 	sizer->Add(doodad_erase_same_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Doodad brush only erases same")));
-	doodad_erase_same_chkbox->SetValue(settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE));
+	doodad_erase_same_chkbox->SetValue(settings.getBoolean(Config::DOODAD_BRUSH_ERASE_LIKE));
 	doodad_erase_same_chkbox->SetToolTip(wxT("The doodad brush will only erase items that belongs to the current brush."));
 
 	sizer->Add(eraser_leave_unique_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Eraser leaves unique items")));
-	eraser_leave_unique_chkbox->SetValue(settings.getInteger(Config::ERASER_LEAVE_UNIQUE));
+	eraser_leave_unique_chkbox->SetValue(settings.getBoolean(Config::ERASER_LEAVE_UNIQUE));
 	eraser_leave_unique_chkbox->SetToolTip(wxT("The eraser will leave containers with items in them, items with unique or action id and items."));
 
 	sizer->Add(allow_spawnless_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Allow creatures without spawn")));
-	allow_spawnless_chkbox->SetValue(settings.getInteger(Config::ALLOW_CREATURES_WITHOUT_SPAWN));
+	allow_spawnless_chkbox->SetValue(settings.getBoolean(Config::ALLOW_CREATURES_WITHOUT_SPAWN));
 	allow_spawnless_chkbox->SetToolTip(wxT("When this option is checked, you can place creatures without placing a spawn, they will NOT be saved, however."));
 
 	sizer->Add(allow_multiple_orderitems_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Prevent toporder conflict")));
-	allow_multiple_orderitems_chkbox->SetValue(settings.getInteger(Config::RAW_LIKE_SIMONE));
+	allow_multiple_orderitems_chkbox->SetValue(settings.getBoolean(Config::RAW_LIKE_SIMONE));
 	allow_multiple_orderitems_chkbox->SetToolTip(wxT("When this option is checked, you can not place several items with the same toporder on one tile using a RAW Brush."));
 
 	sizer->Add(20,10);
 
 	sizer->Add(merge_move_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Use merge move")));
-	merge_move_chkbox->SetValue(settings.getInteger(Config::MERGE_MOVE));
+	merge_move_chkbox->SetValue(settings.getBoolean(Config::MERGE_MOVE));
 	merge_move_chkbox->SetToolTip(wxT("Moved tiles won't replace already placed tiles."));
 	sizer->Add(merge_paste_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Use merge paste")));
-	merge_paste_chkbox->SetValue(settings.getInteger(Config::MERGE_PASTE));
+	merge_paste_chkbox->SetValue(settings.getBoolean(Config::MERGE_PASTE));
 	merge_paste_chkbox->SetToolTip(wxT("Pasted tiles won't replace already placed tiles."));
 
 	editor_page->SetSizerAndFit(sizer);
@@ -171,15 +171,15 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	sizer->Add(hide_items_when_zoomed_chkbox = newd wxCheckBox(graphics_page, wxID_ANY, wxT("Hide items when zoomed out")));
-	hide_items_when_zoomed_chkbox->SetValue(settings.getInteger(Config::HIDE_ITEMS_WHEN_ZOOMED));
+	hide_items_when_zoomed_chkbox->SetValue(settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED));
 	SetWindowToolTip(hide_items_when_zoomed_chkbox, wxT("When this option is checked, \"loose\" items will be hidden when you zoom very far out."));
 
 	sizer->Add(icon_selection_shadow_chkbox = newd wxCheckBox(graphics_page, wxID_ANY, wxT("Use icon selection shadow")));
-	icon_selection_shadow_chkbox->SetValue(settings.getInteger(Config::USE_GUI_SELECTION_SHADOW));
+	icon_selection_shadow_chkbox->SetValue(settings.getBoolean(Config::USE_GUI_SELECTION_SHADOW));
 	SetWindowToolTip(icon_selection_shadow_chkbox, wxT("When this option is checked, selected items in the palette menu will be shaded."));
 
 	sizer->Add(use_memcached_chkbox = newd wxCheckBox(graphics_page, wxID_ANY, wxT("Use memcached sprites")));
-	use_memcached_chkbox->SetValue(settings.getInteger(Config::USE_MEMCACHED_SPRITES));
+	use_memcached_chkbox->SetValue(settings.getBoolean(Config::USE_MEMCACHED_SPRITES));
 	SetWindowToolTip(use_memcached_chkbox, wxT("When this is checked, sprites will be loaded into memory at startup and unpacked at runtime. This is faster but consumes more memory.\nIf it is not checked, the editor will use less memory but there will be a performance decrease due to reading sprites from the disk."));
 
 	sizer->Add(20,10);
@@ -377,34 +377,34 @@ wxNotebookPage* PreferencesWindow::CreateUIPage() {
 	sizer->AddSpacer(10);
 
 	sizer->Add(large_terrain_tools_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large terrain palette tool & size icons")));
-	large_terrain_tools_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_TERRAIN_TOOLBAR));
+	large_terrain_tools_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 
 	sizer->Add(large_doodad_sizebar_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large doodad size palette icons")));
-	large_doodad_sizebar_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_DOODAD_SIZEBAR));
+	large_doodad_sizebar_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
 
 	sizer->Add(large_item_sizebar_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large item size palette icons")));
-	large_item_sizebar_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_ITEM_SIZEBAR));
+	large_item_sizebar_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
 
 	sizer->Add(large_house_sizebar_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large house palette size icons")));
-	large_house_sizebar_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_HOUSE_SIZEBAR));
+	large_house_sizebar_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
 
 	sizer->Add(large_raw_sizebar_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large raw palette size icons")));
-	large_raw_sizebar_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_RAW_SIZEBAR));
+	large_raw_sizebar_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
 
 	sizer->Add(large_container_icons_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large container view icons")));
-	large_container_icons_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_CONTAINER_ICONS));
+	large_container_icons_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS));
 
 	sizer->Add(large_pick_item_icons_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large item picker icons")));
-	large_pick_item_icons_chkbox->SetValue(settings.getInteger(Config::USE_LARGE_CHOOSE_ITEM_ICONS));
+	large_pick_item_icons_chkbox->SetValue(settings.getBoolean(Config::USE_LARGE_CHOOSE_ITEM_ICONS));
 
 	sizer->Add(10,10);
 
 	sizer->Add(switch_mousebtn_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Switch mousebuttons")));
-	switch_mousebtn_chkbox->SetValue(settings.getInteger(Config::SWITCH_MOUSEBUTTONS));
+	switch_mousebtn_chkbox->SetValue(settings.getBoolean(Config::SWITCH_MOUSEBUTTONS));
 	switch_mousebtn_chkbox->SetToolTip(wxT("Switches the right and center mouse button."));
 
 	sizer->Add(doubleclick_properties_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Double click for properties")));
-	doubleclick_properties_chkbox->SetValue(settings.getInteger(Config::DOUBLECLICK_PROPERTIES));
+	doubleclick_properties_chkbox->SetValue(settings.getBoolean(Config::DOUBLECLICK_PROPERTIES));
 	doubleclick_properties_chkbox->SetToolTip(wxT("Double clicking on a tile will bring up the properties menu for the top item."));
 
 	sizer->Add(inversed_scroll_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use inversed scroll")));
@@ -453,7 +453,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	// Check file sigs checkbox
 	options_sizer->Add(check_sigs_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Check file signatures")));
 	options_sizer->Add(10, 1);
-	check_sigs_chkbox->SetValue(settings.getInteger(Config::CHECK_SIGNATURES));
+	check_sigs_chkbox->SetValue(settings.getBoolean(Config::CHECK_SIGNATURES));
 	check_sigs_chkbox->SetToolTip(wxT("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs."));
     
 	// Add the grid sizer
@@ -555,7 +555,7 @@ void PreferencesWindow::Apply()
 
 	// Graphics
 	settings.setInteger(Config::USE_GUI_SELECTION_SHADOW, icon_selection_shadow_chkbox->GetValue());
-	if(bool(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) != use_memcached_chkbox->GetValue()) {
+	if(settings.getBoolean(Config::USE_MEMCACHED_SPRITES) != use_memcached_chkbox->GetValue()) {
 		must_restart = true;
 	}
 	settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, use_memcached_chkbox->GetValue());

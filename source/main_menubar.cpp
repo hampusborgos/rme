@@ -347,7 +347,7 @@ void MainMenuBar::LoadValues()
 {
 	using namespace MenuBar;
 	
-	CheckItem(SELECT_MODE_COMPENSATE, settings.getInteger(Config::COMPENSATED_SELECT));
+	CheckItem(SELECT_MODE_COMPENSATE, settings.getBoolean(Config::COMPENSATED_SELECT));
 
 	if(IsItemChecked(MenuBar::SELECT_MODE_CURRENT))
 		settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
@@ -370,22 +370,22 @@ void MainMenuBar::LoadValues()
 			break;
 	}
 
-	CheckItem(AUTOMAGIC, settings.getInteger(Config::USE_AUTOMAGIC));
+	CheckItem(AUTOMAGIC, settings.getBoolean(Config::USE_AUTOMAGIC));
 	
-	CheckItem(SHOW_SHADE, settings.getInteger(Config::SHOW_SHADE));
-	CheckItem(SHOW_INGAME_BOX, settings.getInteger(Config::SHOW_INGAME_BOX));
-	CheckItem(SHOW_ALL_FLOORS, settings.getInteger(Config::SHOW_ALL_FLOORS));
-	CheckItem(GHOST_ITEMS, settings.getInteger(Config::TRANSPARENT_ITEMS));
-	CheckItem(GHOST_HIGHER_FLOORS, settings.getInteger(Config::TRANSPARENT_FLOORS));
-	CheckItem(SHOW_EXTRA, !settings.getInteger(Config::SHOW_EXTRA));
-	CheckItem(SHOW_GRID, settings.getInteger(Config::SHOW_GRID));
-	CheckItem(HIGHLIGHT_ITEMS, settings.getInteger(Config::HIGHLIGHT_ITEMS));
-	CheckItem(SHOW_CREATURES, settings.getInteger(Config::SHOW_CREATURES));
-	CheckItem(SHOW_SPAWNS, settings.getInteger(Config::SHOW_SPAWNS));
-	CheckItem(SHOW_SPECIAL, settings.getInteger(Config::SHOW_SPECIAL_TILES));
-	CheckItem(SHOW_ONLY_COLORS, settings.getInteger(Config::SHOW_ONLY_TILEFLAGS));
-	CheckItem(SHOW_ONLY_MODIFIED, settings.getInteger(Config::SHOW_ONLY_MODIFIED_TILES));
-	CheckItem(SHOW_HOUSES, settings.getInteger(Config::SHOW_HOUSES));
+	CheckItem(SHOW_SHADE, settings.getBoolean(Config::SHOW_SHADE));
+	CheckItem(SHOW_INGAME_BOX, settings.getBoolean(Config::SHOW_INGAME_BOX));
+	CheckItem(SHOW_ALL_FLOORS, settings.getBoolean(Config::SHOW_ALL_FLOORS));
+	CheckItem(GHOST_ITEMS, settings.getBoolean(Config::TRANSPARENT_ITEMS));
+	CheckItem(GHOST_HIGHER_FLOORS, settings.getBoolean(Config::TRANSPARENT_FLOORS));
+	CheckItem(SHOW_EXTRA, !settings.getBoolean(Config::SHOW_EXTRA));
+	CheckItem(SHOW_GRID, settings.getBoolean(Config::SHOW_GRID));
+	CheckItem(HIGHLIGHT_ITEMS, settings.getBoolean(Config::HIGHLIGHT_ITEMS));
+	CheckItem(SHOW_CREATURES, settings.getBoolean(Config::SHOW_CREATURES));
+	CheckItem(SHOW_SPAWNS, settings.getBoolean(Config::SHOW_SPAWNS));
+	CheckItem(SHOW_SPECIAL, settings.getBoolean(Config::SHOW_SPECIAL_TILES));
+	CheckItem(SHOW_ONLY_COLORS, settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS));
+	CheckItem(SHOW_ONLY_MODIFIED, settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES));
+	CheckItem(SHOW_HOUSES, settings.getBoolean(Config::SHOW_HOUSES));
 }
 
 void MainMenuBar::LoadRecentFiles() 
@@ -668,7 +668,7 @@ void MainMenuBar::OnImportMonsterData(wxCommandEvent& WXUNUSED(event))
 	{
 		wxArrayString paths;
 		dlg.GetPaths(paths);
-		for(uint i = 0; i < paths.GetCount(); ++i) 
+		for(uint32_t i = 0; i < paths.GetCount(); ++i) 
 		{
 			wxString error;
 			wxArrayString warnings;
@@ -1469,7 +1469,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 
 	int town_count = map->towns.count();
 	int house_count = map->houses.count();
-	std::map<uint32_t, uint> town_sqm_count;
+	std::map<uint32_t, uint32_t> town_sqm_count;
 	const Town* largest_town = nullptr;
 	uint64_t largest_town_size = 0;
 	uint64_t total_house_sqm = 0;
@@ -1580,13 +1580,13 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	sqm_per_town    = (town_count != 0?  double(total_house_sqm) / double(town_count)  : -1.0);
 
 	Towns& towns = map->towns;
-	for(std::map<uint32_t, uint>::iterator town_iter = town_sqm_count.begin();
+	for(std::map<uint32_t, uint32_t>::iterator town_iter = town_sqm_count.begin();
 			town_iter != town_sqm_count.end();
 			++town_iter)
 	{
 		// No load bar for this, load is non-existant
 		uint32_t town_id = town_iter->first;
-		uint town_sqm = town_iter->second;
+		uint32_t town_sqm = town_iter->second;
 		Town* town = towns.getTown(town_id);
 		if(town && town_sqm > largest_town_size) 
 		{

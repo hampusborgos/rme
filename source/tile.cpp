@@ -86,9 +86,9 @@ Tile* Tile::deepCopy(BaseMap& map)
 	return copy;
 }
 
-uint Tile::memsize() const
+uint32_t Tile::memsize() const
 {
-	uint mem = sizeof(*this);
+	uint32_t mem = sizeof(*this);
 	if(ground) mem += ground->memsize();
 
 	ItemVector::const_iterator it;

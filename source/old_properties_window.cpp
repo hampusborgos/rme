@@ -65,7 +65,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		// Now we add the subitems!
 		wxSizer* contents_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Contents"));
 
-		bool use_large_sprites = settings.getInteger(Config::USE_LARGE_CONTAINER_ICONS);
+		bool use_large_sprites = settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
 		wxSizer* horizontal_sizer = nullptr;
 		const int additional_height_increment = (use_large_sprites? 40 : 24);
 		int additional_height = 0;
@@ -401,14 +401,14 @@ OldPropertiesWindow::~OldPropertiesWindow()
 	// Warning: edit_item may no longer be valid, DONT USE IT!
 	if(splash_type_field)
 	{
-		for(uint i = 0; i < splash_type_field->GetCount(); ++i)
+		for(uint32_t i = 0; i < splash_type_field->GetCount(); ++i)
 		{
 			delete reinterpret_cast<int*>(splash_type_field->GetClientData(i));
 		}
 	}
 	if(depot_id_field)
 	{
-		for(uint i = 0; i < depot_id_field->GetCount(); ++i)
+		for(uint32_t i = 0; i < depot_id_field->GetCount(); ++i)
 		{
 			delete reinterpret_cast<int*>(depot_id_field->GetClientData(i));
 		}

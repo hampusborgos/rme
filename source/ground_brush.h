@@ -29,7 +29,7 @@ public:
 	bool hasInnerZilchBorder() const {return has_zilch_inner_border;}
 	bool hasOuterBorder() const {return has_outer_border || optional_border;}
 	bool hasInnerBorder() const {return has_inner_border;}
-	bool hasOptionalBorder() const {return bool(optional_border);}
+	bool hasOptionalBorder() const {return optional_border != nullptr;}
 protected: // Members
 	int32_t z_order;
 	bool has_zilch_outer_border;

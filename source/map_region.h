@@ -13,11 +13,14 @@ class Tile;
 class Floor;
 class BaseMap;
 
-class TileLocation : boost::noncopyable
+class TileLocation
 {
 	TileLocation();
 public:
 	~TileLocation();
+
+	TileLocation(const TileLocation&) = delete;
+	TileLocation& operator=(const TileLocation&) = delete;
 
 protected:
 	Tile* tile;
@@ -61,10 +64,14 @@ public:
 };
 
 // This is not a QuadTree, but a HexTree (16 child nodes to every node), so the name is abit misleading
-class QTreeNode : boost::noncopyable {
+class QTreeNode
+{
 public:
 	QTreeNode(BaseMap& map);
 	virtual ~QTreeNode();
+
+	QTreeNode(const QTreeNode&) = delete;
+	QTreeNode& operator=(const QTreeNode&) = delete;
 
 	QTreeNode* getLeaf(int x, int y); // Might return nullptr
 	QTreeNode* getLeafForce(int x, int y); // Will never return nullptr, it will create the node if it's not there
@@ -76,7 +83,7 @@ public:
 	void clearTile(int x, int y, int z);
 
 	Floor* createFloor(int x, int y, int z);
-	Floor* getFloor(uint z) {
+	Floor* getFloor(uint32_t z) {
 		ASSERT(isLeaf);
 		return array[z];
 	}

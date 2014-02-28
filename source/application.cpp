@@ -576,7 +576,7 @@ bool MainFrame::DoQueryImportCreatures()
 				{
 					wxArrayString paths;
 					dlg.GetPaths(paths);
-					for(uint i = 0; i < paths.GetCount(); ++i) 
+					for(uint32_t i = 0; i < paths.GetCount(); ++i) 
 					{
 						wxString error;
 						wxArrayString warnings;

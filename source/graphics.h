@@ -162,7 +162,7 @@ public:
 	uint8_t ydiv;
 	uint8_t zdiv;
 	uint8_t animation_length;
-	uint numsprites;
+	uint32_t numsprites;
 
 	uint16_t draw_height;
 	uint16_t drawoffset_x;

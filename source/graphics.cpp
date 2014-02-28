@@ -361,9 +361,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	file.getU16(effect_count);
 	file.getU16(distance_count);
 
-	uint minclientID = 100; // tibia.dat start with id 100
+	uint32_t minclientID = 100; // tibia.dat start with id 100
 	// We don't load distance/effects, if we would, just add effect_count & distance_count here
-	uint maxclientID = item_count + creature_count;
+	uint32_t maxclientID = item_count + creature_count;
 
 	bool (GraphicManager::*loadFlags)(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
 	datVersion = client_version->getDatVersionForSignature(datSignature);
@@ -422,7 +422,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			(int)sType->animation_length;
 
 		// Read the sprite ids
-		for(uint i = 0; i < sType->numsprites; ++i)
+		for(uint32_t i = 0; i < sType->numsprites; ++i)
 		{
 			uint32_t sprite_id;
 			if (datVersion >= DAT_VERSION_96)
@@ -1259,9 +1259,10 @@ bool GraphicManager::loadSpriteMetadataFlagsVer1021(FileReadHandle& file, GameSp
 				/* marketRestrictLevel = */ file.skip(2);
 				break;
 			}
-			case VER_1021_FLAG_DEFAULT_ACTION:
+			case VER_1021_FLAG_DEFAULT_ACTION: {
 				file.skip(2);
 				break;
+			}
 			case VER_1021_FLAG_USABLE:
 				break;
 			case VER_1021_FLAG_LAST:
@@ -1325,8 +1326,8 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		return true;
 	}
 
-	std::vector<uint> sprite_indexes;
-	for(uint i = 0; i < total_pics; ++i) {
+	std::vector<uint32_t> sprite_indexes;
+	for(uint32_t i = 0; i < total_pics; ++i) {
 		uint32_t index;
 		safe_get(U32, index);
 		sprite_indexes.push_back(index);
@@ -1334,11 +1335,11 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 
 	// Now read individual sprites
 	int id = 1;
-	for(std::vector<uint>::iterator sprite_iter = sprite_indexes.begin();
+	for(std::vector<uint32_t>::iterator sprite_iter = sprite_indexes.begin();
 			sprite_iter != sprite_indexes.end();
 			++sprite_iter, ++id)
 	{
-		uint index = *sprite_iter + 3;
+		uint32_t index = *sprite_iter + 3;
 		fh.seek(index);
 		uint16_t size;
 		safe_get(U16, size);
@@ -1433,10 +1434,8 @@ void GraphicManager::addSpriteToCleanup(GameSprite* spr)
 {
 	cleanup_list.push_back(spr);
 	// Clean if needed
-	if(cleanup_list.size() > uint(max(100, settings.getInteger(Config::SOFTWARE_CLEAN_THRESHOLD))))
-	{
-		for(int i = 0; i < settings.getInteger(Config::SOFTWARE_CLEAN_SIZE) && uint(i) < cleanup_list.size(); ++i)
-		{
+	if (cleanup_list.size() > std::max<uint32_t>(100, settings.getInteger(Config::SOFTWARE_CLEAN_THRESHOLD))) {
+		for (int i = 0; i < settings.getInteger(Config::SOFTWARE_CLEAN_SIZE) && static_cast<uint32_t>(i) < cleanup_list.size(); ++i) {
 			cleanup_list.front()->unloadDC();
 			cleanup_list.pop_front();
 		}
@@ -1553,7 +1552,7 @@ uint8_t GameSprite::getMiniMapColor() const {
 }
 
 GLuint GameSprite::getHardwareID(int _x, int _y, int _frame, int _count, int _xdiv, int _ydiv, int _zdiv, int _timeframe) {
-	uint v;
+	uint32_t v;
 	if(_count >= 0 && height <= 1 && width <= 1) {
 		v = _count;
 	} else {
@@ -1594,7 +1593,7 @@ GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const 
 }
 
 GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _timeframe) {
-	uint v;
+	uint32_t v;
 	v = ((((_dir) * frames) * height+_y) * width+_x);
 	if(v >= numsprites) {
 		if(numsprites == 1) {
@@ -1615,7 +1614,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 		const int bgshade = settings.getInteger(Config::ICON_BACKGROUND);
 
 		uint8_t* rgb = nullptr;
-		uint ht, wt;
+		uint32_t ht, wt;
 
 		if(width == 2 && height == 2) {
 			wt = 2, ht = 2;
@@ -1755,17 +1754,17 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 		if(sz == SPRITE_SIZE_16x16) {
 			uint8_t* rgb16x16 = reinterpret_cast<uint8_t*>(malloc(16*16*3));
 
-			uint pixels_per_line = 32*wt;
-			uint pixels_per_pixel = 2*wt;
-			uint bytes_per_line = 3*pixels_per_line;
-			uint bytes_per_pixel = 3*pixels_per_pixel;
+			uint32_t pixels_per_line = 32*wt;
+			uint32_t pixels_per_pixel = 2*wt;
+			uint32_t bytes_per_line = 3*pixels_per_line;
+			uint32_t bytes_per_pixel = 3*pixels_per_pixel;
 
 
-			for(uint y = 0; y < 16; ++y) {
-				for(uint x = 0; x < 16; ++x) {
-					uint r = 0, g = 0, b = 0, c = 0;
-					for(uint u = 0; u < 2; ++u) {
-						for(uint v = 0; v < 2; ++v) {
+			for(uint32_t y = 0; y < 16; ++y) {
+				for(uint32_t x = 0; x < 16; ++x) {
+					uint32_t r = 0, g = 0, b = 0, c = 0;
+					for(uint32_t u = 0; u < 2; ++u) {
+						for(uint32_t v = 0; v < 2; ++v) {
 							r += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 0];
 							g += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 1];
 							b += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 2];
@@ -1791,17 +1790,17 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 		} else if(sz == SPRITE_SIZE_32x32) {
 			uint8_t* rgb32x32 = reinterpret_cast<uint8_t*>(malloc(32*32*3));
 
-			uint pixels_per_line = 32*wt;
-			uint pixels_per_pixel = wt;
-			uint bytes_per_line = 3*pixels_per_line;
-			uint bytes_per_pixel = 3*pixels_per_pixel;
+			uint32_t pixels_per_line = 32*wt;
+			uint32_t pixels_per_pixel = wt;
+			uint32_t bytes_per_line = 3*pixels_per_line;
+			uint32_t bytes_per_pixel = 3*pixels_per_pixel;
 
 
-			for(uint y = 0; y < 32; ++y) {
-				for(uint x = 0; x < 32; ++x) {
-					uint r = 0, g = 0, b = 0, c = 0;
-					for(uint u = 0; u < ht; ++u) {
-						for(uint v = 0; v < wt; ++v) {
+			for(uint32_t y = 0; y < 32; ++y) {
+				for(uint32_t x = 0; x < 32; ++x) {
+					uint32_t r = 0, g = 0, b = 0, c = 0;
+					for(uint32_t u = 0; u < ht; ++u) {
+						for(uint32_t v = 0; v < wt; ++v) {
 							r += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 0];
 							g += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 1];
 							b += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 2];

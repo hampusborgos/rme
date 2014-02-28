@@ -112,7 +112,7 @@ QTreeNode::~QTreeNode()
 QTreeNode* QTreeNode::getLeaf(int x, int y)
 {
 	QTreeNode* node = this;
-	uint cx = x, cy = y;
+	uint32_t cx = x, cy = y;
 	while(node)
 	{
 		if(node->isLeaf)
@@ -140,7 +140,7 @@ QTreeNode* QTreeNode::getLeaf(int x, int y)
 QTreeNode* QTreeNode::getLeafForce(int x, int y)
 {
 	QTreeNode* node = this;
-	uint cx = x, cy = y;
+	uint32_t cx = x, cy = y;
 	int level = 6;
 	while(node)
 	{
@@ -186,15 +186,16 @@ Floor* QTreeNode::createFloor(int x, int y, int z)
 
 bool QTreeNode::isVisible(bool underground)
 {
-	return visible & (underground + 1);
+	return testFlags(visible, underground + 1);
 }
 
 bool QTreeNode::isRequested(bool underground)
 {
-	if(underground)
-		return visible & 4;
-	else
-		return visible & 8;
+	if (underground) {
+		return testFlags(visible, 4);
+	} else {
+		return testFlags(visible, 8);
+	}
 }
 
 void QTreeNode::clearVisible(uint32_t u)
@@ -209,7 +210,11 @@ void QTreeNode::clearVisible(uint32_t u)
 
 bool QTreeNode::isVisible(uint32_t client, bool underground)
 {
-	return underground? (visible >> 16) & (1 << client) : visible & (1 << client);
+	if (underground) {
+		return testFlags(visible >> 16, 1 << client);
+	} else {
+		return testFlags(visible, 1 << client);
+	}
 }
 
 void QTreeNode::setVisible(bool underground, bool value)

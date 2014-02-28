@@ -126,7 +126,7 @@ ItemDatabase::~ItemDatabase()
 
 void ItemDatabase::clear()
 {
-	for(uint i = 0; i < items.size(); i++)
+	for(uint32_t i = 0; i < items.size(); i++)
 	{
 		delete items[i];
 		items.set(i, nullptr);
