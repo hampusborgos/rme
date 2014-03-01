@@ -169,12 +169,15 @@ public:
 	void UpdateTitle();
 	void UpdateMenus();
 	void SetStatusText(wxString text);
+
 	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
 	long PopupDialog(wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
+
 	void ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec);
-	void ListDialog(wxString title, const wxArrayString& vec) {ListDialog(nullptr, title, vec);}
+	void ListDialog(const wxString& title, const wxArrayString& vec) { ListDialog(nullptr, title, vec); }
+
 	void ShowTextBox(wxWindow* parent, wxString title, wxString contents);
-	void ShowTextBox(wxString title, wxString contents) {ShowTextBox(nullptr, title, contents);}
+	void ShowTextBox(const wxString& title, const wxString& contents) {ShowTextBox(nullptr, title, contents);}
 
 	// Get the current GL context
 	// Param is required if the context is to be created.
@@ -452,12 +455,12 @@ public:
 		gui.DestroyLoadBar();
 	}
 
-	void SetLoadDone(int done, wxString newmessage = wxT(""))
+	void SetLoadDone(int32_t done, const wxString& newmessage = wxEmptyString)
 	{
 		gui.SetLoadDone(done, newmessage);
 	}
 
-	void SetLoadScale(int from, int to)
+	void SetLoadScale(int32_t from, int32_t to)
 	{
 		gui.SetLoadScale(from, to);
 	}

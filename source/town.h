@@ -29,8 +29,8 @@ public:
 	Town(const Town& copy) : id(copy.id), name(copy.name), templepos(copy.templepos) {}
 	~Town() {}
 
-	const std::string& getName() const {return name;}
-	void setName(std::string _name) {name = _name;}
+	const std::string& getName() const { return name; }
+	void setName(const std::string& newName) { name = newName; }
 
 	const Position& getTemplePosition() const {return templepos;}
 	void setTemplePosition(const Position& _pos);

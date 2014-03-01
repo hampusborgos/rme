@@ -11,7 +11,7 @@ public:
 	RAWBrush(uint16_t itemid); // Create a RAWBrush of the specified type
 	virtual ~RAWBrush();
 
-	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}
+	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 

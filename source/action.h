@@ -48,8 +48,8 @@ private:
 	Change();
 public:
 	Change(Tile* tile);
-	static Change* Create(House* house, Position where);
-	static Change* Create(Waypoint* wp, Position where);
+	static Change* Create(House* house, const Position& where);
+	static Change* Create(Waypoint* wp, const Position& where);
 	~Change();
 	void clear();
 	

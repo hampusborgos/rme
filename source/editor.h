@@ -93,8 +93,8 @@ public: // Functions
 
 	// Draw using the current brush to the target position
 	// alt is whether the ALT key is pressed
-	void draw(const Position offset, bool alt);
-	void undraw(const Position offset, bool alt);
+	void draw(const Position& offset, bool alt);
+	void undraw(const Position& offset, bool alt);
 	void draw(const PositionVector& posvec, bool alt);
 	void draw(const PositionVector& todraw, PositionVector& toborder, bool alt);
 	void undraw(const PositionVector& posvec, bool alt);
@@ -109,8 +109,8 @@ protected:
 	Editor& operator=(const Editor&);
 };
 
-inline void Editor::draw(const Position offset, bool alt) {drawInternal(offset, alt, true);}
-inline void Editor::undraw(const Position offset, bool alt) {drawInternal(offset, alt, false);}
+inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }
+inline void Editor::undraw(const Position& offset, bool alt) { drawInternal(offset, alt, false); }
 inline void Editor::draw(const PositionVector& posvec, bool alt) {drawInternal(posvec, alt, true);}
 inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt) {drawInternal(todraw, toborder, alt, true);}
 inline void Editor::undraw(const PositionVector& posvec, bool alt) {drawInternal(posvec, alt, false);}

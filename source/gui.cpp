@@ -709,102 +709,85 @@ void GUI::NewMapView()
 
 void GUI::LoadPerspective()
 {
-
-	if(IsVersionLoaded() == false)
-	{
-		if(settings.getInteger(Config::WINDOW_MAXIMIZED))
-		{
+	if (!IsVersionLoaded()) {
+		if (settings.getInteger(Config::WINDOW_MAXIMIZED)) {
 			root->Maximize();
+		} else {
+			root->SetSize(wxSize(
+				settings.getInteger(Config::WINDOW_WIDTH),
+				settings.getInteger(Config::WINDOW_HEIGHT)
+			));
 		}
-		else
-		{
-			root->SetSize(wxSize(settings.getInteger(Config::WINDOW_WIDTH), settings.getInteger(Config::WINDOW_HEIGHT)));
-		}
-	}
-	else
-	{
-		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
-		std::vector<std::string> palette_list;
-
-		std::string::const_iterator last_iterator = layout.begin();
+	} else {
 		std::string tmp;
-		size_t i = 0;
-		while(i  < layout.size())
-		{
-			if(layout[i] == '|')
-			{
+		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
+
+		std::vector<std::string> palette_list;
+		for (char c : layout) {
+			if (c == '|') {
 				palette_list.push_back(tmp);
 				tmp.clear();
+			} else {
+				tmp.push_back(c);
 			}
-			else
-				tmp.append(1, layout[i]);
-			++i;
 		}
-		if(tmp.size())
+
+		if (!tmp.empty()) {
 			palette_list.push_back(tmp);
+		}
 
-		for(std::vector<std::string>::const_iterator iter = palette_list.begin();
-			iter != palette_list.end();
-			++iter)
-		{
+		for (const std::string& name : palette_list) {
 			PaletteWindow* palette = CreatePalette();
-			wxAuiPaneInfo& info = aui_manager->GetPane(palette);
-			wxString data = wxstr(*iter);
-			aui_manager->LoadPaneInfo(data, info);
 
-			if(info.IsFloatable())
-			{
+			wxAuiPaneInfo& info = aui_manager->GetPane(palette);
+			aui_manager->LoadPaneInfo(wxstr(name), info);
+
+			if (info.IsFloatable()) {
 				bool offscreen = true;
-				for(uint32_t index = 0; index < wxDisplay::GetCount(); ++index)
-				{
+				for (uint32_t index = 0; index < wxDisplay::GetCount(); ++index) {
 					wxDisplay display(index);
 					wxRect rect = display.GetClientArea();
-					if(rect.Contains(info.floating_pos))
-					{
+					if (rect.Contains(info.floating_pos)) {
 						offscreen = false;
 						break;
 					}
 				}
-				if(offscreen)
-				{
+
+				if (offscreen) {
 					info.Dock();
 				}
 			}
 		}
 
-		if(settings.getInteger(Config::MINIMAP_VISIBLE))
-		{
-			if(!minimap)
-			{
+		if (settings.getInteger(Config::MINIMAP_VISIBLE)) {
+			if (!minimap) {
 				wxAuiPaneInfo info;
-				wxString data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
+
+				const wxString& data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
 				aui_manager->LoadPaneInfo(data, info);
+
 				minimap = newd MinimapWindow(root);
 				aui_manager->AddPane(minimap, info);
-			}
-			else
-			{
+			} else {
 				wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
-				wxString data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
+
+				const wxString& data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
 				aui_manager->LoadPaneInfo(data, info);
 			}
-			wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
 
-			if(info.IsFloatable())
-			{
+			wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
+			if (info.IsFloatable()) {
 				bool offscreen = true;
-				for(uint32_t index = 0; index < wxDisplay::GetCount(); ++index)
-				{
+				for (uint32_t index = 0; index < wxDisplay::GetCount(); ++index) {
 					wxDisplay display(index);
 					wxRect rect = display.GetClientArea();
-					if(rect.Contains(info.floating_pos))
-					{
+					if (rect.Contains(info.floating_pos)) {
 						offscreen = false;
 						break;
 					}
 				}
-				if(offscreen)
-				{
+
+				if (offscreen) {
 					info.Dock();
 				}
 			}

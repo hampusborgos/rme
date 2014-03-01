@@ -107,7 +107,7 @@ int TableBrush::getLookID() const {
 	return look_id;
 }
 
-bool TableBrush::canDraw(BaseMap* map, Position pos) const {
+bool TableBrush::canDraw(BaseMap* map, const Position& position) const {
 	return true;
 }
 
@@ -170,32 +170,28 @@ bool hasMatchingTableBrushAtTile(BaseMap* map, TableBrush* table_brush, uint32_t
 	return false;
 }
 
-void TableBrush::doTables(BaseMap* map, Tile* tile) {
+void TableBrush::doTables(BaseMap* map, Tile* tile)
+{
 	ASSERT(tile);
-
-	if(tile->hasTable() == false) {
+	if(!tile->hasTable()) {
 		return;
 	}
 
-	int x = tile->getPosition().x;
-	int y = tile->getPosition().y;
-	int z = tile->getPosition().z;
+	const Position& position = tile->getPosition();
 
-	ItemVector items_to_add;
+	int32_t x = position.x;
+	int32_t y = position.y;
+	int32_t z = position.z;
 
-	for(ItemVector::const_iterator item_iter = tile->items.begin();
-			item_iter != tile->items.end();
-			++item_iter)
-	{
-		Item* item = *item_iter;
+	for (Item* item : tile->items) {
 		ASSERT(item);
+
 		TableBrush* table_brush = item->getTableBrush();
-		if(table_brush == nullptr) {
+		if (!table_brush) {
 			continue;
 		}
 
 		bool neighbours[8];
-
 		if(x == 0) {
 			if(y == 0) {
 				neighbours[0] = false;
@@ -237,32 +233,30 @@ void TableBrush::doTables(BaseMap* map, Tile* tile) {
 		}
 
 		uint32_t tiledata = 0;
-		for(int i = 0; i < 8; i++) {
-			if(neighbours[i]) {
+		for (int32_t i = 0; i < 8; ++i) {
+			if (neighbours[i]) {
 				// Same table as this one, calculate what border
 				tiledata |= 1 << i;
 			}
 		}
-		::BorderType bt = BorderType(table_types[tiledata]);
 
-		// bt is always valid.
-
-		TableNode& tn = table_brush->table_items[int(bt)];
+		BorderType bt = static_cast<BorderType>(table_types[tiledata]);
+		TableNode& tn = table_brush->table_items[static_cast<int32_t>(bt)];
 		if(tn.total_chance == 0) {
 			return;
 		}
-		int chance = random(1, tn.total_chance);
+
+		int32_t chance = random(1, tn.total_chance);
 		uint16_t id = 0;
-		for(std::vector<TableType>::const_iterator node_iter = tn.items.begin();
-				node_iter != tn.items.end();
-				++node_iter)
-		{
-			if(chance <= node_iter->chance) {
-				id = node_iter->item_id;
+
+		for (const TableType& tableType : tn.items) {
+			if (chance <= tableType.chance) {
+				id = tableType.item_id;
 				break;
 			}
-			chance -= node_iter->chance;
+			chance -= tableType.chance;
 		}
+
 		if(id != 0) {
 			item->setID(id);
 		}

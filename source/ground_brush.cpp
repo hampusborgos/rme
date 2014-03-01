@@ -7,7 +7,7 @@
 
 uint32_t GroundBrush::border_types[256];
 
-int AutoBorder::edgeNameToID(std::string edgename) {
+int AutoBorder::edgeNameToID(const std::string& edgename) {
 	if(edgename == "n") {
 		return NORTH_HORIZONTAL;
 	} else if(edgename == "w") {

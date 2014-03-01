@@ -20,7 +20,7 @@ public:
 	bool loadAlternative(pugi::xml_node node, wxArrayString& warnings, AlternativeBlock* which = nullptr);
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 
-	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}
+	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	const CompositeTileList& getComposite(int variation) const;
 	virtual void undraw(BaseMap* map, Tile* tile);

@@ -17,7 +17,7 @@ public:
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {return true;}
 
 	// You can always draw house tiles!
-	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}
+	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
 	// Draw the shit!
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	// Undraw the shit!

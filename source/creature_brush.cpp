@@ -35,13 +35,14 @@ std::string CreatureBrush::getName() const {
 	return "Creature Brush";
 }
 
-bool CreatureBrush::canDraw(BaseMap* map, Position pos) const {
-	Tile* tile = map->getTile(pos);
-	if(creature_type && tile && !tile->isBlocking()) {
-		if(tile->getLocation()->getSpawnCount() == 0) {
-			if(settings.getInteger(Config::ALLOW_CREATURES_WITHOUT_SPAWN)) {
-				if(tile->isPZ()) {
-					if(creature_type->isNpc) {
+bool CreatureBrush::canDraw(BaseMap* map, const Position& position) const
+{
+	Tile* tile = map->getTile(position);
+	if (creature_type && tile && !tile->isBlocking()) {
+		if (tile->getLocation()->getSpawnCount() == 0) {
+			if (settings.getInteger(Config::ALLOW_CREATURES_WITHOUT_SPAWN)) {
+				if (tile->isPZ()) {
+					if (creature_type->isNpc) {
 						return true;
 					}
 				} else {
@@ -49,8 +50,8 @@ bool CreatureBrush::canDraw(BaseMap* map, Position pos) const {
 				}
 			}
 		} else {
-			if(tile->isPZ()) {
-				if(creature_type->isNpc) {
+			if (tile->isPZ()) {
+				if (creature_type->isNpc) {
 					return true;
 				}
 			} else {

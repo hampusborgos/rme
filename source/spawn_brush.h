@@ -11,7 +11,7 @@ public:
 	SpawnBrush(); // Create a RAWBrush of the specified type
 	virtual ~SpawnBrush();
 
-	virtual bool canDraw(BaseMap* map, Position pos) const;
+	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter); // parameter is brush size
 	virtual void undraw(BaseMap* map, Tile* tile);
 

@@ -71,20 +71,16 @@ void reform(Map* map, Tile* tile, Item* item)
 Item* Item::Create_OTBM(const IOMap& maphandle, BinaryNode* stream)
 {
 	uint16_t _id;
-	if(!stream->getU16(_id))
+	if (!stream->getU16(_id)) {
 		return nullptr;
+	}
 
 	uint8_t _count = 0;
 
 	const ItemType& iType = item_db[_id];
-	if(maphandle.version.otbm == MAP_OTBM_1)
-	{
-		if(iType.stackable || iType.isSplash() || iType.isFluidContainer())
-		{
-			if(!stream->getU8(_count))
-			{
-				// Do nothing, we can't fail on this
-			}
+	if (maphandle.version.otbm == MAP_OTBM_1) {
+		if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
+			stream->getU8(_count);
 		}
 	}
 	return Item::Create(_id, _count);
@@ -92,101 +88,84 @@ Item* Item::Create_OTBM(const IOMap& maphandle, BinaryNode* stream)
 
 bool Item::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attr, BinaryNode* stream)
 {
-	switch(attr)
-	{
-		case OTBM_ATTR_COUNT:
-		{
+	switch (attr) {
+		case OTBM_ATTR_COUNT: {
 			uint8_t subtype;
-			if(!stream->getU8(subtype))
+			if (!stream->getU8(subtype)) {
 				return false;
-
+			}
 			setSubtype(subtype);
-		} break;
-		case OTBM_ATTR_ACTION_ID:
-		{
+			break;
+		}
+		case OTBM_ATTR_ACTION_ID: {
 			uint16_t aid;
-			if(!stream->getU16(aid))
+			if (!stream->getU16(aid)) {
 				return false;
-
+			}
 			setActionID(aid);
-		} break;
-		case OTBM_ATTR_UNIQUE_ID:
-		{
+			break;
+		}
+		case OTBM_ATTR_UNIQUE_ID: {
 			uint16_t uid;
-			if(!stream->getU16(uid))
+			if (!stream->getU16(uid)) {
 				return false;
-
+			}
 			setUniqueID(uid);
-		} break;
-		case OTBM_ATTR_CHARGES:
-		{
+			break;
+		}
+		case OTBM_ATTR_CHARGES: {
 			uint16_t charges;
-			if(!stream->getU16(charges))
+			if (!stream->getU16(charges)) {
 				return false;
-
+			}
 			setSubtype(charges);
-		} break;
-		case OTBM_ATTR_TEXT:
-		{
+			break;
+		}
+		case OTBM_ATTR_TEXT: {
 			std::string text;
-			if(!stream->getString(text))
+			if (!stream->getString(text)) {
 				return false;
-
+			}
 			setText(text);
-		} break;
-		case OTBM_ATTR_DESC:
-		{
+			break;
+		}
+		case OTBM_ATTR_DESC: {
 			std::string text;
-			if(!stream->getString(text))
+			if (!stream->getString(text)) {
 				return false;
-
+			}
 			setDescription(text);
-		} break;
-		case OTBM_ATTR_RUNE_CHARGES:
-		{
+			break;
+		}
+		case OTBM_ATTR_RUNE_CHARGES: {
 			uint8_t subtype;
-			if(!stream->getU8(subtype))
+			if (!stream->getU8(subtype)) {
 				return false;
-
+			}
 			setSubtype(subtype);
-		} break;
+			break;
+		}
 		
 		// The following *should* be handled in the derived classes
 		// However, we still need to handle them here since otherwise things
 		// will break horribly
-		case OTBM_ATTR_DEPOT_ID:
-		{
-			return stream->skip(2);
-		} break;
-		case OTBM_ATTR_HOUSEDOORID:
-		{
-			return stream->skip(1);
-		} break;
-		case OTBM_ATTR_TELE_DEST:
-		{
-			return stream->skip(5);
-		} break;
-		default:
-		{
-			return false;
-		} break;
+		case OTBM_ATTR_DEPOT_ID: return stream->skip(2);
+		case OTBM_ATTR_HOUSEDOORID: return stream->skip(1);
+		case OTBM_ATTR_TELE_DEST: return stream->skip(5);
+		default: return false;
 	}
-
 	return true;
 }
 
 bool Item::unserializeAttributes_OTBM(const IOMap& maphandle, BinaryNode* stream)
 {
 	uint8_t attribute;
-	while(stream->getU8(attribute))
-	{
-		if(attribute == OTBM_ATTR_ATTRIBUTE_MAP)
-		{
-			if(!ItemAttributes::unserializeAttributeMap(maphandle, stream))
+	while (stream->getU8(attribute)) {
+		if (attribute == OTBM_ATTR_ATTRIBUTE_MAP) {
+			if (!ItemAttributes::unserializeAttributeMap(maphandle, stream)) {
 				return false;
-		}
-		else if(!readItemAttribute_OTBM(maphandle, OTBM_ItemAttribute(attribute), stream))
-		{
+			}
+		} else if (!readItemAttribute_OTBM(maphandle, static_cast<OTBM_ItemAttribute>(attribute), stream)) {
 			return false;
 		}
 	}
@@ -200,55 +179,47 @@ bool Item::unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node)
 
 void Item::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
-	if(maphandle.version.otbm >= MAP_OTBM_2)
-	{
+	if (maphandle.version.otbm >= MAP_OTBM_2) {
 		const ItemType& iType = item_db[id];
-
-		if(iType.stackable || iType.isSplash() || iType.isFluidContainer())
-		{
+		if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
 			stream.addU8(OTBM_ATTR_COUNT);
 			stream.addU8(getSubtype());
 		}
 	}
 
-	if(maphandle.version.otbm >= MAP_OTBM_4)
-	{
-		if(attributes && attributes->size())
-		{
+	if (maphandle.version.otbm >= MAP_OTBM_4) {
+		if (attributes && !attributes->empty()) {
 			stream.addU8(OTBM_ATTR_ATTRIBUTE_MAP);
 			serializeAttributeMap(maphandle, stream);
 		}
-	}
-	else
-	{
-		if(item_db.MinorVersion >= CLIENT_VERSION_820 && isCharged())
-		{
+	} else {
+		if (item_db.MinorVersion >= CLIENT_VERSION_820 && isCharged()) {
 			stream.addU8(OTBM_ATTR_CHARGES);
 			stream.addU16(getSubtype());
 		}
 
-		if(getActionID() > 0)
-		{
+		uint16_t actionId = getActionID();
+		if (actionId > 0) {
 			stream.addU8(OTBM_ATTR_ACTION_ID);
-			stream.addU16(getActionID());
+			stream.addU16(actionId);
 		}
 
-		if(getUniqueID() > 0)
-		{
+		uint16_t uniqueId = getUniqueID();
+		if (uniqueId > 0) {
 			stream.addU8(OTBM_ATTR_UNIQUE_ID);
-			stream.addU16(getUniqueID());
+			stream.addU16(uniqueId);
 		}
 
-		if(getText().length() > 0)
-		{
+		const std::string& text = getText();
+		if (!text.empty()) {
 			stream.addU8(OTBM_ATTR_TEXT);
-			stream.addString(getText());
+			stream.addString(text);
 		}
 
-		if(getDescription().length() > 0)
-		{
+		const std::string& description = getDescription();
+		if (!description.empty()) {
 			stream.addU8(OTBM_ATTR_DESC);
-			stream.addString(getDescription());
+			stream.addString(description);
 		}
 	}
 }
@@ -267,22 +238,18 @@ void Item::serializeItemCompact_OTBM(const IOMap& maphandle, NodeFileWriteHandle
 }
 
 
-bool Item::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const
+bool Item::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& file) const
 {
-	f.addNode(OTBM_ITEM);
-	f.addU16(id);
-
-	if(maphandle.version.otbm == MAP_OTBM_1) {
+	file.addNode(OTBM_ITEM);
+	file.addU16(id);
+	if (maphandle.version.otbm == MAP_OTBM_1) {
 		const ItemType& iType = item_db[id];
-
-		if(iType.stackable || iType.isSplash() || iType.isFluidContainer()){
-			f.addU8(getSubtype());
+		if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
+			file.addU8(getSubtype());
 		}
 	}
-
-	serializeItemAttributes_OTBM(maphandle, f);
-	f.endNode();
-
+	serializeItemAttributes_OTBM(maphandle, file);
+	file.endNode();
 	return true;
 }
 
@@ -291,17 +258,12 @@ bool Item::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f
 
 bool Teleport::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attribute, BinaryNode* stream)
 {
-	if(OTBM_ATTR_TELE_DEST == attribute) {
-		uint16_t x = 0;
-		uint16_t y = 0;
-		uint8_t z = 0;
-		if(!stream->getU16(x) ||
-				!stream->getU16(y) ||
-				!stream->getU8(z))
-		{
+	if (OTBM_ATTR_TELE_DEST == attribute) {
+		uint16_t x, y;
+		uint8_t z;
+		if (!stream->getU16(x) || !stream->getU16(y) || !stream->getU8(z)) {
 			return false;
 		}
-
 		destination = Position(x, y, z);
 		return true;
 	} else {
@@ -324,9 +286,9 @@ void Teleport::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWrit
 
 bool Door::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attribute, BinaryNode* stream)
 {
-	if(OTBM_ATTR_HOUSEDOORID == attribute) {
+	if (OTBM_ATTR_HOUSEDOORID == attribute) {
 		uint8_t id = 0;
-		if(!stream->getU8(id)) {
+		if (!stream->getU8(id)) {
 			return false;
 		}
 		doorid = id;
@@ -339,7 +301,7 @@ bool Door::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute att
 void Door::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
 	Item::serializeItemAttributes_OTBM(maphandle, stream);
-	if(doorid) {
+	if (doorid) {
 		stream.addByte(OTBM_ATTR_HOUSEDOORID);
 		stream.addU8(doorid);
 	}
@@ -350,9 +312,9 @@ void Door::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHan
 
 bool Depot::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attribute, BinaryNode* stream)
 {
-	if(OTBM_ATTR_DEPOT_ID == attribute) {
+	if (OTBM_ATTR_DEPOT_ID == attribute) {
 		uint16_t id = 0;
-		if(!stream->getU16(id)) {
+		if (!stream->getU16(id)) {
 			return false;
 		}
 		depotid = id;
@@ -365,7 +327,7 @@ bool Depot::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute at
 void Depot::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
 	Item::serializeItemAttributes_OTBM(maphandle, stream);
-	if(depotid) {
+	if (depotid) {
 		stream.addByte(OTBM_ATTR_DEPOT_ID);
 		stream.addU16(depotid);
 	}
@@ -376,61 +338,56 @@ void Depot::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHa
 
 bool Container::unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node)
 {
-	bool ret = Item::unserializeAttributes_OTBM(maphandle, node);
-
-	if(ret)
-	{
-		BinaryNode* child = node->getChild();
-		if(child)
-		do { // Do always us to break...
-			uint8_t type;
-			if(!child->getByte(type))
-				return false;
-
-			//load container items
-			if(type == OTBM_ITEM)
-			{
-				Item* item = Item::Create_OTBM(maphandle, child);
-				if(!item)
-					return false;
-
-				if(!item->unserializeItemNode_OTBM(maphandle, child))
-				{
-					delete item;
-					return false;
-				}
-				contents.push_back(item);
-			}
-			else
-			{
-				// z0mg corrupted file data!
-				return false;
-			}
-		} while(child->advance());
-		return true;
+	if (!Item::unserializeAttributes_OTBM(maphandle, node)) {
+		return false;
 	}
-	return false;
+
+	BinaryNode* child = node->getChild();
+	if (child) {
+		do {
+			uint8_t type;
+			if (!child->getByte(type)) {
+				return false;
+			}
+
+			if (type != OTBM_ITEM) {
+				return false;
+			}
+
+			Item* item = Item::Create_OTBM(maphandle, child);
+			if (!item) {
+				return false;
+			}
+
+			if (!item->unserializeItemNode_OTBM(maphandle, child)) {
+				delete item;
+				return false;
+			}
+
+			contents.push_back(item);
+		} while (child->advance());
+	}
+	return true;
 }
 
-bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const
+bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& file) const
 {
-	f.addNode(OTBM_ITEM);
-	
-	f.addU16(id);
-	if(maphandle.version.otbm == MAP_OTBM_1)
-	{
+	file.addNode(OTBM_ITEM);
+	file.addU16(id);
+	if (maphandle.version.otbm == MAP_OTBM_1) {
 		// In the ludicrous event that an item is a container AND stackable, we have to do this. :p
 		const ItemType& iType = item_db[id];
-		if(iType.stackable || iType.isSplash() || iType.isFluidContainer())
-			f.addU8(getSubtype());
+		if (iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
+			file.addU8(getSubtype());
+		}
 	}
 
-	serializeItemAttributes_OTBM(maphandle, f);
+	serializeItemAttributes_OTBM(maphandle, file);
+	for (Item* item : contents) {
+		item->serializeItemNode_OTBM(maphandle, file);
+	}
 
-	for(ItemVector::const_iterator it = contents.begin(); it != contents.end(); ++it)
-		(*it)->serializeItemNode_OTBM(maphandle, f);
-
-	f.endNode();
+	file.endNode();
 	return true;
 }
 

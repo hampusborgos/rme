@@ -123,8 +123,12 @@ inline bool Position::isValid() const {
 	return x >= 0 && x <= 0xFFFF && y >= 0 && y <= 0xFFFF && z >= 0 && z <= 15;
 }
 
-inline Position abs(Position pos) {
-	return Position(abs(pos.x), abs(pos.y), abs(pos.z));
+inline Position abs(const Position& position) {
+	return Position(
+		std::abs(position.x),
+		std::abs(position.y),
+		std::abs(position.z)
+	);
 }
 
 typedef std::vector<Position> PositionVector;

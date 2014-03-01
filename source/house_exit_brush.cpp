@@ -29,18 +29,13 @@ uint32_t HouseExitBrush::getHouseID() const {
 }
 
 
-bool HouseExitBrush::canDraw(BaseMap* map, Position pos) const {
-	Tile* tile = map->getTile(pos);
-	if(tile == nullptr) {
+bool HouseExitBrush::canDraw(BaseMap* map, const Position& position) const
+{
+	Tile* tile = map->getTile(position);
+	if(!tile || !tile->hasGround()) {
 		return false;
 	}
-	if(tile->hasGround() == false) {
-		return false;
-	}
-	if(tile->isHouseTile() == true) {
-		return false;
-	}
-	if(tile->isBlocking() == true) {
+	if(!tile->isHouseTile() || !tile->isBlocking()) {
 		return false;
 	}
 	return true;

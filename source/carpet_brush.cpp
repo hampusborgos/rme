@@ -143,7 +143,7 @@ int CarpetBrush::getLookID() const {
 	return look_id;
 }
 
-bool CarpetBrush::canDraw(BaseMap* map, Position pos) const {
+bool CarpetBrush::canDraw(BaseMap* map, const Position& position) const {
 	return true;
 }
 

@@ -352,16 +352,15 @@ public:
 	bool loadItemFromGameXml(pugi::xml_node itemNode, int id);
 	bool loadMetaItem(pugi::xml_node node);
 
-	// Version information
-	uint32_t MajorVersion;
-	uint32_t MinorVersion;
-	uint32_t BuildNumber;
-
-public:
 	//typedef std::map<int32_t, ItemType*> ItemMap;
 	typedef contigous_vector<ItemType*> ItemMap;
 	typedef std::map<std::string, ItemType*> ItemNameMap;
 	ItemMap items;
+
+	// Version information
+	uint32_t MajorVersion;
+	uint32_t MinorVersion;
+	uint32_t BuildNumber;
 
 protected:
 	bool loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArrayString& warnings);
@@ -370,13 +369,13 @@ protected:
 
 protected:
 	// Count of GameSprite types
-	int item_count;
-	int effect_count;
-	int monster_count;
-	int distance_count;
+	int32_t item_count;
+	int32_t effect_count;
+	int32_t monster_count;
+	int32_t distance_count;
 
-	int minclientID;
-	int maxclientID;
+	int32_t minclientID;
+	int32_t maxclientID;
 	uint16_t max_item_id;
 
 	friend class GameSprite;

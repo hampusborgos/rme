@@ -57,7 +57,7 @@ public:
 	void init();
 	void clear();
 
-	Brush* getBrush(std::string name) const;
+	Brush* getBrush(const std::string& name) const;
 
 	void addBrush(Brush* brush);
 	
@@ -86,7 +86,7 @@ public:
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {return true;}
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter = nullptr) = 0;
 	virtual void undraw(BaseMap* map, Tile* tile) = 0;
-	virtual bool canDraw(BaseMap* map, Position pos) const = 0;
+	virtual bool canDraw(BaseMap* map, const Position& position) const = 0;
 	
 	uint32_t getID() const {return id;}
 	virtual std::string getName() const = 0;
@@ -114,7 +114,7 @@ public:
 	TerrainBrush();
 	virtual ~TerrainBrush();
 	
-	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}
+	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
 
 	virtual std::string getName() const {return name;}
 	virtual void setName(std::string newname) {name = newname;}
@@ -138,7 +138,7 @@ public:
 	FlagBrush(uint32_t _flag);
 	virtual ~FlagBrush();
 
-	virtual bool canDraw(BaseMap* map, Position pos) const;
+	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 
@@ -159,7 +159,7 @@ public:
 	
 	static void switchDoor(Item* door);
 
-	virtual bool canDraw(BaseMap* map, Position pos) const;
+	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 	
@@ -178,7 +178,7 @@ public:
 	OptionalBorderBrush();
 	virtual ~OptionalBorderBrush();
 
-	virtual bool canDraw(BaseMap* map, Position pos) const;
+	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 
@@ -195,7 +195,7 @@ public:
 	EraserBrush();
 	virtual ~EraserBrush();
 
-	virtual bool canDraw(BaseMap* map, Position pos) const;
+	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 	
@@ -215,7 +215,7 @@ public:
 	}
 	~AutoBorder() {}
 	
-	static int edgeNameToID(std::string edgename);
+	static int edgeNameToID(const std::string& edgename);
 	bool load(pugi::xml_node node, wxArrayString& warnings, GroundBrush* owner = nullptr, uint16_t ground_equivalent = 0);
 	
 	uint32_t tiles[13];

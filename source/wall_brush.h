@@ -15,7 +15,7 @@ public:
 
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 	
-	virtual bool canDraw(BaseMap* map, Position pos) const {return true;}
+	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
 
 	// Draw to the target tile
 	// Note that this actually only puts the first WALL_NORMAL item on the tile.

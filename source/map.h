@@ -64,11 +64,12 @@ public:
 	// Mess with spawns
 	bool addSpawn(Tile* spawn);
 	void removeSpawn(Tile* tile);
-	void removeSpawn(Position pos) {removeSpawn(getTile(pos));}
+	void removeSpawn(const Position& position) { removeSpawn(getTile(position)); }
+
 	// Returns all possible spawns on the target tile
 	SpawnList getSpawnList(Tile* t);
-	SpawnList getSpawnList(Position pos) {return getSpawnList(getTile(pos));}
-	SpawnList getSpawnList(int x, int y, int z) {return getSpawnList(getTile(x, y, z));}
+	SpawnList getSpawnList(const Position& position) { return getSpawnList(getTile(position)); }
+	SpawnList getSpawnList(int32_t x, int32_t y, int32_t z) { return getSpawnList(getTile(x, y, z)); }
 
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to

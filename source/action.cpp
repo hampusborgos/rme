@@ -36,7 +36,7 @@ Change::Change(Tile* t) : type(CHANGE_TILE)
 	data = t;
 }
 
-Change* Change::Create(House* house, Position where)
+Change* Change::Create(House* house, const Position& where)
 {
 	Change* c = newd Change();
 	c->type = CHANGE_MOVE_HOUSE_EXIT;
@@ -47,7 +47,7 @@ Change* Change::Create(House* house, Position where)
 	return c;
 }
 
-Change* Change::Create(Waypoint* wp, Position where)
+Change* Change::Create(Waypoint* wp, const Position& where)
 {
 	Change* c = newd Change();
 	c->type = CHANGE_MOVE_WAYPOINT;
@@ -457,26 +457,31 @@ BatchAction::BatchAction(Editor& editor, ActionIdentifier ident) :
 
 BatchAction::~BatchAction()
 {
-	for(std::vector<Action*>::iterator it = batch.begin(); it != batch.end(); it++)
-		delete (*it);
+	for (Action* action : batch) {
+		delete action;
+	}
+	batch.clear();
 }
 
 size_t BatchAction::memsize(bool recalc) const
 {
 	// Expensive operation, only evaluate once (won't change anyways)
-	if(!recalc && memory_size > 0) return memory_size;
+	if (!recalc && memory_size > 0) {
+		return memory_size;
+	}
+
 	uint32_t mem = sizeof(*this);
 	mem += sizeof(Action*) * 3 * batch.size();
 
-	for(std::vector<Action*>::const_iterator it = batch.begin(); it != batch.end(); it++)
-	{
+	for (Action* action : batch) {
 #ifdef __USE_EXACT_MEMSIZE__
-		mem += (*it)->memsize();
+		mem += action->memsize();
 #else
 		// Less exact but MUCH faster
-		mem += (*it)->approx_memsize();
+		mem += action->approx_memsize();
 #endif
 	}
+
 	const_cast<BatchAction*>(this)->memory_size = mem;
 	return mem;
 }
@@ -524,41 +529,43 @@ void BatchAction::addAndCommitAction(Action* action)
 
 void BatchAction::commit()
 {
-	for(ActionVector::iterator it = batch.begin(); it != batch.end(); it++)
-		if(!(*it)->isCommited())
-			(*it)->commit(nullptr);
+	for (Action* action : batch) {
+		if (!action->isCommited()) {
+			action->commit(nullptr);
+		}
+	}
 }
 
-void BatchAction::undo() {
-	for(ActionVector::reverse_iterator it = batch.rbegin(); it != batch.rend(); ++it)
-		(*it)->undo(nullptr);
+void BatchAction::undo()
+{
+	for (Action* action : boost::adaptors::reverse(batch)) {
+		action->undo(nullptr);
+	}
 }
 
-void BatchAction::redo() {
-	for(ActionVector::iterator it = batch.begin(); it != batch.end(); ++it)
-		(*it)->redo(nullptr);
+void BatchAction::redo()
+{
+	for (Action* action : batch) {
+		action->redo(nullptr);
+	}
 }
 
 void BatchAction::merge(BatchAction* other)
 {
-	for(ActionVector::iterator it = other->batch.begin(); it != other->batch.end(); it++)
-		batch.push_back(*it);
-
+	batch.insert(batch.end(), other->batch.begin(), other->batch.end());
 	other->batch.clear();
 }
 
-ActionQueue::ActionQueue(Editor& editor) : current(0), memory_size(0), editor(editor)
+ActionQueue::ActionQueue(Editor& editor) :
+	current(0), memory_size(0), editor(editor)
 {
-
+	//
 }
 
 ActionQueue::~ActionQueue()
 {
-	for(ActionList::iterator it = actions.begin();
-		it != actions.end();)
-	{
+	for (auto it = actions.begin(); it != actions.end(); it = actions.erase(it)) {
 		delete *it;
-		it = actions.erase(it);
 	}
 }
 

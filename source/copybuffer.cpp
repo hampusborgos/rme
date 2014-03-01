@@ -240,20 +240,20 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	gui.SetStatusText(wxstr(ss.str()));
 }
 
-void CopyBuffer::paste(Editor& editor, Position topos)
+void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 {
-	if(!tiles)
+	if (!tiles) {
 		return;
+	}
 
 	BatchAction* batchAction = editor.actionQueue->createBatch(ACTION_PASTE_TILES);
-
 	Action* action = editor.actionQueue->createAction(batchAction);
 	for(MapIterator it = tiles->begin();
 			it != tiles->end();
 			++it)
 	{
 		Tile* buffer_tile = (*it)->get();
-		Position pos = buffer_tile->getPosition() - copyPos + topos;
+		Position pos = buffer_tile->getPosition() - copyPos + toPosition;
 
 		if(pos.isValid() == false)
 			continue;
@@ -305,7 +305,7 @@ void CopyBuffer::paste(Editor& editor, Position topos)
 			++it)
 		{
 			bool add_me = false; // If this tile is touched
-			Position pos = (*it)->getPosition() - copyPos + topos;
+			Position pos = (*it)->getPosition() - copyPos + toPosition;
 			if(pos.z < 0 || pos.z >= MAP_HEIGHT) {
 				continue;
 			}
@@ -324,21 +324,21 @@ void CopyBuffer::paste(Editor& editor, Position topos)
 		// Remove duplicates
 		borderize_tiles.sort();
 		borderize_tiles.unique();
-		// Do le borders!
-		for(TileList::iterator it = borderize_tiles.begin(); it != borderize_tiles.end(); it++)
-		{
-			Tile* tile = *it;
-			if(tile)
-			{
-				Tile* new_tile = tile->deepCopy(editor.map);
-				new_tile->borderize(&map);
-				if(tile->ground && tile->ground->isSelected())
-					new_tile->selectGround();
 
-				new_tile->wallize(&map);
-				action->addChange(newd Change(new_tile));
+		for (Tile* tile : borderize_tiles) {
+			if (tile) {
+				Tile* newTile = tile->deepCopy(editor.map);
+				newTile->borderize(&map);
+				
+				if (tile->ground && tile->ground->isSelected()) {
+					newTile->selectGround();
+				}
+
+				newTile->wallize(&map);
+				action->addChange(newd Change(newTile));
 			}
 		}
+
 		// Commit changes to map
 		batchAction->addAndCommitAction(action);
 	}

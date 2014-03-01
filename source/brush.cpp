@@ -48,24 +48,31 @@
 
 Brushes brushes;
 
-Brushes::Brushes() {
+Brushes::Brushes()
+{
+	//
 }
 
-Brushes::~Brushes() {
+Brushes::~Brushes()
+{
+	//
 }
 
-void Brushes::clear() {
-	for(BrushMap::iterator it = brushes.begin(); it != brushes.end(); it++) {
-		delete it->second;
-	}
-	for(BorderMap::iterator it = borders.begin(); it != borders.end(); it++) {
-		delete it->second;
+void Brushes::clear()
+{
+	for (auto brushEntry : brushes) {
+		delete brushEntry.second;
 	}
 	brushes.clear();
+
+	for (auto borderEntry : borders) {
+		delete borderEntry.second;
+	}
 	borders.clear();
 }
 
-void Brushes::init() {
+void Brushes::init()
+{
 	addBrush(gui.optional_brush = newd OptionalBorderBrush());
 	addBrush(gui.eraser = newd EraserBrush());
 	addBrush(gui.spawn_brush = newd SpawnBrush());
@@ -190,10 +197,12 @@ void Brushes::addBrush(Brush *brush) {
 	brushes.insert(std::make_pair(brush->getName(), brush));
 }
 
-Brush* Brushes::getBrush(std::string name) const {
-	BrushMap::const_iterator it = brushes.find(name);
-	if(it != brushes.end())
+Brush* Brushes::getBrush(const std::string& name) const
+{
+	auto it = brushes.find(name);
+	if (it != brushes.end()) {
 		return it->second;
+	}
 	return nullptr;
 }
 
@@ -264,8 +273,8 @@ int FlagBrush::getLookID() const {
 	return 0;
 }
 
-bool FlagBrush::canDraw(BaseMap* map, Position pos) const {
-	Tile* tile = map->getTile(pos);
+bool FlagBrush::canDraw(BaseMap* map, const Position& position) const {
+	Tile* tile = map->getTile(position);
 	return tile && tile->hasGround();
 }
 
@@ -354,13 +363,22 @@ void DoorBrush::switchDoor(Item* item) {
 	}
 }
 
-bool DoorBrush::canDraw(BaseMap* map, Position pos) const {
-	Tile* tile = map->getTile(pos);
-	if(!tile) return false;
+bool DoorBrush::canDraw(BaseMap* map, const Position& position) const
+{
+	Tile* tile = map->getTile(position);
+	if (!tile) {
+		return false;
+	}
+
 	Item* item = tile->getWall();
-	if(!item) return false;
+	if (!item) {
+		return false;
+	}
+
 	WallBrush* wb = item->getWallBrush();
-	if(!wb) return false;
+	if (!wb) {
+		return false;
+	}
 
 	BorderType wall_alignment = item->getWallAlignment();
 
@@ -577,8 +595,9 @@ int OptionalBorderBrush::getLookID() const {
 	return EDITOR_SPRITE_OPTIONAL_BORDER_TOOL;
 }
 
-bool OptionalBorderBrush::canDraw(BaseMap* map, Position pos) const {
-	Tile* tile = map->getTile(pos);
+bool OptionalBorderBrush::canDraw(BaseMap* map, const Position& position) const
+{
+	Tile* tile = map->getTile(position);
 
 	// You can't do gravel on a mountain tile
 	if(tile) {
@@ -589,9 +608,9 @@ bool OptionalBorderBrush::canDraw(BaseMap* map, Position pos) const {
 		}
 	}
 
-	uint32_t x = pos.x;
-	uint32_t y = pos.y;
-	uint32_t z = pos.z;
+	uint32_t x = position.x;
+	uint32_t y = position.y;
+	uint32_t z = position.z;
 
 	tile = map->getTile(x - 1, y - 1, z);
 	if(tile) if(GroundBrush* bb = tile->getGroundBrush()) if(bb->hasOptionalBorder()) return true;

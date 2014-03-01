@@ -22,18 +22,22 @@
 #include "tile.h"
 #include "spawn.h"
 
-Spawns::Spawns() {
-	;
+Spawns::Spawns()
+{
+	//
 }
 
-Spawns::~Spawns() {
-	;
+Spawns::~Spawns()
+{
+	//
 }
 
-void Spawns::addSpawn(Tile* tile) {
+void Spawns::addSpawn(Tile* tile)
+{
 	ASSERT(tile->spawn);
-	std::pair<SpawnPositionList::iterator, bool> s = spawns.insert(tile->getPosition());
-	ASSERT(s.second);
+
+	auto it = spawns.insert(tile->getPosition());
+	ASSERT(it.second);
 }
 
 void Spawns::removeSpawn(Tile* tile) {
