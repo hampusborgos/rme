@@ -627,8 +627,9 @@ NodeFileWriteHandle::NodeFileWriteHandle() :
 {
 }
 
-NodeFileWriteHandle::~NodeFileWriteHandle() {
-	if(cache) free(cache);
+NodeFileWriteHandle::~NodeFileWriteHandle()
+{
+	free(cache);
 }
 
 bool NodeFileWriteHandle::addNode(uint8_t nodetype) {

@@ -631,140 +631,152 @@ inline GroundBrush* extractGroundBrushFromTile(BaseMap* map, uint32_t x, uint32_
 	return t? t->getGroundBrush() : nullptr;
 }
 
-void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
+void GroundBrush::doBorders(BaseMap* map, Tile* tile)
+{
 	ASSERT(tile);
 
-	GroundBrush* border_brush = (tile->ground? tile->ground->getGroundBrush() : nullptr);
-
-	unsigned int x = tile->getPosition().x;
-	unsigned int y = tile->getPosition().y;
-	unsigned int z = tile->getPosition().z;
-	// Pair of visited / what border type
-	std::pair<bool, GroundBrush*> neighbours[8];
-
-	if(x == 0) {
-		if(y == 0) {
-			neighbours[0] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[1] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[2] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[3] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
-			neighbours[5] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[6] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y + 1, z));
-			neighbours[7] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y + 1, z));
-		} else {
-			neighbours[0] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[1] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y - 1, z));
-			neighbours[2] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y - 1, z));
-			neighbours[3] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
-			neighbours[5] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-			neighbours[6] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y + 1, z));
-			neighbours[7] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y + 1, z));
-		}
-	} else if(y == 0) {
-		neighbours[0] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-		neighbours[1] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-		neighbours[2] = std::make_pair<bool, GroundBrush*>(false, nullptr);
-		neighbours[3] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y, z));
-		neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
-		neighbours[5] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y + 1, z));
-		neighbours[6] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y + 1, z));
-		neighbours[7] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y + 1, z));
+	GroundBrush* borderBrush;
+	if (tile->ground) {
+		borderBrush = tile->ground->getGroundBrush();
 	} else {
-		neighbours[0] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y - 1, z));
-		neighbours[1] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y - 1, z));
-		neighbours[2] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y - 1, z));
-		neighbours[3] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y, z));
-		neighbours[4] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y, z));
-		neighbours[5] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x - 1, y + 1, z));
-		neighbours[6] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x,     y + 1, z));
-		neighbours[7] = std::make_pair<bool, GroundBrush*>(false, extractGroundBrushFromTile(map, x + 1, y + 1, z));
+		borderBrush = nullptr;
 	}
 
-	std::vector<BorderCluster> border_list;
-	static std::vector<const BorderBlock*> specific_list;
-	specific_list.clear();
+	const Position& position = tile->getPosition();
 
-	for(int i = 0; i < 8; i++) {
+	uint32_t x = position.x;
+	uint32_t y = position.x;
+	uint32_t z = position.z;
+
+	// Pair of visited / what border type
+	std::pair<bool, GroundBrush*> neighbours[8];
+	if (x == 0) {
+		if (y == 0) {
+			neighbours[0] = { false, nullptr };
+			neighbours[1] = { false, nullptr };
+			neighbours[2] = { false, nullptr };
+			neighbours[3] = { false, nullptr };
+			neighbours[4] = { false, extractGroundBrushFromTile(map, x + 1, y,     z) };
+			neighbours[5] = { false, nullptr };
+			neighbours[6] = { false, extractGroundBrushFromTile(map, x,     y + 1, z) };
+			neighbours[7] = { false, extractGroundBrushFromTile(map, x + 1, y + 1, z) };
+		} else {
+			neighbours[0] = { false, nullptr };
+			neighbours[1] = { false, extractGroundBrushFromTile(map, x,     y - 1, z) };
+			neighbours[2] = { false, extractGroundBrushFromTile(map, x + 1, y - 1, z) };
+			neighbours[3] = { false, nullptr };
+			neighbours[4] = { false, extractGroundBrushFromTile(map, x + 1, y,     z) };
+			neighbours[5] = { false, nullptr };
+			neighbours[6] = { false, extractGroundBrushFromTile(map, x,     y + 1, z) };
+			neighbours[7] = { false, extractGroundBrushFromTile(map, x + 1, y + 1, z) };
+		}
+	} else if (y == 0) {
+		neighbours[0] = { false, nullptr };
+		neighbours[1] = { false, nullptr };
+		neighbours[2] = { false, nullptr };
+		neighbours[3] = { false, extractGroundBrushFromTile(map, x - 1, y,     z) };
+		neighbours[4] = { false, extractGroundBrushFromTile(map, x + 1, y,     z) };
+		neighbours[5] = { false, extractGroundBrushFromTile(map, x - 1, y + 1, z) };
+		neighbours[6] = { false, extractGroundBrushFromTile(map, x,     y + 1, z) };
+		neighbours[7] = { false, extractGroundBrushFromTile(map, x + 1, y + 1, z) };
+	} else {
+		neighbours[0] = { false, extractGroundBrushFromTile(map, x - 1, y - 1, z) };
+		neighbours[1] = { false, extractGroundBrushFromTile(map, x,     y - 1, z) };
+		neighbours[2] = { false, extractGroundBrushFromTile(map, x + 1, y - 1, z) };
+		neighbours[3] = { false, extractGroundBrushFromTile(map, x - 1, y,     z) };
+		neighbours[4] = { false, extractGroundBrushFromTile(map, x + 1, y,     z) };
+		neighbours[5] = { false, extractGroundBrushFromTile(map, x - 1, y + 1, z) };
+		neighbours[6] = { false, extractGroundBrushFromTile(map, x,     y + 1, z) };
+		neighbours[7] = { false, extractGroundBrushFromTile(map, x + 1, y + 1, z) };
+	}
+
+	static std::vector<const BorderBlock*> specificList;
+	specificList.clear();
+
+	std::vector<BorderCluster> borderList;
+	for(int32_t i = 0; i < 8; ++i) {
+		if (neighbours[i].first) {
+			continue;
+		}
+
 		//printf("Checking neighbour #%d\n", i);
-		if(neighbours[i].first) continue;
 		//printf("\tNeighbour not checked before\n");
-		GroundBrush* other = neighbours[i].second;
 
-		if(border_brush) {
-			if(other) {
+		auto& neighbourPair = neighbours[i];
+		GroundBrush* other = neighbourPair.second;
+
+		if (borderBrush) {
+			if (other) {
 				//printf("\tNeighbour has brush\n");
-				if(other->getID() == border_brush->getID()) {
+				if (other->getID() == borderBrush->getID()) {
 					//printf("\tNeighbour has same brush as we\n");
 					continue;
 				}
 
-				if(other->hasOuterBorder() || border_brush->hasInnerBorder()) {
+				if(other->hasOuterBorder() || borderBrush->hasInnerBorder()) {
 					bool only_mountain = false;
-					if(/*border_brush->hasInnerBorder() == false && */(other->friendOf(border_brush) || border_brush->friendOf(other))) {
-						if(other->hasOptionalBorder()) {
-							only_mountain = true;
-						} else {
+					if (/*!borderBrush->hasInnerBorder() && */(other->friendOf(borderBrush) || borderBrush->friendOf(other))) {
+						if (!other->hasOptionalBorder()) {
 							continue;
 						}
+						only_mountain = true;
 					}
 
 					uint32_t tiledata = 0;
-					for(int j = i; j < 8; j++) {
-						if(neighbours[j].first == false && neighbours[j].second && neighbours[j].second->getID() == other->getID()) {
-							neighbours[j].first = true;
+					for (int32_t j = i; j < 8; ++j) {
+						auto& otherPair = neighbours[j];
+						if (!otherPair.first && otherPair.second && otherPair.second->getID() == other->getID()) {
+							otherPair.first = true;
 							tiledata |= 1 << j;
 						}
 					}
 
 					if(tiledata != 0) {
 						// Add mountain if appropriate!
-						if(other->hasOptionalBorder() && tile->hasOptionalBorder()) {
-							BorderCluster cluster;
-							cluster.alignment = tiledata;
-							cluster.z = 0x7FFFFFFF; // Above all other borders
-							cluster.border = other->optional_border;
-							border_list.push_back(cluster);
-							if(other->useSoloOptionalBorder()) {
+						if (other->hasOptionalBorder() && tile->hasOptionalBorder()) {
+							BorderCluster borderCluster;
+							borderCluster.alignment = tiledata;
+							borderCluster.z = 0x7FFFFFFF; // Above all other borders
+							borderCluster.border = other->optional_border;
+
+							borderList.push_back(borderCluster);
+							if (other->useSoloOptionalBorder()) {
 								only_mountain = true;
 							}
 						}
-						if(only_mountain == false) {
-							const BorderBlock* bb = getBrushTo(border_brush, other);
 
-							if(bb) {
+						if(!only_mountain) {
+							const BorderBlock* borderBlock = getBrushTo(borderBrush, other);
+							if(borderBlock) {
 								bool found = false;
-								for(std::vector<BorderCluster>::iterator iter = border_list.begin();
-										iter != border_list.end();
-										++iter)
-								{
-									BorderCluster& bc = *iter;
-									if(bc.border == bb->autoborder) {
-										// z0MG! Same borderzzz, Group it!
-										bc.alignment |= tiledata;
-										if(bc.z < other->getZ()) {
-											bc.z = other->getZ(); // Z always has top value!
+								for (BorderCluster& borderCluster : borderList) {
+									if (borderCluster.border == borderBlock->autoborder) {
+										borderCluster.alignment |= tiledata;
+										if (borderCluster.z < other->getZ()) {
+											borderCluster.z = other->getZ();
 										}
-										if(bb->specific_cases.size() > 0) {
-											if(std::find(specific_list.begin(), specific_list.end(), bb) == specific_list.end()) {
-												specific_list.push_back(bb);
+
+										if (!borderBlock->specific_cases.empty()) {
+											if (std::find(specificList.begin(), specificList.end(), borderBlock) == specificList.end()) {
+												specificList.push_back(borderBlock);
 											}
 										}
+
 										found = true;
 										break;
 									}
 								}
 
-								if(found == false) {
-									BorderCluster bc;
-									bc.alignment = tiledata;
-									bc.z = other->getZ();
-									bc.border = bb->autoborder;
-									border_list.push_back(bc);
-									if(bb->specific_cases.size() > 0) {
-										if(std::find(specific_list.begin(), specific_list.end(), bb) == specific_list.end()) {
-											specific_list.push_back(bb);
+								if (!found) {
+									BorderCluster borderCluster;
+									borderCluster.alignment = tiledata;
+									borderCluster.z = other->getZ();
+									borderCluster.border = borderBlock->autoborder;
+
+									borderList.push_back(borderCluster);
+									if (!borderBlock->specific_cases.empty()) {
+										if (std::find(specificList.begin(), specificList.end(), borderBlock) == specificList.end()) {
+											specificList.push_back(borderBlock);
 										}
 									}
 								}
@@ -772,204 +784,204 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile) {
 						}
 					}
 				}
-			} else if(border_brush->hasInnerZilchBorder()) {
+			} else if (borderBrush->hasInnerZilchBorder()) {
 				// Border against nothing (or undefined tile)
 				uint32_t tiledata = 0;
-				for(int j = i; j < 8; j++) {
-					if(neighbours[j].first == false && !neighbours[j].second) {
-						neighbours[j].first = true;
+				for (int32_t j = i; j < 8; ++j) {
+					auto& otherPair = neighbours[j];
+					if (!otherPair.first && !otherPair.second) {
+						otherPair.first = true;
 						tiledata |= 1 << j;
 					}
 				}
 
-				if(tiledata != 0) {
-					BorderCluster cluster;
-					cluster.alignment = tiledata;
-					cluster.z = 5000;
-					const BorderBlock* bb = getBrushTo(border_brush, nullptr);
-					if(!bb) {
+				if (tiledata != 0) {
+					const BorderBlock* borderBlock = getBrushTo(borderBrush, nullptr);
+					if (!borderBlock) {
 						continue;
 					}
-					cluster.border = bb->autoborder;
-					if(cluster.border) {
-						border_list.push_back(cluster);
+
+					if (borderBlock->autoborder) {
+						BorderCluster borderCluster;
+						borderCluster.alignment = tiledata;
+						borderCluster.z = 5000;
+						borderCluster.border = borderBlock->autoborder;
+
+						borderList.push_back(borderCluster);
 					}
-					if(bb->specific_cases.size() > 0) {
-						if(std::find(specific_list.begin(), specific_list.end(), bb) == specific_list.end()) {
-							specific_list.push_back(bb);
+
+					if (!borderBlock->specific_cases.empty()) {
+						if (std::find(specificList.begin(), specificList.end(), borderBlock) == specificList.end()) {
+							specificList.push_back(borderBlock);
 						}
 					}
 				}
 				continue;
 			}
-		} else if(other && other->hasOuterZilchBorder()) { // outer zilch border
+		} else if (other && other->hasOuterZilchBorder()) {
 			// Border against nothing (or undefined tile)
 			uint32_t tiledata = 0;
-			for(int j = i; j < 8; j++) {
-				if(neighbours[j].first == false && neighbours[j].second && neighbours[j].second->getID() == other->getID()) {
-					neighbours[j].first = true;
+			for (int32_t j = i; j < 8; ++j) {
+				auto& otherPair = neighbours[j];
+				if (!otherPair.first && otherPair.second && otherPair.second->getID() == other->getID()) {
+					otherPair.first = true;
 					tiledata |= 1 << j;
 				}
 			}
 
-			if(tiledata != 0) {
-				BorderCluster cluster;
-				cluster.alignment = tiledata;
-				cluster.z = other->getZ();
-				const BorderBlock* bb = getBrushTo(nullptr, other);
-				if(bb) {
-					cluster.border = bb->autoborder;
-					if(cluster.border) {
-						border_list.push_back(cluster);
+			if (tiledata != 0) {
+				const BorderBlock* borderBlock = getBrushTo(nullptr, other);
+				if (borderBlock) {
+					if (borderBlock->autoborder) {
+						BorderCluster borderCluster;
+						borderCluster.alignment = tiledata;
+						borderCluster.z = other->getZ();
+						borderCluster.border = borderBlock->autoborder;
+
+						borderList.push_back(borderCluster);
 					}
-					if(bb->specific_cases.size() > 0) {
-						if(std::find(specific_list.begin(), specific_list.end(), bb) == specific_list.end()) {
-							specific_list.push_back(bb);
+
+					if (!borderBlock->specific_cases.empty()) {
+						if (std::find(specificList.begin(), specificList.end(), borderBlock) == specificList.end()) {
+							specificList.push_back(borderBlock);
 						}
 					}
 				}
 
 				// Add mountain if appropriate!
-				if(other->hasOptionalBorder() && tile->hasOptionalBorder()) {
-					BorderCluster cluster;
-					cluster.alignment = tiledata;
-					cluster.z = 0x7FFFFFFF; // Above other zilch borders
-					cluster.border = other->optional_border;
-					border_list.push_back(cluster);
+				if (other->hasOptionalBorder() && tile->hasOptionalBorder()) {
+					BorderCluster borderCluster;
+					borderCluster.alignment = tiledata;
+					borderCluster.z = 0x7FFFFFFF; // Above other zilch borders
+					borderCluster.border = other->optional_border;
+
+					borderList.push_back(borderCluster);
 				} else {
 					tile->setOptionalBorder(false);
 				}
 			}
 		}
 		// Check tile as done
-		neighbours[i].first = true;
+		neighbourPair.first = true;
 	}
 
-	sort(border_list.begin(), border_list.end());
-
+	std::sort(borderList.begin(), borderList.end());
 	tile->cleanBorders();
-	while(border_list.empty() == false) {
-		BorderCluster& cluster = border_list.back();
-		if(cluster.border == nullptr) {
-			border_list.pop_back();
+
+	while (!borderList.empty()) {
+		BorderCluster& borderCluster = borderList.back();
+		if (!borderCluster.border) {
+			borderList.pop_back();
 			continue;
 		}
-		::BorderType i[4];
 
-		i[0] = ::BorderType((border_types[cluster.alignment] & 0x000000FF) >> 0);
-		i[1] = ::BorderType((border_types[cluster.alignment] & 0x0000FF00) >> 8);
-		i[2] = ::BorderType((border_types[cluster.alignment] & 0x00FF0000) >> 16);
-		i[3] = ::BorderType((border_types[cluster.alignment] & 0xFF000000) >> 24);
+		BorderType directions[4] = {
+			static_cast<BorderType>((border_types[borderCluster.alignment] & 0x000000FF) >> 0),
+			static_cast<BorderType>((border_types[borderCluster.alignment] & 0x0000FF00) >> 8),
+			static_cast<BorderType>((border_types[borderCluster.alignment] & 0x00FF0000) >> 16),
+			static_cast<BorderType>((border_types[borderCluster.alignment] & 0xFF000000) >> 24)
+		};
 
-		for(int iter = 0; iter < 4; ++iter) {
-			if(i[iter]) {
-				if(cluster.border->tiles[i[iter]]) {
-					tile->addBorderItem(Item::Create(cluster.border->tiles[i[iter]]));
-				} else {
-					if(i[iter] == NORTHWEST_DIAGONAL) {
-						tile->addBorderItem(Item::Create(cluster.border->tiles[WEST_HORIZONTAL]));
-						tile->addBorderItem(Item::Create(cluster.border->tiles[NORTH_HORIZONTAL]));
-					} else if(i[iter] == NORTHEAST_DIAGONAL) {
-						tile->addBorderItem(Item::Create(cluster.border->tiles[EAST_HORIZONTAL]));
-						tile->addBorderItem(Item::Create(cluster.border->tiles[NORTH_HORIZONTAL]));
-					} else if(i[iter] == SOUTHWEST_DIAGONAL) {
-						tile->addBorderItem(Item::Create(cluster.border->tiles[SOUTH_HORIZONTAL]));
-						tile->addBorderItem(Item::Create(cluster.border->tiles[WEST_HORIZONTAL]));
-					} else if(i[iter] == SOUTHEAST_DIAGONAL) {
-						tile->addBorderItem(Item::Create(cluster.border->tiles[SOUTH_HORIZONTAL]));
-						tile->addBorderItem(Item::Create(cluster.border->tiles[EAST_HORIZONTAL]));
-					}
-				}
-			} else {
+		for (int32_t i = 0; i < 4; ++i) {
+			BorderType direction = directions[i];
+			if (direction == 0) {
 				break;
+			}
+
+			if (borderCluster.border->tiles[direction]) {
+				tile->addBorderItem(Item::Create(borderCluster.border->tiles[direction]));
+			} else {
+				if (direction == NORTHWEST_DIAGONAL) {
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[WEST_HORIZONTAL]));
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[NORTH_HORIZONTAL]));
+				} else if (direction == NORTHEAST_DIAGONAL) {
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[EAST_HORIZONTAL]));
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[NORTH_HORIZONTAL]));
+				} else if (direction == SOUTHWEST_DIAGONAL) {
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[SOUTH_HORIZONTAL]));
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[WEST_HORIZONTAL]));
+				} else if (direction == SOUTHEAST_DIAGONAL) {
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[SOUTH_HORIZONTAL]));
+					tile->addBorderItem(Item::Create(borderCluster.border->tiles[EAST_HORIZONTAL]));
+				}
 			}
 		}
 
-		border_list.pop_back();
+		borderList.pop_back();
 	}
 
-	for(std::vector<const BorderBlock*>::const_iterator specific_outer_iter = specific_list.begin();
-			specific_outer_iter != specific_list.end();
-			++specific_outer_iter)
-	{
-		const BorderBlock* specific = *specific_outer_iter;
-		//printf("Specific block\n");
-		for(std::vector<SpecificCaseBlock*>::const_iterator specific_it = specific->specific_cases.begin();
-				specific_it!= specific->specific_cases.end();
-				++specific_it)
-		{
-			//printf("New round\n");
-			SpecificCaseBlock* const scb = *specific_it;
-			//if(scb->to_replace_id == 0) continue;
-			//if(scb->with_id == 0) continue;
-			ItemVector::iterator it = tile->items.begin();
-
+	for (const BorderBlock* borderBlock : specificList) {
+		for (const SpecificCaseBlock* specificCaseBlock : borderBlock->specific_cases) {
+			/*
+			printf("New round\n");
+			if (specificCaseBlock->to_replace_id == 0) {
+				continue;
+			}
+			
+			if (specificCaseBlock->with_id == 0) {
+				continue;
+			}
+			*/
 			uint32_t matches = 0;
-			while(it != tile->items.end()) {
-				Item* item = *it;
-				if(item->isBorder() == false) {
+			for (Item* item : tile->items) {
+				if (!item->isBorder()) {
 					break;
 				}
 
-				if(scb->match_group > 0) {
-					//printf("Matching %d == %d : %d == %d\n", item->getBorderGroup(), scb->match_group, item->getBorderAlignment(), scb->group_match_alignment);
-					if(item->getBorderGroup() == scb->match_group && item->getBorderAlignment() == scb->group_match_alignment) {
-						//printf("Successfully matched %d == %d : %d == %d\n", item->getBorderGroup(), scb->match_group, item->getBorderAlignment(), scb->group_match_alignment);
+				if (specificCaseBlock->match_group > 0) {
+					//printf("Matching %d == %d : %d == %d\n", item->getBorderGroup(), specificCaseBlock->match_group, item->getBorderAlignment(), specificCaseBlock->group_match_alignment);
+					if (item->getBorderGroup() == specificCaseBlock->match_group && item->getBorderAlignment() == specificCaseBlock->group_match_alignment) {
+						//printf("Successfully matched %d == %d : %d == %d\n", item->getBorderGroup(), specificCaseBlock->match_group, item->getBorderAlignment(), specificCaseBlock->group_match_alignment);
 						++matches;
-						++it;
 						continue;
 					}
 				}
 
 				//printf("\tInvestigating first item id:%d\n", item->getID());
-				for(std::vector<uint16_t>::iterator case_it = scb->items_to_match.begin();
-						case_it != scb->items_to_match.end();
-						++case_it)
-				{
-					if(item->getID() == (*case_it)) {
+				for (uint16_t matchId : specificCaseBlock->items_to_match) {
+					if (item->getID() == matchId) {
 						//printf("\t\tMatched item id %d\n", item->getID());
 						++matches;
 					}
 				}
-				++it;
 			}
 
 			//printf("\t\t%d matches of %d\n", matches, scb->items_to_match.size());
-			if(matches == scb->items_to_match.size()) {
-				if(scb->delete_all) {
+			if (matches == specificCaseBlock->items_to_match.size()) {
+				auto& tileItems = tile->items;
+				auto it = tileItems.begin();
+				if (specificCaseBlock->delete_all) {
 					// Delete all matching borders
-					it = tile->items.begin();
-
-					while(it != tile->items.end()) {
-						bool inc = true;
+					while (it != tileItems.end()) {
 						Item* item = *it;
-						if(item->isBorder() == false) {
+						if (!item->isBorder()) {
 							break;
 						}
-						for(std::vector<uint16_t>::iterator case_it = scb->items_to_match.begin();
-								case_it != scb->items_to_match.end();
-								++case_it) {
-							if(item->getID() == (*case_it)) {
-								delete *it;
-								it = tile->items.erase(it);
+
+						bool inc = true;
+						for (uint16_t matchId : specificCaseBlock->items_to_match) {
+							if (item->getID() == matchId) {
+								delete item;
+								it = tileItems.erase(it);
 								inc = false;
 								break;
 							}
 						}
-						if(inc) ++it;
+
+						if (inc) {
+							++it;
+						}
 					}
 				} else {
 					// All matched, replace!
-					it = tile->items.begin();
-					while(true) {
-						if(it == tile->items.end()) {
+					while (it != tileItems.end()) {
+						Item* item = *it;
+						if (!item->isBorder()) {
 							return;
 						}
-						if((*it)->isBorder() == false) {
-							return;
-						}
-						if((*it)->getID() == scb->to_replace_id) {
-							(*it)->setID(scb->with_id);
+
+						if (item->getID() == specificCaseBlock->to_replace_id) {
+							item->setID(specificCaseBlock->with_id);
 							return;
 						}
 						++it;

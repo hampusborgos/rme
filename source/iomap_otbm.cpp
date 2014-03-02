@@ -1051,7 +1051,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 		spawnPosition.y = pugi::cast<int32_t>(spawnNode.attribute("centery").value());
 		spawnPosition.z = pugi::cast<int32_t>(spawnNode.attribute("centerz").value());
 
-		if (spawnPosition.x == 0 || spawnPosition.y == 0 || spawnPosition.z == 0) {
+		if (spawnPosition.x == 0 || spawnPosition.y == 0) {
 			warning(wxT("Bad position data on one spawn, discarding..."));
 			continue;
 		}
@@ -1501,16 +1501,15 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 
 			f.addNode(OTBM_TOWNS);
 			{
-				for(TownMap::const_iterator it = map.towns.begin(); it != map.towns.end(); ++it)
-				{
-					Town* town = it->second;
+				for (const auto& townEntry : map.towns) {
+					Town* town = townEntry.second;
+					const Position& townPosition = town->getTemplePosition();
 					f.addNode(OTBM_TOWN);
-
-					f.addU32(town->getID());
-					f.addString(town->getName());
-					f.addU16(town->getTemplePosition().x);
-					f.addU16(town->getTemplePosition().y);
-					f.addU8 (town->getTemplePosition().z);
+						f.addU32(town->getID());
+						f.addString(town->getName());
+						f.addU16(townPosition.x);
+						f.addU16(townPosition.y);
+						f.addU8(townPosition.z);
 					f.endNode();
 				}
 			} f.endNode();

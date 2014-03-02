@@ -708,105 +708,113 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	return true;
 }
 
-void Editor::borderizeSelection() {
-	if(selection.size() == 0) {
+void Editor::borderizeSelection()
+{
+	if (selection.size() == 0) {
 		gui.SetStatusText(wxT("No items selected. Can't borderize."));
 	}
 
 	Action* action = actionQueue->createAction(ACTION_BORDERIZE);
-	for(TileVector::iterator it = selection.begin(); it != selection.end(); it++) {
-		Tile* tile = *it;
-		Tile* new_tile = tile->deepCopy(map);
-		new_tile->borderize(&map);
-		new_tile->select();
-		action->addChange(newd Change(new_tile));
+	for (Tile* tile : selection) {
+		Tile* newTile = tile->deepCopy(map);
+		newTile->borderize(&map);
+		newTile->select();
+		action->addChange(newd Change(newTile));
 	}
 	addAction(action);
 }
 
-void Editor::borderizeMap(bool showdialog) {
-	if(showdialog) {
+void Editor::borderizeMap(bool showdialog)
+{
+	if (showdialog) {
 		gui.CreateLoadBar(wxT("Borderizing map..."));
 	}
 
 	uint64_t tiles_done = 0;
-	for(MapIterator map_iter = map.begin();
-			map_iter != map.end();
-			++map_iter)
-	{
-		if(showdialog && tiles_done % 4096 == 0) {
-			gui.SetLoadDone(int(tiles_done / double(map.tilecount) * 100.0));
+	for (TileLocation* tileLocation : map) {
+		if (showdialog && tiles_done % 4096 == 0) {
+			gui.SetLoadDone(static_cast<int32_t>(tiles_done / double(map.tilecount) * 100.0));
 		}
 
-		Tile* tile = (*map_iter)->get();
+		Tile* tile = tileLocation->get();
 		ASSERT(tile);
+
 		tile->borderize(&map);
-		tiles_done += 1;
+		++tiles_done;
 	}
 
-	if(showdialog) {
+	if (showdialog) {
 		gui.DestroyLoadBar();
 	}
 }
 
-void Editor::randomizeSelection() {
-	if(selection.size() == 0) {
+void Editor::randomizeSelection()
+{
+	if (selection.size() == 0) {
 		gui.SetStatusText(wxT("No items selected. Can't randomize."));
 	}
 
 	Action* action = actionQueue->createAction(ACTION_RANDOMIZE);
-	for(TileVector::iterator it = selection.begin(); it != selection.end(); it++) {
-		Tile* tile = *it;
-		Tile* new_tile = tile->deepCopy(map);
-		GroundBrush* gb = new_tile->getGroundBrush();
-		Item* old_ground = tile->ground;
-		if(gb && gb->isReRandomizable()) {
-			gb->draw(&map, new_tile, nullptr);
-			Item* new_ground = new_tile->ground;
-			if(old_ground && new_ground) {
-				new_ground->setActionID(old_ground? old_ground->getActionID() : 0);
-				new_ground->setUniqueID(old_ground? old_ground->getUniqueID() : 0);
+	for (Tile* tile : selection) {
+		Tile* newTile = tile->deepCopy(map);
+		GroundBrush* groundBrush = newTile->getGroundBrush();
+		if (groundBrush && groundBrush->isReRandomizable()) {
+			groundBrush->draw(&map, newTile, nullptr);
+
+			Item* oldGround = tile->ground;
+			Item* newGround = newTile->ground;
+			if (oldGround && newGround) {
+				newGround->setActionID(oldGround->getActionID());
+				newGround->setUniqueID(oldGround->getUniqueID());
 			}
-			new_tile->select();
-			action->addChange(newd Change(new_tile));
+
+			newTile->select();
+			action->addChange(newd Change(newTile));
 		}
 	}
 	addAction(action);
 }
 
-void Editor::randomizeMap(bool showdialog) {
-	if(showdialog) {
+void Editor::randomizeMap(bool showdialog)
+{
+	if (showdialog) {
 		gui.CreateLoadBar(wxT("Randomizing map..."));
 	}
 
 	uint64_t tiles_done = 0;
-	for(MapIterator map_iter = map.begin();
-			map_iter != map.end();
-			++map_iter)
-	{
-		if(showdialog && tiles_done % 4096 == 0) {
-			gui.SetLoadDone(int(tiles_done / double(map.tilecount) * 100.0));
+	for (TileLocation* tileLocation : map) {
+		if (showdialog && tiles_done % 4096 == 0) {
+			gui.SetLoadDone(static_cast<int32_t>(tiles_done / double(map.tilecount) * 100.0));
 		}
 
-		Tile* tile = (*map_iter)->get();
+		Tile* tile = tileLocation->get();
 		ASSERT(tile);
-		GroundBrush* gb = tile->getGroundBrush();
-		Item* old_ground = tile->ground;
-		uint16_t old_aid = old_ground? old_ground->getActionID() : 0;
-		uint16_t old_uid = old_ground? old_ground->getUniqueID() : 0;
-		if(gb) {
-			gb->draw(&map, tile, nullptr);
-			Item* new_ground = tile->ground;
-			if(new_ground) {
-				new_ground->setActionID(old_aid);
-				new_ground->setUniqueID(old_uid);
+
+		GroundBrush* groundBrush = tile->getGroundBrush();
+		if (groundBrush) {
+			Item* oldGround = tile->ground;
+
+			uint16_t actionId, uniqueId;
+			if (oldGround) {
+				actionId = oldGround->getActionID();
+				uniqueId = oldGround->getUniqueID();
+			} else {
+				actionId = 0;
+				uniqueId = 0;
+			}
+			groundBrush->draw(&map, tile, nullptr);
+
+			Item* newGround = tile->ground;
+			if (newGround) {
+				newGround->setActionID(actionId);
+				newGround->setUniqueID(uniqueId);
 			}
 			tile->update();
 		}
-		tiles_done += 1;
+		++tiles_done;
 	}
 
-	if(showdialog) {
+	if (showdialog) {
 		gui.DestroyLoadBar();
 	}
 }
