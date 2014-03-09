@@ -21,10 +21,36 @@
 #include "main.h"
 
 #include "common.h"
-
 #include "math.h"
-#include <sstream>
 
+#include <sstream>
+#include <random>
+
+// random generator
+std::mt19937& getRandomGenerator()
+{
+	static std::random_device rd;
+	static std::mt19937 generator(rd());
+	return generator;
+}
+
+int32_t uniform_random(int32_t minNumber, int32_t maxNumber)
+{
+	static std::uniform_int_distribution<int32_t> uniformRand;
+	if (minNumber == maxNumber) {
+		return minNumber;
+	} else if (minNumber > maxNumber) {
+		std::swap(minNumber, maxNumber);
+	}
+	return uniformRand(getRandomGenerator(), std::uniform_int_distribution<int32_t>::param_type(minNumber, maxNumber));
+}
+
+int32_t uniform_random(int32_t maxNumber)
+{
+	return uniform_random(0, maxNumber);
+}
+
+//
 std::string i2s(const int _i) {
 	static std::stringstream ss;
 	ss.str("");

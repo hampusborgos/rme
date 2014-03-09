@@ -48,6 +48,10 @@ class MapDrawer
 	wxPaintDC& pdc;
 	DrawingOptions options;
 
+	double zoom;
+
+	uint32_t current_house_id;
+
 	int mouse_map_x, mouse_map_y;
 	int start_x, start_y, start_z;
 	int end_x, end_y, end_z, superend_z;
@@ -55,8 +59,6 @@ class MapDrawer
 	int screensize_x, screensize_y;
 	int tile_size;
 	int floor;
-	int current_house_id;
-	double zoom;
 
 protected:
 	std::vector<MapTooltip> tooltips;

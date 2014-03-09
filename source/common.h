@@ -21,6 +21,9 @@ inline bool testFlags(size_t flags, size_t test) {
 	return (flags & test) != 0;
 }
 
+int32_t uniform_random(int32_t minNumber, int32_t maxNumber);
+int32_t uniform_random(int32_t maxNumber);
+
 // Function-like convertions between float, int and doubles
 std::string i2s(int i);
 std::string f2s(double i);

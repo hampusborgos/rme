@@ -23,9 +23,11 @@ public:
 
 	static void doTables(BaseMap* map, Tile* tile);
 
-	virtual int getLookID() const;
-	virtual void setName(std::string newname);
-	virtual std::string getName() const;
+	virtual int getLookID() const { return look_id; }
+
+	virtual std::string getName() const { return name; }
+	virtual void setName(const std::string& newName) { name = newName; }
+
 	virtual bool needBorders() const {return true;}
 protected:
 	struct TableType

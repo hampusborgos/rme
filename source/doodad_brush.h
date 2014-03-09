@@ -48,7 +48,7 @@ public:
 	virtual int getLookID() const {return look_id;}
 	virtual int getMaxVariation() const {return alternatives.size();}
 	virtual std::string getName() const {return name;}
-	virtual void setName(std::string newname) {name = newname;}
+	virtual void setName(const std::string& newName) { name = newName; }
 
 protected:
 	std::string name;

@@ -95,18 +95,6 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	return true;
 }
 
-void TableBrush::setName(std::string newname) {
-	name = newname;
-}
-
-std::string TableBrush::getName() const {
-	return name;
-}
-
-int TableBrush::getLookID() const {
-	return look_id;
-}
-
 bool TableBrush::canDraw(BaseMap* map, const Position& position) const {
 	return true;
 }

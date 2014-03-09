@@ -206,35 +206,39 @@ Brush* Brushes::getBrush(const std::string& name) const
 	return nullptr;
 }
 
+// Brush
 uint32_t Brush::id_counter = 0;
-
 Brush::Brush() :
-	id(++id_counter),
-	visible(false)
+	id(++id_counter), visible(false)
 {
+	//
 }
 
-Brush::~Brush() {
-
+Brush::~Brush()
+{
+	//
 }
 
+// TerrainBrush
 TerrainBrush::TerrainBrush() :
-	look_id(0),
-	hate_friends(false)
+	look_id(0), hate_friends(false)
 {
-
+	//
 }
 
-TerrainBrush::~TerrainBrush() {
+TerrainBrush::~TerrainBrush()
+{
+	//
 }
 
-bool TerrainBrush::friendOf(TerrainBrush* other) {
+bool TerrainBrush::friendOf(TerrainBrush* other)
+{
 	uint32_t borderID = other->getID();
-	for(std::vector<uint32_t>::iterator fit = friends.begin(); fit != friends.end(); ++fit) {
-		if(*fit == borderID) {
+	for (uint32_t friendId : friends) {
+		if (friendId == borderID) {
 			//printf("%s is friend of %s\n", getName().c_str(), other->getName().c_str());
 			return !hate_friends;
-		} else if(*fit == 0xFFFFFFFF) {
+		} else if (friendId == 0xFFFFFFFF) {
 			//printf("%s is generic friend of %s\n", getName().c_str(), other->getName().c_str());
 			return !hate_friends;
 		}

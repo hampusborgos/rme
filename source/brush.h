@@ -79,56 +79,78 @@ extern Brushes brushes;
 //=============================================================================
 // Common brush interface
 
-class Brush {
-public:
-	Brush();
-	virtual ~Brush();
-	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {return true;}
-	virtual void draw(BaseMap* map, Tile* tile, void* parameter = nullptr) = 0;
-	virtual void undraw(BaseMap* map, Tile* tile) = 0;
-	virtual bool canDraw(BaseMap* map, const Position& position) const = 0;
-	
-	uint32_t getID() const {return id;}
-	virtual std::string getName() const = 0;
-	virtual void setName(std::string newname) {ASSERT(_MSG("setName attempted on nameless brush!"));}
-	virtual int getLookID() const = 0;
-	virtual bool needBorders() const {return false;}
-	virtual bool canDrag() const {return false;}
-	virtual bool canSmear() const {return true;}
-	virtual bool oneSizeFitsAll() const {return false;}
-	virtual int getMaxVariation() const {return 0;}
-	bool visibleInPalette() const {return visible;}
-	void flagAsVisible() {visible = true;}
+class Brush
+{
+	public:
+		Brush();
+		virtual ~Brush();
 
-protected:
-	uint32_t id;
-	bool visible; // Visible in any palette?
-	static uint32_t id_counter;
+		virtual bool load(pugi::xml_node node, wxArrayString& warnings) {
+			return true;
+		}
+
+		virtual void draw(BaseMap* map, Tile* tile, void* parameter = nullptr) = 0;
+		virtual void undraw(BaseMap* map, Tile* tile) = 0;
+		virtual bool canDraw(BaseMap* map, const Position& position) const = 0;
+
+		//
+		uint32_t getID() const { return id; }
+
+		virtual std::string getName() const = 0;
+		virtual void setName(const std::string& newName) {
+			ASSERT(_MSG("setName attempted on nameless brush!"));
+		}
+		
+		virtual int getLookID() const = 0;
+		
+		virtual bool needBorders() const { return false; }
+
+		virtual bool canDrag() const { return false; }
+		virtual bool canSmear() const { return true; }
+
+		virtual bool oneSizeFitsAll() const { return false; }
+
+		virtual int32_t getMaxVariation() const { return 0; }
+
+		bool visibleInPalette() const { return visible; }
+		void flagAsVisible() { visible = true; }
+
+	protected:
+		static uint32_t id_counter;
+		uint32_t id;
+		
+		bool visible; // Visible in any palette?
 };
 
 //=============================================================================
 // Terrain brush interface
 
-class TerrainBrush : public Brush {
-public:
-	TerrainBrush();
-	virtual ~TerrainBrush();
+class TerrainBrush : public Brush
+{
+	public:
+		TerrainBrush();
+		virtual ~TerrainBrush();
 	
-	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
+		virtual bool canDraw(BaseMap* map, const Position& position) const { return true; }
 
-	virtual std::string getName() const {return name;}
-	virtual void setName(std::string newname) {name = newname;}
-	virtual int32_t getZ() const {return 0;}
-	virtual int getLookID() const {return look_id;}
-	virtual bool needBorders() const {return true;}
-	virtual bool canDrag() const {return true;}
+		virtual std::string getName() const { return name; }
+		virtual void setName(const std::string& newName) { name = newName; }
+
+		virtual int32_t getZ() const { return 0; }
+		virtual int32_t getLookID() const { return look_id; }
+
+		virtual bool needBorders() const { return true; }
+		virtual bool canDrag() const { return true; }
 	
-	bool friendOf(TerrainBrush* other);
-protected:
-	uint16_t look_id;
-	std::string name;
-	bool hate_friends;
-	std::vector<uint32_t> friends;
+		bool friendOf(TerrainBrush* other);
+
+	protected:
+		std::vector<uint32_t> friends;
+		std::string name;
+
+		uint16_t look_id;
+		
+		bool hate_friends;
 };
 //=============================================================================
 // FlagBrush, draw PZ etc.

@@ -82,6 +82,7 @@ void MapDrawer::SetupGL()
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
+	glTranslatef(0.375f, 0.375f, 0.0f);
 }
 
 DrawingOptions::DrawingOptions()

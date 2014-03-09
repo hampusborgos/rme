@@ -18,9 +18,12 @@ uint32_t CarpetBrush::carpet_types[256];
 CarpetBrush::CarpetBrush() :
 	look_id(0)
 {
+	//
 }
 
-CarpetBrush::~CarpetBrush() {
+CarpetBrush::~CarpetBrush()
+{
+	//
 }
 
 bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
@@ -121,40 +124,37 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			auto& alignItem = carpet_items[alignment];
 			alignItem.total_chance = 1;
 
-			CarpetType t;
-			t.id = id;
-			t.chance = 1;
+			CarpetType carpetType;
+			carpetType.id = id;
+			carpetType.chance = 1;
 
-			alignItem.items.push_back(t);
+			alignItem.items.push_back(carpetType);
 		}
 	}
 	return true;
 }
 
-void CarpetBrush::setName(std::string newname) {
-	name = newname;
-}
-
-std::string CarpetBrush::getName() const {
-	return name;
-}
-
-int CarpetBrush::getLookID() const {
-	return look_id;
-}
-
-bool CarpetBrush::canDraw(BaseMap* map, const Position& position) const {
+bool CarpetBrush::canDraw(BaseMap* map, const Position& position) const
+{
 	return true;
 }
 
-void CarpetBrush::undraw(BaseMap* map, Tile* t) {
-	ItemVector::iterator it = t->items.begin();
-	while(it != t->items.end()) {
-		if((*it)->isCarpet()) {
-			CarpetBrush* cb = (*it)->getCarpetBrush();
-			if(cb == this) {
-				delete *it;
-				it = t->items.erase(it);
+void CarpetBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
+	undraw(map, tile); // Remove old
+	tile->addItem(Item::Create(getRandomCarpet(CARPET_CENTER)));
+}
+
+void CarpetBrush::undraw(BaseMap* map, Tile* tile)
+{
+	auto& items = tile->items;
+	for (auto it = items.begin(); it != items.end(); ) {
+		Item* item = *it;
+		if (item->isCarpet()) {
+			CarpetBrush* carpetBrush = item->getCarpetBrush();
+			if (carpetBrush) {
+				delete item;
+				it = items.erase(it);
 			} else {
 				++it;
 			}
@@ -164,151 +164,141 @@ void CarpetBrush::undraw(BaseMap* map, Tile* t) {
 	}
 }
 
-void CarpetBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
-	undraw(map, tile); // Remove old
-
-	tile->addItem(Item::Create(getRandomCarpet(CARPET_CENTER)));
-}
-
-
-bool hasMatchingCarpetBrushAtTile(BaseMap* map, CarpetBrush* carpet_brush, uint32_t x, uint32_t y, uint32_t z) {
-	Tile* t = map->getTile(x, y, z);
-	if(!t) return false;
-
-	ItemVector::const_iterator it = t->items.begin();
-	for(; it != t->items.end(); ++it) {
-		CarpetBrush* cb = (*it)->getCarpetBrush();
-		if(cb == carpet_brush) {
-			return true;
+void CarpetBrush::doCarpets(BaseMap* map, Tile* tile)
+{
+	static const auto hasMatchingCarpetBrushAtTile = [](BaseMap* map, CarpetBrush* carpetBrush, uint32_t x, uint32_t y, uint32_t z) -> bool {
+		Tile* tile = map->getTile(x, y, z);
+		if (!tile) {
+			return false;
 		}
+
+		for (Item* item : tile->items) {
+			if (item->getCarpetBrush() == carpetBrush) {
+				return true;
+			}
+		}
+		return false;
 	}
 
-	return false;
-}
-
-uint16_t CarpetBrush::getRandomCarpet(BorderType alignment) {
-	if(carpet_items[alignment].total_chance > 0) {
-		int chance = random(1, carpet_items[alignment].total_chance);
-		for(std::vector<CarpetType>::const_iterator carpet_iter = carpet_items[alignment].items.begin();
-				carpet_iter != carpet_items[alignment].items.end();
-				++carpet_iter)
-		{
-			if(chance <= carpet_iter->chance) {
-				return carpet_iter->id;
-			}
-			chance -= carpet_iter->chance;
-		}
-	} else {
-		if(alignment != CARPET_CENTER && carpet_items[CARPET_CENTER].total_chance > 0) {
-			int chance = random(1, carpet_items[CARPET_CENTER].total_chance);
-			for(std::vector<CarpetType>::const_iterator carpet_iter = carpet_items[CARPET_CENTER].items.begin();
-					carpet_iter != carpet_items[CARPET_CENTER].items.end();
-					++carpet_iter)
-			{
-				if(chance <= carpet_iter->chance) {
-					return carpet_iter->id;
-				}
-				chance -= carpet_iter->chance;
-			}
-		}
-		// Find an item to place on the tile, first center, then the rest.
-		for(int i = 0; i < 12; ++i) {
-			if(carpet_items[i].total_chance > 0) {
-				int chance = random(1, carpet_items[i].total_chance);
-				for(std::vector<CarpetType>::const_iterator carpet_iter = carpet_items[i].items.begin();
-						carpet_iter != carpet_items[i].items.end();
-						++carpet_iter)
-				{
-					if(chance <= carpet_iter->chance) {
-						return carpet_iter->id;
-					}
-					chance -= carpet_iter->chance;
-				}
-			}
-		}
-	}
-	return 0;
-}
-
-void CarpetBrush::doCarpets(BaseMap* map, Tile* tile) {
 	ASSERT(tile);
-
-
-	if(tile->hasCarpet() == false) {
+	if (!tile->hasCarpet()) {
 		return;
 	}
 
-	int x = tile->getPosition().x;
-	int y = tile->getPosition().y;
-	int z = tile->getPosition().z;
+	const Position& position = tile->getPosition();
+	uint32_t x = position.x;
+	uint32_t y = position.y;
+	uint32_t z = position.z;
+	/*
+	static const std::pair<int32_t, int32_t> positionOffset[8] = {
+		{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}
+	};
 
-	for(ItemVector::const_iterator item_iter = tile->items.begin();
-			item_iter != tile->items.end();
-			++item_iter)
-	{
-		Item* item = *item_iter;
+	const auto& offset = positionOffset[i];
+	if (neighbours[i] && hasMatchingCarpetBrushAtTile(map, carpetBrush, x + offset.first, y + offset.second, z)) {
+		//
+	}
+	*/
+	for (Item* item : tile->items) {
 		ASSERT(item);
-		CarpetBrush* carpet_brush = item->getCarpetBrush();
-		if(carpet_brush == nullptr) {
+
+		CarpetBrush* carpetBrush = item->getCarpetBrush();
+		if (!carpetBrush) {
 			continue;
 		}
 
-		bool neighbours[8];
-
-		if(x == 0) {
-			if(y == 0) {
+		bool neighbours[8] = { false };
+		if (x == 0) {
+			if (y == 0) {
 				neighbours[0] = false;
 				neighbours[1] = false;
 				neighbours[2] = false;
 				neighbours[3] = false;
-				neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y, z);
+				neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y,     z);
 				neighbours[5] = false;
-				neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x,     y + 1, z);
-				neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y + 1, z);
+				neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x,     y + 1, z);
+				neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y + 1, z);
 			} else {
 				neighbours[0] = false;
-				neighbours[1] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x,     y - 1, z);
-				neighbours[2] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y - 1, z);
+				neighbours[1] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x,     y - 1, z);
+				neighbours[2] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y - 1, z);
 				neighbours[3] = false;
-				neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y, z);
+				neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y,     z);
 				neighbours[5] = false;
-				neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x,     y + 1, z);
-				neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y + 1, z);
+				neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x,     y + 1, z);
+				neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y + 1, z);
 			}
-		} else if(y == 0) {
+		} else if (y == 0) {
 			neighbours[0] = false;
 			neighbours[1] = false;
 			neighbours[2] = false;
-			neighbours[3] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x - 1, y, z);
-			neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y, z);
-			neighbours[5] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x - 1, y + 1, z);
-			neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x,     y + 1, z);
-			neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y + 1, z);
+			neighbours[3] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x - 1, y,     z);
+			neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y,     z);
+			neighbours[5] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x - 1, y + 1, z);
+			neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x,     y + 1, z);
+			neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y + 1, z);
 		} else {
-			neighbours[0] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x - 1, y - 1, z);
-			neighbours[1] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x,     y - 1, z);
-			neighbours[2] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y - 1, z);
-			neighbours[3] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x - 1, y, z);
-			neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y, z);
-			neighbours[5] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x - 1, y + 1, z);
-			neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x,     y + 1, z);
-			neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpet_brush, x + 1, y + 1, z);
+			neighbours[0] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x - 1, y - 1, z);
+			neighbours[1] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x,     y - 1, z);
+			neighbours[2] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y - 1, z);
+			neighbours[3] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x - 1, y,     z);
+			neighbours[4] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y,     z);
+			neighbours[5] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x - 1, y + 1, z);
+			neighbours[6] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x,     y + 1, z);
+			neighbours[7] = hasMatchingCarpetBrushAtTile(map, carpetBrush, x + 1, y + 1, z);
 		}
 
-		uint32_t tiledata = 0;
-		for(int i = 0; i < 8; i++) {
-			if(neighbours[i]) {
+		uint32_t tileData = 0;
+		for (uint32_t i = 0; i < 8; ++i) {
+			if (neighbours[i]) {
 				// Same table as this one, calculate what border
-				tiledata |= 1 << i;
+				tileData |= static_cast<uint32_t>(1) << i;
 			}
 		}
-		::BorderType bt = BorderType(carpet_types[tiledata]);
 
-		// bt is always valid.
-		int id = carpet_brush->getRandomCarpet(bt);
-		if(id != 0) {
+		// border type is always valid.
+		uint16_t id = carpetBrush->getRandomCarpet(static_cast<BorderType>(carpet_types[tileData]));
+		if (id != 0) {
 			item->setID(id);
 		}
 	}
 }
 
+uint16_t CarpetBrush::getRandomCarpet(BorderType alignment)
+{
+	static const auto findRandomCarpet = [](const CarpetNode& node) -> uint16_t {
+		int32_t chance = random(1, node.total_chance);
+		for (const CarpetType& carpetType : node.items) {
+			if (chance <= carpetType.chance) {
+				return carpetType.id;
+			}
+			chance -= carpetType.chance;
+		}
+		return 0;
+	};
+
+	CarpetNode node = carpet_items[alignment];
+	if (node.total_chance > 0) {
+		return findRandomCarpet(node);
+	}
+
+	node = carpet_items[CARPET_CENTER];
+	if (alignment != CARPET_CENTER && node.total_chance > 0) {
+		uint16_t id = findRandomCarpet(node);
+		if (id != 0) {
+			return id;
+		}
+	}
+
+	// Find an item to place on the tile, first center, then the rest.
+	for (int32_t i = 0; i < 12; ++i) {
+		node = carpet_items[i];
+		if (node.total_chance > 0) {
+			uint16_t id = findRandomCarpet(node);
+			if (id != 0) {
+				return id;
+			}
+		}
+	}
+	return 0;
+}

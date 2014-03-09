@@ -109,28 +109,24 @@ GroundBrush::GroundBrush() :
 	randomize(true),
 	total_chance(0)
 {
-
+	//
 }
 
-GroundBrush::~GroundBrush() {
-	for(std::vector<BorderBlock*>::iterator it = borders.begin();
-			it != borders.end();
-			++it)
-	{
-		BorderBlock* bb = *it;
-		if(bb->autoborder) {
-			for(std::vector<SpecificCaseBlock*>::iterator specific_iter = bb->specific_cases.begin();
-					specific_iter != bb->specific_cases.end();
-					++specific_iter)
-			{
-				delete *specific_iter;
+GroundBrush::~GroundBrush()
+{
+	for (BorderBlock* borderBlock : borders) {
+		if (borderBlock->autoborder) {
+			for (SpecificCaseBlock* specificCaseBlock : borderBlock->specific_cases) {
+				delete specificCaseBlock;
 			}
-			if(bb->autoborder->ground == true) {
-				delete bb->autoborder;
+
+			if(borderBlock->autoborder->ground) {
+				delete borderBlock->autoborder;
 			}
 		}
-		delete bb;
+		delete borderBlock;
 	}
+	borders.clear();
 }
 
 bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
@@ -520,15 +516,17 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	return true;
 }
 
-void GroundBrush::undraw(BaseMap* map, Tile* tile) {
+void GroundBrush::undraw(BaseMap* map, Tile* tile)
+{
 	ASSERT(tile);
-	if(tile->hasGround() && tile->ground->getGroundBrush() == this) {
+	if (tile->hasGround() && tile->ground->getGroundBrush() == this) {
 		delete tile->ground;
 		tile->ground = nullptr;
 	}
 }
 
-void GroundBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void GroundBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	ASSERT(tile);
 	if(border_items.empty()) return;
 
@@ -626,13 +624,16 @@ const GroundBrush::BorderBlock* GroundBrush::getBrushTo(GroundBrush* first, Grou
 	return nullptr;
 }
 
-inline GroundBrush* extractGroundBrushFromTile(BaseMap* map, uint32_t x, uint32_t y, uint32_t z) {
-	Tile* t = map->getTile(x, y, z);
-	return t? t->getGroundBrush() : nullptr;
-}
-
 void GroundBrush::doBorders(BaseMap* map, Tile* tile)
 {
+	static const auto extractGroundBrushFromTile = [](BaseMap* map, uint32_t x, uint32_t y, uint32_t z) -> GroundBrush* {
+		Tile* tile = map->getTile(x, y, z);
+		if (tile) {
+			return tile->getGroundBrush();
+		}
+		return nullptr;
+	};
+
 	ASSERT(tile);
 
 	GroundBrush* borderBrush;
@@ -645,7 +646,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile)
 	const Position& position = tile->getPosition();
 
 	uint32_t x = position.x;
-	uint32_t y = position.x;
+	uint32_t y = position.y;
 	uint32_t z = position.z;
 
 	// Pair of visited / what border type
@@ -695,16 +696,15 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile)
 
 	std::vector<BorderCluster> borderList;
 	for(int32_t i = 0; i < 8; ++i) {
-		if (neighbours[i].first) {
+		auto& neighbourPair = neighbours[i];
+		if (neighbourPair.first) {
 			continue;
 		}
 
 		//printf("Checking neighbour #%d\n", i);
 		//printf("\tNeighbour not checked before\n");
 
-		auto& neighbourPair = neighbours[i];
 		GroundBrush* other = neighbourPair.second;
-
 		if (borderBrush) {
 			if (other) {
 				//printf("\tNeighbour has brush\n");
@@ -884,7 +884,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile)
 
 		for (int32_t i = 0; i < 4; ++i) {
 			BorderType direction = directions[i];
-			if (direction == 0) {
+			if (direction == BORDER_NONE) {
 				break;
 			}
 

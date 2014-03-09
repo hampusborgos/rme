@@ -1851,26 +1851,136 @@ GameSprite::Image::Image() :
 {
 }
 
-GameSprite::Image::~Image() {
+GameSprite::Image::~Image()
+{
 	unloadGLTexture(0);
 }
 
-void GameSprite::Image::createGLTexture(GLuint whatid) {
+void GameSprite::Image::createGLTexture(GLuint whatid)
+{
+	static const auto generateMipmaps = [](uint8_t* image) {
+		static std::vector<std::tuple<int32_t, int32_t, std::vector<uint8_t>>> mipmaps;
+		if (mipmaps.empty()) {
+			for (int32_t i = 1, size = 16; size != 0; ++i, size /= 2) {
+				mipmaps.push_back(std::make_tuple(i, size, std::vector<uint8_t>(size * size * 4)));
+			}
+		}
+
+		for (auto& mipmapTuple : mipmaps) {
+			int32_t level = std::get<0>(mipmapTuple);
+			uint8_t* fromData;
+			
+			if (level < 2) {
+				fromData = image;
+			} else {
+				fromData = std::get<2>(mipmaps[level - 2]).data();
+			}
+
+			int32_t size = std::get<1>(mipmapTuple);
+			auto& mipmap = std::get<2>(mipmapTuple);
+
+			mipmap.assign(mipmap.size(), 0);
+			for (int32_t y = 0; y < size; ++y) {
+				for (int32_t x = 0; x < size; ++x) {
+					int32_t lineLength = size * 4;
+
+					int32_t toIndex = (lineLength * y) + (x * 4);
+					int32_t fromIndex = (2 * lineLength * (y * 2)) + (x * 4);
+
+					mipmap[toIndex + 0] = fromData[fromIndex + 0];
+					mipmap[toIndex + 1] = fromData[fromIndex + 1];
+					mipmap[toIndex + 2] = fromData[fromIndex + 2];
+					mipmap[toIndex + 3] = fromData[fromIndex + 3];
+				}
+			}
+		}
+#if 0 || 0 // BICUBIC || BILINEAR
+		for (auto& mipmapTuple : boost::adaptors::reverse(mipmaps)) {
+			int32_t level = std::get<0>(mipmapTuple);
+			uint8_t* fromData;
+			
+			if (level < 2) {
+				fromData = image;
+			} else {
+				fromData = std::get<2>(mipmaps[level - 2]).data();
+			}
+
+			int32_t size = std::get<1>(mipmapTuple);
+			auto& mipmap = std::get<2>(mipmapTuple);
+
+			for (int32_t y = 0; y < size; ++y) {
+				for (int32_t x = 0; x < size; ++x) {
+					int32_t lineLength = size * 4;
+					int32_t toIndex = (lineLength * y) + (x * 4);
+
+					uint16_t r = 0;
+					uint16_t g = 0;
+					uint16_t b = 0;
+					uint16_t a = 0;
+
+					lineLength *= 2;
+					for (int32_t n = 0; n < 2; ++n) {
+						for (int32_t m = 0; m < 2; ++m) {
+							int32_t fromIndex = (lineLength * ((y * 2) + n)) + ((x + m) * 4);
+							if (fromData[fromIndex + 3] == 0x00) {
+								r = g = b = a = 0x00;
+								n = m = 2;
+								continue;
+							}
+							r += fromData[fromIndex + 0];
+							g += fromData[fromIndex + 1];
+							b += fromData[fromIndex + 2];
+							a += fromData[fromIndex + 3];
+						}
+					}
+
+					mipmap[toIndex + 0] = r / 4;
+					mipmap[toIndex + 1] = g / 4;
+					mipmap[toIndex + 2] = b / 4;
+					mipmap[toIndex + 3] = a / 4;
+				}
+			}
+		}
+#endif
+		return mipmaps;
+	};
+
 	ASSERT(!isGLLoaded);
 
 	uint8_t* rgba = getRGBAData();
-	if(!rgba) return;
+	if (!rgba) {
+		return;
+	}
 
 	isGLLoaded = true;
 	gui.gfx.loaded_textures += 1;
 
 	glBindTexture(GL_TEXTURE_2D, whatid);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+#if 0
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
-	glTexParameteri(GL_TEXTURE_2D, 0x2802, 0x812F);
-	glTexParameteri(GL_TEXTURE_2D, 0x2803, 0x812F);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+#elif 0
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
 
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+	for (const auto& mipmap : generateMipmaps(rgba)) {
+		glTexImage2D(GL_TEXTURE_2D, std::get<0>(mipmap), GL_RGBA, std::get<1>(mipmap), std::get<1>(mipmap), 0, GL_RGBA, GL_UNSIGNED_BYTE, std::get<2>(mipmap).data());
+	}
+#else
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+	glGenerateMipmaps(GL_TEXTURE_2D);
+#endif
 	delete[] rgba;
 	#undef SPRITE_SIZE
 }
