@@ -66,47 +66,28 @@ void ContainerItemButton::OnMouseRightRelease(wxMouseEvent& WXUNUSED(event))
 
 void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 {
-	struct IsItem
-	{
-		static bool Pickupable(const ItemType& it)
-		{
-			return it.pickupable;
-		}
-	};
+	FindItemDialog* itemDialog = newd FindItemDialog(GetParent(), wxT("Choose Item to add"));
+	itemDialog->setCondition([](const ItemType& itemType) -> bool {
+		return itemType.pickupable;
+	});
 
-	FindItemDialog* d = newd FindItemDialog(this->GetParent(), wxT("Choose Item to add"));
-	d->setCondition(IsItem::Pickupable);
-	int id = d->ShowModal();
-	d->Destroy();
+	int32_t id = itemDialog->ShowModal();
+	itemDialog->Destroy();
 
-	if(id != 0)
-	{
-		Container* container = getParentContainer();
-
-		// Find the position where we should insert the item
-		ItemVector& v = container->getVector();
-		ItemVector::iterator item_index = v.begin();
-		int i = 0;
-		while(true) {
-			if(item_index == v.end()) {
-				// Insert at end of the vector
-				break;
-			}
-			if(i == index) {
-				// We found where to insert
-				break;
-			}
-			++i;
-			++item_index;
-		}
-
-		// Create and insert the item
-		Item* item = Item::Create(id);
-		v.insert(item_index, item);
-
-		// Update view
-		UpdateParentContainerWindow();
+	if (id == 0) {
+		return;
 	}
+
+	Container* container = getParentContainer();
+	ItemVector& itemVector = container->getVector();
+
+	Item* item = Item::Create(id);
+	if (index < itemVector.size()) {
+		itemVector.insert(itemVector.begin() + index, item);
+	} else {
+		itemVector.push_back(item);
+	}
+	UpdateParentContainerWindow();
 }
 
 void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
@@ -145,62 +126,61 @@ void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
 void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 {
 	ASSERT(edit_item);
-	int ret = gui.PopupDialog(GetParent(),
+	int32_t ret = gui.PopupDialog(GetParent(),
 		wxT("Remove Item"),
 		wxT("Are you sure you want to remove this item from the container?"),
-		wxYES | wxNO);
+		wxYES | wxNO
+	);
 
-	if(ret == wxID_YES)
-	{
-		Container* container = getParentContainer();
-		ItemVector& v = container->getVector();
-		ItemVector::iterator item_index = v.begin();
-		while(item_index != v.end())
-		{
-			if(*item_index == edit_item)
-			{
-				break;
-			}
-			++item_index;
-		}
-		ASSERT(item_index != v.end());
-
-		v.erase(item_index);
-		delete edit_item;
-
-		UpdateParentContainerWindow();
+	if (ret != wxID_YES) {
+		return;
 	}
+
+	Container* container = getParentContainer();
+	ItemVector& itemVector = container->getVector();
+
+	auto it = itemVector.begin();
+	for (; it != itemVector.end(); ++it) {
+		if (*it == edit_item) {
+			break;
+		}
+	}
+
+	ASSERT(it != itemVector.end());
+	itemVector.erase(it);
+	
+	delete edit_item;
+	UpdateParentContainerWindow();
 }
 
 void ContainerItemButton::setItem(Item* item)
 {
 	edit_item = item;
-	if(edit_item)
+	if (edit_item) {
 		SetSprite(edit_item->getClientID());
-	else
+	} else {
 		SetSprite(0);
+	}
 }
 
 Container* ContainerItemButton::getParentContainer()
 {
-	wxWindow* w = this;
-	while ((w = w->GetParent()))
-	{
-		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
-			return dynamic_cast<Container*>(o->getItemBeingEdited());
+	for (wxWindow* window = GetParent(); window != nullptr; window = window->GetParent()) {
+		ObjectPropertiesWindowBase* propertyWindow = dynamic_cast<ObjectPropertiesWindowBase*>(window);
+		if (propertyWindow) {
+			return dynamic_cast<Container*>(propertyWindow->getItemBeingEdited());
+		}
 	}
 	return nullptr;
 }
 
 void ContainerItemButton::UpdateParentContainerWindow()
 {
-	wxWindow* w = this;
-	while ((w = w->GetParent()))
-	{
-		if (ObjectPropertiesWindowBase* o = dynamic_cast<ObjectPropertiesWindowBase*>(w))
-		{
-			o->Update();
-			return;
+	for (wxWindow* window = GetParent(); window != nullptr; window = window->GetParent()) {
+		ObjectPropertiesWindowBase* propertyWindow = dynamic_cast<ObjectPropertiesWindowBase*>(window);
+		if (propertyWindow) {
+			propertyWindow->Update();
+			break;
 		}
 	}
 }

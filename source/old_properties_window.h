@@ -24,6 +24,9 @@ public:
 
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
+
+	void Update();
+
 protected:
 
 protected:

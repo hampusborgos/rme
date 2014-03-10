@@ -69,22 +69,32 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		wxSizer* horizontal_sizer = nullptr;
 		const int additional_height_increment = (use_large_sprites? 40 : 24);
 		int additional_height = 0;
-		for (int i = 1; i <= container->getVolume(); ++i)
-		{
-			if(horizontal_sizer == nullptr) {
+
+		int32_t maxColumns;
+		if (use_large_sprites) {
+			maxColumns = 6;
+		} else {
+			maxColumns = 12;
+		}
+
+		for (int32_t index = 0; index < container->getVolume(); ++index) {
+			if (!horizontal_sizer) {
 				horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
 			}
-			Item* item = container->getItem(i - 1);
-			
-			container_items.push_back(newd ContainerItemButton(this, use_large_sprites, i - 1, map, item));
-			horizontal_sizer->Add(container_items.back());
 
-			if(i % (use_large_sprites? 6 : 11) == 0) {
+			Item* item = container->getItem(index);
+			ContainerItemButton* containerItemButton = newd ContainerItemButton(this, use_large_sprites, index, map, item);
+
+			container_items.push_back(containerItemButton);
+			horizontal_sizer->Add(containerItemButton);
+
+			if (((index + 1) % maxColumns) == 0) {
 				contents_sizer->Add(horizontal_sizer);
 				horizontal_sizer = nullptr;
 				additional_height += additional_height_increment;
 			}
 		}
+
 		if(horizontal_sizer != nullptr) {
 			contents_sizer->Add(horizontal_sizer);
 			additional_height += additional_height_increment;
@@ -609,4 +619,15 @@ void OldPropertiesWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// Just close this window
 	EndModal(0);
+}
+
+void OldPropertiesWindow::Update()
+{
+	Container* container = dynamic_cast<Container*>(edit_item);
+	if (container) {
+		for (int32_t i = 0; i < container->getVolume(); ++i) {
+			container_items[i]->setItem(container->getItem(i));
+		}
+	}
+	wxDialog::Update();
 }

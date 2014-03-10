@@ -291,7 +291,7 @@ bool Door::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute att
 		if (!stream->getU8(id)) {
 			return false;
 		}
-		doorid = id;
+		doorId = id;
 		return true;
 	} else {
 		return Item::readItemAttribute_OTBM(maphandle, attribute, stream);
@@ -301,9 +301,9 @@ bool Door::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute att
 void Door::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
 	Item::serializeItemAttributes_OTBM(maphandle, stream);
-	if (doorid) {
+	if (doorId) {
 		stream.addByte(OTBM_ATTR_HOUSEDOORID);
-		stream.addU8(doorid);
+		stream.addU8(doorId);
 	}
 }
 
@@ -317,7 +317,7 @@ bool Depot::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute at
 		if (!stream->getU16(id)) {
 			return false;
 		}
-		depotid = id;
+		depotId = id;
 		return true;
 	} else {
 		return Item::readItemAttribute_OTBM(maphandle, attribute, stream);
@@ -327,9 +327,9 @@ bool Depot::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute at
 void Depot::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
 	Item::serializeItemAttributes_OTBM(maphandle, stream);
-	if (depotid) {
+	if (depotId) {
 		stream.addByte(OTBM_ATTR_DEPOT_ID);
-		stream.addU16(depotid);
+		stream.addU16(depotId);
 	}
 }
 

@@ -23,106 +23,87 @@
 
 #include "iomap.h"
 
-// ============================================================================
 // Container
-
-Container::Container(const unsigned short _type) : Item(_type, 0) {
-	// ...
+Container::Container(const uint16_t type) : Item(type, 0)
+{
+	//
 }
 
-Container::~Container() {
-	for(ItemVector::iterator it = contents.begin(); it != contents.end(); ++it) {
-		delete *it;
+Container::~Container()
+{
+	for (Item* item : contents) {
+		delete item;
 	}
 }
 
-Item* Container::deepCopy() const {
+Item* Container::deepCopy() const
+{
 	Item* copy = Item::deepCopy();
-
-	// If the map has been converted, it might not be a container
-	Container* copy_container =dynamic_cast<Container*>(copy);
-	if (copy_container)
-	{
-		for(ItemVector::const_iterator it = contents.begin(); it != contents.end(); ++it) {
-			copy_container->contents.push_back((*it)->deepCopy());
+	
+	Container* copyContainer = dynamic_cast<Container*>(copy);
+	if (copyContainer) {
+		for (Item* item : contents) {
+			copyContainer->contents.push_back(item->deepCopy());
 		}
 	}
+	
 	return copy;
 }
 
-ItemVector& Container::getVector() {
-	return contents;
-}
-
-Item* Container::getItem(int index) {
-	if((size_t)index >= contents.size()) {
-		return nullptr;
+Item* Container::getItem(size_t index) const
+{
+	if (index < contents.size()) {
+		return contents[index];
 	}
-	return contents.at(index);
+	return nullptr;
 }
 
-double Container::getWeight() {
+double Container::getWeight()
+{
 	return item_db[id].weight;
 }
 
-// ============================================================================
 // Teleport
-
-Teleport::Teleport(const unsigned short _type) :
-	Item(_type, 0),
-	destination(0,0,0)
+Teleport::Teleport(const uint16_t type) : Item(type, 0),
+	destination(0, 0, 0)
 {
-	// ...
+	//
 }
 
-Teleport::~Teleport() {
-	// ...
-}
-
-Item* Teleport::deepCopy() const {
+Item* Teleport::deepCopy() const
+{
 	Teleport* copy = static_cast<Teleport*>(Item::deepCopy());
 	copy->destination = destination;
 	return copy;
 }
 
-// ============================================================================
 // Door
-
-Door::Door(const unsigned short _type) :
-	Item(_type, 0),
-	doorid(0)
+Door::Door(const uint16_t type) : Item(type, 0),
+	doorId(0)
 {
-	// ...
+	//
 }
 
-Door::~Door() {
-	// ...
-}
-
-Item* Door::deepCopy() const {
+Item* Door::deepCopy() const
+{
 	Door* copy = static_cast<Door*>(Item::deepCopy());
-	copy->doorid = doorid;
+	copy->doorId = doorId;
 	return copy;
 }
 
-// ============================================================================
 // Depot
-
-Depot::Depot(const unsigned short _type) :
-	Item(_type, 0),
-	depotid(0)
+Depot::Depot(const uint16_t type) : Item(type, 0),
+	depotId(0)
 {
-	// ...
+	//
 }
 
-Depot::~Depot() {
-	// ...
-}
-
-Item* Depot::deepCopy() const {
+Item* Depot::deepCopy() const
+{
 	Item* copy = Item::deepCopy();
 	Depot* copy_depot = dynamic_cast<Depot*>(copy);
-	if (copy_depot)
-		copy_depot->depotid = depotid;
+	if (copy_depot) {
+		copy_depot->depotId = depotId;
+	}
 	return copy;
 }

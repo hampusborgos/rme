@@ -17,7 +17,7 @@ class PropertiesWindow : public ObjectPropertiesWindowBase
 {
 public:
 	PropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Item* item, wxPoint position = wxDefaultPosition);
-	virtual ~PropertiesWindow();
+	~PropertiesWindow();
 
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
@@ -50,7 +50,7 @@ protected:
 	wxNotebook* notebook;
 	wxWindow* currentPanel;
 
-	DECLARE_EVENT_TABLE();
+	DECLARE_EVENT_TABLE()
 };
 
 #endif

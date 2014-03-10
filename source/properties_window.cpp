@@ -29,15 +29,15 @@ PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile*
 	currentPanel(nullptr)
 {
 	ASSERT(edit_item);
-	
-	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
 	notebook = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxSize(600, 300));
 
 	notebook->AddPage(createGeneralPanel(notebook), wxT("Simple"), true);
-	if (dynamic_cast<Container*>(item))
+	if (dynamic_cast<Container*>(item)) {
 		notebook->AddPage(createContainerPanel(notebook), wxT("Contents"));
+	}
 	notebook->AddPage(createAttributesPanel(notebook), wxT("Advanced"));
 
+	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
 	topSizer->Add(notebook, wxSizerFlags(1).DoubleBorder());
 
 	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -52,15 +52,16 @@ PropertiesWindow::~PropertiesWindow()
 {
 	;
 }
+
 void PropertiesWindow::Update()
 {
-	wxDialog::Update();
-	Container *edit_container = dynamic_cast<Container *>(edit_item);
-	if (nullptr != edit_container)
-	{
-		for (int i = 0; i < edit_container->getVolume(); ++i)
-			container_items[i]->setItem(edit_container->getItem(i));
+	Container* container = dynamic_cast<Container*>(edit_item);
+	if (container) {
+		for (int32_t i = 0; i < container->getVolume(); ++i) {
+			container_items[i]->setItem(container->getItem(i));
+		}
 	}
+	wxDialog::Update();
 }
 
 wxWindow* PropertiesWindow::createGeneralPanel(wxWindow* parent)
@@ -94,11 +95,12 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 	wxSizer* gridSizer = newd wxGridSizer(6, 5, 5);
 
 	bool use_large_sprites = settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
-	for (int i = 1; i <= container->getVolume(); ++i)
-	{
-		Item* item = container->getItem(i - 1);
-		container_items.push_back(newd ContainerItemButton(panel, use_large_sprites, i - 1, edit_map, item));
-		gridSizer->Add(container_items.back(), wxSizerFlags(0));
+	for (int32_t i = 0; i < container->getVolume(); ++i) {
+		Item* item = container->getItem(i);
+		ContainerItemButton* containerItemButton = newd ContainerItemButton(panel, use_large_sprites, i, edit_map, item);
+
+		container_items.push_back(containerItemButton);
+		gridSizer->Add(containerItemButton, wxSizerFlags(0));
 	}
 
 	topSizer->Add(gridSizer, wxSizerFlags(1).Expand());
@@ -111,7 +113,6 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 	*/
 
 	panel->SetSizer(topSizer);
-
 	return panel;
 }
 
