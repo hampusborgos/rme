@@ -20,34 +20,34 @@ public:
 };
 
 // Container Item Button
-class ContainerItemButton : public ItemButton {
-public:
-	ContainerItemButton(wxWindow* parent, bool large, int index, const Map* map, Item* item);
-	~ContainerItemButton();
+class ContainerItemButton : public ItemButton
+{
+	DECLARE_EVENT_TABLE()
+	public:
+		ContainerItemButton(wxWindow* parent, bool large, int index, const Map* map, Item* item);
+		~ContainerItemButton();
 
-	void OnMouseDoubleLeftClick(wxMouseEvent& event);
-	void OnMouseRightRelease(wxMouseEvent& event);
+		void OnMouseDoubleLeftClick(wxMouseEvent& event);
+		void OnMouseRightRelease(wxMouseEvent& event);
 
-	void OnAddItem(wxCommandEvent& event);
-	void OnEditItem(wxCommandEvent& event);
-	void OnRemoveItem(wxCommandEvent& event);
+		void OnAddItem(wxCommandEvent& event);
+		void OnEditItem(wxCommandEvent& event);
+		void OnRemoveItem(wxCommandEvent& event);
 
-	void UpdateParentContainerWindow();
-	Container* getParentContainer();
-	void setItem(Item* item);
-private:
-	static std::unique_ptr<ContainerItemPopupMenu> popup_menu;
-	static ContainerItemPopupMenu* getMenu() {
-		if(popup_menu.get() == nullptr) popup_menu.reset(newd ContainerItemPopupMenu());
-		return popup_menu.get();
-	}
-	const Map* edit_map;
-	Item* edit_item;
-	int index;
+		ObjectPropertiesWindowBase* getParentContainerWindow();
+		Container* getParentContainer();
 
-	friend class ContainerItemPopupMenu;
+		void setItem(Item* item);
 
-	DECLARE_EVENT_TABLE();
+	private:
+		static std::unique_ptr<ContainerItemPopupMenu> popup_menu;
+
+		const Map* edit_map;
+		Item* edit_item;
+	
+		size_t index;
+
+		friend class ContainerItemPopupMenu;
 };
 
 #endif

@@ -148,36 +148,26 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Type")));
 
-
+		// Splash types
 		splash_type_field = newd wxChoice(this, wxID_ANY);
-		if(edit_item->isFluidContainer()) {
-			splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int(LIQUID_NONE));
+		if (edit_item->isFluidContainer()) {
+			splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int32_t(LIQUID_NONE));
 		}
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_WATER)), newd int(LIQUID_WATER));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_BLOOD)), newd int(LIQUID_BLOOD));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_BEER)), newd int(LIQUID_BEER));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_SLIME)), newd int(LIQUID_SLIME));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_LEMONADE)), newd int(LIQUID_LEMONADE));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_MILK)), newd int(LIQUID_MILK));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_MANAFLUID)), newd int(LIQUID_MANAFLUID));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_LIFEFLUID)), newd int(LIQUID_LIFEFLUID));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_OIL)), newd int(LIQUID_OIL));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_URINE)), newd int(LIQUID_URINE));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_COCONUT_MILK)), newd int(LIQUID_COCONUT_MILK));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_WINE)), newd int(LIQUID_WINE));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_MUD)), newd int(LIQUID_MUD));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_LAVA)), newd int(LIQUID_LAVA));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_RUM)), newd int(LIQUID_RUM));
-		splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_SWAMP)), newd int(LIQUID_SWAMP));
-		if(item->getSubtype()) {
-			std::string what = Item::LiquidID2Name(item->getSubtype());
-			if(what == "Unknown") {
-				splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int(LIQUID_NONE));
+
+		for (SplashType splashType = LIQUID_FIRST; splashType != LIQUID_LAST; ++splashType) {
+			splash_type_field->Append(wxstr(Item::LiquidID2Name(splashType)), newd int32_t(splashType));
+		}
+
+		if (item->getSubtype()) {
+			const std::string& what = Item::LiquidID2Name(item->getSubtype());
+			if (what == "Unknown") {
+				splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int32_t(LIQUID_NONE));
 			}
 			splash_type_field->SetStringSelection(wxstr(what));
 		} else {
 			splash_type_field->SetSelection(0);
 		}
+
 		subsizer->Add(splash_type_field, wxSizerFlags(1).Expand());
 
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Action ID")));

@@ -35,33 +35,35 @@ ContainerItemButton::ContainerItemButton(wxWindow* parent, bool large, int _inde
 	edit_item(item),
 	index(_index)
 {
-	// ...
+	//
 }
 
 ContainerItemButton::~ContainerItemButton()
 {
-	// ...
+	//
 }
 
 void ContainerItemButton::OnMouseDoubleLeftClick(wxMouseEvent& WXUNUSED(event))
 {
+	if (edit_item) {
+		OnEditItem(wxCommandEvent());
+		return;
+	}
+
 	Container* container = getParentContainer();
-
-	bool can_add = container->getVolume() > (int)container->getVector().size();
-
-	if(edit_item) {
-		wxCommandEvent unused;
-		OnEditItem(unused);
-	} else if(can_add) {
-		wxCommandEvent unused;
-		OnAddItem(unused);
+	if (container->getVolume() > container->getItemCount()) {
+		OnAddItem(wxCommandEvent());
 	}
 }
 
 void ContainerItemButton::OnMouseRightRelease(wxMouseEvent& WXUNUSED(event))
 {
-	getMenu()->Update(this);
-	PopupMenu(getMenu());
+	if (!popup_menu) {
+		popup_menu.reset(newd ContainerItemPopupMenu);
+	}
+
+	popup_menu->Update(this);
+	PopupMenu(popup_menu.get());
 }
 
 void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
@@ -87,7 +89,11 @@ void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 	} else {
 		itemVector.push_back(item);
 	}
-	UpdateParentContainerWindow();
+	
+	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
+	if (propertyWindow) {
+		propertyWindow->Update();
+	}
 }
 
 void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
@@ -147,10 +153,14 @@ void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 	}
 
 	ASSERT(it != itemVector.end());
+
 	itemVector.erase(it);
-	
 	delete edit_item;
-	UpdateParentContainerWindow();
+	
+	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
+	if (propertyWindow) {
+		propertyWindow->Update();
+	}
 }
 
 void ContainerItemButton::setItem(Item* item)
@@ -163,31 +173,27 @@ void ContainerItemButton::setItem(Item* item)
 	}
 }
 
-Container* ContainerItemButton::getParentContainer()
+ObjectPropertiesWindowBase* ContainerItemButton::getParentContainerWindow()
 {
 	for (wxWindow* window = GetParent(); window != nullptr; window = window->GetParent()) {
 		ObjectPropertiesWindowBase* propertyWindow = dynamic_cast<ObjectPropertiesWindowBase*>(window);
 		if (propertyWindow) {
-			return dynamic_cast<Container*>(propertyWindow->getItemBeingEdited());
+			return propertyWindow;
 		}
 	}
 	return nullptr;
 }
 
-void ContainerItemButton::UpdateParentContainerWindow()
+Container* ContainerItemButton::getParentContainer()
 {
-	for (wxWindow* window = GetParent(); window != nullptr; window = window->GetParent()) {
-		ObjectPropertiesWindowBase* propertyWindow = dynamic_cast<ObjectPropertiesWindowBase*>(window);
-		if (propertyWindow) {
-			propertyWindow->Update();
-			break;
-		}
+	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
+	if (propertyWindow) {
+		return dynamic_cast<Container*>(propertyWindow->getItemBeingEdited());
 	}
+	return nullptr;
 }
 
-// ============================================================================
-// Container Popup Menu
-
+// ContainerItemPopupMenu
 ContainerItemPopupMenu::ContainerItemPopupMenu() : wxMenu(wxT(""))
 {
 	// ...

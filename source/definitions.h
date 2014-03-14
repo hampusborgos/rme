@@ -33,7 +33,6 @@
      (minor)      * 100000 + \
      (subversion) * 1000)
 
-
 #define __RME_VERSION_ID__ MAKE_VERSION_ID(\
 	__RME_VERSION_MAJOR__, \
     __RME_VERSION_MINOR__, \
@@ -113,5 +112,26 @@
 // wxString conversions
 #define nstr(str) std::string((const char*)(str.mb_str(wxConvUTF8)))
 #define wxstr(str) wxString((str).c_str(), wxConvUTF8)
+
+// increment & decrement definitions
+#define IMPLEMENT_INCREMENT_OP(Type) \
+	namespace { \
+		Type& operator++(Type& type) { \
+			return (type = static_cast<Type>(type + 1)); \
+		} \
+		Type operator++(Type& type, int) { \
+			return static_cast<Type>((++type) - 1); \
+		} \
+	}
+    
+#define IMPLEMENT_DECREMENT_OP(Type) \
+	namespace { \
+		Type& operator--(Type& type) { \
+			return (type = static_cast<Type>(type - 1)); \
+		} \
+		Type operator--(Type& type, int) { \
+			return static_cast<Type>((--type) + 1); \
+		} \
+	}
 
 #endif
