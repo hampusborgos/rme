@@ -178,7 +178,7 @@ void CarpetBrush::doCarpets(BaseMap* map, Tile* tile)
 			}
 		}
 		return false;
-	}
+	};
 
 	ASSERT(tile);
 	if (!tile->hasCarpet()) {
