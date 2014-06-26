@@ -77,7 +77,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 			maxColumns = 12;
 		}
 
-		for (int32_t index = 0; index < container->getVolume(); ++index) {
+		for (size_t index = 0; index < container->getVolume(); ++index) {
 			if (!horizontal_sizer) {
 				horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
 			}
@@ -615,7 +615,7 @@ void OldPropertiesWindow::Update()
 {
 	Container* container = dynamic_cast<Container*>(edit_item);
 	if (container) {
-		for (int32_t i = 0; i < container->getVolume(); ++i) {
+		for (size_t i = 0; i < container->getVolume(); ++i) {
 			container_items[i]->setItem(container->getItem(i));
 		}
 	}

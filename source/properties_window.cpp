@@ -57,7 +57,7 @@ void PropertiesWindow::Update()
 {
 	Container* container = dynamic_cast<Container*>(edit_item);
 	if (container) {
-		for (int32_t i = 0; i < container->getVolume(); ++i) {
+		for (size_t i = 0; i < container->getVolume(); ++i) {
 			container_items[i]->setItem(container->getItem(i));
 		}
 	}
@@ -95,7 +95,7 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 	wxSizer* gridSizer = newd wxGridSizer(6, 5, 5);
 
 	bool use_large_sprites = settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
-	for (int32_t i = 0; i < container->getVolume(); ++i) {
+	for (size_t i = 0; i < container->getVolume(); ++i) {
 		Item* item = container->getItem(i);
 		ContainerItemButton* containerItemButton = newd ContainerItemButton(panel, use_large_sprites, i, edit_map, item);
 
