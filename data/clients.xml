@@ -274,7 +274,7 @@
 		<client name="10.50" otb="10.50" default="true" visible="true" data_directory="1050">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.50"/>
-			<data datversion="10.50" sprversion="9.6" dat="0x53ABBB5E" spr="0x53ABBB95"/>
+			<data datversion="10.50" sprversion="9.6" dat="0x53B6460E" spr="0x53B64639"/>
 		</client>
 	</clients>
 
