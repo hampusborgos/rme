@@ -1,7 +1,7 @@
 What is this?
 =============
 
-This is a map editor for OpenTibia, which is an open source implementation of the MMORPG Tibia (which can be found at [tibia.net](http://tibia.net)), the official website is [remeresmapeditor.com](http://remeresmapeditor.com).
+This is a map editor for OpenTibia, which is an open source implementation of the MMORPG Tibia (which can be found at [tibia.com](http://tibia.com)), the official website is [remeresmapeditor.com](http://remeresmapeditor.com).
 You can find the project for hosting your own server at [the otserv project](https://github.com/opentibia/server).
 The main fansite for help, discussion and servers is [otland.net](http://otland.net).
 
