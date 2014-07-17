@@ -170,6 +170,13 @@ public:
 
 	uint16_t minimap_color;
 
+	//Animation
+	uint8_t animation_type;
+	int32_t loop_count;
+	uint8_t start_phase;
+	uint32_t minimum_duration;
+	uint32_t maximum_duration;
+
 	std::vector<NormalImage*> spriteList;
 	std::list<TemplateImage*> instanced_templates; // Templates that use this sprite
 

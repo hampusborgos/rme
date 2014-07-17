@@ -415,8 +415,20 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			file.getU8(sType->zdiv); // Is this ever used? Maybe it means something else?
 		file.getU8(sType->animation_length); // Length of animation
 		if (sType->animation_length > 1)
+		{
 			if (datVersion >= DAT_VERSION_1050)
-				file.skip(6 + 8 * sType->animation_length);
+			{
+				file.getByte(sType->animation_type);
+				file.getI32(sType->loop_count);
+				file.getByte(sType->start_phase);
+				for (int i = 0; i < sType->animation_length; i++)
+				{
+					file.getU32(sType->minimum_duration);
+					file.getU32(sType->maximum_duration);
+				}
+			}
+		}
+
 
 		sType->numsprites =
 			(int)sType->width * (int)sType->height *
@@ -1451,7 +1463,13 @@ GameSprite::GameSprite() :
 	draw_height(0),
 	drawoffset_x(0),
 	drawoffset_y(0),
-	minimap_color(0)
+	minimap_color(0),
+	animation_type(0),
+	loop_count(0),
+	start_phase(0),
+	minimum_duration(0),
+	maximum_duration(0)
+
 {
 	dc[SPRITE_SIZE_16x16] = nullptr;
 	dc[SPRITE_SIZE_32x32] = nullptr;
