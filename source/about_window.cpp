@@ -185,7 +185,8 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	about << wxT("This is free software, and you are welcome to redistribute it\n");
 	about << wxT("under certain conditions.\n");
 	about << wxT("\n");
-	about << wxT("Compiled ") << __TDATE__ << wxT(" : ") << __TTIME__;
+	about << wxT("Compiled on: ") << __TDATE__ << wxT(" : ") << __TTIME__ << wxT("\n");
+	about << wxT("Compiled with: ") << BOOST_COMPILER << wxT("\n");
 
 	topsizer = newd wxBoxSizer(wxVERTICAL);
 

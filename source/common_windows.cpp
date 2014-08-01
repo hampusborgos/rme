@@ -736,7 +736,7 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 		{
 			if(item_list->GetItemCount() > 0) 
 			{
-				size_t n = item_list->GetSelection();
+				ssize_t n = item_list->GetSelection();
 				if(n == wxNOT_FOUND) 
 					n = 0;
 				else if(n != amount && n - amount < n) // latter is needed for unsigned overflow
@@ -752,7 +752,7 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 		case WXK_DOWN:
 		{
 			if(item_list->GetItemCount() > 0) {
-				size_t n = item_list->GetSelection();
+				ssize_t n = item_list->GetSelection();
 				size_t itemcount = item_list->GetItemCount();
 				if(n == wxNOT_FOUND)
 					n = 0;
@@ -1142,7 +1142,7 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 		{
 			if(item_list->GetItemCount() > 0) 
 			{
-				size_t n = item_list->GetSelection();
+				ssize_t n = item_list->GetSelection();
 				if(n == wxNOT_FOUND) 
 					n = 0;
 				else if(n != amount && n - amount < n) // latter is needed for unsigned overflow
@@ -1158,7 +1158,7 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 		case WXK_DOWN:
 		{
 			if(item_list->GetItemCount() > 0) {
-				size_t n = item_list->GetSelection();
+				ssize_t n = item_list->GetSelection();
 				size_t itemcount = item_list->GetItemCount();
 				if(n == wxNOT_FOUND)
 					n = 0;
@@ -1312,7 +1312,7 @@ void FindDialogListBox::AddBrush(Brush* brush)
 
 Brush* FindDialogListBox::GetSelectedBrush() 
 {
-	size_t n = GetSelection();
+	ssize_t n = GetSelection();
 	if(n == wxNOT_FOUND || no_matches || cleared)
 		return nullptr;
 	return brushlist[n];

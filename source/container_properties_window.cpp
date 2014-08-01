@@ -42,7 +42,7 @@ ContainerItemButton::~ContainerItemButton()
 {
 	//
 }
-
+/*
 void ContainerItemButton::OnMouseDoubleLeftClick(wxMouseEvent& WXUNUSED(event))
 {
 	if (edit_item) {
@@ -53,6 +53,21 @@ void ContainerItemButton::OnMouseDoubleLeftClick(wxMouseEvent& WXUNUSED(event))
 	Container* container = getParentContainer();
 	if (container->getVolume() > container->getItemCount()) {
 		OnAddItem(wxCommandEvent());
+	}
+}
+*/
+void ContainerItemButton::OnMouseDoubleLeftClick(wxMouseEvent& WXUNUSED(event))
+{
+	wxCommandEvent dummy;
+
+	if (edit_item) {
+		OnEditItem(dummy);
+		return;
+	}
+
+	Container* container = getParentContainer();
+	if (container->getVolume() > container->getItemCount()) {
+		OnAddItem(dummy);
 	}
 }
 
