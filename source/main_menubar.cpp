@@ -51,9 +51,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	using namespace MenuBar;
 	checking_programmaticly = false;
 
-//#define MAKE_ACTION(id, kind, handler) actions[#id] = newd MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler))
 #define MAKE_ACTION(id, kind, handler) actions[#id] = new MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler))
-//#define MAKE_SET_ACTION(id, kind, setting_, handler) actions[#id] = newd MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler)); actions[#id].setting = setting_
 #define MAKE_SET_ACTION(id, kind, setting_, handler) actions[#id] = new MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler)); actions[#id].setting = setting_
 
 	MAKE_ACTION(NEW, wxITEM_NORMAL, OnNew);
