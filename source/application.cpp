@@ -663,12 +663,4 @@ void wxOnAssert(wchar_t const*, int, char const*, wchar_t const*, wchar_t const*
     ;
 }
 
-void wxAppConsole::OnAssertFailure(wchar_t const*, int, wchar_t const*, wchar_t const*, wchar_t const*) {
-    ;
-}
-
-void wxAppConsole::OnAssert(wchar_t const*, int, wchar_t const*, wchar_t const*) {
-    
-}
-
 #endif

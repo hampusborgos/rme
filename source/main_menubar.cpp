@@ -30,6 +30,8 @@
 
 #include "gui.h"
 
+#include <wx/chartype.h>
+
 #include "editor.h"
 #include "materials.h"
 #include "live_client.h"
@@ -49,8 +51,10 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	using namespace MenuBar;
 	checking_programmaticly = false;
 
-#define MAKE_ACTION(id, kind, handler) actions[#id] = newd MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler))
-#define MAKE_SET_ACTION(id, kind, setting_, handler) actions[#id] = newd MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler)); actions[#id].setting = setting_
+//#define MAKE_ACTION(id, kind, handler) actions[#id] = newd MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler))
+#define MAKE_ACTION(id, kind, handler) actions[#id] = new MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler))
+//#define MAKE_SET_ACTION(id, kind, setting_, handler) actions[#id] = newd MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler)); actions[#id].setting = setting_
+#define MAKE_SET_ACTION(id, kind, setting_, handler) actions[#id] = new MenuBar::Action(#id, id, kind, wxCommandEventFunction(&MainMenuBar::handler)); actions[#id].setting = setting_
 
 	MAKE_ACTION(NEW, wxITEM_NORMAL, OnNew);
 	MAKE_ACTION(OPEN, wxITEM_NORMAL, OnOpen);
@@ -441,7 +445,7 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 		wxMenu* m = dynamic_cast<wxMenu*>(i);
 		if (m) {
 			menubar->Append(m, m->GetTitle());
-			m->SetTitle(wxT(""));
+			m->SetTitle(m->GetTitle());
 		} else if (i) {
 			delete i;
 			warnings.push_back(path.GetFullName() + wxT(": Only menus can be subitems of main menu"));
@@ -491,7 +495,7 @@ wxObject* MainMenuBar::LoadItem(pugi::xml_node node, wxMenu* parent, wxArrayStri
 		if (parent) {
 			parent->AppendSubMenu(menu, wxstr(name));
 		} else {
-			menu->SetTitle(wxstr(name));
+			menu->SetTitle((name));
 		}
 		return menu;
 	} else if (nodeName == "item") {

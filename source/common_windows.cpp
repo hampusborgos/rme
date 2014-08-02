@@ -20,6 +20,10 @@
 #include "common_windows.h"
 #include "numbertextctrl.h"
 
+#ifdef _MSC_VER
+	#pragma warning(disable:4018) // signed/unsigned mismatch
+#endif
+
 
 // ============================================================================
 // Map Properties Window
