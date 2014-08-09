@@ -35,7 +35,7 @@ bool HouseExitBrush::canDraw(BaseMap* map, const Position& position) const
 	if(!tile || !tile->hasGround()) {
 		return false;
 	}
-	if(!tile->isHouseTile() || !tile->isBlocking()) {
+	if(tile->isHouseTile() || tile->isBlocking()) {
 		return false;
 	}
 	return true;
