@@ -53,7 +53,7 @@ void ExtensionsDialog::OnClickOpenFolder(wxCommandEvent& evt)
 	wxString cmd;
 #if defined __WINDOWS__
 	cmd << "explorer";
-#elif defined __OSX__
+#elif defined __APPLE__
 	cmd << "open";
 #elif defined __linux
 	cmd << "xdg-open";

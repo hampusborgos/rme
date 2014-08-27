@@ -207,7 +207,7 @@ void HousePalettePanel::SelectTown(size_t index) {
 				}
 			} else {
 				// "No Town" selected!
-				if(map->towns.getTown(house_iter->second->townid) == false) {
+				if (map->towns.getTown(house_iter->second->townid) == nullptr) {
 					// The town doesn't exist
 					house_list->Append(wxstr(house_iter->second->getDescription()), house_iter->second);
 				}

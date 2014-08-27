@@ -45,14 +45,16 @@ ContainerItemButton::~ContainerItemButton()
 
 void ContainerItemButton::OnMouseDoubleLeftClick(wxMouseEvent& WXUNUSED(event))
 {
+	wxCommandEvent dummy;
+
 	if (edit_item) {
-		OnEditItem(wxCommandEvent());
+		OnEditItem(dummy);
 		return;
 	}
 
 	Container* container = getParentContainer();
 	if (container->getVolume() > container->getItemCount()) {
-		OnAddItem(wxCommandEvent());
+		OnAddItem(dummy);
 	}
 }
 

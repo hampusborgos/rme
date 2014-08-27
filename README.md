@@ -42,14 +42,16 @@ First make sure that you have the necessary compiling, if any library is missing
 
 Assuming that you have MSVC 2013 or later and the required libraries installed, clone the project, open the project file in `vcproj/Project/RME.vcproj` then hit build.
 
+For more details you can follow [this tutorial](http://otland.net/threads/compiling-remeres-map-editor-from-the-latest-source-with-msvc-2013.216826/) by dominique120.
+
 ### Linux
 ===============
 
-Assuming that you have all required tools to compile (gcc, cmake, the libraries) clone the project, open you terminal and do the following commands:
+Assuming that you have all required tools to compile (gcc, cmake, boost, mesa, wxWidgets, libarchive) clone the project, open you terminal and do the following commands:
 
 ```
 mkdir build && cd build
 cmake ..
-make -j4
+make -j `nproc`
 ./rme
 ```

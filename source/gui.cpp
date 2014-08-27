@@ -27,6 +27,10 @@
 #include "live_tab.h"
 #include "live_server.h"
 
+#ifdef __WXOSX__
+#include <AGL/agl.h>
+#endif
+
 const wxEventType EVT_UPDATE_MENUS = wxNewEventType();
 
 
@@ -94,8 +98,7 @@ wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
                     const wxGLContext *other
                     );
         */
-        wxPalette unused;
-        OGLContext = new wxGLContext((AGLPixelFormat)AGL_RGBA, (wxGLCanvas*)nullptr, unused, nullptr);
+		OGLContext = new wxGLContext(win, nullptr);
 #else
 		OGLContext = newd wxGLContext(win);
 #endif
