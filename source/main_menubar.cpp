@@ -787,8 +787,8 @@ namespace OnSearchForItem
 			if(item->getID() == itemid) 
 			{
 				found.push_back(std::make_pair(tile, item));
-				if(found.size() > 500)
-					more_than_500 = true;
+				//if(found.size() > 500)
+				//	more_than_500 = true;
 			}
 		}
 	};

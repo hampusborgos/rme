@@ -845,6 +845,7 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 				it.type = ITEM_TYPE_BED;
 			} else if (typeValue == "door") {
 				it.type = ITEM_TYPE_DOOR;
+                std::cout << "door!";
 			} else {
 				// We ignore many types, no need to complain
 				//warnings.push_back("items.xml: Unknown type " + typeValue);

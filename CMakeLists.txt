@@ -11,6 +11,7 @@ set(CMAKE_CXX_FLAGS_DEBUG          "-O0 -g -D__DEBUG__")
 set(CMAKE_CXX_FLAGS_MINSIZEREL     "-Os -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELEASE        "-O4 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
+set(CMAKE_CXX_LINK_FLAGS           "-static-libgcc -static-libstdc++")
 
 find_package(OpenGL REQUIRED)
 find_package(LibArchive REQUIRED)
@@ -18,8 +19,10 @@ find_package(LibArchive REQUIRED)
 if(WIN32)
     set(Boost_THREADAPI win32)
 endif()
+set(Boost_USE_STATIC_LIBS ON)
 find_package(Boost 1.34.0 COMPONENTS thread system REQUIRED)
 
+set(wxWidgets_CONFIGURATION msw)
 find_package(wxWidgets COMPONENTS html aui gl adv core net base REQUIRED)
 include(${wxWidgets_USE_FILE})
 

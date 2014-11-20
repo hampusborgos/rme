@@ -30,6 +30,7 @@
 #include "wall_brush.h"
 #include "carpet_brush.h"
 #include "table_brush.h"
+#include "complexitem.h"
 
 Tile::Tile(int x, int y, int z) :
 	location(nullptr),
@@ -188,6 +189,22 @@ Item* Tile::getTopItem() {
 }
 
 void Tile::addItem(Item* item) {
+    /*
+    if(item->isDoor()) {
+        Door *door = ((Door*)item);
+        std::ifstream fin("/home/bart/doors");
+        std::string line;
+        while(std::getline(fin, line)) {
+            std::stringstream ss(line);
+            int x, y, z, id;
+            ss >> x >> y >> z >> id;
+            if(location->getX() == x && location->getY() == y && location->getZ() == z) {
+                door->setDoorID(id);
+                printf("set door at %d %d %d %d\n", x, y, z, id);
+            }
+        }
+    }
+    */
 	if(!item) return;
 	if(item->isGroundTile()) {
 		//printf("ADDING GROUND\n");

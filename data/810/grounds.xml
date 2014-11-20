@@ -664,6 +664,7 @@
 		<item id="231" chance="1"/>
 		
 		<border align="outer" id="16"/>
+		<border align="inner" to="walkable sea" id="125"/>		
 		<border align="inner" to="sea" ground_equivalent="231">
 			<borderitem edge="n"   item="4632"/>
 			<borderitem edge="e"   item="4635"/>
@@ -1842,19 +1843,10 @@
 		<border align="outer" id="39"/>
 	</brush>
 
-
-
-
 	<brush name="pavement" type="ground" server_lookid="7348" z-order="1">
 		<item id="7348" chance="10"/>
 	</brush>
-
-
-
-
-
-
-
+	
 
 
 </materials>

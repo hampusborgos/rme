@@ -789,4 +789,19 @@
 		<borderitem edge="s"   item="6211"/>
 	</border>
 	
+	<border id="125"> -- beach border --
+		<borderitem edge="n"   item="4632"/>
+		<borderitem edge="e"   item="4635"/>
+		<borderitem edge="s"   item="4634"/>
+		<borderitem edge="w"   item="4633"/>
+		<borderitem edge="cnw" item="4643"/>
+		<borderitem edge="cne" item="4642"/>
+		<borderitem edge="csw" item="4641"/>
+		<borderitem edge="cse" item="4640"/>
+		<borderitem edge="dnw" item="4639"/>
+		<borderitem edge="dne" item="4638"/>
+		<borderitem edge="dsw" item="4637"/>
+		<borderitem edge="dse" item="4636"/>
+	</border>
+	
 </materials>

@@ -1,5 +1,25 @@
 <materials>
 	<!-- DOODAD -->
+	<brush name="embedded wall" type="wall" server_lookid="15036">
+		<wall type="pole">               <item id="15038" chance="1"/> </wall>
+		<wall type="horizontal">         <item id="15036" chance="1"/> </wall>
+		<wall type="vertical">           <item id="15037" chance="1"/> </wall>
+		<wall type="corner">             <item id="15035" chance="1"/> </wall> 
+	</brush>
+	
+	<brush name="jungle plants" type="doodad" server_lookid="4007" draggable="true" on_blocking="false" thickness="12/100">
+		<item id="4007" chance="15"/>
+		<item id="4008" chance="15"/>
+		<item id="4009" chance="15"/>
+		<item id="4010" chance="10"/>
+		<item id="4011" chance="10"/>
+		<item id="4012" chance="10"/>
+		<item id="4015" chance="10"/>
+		<item id="4014" chance="10"/>
+		<item id="4017" chance="10"/>
+		<item id="4018" chance="10"/>
+	</brush>
+	
 	<brush name="grass tufts" type="doodad" server_lookid="6216" draggable="true" on_blocking="false" thickness="25/100">
 		<item id="6216" chance="4"/>
 		<item id="6217" chance="10"/>
@@ -203,20 +223,15 @@
 	</brush>
 	
 	<brush name="small rocks" type="doodad" server_lookid="3610" draggable="true" on_blocking="true" thickness="50/100">
-		<item id="3607" chance="3"/>
-		<item id="3615" chance="3"/>
-		<item id="1285" chance="3"/>
-		<item id="3616" chance="3"/>
 		<item id="3608" chance="3"/>
-		<item id="3609" chance="3"/>
 		<item id="3610" chance="3"/>
-		<item id="3611" chance="10"/>
-		<item id="3612" chance="12"/>
+		<item id="3611" chance="8"/>
 		<item id="3613" chance="8"/>
 		<item id="3614" chance="8"/>
-		<!-- <item id="3621" chance="20"/>
-		<item id="3622" chance="20"/>
-		<item id="3623" chance="20"/> -->
+		<item id="3612" chance="4"/>
+		<item id="3621" chance="4"/>
+		<item id="3622" chance="4"/>
+		<item id="3623" chance="4"/> -->
 		<!-- <item id="3665" chance="10"/> -->
 	</brush>
 	
@@ -829,6 +844,7 @@
 		<item id="4180" chance="10"/>
 		<item id="4181" chance="10"/>
 	</brush>
+	
 	
 	<brush name="jungle maw" type="doodad" server_lookid="4208" draggable="true" on_blocking="false" thickness="12/100">
 		<alternate> <item id="4208" chance="10"/> </alternate> -- open --
