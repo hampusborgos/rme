@@ -1100,7 +1100,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 
 			Direction direction = SOUTH;
 			if (isNpc && pugi::has_attribute(creatureNode, "direction")) {
-				int8_t dir = pugi::cast<int8_t>(creatureNode.attribute("direction").value());
+				int16_t dir = pugi::cast<int16_t>(creatureNode.attribute("direction").value());
 				if (dir >= FIRST_DIRECTION && direction <= LAST_DIRECTION) {
 					direction = (Direction)dir;
 				}
