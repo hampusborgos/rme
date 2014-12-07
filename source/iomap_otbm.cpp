@@ -1100,7 +1100,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 			Direction direction = SOUTH;
 			if (isNpc) {
 				int dir = creatureNode.attribute("direction").as_int(-1);
-				if (dir >= FIRST_DIRECTION && dir <= LAST_DIRECTION) {
+				if (dir >= DIRECTION_FIRST && dir <= DIRECTION_LAST) {
 					direction = (Direction)dir;
 				}
 			}

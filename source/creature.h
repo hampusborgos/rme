@@ -10,20 +10,26 @@
 
 enum Direction
 {
-    NORTH = 0,
-    EAST = 1,
-    SOUTH = 2,
-    WEST = 3,
+	NORTH = 0,
+	EAST = 1,
+	SOUTH = 2,
+	WEST = 3,
 
-    FIRST_DIRECTION = NORTH,
-    LAST_DIRECTION = WEST
+	DIRECTION_FIRST = NORTH,
+	DIRECTION_LAST = WEST
 };
+
+IMPLEMENT_INCREMENT_OP(Direction)
 
 class Creature {
 public:
 	Creature(CreatureType* ctype);
 	Creature(std::string type_name);
 	~Creature();
+
+	// Static conversions
+	static std::string DirID2Name(uint16_t id);
+	static uint16_t DirName2ID(std::string id);
 
 	Creature* deepCopy() const;
 

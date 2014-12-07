@@ -13,6 +13,7 @@
 #include "house.h"
 #include "map.h"
 #include "editor.h"
+#include "creature.h"
 
 #include "gui.h"
 #include "application.h"
@@ -347,8 +348,12 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	subsizer->Add(count_field, wxSizerFlags(1).Expand());
 
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Direction")));
-	direction_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_creature->getDirection()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 
-		FIRST_DIRECTION, LAST_DIRECTION, edit_creature->getDirection());
+	direction_field = newd wxChoice(this, wxID_ANY);
+
+	for (Direction dir = DIRECTION_FIRST; dir <= DIRECTION_LAST; ++dir) {
+		direction_field->Append(wxstr(Creature::DirID2Name(dir)), newd int32_t(dir));
+	}
+	direction_field->SetSelection(edit_creature->getDirection());
 	subsizer->Add(direction_field, wxSizerFlags(1).Expand());
 
 	boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
@@ -410,6 +415,11 @@ OldPropertiesWindow::~OldPropertiesWindow()
 		for(uint32_t i = 0; i < splash_type_field->GetCount(); ++i)
 		{
 			delete reinterpret_cast<int*>(splash_type_field->GetClientData(i));
+		}
+	}
+	if (direction_field) {
+		for (uint32_t i = 0; i < direction_field->GetCount(); ++i) {
+			delete reinterpret_cast<int*>(direction_field->GetClientData(i));
 		}
 	}
 	if(depot_id_field)
@@ -605,8 +615,12 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		int new_spawntime = count_field->GetValue();
 		edit_creature->setSpawnTime(new_spawntime);
 
-		Direction new_dir = (Direction)direction_field->GetValue();
-		edit_creature->setDirection(new_dir);
+		int* new_dir = reinterpret_cast<int*>(direction_field->GetClientData(
+			direction_field->GetSelection()));
+
+		if (new_dir) {
+			edit_creature->setDirection((Direction)*new_dir);
+		}
 	} else if(edit_spawn) {
 		int new_spawnsize = count_field->GetValue();
 		edit_spawn->setSize(new_spawnsize);
