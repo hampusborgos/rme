@@ -32,6 +32,7 @@ END_EVENT_TABLE()
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Item Properties"), map, tile_parent, item, pos),
 	count_field(nullptr),
+	direction_field(nullptr),
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
@@ -372,6 +373,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Spawn* spawn, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Spawn Properties"), map, tile_parent, spawn, pos),
 	count_field(nullptr),
+	direction_field(nullptr),
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
@@ -417,7 +419,8 @@ OldPropertiesWindow::~OldPropertiesWindow()
 			delete reinterpret_cast<int*>(splash_type_field->GetClientData(i));
 		}
 	}
-	if (direction_field) {
+	if (direction_field)
+	{
 		for (uint32_t i = 0; i < direction_field->GetCount(); ++i) {
 			delete reinterpret_cast<int*>(direction_field->GetClientData(i));
 		}
