@@ -38,7 +38,6 @@
 
 #include "iomap_otbm.h"
 #include "pugicast.h"
-#include "pugiext.h"
 
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
@@ -1099,9 +1098,9 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 			}
 
 			Direction direction = SOUTH;
-			if (isNpc && pugi::has_attribute(creatureNode, "direction")) {
-				int16_t dir = pugi::cast<int16_t>(creatureNode.attribute("direction").value());
-				if (dir >= FIRST_DIRECTION && direction <= LAST_DIRECTION) {
+			if (isNpc) {
+				int dir = creatureNode.attribute("direction").as_int(-1);
+				if (dir >= FIRST_DIRECTION && dir <= LAST_DIRECTION) {
 					direction = (Direction)dir;
 				}
 			}
