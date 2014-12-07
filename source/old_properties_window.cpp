@@ -321,6 +321,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Creature* creature, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Creature Properties"), map, tile_parent, creature, pos),
 	count_field(nullptr),
+	direction_field(nullptr),
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
@@ -344,6 +345,11 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	count_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_creature->getSpawnTime()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 10, 3600, edit_creature->getSpawnTime());
 	// count_field->SetSelection(-1, -1);
 	subsizer->Add(count_field, wxSizerFlags(1).Expand());
+
+	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Direction")));
+	direction_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_creature->getDirection()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 
+		FIRST_DIRECTION, LAST_DIRECTION, edit_creature->getDirection());
+	subsizer->Add(direction_field, wxSizerFlags(1).Expand());
 
 	boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 
@@ -598,6 +604,9 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	} else if(edit_creature) {
 		int new_spawntime = count_field->GetValue();
 		edit_creature->setSpawnTime(new_spawntime);
+
+		Direction new_dir = (Direction)direction_field->GetValue();
+		edit_creature->setDirection(new_dir);
 	} else if(edit_spawn) {
 		int new_spawnsize = count_field->GetValue();
 		edit_spawn->setSize(new_spawnsize);

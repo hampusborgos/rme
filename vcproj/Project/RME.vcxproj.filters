@@ -350,6 +350,7 @@
       <Filter>editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\pugicast.h" />
+    <ClInclude Include="..\..\source\pugiext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">

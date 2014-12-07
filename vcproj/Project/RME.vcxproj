@@ -342,6 +342,7 @@
     <ClInclude Include="..\..\source\numbertextctrl.h" />
     <ClInclude Include="..\..\source\properties_window.h" />
     <ClInclude Include="..\..\source\pugicast.h" />
+    <ClInclude Include="..\..\source\pugiext.h" />
     <ClInclude Include="..\..\source\raw_brush.h" />
     <ClCompile Include="..\..\source\numbertextctrl.cpp" />
     <ClCompile Include="..\..\source\properties_window.cpp" />

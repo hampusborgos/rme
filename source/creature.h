@@ -6,8 +6,18 @@
 #ifndef RME_CREATURE_H_
 #define RME_CREATURE_H_
 
-
 #include "creatures.h"
+
+enum Direction
+{
+    NORTH = 0,
+    EAST = 1,
+    SOUTH = 2,
+    WEST = 3,
+
+    FIRST_DIRECTION = NORTH,
+    LAST_DIRECTION = WEST
+};
 
 class Creature {
 public:
@@ -28,13 +38,19 @@ public:
 	void select() {selected = true;}
 
 	bool isNpc() const;
+
 	std::string getName() const;
 	CreatureBrush* getBrush() const;
+
 	int getSpawnTime() const {return spawntime;}
 	void setSpawnTime(int spawntime) {this->spawntime = spawntime;}
 
+    Direction getDirection() const { return direction; }
+    void setDirection(Direction direction) { this->direction = direction; }
+
 protected:
 	std::string type_name;
+	Direction direction;
 	int spawntime;
 	bool saved;
 	bool selected;

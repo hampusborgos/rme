@@ -968,9 +968,9 @@ void MapDrawer::DrawBrush()
 			int cy = (mouse_map_y)*32-view_scroll_y - getFloorAdjustment(floor);
 			int cx = (mouse_map_x)*32-view_scroll_x - getFloorAdjustment(floor);
 			if(creature_brush->canDraw(&editor.map, Position(mouse_map_x, mouse_map_y, floor)))
-				BlitCreature(cx, cy, creature_brush->getType()->outfit, 255, 255, 255, 160);
+				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 255, 255, 160);
 			else
-				BlitCreature(cx, cy, creature_brush->getType()->outfit, 255, 64, 64, 160);
+				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 64, 64, 160);
 			
 			glDisable(GL_TEXTURE_2D);
 		}
@@ -1293,7 +1293,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int re
 	}
 }
 
-void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, int red, int green, int blue, int alpha)
+void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red, int green, int blue, int alpha)
 {
 	if(outfit.lookItem != 0)
 	{
@@ -1316,7 +1316,7 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, int
 		int tme = 0; //GetTime() % itype->FPA;
 		for(int cx = 0; cx != spr->width; ++cx) {
 			for(int cy = 0; cy != spr->height; ++cy) {
-				int texnum = spr->getHardwareID(cx,cy,2/*south*/,outfit,tme);
+				int texnum = spr->getHardwareID(cx,cy,(int)dir,outfit,tme);
 				glBlitTexture(screenx-cx*32, screeny-cy*32, texnum, red, green, blue, alpha);
 			}
 		}
@@ -1331,7 +1331,7 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Creature* c, int re
 		green /= 2;
 		blue /= 2;
 	}
-	BlitCreature(screenx, screeny, c->getLookType(), red, green, blue, alpha);
+	BlitCreature(screenx, screeny, c->getLookType(), c->getDirection(), red, green, blue, alpha);
 }
 
 void MapDrawer::MakeTooltip(Item* item, std::ostringstream& tip)
