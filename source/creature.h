@@ -51,8 +51,8 @@ public:
 	int getSpawnTime() const {return spawntime;}
 	void setSpawnTime(int spawntime) {this->spawntime = spawntime;}
 
-    Direction getDirection() const { return direction; }
-    void setDirection(Direction direction) { this->direction = direction; }
+	Direction getDirection() const { return direction; }
+	void setDirection(Direction direction) { this->direction = direction; }
 
 protected:
 	std::string type_name;
