@@ -36,7 +36,7 @@ Settings settings;
 
 Settings::Settings() : store(Config::LAST)
 #ifdef __WINDOWS__
-		       , use_file_cfg(false) 
+			   , use_file_cfg(false) 
 #endif
 {
 	setDefaults();
@@ -237,7 +237,7 @@ void Settings::IO(IOMode mode) {
 	Int(ERASER_LEAVE_UNIQUE, 1);
 	Int(DOODAD_BRUSH_ERASE_LIKE, 0);
 	Int(WARN_FOR_DUPLICATE_ID, 1);
-	Int(ALLOW_CREATURES_WITHOUT_SPAWN, 0);
+	Int(AUTO_CREATE_SPAWN, 1);
 	Int(DEFAULT_SPAWNTIME, 60);
 	Int(MAX_SPAWN_RADIUS, 30);
 	Int(CURRENT_SPAWN_RADIUS, 5);

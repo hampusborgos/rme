@@ -60,7 +60,7 @@ protected:
 	wxCheckBox* auto_assign_doors_chkbox;
 	wxCheckBox* eraser_leave_unique_chkbox;
 	wxCheckBox* doodad_erase_same_chkbox;
-	wxCheckBox* allow_spawnless_chkbox;
+	wxCheckBox* auto_create_spawn_chkbox;
 	wxCheckBox* allow_multiple_orderitems_chkbox;
 	wxCheckBox* merge_move_chkbox;
 	wxCheckBox* merge_paste_chkbox;
