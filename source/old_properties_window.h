@@ -31,6 +31,7 @@ protected:
 
 protected:
 	wxSpinCtrl* count_field;
+	wxChoice* direction_field;
 	wxSpinCtrl* action_id_field;
 	wxSpinCtrl* unique_id_field;
 	wxSpinCtrl* door_id_field;

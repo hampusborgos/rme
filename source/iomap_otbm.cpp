@@ -1097,6 +1097,14 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 				spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
 			}
 
+			Direction direction = SOUTH;
+			if (isNpc) {
+				int dir = creatureNode.attribute("direction").as_int(-1);
+				if (dir >= DIRECTION_FIRST && dir <= DIRECTION_LAST) {
+					direction = (Direction)dir;
+				}
+			}
+
 			Position creaturePosition(spawnPosition);
 
 			pugi::xml_attribute xAttribute = creatureNode.attribute("x");
@@ -1142,6 +1150,9 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 			}
 
 			Creature* creature = newd Creature(type);
+			if (creature->isNpc()) {
+				creature->setDirection(direction);
+			}
 			creature->setSpawnTime(spawntime);
 			creatureTile->creature = creature;
 
@@ -1578,6 +1589,9 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 						creatureNode.append_attribute("y") = y;
 						creatureNode.append_attribute("z") = spawnPosition.z;
 						creatureNode.append_attribute("spawntime") = creature->getSpawnTime();
+						if (creature->isNpc()) {
+							creatureNode.append_attribute("direction") = creature->getDirection();
+						}
 
 						// Mark as saved
 						creature->save();

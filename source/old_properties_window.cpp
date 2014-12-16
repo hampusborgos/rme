@@ -13,6 +13,7 @@
 #include "house.h"
 #include "map.h"
 #include "editor.h"
+#include "creature.h"
 
 #include "gui.h"
 #include "application.h"
@@ -31,6 +32,7 @@ END_EVENT_TABLE()
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Item Properties"), map, tile_parent, item, pos),
 	count_field(nullptr),
+	direction_field(nullptr),
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
@@ -321,6 +323,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Creature* creature, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Creature Properties"), map, tile_parent, creature, pos),
 	count_field(nullptr),
+	direction_field(nullptr),
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
@@ -345,6 +348,15 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	// count_field->SetSelection(-1, -1);
 	subsizer->Add(count_field, wxSizerFlags(1).Expand());
 
+	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Direction")));
+	direction_field = newd wxChoice(this, wxID_ANY);
+
+	for (Direction dir = DIRECTION_FIRST; dir <= DIRECTION_LAST; ++dir) {
+		direction_field->Append(wxstr(Creature::DirID2Name(dir)), newd int32_t(dir));
+	}
+	direction_field->SetSelection(edit_creature->getDirection());
+	subsizer->Add(direction_field, wxSizerFlags(1).Expand());
+
 	boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 
 	topsizer->Add(boxsizer, wxSizerFlags(3).Expand().Border(wxALL, 20));
@@ -361,6 +373,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, const Tile* tile_parent, Spawn* spawn, wxPoint pos) :
 	ObjectPropertiesWindowBase(win_parent, wxT("Spawn Properties"), map, tile_parent, spawn, pos),
 	count_field(nullptr),
+	direction_field(nullptr),
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
@@ -404,6 +417,12 @@ OldPropertiesWindow::~OldPropertiesWindow()
 		for(uint32_t i = 0; i < splash_type_field->GetCount(); ++i)
 		{
 			delete reinterpret_cast<int*>(splash_type_field->GetClientData(i));
+		}
+	}
+	if (direction_field)
+	{
+		for (uint32_t i = 0; i < direction_field->GetCount(); ++i) {
+			delete reinterpret_cast<int*>(direction_field->GetClientData(i));
 		}
 	}
 	if(depot_id_field)
@@ -598,6 +617,13 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	} else if(edit_creature) {
 		int new_spawntime = count_field->GetValue();
 		edit_creature->setSpawnTime(new_spawntime);
+
+		int* new_dir = reinterpret_cast<int*>(direction_field->GetClientData(
+			direction_field->GetSelection()));
+
+		if (new_dir) {
+			edit_creature->setDirection((Direction)*new_dir);
+		}
 	} else if(edit_spawn) {
 		int new_spawnsize = count_field->GetValue();
 		edit_spawn->setSize(new_spawnsize);
