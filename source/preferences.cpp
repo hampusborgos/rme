@@ -142,9 +142,9 @@ wxNotebookPage* PreferencesWindow::CreateEditorPage() {
 	eraser_leave_unique_chkbox->SetValue(settings.getBoolean(Config::ERASER_LEAVE_UNIQUE));
 	eraser_leave_unique_chkbox->SetToolTip(wxT("The eraser will leave containers with items in them, items with unique or action id and items."));
 
-	sizer->Add(allow_spawnless_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Allow creatures without spawn")));
-	allow_spawnless_chkbox->SetValue(settings.getBoolean(Config::ALLOW_CREATURES_WITHOUT_SPAWN));
-	allow_spawnless_chkbox->SetToolTip(wxT("When this option is checked, you can place creatures without placing a spawn, they will NOT be saved, however."));
+	sizer->Add(auto_create_spawn_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Auto create spawn when placing creature")));
+    auto_create_spawn_chkbox->SetValue(settings.getBoolean(Config::AUTO_CREATE_SPAWN));
+    auto_create_spawn_chkbox->SetToolTip(wxT("When this option is checked, you can place creatures without placing a spawn manually, the spawn will be place automatically."));
 
 	sizer->Add(allow_multiple_orderitems_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Prevent toporder conflict")));
 	allow_multiple_orderitems_chkbox->SetValue(settings.getBoolean(Config::RAW_LIKE_SIMONE));
@@ -548,7 +548,7 @@ void PreferencesWindow::Apply()
 	settings.setInteger(Config::AUTO_ASSIGN_DOORID, auto_assign_doors_chkbox->GetValue());
 	settings.setInteger(Config::ERASER_LEAVE_UNIQUE, eraser_leave_unique_chkbox->GetValue());
 	settings.setInteger(Config::DOODAD_BRUSH_ERASE_LIKE, doodad_erase_same_chkbox->GetValue());
-	settings.setInteger(Config::ALLOW_CREATURES_WITHOUT_SPAWN, allow_spawnless_chkbox->GetValue());
+    settings.setInteger(Config::AUTO_CREATE_SPAWN, auto_create_spawn_chkbox->GetValue());
 	settings.setInteger(Config::RAW_LIKE_SIMONE, allow_multiple_orderitems_chkbox->GetValue());
 	settings.setInteger(Config::MERGE_MOVE, merge_move_chkbox->GetValue());
 	settings.setInteger(Config::MERGE_PASTE, merge_paste_chkbox->GetValue());

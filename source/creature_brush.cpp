@@ -9,6 +9,7 @@
 #include "tile.h"
 #include "creature.h"
 #include "basemap.h"
+#include "spawn.h"
 
 //=============================================================================
 // Creature brush
@@ -39,25 +40,15 @@ bool CreatureBrush::canDraw(BaseMap* map, const Position& position) const
 {
 	Tile* tile = map->getTile(position);
 	if (creature_type && tile && !tile->isBlocking()) {
-		if (tile->getLocation()->getSpawnCount() == 0) {
-			if (settings.getInteger(Config::ALLOW_CREATURES_WITHOUT_SPAWN)) {
-				if (tile->isPZ()) {
-					if (creature_type->isNpc) {
-						return true;
-					}
-				} else {
-					return true;
-				}
-			}
-		} else {
-			if (tile->isPZ()) {
-				if (creature_type->isNpc) {
-					return true;
-				}
-			} else {
-				return true;
-			}
-		}
+        if (tile->getLocation()->getSpawnCount() != 0 || settings.getInteger(Config::AUTO_CREATE_SPAWN)) {
+            if (tile->isPZ()) {
+                if (creature_type->isNpc) {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+        }
 	}
 	return false;
 }
@@ -73,6 +64,10 @@ void CreatureBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 	if(canDraw(map, tile->getPosition())) {
 		undraw(map, tile);
 		if(creature_type) {
+            if (tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
+                // manually place spawn on location
+                tile->spawn = newd Spawn(1);
+            }
 			tile->creature = newd Creature(creature_type);
 			tile->creature->setSpawnTime(*(int*)parameter);
 		}
