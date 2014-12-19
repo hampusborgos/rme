@@ -142,9 +142,9 @@ wxNotebookPage* PreferencesWindow::CreateEditorPage() {
 	eraser_leave_unique_chkbox->SetValue(settings.getBoolean(Config::ERASER_LEAVE_UNIQUE));
 	eraser_leave_unique_chkbox->SetToolTip(wxT("The eraser will leave containers with items in them, items with unique or action id and items."));
 
-	sizer->Add(allow_spawnless_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Allow creatures without spawn")));
-	allow_spawnless_chkbox->SetValue(settings.getBoolean(Config::ALLOW_CREATURES_WITHOUT_SPAWN));
-	allow_spawnless_chkbox->SetToolTip(wxT("When this option is checked, you can place creatures without placing a spawn, they will NOT be saved, however."));
+	sizer->Add(auto_create_spawn_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Auto create spawn when placing creature")));
+	auto_create_spawn_chkbox->SetValue(settings.getBoolean(Config::AUTO_CREATE_SPAWN));
+	auto_create_spawn_chkbox->SetToolTip(wxT("When this option is checked, you can place creatures without placing a spawn manually, the spawn will be place automatically."));
 
 	sizer->Add(allow_multiple_orderitems_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Prevent toporder conflict")));
 	allow_multiple_orderitems_chkbox->SetValue(settings.getBoolean(Config::RAW_LIKE_SIMONE));
@@ -436,7 +436,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 	// Refresh settings
 	ClientVersion::saveVersions();
-    ClientVersionList versions = ClientVersion::getAllVisible();
+	ClientVersionList versions = ClientVersion::getAllVisible();
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
@@ -445,7 +445,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 	// Default client version choice control
 	default_version_choice = newd wxChoice(client_page, wxID_ANY);
-    wxStaticText* default_client_tooltip = newd wxStaticText(client_page, wxID_ANY, wxT("Default Client version"));
+	wxStaticText* default_client_tooltip = newd wxStaticText(client_page, wxID_ANY, wxT("Default Client version"));
 	options_sizer->Add(default_client_tooltip, 0);
 	options_sizer->Add(default_version_choice, 0);
 	SetWindowToolTip(default_client_tooltip, default_version_choice, wxT("This will decide what client version will be used when new maps are created."));
@@ -455,48 +455,48 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	options_sizer->Add(10, 1);
 	check_sigs_chkbox->SetValue(settings.getBoolean(Config::CHECK_SIGNATURES));
 	check_sigs_chkbox->SetToolTip(wxT("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs."));
-    
+	
 	// Add the grid sizer
 	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
 
 	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER);
 	wxFlexGridSizer* client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
-    client_list_window->SetVirtualSize( 500, 1000 );
+	client_list_window->SetVirtualSize( 500, 1000 );
 
 	int version_counter = 0;
-    for (ClientVersionList::iterator version_iter = versions.begin();
-         version_iter != versions.end();
-         ++version_iter)
-    {
-        const ClientVersion* version = *version_iter;
+	for (ClientVersionList::iterator version_iter = versions.begin();
+		 version_iter != versions.end();
+		 ++version_iter)
+	{
+		const ClientVersion* version = *version_iter;
 		if (!version->isVisible())
 			continue;
-        
-        default_version_choice->Append(wxstr(version->getName()));
-        
-        wxString searchtip;
-        searchtip << wxT("Version ") << wxstr(version->getName()) << wxT(" search path");
-        wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, searchtip);
-        client_list_sizer->Add(tmp_text, 0);
+		
+		default_version_choice->Append(wxstr(version->getName()));
+		
+		wxString searchtip;
+		searchtip << wxT("Version ") << wxstr(version->getName()) << wxT(" search path");
+		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, searchtip);
+		client_list_sizer->Add(tmp_text, 0);
 
 		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, version->getClientPath().GetFullPath());
 		version_dir_pickers.push_back(dir_picker);
-        client_list_sizer->Add(dir_picker, 0);
-        
-        wxString tooltip;
-        tooltip << wxT("The editor will look for ") << wxstr(version->getName()) << wxT(" Tibia.dat & Tibia.spr here.");
-        tmp_text->SetToolTip(tooltip);
-        dir_picker->SetToolTip(tooltip);
+		client_list_sizer->Add(dir_picker, 0);
+		
+		wxString tooltip;
+		tooltip << wxT("The editor will look for ") << wxstr(version->getName()) << wxT(" Tibia.dat & Tibia.spr here.");
+		tmp_text->SetToolTip(tooltip);
+		dir_picker->SetToolTip(tooltip);
 
 		if (version->getID() == settings.getInteger(Config::DEFAULT_CLIENT_VERSION))
 			default_version_choice->SetSelection(version_counter);
 
 		version_counter++;
-    }
+	}
 
 	// Set the sizers
-    client_list_window->SetSizer(client_list_sizer);
+	client_list_window->SetSizer(client_list_sizer);
 	topsizer->Add(client_list_window, wxSizerFlags(1));
 	client_page->SetSizerAndFit(topsizer);
 
@@ -548,7 +548,7 @@ void PreferencesWindow::Apply()
 	settings.setInteger(Config::AUTO_ASSIGN_DOORID, auto_assign_doors_chkbox->GetValue());
 	settings.setInteger(Config::ERASER_LEAVE_UNIQUE, eraser_leave_unique_chkbox->GetValue());
 	settings.setInteger(Config::DOODAD_BRUSH_ERASE_LIKE, doodad_erase_same_chkbox->GetValue());
-	settings.setInteger(Config::ALLOW_CREATURES_WITHOUT_SPAWN, allow_spawnless_chkbox->GetValue());
+	settings.setInteger(Config::AUTO_CREATE_SPAWN, auto_create_spawn_chkbox->GetValue());
 	settings.setInteger(Config::RAW_LIKE_SIMONE, allow_multiple_orderitems_chkbox->GetValue());
 	settings.setInteger(Config::MERGE_MOVE, merge_move_chkbox->GetValue());
 	settings.setInteger(Config::MERGE_PASTE, merge_paste_chkbox->GetValue());
@@ -639,11 +639,11 @@ void PreferencesWindow::Apply()
 	// Client
 	ClientVersionList versions = ClientVersion::getAllVisible();
 	int version_counter = 0;
-    for (ClientVersionList::iterator version_iter = versions.begin();
-         version_iter != versions.end();
-         ++version_iter)
-    {
-        ClientVersion* version = *version_iter;
+	for (ClientVersionList::iterator version_iter = versions.begin();
+		 version_iter != versions.end();
+		 ++version_iter)
+	{
+		ClientVersion* version = *version_iter;
 
 		wxString dir = version_dir_pickers[version_counter]->GetPath();
 		if (dir.Length() > 0 && dir.Last() != wxT('/') && dir.Last() != wxT('\\'))
@@ -654,7 +654,7 @@ void PreferencesWindow::Apply()
 			settings.setInteger(Config::DEFAULT_CLIENT_VERSION, version->getID());
 
 		version_counter++;
-    }
+	}
 	settings.setInteger(Config::CHECK_SIGNATURES, check_sigs_chkbox->GetValue());
 
 	// Make sure to reload client paths
