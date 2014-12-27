@@ -76,6 +76,7 @@ public:
 	FORCEINLINE bool getU8(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getByte(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getU16(uint16_t& u16) {return getType(u16);}
+	FORCEINLINE bool getI32(int32_t& i32) { return getType(i32);}
 	FORCEINLINE bool getU32(uint32_t& u32) {return getType(u32);}
 	bool getRAW(uint8_t* ptr, size_t sz);
 	bool getRAW(std::string& str, size_t sz);
@@ -111,6 +112,7 @@ public:
 	FORCEINLINE bool getU8(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getByte(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getU16(uint16_t& u16) {return getType(u16);}
+	FORCEINLINE bool getI32(int32_t& i32) { return getType(i32);}
 	FORCEINLINE bool getU32(uint32_t& u32) {return getType(u32);}
 	FORCEINLINE bool getU64(uint64_t& u64) {return getType(u64);}
 	FORCEINLINE bool skip(size_t sz) {
@@ -229,6 +231,7 @@ public:
 	FORCEINLINE bool addU8(uint8_t u8) {return addType(u8);}
 	FORCEINLINE bool addByte(uint8_t u8) {return addType(u8);}
 	FORCEINLINE bool addU16(uint16_t u16) {return addType(u16);}
+	FORCEINLINE bool addI32(int32_t i32) { return addType(i32);}
 	FORCEINLINE bool addU32(uint32_t u32) {return addType(u32);}
 	FORCEINLINE bool addU64(uint64_t u64) {return addType(u64);}
 	bool addString(const std::string& str);
@@ -258,6 +261,7 @@ public:
 	bool addU8(uint8_t u8);
 	bool addByte(uint8_t u8);
 	bool addU16(uint16_t u16);
+	bool addI32(int32_t i32);
 	bool addU32(uint32_t u32);
 	bool addU64(uint64_t u64);
 	bool addString(const std::string& str);
