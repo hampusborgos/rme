@@ -1,0 +1,368 @@
+<?xml version="1.0"?>
+<creatures>
+	<creature name="A Wandering Soul" type="npc" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="10" looklegs="10" lookfeet="0" />
+	<creature name="Abyssador" type="monster" looktype="495" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Adventurer" type="monster" looktype="129" lookitem="0" lookaddon="0" lookhead="92" lookbody="15" looklegs="92" lookfeet="82" />
+	<creature name="Alissow" type="npc" looktype="289" lookitem="0" lookaddon="0" lookhead="114" lookbody="114" looklegs="91" lookfeet="91" />
+	<creature name="Angry Adventurer" type="monster" looktype="129" lookitem="0" lookaddon="0" lookhead="92" lookbody="15" looklegs="92" lookfeet="82" />
+	<creature name="Annihilon" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="19" lookbody="104" looklegs="96" lookfeet="96" />
+	<creature name="Antonio" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="96" lookbody="99" looklegs="76" lookfeet="115" />
+	<creature name="Arachir the ancient one" type="monster" looktype="287" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Armadile" type="monster" looktype="487" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Askarak Demon" type="monster" looktype="420" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Askarak Lord" type="monster" looktype="410" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Askarak Prince" type="monster" looktype="419" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Athan" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="20" lookbody="100" looklegs="50" lookfeet="99" />
+	<creature name="Bane Bringer" type="monster" looktype="310" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Barak" type="npc" looktype="541" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="113" />
+	<creature name="Barbaria" type="monster" looktype="264" lookitem="0" lookaddon="0" lookhead="78" lookbody="116" looklegs="95" lookfeet="121" />
+	<creature name="Baron Brute" type="monster" looktype="2" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Battlemaster Zunzu" type="monster" looktype="343" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Berserker Chicken" type="monster" looktype="111" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Big Boss Trolliver" type="monster" looktype="281" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Blazing Fire Elemental" type="monster" looktype="49" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Blistering Fire Elemental" type="monster" looktype="242" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Blood Hand" type="monster" looktype="552" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Blood Priest" type="monster" looktype="553" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Boar" type="monster" looktype="380" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Bog Frog" type="monster" looktype="412" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Bonelord" type="monster" looktype="17" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Boogey" type="monster" looktype="300" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Breeze" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="120" lookbody="128" looklegs="121" lookfeet="111" />
+	<creature name="Brimstone Bug" type="monster" looktype="352" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Brown Horse" type="monster" looktype="436" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Bruce" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<creature name="Bulma" type="npc" looktype="139" lookitem="0" lookaddon="0" lookhead="113" lookbody="57" looklegs="95" lookfeet="113" />
+	<creature name="Cael" type="npc" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Calamary" type="monster" looktype="451" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Capitao Coruja" type="npc" looktype="129" lookitem="0" lookaddon="0" lookhead="114" lookbody="119" looklegs="114" lookfeet="114" />
+	<creature name="Cat" type="monster" looktype="276" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Challenger" type="npc" looktype="300" lookitem="0" lookaddon="0" lookhead="114" lookbody="119" looklegs="114" lookfeet="114" />
+	<creature name="Charged Energy Elemental" type="monster" looktype="293" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Chizzoron the Distorter" type="monster" looktype="340" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Chrak" type="monster" looktype="346" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Chuckles" type="npc" looktype="99" lookitem="0" lookaddon="0" lookhead="1" lookbody="1" looklegs="1" lookfeet="1" />
+	<creature name="Cityguard" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="19" lookbody="19" looklegs="19" lookfeet="19" />
+	<creature name="Clay Guardian" type="monster" looktype="333" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Cliff Strider" type="monster" looktype="497" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Coldheart" type="monster" looktype="261" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Comedinha" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="100" lookbody="100" looklegs="114" lookfeet="114" />
+	<creature name="Corym Charlatan" type="monster" looktype="532" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Corym Skirmisher" type="monster" looktype="533" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Corym Vanguard" type="monster" looktype="534" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Crawler" type="monster" looktype="456" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Crustacea Gigantica" type="monster" looktype="383" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Crystal Wolf" type="monster" looktype="391" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Crystalcrusher" type="monster" looktype="511" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Damaged Crystal Golem" type="monster" looktype="508" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dark Apprentice" type="monster" looktype="134" lookitem="0" lookaddon="0" lookhead="78" lookbody="88" looklegs="0" lookfeet="88" />
+	<creature name="Dark Magician" type="monster" looktype="133" lookitem="0" lookaddon="0" lookhead="116" lookbody="95" looklegs="50" lookfeet="132" />
+	<creature name="Dark Rodo" type="npc" looktype="133" lookitem="0" lookaddon="0" lookhead="0" lookbody="86" looklegs="0" lookfeet="38" />
+	<creature name="Death" type="npc" looktype="9" lookitem="0" lookaddon="0" lookhead="114" lookbody="114" looklegs="91" lookfeet="91" />
+	<creature name="DeathFan" type="monster" looktype="9" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Deathspawn" type="monster" looktype="226" lookitem="0" lookaddon="0" lookhead="114" lookbody="98" looklegs="97" lookfeet="114" />
+	<creature name="Deepling Brawler" type="monster" looktype="470" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Elite" type="monster" looktype="441" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Guard" type="monster" looktype="442" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Master Librarian" type="monster" looktype="443" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Scout" type="monster" looktype="413" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Spellsinger" type="monster" looktype="443" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Tyrant" type="monster" looktype="442" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Warrior" type="monster" looktype="441" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Deepling Worker" type="monster" looktype="470" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Demon Parrot" type="monster" looktype="217" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Diamond Servant" type="monster" looktype="397" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Diblis the fair" type="monster" looktype="287" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dirtbeard" type="monster" looktype="98" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Diseased Dan" type="monster" looktype="299" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dona Seguranca" type="npc" looktype="155" lookitem="0" lookaddon="0" lookhead="79" lookbody="129" looklegs="115" lookfeet="0" />
+	<creature name="Donald" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="20" lookbody="100" looklegs="50" lookfeet="99" />
+	<creature name="Donkey" type="monster" looktype="387" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Doom Deer" type="monster" looktype="31" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Doomhowl" type="monster" looktype="308" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dorbin" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="61" looklegs="39" lookfeet="115" />
+	<creature name="Dragon Hatchling" type="monster" looktype="271" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dragon Lord Hatchling" type="monster" looktype="272" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dragonling" type="monster" looktype="505" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Draken Abomination" type="monster" looktype="357" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Draken Elite" type="monster" looktype="362" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Draken Spellweaver" type="monster" looktype="340" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Draken Warmaster" type="monster" looktype="334" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Draptor" type="monster" looktype="382" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dreadbeast" type="monster" looktype="101" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Dreadwing" type="monster" looktype="307" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Drillworm" type="monster" looktype="527" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dromedary" type="monster" looktype="404" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dufi" type="npc" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Dwarf Emperor" type="monster" looktype="332" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Earth Overlord" type="monster" looktype="285" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Elder Bonelord" type="monster" looktype="108" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Elder Wyrm" type="monster" looktype="561" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Elite Trainer" type="monster" looktype="134" lookitem="0" lookaddon="0" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" />
+	<creature name="Emerald Damselfly" type="monster" looktype="528" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Energy Overlord" type="monster" looktype="290" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Enraged Crystal Golem" type="monster" looktype="508" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Enslaved Dwarf" type="monster" looktype="486" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ermes" type="npc" looktype="472" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="114" lookfeet="0" />
+	<creature name="Esmeralda" type="monster" looktype="305" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Esrik" type="npc" looktype="71" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Essence of Darkness" type="monster" looktype="315" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Eternal Guardian" type="monster" looktype="345" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Evil Mastermind" type="monster" looktype="256" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Evil Sheep" type="monster" looktype="14" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Evil Sheep Lord" type="monster" looktype="13" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Eye of the Seven" type="monster" looktype="0" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Fatality" type="monster" looktype="113" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Feromous" type="monster" looktype="229" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Feverish Citizen" type="monster" looktype="425" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Filth Toad" type="monster" looktype="222" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Fire Horse" type="monster" looktype="429" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Fire Overlord" type="monster" looktype="243" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Firewalker" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="40" lookbody="37" looklegs="116" lookfeet="95" />
+	<creature name="Fish" type="monster" looktype="455" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Fleshslicer" type="monster" looktype="457" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Foreman Kneebiter" type="monster" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Forest Fury" type="monster" looktype="569" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Frodo" type="npc" looktype="134" lookitem="0" lookaddon="0" lookhead="114" lookbody="113" looklegs="113" lookfeet="113" />
+	<creature name="Frost Dragon Hatchling" type="monster" looktype="283" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Garzon" type="npc" looktype="130" lookitem="0" lookaddon="0" lookhead="77" lookbody="101" looklegs="90" lookfeet="116" />
+	<creature name="Ghastly Dragon" type="monster" looktype="351" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ghost Morgaroth" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="0" lookbody="126" looklegs="94" lookfeet="94" />
+	<creature name="Glitterscale" type="monster" looktype="34" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Gnarlhound" type="monster" looktype="341" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Goblin Leader" type="monster" looktype="61" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Golden Servant" type="monster" looktype="396" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Golgordan" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="108" lookbody="100" looklegs="105" lookfeet="114" />
+	<creature name="Grand Mother Foulscale" type="monster" looktype="34" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Grave Guard" type="monster" looktype="234" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Gravedigger" type="monster" looktype="558" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Gree Dee" type="npc" looktype="129" lookitem="0" lookaddon="0" lookhead="97" lookbody="77" looklegs="87" lookfeet="115" />
+	<creature name="Green Phantom" type="monster" looktype="319" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Grey Horse" type="monster" looktype="434" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Groam" type="monster" looktype="413" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Grynch Clan Goblin" type="monster" looktype="61" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Hairman The Huge" type="monster" looktype="116" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Hal" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<creature name="Halvar" type="npc" looktype="300" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Harbor" type="npc" looktype="134" lookitem="0" lookaddon="0" lookhead="96" lookbody="99" looklegs="99" lookfeet="115" />
+	<creature name="Hellgorak" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="19" lookbody="96" looklegs="21" lookfeet="81" />
+	<creature name="Heoni" type="monster" looktype="239" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Herald of Gloom" type="monster" looktype="320" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Hide" type="monster" looktype="219" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Hideous Fungus" type="monster" looktype="499" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Hive Overseer" type="monster" looktype="458" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Hot Dog" type="monster" looktype="32" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Humongous Fungus" type="monster" looktype="488" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Humorless Fungus" type="monster" looktype="517" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ice Overlord" type="monster" looktype="11" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Incredibly Old Witch" type="monster" looktype="54" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Infernal Frog" type="monster" looktype="224" lookitem="0" lookaddon="0" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" />
+	<creature name="Infernalist" type="monster" looktype="130" lookitem="0" lookaddon="0" lookhead="78" lookbody="76" looklegs="94" lookfeet="115" />
+	<creature name="Inky" type="monster" looktype="46" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Insect Swarm" type="monster" looktype="349" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Insectoid Scout" type="monster" looktype="403" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Insectoid Worker" type="monster" looktype="403" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Iron Servant" type="monster" looktype="395" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ironblight" type="monster" looktype="498" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Izac" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="119" looklegs="114" lookfeet="114" />
+	<creature name="Jagged Earth Elemental" type="monster" looktype="285" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Jaul" type="monster" looktype="444" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Jellyfish" type="monster" looktype="452" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Julie" type="npc" looktype="142" lookitem="0" lookaddon="0" lookhead="78" lookbody="88" looklegs="0" lookfeet="88" />
+	<creature name="Kenny" type="npc" looktype="251" lookitem="0" lookaddon="0" lookhead="77" lookbody="77" looklegs="77" lookfeet="77" />
+	<creature name="Killer Caiman" type="monster" looktype="358" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Killer Rabbit" type="monster" looktype="74" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="King Arthas Apparition" type="monster" looktype="332" lookitem="0" lookaddon="0" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" />
+	<creature name="King Arthas Viii" type="npc" looktype="332" lookitem="0" lookaddon="0" lookhead="21" lookbody="87" looklegs="107" lookfeet="95" />
+	<creature name="King Guard" type="npc" looktype="268" lookitem="0" lookaddon="0" lookhead="155" lookbody="155" looklegs="155" lookfeet="30" />
+	<creature name="Kollos" type="monster" looktype="458" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Koshei The Deathless" type="monster" looktype="99" lookitem="0" lookaddon="0" lookhead="95" lookbody="116" looklegs="119" lookfeet="115" />
+	<creature name="Kraknaknork Demon" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="117" lookbody="58" looklegs="117" lookfeet="0" />
+	<creature name="Lady Bug" type="monster" looktype="448" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lancer Beetle" type="monster" looktype="348" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Latrivan" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="120" lookbody="128" looklegs="121" lookfeet="111" />
+	<creature name="Lavanos" type="monster" looktype="303" lookitem="0" lookaddon="0" lookhead="10" lookbody="50" looklegs="121" lookfeet="115" />
+	<creature name="Leaf Golem" type="monster" looktype="567" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lector The Butcher" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="20" lookbody="19" looklegs="39" lookfeet="99" />
+	<creature name="Lesser Swarmer" type="monster" looktype="460" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Leviathan" type="monster" looktype="275" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Librarian" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="107" lookbody="107" looklegs="114" lookfeet="114" />
+	<creature name="Little Corym Charlatan" type="monster" looktype="532" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Abomination" type="monster" looktype="364" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Chosen" type="monster" looktype="344" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Dragon Priest" type="monster" looktype="339" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard High Guard" type="monster" looktype="337" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Legionnaire" type="monster" looktype="338" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Magistratus" type="monster" looktype="115" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Noble" type="monster" looktype="115" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lizard Zaogun" type="monster" looktype="343" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lola" type="npc" looktype="142" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="95" lookfeet="114" />
+	<creature name="Lord of the Elements" type="monster" looktype="290" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lorietta" type="npc" looktype="270" lookitem="0" lookaddon="0" lookhead="78" lookbody="79" looklegs="80" lookfeet="77" />
+	<creature name="Lost Basher" type="monster" looktype="538" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lost Berserker" type="monster" looktype="496" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lost Husher" type="monster" looktype="537" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Lost Thrower" type="monster" looktype="538" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Mad" type="npc" looktype="129" lookitem="0" lookaddon="0" lookhead="75" lookbody="115" looklegs="78" lookfeet="115" />
+	<creature name="mad mage" type="monster" looktype="394" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Mad Technomancer" type="monster" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Madareth" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="77" lookbody="116" looklegs="82" lookfeet="79" />
+	<creature name="Magma Crawler" type="monster" looktype="492" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Man in the Cave" type="monster" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="116" looklegs="95" lookfeet="114" />
+	<creature name="Manta Ray" type="monster" looktype="449" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Marina" type="npc" looktype="0" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Maris" type="npc" looktype="130" lookitem="0" lookaddon="0" lookhead="77" lookbody="101" looklegs="90" lookfeet="116" />
+	<creature name="Marsh Stalker" type="monster" looktype="530" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Martes 13" type="monster" looktype="319" lookitem="0" lookaddon="0" lookhead="38" lookbody="114" looklegs="0" lookfeet="94" />
+	<creature name="Massacre" type="monster" looktype="244" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Max" type="npc" looktype="367" lookitem="0" lookaddon="0" lookhead="79" lookbody="76" looklegs="49" lookfeet="94" />
+	<creature name="Mechanical Fighter" type="monster" looktype="102" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Medusa" type="monster" looktype="330" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Menacing Mummy" type="npc" looktype="90" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Mephiles" type="monster" looktype="237" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Midnight Panther" type="monster" looktype="385" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Midnight Spawn" type="monster" looktype="315" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Modified Gnarlhound" type="monster" looktype="515" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Monge" type="npc" looktype="57" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Monstor" type="monster" looktype="244" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Muddy Earth Elemental" type="monster" looktype="301" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Murderess Spider" type="monster" looktype="208" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Murim" type="npc" looktype="160" lookitem="0" lookaddon="0" lookhead="95" lookbody="23" looklegs="22" lookfeet="116" />
+	<creature name="Necromancer Servant" type="monster" looktype="9" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Nightfiend" type="monster" looktype="568" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Northern Pike" type="monster" looktype="454" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Numus" type="npc" looktype="278" lookitem="0" lookaddon="0" lookhead="95" lookbody="114" looklegs="114" lookfeet="95" />
+	<creature name="Obujos" type="monster" looktype="445" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Oiriz" type="npc" looktype="66" lookitem="0" lookaddon="0" lookhead="60" lookbody="100" looklegs="82" lookfeet="114" />
+	<creature name="Oldrak" type="npc" looktype="432" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Oliver" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<creature name="Omar" type="npc" looktype="289" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="95" lookfeet="114" />
+	<creature name="Ongulf" type="npc" looktype="70" lookitem="0" lookaddon="0" lookhead="95" lookbody="23" looklegs="22" lookfeet="116" />
+	<creature name="Orc Marauder" type="monster" looktype="342" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Orewalker" type="monster" looktype="490" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Overcharged Energy Elemental" type="monster" looktype="290" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Perac" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="118" looklegs="115" lookfeet="114" />
+	<creature name="Peter" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<creature name="Pietro" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="20" lookbody="100" looklegs="50" lookfeet="99" />
+	<creature name="Pigeon" type="monster" looktype="531" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Poacher" type="monster" looktype="129" lookitem="0" lookaddon="0" lookhead="114" lookbody="118" looklegs="118" lookfeet="116" />
+	<creature name="Pompan" type="npc" looktype="132" lookitem="0" lookaddon="0" lookhead="78" lookbody="13" looklegs="32" lookfeet="108" />
+	<creature name="Poodle" type="monster" looktype="473" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Prezil" type="npc" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Priest" type="npc" looktype="57" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Pugwah" type="npc" looktype="214" lookitem="0" lookaddon="0" lookhead="78" lookbody="86" looklegs="114" lookfeet="116" />
+	<creature name="Pythius The Rotten" type="monster" looktype="231" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Rabaz" type="npc" looktype="130" lookitem="0" lookaddon="0" lookhead="39" lookbody="38" looklegs="1" lookfeet="1" />
+	<creature name="Raging Mage" type="monster" looktype="416" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Rainbow Morgaroth" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="114" lookfeet="50" />
+	<creature name="Reed" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<creature name="Rift Brood" type="monster" looktype="290" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Rift Scythe" type="monster" looktype="300" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Rift Worm" type="monster" looktype="295" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ron the Ripper" type="monster" looktype="151" lookitem="0" lookaddon="0" lookhead="95" lookbody="94" looklegs="117" lookfeet="97" />
+	<creature name="Rorc" type="monster" looktype="550" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Rottie the Rotworm" type="monster" looktype="26" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Roy" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="40" lookbody="37" looklegs="116" lookfeet="95" />
+	<creature name="Salamander" type="monster" looktype="529" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Sandcrawler" type="monster" looktype="350" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Sandstone Scorpion" type="monster" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Scout Knowles" type="npc" looktype="129" lookitem="0" lookaddon="0" lookhead="120" lookbody="120" looklegs="114" lookfeet="114" />
+	<creature name="Sea Serpent" type="monster" looktype="275" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Seller" type="npc" looktype="134" lookitem="0" lookaddon="0" lookhead="114" lookbody="113" looklegs="113" lookfeet="113" />
+	<creature name="Serafin" type="npc" looktype="129" lookitem="0" lookaddon="0" lookhead="96" lookbody="123" looklegs="86" lookfeet="98" />
+	<creature name="Shaburak Demon" type="monster" looktype="417" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Shaburak Lord" type="monster" looktype="417" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Shaburak Prince" type="monster" looktype="418" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Shadow Hound" type="monster" looktype="322" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Shadow Pupil" type="monster" looktype="551" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Shardhead" type="monster" looktype="261" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Shark" type="monster" looktype="453" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Sharptooth" type="monster" looktype="20" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Sir Valorcrest" type="monster" looktype="287" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Slug" type="monster" looktype="407" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Snake God Essence" type="monster" looktype="356" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Snake Thing" type="monster" looktype="220" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Soilance" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="48" looklegs="57" lookfeet="76" />
+	<creature name="Soldier" type="npc" looktype="134" lookitem="0" lookaddon="0" lookhead="130" lookbody="80" looklegs="155" lookfeet="30" />
+	<creature name="Souleater" type="monster" looktype="355" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Soya" type="npc" looktype="139" lookitem="0" lookaddon="0" lookhead="132" lookbody="79" looklegs="97" lookfeet="132" />
+	<creature name="Spider Queen" type="monster" looktype="219" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Spidris" type="monster" looktype="457" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Spidris Elite" type="monster" looktype="457" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Spitter" type="monster" looktype="461" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Splasher" type="monster" looktype="72" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Squirrel" type="monster" looktype="274" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Stevan" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="114" lookfeet="0" />
+	<creature name="Stone Devoruer" type="monster" looktype="486" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Stonecracker" type="monster" looktype="55" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Strange Slime" type="monster" looktype="19" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Swampling" type="monster" looktype="535" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Swarmer" type="monster" looktype="460" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Swarmer Hatchling" type="monster" looktype="460" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Swolt" type="npc" looktype="160" lookitem="0" lookaddon="0" lookhead="77" lookbody="80" looklegs="79" lookfeet="97" />
+	<creature name="Tanjis" type="monster" looktype="446" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Tarakinner" type="npc" looktype="153" lookitem="0" lookaddon="0" lookhead="115" lookbody="31" looklegs="66" lookfeet="97" />
+	<creature name="Taraksunken" type="npc" looktype="153" lookitem="0" lookaddon="0" lookhead="115" lookbody="31" looklegs="66" lookfeet="97" />
+	<creature name="Target Dummy" type="monster" looktype="304" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Target Fighter" type="monster" looktype="0" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Tarnished Spirit" type="monster" looktype="566" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Terramite" type="monster" looktype="346" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Abomination" type="monster" looktype="238" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Blacksmith" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="57" lookbody="95" looklegs="95" lookfeet="57" />
+	<creature name="The Blightfather" type="monster" looktype="348" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Bloodtusk" type="monster" looktype="199" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Bloodweb" type="monster" looktype="263" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Challenger" type="npc" looktype="9" lookitem="0" lookaddon="0" lookhead="79" lookbody="94" looklegs="114" lookfeet="77" />
+	<creature name="The Collector" type="monster" looktype="261" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Dreadorian" type="monster" looktype="234" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Fastest Turtle" type="monster" looktype="303" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="The Frog Prince" type="monster" looktype="224" lookitem="0" lookaddon="0" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" />
+	<creature name="The Many" type="monster" looktype="121" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Noxious Spawn" type="monster" looktype="220" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Pale Count" type="monster" looktype="558" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="The Snapper" type="monster" looktype="119" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Thorgrin" type="npc" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Thorgrincormaya" type="npc" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Thornfire Wolf" type="monster" looktype="414" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Thorphin" type="npc" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Tirecz" type="monster" looktype="334" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Tom The Fisherman" type="npc" looktype="151" lookitem="0" lookaddon="0" lookhead="79" lookbody="118" looklegs="115" lookfeet="114" />
+	<creature name="Tomb Servant" type="monster" looktype="100" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Tony" type="npc" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<creature name="Tony The Beggar" type="npc" looktype="153" lookitem="0" lookaddon="0" lookhead="58" lookbody="58" looklegs="76" lookfeet="76" />
+	<creature name="Troll Champion" type="monster" looktype="281" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Undead Cavebear" type="monster" looktype="384" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Undead Mine Worker" type="monster" looktype="33" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Undead Prospector" type="monster" looktype="18" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ungreez" type="monster" looktype="35" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Ushuriel" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="0" lookbody="95" looklegs="19" lookfeet="112" />
+	<creature name="Vampire Pig" type="monster" looktype="60" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Vampire Viscount" type="monster" looktype="555" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Versperoth" type="monster" looktype="295" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Vicious Manbat" type="monster" looktype="554" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Vincent" type="npc" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="61" looklegs="25" lookfeet="57" />
+	<creature name="Wailing Widow" type="monster" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Warlord Ruzad" type="monster" looktype="2" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<creature name="Waspoid" type="monster" looktype="462" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Water Buffalo" type="monster" looktype="523" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Weeper" type="monster" looktype="489" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="White Deer" type="monster" looktype="400" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="White Shade" type="monster" looktype="560" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Wiggler" type="monster" looktype="510" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Wild Fire Magic" type="monster" looktype="458" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Wild Fury Magic" type="monster" looktype="445" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Wild Nature Magic" type="monster" looktype="453" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Wild Water Magic" type="monster" looktype="211" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Wilting Leaf Golem" type="monster" looktype="460" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Xenia" type="monster" looktype="137" lookitem="0" lookaddon="0" lookhead="95" lookbody="115" looklegs="115" lookfeet="95" />
+	<creature name="Yaga The Crone" type="monster" looktype="54" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Yalahari" type="monster" looktype="309" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Yalaharian Summoner" type="monster" looktype="324" lookitem="0" lookaddon="0" lookhead="113" lookbody="12" looklegs="55" lookfeet="89" />
+	<creature name="Yielothax" type="monster" looktype="408" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Zevelon Duskbringer" type="monster" looktype="287" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="Zoralurk" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="0" lookbody="98" looklegs="86" lookfeet="94" />
+	<creature name="Zugurosh" type="monster" looktype="12" lookitem="0" lookaddon="0" lookhead="2" lookbody="35" looklegs="57" lookfeet="91" />
+	<creature name="Zulazza the Corruptor" type="monster" looktype="334" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="zurak" type="npc" looktype="114" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<creature name="zurakarena" type="npc" looktype="114" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+</creatures>
