@@ -459,7 +459,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	// Add the grid sizer
 	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
 
-	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER);
+	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxSize(400, 350), wxSUNKEN_BORDER);
 	wxFlexGridSizer* client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
 	client_list_window->SetVirtualSize( 500, 1000 );
@@ -497,6 +497,8 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 	// Set the sizers
 	client_list_window->SetSizer(client_list_sizer);
+	client_list_window->FitInside();
+	client_list_window->SetScrollRate(5, 5);
 	topsizer->Add(client_list_window, wxSizerFlags(1));
 	client_page->SetSizerAndFit(topsizer);
 
