@@ -80,7 +80,9 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 	}
 	
-	dc.DrawText(item_iterator->second->getName(), rect.GetX() + 40, rect.GetY() + 6);
+	wxString label;
+	label << item_iterator->second->getID() << wxT(" - ") << item_iterator->second->getName();
+	dc.DrawText(label, rect.GetX() + 40, rect.GetY() + 6);
 }
 
 wxCoord BrowseTileListBox::OnMeasureItem(size_t n) const
