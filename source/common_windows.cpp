@@ -1615,7 +1615,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 		x_templepos_field->Enable(true);
 		y_templepos_field->Enable(true);
 		z_templepos_field->Enable(true);
-		select_position_button->Enable(false);
+		select_position_button->Enable(true);
 
 		// Change the values to reflect the newd selection
 		Town* town = town_list[new_selection];
@@ -1654,6 +1654,16 @@ void EditTownsDialog::OnListBoxChange(wxCommandEvent& event)
 
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
 {
+	long tmplong;
+	Position templepos;
+	x_templepos_field->GetValue().ToLong(&tmplong);
+	templepos.x = tmplong;
+	y_templepos_field->GetValue().ToLong(&tmplong);
+	templepos.y = tmplong;
+	z_templepos_field->GetValue().ToLong(&tmplong);
+	templepos.z = tmplong;
+
+	gui.CenterOnPosition(templepos);
 }
 
 void EditTownsDialog::OnClickAdd(wxCommandEvent& WXUNUSED(event))
