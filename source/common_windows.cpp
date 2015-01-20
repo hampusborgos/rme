@@ -20,6 +20,8 @@
 #include "common_windows.h"
 #include "numbertextctrl.h"
 
+#include <regex>
+
 #ifdef _MSC_VER
 	#pragma warning(disable:4018) // signed/unsigned mismatch
 #endif
@@ -1458,12 +1460,15 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Temple Position"));
 
 	x_templepos_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(60,20), 0, wxTextValidator(wxFILTER_NUMERIC, &temple_x));
+	x_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(x_templepos_field, 2, wxEXPAND);
 
 	y_templepos_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(60,20), 0, wxTextValidator(wxFILTER_NUMERIC, &temple_y));
+	y_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(y_templepos_field, 2, wxEXPAND);
 
 	z_templepos_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(35,20), 0, wxTextValidator(wxFILTER_NUMERIC, &temple_z));
+	z_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(z_templepos_field, 1, wxEXPAND);
 
 	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, wxT("Select"));
@@ -1650,6 +1655,51 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 void EditTownsDialog::OnListBoxChange(wxCommandEvent& event)
 {
 	UpdateSelection(event.GetSelection());
+}
+
+void EditTownsDialog::OnClipboardText(wxClipboardTextEvent& evt)
+{
+	wxWindow* w = FindFocus();
+	if (w->GetParent() == this && wxTheClipboard->Open())
+	{
+		if (wxTheClipboard->IsSupported(wxDF_TEXT))
+		{
+			const std::regex rex("[0-9]+");
+			std::vector<int> values;
+			wxTextDataObject data;
+			wxTheClipboard->GetData(data);
+			std::string str = data.GetText();
+
+			for (std::sregex_iterator i(str.begin(), str.end(), rex); i != std::sregex_iterator(); ++i)
+			{
+				std::stringstream ssv(*i->begin());
+				int value = 0;
+				ssv >> value;
+				values.push_back(value);
+			}
+
+			if (values.size() == 3)
+			{
+				temple_x.Clear();
+				temple_x << values[0];
+				x_templepos_field->SetValue(temple_x);
+
+				temple_y.Clear();
+				temple_y << values[1];
+				y_templepos_field->SetValue(temple_y);
+
+				temple_z.Clear();
+				temple_z << values[2];
+				z_templepos_field->SetValue(temple_z);
+			}
+			else
+				evt.Skip();
+		}
+
+		wxTheClipboard->Close();
+	}
+	else
+		evt.Skip();
 }
 
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
@@ -1856,6 +1906,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 	// We connect the OnTypeText handler from this window (using us as event object)
 	// this way we don't have to subclass
 	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
+	ctrl->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(GotoPositionDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(ctrl, 2, wxCENTER);
 
 	// Add Y position spin ctrl
@@ -1865,6 +1916,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 		wxDefaultPosition, wxSize(70, -1));
 	
 	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
+	ctrl->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(GotoPositionDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(ctrl, 2, wxCENTER);
 
 	// Add Z position spin ctrl
@@ -1874,6 +1926,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 		wxDefaultPosition, wxSize(40, -1));
 	
 	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
+	ctrl->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(GotoPositionDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(ctrl, 1, wxCENTER);
 
 
@@ -1956,4 +2009,44 @@ void GotoPositionDialog::OnTypeText(wxKeyEvent& evt)
 			// No key we're interested in, ensure event is handled as normal
 			evt.Skip();
 	}
+}
+
+void GotoPositionDialog::OnClipboardText(wxClipboardTextEvent& evt)
+{
+	wxWindow* w = FindFocus();
+	if (w->GetParent() == this && wxTheClipboard->Open())
+	{
+		if (wxTheClipboard->IsSupported(wxDF_TEXT))
+		{
+			const std::regex rex("[0-9]+");
+			std::vector<int> values;
+			wxTextDataObject data;
+			wxTheClipboard->GetData(data);
+			std::string str = data.GetText();
+
+			for (std::sregex_iterator i(str.begin(), str.end(), rex); i != std::sregex_iterator(); ++i)
+			{
+				std::stringstream ssv(*i->begin());
+				int value = 0;
+				ssv >> value;
+				values.push_back(value);
+			}
+
+			if (values.size() == 3)
+			{
+				NumberTextCtrl* x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
+				x->SetIntValue(values[0]);
+				NumberTextCtrl* y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
+				y->SetIntValue(values[1]);
+				NumberTextCtrl* z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
+				z->SetIntValue(values[2]);
+			}
+			else
+				evt.Skip();
+		}
+
+		wxTheClipboard->Close();
+	}
+	else
+		evt.Skip();
 }

@@ -23,6 +23,7 @@
 #include "main.h"
 
 #include "dcbutton.h"
+#include "numbertextctrl.h"
 
 class GameSprite;
 class MapTab;
@@ -286,6 +287,7 @@ public:
 	~GotoPositionDialog() {}
 
 	void OnTypeText(wxKeyEvent&);
+	void OnClipboardText(wxClipboardTextEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 
@@ -338,7 +340,7 @@ public:
 	virtual ~EditTownsDialog();
 
 	void OnListBoxChange(wxCommandEvent&);
-
+	void OnClipboardText(wxClipboardTextEvent&);
 	void OnClickSelectTemplePosition(wxCommandEvent&);
 	void OnClickAdd(wxCommandEvent&);
 	void OnClickRemove(wxCommandEvent&);
