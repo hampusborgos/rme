@@ -21,6 +21,7 @@
 #include "map_drawer.h"
 #include "application.h"
 #include "live_server.h"
+#include "browse_tile_window.h"
 
 #include "doodad_brush.h"
 #include "house_exit_brush.h"
@@ -61,6 +62,8 @@ BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 	EVT_MENU(MAP_POPUP_MENU_COPY_POSITION, MapCanvas::OnCopyPosition)
 	EVT_MENU(MAP_POPUP_MENU_PASTE, MapCanvas::OnPaste)
 	EVT_MENU(MAP_POPUP_MENU_DELETE, MapCanvas::OnDelete)
+	//----
+	EVT_MENU(MAP_POPUP_MENU_BROWSE_TILE, MapCanvas::OnBrowseTile)
 	// ----
 	EVT_MENU(MAP_POPUP_MENU_ROTATE, MapCanvas::OnRotateItem)
 	EVT_MENU(MAP_POPUP_MENU_GOTO, MapCanvas::OnGotoDestination)
@@ -1967,6 +1970,34 @@ void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 	wxTheClipboard->SetData(obj);
 }
 
+void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
+{
+	if (editor.selection.size() != 1)
+		return;
+
+	Tile* tile = editor.selection.getSelectedTile();
+	if (!tile) return;
+	ASSERT(tile->isSelected());
+	Tile* new_tile = tile->deepCopy(editor.map);
+
+	wxDialog* w = new BrowseTileWindow(gui.root, &editor.map, new_tile, wxPoint(cursor_x, cursor_y));
+	
+	int ret = w->ShowModal();
+	if (ret != 0)
+	{
+		Action* action = editor.actionQueue->createAction(ACTION_DELETE_TILES);
+		action->addChange(newd Change(new_tile));
+		editor.addAction(action);
+	}
+	else
+	{
+		// Cancel
+		delete new_tile;
+	}
+	
+	w->Destroy();
+}
+
 void MapCanvas::OnRotateItem(wxCommandEvent& WXUNUSED(event))
 {
 	Tile* tile = editor.selection.getSelectedTile();
@@ -2301,6 +2332,11 @@ void MapPopupMenu::Update()
 
 	wxMenuItem* deleteItem = Append( MAP_POPUP_MENU_DELETE, wxT("&Delete\tDEL"), wxT("Removes all seleceted items"));
 	deleteItem->Enable(anything_selected);
+
+	AppendSeparator();
+
+	wxMenuItem* browseTile = Append(MAP_POPUP_MENU_BROWSE_TILE, wxT("Browse Field"), wxT("Navigate from tile items"));
+	browseTile->Enable(anything_selected);
 
 	if(anything_selected)
 	{
