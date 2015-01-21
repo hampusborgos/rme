@@ -358,14 +358,13 @@ protected:
 
 	wxListBox* town_listbox;
 	wxString town_name, town_id;
-	wxString temple_x, temple_y, temple_z;
 
 	wxTextCtrl* name_field;
 	wxTextCtrl* id_field;
 
-	wxTextCtrl* x_templepos_field;
-	wxTextCtrl* y_templepos_field;
-	wxTextCtrl* z_templepos_field;
+	NumberTextCtrl* x_templepos_field;
+	NumberTextCtrl* y_templepos_field;
+	NumberTextCtrl* z_templepos_field;
 	wxButton* remove_button;
 	wxButton* select_position_button;
 

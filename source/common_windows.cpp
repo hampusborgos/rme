@@ -1459,15 +1459,15 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	// Temple position
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Temple Position"));
 
-	x_templepos_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(60,20), 0, wxTextValidator(wxFILTER_NUMERIC, &temple_x));
+	x_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, map.getWidth(), wxWANTS_CHARS, wxT("X"), wxDefaultPosition, wxSize(60, 20));
 	x_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(x_templepos_field, 2, wxEXPAND);
 
-	y_templepos_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(60,20), 0, wxTextValidator(wxFILTER_NUMERIC, &temple_y));
+	y_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, map.getHeight(), wxWANTS_CHARS, wxT("Y"), wxDefaultPosition, wxSize(60, 20));
 	y_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(y_templepos_field, 2, wxEXPAND);
 
-	z_templepos_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(35,20), 0, wxTextValidator(wxFILTER_NUMERIC, &temple_z));
+	z_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, 15, wxWANTS_CHARS, wxT("Z"), wxDefaultPosition, wxSize(35, 20));
 	z_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(z_templepos_field, 1, wxEXPAND);
 
@@ -1582,12 +1582,9 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 
 			if(old_town) {
 				Position templepos;
-				x_templepos_field->GetValue().ToLong(&tmplong);
-				templepos.x = tmplong;
-				y_templepos_field->GetValue().ToLong(&tmplong);
-				templepos.y = tmplong;
-				z_templepos_field->GetValue().ToLong(&tmplong);
-				templepos.z = tmplong;
+				templepos.x = x_templepos_field->GetIntValue();
+				templepos.y = y_templepos_field->GetIntValue();
+				templepos.z = z_templepos_field->GetIntValue();
 
 				//printf("Changed town %d:%s\n", old_town_id, old_town->getName().c_str());
 				//printf("New values %d:%s:%d:%d:%d\n", town_id, town_name.c_str(), templepos.x, templepos.y, templepos.z);
@@ -1610,10 +1607,6 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 	town_name.Clear();
 	town_id.Clear();
 
-	temple_x.Clear();
-	temple_y.Clear();
-	temple_z.Clear();
-
 	if(town_list.size() > size_t(new_selection))
 	{
 		name_field->Enable(true);
@@ -1632,12 +1625,9 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 		town_id << long(town->getID());
 		id_field->SetValue(town_id);
 
-		temple_x << town->getTemplePosition().x;
-		x_templepos_field->SetValue(temple_x);
-		temple_y << town->getTemplePosition().y;
-		y_templepos_field->SetValue(temple_y);
-		temple_z << town->getTemplePosition().z;
-		z_templepos_field->SetValue(temple_z);
+		x_templepos_field->SetIntValue(town->getTemplePosition().x);
+		y_templepos_field->SetIntValue(town->getTemplePosition().y);
+		z_templepos_field->SetIntValue(town->getTemplePosition().z);
 
 		town_listbox->SetSelection(new_selection);
 	}
@@ -1680,17 +1670,9 @@ void EditTownsDialog::OnClipboardText(wxClipboardTextEvent& evt)
 
 			if (values.size() == 3)
 			{
-				temple_x.Clear();
-				temple_x << values[0];
-				x_templepos_field->SetValue(temple_x);
-
-				temple_y.Clear();
-				temple_y << values[1];
-				y_templepos_field->SetValue(temple_y);
-
-				temple_z.Clear();
-				temple_z << values[2];
-				z_templepos_field->SetValue(temple_z);
+				x_templepos_field->SetIntValue(values[0]);
+				y_templepos_field->SetIntValue(values[1]);
+				z_templepos_field->SetIntValue(values[2]);
 			}
 			else
 				evt.Skip();
@@ -1704,14 +1686,10 @@ void EditTownsDialog::OnClipboardText(wxClipboardTextEvent& evt)
 
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
 {
-	long tmplong;
 	Position templepos;
-	x_templepos_field->GetValue().ToLong(&tmplong);
-	templepos.x = tmplong;
-	y_templepos_field->GetValue().ToLong(&tmplong);
-	templepos.y = tmplong;
-	z_templepos_field->GetValue().ToLong(&tmplong);
-	templepos.z = tmplong;
+	templepos.x = x_templepos_field->GetIntValue();
+	templepos.y = y_templepos_field->GetIntValue();
+	templepos.z = z_templepos_field->GetIntValue();
 
 	gui.CenterOnPosition(templepos);
 }
@@ -1799,12 +1777,9 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			if(old_town)
 			{
 				Position templepos;
-				x_templepos_field->GetValue().ToLong(&tmplong);
-				templepos.x = tmplong;
-				y_templepos_field->GetValue().ToLong(&tmplong);
-				templepos.y = tmplong;
-				z_templepos_field->GetValue().ToLong(&tmplong);
-				templepos.z = tmplong;
+				templepos.x = x_templepos_field->GetIntValue();
+				templepos.y = y_templepos_field->GetIntValue();
+				templepos.z = z_templepos_field->GetIntValue();
 
 				//printf("Changed town %d:%s\n", old_town_id, old_town->getName().c_str());
 				//printf("New values %d:%s:%d:%d:%d\n", town_id, town_name.c_str(), templepos.x, templepos.y, templepos.z);
