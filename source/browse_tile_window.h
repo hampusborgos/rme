@@ -30,8 +30,15 @@ public:
 	BrowseTileWindow(wxWindow* parent, const Map* map, Tile* tile, wxPoint position = wxDefaultPosition);
 	~BrowseTileWindow();
 
+	void OnClickDelete(wxCommandEvent&);
+	void OnClickOK(wxCommandEvent&);
+	void OnClickCancel(wxCommandEvent&);
+
 protected:
 	BrowseTileListBox* item_list;
+	wxStaticText* item_count_txt;
+
+	DECLARE_EVENT_TABLE();
 };
 
 #endif

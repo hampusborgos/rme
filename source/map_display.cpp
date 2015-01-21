@@ -1978,9 +1978,23 @@ void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 	Tile* tile = editor.selection.getSelectedTile();
 	if (!tile) return;
 	ASSERT(tile->isSelected());
+	Tile* new_tile = tile->deepCopy(editor.map);
 
-	wxDialog* w = new BrowseTileWindow(gui.root, &editor.map, tile, wxPoint(cursor_x, cursor_y));
-	w->ShowModal();
+	wxDialog* w = new BrowseTileWindow(gui.root, &editor.map, new_tile, wxPoint(cursor_x, cursor_y));
+	
+	int ret = w->ShowModal();
+	if (ret != 0)
+	{
+		Action* action = editor.actionQueue->createAction(ACTION_DELETE_TILES);
+		action->addChange(newd Change(new_tile));
+		editor.addAction(action);
+	}
+	else
+	{
+		// Cancel
+		delete new_tile;
+	}
+	
 	w->Destroy();
 }
 
