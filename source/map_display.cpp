@@ -1965,9 +1965,14 @@ void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 		clip << "}";
 	}
 
-	wxTextDataObject* obj = new wxTextDataObject();
-	obj->SetText(wxstr(clip.str()));
-	wxTheClipboard->SetData(obj);
+	if (wxTheClipboard->Open())
+	{
+		wxTextDataObject* obj = new wxTextDataObject();
+		obj->SetText(wxstr(clip.str()));
+		wxTheClipboard->SetData(obj);
+
+		wxTheClipboard->Close();
+	}
 }
 
 void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
