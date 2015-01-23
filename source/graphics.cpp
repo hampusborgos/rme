@@ -425,7 +425,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		for(uint32_t i = 0; i < sType->numsprites; ++i)
 		{
 			uint32_t sprite_id;
-			if (datVersion >= DAT_VERSION_96)
+			if (datVersion >= DAT_VERSION_96 || settings.getInteger(Config::SPR_EXTENDED))
 			{
 				file.getU32(sprite_id);
 			}
@@ -1301,23 +1301,27 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 	
 	uint32_t total_pics = 0;
 	sprVersion = client_version->getSprVersionForSignature(sprSignature);
-	switch (sprVersion)
-	{
-		case SPR_VERSION_70:
-		{
-			uint16_t u16 = 0;
-			safe_get(U16, u16);
-			total_pics = u16;
 
-			break;
-		}
-		case SPR_VERSION_96:
-			safe_get(U32, total_pics);
-			break;
+	int sprSizeBytes = 0;
+	if (settings.getInteger(Config::SPR_EXTENDED))
+		sprSizeBytes = 4;
+	else if (sprVersion == SPR_VERSION_70)
+		sprSizeBytes = 2;
+	else if (sprVersion == SPR_VERSION_96)
+		sprSizeBytes = 4;
 
-		default:
-			error = wxT("Unrecognized spr signature");
-			return false;
+	if (sprSizeBytes == 0) {
+		error = wxT("Unrecognized spr signature");
+		return false;
+	}
+
+	if (sprSizeBytes == 2) {
+		uint16_t u16 = 0;
+		safe_get(U16, u16);
+		total_pics = u16;
+	}
+	else if (sprSizeBytes == 4) {
+		safe_get(U32, total_pics);
 	}
 
 	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES) == false) {
@@ -1390,25 +1394,16 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 		return false;
 	unloaded = false;
 
-	switch (sprVersion)
-	{
-		case SPR_VERSION_70:
-			// Sprite ids start at 1, so signature is implicitly skipped
-			// Then skip the 2 byte total_pics
-			if(!fh.seek(2 + sprite_id * sizeof(uint32_t)))
-				return false;
-			break;
+	int sprSizeBytes = 0;
+	if (settings.getInteger(Config::SPR_EXTENDED))
+		sprSizeBytes = 4;
+	else if (sprVersion == SPR_VERSION_70)
+		sprSizeBytes = 2;
+	else if (sprVersion == SPR_VERSION_96)
+		sprSizeBytes = 4;
 
-		case SPR_VERSION_96:
-			// Sprite ids start at 1, so signature is implicitly skipped
-			// Then skip the 4 byte total_pics
-			if(!fh.seek(4 + sprite_id * sizeof(uint32_t)))
-				return false;
-			break;
-
-		default:
-			return false;
-	}
+	if (sprSizeBytes == 0 || !fh.seek(sprSizeBytes + sprite_id * sizeof(uint32_t)))
+		return false;
 
 	uint32_t to_seek = 0;
 	if(fh.getU32(to_seek))
@@ -1943,6 +1938,8 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
+	uint8_t channels = (settings.getInteger(Config::SPR_TRANSPARENCY) == 1) ? 4 : 3;
+
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
 		bytes += 2;
@@ -1975,7 +1972,7 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 			rgb32x32[96*y+x*3+1] = green;
 			rgb32x32[96*y+x*3+2] = blue;
 
-			bytes += 3;
+			bytes += channels;
 
 			x++;
 			if(x >= 32) {
@@ -2032,6 +2029,8 @@ uint8_t* GameSprite::NormalImage::getRGBAData() {
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
+	bool transparency = (settings.getInteger(Config::SPR_TRANSPARENCY) == 1);
+	uint8_t channels = transparency ? 4 : 3;
 
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
@@ -2061,12 +2060,13 @@ uint8_t* GameSprite::NormalImage::getRGBAData() {
 			uint8_t red   = dump[bytes+0];
 			uint8_t green = dump[bytes+1];
 			uint8_t blue  = dump[bytes+2];
+			uint8_t alpha = transparency ? dump[bytes + 3] : 0xFF;
 			rgba32x32[128*y+x*4+0] = red;
 			rgba32x32[128*y+x*4+1] = green;
 			rgba32x32[128*y+x*4+2] = blue;
-			rgba32x32[128*y+x*4+3] = 0xFF; //Opaque pixel
+			rgba32x32[128*y+x*4+3] = alpha; //Opaque pixel
 
-			bytes += 3;
+			bytes += channels;
 
 			x++;
 			if(x >= 32) {

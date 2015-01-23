@@ -456,6 +456,18 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	check_sigs_chkbox->SetValue(settings.getBoolean(Config::CHECK_SIGNATURES));
 	check_sigs_chkbox->SetToolTip(wxT("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs."));
 	
+	// Extended checkbox
+	options_sizer->Add(extended_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Extended")));
+	options_sizer->Add(10, 1);
+	extended_chkbox->SetValue(settings.getInteger(Config::SPR_EXTENDED));
+	extended_chkbox->SetToolTip(wxT("When this option is checked, Spr will be able to load more than 65.535 sprites."));
+
+	// Transparency checkbox
+	options_sizer->Add(transparency_chkbox = newd wxCheckBox(client_page, wxID_ANY, wxT("Transparency")));
+	options_sizer->Add(10, 1);
+	transparency_chkbox->SetValue(settings.getInteger(Config::SPR_TRANSPARENCY));
+	transparency_chkbox->SetToolTip(wxT("When this option is checked, Spr will be able to load sprites with alpha channel."));
+	
 	// Add the grid sizer
 	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
 
@@ -658,6 +670,8 @@ void PreferencesWindow::Apply()
 		version_counter++;
 	}
 	settings.setInteger(Config::CHECK_SIGNATURES, check_sigs_chkbox->GetValue());
+	settings.setInteger(Config::SPR_EXTENDED, extended_chkbox->GetValue());
+	settings.setInteger(Config::SPR_TRANSPARENCY, transparency_chkbox->GetValue());
 
 	// Make sure to reload client paths
 	ClientVersion::saveVersions();
