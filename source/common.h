@@ -59,6 +59,9 @@ int random(int low, int high);
 std::wstring string2wstring(const std::string& utf8string);
 std::string wstring2string(const std::wstring& widestring);
 
+// Gets position values from ClipBoard
+bool posFromClipboard(int& x, int& y, int& z);
+
 // Standard math functions
 template <class T>
 inline T abs(T t) {

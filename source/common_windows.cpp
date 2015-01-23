@@ -20,8 +20,6 @@
 #include "common_windows.h"
 #include "numbertextctrl.h"
 
-#include <regex>
-
 #ifdef _MSC_VER
 	#pragma warning(disable:4018) // signed/unsigned mismatch
 #endif
@@ -1650,38 +1648,18 @@ void EditTownsDialog::OnListBoxChange(wxCommandEvent& event)
 void EditTownsDialog::OnClipboardText(wxClipboardTextEvent& evt)
 {
 	wxWindow* w = FindFocus();
-	if (w->GetParent() == this && wxTheClipboard->Open())
+	if (w->GetParent() == this)
 	{
-		if (wxTheClipboard->IsSupported(wxDF_TEXT))
+		Position pos;
+		if (posFromClipboard(pos.x, pos.y, pos.z))
 		{
-			const std::regex rex("[0-9]+");
-			std::vector<int> values;
-			wxTextDataObject data;
-			wxTheClipboard->GetData(data);
-			std::string str = std::string(data.GetText().mb_str());
-
-			for (std::sregex_iterator i(str.begin(), str.end(), rex); i != std::sregex_iterator(); ++i)
-			{
-				std::stringstream ssv(*i->begin());
-				int value = 0;
-				ssv >> value;
-				values.push_back(value);
-			}
-
-			if (values.size() == 3)
-			{
-				x_templepos_field->SetIntValue(values[0]);
-				y_templepos_field->SetIntValue(values[1]);
-				z_templepos_field->SetIntValue(values[2]);
-			}
-			else
-				evt.Skip();
+			x_templepos_field->SetIntValue(pos.x);
+			y_templepos_field->SetIntValue(pos.y);
+			z_templepos_field->SetIntValue(pos.z);
 		}
-
-		wxTheClipboard->Close();
+		else
+			evt.Skip();
 	}
-	else
-		evt.Skip();
 }
 
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
@@ -1989,39 +1967,19 @@ void GotoPositionDialog::OnTypeText(wxKeyEvent& evt)
 void GotoPositionDialog::OnClipboardText(wxClipboardTextEvent& evt)
 {
 	wxWindow* w = FindFocus();
-	if (w->GetParent() == this && wxTheClipboard->Open())
+	if (w->GetParent() == this)
 	{
-		if (wxTheClipboard->IsSupported(wxDF_TEXT))
+		Position pos;
+		if (posFromClipboard(pos.x, pos.y, pos.z))
 		{
-			const std::regex rex("[0-9]+");
-			std::vector<int> values;
-			wxTextDataObject data;
-			wxTheClipboard->GetData(data);
-			std::string str = std::string(data.GetText().mb_str());
-
-			for (std::sregex_iterator i(str.begin(), str.end(), rex); i != std::sregex_iterator(); ++i)
-			{
-				std::stringstream ssv(*i->begin());
-				int value = 0;
-				ssv >> value;
-				values.push_back(value);
-			}
-
-			if (values.size() == 3)
-			{
-				NumberTextCtrl* x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
-				x->SetIntValue(values[0]);
-				NumberTextCtrl* y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
-				y->SetIntValue(values[1]);
-				NumberTextCtrl* z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
-				z->SetIntValue(values[2]);
-			}
-			else
-				evt.Skip();
+			NumberTextCtrl* x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
+			x->SetIntValue(pos.x);
+			NumberTextCtrl* y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
+			y->SetIntValue(pos.y);
+			NumberTextCtrl* z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
+			z->SetIntValue(pos.z);
 		}
-
-		wxTheClipboard->Close();
+		else
+			evt.Skip();
 	}
-	else
-		evt.Skip();
 }

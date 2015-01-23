@@ -181,3 +181,53 @@ std::string wstring2string(const std::wstring& widestring) {
 	wxString s(widestring.c_str());
 	return std::string((const char*)s.mb_str(wxConvUTF8));
 }
+
+bool posFromClipboard(int& x, int& y, int& z)
+{
+	bool done = false;
+
+	if (wxTheClipboard->Open())
+	{
+		if (wxTheClipboard->IsSupported(wxDF_TEXT))
+		{
+			std::vector<int> values;
+			wxTextDataObject data;
+			wxTheClipboard->GetData(data);
+			wxString text = data.GetText();
+
+			if (text.size() < 50)
+			{
+				bool r = false;
+				wxString sv;
+
+				for (size_t s = 0; s < text.size(); ++s)
+				{
+					if (text[s] >= '0' && text[s] <= '9')
+					{
+						sv << text[s];
+						r = true;
+					}
+					else if (r)
+					{
+						values.push_back(ws2i(sv));
+						sv.Clear();
+						r = false;
+
+						if (values.size() >= 3)
+							break;
+					}
+				}
+			}
+
+			if (values.size() == 3)
+			{
+				x = values[0];
+				y = values[1];
+				z = values[2];
+				done = true;
+			}
+		}
+		wxTheClipboard->Close();
+	}
+	return done;
+}
