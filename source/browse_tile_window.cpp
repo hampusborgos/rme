@@ -64,20 +64,14 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	if (sprite)
 		sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
-	if (int(n) == GetSelection())
-	{
-		dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
-	}
-	else {
-		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
-	}
-
 	if (IsSelected(n))
 	{
 		item->select();
+		dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
 	}
 	else {
 		item->deselect();
+		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 	}
 	
 	wxString label;
