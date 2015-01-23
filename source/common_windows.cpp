@@ -1658,7 +1658,7 @@ void EditTownsDialog::OnClipboardText(wxClipboardTextEvent& evt)
 			std::vector<int> values;
 			wxTextDataObject data;
 			wxTheClipboard->GetData(data);
-			std::string str = data.GetText();
+			std::string str = std::string(data.GetText().mb_str());
 
 			for (std::sregex_iterator i(str.begin(), str.end(), rex); i != std::sregex_iterator(); ++i)
 			{
@@ -1997,7 +1997,7 @@ void GotoPositionDialog::OnClipboardText(wxClipboardTextEvent& evt)
 			std::vector<int> values;
 			wxTextDataObject data;
 			wxTheClipboard->GetData(data);
-			std::string str = data.GetText();
+			std::string str = std::string(data.GetText().mb_str());
 
 			for (std::sregex_iterator i(str.begin(), str.end(), rex); i != std::sregex_iterator(); ++i)
 			{
