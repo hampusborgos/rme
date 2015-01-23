@@ -1416,7 +1416,7 @@ BEGIN_EVENT_TABLE(EditTownsDialog, wxDialog)
 END_EVENT_TABLE()
 
 EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Towns"), wxDefaultPosition, wxSize(250,260)),
+	wxDialog(parent, wxID_ANY, wxT("Towns"), wxDefaultPosition, wxSize(280,330)),
 	editor(editor)
 {
 	Map& map = editor.map;
@@ -1438,48 +1438,48 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	}
 
 	// Town list
-	town_listbox = newd wxListBox(this, EDIT_TOWNS_LISTBOX, wxDefaultPosition, wxSize(240,80));
-	sizer->Add(town_listbox, 1, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 20);
+	town_listbox = newd wxListBox(this, EDIT_TOWNS_LISTBOX, wxDefaultPosition, wxSize(240, 100));
+	sizer->Add(town_listbox, 1, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 10);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, EDIT_TOWNS_ADD, wxT("Add")));
-	tmpsizer->Add(remove_button = newd wxButton(this, EDIT_TOWNS_REMOVE, wxT("Remove")));
-	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 20);
+	tmpsizer->Add(newd wxButton(this, EDIT_TOWNS_ADD, wxT("Add")), 0, wxTOP, 5);
+	tmpsizer->Add(remove_button = newd wxButton(this, EDIT_TOWNS_REMOVE, wxT("Remove")), 0, wxRIGHT | wxTOP, 5);
+	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 	// House options
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Name / ID"));
 	name_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(190,20), 0, wxTextValidator(wxFILTER_ASCII, &town_name));
-	tmpsizer->Add(name_field, 3, wxEXPAND);
+	tmpsizer->Add(name_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
 	id_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(40,20), 0, wxTextValidator(wxFILTER_NUMERIC, &town_id));
 	id_field->Enable(false);
-	tmpsizer->Add(id_field, 1, wxEXPAND);
-	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 20);
+	tmpsizer->Add(id_field, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+	sizer->Add(tmpsizer, 0, wxEXPAND | wxALL, 10);
 
 	// Temple position
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Temple Position"));
 
 	x_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, map.getWidth(), wxWANTS_CHARS, wxT("X"), wxDefaultPosition, wxSize(60, 20));
 	x_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(x_templepos_field, 2, wxEXPAND);
+	tmpsizer->Add(x_templepos_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
 	y_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, map.getHeight(), wxWANTS_CHARS, wxT("Y"), wxDefaultPosition, wxSize(60, 20));
 	y_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(y_templepos_field, 2, wxEXPAND);
+	tmpsizer->Add(y_templepos_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
 	z_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, 15, wxWANTS_CHARS, wxT("Z"), wxDefaultPosition, wxSize(35, 20));
 	z_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(z_templepos_field, 1, wxEXPAND);
+	tmpsizer->Add(z_templepos_field, 1, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
 	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, wxT("Select"));
-	tmpsizer->Add(select_position_button, 0);
-	sizer->Add(tmpsizer, 0, wxEXPAND | wxALL, 20);
+	tmpsizer->Add(select_position_button, 0, wxLEFT | wxRIGHT | wxBOTTOM, 5);
+	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 	// OK/Cancel buttons
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
 	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
 	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
-	sizer->Add(tmpsizer, 0, wxCENTER | wxLEFT | wxRIGHT | wxBOTTOM, 20);
+	sizer->Add(tmpsizer, 0, wxCENTER | wxALL, 10);
 
 	SetSizerAndFit(sizer);
 
