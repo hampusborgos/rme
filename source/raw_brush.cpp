@@ -38,7 +38,7 @@ uint16_t RAWBrush::getItemID() const {
 
 std::string RAWBrush::getName() const {
 	if(itemtype)
-		return itemtype->name + ":" + i2s(itemtype->id) + itemtype->editorsuffix;
+		return i2s(itemtype->id) + " - " + itemtype->name + itemtype->editorsuffix;
 	return "RAWBrush";
 }
 
