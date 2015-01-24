@@ -62,6 +62,9 @@ std::string wstring2string(const std::wstring& widestring);
 // Gets position values from ClipBoard
 bool posFromClipboard(int& x, int& y, int& z);
 
+// Returns 'yes' if the defined value is true or 'no' if it is false.
+wxString b2yn(bool v);
+
 // Standard math functions
 template <class T>
 inline T abs(T t) {
