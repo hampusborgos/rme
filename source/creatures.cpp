@@ -159,7 +159,8 @@ CreatureType* CreatureType::loadFromOTXML(const FileName& filename, pugi::xml_do
 			ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
 		}
 
-		if ((attribute = optionNode.attribute("item")) || (attribute = optionNode.attribute("lookex"))) {
+        if ((attribute = optionNode.attribute("item")) || (attribute = optionNode.attribute("lookex")) 
+                || (attribute = optionNode.attribute("typeex"))) {
 			ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
 		}
 
