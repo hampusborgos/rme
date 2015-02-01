@@ -401,18 +401,18 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			warnings.push_back(msg);
 		}
 
-		bool isCreature = (id > item_count);
+		bool frameGroups = (datVersion == DAT_VERSION_1056 && id > item_count);
 		uint8_t groupCount = 1;
 
 		// Reads the group count
-		if (isCreature && datVersion == DAT_VERSION_1056) {
+		if (frameGroups) {
 			file.getU8(groupCount);
 		}
 
 		for (uint32_t k = 0; k < groupCount; ++k)
 		{
 			// Skipping the group type
-			if (isCreature && datVersion == DAT_VERSION_1056) {
+			if (frameGroups) {
 				file.skip(1);
 			}
 
