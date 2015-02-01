@@ -251,8 +251,12 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 				client_data.datVersion = DAT_VERSION_1010;
 			} else if (datVersion == "10.21") {
 				client_data.datVersion = DAT_VERSION_1021;
+			} else if (datVersion == "10.50") {
+				client_data.datVersion = DAT_VERSION_1050;
+			} else if (datVersion == "10.56") {
+				client_data.datVersion = DAT_VERSION_1056;
 			} else {
-				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6, 7.8, 8.6, 9.6, 10.10 and 10.21 are supported)"));
+				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6, 7.8, 8.6, 9.6, 10.10, 10.21, 10.50 and 10.56 are supported)"));
 				continue;
 			}
 

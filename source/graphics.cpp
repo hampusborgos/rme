@@ -376,7 +376,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			// Same .dat loader, the change is only sprite id -> u32
 		case DAT_VERSION_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
 		case DAT_VERSION_1010: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1010; break;
-		case DAT_VERSION_1021: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
+		case DAT_VERSION_1021:
+		case DAT_VERSION_1050:
+		case DAT_VERSION_1056: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
 		default:
 			error = wxT("Unknown .dat format version.");
 			return false;
@@ -399,50 +401,73 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			warnings.push_back(msg);
 		}
 
-		// Size and GameSprite data
-		file.getByte(sType->width);
-		file.getByte(sType->height);
-		if((sType->width > 1) || (sType->height > 1)){
-			file.skip(1); // No idea what this is....
+		bool isCreature = (id > item_count);
+		uint8_t groupCount = 1;
+
+		// Reads the group count
+		if (isCreature && datVersion == DAT_VERSION_1056) {
+			file.getU8(groupCount);
 		}
 
-		file.getU8(sType->frames); // Number of blendframes (some sprites consist of several merged sprites)
-		file.getU8(sType->xdiv);
-		file.getU8(sType->ydiv);
-		if(datVersion <= DAT_VERSION_74)
-			sType->zdiv = 1;
-		else
-			file.getU8(sType->zdiv); // Is this ever used? Maybe it means something else?
-		file.getU8(sType->animation_length); // Length of animation
-
-		sType->numsprites =
-			(int)sType->width * (int)sType->height *
-			(int)sType->frames *
-			(int)sType->xdiv * (int)sType->ydiv * sType->zdiv *
-			(int)sType->animation_length;
-
-		// Read the sprite ids
-		for(uint32_t i = 0; i < sType->numsprites; ++i)
+		for (uint32_t k = 0; k < groupCount; ++k)
 		{
-			uint32_t sprite_id;
-			if (datVersion >= DAT_VERSION_96 || settings.getInteger(Config::SPR_EXTENDED))
-			{
-				file.getU32(sprite_id);
+			// Skipping the group type
+			if (isCreature && datVersion == DAT_VERSION_1056) {
+				file.skip(1);
 			}
+
+			// Size and GameSprite data
+			file.getByte(sType->width);
+			file.getByte(sType->height);
+
+			// Skipping the exact size
+			if ((sType->width > 1) || (sType->height > 1)){
+				file.skip(1);
+			}
+
+			file.getU8(sType->frames); // Number of blendframes (some sprites consist of several merged sprites)
+			file.getU8(sType->xdiv);
+			file.getU8(sType->ydiv);
+			if (datVersion <= DAT_VERSION_74)
+				sType->zdiv = 1;
 			else
-			{
-				uint16_t u16 = 0;
-				file.getU16(u16);
-				sprite_id = u16;
+				file.getU8(sType->zdiv);
+			file.getU8(sType->animation_length); // Length of animation
+
+			// Skipping the frame duration
+			if (datVersion >= DAT_VERSION_1050 && sType->animation_length > 1) {
+				file.skip(6 + 8 * sType->animation_length);
 			}
-			
-			if(image_space[sprite_id] == nullptr)
+
+			sType->numsprites =
+				(int)sType->width * (int)sType->height *
+				(int)sType->frames *
+				(int)sType->xdiv * (int)sType->ydiv * sType->zdiv *
+				(int)sType->animation_length;
+
+			// Read the sprite ids
+			for (uint32_t i = 0; i < sType->numsprites; ++i)
 			{
-				GameSprite::NormalImage* img = newd GameSprite::NormalImage();
-				img->id = sprite_id;
-				image_space[sprite_id] = img;
+				uint32_t sprite_id;
+				if (datVersion >= DAT_VERSION_96 || settings.getInteger(Config::SPR_EXTENDED))
+				{
+					file.getU32(sprite_id);
+				}
+				else
+				{
+					uint16_t u16 = 0;
+					file.getU16(u16);
+					sprite_id = u16;
+				}
+
+				if (image_space[sprite_id] == nullptr)
+				{
+					GameSprite::NormalImage* img = newd GameSprite::NormalImage();
+					img->id = sprite_id;
+					image_space[sprite_id] = img;
+				}
+				sType->spriteList.push_back(static_cast<GameSprite::NormalImage*>(image_space[sprite_id]));
 			}
-			sType->spriteList.push_back(static_cast<GameSprite::NormalImage*>(image_space[sprite_id]));
 		}
 		++id;
 	}
