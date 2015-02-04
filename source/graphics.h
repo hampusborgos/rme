@@ -66,8 +66,8 @@ public:
 	GameSprite();
 	~GameSprite();
 
-	GLuint getHardwareID(int _x, int _y, int _frame, int _subtype, int _xdiv, int _ydiv, int _zdiv, int _timeframe);
-	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _timeframe); // CreatureDatabase
+	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
+	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 
 	virtual void unloadDC();
@@ -157,11 +157,11 @@ public:
 	// GameSprite info
 	uint8_t height;
 	uint8_t width;
+	uint8_t layers;
+	uint8_t pattern_x;
+	uint8_t pattern_y;
+	uint8_t pattern_z;
 	uint8_t frames;
-	uint8_t xdiv;
-	uint8_t ydiv;
-	uint8_t zdiv;
-	uint8_t animation_length;
 	uint32_t numsprites;
 
 	uint16_t draw_height;

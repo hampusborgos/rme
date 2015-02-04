@@ -401,18 +401,18 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			warnings.push_back(msg);
 		}
 
-		bool frameGroups = (datVersion == DAT_VERSION_1056 && id > item_count);
-		uint8_t groupCount = 1;
+		bool has_frame_groups = (datVersion == DAT_VERSION_1056 && id > item_count);
+		uint8_t group_count = 1;
 
 		// Reads the group count
-		if (frameGroups) {
-			file.getU8(groupCount);
+		if (has_frame_groups) {
+			file.getU8(group_count);
 		}
 
-		for (uint32_t k = 0; k < groupCount; ++k)
+		for (uint32_t k = 0; k < group_count; ++k)
 		{
 			// Skipping the group type
-			if (frameGroups) {
+			if (has_frame_groups) {
 				file.skip(1);
 			}
 
@@ -425,25 +425,25 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 				file.skip(1);
 			}
 
-			file.getU8(sType->frames); // Number of blendframes (some sprites consist of several merged sprites)
-			file.getU8(sType->xdiv);
-			file.getU8(sType->ydiv);
+			file.getU8(sType->layers); // Number of blendframes (some sprites consist of several merged sprites)
+			file.getU8(sType->pattern_x);
+			file.getU8(sType->pattern_y);
 			if (datVersion <= DAT_VERSION_74)
-				sType->zdiv = 1;
+				sType->pattern_z = 1;
 			else
-				file.getU8(sType->zdiv);
-			file.getU8(sType->animation_length); // Length of animation
+				file.getU8(sType->pattern_z);
+			file.getU8(sType->frames); // Length of animation
 
 			// Skipping the frame duration
-			if (datVersion >= DAT_VERSION_1050 && sType->animation_length > 1) {
-				file.skip(6 + 8 * sType->animation_length);
+			if (datVersion >= DAT_VERSION_1050 && sType->frames > 1) {
+				file.skip(6 + 8 * sType->frames);
 			}
 
 			sType->numsprites =
 				(int)sType->width * (int)sType->height *
-				(int)sType->frames *
-				(int)sType->xdiv * (int)sType->ydiv * sType->zdiv *
-				(int)sType->animation_length;
+				(int)sType->layers *
+				(int)sType->pattern_x * (int)sType->pattern_y * sType->pattern_z *
+				(int)sType->frames;
 
 			// Read the sprite ids
 			for (uint32_t i = 0; i < sType->numsprites; ++i)
@@ -1518,11 +1518,11 @@ GameSprite::GameSprite() :
 	id(0),
 	height(0),
 	width(0),
+	layers(0),
+	pattern_x(0),
+	pattern_y(0),
+	pattern_z(0),
 	frames(0),
-	xdiv(0),
-	ydiv(0),
-	zdiv(0),
-	animation_length(0),
 	numsprites(0),
 	draw_height(0),
 	drawoffset_x(0),
@@ -1571,12 +1571,12 @@ uint8_t GameSprite::getMiniMapColor() const {
 	return minimap_color;
 }
 
-GLuint GameSprite::getHardwareID(int _x, int _y, int _frame, int _count, int _xdiv, int _ydiv, int _zdiv, int _timeframe) {
+GLuint GameSprite::getHardwareID(int _x, int _y, int _layer, int _count, int _pattern_x, int _pattern_y, int _pattern_z, int _frame) {
 	uint32_t v;
 	if(_count >= 0 && height <= 1 && width <= 1) {
 		v = _count;
 	} else {
-		v = ((((((_timeframe)*ydiv+_ydiv)*xdiv+_xdiv)*frames+_frame)*height+_y)*width+_x);
+		v = ((((((_frame)*pattern_y+_pattern_y)*pattern_x+_pattern_x)*layers+_layer)*height+_y)*width+_x);
 	}
 	if(v >= numsprites) {
 		if(numsprites == 1) {
@@ -1612,9 +1612,9 @@ GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const 
 	return img;
 }
 
-GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _timeframe) {
+GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame) {
 	uint32_t v;
-	v = ((((_dir) * frames) * height+_y) * width+_x);
+	v = ((((_dir) * layers) * height+_y) * width+_x);
 	if(v >= numsprites) {
 		if(numsprites == 1) {
 			v = 0;
@@ -1622,7 +1622,7 @@ GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit
 			v %= numsprites;
 		}
 	}
-	if(frames > 1) { // Template
+	if(layers > 1) { // Template
 		TemplateImage* img = getTemplateImage(v, _outfit);
 		return img->getHardwareID();
 	}
@@ -1641,7 +1641,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[2*2*32*32*3];
 			memset(rgb, bgshade, 2*2*32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32[2][2] = {
 					{spriteList[(cf*2+1)*2+1]->getRGBData(),spriteList[(cf*2+1)*2]->getRGBData()},
 					{spriteList[cf*4+1]->getRGBData(),spriteList[cf*4]->getRGBData()}
@@ -1679,7 +1679,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[2*2*32*32*3];
 			memset(rgb, bgshade, 2*2*32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32[2] = {
 					spriteList[cf*2+1]->getRGBData(),
 					spriteList[cf*2+0]->getRGBData()
@@ -1712,7 +1712,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[2*2*32*32*3];
 			memset(rgb, bgshade, 2*2*32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32[2] = {
 					spriteList[cf*2+1]->getRGBData(),
 					spriteList[cf*2+0]->getRGBData()
@@ -1745,7 +1745,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[32*32*3];
 			memset(rgb, bgshade, 32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32 = spriteList[cf]->getRGBData();
 				if(!rgb32x32) continue;
 
