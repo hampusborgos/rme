@@ -107,18 +107,18 @@ struct OtbVersion
 };
 
 // Formats for the .dat data file for Tibia
-enum DatVersion
+enum DatFormat
 {
-	DAT_VERSION_UNKNOWN,
-	DAT_VERSION_74,
-	DAT_VERSION_76,
-	DAT_VERSION_78,
-	DAT_VERSION_86,
-	DAT_VERSION_96,
-	DAT_VERSION_1010,
-	DAT_VERSION_1021,
-	DAT_VERSION_1050,
-	DAT_VERSION_1056
+	DAT_FORMAT_UNKNOWN,
+	DAT_FORMAT_74,
+	DAT_FORMAT_76,
+	DAT_FORMAT_78,
+	DAT_FORMAT_86,
+	DAT_FORMAT_96,
+	DAT_FORMAT_1010,
+	DAT_FORMAT_1021,
+	DAT_FORMAT_1050,
+	DAT_FORMAT_1056
 };
 
 // DAT flags
@@ -205,19 +205,10 @@ enum Ver1021_DatFlags
 	VER_1021_FLAG_LAST = 255
 };
 
-// Possible format for the .spr data file for Tibia
-enum SprVersion
-{
-	SPR_VERSION_UNKNOWN,
-	SPR_VERSION_70,
-	SPR_VERSION_96, // 32 bit sprids
-};
-
 // Represents a client file version
 struct ClientData
 {
-	DatVersion datVersion;
-	SprVersion sprVersion;
+	DatFormat datFormat;
 	uint32_t datSignature;
 	uint32_t sprSignature;
 };
@@ -258,8 +249,7 @@ public:
 	ClientVersionID getID() const;
 	MapVersionID getPrefferedMapVersionID() const;
 	OtbVersion getOTBVersion() const;
-	DatVersion getDatVersionForSignature(uint32_t signature) const;
-	SprVersion getSprVersionForSignature(uint32_t signature) const;
+	DatFormat getDatFormatForSignature(uint32_t signature) const;
 	ClientVersionList getExtensionsSupported() const;
 
 	FileName getDataPath() const;

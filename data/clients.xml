@@ -97,7 +97,7 @@
 		and later will be loaded
 
 		data - The .dat / .spr id (first four bytes). Used to recognize
-		the client data files. The datversion / sprversion is what version
+		the client data files. The format is what version
 		of the loader the editor should use (ie. last time data format
 		changed)
 -->
@@ -105,26 +105,26 @@
 		<client name="7.4" otb="7.40" visible="true" data_directory="740">
 			<otbm version="1"/>
 			<extensions from="7.4" to="7.4"/>
-			<data datversion="7.4" sprversion="7.0" dat="0x41BF619C" spr="0x41B9EA86"/>
+			<data format="7.4" dat="0x41BF619C" spr="0x41B9EA86"/>
 		</client>
 
 		<client name="7.6" otb="7.60" visible="true" data_directory="760">
 			<otbm version="1"/>
 			<extensions from="7.6" to="7.6"/>
-			<data datversion="7.6" sprversion="7.0" dat="0x439D5A33" spr="0x439852BE"/>
+			<data format="7.6" dat="0x439D5A33" spr="0x439852BE"/>
 		</client>
 
 		<client name="8.00" otb="8.00" visible="true" data_directory="800">
 			<otbm version="2"/>
 			<extensions from="8.00" to="8.00"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x467FD7E6" spr="0x467F9E74"/>
+			<data format="7.8" dat="0x467FD7E6" spr="0x467F9E74"/>
 		</client>
 
 		<client name="8.10" otb="8.10" visible="true" data_directory="810">
 			<otbm version="2"/>
 			<extensions from="8.10" to="8.10"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x475D3747" spr="0x475D0B01"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x47F60E37" spr="0x47EBB9B2"/>
+			<data format="7.8" dat="0x475D3747" spr="0x475D0B01"/>
+			<data format="7.8" dat="0x47F60E37" spr="0x47EBB9B2"/>
 		</client>
 
 		<client name="8.20 - 8.31" otb="8.20" visible="true" data_directory="820">
@@ -132,136 +132,136 @@
 			<extensions from="8.20 - 8.31" to="8.20 - 8.31"/>
 			<fucked_up_charges/> <!-- Special tag, only for this version -->
 
-			<data datversion="7.8" sprversion="7.0" dat="0x486905AA" spr="0x4868ECC9"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x486CCA2B" spr="0x4868ECC9"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x489980A1" spr="0x489980A5"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x48DA1FB6" spr="0x48C8E712"/>
+			<data format="7.8" dat="0x486905AA" spr="0x4868ECC9"/>
+			<data format="7.8" dat="0x486CCA2B" spr="0x4868ECC9"/>
+			<data format="7.8" dat="0x489980A1" spr="0x489980A5"/>
+			<data format="7.8" dat="0x48DA1FB6" spr="0x48C8E712"/>
 		</client>
 
 		<client name="8.40" otb="8.40" visible="true" data_directory="840">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="8.40"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x493D607A" spr="0x493D4E7C"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x49B7CC19" spr="0x49B140EA"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x49C233C9" spr="0x49B140EA"/>
+			<data format="7.8" dat="0x493D607A" spr="0x493D4E7C"/>
+			<data format="7.8" dat="0x49B7CC19" spr="0x49B140EA"/>
+			<data format="7.8" dat="0x49C233C9" spr="0x49B140EA"/>
 		</client>
 
 		<client name="8.50" otb="8.50" visible="true" data_directory="850">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="8.50"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4A49C5EB" spr="0x4A44FD4E"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4A4CC0DC" spr="0x4A44FD4E"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4AE97492" spr="0x4A44FD4E"/>
+			<data format="7.8" dat="0x4A49C5EB" spr="0x4A44FD4E"/>
+			<data format="7.8" dat="0x4A4CC0DC" spr="0x4A44FD4E"/>
+			<data format="7.8" dat="0x4AE97492" spr="0x4A44FD4E"/>
 		</client>
 
 		<client name="8.54 (bad)" otb="8.54 (bad)" visible="false" data_directory="854">
 			<otbm version="3"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4B28B89E" spr="0x4B1E2C87"/>
+			<data format="7.8" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
+			<data format="7.8" dat="0x4B28B89E" spr="0x4B1E2C87"/>
 		</client>
 
 		<client name="8.54" otb="8.54" visible="true" data_directory="854">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="8.54"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
-			<data datversion="7.8" sprversion="7.0" dat="0x4B28B89E" spr="0x4B1E2C87"/>
+			<data format="7.8" dat="0x4B1E2CAA" spr="0x4B1E2C87"/>
+			<data format="7.8" dat="0x4B28B89E" spr="0x4B1E2C87"/>
 		</client>
 
 		<client name="8.60 (old)" otb="8.60 (old)" visible="false" data_directory="860">
 			<otbm version="3"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4C2C7993" spr="0x4C220594"/>
+			<data format="8.6" dat="0x4C2C7993" spr="0x4C220594"/>
 		</client>
 
 		<client name="8.60" otb="8.60" visible="true" data_directory="860">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="8.60"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4C2C7993" spr="0x4C220594"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4C6A4CBC" spr="0x4C63F145"/>
+			<data format="8.6" dat="0x4C2C7993" spr="0x4C220594"/>
+			<data format="8.6" dat="0x4C6A4CBC" spr="0x4C63F145"/>
 		</client>
 
 		<client name="8.70" otb="8.70" visible="true" data_directory="870">
 			<otbm version="3"/>
 			<otbm version="4"/>
 			<extensions from="8.20 - 8.31" to="8.70"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4CFE22C5" spr="0x4CFD078A"/>
+			<data format="8.6" dat="0x4CFE22C5" spr="0x4CFD078A"/>
 		</client>
 
 		<client name="9.10" otb="9.10" visible="true" data_directory="910">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.10"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4E12DAFF" spr="0x4E12DB27"/>
+			<data format="8.6" dat="0x4E12DAFF" spr="0x4E12DB27"/>
 		</client>
 
 		<client name="9.20 - 9.31" otb="9.20" visible="true" data_directory="920">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.20 - 9.31"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4E807C08" spr="0x4E807C23"/>
+			<data format="8.6" dat="0x4E807C08" spr="0x4E807C23"/>
 		</client>
 
 		<client name="9.46" otb="9.46" visible="true" data_directory="946">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.46"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4F6B341F" spr="0x4F5DCEF7"/>
+			<data format="8.6" dat="0x4F6B341F" spr="0x4F5DCEF7"/>
 		</client>
 
 		<client name="9.54" otb="9.54" visible="true" data_directory="954">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.54"/>
-			<data datversion="8.6" sprversion="7.0" dat="0x4FD5956B" spr="0x4FD595B7"/>
+			<data format="8.6" dat="0x4FD5956B" spr="0x4FD595B7"/>
 		</client>
 
 		<client name="9.60" otb="9.60" visible="true" data_directory="960">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.60"/>
-			<data datversion="9.6" sprversion="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/>
+			<data format="9.6" dat="0x4FFA74CC" spr="0x4FFA74F9"/>
 		</client>
 
 		<client name="9.70" otb="9.70" visible="true" data_directory="970">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.70"/>
-			<data datversion="9.6" sprversion="9.6" dat="0x5072A490" spr="0x5072A567"/>
+			<data format="9.6" dat="0x5072A490" spr="0x5072A567"/>
 		</client>
 
 		<client name="9.86" otb="9.86" visible="true" data_directory="986">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="9.86"/>
-			<data datversion="9.6" sprversion="9.6" dat="0x5170E904" spr="0x5170E96F"/>
+			<data format="9.6" dat="0x5170E904" spr="0x5170E96F"/>
 		</client>
 		
 		<client name="10.10" otb="10.10" visible="true" data_directory="1010">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.10"/>
-			<data datversion="10.10" sprversion="9.6" dat="0x51E3F8C3" spr="0x51E3F8E9"/>
+			<data format="10.10" dat="0x51E3F8C3" spr="0x51E3F8E9"/>
 		</client>
 		
 		<client name="10.20" otb="10.20" visible="true" data_directory="1020">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.20"/>
-			<data datversion="10.10" sprversion="9.6" dat="0x5236F129" spr="0x5236F14F"/>
+			<data format="10.10" dat="0x5236F129" spr="0x5236F14F"/>
 		</client>
 		
 		<client name="10.21" otb="10.21" visible="true" data_directory="1021">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.21"/>
-			<data datversion="10.21" sprversion="9.6" dat="0x526A5068" spr="0x526A5090"/>
+			<data format="10.21" dat="0x526A5068" spr="0x526A5090"/>
 		</client>
 		
 		<client name="10.30" otb="10.30" visible="true" data_directory="1030">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.30"/>
-			<data datversion="10.21" sprversion="9.6" dat="0x52A59036" spr="0x52A5905F"/>
+			<data format="10.21" dat="0x52A59036" spr="0x52A5905F"/>
 		</client>
 		
 		<client name="10.31" otb="10.31" visible="true" data_directory="1031">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.31"/>
-			<data datversion="10.21" sprversion="9.6" dat="0x52AED581" spr="0x52AED5A7"/>
+			<data format="10.21" dat="0x52AED581" spr="0x52AED5A7"/>
 		</client>
 		
 		<client name="10.35" otb="10.35" default="true" visible="true" data_directory="1035">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.35"/>
-			<data datversion="10.21" sprversion="9.6" dat="0x52FDFC2C" spr="0x52FDFC54"/>
+			<data format="10.21" dat="0x52FDFC2C" spr="0x52FDFC54"/>
 		</client>
 	</clients>
 

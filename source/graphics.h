@@ -226,10 +226,10 @@ private:
 	ImageMap image_space;
 	std::deque<GameSprite*> cleanup_list;
 
-	DatVersion datVersion;
-	SprVersion sprVersion;
+	DatFormat dat_format;
 	uint16_t item_count;
 	uint16_t creature_count;
+	bool is_extended;
 
 	int loaded_textures;
 	int lastclean;

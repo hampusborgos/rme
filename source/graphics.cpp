@@ -59,8 +59,8 @@ static uint32_t TemplateOutfitLookupTable[] = {
 GraphicManager::GraphicManager() :
 	client_version(nullptr),
 	unloaded(true),
-	datVersion(DAT_VERSION_UNKNOWN),
-	sprVersion(SPR_VERSION_UNKNOWN),
+	dat_format(DAT_FORMAT_UNKNOWN),
+	is_extended(false),
 	loaded_textures(0),
 	lastclean(0)
 {
@@ -366,23 +366,25 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	uint32_t maxclientID = item_count + creature_count;
 
 	bool (GraphicManager::*loadFlags)(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	datVersion = client_version->getDatVersionForSignature(datSignature);
-	switch (datVersion)
+	dat_format = client_version->getDatFormatForSignature(datSignature);
+	switch (dat_format)
 	{
-		case DAT_VERSION_74: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer74; break;
-		case DAT_VERSION_76: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer76; break;
-		case DAT_VERSION_78: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer78; break;
-		case DAT_VERSION_86: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
+		case DAT_FORMAT_74: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer74; break;
+		case DAT_FORMAT_76: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer76; break;
+		case DAT_FORMAT_78: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer78; break;
+		case DAT_FORMAT_86: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
 			// Same .dat loader, the change is only sprite id -> u32
-		case DAT_VERSION_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
-		case DAT_VERSION_1010: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1010; break;
-		case DAT_VERSION_1021:
-		case DAT_VERSION_1050:
-		case DAT_VERSION_1056: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
+		case DAT_FORMAT_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
+		case DAT_FORMAT_1010: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1010; break;
+		case DAT_FORMAT_1021:
+		case DAT_FORMAT_1050:
+		case DAT_FORMAT_1056: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
 		default:
 			error = wxT("Unknown .dat format version.");
 			return false;
 	}
+
+	is_extended = (dat_format >= DAT_FORMAT_96 || settings.getInteger(Config::SPR_EXTENDED));
 
 	uint16_t id = minclientID;
 	// loop through all ItemDatabase until we reach the end of file
@@ -401,7 +403,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			warnings.push_back(msg);
 		}
 
-		bool has_frame_groups = (datVersion == DAT_VERSION_1056 && id > item_count);
+		bool has_frame_groups = (dat_format == DAT_FORMAT_1056 && id > item_count);
 		uint8_t group_count = 1;
 
 		// Reads the group count
@@ -428,14 +430,14 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			file.getU8(sType->layers); // Number of blendframes (some sprites consist of several merged sprites)
 			file.getU8(sType->pattern_x);
 			file.getU8(sType->pattern_y);
-			if (datVersion <= DAT_VERSION_74)
+			if (dat_format <= DAT_FORMAT_74)
 				sType->pattern_z = 1;
 			else
 				file.getU8(sType->pattern_z);
 			file.getU8(sType->frames); // Length of animation
 
 			// Skipping the frame duration
-			if (datVersion >= DAT_VERSION_1050 && sType->frames > 1) {
+			if (dat_format >= DAT_FORMAT_1050 && sType->frames > 1) {
 				file.skip(6 + 8 * sType->frames);
 			}
 
@@ -449,12 +451,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			for (uint32_t i = 0; i < sType->numsprites; ++i)
 			{
 				uint32_t sprite_id;
-				if (datVersion >= DAT_VERSION_96 || settings.getInteger(Config::SPR_EXTENDED))
-				{
+				if (is_extended) {
 					file.getU32(sprite_id);
-				}
-				else
-				{
+				} else {
 					uint16_t u16 = 0;
 					file.getU16(u16);
 					sprite_id = u16;
@@ -1323,30 +1322,14 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 	
 	uint32_t sprSignature;
 	safe_get(U32, sprSignature);
-	
+
 	uint32_t total_pics = 0;
-	sprVersion = client_version->getSprVersionForSignature(sprSignature);
-
-	int sprSizeBytes = 0;
-	if (settings.getInteger(Config::SPR_EXTENDED))
-		sprSizeBytes = 4;
-	else if (sprVersion == SPR_VERSION_70)
-		sprSizeBytes = 2;
-	else if (sprVersion == SPR_VERSION_96)
-		sprSizeBytes = 4;
-
-	if (sprSizeBytes == 0) {
-		error = wxT("Unrecognized spr signature");
-		return false;
-	}
-
-	if (sprSizeBytes == 2) {
+	if (is_extended) {
+		safe_get(U32, total_pics);
+	} else {
 		uint16_t u16 = 0;
 		safe_get(U16, u16);
 		total_pics = u16;
-	}
-	else if (sprSizeBytes == 4) {
-		safe_get(U32, total_pics);
 	}
 
 	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES) == false) {
@@ -1419,15 +1402,7 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 		return false;
 	unloaded = false;
 
-	int sprSizeBytes = 0;
-	if (settings.getInteger(Config::SPR_EXTENDED))
-		sprSizeBytes = 4;
-	else if (sprVersion == SPR_VERSION_70)
-		sprSizeBytes = 2;
-	else if (sprVersion == SPR_VERSION_96)
-		sprSizeBytes = 4;
-
-	if (sprSizeBytes == 0 || !fh.seek(sprSizeBytes + sprite_id * sizeof(uint32_t)))
+	if (!fh.seek((is_extended ? 4 : 2) + sprite_id * sizeof(uint32_t)))
 		return false;
 
 	uint32_t to_seek = 0;

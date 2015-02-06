@@ -224,48 +224,34 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 		} else if (childName == "fucked_up_charges") {
 			version->usesFuckedUpCharges = true;
 		} else if (childName == "data") {
-			if (!(attribute = childNode.attribute("sprversion"))) {
-				wxLogError(wxT("Node 'data' does not have 'datversion' / 'sprversion' tags."));
+
+			if (!(attribute = childNode.attribute("format"))) {
+				wxLogError(wxT("Node 'data' does not have 'format' tag."));
 				continue;
 			}
 
-			const std::string& sprVersion = attribute.as_string();
-			if (!(attribute = childNode.attribute("datversion"))) {
-				wxLogError(wxT("Node 'data' does not have 'datversion' / 'sprversion' tags."));
-				continue;
-			}
-
-			const std::string& datVersion = attribute.as_string();
-			ClientData client_data = {DAT_VERSION_74, SPR_VERSION_70, 0, 0};
-			if (datVersion == "7.4") {
-				client_data.datVersion = DAT_VERSION_74;
-			} else if (datVersion == "7.6") {
-				client_data.datVersion = DAT_VERSION_76;
-			} else if (datVersion == "7.8") {
-				client_data.datVersion = DAT_VERSION_78;
-			} else if (datVersion == "8.6") {
-				client_data.datVersion = DAT_VERSION_86;
-			} else if (datVersion == "9.6") {
-				client_data.datVersion = DAT_VERSION_96;
-			} else if (datVersion == "10.10") {
-				client_data.datVersion = DAT_VERSION_1010;
-			} else if (datVersion == "10.21") {
-				client_data.datVersion = DAT_VERSION_1021;
-			} else if (datVersion == "10.50") {
-				client_data.datVersion = DAT_VERSION_1050;
-			} else if (datVersion == "10.56") {
-				client_data.datVersion = DAT_VERSION_1056;
+			const std::string& format = attribute.as_string();
+			ClientData client_data = { DAT_FORMAT_74, 0, 0 };
+			if (format == "7.4") {
+				client_data.datFormat = DAT_FORMAT_74;
+			} else if (format == "7.6") {
+				client_data.datFormat = DAT_FORMAT_76;
+			} else if (format == "7.8") {
+				client_data.datFormat = DAT_FORMAT_78;
+			} else if (format == "8.6") {
+				client_data.datFormat = DAT_FORMAT_86;
+			} else if (format == "9.6") {
+				client_data.datFormat = DAT_FORMAT_96;
+			} else if (format == "10.10") {
+				client_data.datFormat = DAT_FORMAT_1010;
+			} else if (format == "10.21") {
+				client_data.datFormat = DAT_FORMAT_1021;
+			} else if (format == "10.50") {
+				client_data.datFormat = DAT_FORMAT_1050;
+			} else if (format == "10.56") {
+				client_data.datFormat = DAT_FORMAT_1056;
 			} else {
-				wxLogError(wxT("Node 'data' 'datversion' is invalid (7.4, 7.6, 7.8, 8.6, 9.6, 10.10, 10.21, 10.50 and 10.56 are supported)"));
-				continue;
-			}
-
-			if (sprVersion == "7.0") {
-				client_data.sprVersion = SPR_VERSION_70;
-			} else if (sprVersion == "9.6") {
-				client_data.sprVersion = SPR_VERSION_96;
-			} else {
-				wxLogError(wxT("Node 'data' 'sprversion' is invalid (7.0 and 9.6 are supported)"));
+				wxLogError(wxT("Node 'data' 'format' is invalid (7.4, 7.6, 7.8, 8.6, 9.6, 10.10, 10.21, 10.50 and 10.56 are supported)"));
 				continue;
 			}
 
@@ -316,7 +302,7 @@ void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
 
 		const std::string& from = childNode.attribute("from").as_string();
 		const std::string& to = childNode.attribute("to").as_string();
-			
+
 		ClientVersion* fromVersion = get(from);
 		ClientVersion* toVersion = get(to);
 
@@ -510,26 +496,15 @@ bool ClientVersion::loadValidPaths()
 	return true;
 }
 
-DatVersion ClientVersion::getDatVersionForSignature(uint32_t signature) const
+DatFormat ClientVersion::getDatFormatForSignature(uint32_t signature) const
 {
 	for(std::vector<ClientData>::const_iterator iter = data_versions.begin(); iter != data_versions.end(); ++iter)
 	{
 		if(iter->datSignature == signature)
-			return iter->datVersion;
+			return iter->datFormat;
 	}
 
-	return DAT_VERSION_UNKNOWN;
-}
-
-SprVersion ClientVersion::getSprVersionForSignature(uint32_t signature) const
-{
-	for(std::vector<ClientData>::const_iterator iter = data_versions.begin(); iter != data_versions.end(); ++iter)
-	{
-		if(iter->sprSignature == signature)
-			return iter->sprVersion;
-	}
-
-	return SPR_VERSION_UNKNOWN;
+	return DAT_FORMAT_UNKNOWN;
 }
 
 std::string ClientVersion::getName() const
