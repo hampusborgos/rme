@@ -111,7 +111,7 @@
 		<client name="7.6" otb="7.60" visible="true" data_directory="760">
 			<otbm version="1"/>
 			<extensions from="7.6" to="7.6"/>
-			<data format="7.6" dat="0x439D5A33" spr="0x439852BE"/>
+			<data format="7.55" dat="0x439D5A33" spr="0x439852BE"/>
 		</client>
 
 		<client name="8.00" otb="8.00" visible="true" data_directory="800">

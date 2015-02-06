@@ -234,8 +234,8 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 			ClientData client_data = { DAT_FORMAT_74, 0, 0 };
 			if (format == "7.4") {
 				client_data.datFormat = DAT_FORMAT_74;
-			} else if (format == "7.6") {
-				client_data.datFormat = DAT_FORMAT_76;
+			} else if (format == "7.55") {
+				client_data.datFormat = DAT_FORMAT_755;
 			} else if (format == "7.8") {
 				client_data.datFormat = DAT_FORMAT_78;
 			} else if (format == "8.6") {
@@ -251,7 +251,7 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 			} else if (format == "10.56") {
 				client_data.datFormat = DAT_FORMAT_1056;
 			} else {
-				wxLogError(wxT("Node 'data' 'format' is invalid (7.4, 7.6, 7.8, 8.6, 9.6, 10.10, 10.21, 10.50 and 10.56 are supported)"));
+				wxLogError(wxT("Node 'data' 'format' is invalid (7.4, 7.55, 7.8, 8.6, 9.6, 10.10, 10.21, 10.50 and 10.56 are supported)"));
 				continue;
 			}
 
