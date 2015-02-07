@@ -118,7 +118,7 @@ enum DatFormat
 	DAT_FORMAT_1010,
 	DAT_FORMAT_1021,
 	DAT_FORMAT_1050,
-	DAT_FORMAT_1056
+	DAT_FORMAT_1057
 };
 
 enum DatFlags : uint8_t

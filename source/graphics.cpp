@@ -385,7 +385,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			warnings.push_back(msg);
 		}
 
-		bool has_frame_groups = (dat_format == DAT_FORMAT_1056 && id > item_count);
+		bool has_frame_groups = (dat_format == DAT_FORMAT_1057 && id > item_count);
 		uint8_t group_count = 1;
 
 		// Reads the group count
