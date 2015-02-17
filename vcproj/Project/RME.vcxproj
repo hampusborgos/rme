@@ -293,7 +293,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\source\brush_tables.cpp" />
     <ClCompile Include="..\..\source\container_properties_window.cpp" />
-	<ClInclude Include="..\..\source\browse_tile_window.h" />
+    <ClInclude Include="..\..\source\otml.h" />
+    <ClInclude Include="..\..\source\browse_tile_window.h" />
     <ClCompile Include="..\..\source\browse_tile_window.cpp" />
     <ClInclude Include="..\..\source\carpet_brush.h" />
     <ClCompile Include="..\..\source\carpet_brush.cpp" />

@@ -25,6 +25,7 @@
 #include "filehandle.h"
 #include "settings.h"
 #include "gui.h"
+#include "otml.h"
 
 #include <wx/mstream.h>
 #include "pngfiles.h"
@@ -60,7 +61,11 @@ GraphicManager::GraphicManager() :
 	client_version(nullptr),
 	unloaded(true),
 	dat_format(DAT_FORMAT_UNKNOWN),
+	otfi_found(false),
 	is_extended(false),
+	has_transparency(false),
+	has_frame_durations(false),
+	has_frame_groups(false),
 	loaded_textures(0),
 	lastclean(0)
 {
@@ -82,6 +87,11 @@ GraphicManager::~GraphicManager()
 	{
 		delete iter->second;
 	}
+}
+
+bool GraphicManager::hasTransparency() const
+{
+	return has_transparency;
 }
 
 bool GraphicManager::isUnloaded() const
@@ -341,6 +351,35 @@ bool GraphicManager::loadEditorSprites()
 	return true;
 }
 
+bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings)
+{
+	otfi_found = wxFileExists(filename.GetFullPath());
+	if (otfi_found)
+	{
+		std::string path = std::string(filename.GetFullPath().mb_str());
+		OTMLDocumentPtr doc = OTMLDocument::parse(path);
+
+		if(doc->size() == 0 || !doc->hasChildAt("DatSpr")) {
+			error += wxT("'DatSpr' tag not found");
+			return false;
+		}
+
+		OTMLNodePtr node = doc->get("DatSpr");
+		is_extended = node->valueAt<bool>("extended");
+		has_transparency = node->valueAt<bool>("transparency");
+		has_frame_durations = node->valueAt<bool>("frame-durations");
+		has_frame_groups = node->valueAt<bool>("frame-groups");
+	}
+	else
+	{
+		is_extended = false;
+		has_transparency = false;
+		has_frame_durations = false;
+		has_frame_groups = false;
+	}
+	return true;
+}
+
 bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& error, wxArrayString& warnings)
 {
 	// items.otb has most of the info we need. This only loads the GameSprite metadata
@@ -366,7 +405,12 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	uint32_t maxclientID = item_count + creature_count;
 
 	dat_format = client_version->getDatFormatForSignature(datSignature);
-	is_extended = (dat_format >= DAT_FORMAT_96 || settings.getInteger(Config::SPR_EXTENDED));
+
+	if(!otfi_found) {
+		is_extended = dat_format >= DAT_FORMAT_96;
+		has_frame_durations = dat_format >= DAT_FORMAT_1050;
+		has_frame_groups = dat_format >= DAT_FORMAT_1057;
+	}
 
 	uint16_t id = minclientID;
 	// loop through all ItemDatabase until we reach the end of file
@@ -385,18 +429,16 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			warnings.push_back(msg);
 		}
 
-		bool has_frame_groups = (dat_format == DAT_FORMAT_1057 && id > item_count);
-		uint8_t group_count = 1;
-
 		// Reads the group count
-		if (has_frame_groups) {
+		uint8_t group_count = 1;
+		if (has_frame_groups && id > item_count) {
 			file.getU8(group_count);
 		}
 
 		for (uint32_t k = 0; k < group_count; ++k)
 		{
 			// Skipping the group type
-			if (has_frame_groups) {
+			if (has_frame_groups && id > item_count) {
 				file.skip(1);
 			}
 
@@ -419,7 +461,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			file.getU8(sType->frames); // Length of animation
 
 			// Skipping the frame duration
-			if (dat_format >= DAT_FORMAT_1050 && sType->frames > 1) {
+			if (has_frame_durations && sType->frames > 1) {
 				file.skip(6 + 8 * sType->frames);
 			}
 
@@ -1269,7 +1311,7 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
-	uint8_t channels = (settings.getInteger(Config::SPR_TRANSPARENCY) == 1) ? 4 : 3;
+	uint8_t bits_per_pixel = gui.gfx.hasTransparency() ? 4 : 3;
 
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
@@ -1303,7 +1345,7 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 			rgb32x32[96*y+x*3+1] = green;
 			rgb32x32[96*y+x*3+2] = blue;
 
-			bytes += channels;
+			bytes += bits_per_pixel;
 
 			x++;
 			if(x >= 32) {
@@ -1360,8 +1402,8 @@ uint8_t* GameSprite::NormalImage::getRGBAData() {
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
-	bool transparency = (settings.getInteger(Config::SPR_TRANSPARENCY) == 1);
-	uint8_t channels = transparency ? 4 : 3;
+	bool transparency = gui.gfx.hasTransparency();
+	uint8_t bits_per_pixel = transparency ? 4 : 3;
 
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
@@ -1397,7 +1439,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData() {
 			rgba32x32[128*y+x*4+2] = blue;
 			rgba32x32[128*y+x*4+3] = alpha; //Opaque pixel
 
-			bytes += channels;
+			bytes += bits_per_pixel;
 
 			x++;
 			if(x >= 32) {

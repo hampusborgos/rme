@@ -338,6 +338,15 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	gui.gfx.client_version = getLoadedVersion();
 	
+	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.otfi"));
+	if(!gui.gfx.loadOTFI(otfi_path, error, warnings))
+	{
+		error = wxT("Couldn't load tibia.otfi: ") + error;
+		gui.DestroyLoadBar();
+		UnloadVersion();
+		return false;
+	}
+
 	gui.CreateLoadBar(wxT("Loading data files"));
 	gui.SetLoadDone(0, wxT("Loading Tibia.dat ..."));
 	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.dat"));

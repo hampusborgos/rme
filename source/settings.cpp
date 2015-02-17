@@ -205,8 +205,6 @@ void Settings::IO(IOMode mode) {
 	section("Version");
 	Int(VERSION_ID, 0);
 	Int(CHECK_SIGNATURES, 1);
-	Int(SPR_EXTENDED, 0);
-	Int(SPR_TRANSPARENCY, 0);
 	Int(USE_CUSTOM_DATA_DIRECTORY, 0);
 	String(DATA_DIRECTORY, "");
 	String(EXTENSIONS_DIRECTORY, "");
