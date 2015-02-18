@@ -24,7 +24,7 @@
     <creature name="Axeitus Headbanger" type="monster" looktype="71"/>
     <creature name="Azerus" type="monster" looktype="309" lookhead="19" lookbody="96" looklegs="21" lookfeet="81"/>
     <creature name="Azure Frog" type="monster" looktype="226" lookhead="69" lookbody="66" looklegs="69" lookfeet="66"/>
-    <creature name="Bad Dream" type="monster"/>
+    <creature name="Bad Dream" type="monster" lookitem="22444"/>
     <creature name="Badger" type="monster" looktype="105"/>
     <creature name="Bandit" type="monster" looktype="129" lookhead="58" lookbody="59" looklegs="45" lookfeet="114"/>
     <creature name="Bane Bringer" type="monster" looktype="310"/>
@@ -206,7 +206,7 @@
     <creature name="Evil Mastermind" type="monster" looktype="256"/>
     <creature name="Evil Sheep" type="monster" looktype="14"/>
     <creature name="Evil Sheep Lord" type="monster" looktype="13"/>
-    <creature name="Eye of the Seven" type="monster"/>
+    <creature name="Eye of the Seven" type="monster" lookitem="1560"/>
     <creature name="Fallen Mooh'tah Master Ghar" type="monster" looktype="29"/>
     <creature name="Fatality" type="monster" looktype="113"/>
     <creature name="Fernfang" type="monster" looktype="206"/>
@@ -219,7 +219,7 @@
     <creature name="Fire Overlord" type="monster" looktype="243"/>
     <creature name="Firestarter" type="monster" looktype="159" lookhead="94" lookbody="77" looklegs="78" lookfeet="79"/>
     <creature name="Fish" type="monster" looktype="455"/>
-    <creature name="Flamethrower" type="monster"/>
+    <creature name="Flamethrower" type="monster" lookitem="1551"/>
     <creature name="Flamingo" type="monster" looktype="212"/>
     <creature name="Fleshslicer" type="monster" looktype="457"/>
     <creature name="Floor Blob" type="monster" looktype="459"/>
@@ -290,7 +290,7 @@
     <creature name="Hide" type="monster" looktype="219"/>
     <creature name="Hideous Fungus" type="monster" looktype="499"/>
     <creature name="Hive Overseer" type="monster" looktype="458"/>
-    <creature name="Hive Pore" type="monster"/>
+    <creature name="Hive Pore" type="monster" lookitem="15467"/>
     <creature name="Honour Guard" type="monster" looktype="298"/>
     <creature name="Horestis" type="monster" looktype="88" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
     <creature name="Horse" type="monster" looktype="435"/>
@@ -338,7 +338,7 @@
     <creature name="Larva" type="monster" looktype="82"/>
     <creature name="Latrivan" type="monster" looktype="12" lookhead="120" lookbody="128" looklegs="121" lookfeet="111"/>
     <creature name="Lava Golem" type="monster" looktype="491"/>
-    <creature name="Lavahole" type="monster"/>
+    <creature name="Lavahole" type="monster" lookitem="389"/>
     <creature name="Leaf Golem" type="monster" looktype="567"/>
     <creature name="Lesser Swarmer" type="monster" looktype="460"/>
     <creature name="Lethal Lissy" type="monster" looktype="155" lookhead="77" lookbody="0" looklegs="76" lookfeet="132"/>
@@ -368,7 +368,7 @@
     <creature name="Mad Technomancer" type="monster" looktype="66"/>
     <creature name="Madareth" type="monster" looktype="12" lookhead="77" lookbody="116" looklegs="82" lookfeet="79"/>
     <creature name="Magic Pillar" type="monster" looktype="0"/>
-    <creature name="Magicthrower" type="monster"/>
+    <creature name="Magicthrower" type="monster" lookitem="1551"/>
     <creature name="Magma Crawler" type="monster" looktype="492"/>
     <creature name="Mahrdis" type="monster" looktype="90"/>
     <creature name="Mammoth" type="monster" looktype="199"/>
@@ -457,7 +457,7 @@
     <creature name="Pirate Marauder" type="monster" looktype="93"/>
     <creature name="Pirate Skeleton" type="monster" looktype="195"/>
     <creature name="Plaguesmith" type="monster" looktype="247"/>
-    <creature name="Plaguethrower" type="monster"/>
+    <creature name="Plaguethrower" type="monster" lookitem="1551"/>
     <creature name="Poacher" type="monster" looktype="129" lookhead="115" lookbody="119" looklegs="119" lookfeet="115"/>
     <creature name="Poison Spider" type="monster" looktype="36"/>
     <creature name="Polar Bear" type="monster" looktype="42"/>
@@ -514,7 +514,7 @@
     <creature name="Sheep" type="monster" looktype="14"/>
     <creature name="Shiversleep" type="monster" looktype="592"/>
     <creature name="Shock Head" type="monster" looktype="579"/>
-    <creature name="Shredderthrower" type="monster"/>
+    <creature name="Shredderthrower" type="monster" lookitem="1551"/>
     <creature name="Sibang" type="monster" looktype="118"/>
     <creature name="Sight of Surrender" type="monster" looktype="583"/>
     <creature name="Silencer" type="monster" looktype="585"/>
