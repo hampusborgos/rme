@@ -6,6 +6,7 @@
     <creature name="Acolyte of the Cult" type="monster" looktype="194" lookhead="114" lookbody="121" looklegs="121" lookfeet="57"/>
     <creature name="Adept of the Cult" type="monster" looktype="194" lookhead="114" lookbody="94" looklegs="94" lookfeet="57"/>
     <creature name="Adventurer" type="monster" looktype="129" lookhead="92" lookbody="15" looklegs="92" lookfeet="82"/>
+    <creature name="Amazon" type="monster" looktype="137" lookhead="113" lookbody="120" looklegs="114" lookfeet="132"/>
     <creature name="Ancient Scarab" type="monster" looktype="79"/>
     <creature name="Angry Adventurer" type="monster" looktype="129" lookhead="92" lookbody="15" looklegs="92" lookfeet="82"/>
     <creature name="Annihilon" type="monster" looktype="12" lookhead="19" lookbody="104" looklegs="96" lookfeet="96"/>
