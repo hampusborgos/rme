@@ -443,7 +443,7 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 		wxMenu* m = dynamic_cast<wxMenu*>(i);
 		if (m) {
 			menubar->Append(m, m->GetTitle());
-			m->SetTitle(m->GetTitle());
+			m->SetTitle(wxT(""));
 		} else if (i) {
 			delete i;
 			warnings.push_back(path.GetFullName() + wxT(": Only menus can be subitems of main menu"));
