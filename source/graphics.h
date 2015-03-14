@@ -272,7 +272,7 @@ static RGBQuad minimap_color[256] = {
 	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //36
 	RGBQuad(51,0,204), RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //40
 	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //44
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //48
+	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(51,102,153),  //48
 	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //52
 	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //56
 	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //60
