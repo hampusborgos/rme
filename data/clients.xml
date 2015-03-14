@@ -243,25 +243,25 @@
 		<client name="10.21" otb="10.21" visible="true" data_directory="1021">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.21"/>
-			<data format="10.21" dat="0x526A5068" spr="0x526A5090"/>
+			<data format="10.10" dat="0x526A5068" spr="0x526A5090"/>
 		</client>
 		
 		<client name="10.30" otb="10.30" visible="true" data_directory="1030">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.30"/>
-			<data format="10.21" dat="0x52A59036" spr="0x52A5905F"/>
+			<data format="10.10" dat="0x52A59036" spr="0x52A5905F"/>
 		</client>
 		
 		<client name="10.31" otb="10.31" visible="true" data_directory="1031">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.31"/>
-			<data format="10.21" dat="0x52AED581" spr="0x52AED5A7"/>
+			<data format="10.10" dat="0x52AED581" spr="0x52AED5A7"/>
 		</client>
 
 		<client name="10.41" otb="10.41" default="true" visible="true" data_directory="1041">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.41"/>
-			<data format="10.21" dat="0x5383504E" spr="0x53835077"/>
+			<data format="10.10" dat="0x5383504E" spr="0x53835077"/>
 		</client>
 	</clients>
 
