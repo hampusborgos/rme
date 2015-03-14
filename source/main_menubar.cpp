@@ -811,7 +811,9 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 		
 		if(func.more_than_value) 
 		{
-			gui.PopupDialog(wxT("Notice"), wxT("Only the first 500 results will be displayed."), wxOK);
+			wxString msg;
+			msg << wxT("Only the first ") << size_t(settings.getInteger(Config::REPLACE_SIZE)) << wxT(" results will be displayed.");
+			gui.PopupDialog(wxT("Notice"), msg, wxOK);
 		}
 
 		SearchResultWindow* result = gui.ShowSearchWindow();
