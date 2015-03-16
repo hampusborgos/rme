@@ -109,7 +109,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
 	SetWindowToolTip(tmptext, worker_threads_spin, wxT("How many threads the editor will use for intensive operations. This should be equivalent to the amount of logical processors in your system."));
 
 	grid_sizer->Add(tmptext = newd wxStaticText(general_page, wxID_ANY, wxT("Replace size: ")), 0);
-	replace_size_spin = newd wxSpinCtrl(general_page, wxID_ANY, i2ws(settings.getInteger(Config::REPLACE_SIZE)), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 0x10000000);
+	replace_size_spin = newd wxSpinCtrl(general_page, wxID_ANY, i2ws(settings.getInteger(Config::REPLACE_SIZE)), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100000);
 	grid_sizer->Add(replace_size_spin, 0);
 
 	sizer->Add(grid_sizer, 0, wxALL, 5);
