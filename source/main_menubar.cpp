@@ -770,14 +770,14 @@ namespace OnSearchForItem
 {
 	struct Finder 
 	{
-		Finder(uint16_t itemid) : more_than_500(false), itemid(itemid) {}
-		bool more_than_500;
+		Finder(uint16_t itemid) : more_than_value(false), itemid(itemid) {}
+		bool more_than_value;
 		uint16_t itemid;
 		std::vector<std::pair<Tile*, Item*> > found;
 
 		void operator()(Map& map, Tile* tile, Item* item, long long done) 
 		{
-			if(more_than_500) return;
+			if(more_than_value) return;
 			if(done % 0x8000 == 0) 
 			{
 				gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
@@ -786,8 +786,8 @@ namespace OnSearchForItem
 			if(item->getID() == itemid) 
 			{
 				found.push_back(std::make_pair(tile, item));
-				if(found.size() > 500)
-					more_than_500 = true;
+				if(found.size() >= size_t(settings.getInteger(Config::REPLACE_SIZE)))
+					more_than_value = true;
 			}
 		}
 	};
@@ -809,9 +809,11 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 		gui.DestroyLoadBar();
 		
-		if(func.more_than_500) 
+		if(func.more_than_value) 
 		{
-			gui.PopupDialog(wxT("Notice"), wxT("Only the first 500 results will be displayed."), wxOK);
+			wxString msg;
+			msg << wxT("Only the first ") << size_t(settings.getInteger(Config::REPLACE_SIZE)) << wxT(" results will be displayed.");
+			gui.PopupDialog(wxT("Notice"), msg, wxOK);
 		}
 
 		SearchResultWindow* result = gui.ShowSearchWindow();

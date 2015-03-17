@@ -248,6 +248,7 @@ void Settings::IO(IOMode mode) {
 	Int(USE_OTBM_4_FOR_ALL_MAPS, 0);
 	Int(USE_OTGZ, 1);
 	Int(SAVE_WITH_OTB_MAGIC_NUMBER, 0);
+	Int(REPLACE_SIZE, 500);
 
 	section("Graphics");
 	Int(TEXTURE_MANAGEMENT, 1);

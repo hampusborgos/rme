@@ -108,6 +108,11 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
 	grid_sizer->Add(worker_threads_spin, 0);
 	SetWindowToolTip(tmptext, worker_threads_spin, wxT("How many threads the editor will use for intensive operations. This should be equivalent to the amount of logical processors in your system."));
 
+	grid_sizer->Add(tmptext = newd wxStaticText(general_page, wxID_ANY, wxT("Replace count: ")), 0);
+	replace_size_spin = newd wxSpinCtrl(general_page, wxID_ANY, i2ws(settings.getInteger(Config::REPLACE_SIZE)), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 100000);
+	grid_sizer->Add(replace_size_spin, 0);
+	SetWindowToolTip(tmptext, replace_size_spin, wxT("How many items you can replace on the map using the Replace Item tool."));
+
 	sizer->Add(grid_sizer, 0, wxALL, 5);
 
 	general_page->SetSizerAndFit(sizer);
@@ -572,6 +577,7 @@ void PreferencesWindow::Apply()
 	settings.setInteger(Config::UNDO_SIZE, undo_size_spin->GetValue());
 	settings.setInteger(Config::UNDO_MEM_SIZE, undo_mem_size_spin->GetValue());
 	settings.setInteger(Config::WORKER_THREADS, worker_threads_spin->GetValue());
+	settings.setInteger(Config::REPLACE_SIZE, replace_size_spin->GetValue());
 
 	// Editor
 	settings.setInteger(Config::GROUP_ACTIONS, group_actions_chkbox->GetValue());
