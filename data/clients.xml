@@ -71,7 +71,7 @@
 		<otb client="10.30" version="3" id="53"/>
 		<otb client="10.31" version="3" id="54"/>
 		<otb client="10.41" version="3" id="55"/>
-		<otb client="10.76" version="3" id="56"/>
+		<otb client="10.77" version="3" id="56"/>
 	</otbs>
 
 	<clients>
@@ -265,10 +265,10 @@
 			<data format="10.10" dat="0x5383504E" spr="0x53835077"/>
 		</client>
 
-		<client name="10.76" otb="10.76" default="true" visible="true" data_directory="1076">
+		<client name="10.77" otb="10.77" default="true" visible="true" data_directory="1077">
 			<otbm version="3"/>
-			<extensions from="8.20 - 8.31" to="10.76"/>
-			<data format="10.57" dat="0x37DF" spr="0x54F03CE9"/>
+			<extensions from="8.20 - 8.31" to="10.77"/>
+			<data format="10.57" dat="0x38DE" spr="0x5525213D"/>
 		</client>
 	</clients>
 
