@@ -894,6 +894,13 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			/*if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.writeOnceItemId = pugi::cast<int32_t>(attribute.value());
 			}*/
+		} else if (key == "allowDistRead") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				it.allowDistRead = it.canReadText = attribute.as_bool();
+				if (it.maxTextLen == 0) {
+					it.maxTextLen = 0xFFFF;
+				}
+			}
 		} else if (key == "charges") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.charges = pugi::cast<int32_t>(attribute.value());
