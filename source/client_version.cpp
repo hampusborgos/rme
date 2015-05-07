@@ -462,9 +462,11 @@ bool ClientVersion::hasValidPaths() const
 			return true;
 		}
 	}
-	wxLogError(wxString::Format(
-		wxT("Spr(%d) or Dat(%d) signatures are incorrect."), sprSignature, datSignature
-	));
+
+	wxString message = wxT("Signatures are incorrect.\n");
+	message << wxT("Dat signature: %X\n");
+	message << wxT("Spr signature: %X");
+	wxLogError(wxString::Format(message, datSignature, sprSignature));
 	return false;
 }
 
