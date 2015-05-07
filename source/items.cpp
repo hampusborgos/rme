@@ -819,13 +819,15 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			continue;
 		}
 
-		const std::string& key = attribute.as_string();
+		std::string key = attribute.as_string();
+		to_lower_str(key);
 		if (key == "type") {
 			if (!(attribute = itemAttributesNode.attribute("value"))) {
 				continue;
 			}
 
-			const std::string& typeValue = attribute.as_string();
+			std::string typeValue = attribute.as_string();
+			to_lower_str(key);
 			if (typeValue == "magicfield") {
 				it.group = ITEM_GROUP_MAGICFIELD;
 				it.type = ITEM_TYPE_MAGICFIELD;
@@ -851,7 +853,7 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.description = attribute.as_string();
 			}
-		}else if (key == "runeSpellName") {
+		}else if (key == "runespellName") {
 			/*if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.runeSpellName = attribute.as_string();
 			}*/
@@ -867,11 +869,11 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.defense = pugi::cast<int32_t>(attribute.value());
 			}
-		} else if (key == "rotateTo") {
+		} else if (key == "rotateto") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.rotateTo = pugi::cast<int32_t>(attribute.value());
 			}
-		} else if (key == "containerSize") {
+		} else if (key == "containersize") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.volume = pugi::cast<int32_t>(attribute.value());
 			}
@@ -883,23 +885,20 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.canWriteText = it.canReadText = attribute.as_bool();
 			}
-		} else if (key == "decayTo") {
+		} else if (key == "decayto") {
 			it.decays = true;
-		} else if (key == "maxTextLen" || key == "maxTextLength") {
+		} else if (key == "maxtextlen" || key == "maxtextlength") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.maxTextLen = pugi::cast<int32_t>(attribute.value());
 				it.canReadText = it.maxTextLen > 0;
 			}
-		} else if (key == "writeOnceItemId") {
+		} else if (key == "writeonceitemid") {
 			/*if ((attribute = itemAttributesNode.attribute("value"))) {
 				it.writeOnceItemId = pugi::cast<int32_t>(attribute.value());
 			}*/
-		} else if (key == "allowDistRead") {
+		} else if (key == "allowdistread") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
-				it.allowDistRead = it.canReadText = attribute.as_bool();
-				if (it.maxTextLen == 0) {
-					it.maxTextLen = 0xFFFF;
-				}
+				it.allowDistRead = attribute.as_bool();
 			}
 		} else if (key == "charges") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
