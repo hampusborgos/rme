@@ -1469,7 +1469,7 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	z_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
 	tmpsizer->Add(z_templepos_field, 1, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
-	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, wxT("Select"));
+	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, wxT("Go To"));
 	tmpsizer->Add(select_position_button, 0, wxLEFT | wxRIGHT | wxBOTTOM, 5);
 	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
@@ -1823,7 +1823,7 @@ void EditTownsDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 }
 
 // ============================================================================
-// Goto Position Dialog
+// Go To Position Dialog
 // Jump to a position on the map by entering XYZ coordinates
 
 BEGIN_EVENT_TABLE(GotoPositionDialog, wxDialog)
@@ -1832,7 +1832,7 @@ BEGIN_EVENT_TABLE(GotoPositionDialog, wxDialog)
 END_EVENT_TABLE()
 
 GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Goto Position"), wxDefaultPosition, wxDefaultSize),
+	wxDialog(parent, wxID_ANY, wxT("Go To Position"), wxDefaultPosition, wxDefaultSize),
 	editor(editor)
 {
 	Map& map = editor.map;

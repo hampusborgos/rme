@@ -2400,7 +2400,7 @@ void MapPopupMenu::Update()
 					
 					if(teleport && teleport->noDestination())
 					{
-						Append( MAP_POPUP_MENU_GOTO, wxT("&Goto Destination"), wxT("Goto the destination of this teleport"));
+						Append( MAP_POPUP_MENU_GOTO, wxT("&Go To Destination"), wxT("Go to the destination of this teleport"));
 					}
 					if(topSelectedItem->isOpen())
 					{
