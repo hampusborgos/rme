@@ -1,5 +1,351 @@
 <materials>
 	
+	<brush name="ruin wall" type="wall" server_lookid="3362">
+		<wall type="horizontal">
+			<item id="3362" chance="1"/>
+			<item id="3364" chance="0"/>
+			<item id="3368" chance="0"/>
+
+			<item id="3372" chance="0"/>
+			<item id="3373" chance="0"/>
+			<item id="3391" chance="0"/>
+			<item id="3404" chance="0"/>
+			<item id="3405" chance="0"/>
+			<item id="3406" chance="0"/>
+			<item id="3407" chance="0"/>
+			<item id="3408" chance="0"/>
+			<item id="3409" chance="0"/>
+			<item id="3410" chance="0"/>
+			<item id="3411" chance="0"/>
+			<item id="3414" chance="0"/>
+			<item id="3415" chance="0"/>
+			<item id="3416" chance="0"/>
+			<item id="3417" chance="0"/>
+			<item id="3418" chance="0"/>
+			<item id="3419" chance="0"/>
+			<item id="3420" chance="0"/>
+			<item id="3421" chance="0"/>
+			<item id="3422" chance="0"/>
+
+			<door id="3393" type="normal" open="false"/>
+			<door id="3393" type="locked" open="false"/>
+			<door id="3393" type="quest" open="false"/>
+			<door id="3393" type="magic" open="false"/>
+			<door id="3393" type="normal" open="false"/>
+			<door id="3422" type="hatch window" open="false"/>
+			<door id="3392" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3361" chance="1"/>
+			<item id="3366" chance="0"/>
+
+			<item id="3370" chance="0"/>
+			<item id="3371" chance="0"/>
+			<item id="3373" chance="0"/>
+			<item id="3374" chance="0"/>
+			<item id="3375" chance="0"/>
+			<item id="3377" chance="0"/>
+			<item id="3378" chance="0"/>
+			<item id="3379" chance="0"/>
+			<item id="3380" chance="0"/>
+			<item id="3381" chance="0"/>
+			<item id="3382" chance="0"/>
+			<item id="3383" chance="0"/>
+			<item id="3384" chance="0"/>
+			<item id="3385" chance="0"/>
+			<item id="3386" chance="0"/>
+			<item id="3390" chance="0"/>
+			<item id="3397" chance="0"/>
+			<item id="3398" chance="0"/>
+			<item id="3412" chance="0"/>
+			<item id="3413" chance="0"/>
+
+			<door id="3395" type="normal" open="false"/>
+			<door id="3395" type="locked" open="false"/>
+			<door id="3395" type="quest" open="false"/>
+			<door id="3395" type="magic" open="false"/>
+			<door id="3395" type="normal" open="false"/>
+			<door id="3384" type="hatch window" open="false"/>
+			<door id="3376" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3365" chance="1"/>
+			<item id="3367" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="3369" chance="0"/> -- This needs to be here for backwards compability --
+		</wall>
+		<wall type="pole">
+			<item id="3363" chance="1"/>
+		</wall>
+	</brush>
+	
+		<brush name="jungle stone wall" type="wall" server_lookid="3458">
+		<wall type="horizontal">
+			<item id="3458" chance="500"/>
+			<item id="3457" chance="100"/>
+			<item id="3455" chance="100"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3460" chance="400"/>
+			<item id="3459" chance="100"/>
+			<item id="3456" chance="100"/>
+		</wall>
+		<wall type="corner">
+			<item id="3461" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3462" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="jungle stone wall ornamented" type="wall" server_lookid="3454">
+		<wall type="horizontal">
+			<item id="3454" chance="500"/>
+			<item id="3470" chance="100"/>
+			<item id="3469" chance="100"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3463" chance="500"/>
+			<item id="3466" chance="100"/>
+			<item id="3465" chance="100"/>
+		</wall>
+		<wall type="corner">
+			<item id="3473" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3464" chance="1000"/>
+		</wall>
+	</brush>
+	
+	<brush name="bamboo wall" type="wall" server_lookid="3424">
+		<wall type="horizontal">
+			<item id="3424" chance="500"/>
+			<item id="3426" chance="100"/>
+			<item id="3432" chance="100"/>
+			<door id="3535" type="normal" open="false"/>
+			<door id="3536" type="normal" open="false"/>
+			<door id="3537" type="normal" open="true"/>
+			<door id="3538" type="locked" open="false"/>
+			<door id="3539" type="locked" open="true"/>
+			<door id="3540" type="quest" open="false"/>
+			<door id="3541" type="quest" open="true"/>
+			<door id="3542" type="magic" open="false"/>
+			<door id="3543" type="magic" open="true"/>
+			<door id="3449" type="window"/>            
+		</wall>
+		<wall type="vertical">
+			<item id="3423" chance="400"/>
+			<item id="3428" chance="100"/>
+			<item id="3430" chance="100"/>
+			<door id="3544" type="normal" open="false"/>
+			<door id="3545" type="normal" open="false"/>
+			<door id="3546" type="normal" open="true"/>
+			<door id="3547" type="locked" open="false"/>
+			<door id="3548" type="locked" open="true"/>
+			<door id="3549" type="quest" open="false"/>
+			<door id="3550" type="quest" open="true"/>
+			<door id="3551" type="magic" open="false"/>
+			<door id="3552" type="magic" open="true"/>
+			<door id="3452" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3427" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3425" chance="1000"/>
+		</wall>
+	</brush>
+	
+	<brush name="marble railing" type="wall" server_lookid="1582">
+		<wall type="horizontal">
+			<item id="1582" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1584" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1588" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1586" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="ornamented marble railing" type="wall" server_lookid="1583">
+		<wall type="horizontal">
+			<item id="1583" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1585" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1589" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1587" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="pillared marble railing" type="wall" server_lookid="1590">
+		<wall type="horizontal">
+			<item id="1590" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1591" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1593" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1592" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="stone railing" type="wall" server_lookid="1524">
+		<wall type="horizontal">
+			<item id="1524" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1526" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1530" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1528" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="metal wall" type="wall" server_lookid="1090">
+		<wall type="horizontal">
+			<item id="1090" chance="500"/>
+			<item id="1092" chance="100"/>
+			<item id="1098" chance="100"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1089" chance="400"/>
+			<item id="1096" chance="100"/>
+			<item id="5009" chance="100"/>
+		</wall>
+		<wall type="corner">
+			<item id="1093" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1091" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="ornamented sandstone railing" type="wall" server_lookid="1570">
+		<wall type="horizontal">
+			<item id="1570" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1572" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1576" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1574" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="sandstone railing" type="wall" server_lookid="1562">
+		<wall type="horizontal">
+			<item id="1562" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1564" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1568" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1566" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="jungle stone railing" type="wall" server_lookid="3481">
+		<wall type="horizontal">
+			<item id="3481" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3482" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="3480" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3483" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="grass wall" type="wall" server_lookid="3497">
+		<wall type="horizontal">
+			<item id="3497" chance="500"/>
+			<item id="3498" chance="100"/>
+			<door id="3499" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3500" chance="400"/>
+			<item id="3501" chance="100"/>
+			<door id="3502" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3503" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3496" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="thin bamboo wall" type="wall" server_lookid="3795">
+		<wall type="horizontal">
+			<item id="3795" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3796" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="3801" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3800" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="paravent wall" type="wall" server_lookid="1171">
+		<wall type="horizontal">
+			<item id="1171" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1170" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="1173" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1172" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="fiery wall" type="wall" server_lookid="1197">
+		<wall type="horizontal">
+			<item id="1197" chance="500"/>
+			<item id="1199" chance="100"/>
+			<item id="1203" chance="100"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1196" chance="400"/>
+			<item id="1201" chance="100"/>
+			<item id="5012" chance="100"/>
+		</wall>
+		<wall type="corner">
+			<item id="1200" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="1198" chance="1000"/>
+		</wall>
+	</brush>
 	<brush name="plaster wall" type="wall" server_lookid="1037">
 		<wall type="horizontal">
 			<item id="1037" chance="500"/>
@@ -393,5 +739,53 @@
 				<tile x="0" y="1" z="0">  <item id="1218" chance="10"/> </tile>
 			</composite>
 		</alternate>
+	</brush>
+
+	<brush name="Wooden Palisade" type="wall" server_lookid="3509">
+		<wall type="horizontal">
+			<item id="3509" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3517" chance="400"/>
+		</wall>
+		<wall type="corner">
+			<item id="3530" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3511" chance="1000"/>
+		</wall>
+	</brush>
+	<brush name="Wooden Palisade (no strings)" type="wall" server_lookid="3510">
+		<wall type="horizontal">
+			<item id="3510" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3518" chance="400"/>
+		</wall>		
+		<friend name="Wooden Palisade" redirect="true"/>
+	</brush>
+	<brush name="Wooden Palisade (steel gate)" type="wall" server_lookid="3514">
+		<wall type="horizontal">
+			<item id="3514" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3519" chance="400"/>
+		</wall>		
+		<friend name="Wooden Palisade" redirect="true"/>
+	</brush>
+	<brush name="Wooden Palisade Railing" type="wall" server_lookid="3512">
+		<wall type="horizontal">
+			<item id="3512" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3520" chance="400"/>
+		</wall>		
+		<wall type="corner">
+			<item id="3531" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="3532" chance="1000"/>
+		</wall>
+		<friend name="Wooden Palisade" redirect="true"/>
 	</brush>
 </materials>

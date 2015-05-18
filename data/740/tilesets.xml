@@ -1,6 +1,21 @@
 <materials>
 	<!-- TILESETS -->
-	
+	<tileset name="Borders">
+		<terrain>
+			<item fromid="110" toid="279"/>
+			<item fromid="281" toid="292"/>
+			<item fromid="295" toid="350"/>
+			<item fromid="393" toid="404"/>
+			<item fromid="494" toid="597"/>
+			<item fromid="606" toid="617"/>
+			<item fromid="630" toid="707"/>
+			<item fromid="712" toid="723"/>
+			<item fromid="725" toid="776"/>
+			<item fromid="792" toid="872"/>
+			<item fromid="879" toid="902"/>
+			<item fromid="434" toid="445"/>
+		</terrain>
+	</tileset>
 	<tileset name="Grounds">
 		<raw>
 			<item id="100"/>
@@ -52,8 +67,6 @@
 			<item id="791"/>
 			<item id="804"/>
 			<item id="806"/>
-			<item id="4832"/>
-			<item id="4833"/>
 			<item id="836"/>
 			<item id="918"/>
 			<item id="920"/>
@@ -76,48 +89,36 @@
 			<item id="194"/>
 			<item id="464"/>
 			<item id="466"/>
-			<item id="4595"/>
-			<item id="4608"/>
-			<item fromid="4609" toid="4625"/>
-			<item fromid="4664" toid="4666"/>
-			<item fromid="4691" toid="4712"/>
-			<item fromid="4749" toid="4759"/>
-			<item fromid="4820" toid="4825"/>
 		</raw>
 	</tileset>
 	
 	<tileset name="Nature">
 		<terrain>
-			<brush name="sea"/>
 			<brush name="mountain"/>
-			<brush name="ramp"/>
-			<brush name="bamboo ramp"/>
+			<brush name="sea"/>
+			<brush item="3311"/>
 			<brush name="grass"/>
 			<brush name="grass open stone pile"/>
 			<brush name="grass closed stone pile"/>
 			<brush name="grass pitfall"/>
-			<brush name="dirt"/>
 			<brush name="dry earth"/>
 			<brush name="sand"/>
 			<brush name="sand open stone pile"/>
 			<brush name="sand closed stone pile"/>
 			<brush name="sand scarab hole"/>
+			<brush name="swamp"/>
+			<brush name="light dirt"/>
+			<brush name="dirt"/>
+			<brush name="tar pit"/>
+			<brush name="white gravel"/>
+			<brush name="mountain ground"/>
+			<item fromid="107"/>
 			<brush name="snow"/>
 			<brush name="ice"/>
 			<brush name="ice open stone pile"/>
 			<brush name="ice closed stone pile"/>
 			<brush name="hole in the ice"/>
-			<brush name="jungle grass"/>
-			<brush name="jungle dirt"/>
-			<brush name="swamp"/>
-			<brush name="dark swamp"/>
-			<brush name="light dirt"/>
-			<brush name="tar pit"/>
-			<brush name="white gravel"/>
-			<brush name="mountain ground"/>
-			<brush name="mountain top ground"/>
-			<brush name="rocky ground"/>
-			<brush item="3311"/>
+			<item id="486"/>
 		</terrain>
 		<doodad>
 			<brush name="mossy wall"/>
@@ -127,68 +128,52 @@
 			<brush name="trees"/>
 			<brush name="bushes"/>
 			<brush name="blueberry bushes"/>
-			<brush name="banana tree"/>
 			<brush name="dead bushes"/>
 			<brush name="swamp plants"/>
 			<brush name="flowers"/>
-			<brush name="yellow flowers"/>
 			<brush name="royal flowers"/>
 			<brush name="sunflowers"/>
 			<brush name="lilypads"/>
 			<brush name="roses"/>
 			<brush name="tall jungle grass"/>
-			<brush name="tall swamp grass"/>
-			<item id="3323"/>
 			<item id="2785"/>
-			<brush name="log"/>
-			<brush name="log vines"/>
-			<brush name="log covered in moss"/>
-			<brush name="tree crown"/>
-			<brush name="branches"/>
-			<brush name="bamboo plant"/>
-			<brush name="giant mushrooms"/>
-			<brush name="moldy giant mushrooms"/>
-			<brush name="moldy mushrooms"/>
-			<brush name="small mushrooms"/>
-			<brush name="jungle maw"/>
-			<brush name="ant trails"/>
-			<brush name="waterfall"/>
 			<brush name="gray rocks"/>
 			<brush name="brown rocks"/>
-			<brush name="small rocks"/>
+			<brush name="big stone 1"/>
+			<brush name="big stone 2"/>
+			<brush name="big stone 3"/>
+			<brush name="tall stone"/>
+			<brush name="tall stone fallen"/>
+			<item fromid="1353" toid="1355"/>
 			<brush name="staglamites"/>
-			<brush name="weird shaped stones"/>
-			<brush name="debris"/>
-			<brush name="lava hole"/>
+			<item fromid="388" toid="389"/>
 			<brush name="gray rubble"/>
 			<brush name="brown rubble"/>
 			<brush name="rough gray rubble"/>
 			<brush name="rough brown rubble"/>
-			<brush name="mossy rocks"/>
+			<brush name="dead trees"/>
+			<brush name="rush wood"/>			
+			<brush name="snowy trees"/>
 		</doodad>
 		<raw>
 			<item fromid="386" toid="391"/>
 			<item fromid="1499"/>
 			<item fromid="1285" toid="1359"/>
 			<item fromid="2697" toid="2786"/>
-			<item fromid="3311" toid="3347"/>
 			<item fromid="2569" toid="2574"/>
 			<item fromid="2798" toid="2805"/>
-			<item fromid="3603" toid="3677"/>
-			<item fromid="3984" toid="4250"/>
-			<item fromid="3569" toid="3574"/>
 		</raw>
 	</tileset>
 	
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
+			<item fromid="368"/>
 			<brush name="cave"/>
 			<brush name="cave hole"/>
 			<brush name="cave ropespot"/>
 			<brush name="cave small hole"/>
 			<brush name="cave pickhole"/>
-			<brush name="dirt"/>
 			<brush name="clear water"/>
 			<brush name="lava"/>
 			<brush name="void"/>
@@ -204,25 +189,6 @@
 		</raw>
 	</tileset>
 	
-	<tileset name="Snow">
-		<terrain>
-			<brush name="sea"/>
-			<brush name="mountain"/>
-			<brush name="snow"/>
-			<brush name="ice"/>
-			<brush name="white gravel"/>
-			<brush name="mountain ground"/>
-			<brush name="mountain top ground"/>
-			<brush name="rocky ground"/>
-		</terrain>
-		<doodad>
-			<brush name="snowy dead trees"/>
-			<brush name="snowy alive trees"/>
-			<brush name="dead trees"/>
-			<brush name="snowy trees"/>
-		</doodad>
-	</tileset>
-	
 	<tileset name="Town">
 		<terrain>
 			<brush name="stone floor"/>
@@ -230,8 +196,9 @@
 			<brush name="grassy cobblestone"/>
 			<brush name="lawn"/>
 			<brush name="wooden floor"/>
+			<brush name="beige floor"/>
 			<brush name="drawbridge"/>
-			<brush name="dark wooden floor"/>
+			<brush name="time tiles"/>
 			<brush name="drab tiled stone floor"/>
 			<brush name="dark tiled sandstone"/>
 			<brush name="tiled sandstone floor"/>
@@ -255,10 +222,10 @@
 			<brush name="brick wall arch"/>
 			<brush name="stone wall"/>
 			<brush name="rock wall"/>
+			<brush name="rock wall arch"/>
 			<brush name="egypt wall"/>
 			<brush name="egypt stone wall"/>
 			<brush name="pyramid ramp"/>
-			<brush name="marble wall"/>
 			
 			<brush name="fence"/>
 			<brush name="dark fence"/>
@@ -266,8 +233,7 @@
 			<brush name="steel bars"/>
 			<brush name="steel rebar"/>
 			-->
-			<brush name="flat roof"/>
-			<brush name="brown bamboo roof"/>
+			<brush name="flat roof"/>		
 			<brush name="brick roof, left"/>
 			<brush name="brick roof, vertical"/>
 			<brush name="brick roof, right"/>
@@ -280,35 +246,28 @@
 			<brush name="wooden roof, left"/>
 			<brush name="wooden roof, vertical"/>
 			<brush name="wooden roof, right"/>
+			<brush name="sewer grate"/>
 		</terrain>
 	</tileset>
 	
 	<tileset name="Stairs">
-		<terrain>
+		<doodad>
 			<brush name="wooden ladder hole"/>
 			<brush name="wooden trapdoor"/>
 			<brush name="stairs down"/>
 			<brush name="trapdoor down"/>
 			<brush name="trapdoor ladder down"/>
 			<brush name="trapdoor ladder down"/>
-			<brush name="stone stairway"/>
-			<brush name="black stone stairs"/>
-			<brush name="black stone trapdoor"/>
-			<brush name="gray stone stairs"/>
-			<brush name="gray stone trapdoor"/>
-		</terrain>
+			<item fromid="1385" toid="1386"/>
+			<item fromid="1396"/>
+			<item fromid="432" toid="433"/>
+			<brush name="ramp"/>
+		</doodad>
 	</tileset>
 	
 	<tileset name="Boats">
 		<raw>
-			<item fromid="4883" toid="4947"/>
-			<item fromid="4403"/>
-			<item fromid="3601" toid="3602"/>
-			<item fromid="4948" toid="4991"/>
-			<item fromid="4998" toid="5008"/>
-			<item fromid="5082" toid="5085"/>
 			<item fromid="1277" toid="1284"/>
-			<item fromid="3587" toid="3600"/>
 		</raw>
 	</tileset>
 
@@ -321,24 +280,14 @@
 		<raw>
 			<item fromid="2226"/>
 			<item fromid="2240"/>
-			<item fromid="3607" toid="3616"/>
 		</raw>
 	</tileset>
-
+	
 	<tileset name="Hangables">
 		<doodad>
-			<brush name="cobra wall statue"/>
-			<brush name="wall lamp"/>
-			<brush name="wall lamp - lit"/>
-			<brush name="wall torch"/>
-			<brush name="wall torch - lit"/>
-			<brush name="wall candle"/>
-			<brush name="wall candle - lit"/>
-			<brush name="bambu wall torch"/>
-			<brush name="bambu wall torch - lit"/>
-			<brush name="cage wall lamp"/>
-			<brush name="cage wall lamp - lit"/>
 			<brush name="blackboard"/>
+			<brush name="writeable blackboard"/>
+			<brush name="royal tapestry"/>
 			<item id="1877"/>
 			<item id="1881"/>
 			<item id="1845"/>
@@ -369,10 +318,6 @@
 			<brush name="store counter"/>
 			<brush name="big brown table, horizontal"/>
 			<brush name="big brown table, vertical"/>
-			<brush name="bambu drawer"/>
-			<brush name="bambu bookcase"/>
-			<brush name="bambu bookcase with books"/>
-			<brush name="bambu wardrobe"/>
 			<brush name="bookcase"/>
 			<item id="1738"/>
 			<item id="1739"/>
@@ -380,7 +325,6 @@
 			<item id="1741"/>
 			<item id="1746"/>
 			<brush name="large trunk"/>
-			<brush name="wooden coffin"/>
 			<brush name="large cask"/>
 			<item id="1770"/>
 			<item id="1771"/>
@@ -392,8 +336,12 @@
 			<item id="2034"/>
 			<brush name="oven - on"/>
 			<brush name="oven - off"/>
-			<brush name="map board"/>
-			-- MUSIC!1111111 --
+			<brush name="decorative altar"/>
+			<brush name="stone altar"/>
+			<item id="2593"/>
+			-- flowers --
+			<item fromid="2100" toid="2107"/>
+			-- instruments --
 			<brush name="piano"/>
 			<brush name="harp"/>
 			-- beds --
@@ -401,8 +349,7 @@
 			<brush name="normal bed with sleeper"/>
 			<brush name="cot"/>
 			<brush name="cot with sleeper"/>
-			<brush name="hammock"/>
-			<brush name="hammock with sleeper"/>
+
 			-- tables --
 			<item id="1614"/>
 			<item id="1615"/>
@@ -416,15 +363,10 @@
 			<brush name="sofa chair"/>
 			<brush name="green sofa"/>
 			<brush name="redwhite sofa"/>
-			<brush name="bench"/>
 			<brush name="gilded throne"/>
 			<brush name="dull throne"/>
-			<brush name="large throne"/>
+
 			-- carpets --
-			<brush name="brown bear skin rug"/>
-			<brush name="white bear skin rug"/>
-			<brush name="bear skin rug"/>
-			<brush name="red carpet"/>
 		</doodad>
 		<raw>
 			<item fromid="1602" toid="1808"/>
@@ -444,11 +386,23 @@
 			<item fromid="2594"/>
 			<item fromid="2606" toid="2609"/>
 			<item fromid="2614" toid="2615"/>
-			<item fromid="3805" toid="3843"/>
-			<item fromid="4394" toid="4402"/>
 		</raw>
 	</tileset>
-	
+
+	<tileset name="Light">
+		<doodad>
+			<item fromid="1479" toid="1480"/>
+			<brush name="wall lamp"/>
+			<brush name="wall lamp - lit"/>
+			<brush name="wall torch"/>
+			<brush name="wooden wall lamp"/>
+			<brush name="wooden wall lamps"/>
+			<brush name="wall torch - lit"/>
+			<item fromid="1481" toid="1486"/>
+			<item fromid="2064" toid="2065"/>
+			<item fromid="2044" toid="2045"/>
+		</doodad>
+	</tileset>
 	<tileset name="Statues">
 		<doodad>
 			<item fromid="1444" toid="1445"/>
@@ -460,48 +414,42 @@
 			<brush name="gargoyle statue pedestal"/>
 			<brush name="cobra statue"/>
 			<brush name="cobra statue pedestal"/>
-			<brush name="female statue"/>
-			<brush name="female statue with flame"/>
-			<brush name="hunter statue"/>
-			
-			<brush name="lizard statue"/>
-			<brush name="broken lizard statue"/>
-			<brush name="giant snake head statue"/>
-			<brush name="giant snake head statue (open)"/>
-			<brush name="giant hand statue"/>
 			<item fromid="1450" toid="1451"/>
 		</doodad>
 	</tileset>
 	
 	<tileset name="Exterior">
-		<doodad>
-			<brush name="stone altar"/>
-			<brush name="decorative altar"/>
-			
-			-- coffins --
+		<doodad>			
+			-- creepy --
+			<brush name="wooden coffin"/>
 			<brush name="stone coffin (no rose)"/>
 			<brush name="stone coffin (yellow rose)"/>
 			<brush name="stone coffin (blue rose)"/>
 			<brush name="stone coffin (red rose)"/>
 			<brush name="buried stone coffin"/>
 			<brush name="sarcophagus"/>
-			
+			<item fromid="1406" toid="1409"/>			
 			-- Campfires --
 			<item fromid="1421" toid="1428"/>
-			<item fromid="1481" toid="1486"/>
-			<item fromid="2601" toid="2605"/>
 			
-			-- fountains --
-			<brush name="ancient fountain - off"/>
-			<brush name="ancient fountain - on"/>
-			<brush name="water well"/>
-			<brush name="lava fountain"/>
-			
+			-- fountains --	
 			<brush name="marble fountain - on"/>
 			<brush name="marble fountain - off"/>
 			<item id="1378"/>
 			<brush name="normal fountain - on"/>
 			<brush name="normal fountain - off"/>
+			
+			-- flags --
+			<brush name="dragon flag"/>
+			<brush name="castle flag"/>
+			<brush name="tibia flag"/>
+			<brush name="millstone"/>
+			<brush name="millwheel"/>
+			<brush name="well"/>
+			<brush name="bench"/>
+			-- signs --
+			<item fromid="1429" toid="1434"/>
+			<item fromid="1438" toid="1439"/>	
 		</doodad>
 		<raw>
 			<item fromid="486"/>
@@ -517,10 +465,6 @@
 			<item fromid="2601" toid="2605"/>
 			<item fromid="2610" toid="2613"/>
 			<item fromid="2616" toid="2623"/>
-			<item fromid="3697" toid="3710"/>
-			<item fromid="3715" toid="3726"/>
-			<item fromid="3718" toid="3742"/>
-			<item fromid="3802" toid="3804"/>
 		</raw>
 	</tileset>
 
@@ -566,8 +510,7 @@
 			<item fromid="2323"/>
 			<item fromid="2662" toid="2663"/>
 			<item fromid="2665"/>
-			<item fromid="3967"/>
-			<item fromid="3969" toid="3972"/>
+
 			-- Armor --
 	        <item fromid="2463" toid="2467"/>
 	        <item fromid="2472"/>
@@ -582,7 +525,6 @@
 			<item fromid="2508"/>
 			<item fromid="2650" toid="2660"/>
 			<item fromid="2664"/>
-			<item fromid="3968"/>
 			-- Legs --
 			<item fromid="2468" toid="2470"/>
 			<item fromid="2477" toid="2478"/>
@@ -595,7 +537,6 @@
 			<item fromid="2195"/>
 			<item fromid="2358"/>
 			<item fromid="2640" toid="2646"/>
-			<item fromid="3982"/>
 		</items>
 	</tileset>
 	
@@ -672,8 +613,6 @@
 			<item fromid="2444" toid="2445"/>
 			<item fromid="2448" toid="2449"/>
 			<item fromid="2452" toid="2453"/>
-			<item fromid="3961"/>
-			<item fromid="3966"/>
 			-- Axes --
 			<item fromid="2378"/>
 			<item fromid="2380" toid="2381"/>
@@ -685,10 +624,8 @@
 			<item fromid="2443"/>
 			<item fromid="2447"/>
 			<item fromid="2454"/>
-			<item fromid="3962"/>
 			-- Distance --
 			<item fromid="2389"/>
-			<item fromid="3965"/>
 			<item fromid="2455" toid="2456"/>
 			<item fromid="2352"/>
 			<item fromid="2410"/>
@@ -704,7 +641,6 @@
 	<tileset name="Shields">
 		<items>
 			<item fromid="2509" toid="2542"/>
-			<item fromid="3973" toid="3975"/>
 		</items>
 	</tileset>
 	
@@ -736,10 +672,6 @@
 			<item id="2373"/>
 			<item id="2374"/>
 			<item id="2375"/>
-			<item id="3951"/>
-			<item id="3952"/>
-			<item id="3953"/>
-			<item id="3957"/>
 			-- Lights --
 			<item id="2041" toid="2049"/>
 			<item id="2051"/>
@@ -754,7 +686,6 @@
 			<item id="2063"/>
 			
 			<item fromid="2366" toid="2375"/>
-			<item id="4874"/>
 			<item fromid="2597" toid="2598"/>
 			<item id="2599"/>
 			<item id="2175"/>
@@ -764,16 +695,13 @@
 			<item id="2359"/>
 			<item id="2137"/>
 			<item fromid="2032" toid="2033"/>
-			<item id="4851"/>
 			-- Fluid containers --
-			<item fromid="3941" toid="3942"/>
 			<item fromid="2005" toid="2015"/>
 			<item id="2023"/>
 			<item id="2031"/>
 			<item id="2033"/>
 			<item id="2035"/>
-			<item id="3941"/>
-			<item id="3942"/>
+
 			-- Food related --
 			<item id="2033"/>
 			-- Keys --
@@ -816,7 +744,6 @@
 		<items>
 	        <item fromid="1987" toid="1989"/>
 	        <item fromid="1990" toid="2004"/>
-	        <item fromid="3939" toid="3940"/>
 	        <item fromid="2365"/>
 	        <item fromid="2330" toid="2331"/>
 	        <item fromid="2595" toid="2596"/>
@@ -824,7 +751,6 @@
 		<raw>
 	        <item fromid="1987" toid="1989"/>
 	        <item fromid="1990" toid="2004"/>
-	        <item fromid="3939" toid="3940"/>
 	        <item fromid="2365"/>
 	        <item fromid="2330" toid="2331"/>
 	        <item fromid="2595" toid="2596"/>
@@ -836,25 +762,18 @@
 			<item fromid="1947" toid="1986"/>
 			<item id="2345"/>
 			<item id="2347"/>
-			<item id="2567"/>
-			<item id="2568"/>
 			<item id="2597"/>
 			<item id="2598"/>
 			<item id="2599"/>
 			<item id="2175"/>
 			<item id="2217"/>
-			<item id="4853"/>
-			<item id="4854"/>
-			<item id="4855"/>
 		</items>
 	</tileset>
 	
 	<tileset name="Food">
 		<items>
 			<item id="2666"/>
-			<item id="2035"/>
-			<item id="2032"/>
-			<item id="2032"/>
+			<item fromid="2667" toid="2679"/>
 		</items>
 	</tileset>
 	
@@ -868,8 +787,6 @@
 			<item id="2237"/>
 			<item id="2238"/>
 			<brush name="leaves"/>
-			<item id="2246"/>
-			<brush name="bamboo garbage"/>
 			<brush name="wooden trash"/>
 			<brush name="metal trash"/>
 		</doodad>
@@ -885,7 +802,6 @@
 		<doodad>
 			<item id="2317"/>
 			<item fromid="2806" toid="3134"/>
-			<item fromid="4251" toid="4327"/>
 		</doodad>
 	</tileset>
 	
@@ -907,9 +823,6 @@
 			<item fromid="423"/>
 			<item fromid="427" toid="429"/>
 			<item fromid="432" toid="433"/>
-			<item fromid="3135" toid="3138"/>
-			<item fromid="3219" toid="3220"/>
-			<item fromid="4834" toid="4837"/>
 			
 			<!-- Other -->
 			<item fromid="430"/>
@@ -920,12 +833,10 @@
 			
 			<!-- Ladders -->
 			<item fromid="1386"/>
-			<item fromid="3678"/>
 			
 			<!-- Stairs -->
 			<item fromid="1385"/>
 			<item fromid="1396"/>
-			<item fromid="3687" toid="3688"/>
 		</raw>
 	</tileset>
 </materials>
