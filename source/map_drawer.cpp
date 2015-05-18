@@ -1298,7 +1298,7 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 	if(outfit.lookItem != 0)
 	{
 		ItemType& it = item_db[outfit.lookItem];
-		BlitSpriteType(screenx, screeny, it.clientID, red, green, blue, alpha);
+		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
 	}
 	else
 	{
