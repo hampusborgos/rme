@@ -11,7 +11,36 @@
 		<item id="2708" chance="10"/>
 		<item id="2711" chance="10"/>
 	</brush>
+		
+		-- auda custom --
+	<brush name="dragon flag" type="doodad" server_lookid="1435" draggable="false" on_blocking="false" thickness="12/100">
+		<item id="1435" chance="10"/>
+	</brush>	
 	
+	<brush name="castle flag" type="doodad" server_lookid="1436" draggable="false" on_blocking="false" thickness="12/100">
+		<item id="1436" chance="10"/>
+	</brush>
+	
+	<brush name="tibia flag" type="doodad" server_lookid="1437" draggable="false" on_blocking="false" thickness="12/100">
+		<item id="1437" chance="10"/>
+	</brush>
+
+	<brush name="sewer grate" type="doodad" server_lookid="430" draggable="false" on_blocking="false" thickness="12/100">
+		<item id="430" chance="10"/>
+	</brush>
+	
+	<brush name="streetlamp" type="doodad" server_lookid="1480" draggable="false" on_blocking="false" thickness="12/100">
+		<item id="1480" chance="10"/>
+	</brush>
+	
+	<brush name="time tiles" type="doodad" server_lookid="471" draggable="true" on_blocking="false" thickness="13/100">
+		<item id="471" chance="10"/>
+		<item id="472" chance="10"/>
+		<item id="473" chance="10"/>
+		<item id="474" chance="10"/>
+	</brush>
+	
+		-- auda custom --
 	<brush name="dead trees" type="doodad" server_lookid="2720" draggable="true" on_blocking="false" thickness="12/100">
 		<item id="2709" chance="10"/>
 		<item id="2710" chance="10"/>
@@ -30,15 +59,7 @@
 		</composite>
 	</brush>
 	
-	<brush name="snowy dead trees" type="doodad" server_lookid="7022" draggable="true" on_blocking="false" thickness="12/100">
-		<item id="2697" chance="10"/>
-	</brush>
-	
-	<brush name="snowy alive trees" type="doodad" server_lookid="2698" draggable="true" on_blocking="false" thickness="12/100">
-		<item id="2698" chance="10"/>
-	</brush>
-	
-	<brush name="snowy trees" type="doodad" server_lookid="7023" draggable="true" on_blocking="false" thickness="12/100">
+	<brush name="snowy trees" type="doodad" server_lookid="2698" draggable="true" on_blocking="false" thickness="12/100">
 		<item id="2698" chance="14"/>
 		<item id="2697" chance="10"/>
 	</brush>
@@ -61,10 +82,6 @@
 		<item id="1285" chance="15"/>
 		<item id="1356" chance="15"/>
 		<item id="1304" chance="15"/>
-		<item id="3607" chance="12"/>
-		<item id="3608" chance="12"/>
-		<item id="3615" chance="12"/>
-		<item id="3616" chance="10"/>
 		<composite chance="10">
 			<tile x="0" y="0"> <item id="1305"/> </tile>
 			<tile x="1" y="0"> <item id="1306"/> </tile>
@@ -87,78 +104,9 @@
 			<tile x="0" y="1"> <item id="1302"/> </tile>
 			<tile x="1" y="1"> <item id="1303"/> </tile>
 		</composite>
-		<composite chance="4">
-			<tile x="0" y="0"> <item id="3624"/> </tile>
-			<tile x="1" y="0"> <item id="3625"/> </tile>
-			<tile x="0" y="1"> <item id="3626"/> </tile>
-			<tile x="1" y="1"> <item id="3627"/> </tile>
-		</composite>
-		<composite chance="4">
-			<tile x="0" y="0"> <item id="3617"/> </tile>
-			<tile x="1" y="0"> <item id="3618"/> </tile>
-			<tile x="0" y="1"> <item id="3619"/> </tile>
-			<tile x="1" y="1"> <item id="3620"/> </tile>
-		</composite>
-		<composite chance="4">
-			<tile x="0" y="0"> <item id="3628"/> </tile>
-			<tile x="1" y="0"> <item id="3629"/> </tile>
-			<tile x="0" y="1"> <item id="3630"/> </tile>
-			<tile x="1" y="1"> <item id="3631"/> </tile>
-		</composite>
 		<composite chance="10">
 			<tile x="0" y="0"> <item id="1305"/> </tile>
 			<tile x="1" y="0"> <item id="1306"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="small rocks" type="doodad" server_lookid="3610" draggable="true" on_blocking="true" thickness="25/100">
-		<!-- <item id="3607" chance="10"/> -->
-		<!-- <item id="3608" chance="10"/> -->
-		<!-- <item id="3609" chance="10"/> -->
-		<item id="3610" chance="10"/>
-		<item id="3611" chance="10"/>
-		<item id="3612" chance="10"/>
-		<item id="3613" chance="10"/>
-		<item id="3614" chance="10"/>
-		<item id="3621" chance="10"/>
-		<item id="3622" chance="10"/>
-		<item id="3623" chance="10"/>
-		<!-- <item id="3665" chance="10"/> -->
-	</brush>
-	
-	<brush name="debris" type="doodad" server_lookid="3648" draggable="true" on_blocking="true" thickness="25/100">
-		<item id="3648" chance="10"/>
-		<item id="3649" chance="10"/>
-		<item id="3650" chance="10"/>
-		<item id="3651" chance="10"/>
-		<item id="3652" chance="10"/>
-		<item id="3653" chance="10"/>
-		<item id="3654" chance="10"/>
-		<item id="3655" chance="10"/>
-		<item id="3656" chance="10"/>
-		<item id="3669" chance="10"/>
-		<item id="3666" chance="10"/>
-		<item id="3667" chance="10"/>
-		<item id="3668" chance="10"/>
-		<item id="3670" chance="10"/>
-	</brush>
-	
-	<brush name="weird shaped stones" type="doodad" server_lookid="3665" draggable="true" on_blocking="true" thickness="12/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3657"/> </tile>
-			<tile x="1" y="0"> <item id="3658"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3659"/> </tile>
-			<tile x="0" y="1"> <item id="3660"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3661"/> </tile>
-			<tile x="0" y="1"> <item id="3662"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3663"/> </tile>
-			<tile x="1" y="0"> <item id="3664"/> </tile>
 		</composite>
 	</brush>
 	
@@ -169,31 +117,6 @@
 		<composite chance="4">
 			<tile x="0" y="0"> <item id="1292"/> </tile>
 			<tile x="1" y="0"> <item id="1291"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="mossy rocks" type="doodad" server_lookid="3632" draggable="true" on_blocking="true" thickness="13/100">
-		<item id="3632" chance="10"/>
-		<item id="3633" chance="10"/>
-		<item id="3634" chance="10"/>
-		<item id="3635" chance="10"/>
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3636"/> </tile>
-			<tile x="1" y="0"> <item id="3637"/> </tile>
-			<tile x="0" y="1"> <item id="3638"/> </tile>
-			<tile x="1" y="1"> <item id="3639"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3640"/> </tile>
-			<tile x="1" y="0"> <item id="3641"/> </tile>
-			<tile x="0" y="1"> <item id="3642"/> </tile>
-			<tile x="1" y="1"> <item id="3643"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3644"/> </tile>
-			<tile x="1" y="0"> <item id="3645"/> </tile>
-			<tile x="0" y="1"> <item id="3646"/> </tile>
-			<tile x="1" y="1"> <item id="3647"/> </tile>
 		</composite>
 	</brush>
 	
@@ -268,15 +191,6 @@
 		<item id="391" chance="10"/>
 	</brush>
 	
-	<brush name="lava hole" type="doodad" server_lookid="389" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate>
-			<item id="388" chance="10"/>
-		</alternate>
-		<alternate>
-			<item id="389" chance="10"/>
-		</alternate>
-	</brush>
-	
 	<brush name="swamp plants" type="doodad" server_lookid="2771" draggable="true" on_blocking="true" thickness="2/15">
 		<item id="2769" chance="10"/>
 		<item id="2771" chance="10"/>
@@ -298,18 +212,6 @@
 		<item id="2742" chance="10"/>
 		<item id="2743" chance="10"/>
 		<item id="2747" chance="10"/>
-		<item id="4156" chance="10"/>
-		<item id="4157" chance="10"/>
-		<item id="4158" chance="10"/>
-	</brush>
-	
-	<brush name="yellow flowers" type="doodad" server_lookid="4155" draggable="true" on_blocking="true" thickness="10/100">
-		<item id="4155" chance="10"/>
-		<item id="4154" chance="10"/>
-		<item id="4153" chance="10"/>
-		<item id="4152" chance="10"/>
-		<item id="4151" chance="10"/>
-		<item id="4150" chance="10"/>
 	</brush>
 	
 	<brush name="royal flowers" type="doodad" server_lookid="2749" draggable="true" on_blocking="true" thickness="10/100">
@@ -331,11 +233,6 @@
 	<brush name="blueberry bushes" type="doodad" server_lookid="2785" draggable="true" on_blocking="false" thickness="100/100">
 		<alternate> <item id="2785" chance="10"/> </alternate>
 		<alternate> <item id="2786" chance="10"/> </alternate>
-	</brush>
-	
-	<brush name="banana tree" type="doodad" server_lookid="5390" draggable="true" on_blocking="false" thickness="13/100">
-		<alternate> <item id="5390" chance="10"/> </alternate>
-		<alternate> <item id="5391" chance="10"/> </alternate>
 	</brush>
 	
 	<brush name="lilypads" type="doodad" server_lookid="2758" draggable="true" on_blocking="true" thickness="10/100">
@@ -365,224 +262,12 @@
 		<alternate> <item id="2781" chance="10"/> </alternate>
 	</brush>
 	
-	<brush name="tall swamp grass" type="doodad" server_lookid="3985" draggable="true" on_blocking="false" thickness="100/100">
-		<alternate> <item id="3985" chance="10"/> </alternate>
-		<alternate> <item id="3984" chance="10"/> </alternate>
-	</brush>
-	
 	<brush name="dead bushes" type="doodad" server_lookid="2770" draggable="true" on_blocking="false" thickness="10/100">
 		<item id="2770" chance="10"/>
 		<item id="2784" chance="10"/>
 	</brush>
 	
-	<brush name="waterfall" type="doodad" server_lookid="3569" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate>
-			<composite chance="10">
-				<tile x="0" y="0" z="0">  <item id="3569" chance="10"/> </tile>
-				<tile x="0" y="1" z="0">  <item id="3573" chance="10"/> </tile>
-				<tile x="0" y="0" z="-1"> <item id="3571" chance="10"/> </tile>
-			</composite>
-		</alternate>
-		<alternate>
-			<composite chance="10">
-				<tile x="0" y="0" z="0">  <item id="3570" chance="10"/> </tile>
-				<tile x="1" y="0" z="0">  <item id="3574" chance="10"/> </tile>
-				<tile x="0" y="0" z="-1"> <item id="3572" chance="10"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
 	<!-- Jungle -->
-	
-	<brush name="bamboo plant" type="doodad" server_lookid="4025" draggable="true" on_blocking="true" thickness="12/100">
-		<item id="4025" chance="10"/>
-		<item id="4026" chance="10"/>
-		<composite chance="10">
-			<tile x="0" y="0" z="0">  <item id="4027"/> </tile>
-			<tile x="0" y="0" z="-1"> <item id="4028"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0" z="0">  <item id="4027"/> </tile>
-			<tile x="0" y="0" z="-1"> <item id="4029"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0" z="0">  <item id="4027"/> </tile>
-			<tile x="0" y="0" z="-1"> <item id="4030"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0" z="0">  <item id="4033"/> </tile>
-			<tile x="0" y="0" z="-1"> <item id="4032"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0" z="0">  <item id="4033"/> </tile>
-			<tile x="0" y="0" z="-1"> <item id="4031"/> </tile>
-		</composite>
-		<composite chance="10">
-			<tile x="0" y="0" z="0">  <item id="4033"/> </tile>
-			<tile x="0" y="0" z="-1"> <item id="4034"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="giant mushrooms" type="doodad" server_lookid="4168" draggable="true" on_blocking="false" thickness="12/100">
-		<item id="4167" chance="10"/>
-		<item id="4168" chance="10"/>
-		<item id="4169" chance="10"/>
-	</brush>
-	
-	<brush name="moldy giant mushrooms" type="doodad" server_lookid="4172" draggable="true" on_blocking="false" thickness="12/100">
-		<item id="4172" chance="10"/>
-		<item id="4173" chance="10"/>
-	</brush>
-	
-	<brush name="moldy mushrooms" type="doodad" server_lookid="4174" draggable="true" on_blocking="false" thickness="12/100">
-		<item id="4174" chance="10"/>
-		<item id="4175" chance="10"/>
-		<item id="4176" chance="10"/>
-		<item id="4177" chance="10"/>
-		<item id="4175" chance="10"/>
-	</brush>
-	
-	<brush name="small mushrooms" type="doodad" server_lookid="4181" draggable="true" on_blocking="false" thickness="12/100">
-		<item id="4178" chance="10"/>
-		<item id="4179" chance="10"/>
-		<item id="4180" chance="10"/>
-		<item id="4181" chance="10"/>
-	</brush>
-	
-	<brush name="jungle maw" type="doodad" server_lookid="4208" draggable="true" on_blocking="false" thickness="12/100">
-		<alternate> <item id="4208" chance="10"/> </alternate> -- open --
-		<alternate> <item id="4209" chance="10"/> </alternate> -- closed --
-	</brush>
-	
-	<brush name="tree crown" type="carpet" server_lookid="4129">
-		<carpet align="n"      id="4115"/>
-		<carpet align="e"      id="4114"/>
-		<carpet align="s"      id="4116"/>
-		<carpet align="w"      id="4113"/>
-		<carpet align="cnw">
-			<item chance="10" id="4123"/>
-			<item chance="10" id="4124"/>
-		</carpet>
-		<carpet align="cne">
-			<item chance="10" id="4121"/>
-			<item chance="10" id="4122"/>
-		</carpet>
-		<carpet align="cse">
-			<item chance="10" id="4117"/>
-			<item chance="10" id="4120"/>
-		</carpet>
-		<carpet align="csw">
-			<item chance="10" id="4119"/>
-			<item chance="10" id="4118"/>
-		</carpet>
-		<carpet align="dnw"    id="4128"/>
-		<carpet align="dne"    id="4127"/>
-		<carpet align="dse"    id="4125"/>
-		<carpet align="dsw"    id="4126"/>
-		<carpet align="center">
-			<item chance="50" id="4129"/>
-			<item chance="10" id="4130"/>
-			<item chance="10" id="4131"/>
-			<item chance="10" id="4132"/>
-			<item chance="10" id="4133"/>
-		</carpet>
-	</brush>
-	
-	<brush name="log" type="table" server_lookid="4191">
-		<table align="north"> <item id="4194" chance="10"/> </table>
-		<table align="vertical">
-			<item id="4195" chance="80"/>
-			<item id="4196" chance="10"/>
-			<item id="4197" chance="10"/>
-			<item id="4198" chance="10"/>
-			<item id="4199" chance="10"/>
-			<item id="4200" chance="10"/>
-		</table>
-		<table align="south"> <item id="4201" chance="10"/> </table>
-		<table align="west"> <item id="4186" chance="10"/> </table>
-		<table align="horizontal">
-			<item id="4187" chance="80"/>
-			<item id="4188" chance="10"/>
-			<item id="4189" chance="10"/>
-			<item id="4190" chance="10"/>
-			<item id="4191" chance="10"/>
-			<item id="4192" chance="10"/>
-		</table>
-		<table align="east"> <item id="4193" chance="10"/> </table>
-		<table align="alone"> <item id="4187" chance="10"/> </table>
-	</brush>
-	
-	<brush name="log vines" type="table" server_lookid="4202">
-		<table align="north"> <item id="4205" chance="10"/> </table>
-		<table align="vertical"> <item id="4206" chance="10"/> </table>
-		<table align="south"> <item id="4207" chance="10"/> </table>
-		<table align="west"> <item id="4202" chance="10"/> </table>
-		<table align="horizontal"> <item id="4203" chance="10"/> </table>
-		<table align="east"> <item id="4204" chance="10"/> </table>
-		<table align="alone"> <item id="4203" chance="10"/> </table>
-	</brush>
-	
-	<brush name="log covered in moss" type="table" server_lookid="4240">
-		<table align="north"> <item id="4245" chance="10"/> </table>
-		<table align="vertical">
-			<item id="4246" chance="80"/>
-			<item id="4247" chance="10"/>
-			<item id="4248" chance="10"/>
-			<item id="4249" chance="10"/>
-		</table>
-		<table align="south"> <item id="4250" chance="10"/> </table>
-		<table align="west"> <item id="4239" chance="10"/> </table>
-		<table align="horizontal">
-			<item id="4240" chance="80"/>
-			<item id="4241" chance="10"/>
-			<item id="4242" chance="10"/>
-			<item id="4243" chance="10"/>
-		</table>
-		<table align="east"> <item id="4244" chance="10"/> </table>
-		<table align="alone"> <item id="4240" chance="10"/> </table>
-	</brush>
-	
-	-- In classical style, trails are actually wallbrushes --
-	<brush name="ant trails" type="wall" server_lookid="3313">
-		<wall type="horizontal">         <item id="3313" chance="1"/> </wall>
-		<wall type="vertical">           <item id="3315" chance="1"/> </wall>
-		<wall type="pole">               <item id="3321" chance="1"/> </wall>
-		<wall type="intersection">       <item id="3321" chance="1"/> </wall>
-		<wall type="south end">          <item id="3315" chance="1"/> </wall>
-		<wall type="east end">           <item id="3313" chance="1"/> </wall>
-		<wall type="north end">          <item id="3315" chance="1"/> </wall>
-		<wall type="west end">           <item id="3313" chance="1"/> </wall>
-		<wall type="northeast diagonal"> <item id="3316" chance="1"/> </wall>
-		<wall type="northwest diagonal"> <item id="3317" chance="1"/> </wall>
-		<wall type="southeast diagonal"> <item id="3312" chance="1"/> </wall>
-		<wall type="southwest diagonal"> <item id="3314" chance="1"/> </wall>
-		<wall type="south T">            <item id="3318" chance="1"/> </wall>
-		<wall type="east T">             <item id="3320" chance="1"/> </wall>
-		<wall type="north T">            <item id="3319" chance="1"/> </wall>
-		<wall type="west T">             <item id="3322" chance="1"/> </wall>
-	</brush>
-	
-	<brush name="branches" type="wall" server_lookid="4233">
-		<wall type="horizontal">
-			<item id="4233" chance="1"/>
-			<item id="4234" chance="1"/>
-		</wall>
-		<wall type="vertical">
-			<item id="4231" chance="1"/>
-			<item id="4232" chance="1"/>
-		</wall>
-		<wall type="pole">
-			<item id="4229" chance="1"/>
-		</wall>
-		<wall type="south end">          <item id="4225" chance="1"/> </wall>
-		<wall type="east end">           <item id="4224" chance="1"/> </wall>
-		<wall type="north end">          <item id="4223" chance="1"/> </wall>
-		<wall type="west end">           <item id="4226" chance="1"/> </wall>
-		<wall type="northeast diagonal"> <item id="4237" chance="1"/> </wall>
-		<wall type="northwest diagonal"> <item id="4238" chance="1"/> </wall>
-		<wall type="southeast diagonal"> <item id="4235" chance="1"/> </wall>
-		<wall type="southwest diagonal"> <item id="4236" chance="1"/> </wall>
-	</brush>
 	
 	<!-- Furniture -->
 	
@@ -652,21 +337,6 @@
 		</alternate>
 		<alternate> -- east --
 			<item id="1737" chance="10"/>
-		</alternate>
-	</brush>
-	
-	<brush name="map board" type="doodad" server_lookid="5656" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="5655"/> </tile>
-				<tile x="1" y="0"> <item id="5656"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- east --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="5657"/> </tile>
-				<tile x="0" y="1"> <item id="5658"/> </tile>
-			</composite>
 		</alternate>
 	</brush>
 	
@@ -770,54 +440,6 @@
 				<tile x="0" y="0"> <item id="1712"/> </tile>
 				<tile x="0" y="1"> <item id="1713"/> </tile>
 			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="bambu wardrobe" type="doodad" server_lookid="3822" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3823"/> </tile>
-				<tile x="1" y="0"> <item id="3822"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- east --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3824"/> </tile>
-				<tile x="0" y="1"> <item id="3825"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="bambu bookcase" type="doodad" server_lookid="3828" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item chance="10" id="3828"/>
-		</alternate>
-		<alternate> -- east --
-			<item chance="10" id="3829"/>
-		</alternate>
-	</brush>
-	
-	<brush name="bambu bookcase with books" type="doodad" server_lookid="3830" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item chance="10" id="3830"/>
-		</alternate>
-		<alternate> -- east --
-			<item chance="10" id="3831"/>
-		</alternate>
-	</brush>
-	
-	<brush name="bambu drawer" type="doodad" server_lookid="3832" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item chance="10" id="3832"/>
-		</alternate>
-		<alternate> -- east --
-			<item chance="10" id="3833"/>
-		</alternate>
-		<alternate> -- north --
-			<item chance="10" id="3834"/>
-		</alternate>
-		<alternate> -- west --
-			<item chance="10" id="3835"/>
 		</alternate>
 	</brush>
 	
@@ -973,15 +595,6 @@
 		</alternate>
 	</brush>
 	
-	<brush name="large throne" type="doodad" server_lookid="5915" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="5915" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="5916" chance="10"/>
-		</alternate>
-	</brush>
-	
 	<brush name="redwhite sofa" type="doodad" server_lookid="1695" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate> -- south --
 			<composite chance="10">
@@ -1065,37 +678,6 @@
 				<tile x="0" y="0"> <item id="1388"/> </tile>
 				<tile x="0" y="0" z="-1"> <item id="459"/> </tile>
 				<tile x="-1" y="0"> <item id="1389"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="bamboo ramp" type="doodad" server_lookid="3686" draggable="false" on_blocking="true" one_size="true" redo_borders="true">
-		<alternate> -- south --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3685"/> </tile>
-				<tile x="0" y="0" z="-1"> <item id="459"/> </tile>
-				<tile x="0" y="1"> <item id="3686"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- east --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3681"/> </tile>
-				<tile x="0" y="0" z="-1"> <item id="459"/> </tile>
-				<tile x="1" y="0"> <item id="3682"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- north --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3683"/> </tile>
-				<tile x="0" y="0" z="-1"> <item id="459"/> </tile>
-				<tile x="0" y="-1"> <item id="3684"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- west --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3679"/> </tile>
-				<tile x="0" y="0" z="-1"> <item id="459"/> </tile>
-				<tile x="-1" y="0"> <item id="3680"/> </tile>
 			</composite>
 		</alternate>
 	</brush>
@@ -1295,152 +877,6 @@
 		</alternate>
 	</brush>
 	
-	<brush name="female statue" type="doodad" server_lookid="3697" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="3697" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3699" chance="10"/>
-		</alternate>
-	</brush>
-	
-	<brush name="female statue with flame" type="doodad" server_lookid="3698" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="3698" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3700" chance="10"/>
-		</alternate>
-	</brush>
-	
-	<brush name="hunter statue" type="doodad" server_lookid="3739" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="3739" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3740" chance="10"/>
-		</alternate>
-		<alternate> -- north --
-			<item id="3741" chance="10"/>
-		</alternate>
-		<alternate> -- west --
-			<item id="3742" chance="10"/>
-		</alternate>
-	</brush>
-	
-	<brush name="broken lizard statue" type="doodad" server_lookid="3702" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="3702" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3701" chance="10"/>
-		</alternate>
-		<alternate> -- north --
-			<item id="3704" chance="10"/>
-		</alternate>
-		<alternate> -- west --
-			<item id="3703" chance="10"/>
-		</alternate>
-	</brush>
-	
-	<brush name="lizard statue" type="doodad" server_lookid="3705" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="3705" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3706" chance="10"/>
-		</alternate>
-		<alternate> -- north --
-			<item id="3707" chance="10"/>
-		</alternate>
-		<alternate> -- west --
-			<item id="3708" chance="10"/>
-		</alternate>
-	</brush>
-	
-	<brush name="giant snake head statue" type="doodad" server_lookid="3717" draggable="true" on_blocking="true" thickness="100/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3715"/> </tile>
-			<tile x="0" y="1"> <item id="3717"/> </tile>
-			<tile x="1" y="0"> <item id="3716"/> </tile>
-			<tile x="1" y="1"> <item id="3718"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="giant snake head statue (open)" type="doodad" server_lookid="3719" draggable="true" on_blocking="true" thickness="100/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3719"/> </tile>
-			<tile x="0" y="1"> <item id="3721"/> </tile>
-			<tile x="1" y="0"> <item id="3720"/> </tile>
-			<tile x="1" y="1"> <item id="3722"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="giant hand statue" type="doodad" server_lookid="3723" draggable="true" on_blocking="true" thickness="100/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3723"/> </tile>
-			<tile x="0" y="1"> <item id="3725"/> </tile>
-			<tile x="1" y="0"> <item id="3724"/> </tile>
-			<tile x="1" y="1"> <item id="3726"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="ancient fountain - off" type="doodad" server_lookid="3729" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate>
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3733"/> </tile>
-				<tile x="0" y="1"> <item id="3735"/> </tile>
-				<tile x="1" y="0"> <item id="3734"/> </tile>
-				<tile x="1" y="1"> <item id="3736"/> </tile>
-			</composite>
-		</alternate>
-		<alternate>
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3729"/> </tile>
-				<tile x="0" y="1"> <item id="3731"/> </tile>
-				<tile x="1" y="0"> <item id="3730"/> </tile>
-				<tile x="1" y="1"> <item id="3732"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="ancient fountain - on" type="doodad" server_lookid="3733" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate>
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3729"/> </tile>
-				<tile x="0" y="1"> <item id="3731"/> </tile>
-				<tile x="1" y="0"> <item id="3730"/> </tile>
-				<tile x="1" y="1"> <item id="3732"/> </tile>
-			</composite>
-		</alternate>
-		<alternate>
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3733"/> </tile>
-				<tile x="0" y="1"> <item id="3735"/> </tile>
-				<tile x="1" y="0"> <item id="3734"/> </tile>
-				<tile x="1" y="1"> <item id="3736"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="water well" type="doodad" server_lookid="5078" draggable="true" on_blocking="true" thickness="100/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="5076"/> </tile>
-			<tile x="0" y="1"> <item id="5079"/> </tile>
-			<tile x="1" y="0"> <item id="5077"/> </tile>
-			<tile x="1" y="1"> <item id="5078"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="lava fountain" type="doodad" server_lookid="5074" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="5074" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="5075" chance="10"/>
-		</alternate>
-	</brush>
-	
 	<brush name="marble fountain - off" type="doodad" server_lookid="1370" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
 			<composite chance="10">
@@ -1475,6 +911,94 @@
 				<tile x="0" y="1"> <item id="1372"/> </tile>
 				<tile x="1" y="0"> <item id="1371"/> </tile>
 				<tile x="1" y="1"> <item id="1373"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="millstone" type="doodad" server_lookid="1381" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1381"/> </tile>
+				<tile x="0" y="1"> <item id="1383"/> </tile>
+				<tile x="1" y="0"> <item id="1382"/> </tile>
+				<tile x="1" y="1"> <item id="1384"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+	
+	-- stones --
+	<brush name="big stone 1" type="doodad" server_lookid="1300" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1300"/> </tile>
+				<tile x="0" y="1"> <item id="1302"/> </tile>
+				<tile x="1" y="0"> <item id="1301"/> </tile>
+				<tile x="1" y="1"> <item id="1303"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+	
+	<brush name="big stone 2" type="doodad" server_lookid="1289" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1289"/> </tile>
+				<tile x="0" y="1"> <item id="1287"/> </tile>
+				<tile x="1" y="0"> <item id="1288"/> </tile>
+				<tile x="1" y="1"> <item id="1286"/> </tile>
+			</composite>
+		</alternate>
+	</brush>	
+
+	<brush name="big stone 3" type="doodad" server_lookid="1296" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1296"/> </tile>
+				<tile x="0" y="1"> <item id="1298"/> </tile>
+				<tile x="1" y="0"> <item id="1297"/> </tile>
+				<tile x="1" y="1"> <item id="1299"/> </tile>
+			</composite>
+		</alternate>
+	</brush>	
+	
+	<brush name="tall stone" type="doodad" server_lookid="1304" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1304"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+	
+	<brush name="tall stone fallen" type="doodad" server_lookid="1305" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1305"/> </tile>
+				<tile x="1" y="0"> <item id="1306"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="rush wood" type="doodad" server_lookid="1499" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1499"/> </tile>
+			</composite>
+		</alternate>
+	</brush>		
+	
+	<brush name="millwheel" type="doodad" server_lookid="1380" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1379"/> </tile>
+				<tile x="1" y="0"> <item id="1380"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="well" type="doodad" server_lookid="1368" draggable="false" on_blocking="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1368"/> </tile>
+				<tile x="1" y="0"> <item id="1369"/> </tile>
 			</composite>
 		</alternate>
 	</brush>
@@ -1575,36 +1099,6 @@
 			<composite chance="10">
 				<tile x="0" y="0"> <item id="1768"/> </tile>
 				<tile x="1" y="0"> <item id="1769"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="hammock" type="doodad" server_lookid="3836" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3836"/> </tile>
-				<tile x="0" y="1"> <item id="3837"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- east --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3838"/> </tile>
-				<tile x="1" y="0"> <item id="3839"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="hammock with sleeper" type="doodad" server_lookid="3840" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3840"/> </tile>
-				<tile x="0" y="1"> <item id="3841"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- east --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="3842"/> </tile>
-				<tile x="1" y="0"> <item id="3843"/> </tile>
 			</composite>
 		</alternate>
 	</brush>
@@ -1818,16 +1312,7 @@
 	</brush>
 	
 	<!-- Wall decoration -->
-	
-	<brush name="cobra wall statue" type="doodad" on_blocking="true" server_lookid="1474">
-		<alternate> -- south --
-			<item id="1474" chance="1"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="1472" chance="1"/>
-		</alternate>
-	</brush>
-	
+		
 	<brush name="cobra statue socket" type="doodad" on_blocking="true" server_lookid="1475">
 		<alternate> -- south --
 			<item id="1475" chance="1"/>
@@ -1837,12 +1322,30 @@
 		</alternate>
 	</brush>
 	
-	<brush name="blackboard" type="doodad" on_blocking="true" server_lookid="1811">
+	<brush name="writeable blackboard" type="doodad" on_blocking="true" server_lookid="1811">
 		<alternate> -- south --
 			<item id="1811" chance="1"/>
 		</alternate>
 		<alternate> -- east --
 			<item id="1818" chance="1"/>
+		</alternate>
+	</brush>
+
+	<brush name="blackboard" type="doodad" on_blocking="true" server_lookid="1810">
+		<alternate> -- south --
+			<item id="1810" chance="1"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="1815" chance="1"/>
+		</alternate>
+	</brush>
+	
+	<brush name="royal tapestry" type="doodad" on_blocking="true" server_lookid="1812">
+		<alternate> -- south --
+			<item id="1812" chance="1"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="1813" chance="1"/>
 		</alternate>
 	</brush>
 	
@@ -1882,7 +1385,7 @@
 		</alternate>
 	</brush>
 	
-	<brush name="bambu wall torch" type="doodad" on_blocking="true" server_lookid="2068">
+	<brush name="wooden wall lamps" type="doodad" on_blocking="true" server_lookid="2068">
 		<alternate> -- south --
 			<item id="2068" chance="1"/>
 		</alternate>
@@ -1891,48 +1394,12 @@
 		</alternate>
 	</brush>
 	
-	<brush name="bambu wall torch - lit" type="doodad" on_blocking="true" server_lookid="2069">
+	<brush name="wooden wall lamp" type="doodad" on_blocking="true" server_lookid="2069">
 		<alternate> -- south --
 			<item id="2069" chance="1"/>
 		</alternate>
 		<alternate> -- east --
 			<item id="2067" chance="1"/>
-		</alternate>
-	</brush>
-	
-	<brush name="wall candle" type="doodad" on_blocking="true" server_lookid="3945">
-		<alternate> -- south --
-			<item id="3945" chance="1"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3943" chance="1"/>
-		</alternate>
-	</brush>
-	
-	<brush name="wall candle - lit" type="doodad" on_blocking="true" server_lookid="3944">
-		<alternate> -- south --
-			<item id="3944" chance="1"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3946" chance="1"/>
-		</alternate>
-	</brush>
-	
-	<brush name="cage wall lamp" type="doodad" on_blocking="true" server_lookid="3949">
-		<alternate> -- south --
-			<item id="3949" chance="1"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3947" chance="1"/>
-		</alternate>
-	</brush>
-	
-	<brush name="cage wall lamp - lit" type="doodad" on_blocking="true" server_lookid="3950">
-		<alternate> -- south --
-			<item id="3950" chance="1"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="3948" chance="1"/>
 		</alternate>
 	</brush>
 	
@@ -1976,40 +1443,6 @@
 	
 	<!-- Carpet -->
 	
-	<brush name="brown bear skin rug" type="doodad" server_lookid="3855" draggable="true" on_blocking="true" thickness="100/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3852"/> </tile>
-			<tile x="1" y="0"> <item id="3853"/> </tile>
-			<tile x="0" y="1"> <item id="3854"/> </tile>
-			<tile x="1" y="1"> <item id="3855"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="white bear skin rug" type="doodad" server_lookid="3859" draggable="true" on_blocking="true" thickness="100/100">
-		<composite chance="10">
-			<tile x="0" y="0"> <item id="3856"/> </tile>
-			<tile x="1" y="0"> <item id="3857"/> </tile>
-			<tile x="0" y="1"> <item id="3858"/> </tile>
-			<tile x="1" y="1"> <item id="3859"/> </tile>
-		</composite>
-	</brush>
-	
-	<brush name="bear skin rug" type="doodad" server_lookid="3855" draggable="true" on_blocking="true" thickness="100/100">
-		<item chance="10" id="3860"/>
-	</brush>
-	
-	<brush name="red carpet" type="carpet" server_lookid="4398">
-		<carpet align="n"      id="4401"/>
-		<carpet align="e"      id="4397"/>
-		<carpet align="s"      id="4395"/>
-		<carpet align="w"      id="4399"/>
-		<carpet align="cnw"    id="4402"/>
-		<carpet align="cne"    id="4400"/>
-		<carpet align="cse"    id="4394"/>
-		<carpet align="csw"    id="4396"/>
-		<carpet align="center" id="4398"/>
-	</brush>
-	
 	<!-- Trash -->
 	
 	<brush name="broken bottles" type="doodad" server_lookid="2024" draggable="true" on_blocking="true" thickness="6/10">
@@ -2046,11 +1479,6 @@
 	<brush name="leaves" type="doodad" server_lookid="2244" draggable="true" on_blocking="true" thickness="6/10">
 		<item id="2244" chance="10"/>
 		<item id="2245" chance="10"/>
-	</brush>
-	
-	<brush name="bamboo garbage" type="doodad" server_lookid="3958" draggable="true" on_blocking="true" thickness="6/10">
-		<item id="3958" chance="10"/>
-		<item id="3959" chance="10"/>
 	</brush>
 	
 	<brush name="wooden trash" type="doodad" server_lookid="2250" draggable="true" on_blocking="true" thickness="6/10">

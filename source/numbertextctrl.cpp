@@ -30,7 +30,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		const wxPoint& pos, const wxSize& sz,
 		long style, const wxString& name) :
 	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxDefaultValidator, name),
-	minval(minvalue), maxval(maxvalue)
+	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 }
 
@@ -39,7 +39,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long style, const wxString& name,
 		const wxPoint& pos, const wxSize& sz) :
 	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxDefaultValidator, name),
-	minval(minvalue), maxval(maxvalue)
+	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 }
 
@@ -49,7 +49,7 @@ NumberTextCtrl::~NumberTextCtrl()
 
 void NumberTextCtrl::OnEnterText(wxCommandEvent& evt)
 {
-	printf("%d\n", (int)GetInsertionPoint());
+	//printf("%d\n", (int)GetInsertionPoint());
 	wxString text = GetValue();
 	wxString ntext;
 
@@ -76,11 +76,12 @@ void NumberTextCtrl::OnEnterText(wxCommandEvent& evt)
 
 		ntext.clear();
 		ntext << v;
+		lastval = v;
 	}
 	else
 	{
-		// Invalid input, set to ""
-		ntext = wxT("");
+		ntext.clear();
+		ntext << lastval;
 	}
 
 	// Check if there was any change

@@ -90,7 +90,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 
 // Libarchive, for OTGZ
 #ifdef OTGZ_SUPPORT
-#ifdef __linux
+#if defined(__LINUX__) || defined(__APPLE__)
 #include <archive.h>
 #include <archive_entry.h>
 #else

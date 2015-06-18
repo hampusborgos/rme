@@ -39,7 +39,7 @@ public:
 	long GetIntValue();
 	void SetIntValue(long v);
 protected:
-	long minval, maxval;
+	long minval, maxval, lastval;
 	DECLARE_EVENT_TABLE();
 };
 

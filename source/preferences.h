@@ -52,6 +52,7 @@ protected:
 	wxSpinCtrl* undo_size_spin;
 	wxSpinCtrl* undo_mem_size_spin;
 	wxSpinCtrl* worker_threads_spin;
+	wxSpinCtrl* replace_size_spin;
 	
 	// Editor
 	wxCheckBox* group_actions_chkbox;

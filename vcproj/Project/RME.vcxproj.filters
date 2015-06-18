@@ -76,6 +76,9 @@
     <ClInclude Include="..\..\source\common.h">
       <Filter>common</Filter>
     </ClInclude>
+	<ClInclude Include="..\..\source\otml.h">
+      <Filter>common</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\source\common_windows.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
@@ -350,6 +353,9 @@
       <Filter>editor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\pugicast.h" />
+    <ClInclude Include="..\..\source\browse_tile_window.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -611,6 +617,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\extension.cpp">
       <Filter>editor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\browse_tile_window.cpp">
+      <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

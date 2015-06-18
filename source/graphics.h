@@ -66,8 +66,8 @@ public:
 	GameSprite();
 	~GameSprite();
 
-	GLuint getHardwareID(int _x, int _y, int _frame, int _subtype, int _xdiv, int _ydiv, int _zdiv, int _timeframe);
-	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _timeframe); // CreatureDatabase
+	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
+	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 
 	virtual void unloadDC();
@@ -157,11 +157,11 @@ public:
 	// GameSprite info
 	uint8_t height;
 	uint8_t width;
+	uint8_t layers;
+	uint8_t pattern_x;
+	uint8_t pattern_y;
+	uint8_t pattern_z;
 	uint8_t frames;
-	uint8_t xdiv;
-	uint8_t ydiv;
-	uint8_t zdiv;
-	uint8_t animation_length;
 	uint32_t numsprites;
 
 	uint16_t draw_height;
@@ -197,19 +197,16 @@ public:
 	bool loadEditorSprites();
 	// Metadata should be loaded first
 	// This fills the item / creature adress space
+	bool loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings);
 	bool loadSpriteMetadata(const FileName& datafile, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlagsVer74(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlagsVer76(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlagsVer78(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlagsVer1010(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlagsVer1021(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
+	bool loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
 	bool loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings);
 
 	// Cleans old & unused textures according to config settings
 	void garbageCollection();
 	void addSpriteToCleanup(GameSprite* spr);
 
+	bool hasTransparency() const;
 	bool isUnloaded() const;
 
 	ClientVersion *client_version;
@@ -226,10 +223,14 @@ private:
 	ImageMap image_space;
 	std::deque<GameSprite*> cleanup_list;
 
-	DatVersion datVersion;
-	SprVersion sprVersion;
+	DatFormat dat_format;
 	uint16_t item_count;
 	uint16_t creature_count;
+	bool otfi_found;
+	bool is_extended;
+	bool has_transparency;
+	bool has_frame_durations;
+	bool has_frame_groups;
 
 	int loaded_textures;
 	int lastclean;
@@ -259,70 +260,70 @@ struct RGBQuad {
 };
 
 static RGBQuad minimap_color[256] = {
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //0
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //4
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //8
-	RGBQuad(0,102,0),  RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //12
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //16
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //20
-	RGBQuad(0,204,0),  RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //24
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,255,0),    RGBQuad(0,0,0),       //28
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //32
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //36
-	RGBQuad(51,0,204), RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //40
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //44
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //48
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //52
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //56
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //60
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //64
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //68
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //72
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //76
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //80
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(102,102,102),RGBQuad(0,0,0),       //84
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //88
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //92
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //96
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //100
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //104
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //108
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(163,51,0),   RGBQuad(0,0,0),       //112
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //116
-	RGBQuad(0,0,0),    RGBQuad(153,102,51), RGBQuad(0,0,0),      RGBQuad(0,0,0),       //120
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //124
-	RGBQuad(0,0,0),    RGBQuad(153,153,153),RGBQuad(0,0,0),      RGBQuad(0,0,0),       //128
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //132
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //136
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //140
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //144
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //148
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //152
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //156
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //160
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //164
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //168
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //172
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(204,255,255), //176
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //180
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(255,51,0),   RGBQuad(0,0,0),       //184
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //188
-	RGBQuad(255,102,0),RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //192
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //196
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //200
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(255,204,153), //204
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(255,255,0),  RGBQuad(0,0,0),       //208
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(255,255,255), //212
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //216
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //220
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //224
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //228
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //232
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //236
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //240
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //244
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0),       //248
-	RGBQuad(0,0,0),    RGBQuad(0,0,0),      RGBQuad(0,0,0),      RGBQuad(0,0,0)        //252
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 51),      RGBQuad(0, 0, 102),     RGBQuad(0, 0, 153),     // 0
+	RGBQuad(0, 0, 204),     RGBQuad(0, 0, 255),     RGBQuad(0, 51, 0),      RGBQuad(0, 51, 51),     // 4
+	RGBQuad(0, 51, 102),    RGBQuad(0, 51, 153),    RGBQuad(0, 51, 204),    RGBQuad(0, 51, 255),    // 8
+	RGBQuad(0, 102, 0),     RGBQuad(0, 102, 51),    RGBQuad(0, 102, 102),   RGBQuad(0, 102, 153),   // 12
+	RGBQuad(0, 102, 204),   RGBQuad(0, 102, 255),   RGBQuad(0, 153, 0),     RGBQuad(0, 153, 51),    // 16
+	RGBQuad(0, 153, 102),   RGBQuad(0, 153, 153),   RGBQuad(0, 153, 204),   RGBQuad(0, 153, 255),   // 20
+	RGBQuad(0, 204, 0),     RGBQuad(0, 204, 51),    RGBQuad(0, 204, 102),   RGBQuad(0, 204, 153),   // 24
+	RGBQuad(0, 204, 204),   RGBQuad(0, 204, 255),   RGBQuad(0, 255, 0),     RGBQuad(0, 255, 51),    // 28
+	RGBQuad(0, 255, 102),   RGBQuad(0, 255, 153),   RGBQuad(0, 255, 204),   RGBQuad(0, 255, 255),   // 32
+	RGBQuad(51, 0, 0),      RGBQuad(51, 0, 51),     RGBQuad(51, 0, 102),    RGBQuad(51, 0, 153),    // 36
+	RGBQuad(51, 0, 204),    RGBQuad(51, 0, 255),    RGBQuad(51, 51, 0),     RGBQuad(51, 51, 51),    // 40
+	RGBQuad(51, 51, 102),   RGBQuad(51, 51, 153),   RGBQuad(51, 51, 204),   RGBQuad(51, 51, 255),   // 44
+	RGBQuad(51, 102, 0),    RGBQuad(51, 102, 51),   RGBQuad(51, 102, 102),  RGBQuad(51, 102, 153),  // 48
+	RGBQuad(51, 102, 204),  RGBQuad(51, 102, 255),  RGBQuad(51, 153, 0),    RGBQuad(51, 153, 51),   // 52
+	RGBQuad(51, 153, 102),  RGBQuad(51, 153, 153),  RGBQuad(51, 153, 204),  RGBQuad(51, 153, 255),  // 56
+	RGBQuad(51, 204, 0),    RGBQuad(51, 204, 51),   RGBQuad(51, 204, 102),  RGBQuad(51, 204, 153),  // 60
+	RGBQuad(51, 204, 204),  RGBQuad(51, 204, 255),  RGBQuad(51, 255, 0),    RGBQuad(51, 255, 51),   // 64
+	RGBQuad(51, 255, 102),  RGBQuad(51, 255, 153),  RGBQuad(51, 255, 204),  RGBQuad(51, 255, 255),  // 68
+	RGBQuad(102, 0, 0),     RGBQuad(102, 0, 51),    RGBQuad(102, 0, 102),   RGBQuad(102, 0, 153),   // 72
+	RGBQuad(102, 0, 204),   RGBQuad(102, 0, 255),   RGBQuad(102, 51, 0),    RGBQuad(102, 51, 51),   // 76
+	RGBQuad(102, 51, 102),  RGBQuad(102, 51, 153),  RGBQuad(102, 51, 204),  RGBQuad(102, 51, 255),  // 80
+	RGBQuad(102, 102, 0),   RGBQuad(102, 102, 51),  RGBQuad(102, 102, 102), RGBQuad(102, 102, 153), // 84
+	RGBQuad(102, 102, 204), RGBQuad(102, 102, 255), RGBQuad(102, 153, 0),   RGBQuad(102, 153, 51),  // 88
+	RGBQuad(102, 153, 102), RGBQuad(102, 153, 153), RGBQuad(102, 153, 204), RGBQuad(102, 153, 255), // 92
+	RGBQuad(102, 204, 0),   RGBQuad(102, 204, 51),  RGBQuad(102, 204, 102), RGBQuad(102, 204, 153), // 96
+	RGBQuad(102, 204, 204), RGBQuad(102, 204, 255), RGBQuad(102, 255, 0),   RGBQuad(102, 255, 51),  // 100
+	RGBQuad(102, 255, 102), RGBQuad(102, 255, 153), RGBQuad(102, 255, 204), RGBQuad(102, 255, 255), // 104
+	RGBQuad(153, 0, 0),     RGBQuad(153, 0, 51),    RGBQuad(153, 0, 102),   RGBQuad(153, 0, 153),   // 108
+	RGBQuad(153, 0, 204),   RGBQuad(153, 0, 255),   RGBQuad(153, 51, 0),    RGBQuad(153, 51, 51),   // 112
+	RGBQuad(153, 51, 102),  RGBQuad(153, 51, 153),  RGBQuad(153, 51, 204),  RGBQuad(153, 51, 255),  // 116
+	RGBQuad(153, 102, 0),   RGBQuad(153, 102, 51),  RGBQuad(153, 102, 102), RGBQuad(153, 102, 153), // 120
+	RGBQuad(153, 102, 204), RGBQuad(153, 102, 255), RGBQuad(153, 153, 0),   RGBQuad(153, 153, 51),  // 124
+	RGBQuad(153, 153, 102), RGBQuad(153, 153, 153), RGBQuad(153, 153, 204), RGBQuad(153, 153, 255), // 128
+	RGBQuad(153, 204, 0),   RGBQuad(153, 204, 51),  RGBQuad(153, 204, 102), RGBQuad(153, 204, 153), // 132
+	RGBQuad(153, 204, 204), RGBQuad(153, 204, 255), RGBQuad(153, 255, 0),   RGBQuad(153, 255, 51),  // 136
+	RGBQuad(153, 255, 102), RGBQuad(153, 255, 153), RGBQuad(153, 255, 204), RGBQuad(153, 255, 255), // 140
+	RGBQuad(204, 0, 0),     RGBQuad(204, 0, 51),    RGBQuad(204, 0, 102),   RGBQuad(204, 0, 153),   // 144
+	RGBQuad(204, 0, 204),   RGBQuad(204, 0, 255),   RGBQuad(204, 51, 0),    RGBQuad(204, 51, 51),   // 148
+	RGBQuad(204, 51, 102),  RGBQuad(204, 51, 153),  RGBQuad(204, 51, 204),  RGBQuad(204, 51, 255),  // 152
+	RGBQuad(204, 102, 0),   RGBQuad(204, 102, 51),  RGBQuad(204, 102, 102), RGBQuad(204, 102, 153), // 156
+	RGBQuad(204, 102, 204), RGBQuad(204, 102, 255), RGBQuad(204, 153, 0),   RGBQuad(204, 153, 51),  // 160
+	RGBQuad(204, 153, 102), RGBQuad(204, 153, 153), RGBQuad(204, 153, 204), RGBQuad(204, 153, 255), // 164
+	RGBQuad(204, 204, 0),   RGBQuad(204, 204, 51),  RGBQuad(204, 204, 102), RGBQuad(204, 204, 153), // 168
+	RGBQuad(204, 204, 204), RGBQuad(204, 204, 255), RGBQuad(204, 255, 0),   RGBQuad(204, 255, 51),  // 172
+	RGBQuad(204, 255, 102), RGBQuad(204, 255, 153), RGBQuad(204, 255, 204), RGBQuad(204, 255, 255), // 176
+	RGBQuad(255, 0, 0),     RGBQuad(255, 0, 51),    RGBQuad(255, 0, 102),   RGBQuad(255, 0, 153),   // 180
+	RGBQuad(255, 0, 204),   RGBQuad(255, 0, 255),   RGBQuad(255, 51, 0),    RGBQuad(255, 51, 51),   // 184
+	RGBQuad(255, 51, 102),  RGBQuad(255, 51, 153),  RGBQuad(255, 51, 204),  RGBQuad(255, 51, 255),  // 188
+	RGBQuad(255, 102, 0),   RGBQuad(255, 102, 51),  RGBQuad(255, 102, 102), RGBQuad(255, 102, 153), // 192
+	RGBQuad(255, 102, 204), RGBQuad(255, 102, 255), RGBQuad(255, 153, 0),   RGBQuad(255, 153, 51),  // 196
+	RGBQuad(255, 153, 102), RGBQuad(255, 153, 153), RGBQuad(255, 153, 204), RGBQuad(255, 153, 255), // 200
+	RGBQuad(255, 204, 0),   RGBQuad(255, 204, 51),  RGBQuad(255, 204, 102), RGBQuad(255, 204, 153), // 204
+	RGBQuad(255, 204, 204), RGBQuad(255, 204, 255), RGBQuad(255, 255, 0),   RGBQuad(255, 255, 51),  // 208
+	RGBQuad(255, 255, 102), RGBQuad(255, 255, 153), RGBQuad(255, 255, 204), RGBQuad(255, 255, 255), // 212
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 216
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 220
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 224
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 228
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 232
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 236
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 240
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 244
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 248
+	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0)        // 252
 };
 
 #endif

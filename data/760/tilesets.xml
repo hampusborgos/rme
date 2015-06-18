@@ -1,6 +1,132 @@
 <materials>
 	<!-- TILESETS -->
-	
+
+	<tileset name="Architecture">
+		<raw>
+		<item id="463"/>
+		<item fromid="1514" toid="1523"/>
+		<item fromid="1543" toid="1548"/>
+		<item fromid="3745" toid="3755"/>
+		</raw>
+	</tileset>
+	<tileset name="Pyramid">
+		<raw>
+		<item id="463"/>
+		<item fromid="778" toid="789"/>
+		<item fromid="1071" toid="1083"/>
+		<item fromid="1398" toid="1405"/>
+		<item fromid="1549" toid="1581"/>
+		</raw>
+	</tileset>
+	<tileset name="Blank">
+		<raw>
+		<item fromid="4328" toid="4393"/>	
+		</raw>
+	</tileset>
+	<tileset name="Borders solid">
+		<raw>
+		<item fromid="110" toid="350"/>
+		<item fromid="393" toid="404"/>
+		<item fromid="494" toid="597"/>
+		<item fromid="606" toid="617"/>
+		<item fromid="630" toid="707"/>
+		<item fromid="712" toid="776"/>
+		<item fromid="792" toid="872"/>
+		<item fromid="879" toid="890"/>
+		<item fromid="3246" toid="3257"/>
+		<item fromid="3266" toid="3297"/>
+		<item fromid="3553" toid="3568"/>
+		<item fromid="3575" toid="3586"/>
+		</raw>
+	</tileset>
+	<tileset name="Bridges">
+		<raw>
+		<item id="1284"/>
+		<item fromid="3756" toid="3765"/>
+		<item fromid="3768" toid="3791"/>
+		</raw>
+	</tileset>
+	<tileset name="Special Fields">
+		<raw>
+		<item fromid="1487" toid="1508"/>
+		<item fromid="1510" toid="1513"/>
+		</raw>
+	</tileset>
+	<tileset name="Hidden-path">
+		<raw>
+		<item id="460"/>
+		<item fromid="3258" toid="3262"/>
+		<item id="1509"/>
+		<item fromid="4820" toid="4825"/>
+		<item fromid="4828" toid="4831"/>
+		</raw>
+	</tileset>
+	<tileset name="Mountains">
+		<raw>
+		<item fromid="873" toid="878"/>
+		<item fromid="891" toid="919"/>
+		<item fromid="4405" toid="4525"/>
+		</raw>
+	</tileset>
+	<tileset name="Walls and Railings">
+		<raw>
+			<item fromid="1025" toid="1070"/>
+			<item fromid="1084" toid="1276"/>
+			<item fromid="1524" toid="1542"/>
+			<item fromid="1562" toid="1577"/>
+			<item fromid="1582" toid="1601"/>
+			<item fromid="3361" toid="3552"/>
+		</raw>
+	</tileset>
+	<tileset name="Roofs">
+		<raw>
+		<item fromid="921" toid="964"/>
+		<item fromid="3139" toid="3151"/>
+		<item fromid="3348" toid="3360"/>
+		<item id="5045"/>
+		<item fromid="5047" toid="5054"/>
+		<item id="5081"/>
+		</raw>
+	</tileset>
+	<tileset name="Borders normal">
+		<raw>
+		<item fromid="434" toid="445"/>
+		<item id="477"/>
+		<item id="478"/>
+		<item id="487"/>
+		<item id="488"/>
+		<item fromid="3224" toid="3245"/>
+		<item fromid="3298" toid="3309"/>
+		<item fromid="4542" toid="4565"/>
+		<item fromid="4596" toid="4607"/>
+		<item fromid="4632" toid="4663"/>
+		<item fromid="4667" toid="4690"/>
+		<item fromid="4713" toid="4748"/>
+		<item fromid="4760" toid="4819"/>
+		</raw>
+	</tileset>
+	<tileset name="Special Tiles">
+		<raw>
+		<item id="416"/>
+		<item id="417"/>
+		<item id="421"/>
+		<item id="422"/>
+		<item id="425"/>
+		<item id="426"/>
+		<item id="446"/>
+		<item id="447"/>
+		<item fromid="451" toid="456"/>
+		<item id="465"/>
+		<item id="467"/>
+		<item id="471"/>
+		<item id="472"/>
+		<item id="473"/>
+		<item id="474"/>
+		<item fromid="967" toid="1024"/>
+		<item id="3216"/>
+		<item id="3217"/>
+		</raw>
+	</tileset>
 	<tileset name="Grounds">
 		<raw>
 			<item id="100"/>
@@ -40,12 +166,24 @@
 			<item id="460"/>
 			<item id="459"/>
 			<item id="490"/>
+			<item id="491"/>
+			<item id="492"/>
 			<item id="493"/>
 			<item id="598"/>
+			<item id="599"/>
+			<item id="600"/>
+			<item id="601"/>
 			<item id="602"/>
+			<item id="603"/>
+			<item id="604"/>
+			<item id="605"/>
+			<item fromid="618" toid="629"/>
 			<item id="670"/>
 			<item id="671"/>
 			<item id="708"/>
+			<item id="709"/>
+			<item id="710"/>
+			<item id="711"/>
 			<item id="724"/>
 			<item id="777"/>
 			<item id="790"/>
@@ -76,6 +214,10 @@
 			<item id="194"/>
 			<item id="464"/>
 			<item id="466"/>
+			<item fromid="3152" toid="3215"/>
+			<item fromid="3263" toid="3265"/>
+			<item fromid="4526" toid="4541"/>
+			<item fromid="4567" toid="4579"/>
 			<item id="4595"/>
 			<item id="4608"/>
 			<item fromid="4609" toid="4625"/>
@@ -90,34 +232,43 @@
 		<terrain>
 			<brush name="sea"/>
 			<brush name="mountain"/>
+			<brush name="mountain ground"/>
 			<brush name="ramp"/>
 			<brush name="bamboo ramp"/>
+			<brush name="jungle grass"/>
 			<brush name="grass"/>
 			<brush name="grass open stone pile"/>
 			<brush name="grass closed stone pile"/>
 			<brush name="grass pitfall"/>
+			<brush name="dark swamp"/>
+			<brush name="swamp"/>
+			<brush name="jungle dirt"/>
+			<brush name="light dirt"/>
 			<brush name="dirt"/>
-			<brush name="dry earth"/>
+
 			<brush name="sand"/>
 			<brush name="sand open stone pile"/>
 			<brush name="sand closed stone pile"/>
 			<brush name="sand scarab hole"/>
-			<brush name="snow"/>
+
+			<brush name="tar pit"/>
 			<brush name="ice"/>
 			<brush name="ice open stone pile"/>
 			<brush name="ice closed stone pile"/>
 			<brush name="hole in the ice"/>
-			<brush name="jungle grass"/>
-			<brush name="jungle dirt"/>
-			<brush name="swamp"/>
-			<brush name="dark swamp"/>
-			<brush name="light dirt"/>
-			<brush name="tar pit"/>
+
+
+
+
+
+
+			<brush name="snow"/>
 			<brush name="white gravel"/>
-			<brush name="mountain ground"/>
+
 			<brush name="mountain top ground"/>
 			<brush name="rocky ground"/>
-			<brush item="3311"/>
+
+			<brush name="dry earth"/>
 		</terrain>
 		<doodad>
 			<brush name="mossy wall"/>
@@ -127,7 +278,7 @@
 			<brush name="trees"/>
 			<brush name="bushes"/>
 			<brush name="blueberry bushes"/>
-			<brush name="banana tree"/>
+
 			<brush name="dead bushes"/>
 			<brush name="swamp plants"/>
 			<brush name="flowers"/>
@@ -183,11 +334,13 @@
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
-			<brush name="cave"/>
+
 			<brush name="cave hole"/>
-			<brush name="cave ropespot"/>
+
 			<brush name="cave small hole"/>
 			<brush name="cave pickhole"/>
+			<brush name="cave ropespot"/>
+			<brush name="cave"/>
 			<brush name="dirt"/>
 			<brush name="clear water"/>
 			<brush name="lava"/>
@@ -195,8 +348,8 @@
 		</terrain>
 		<raw>
 			<item fromid="101"/>
-			<item fromid="351" toid="355"/>
-			
+			<item fromid="351" toid="382"/>
+
 			<item fromid="384"/>
 			<item fromid="383"/>
 			<item fromid="385"/>
@@ -216,10 +369,10 @@
 			<brush name="rocky ground"/>
 		</terrain>
 		<doodad>
-			<brush name="snowy dead trees"/>
+
 			<brush name="snowy alive trees"/>
 			<brush name="dead trees"/>
-			<brush name="snowy trees"/>
+
 		</doodad>
 	</tileset>
 	
@@ -247,7 +400,7 @@
 			<brush name="gray stone tiles"/>
 			<brush name="gray stone tiles pressed"/>
 			<brush name="gray stone tiles depressed"/>
-			<!-- <brush name="wooden raft"/> -->
+
 			<brush name="store counter"/>
 			<brush name="plaster wall"/>
 			<brush name="plaster wall arch"/>
@@ -259,7 +412,29 @@
 			<brush name="egypt stone wall"/>
 			<brush name="pyramid ramp"/>
 			<brush name="marble wall"/>
-			
+
+			<brush name="marble railing"/>
+			<brush name="stone railing"/>
+			<brush name="ornamented marble railing"/>
+			<brush name="pillared marble railing"/>
+			<brush name="ruin wall"/>
+			<brush name="paravent wall"/>
+			<brush name="fiery wall"/>
+			<brush name="jungle stone wall"/>
+			<brush name="jungle stone wall ornamented"/>
+			<brush name="metal wall"/>
+			<brush name="bamboo wall"/>
+			<brush name="Wooden Palisade"/>
+			<brush name="Wooden Palisade (no strings)"/>
+			<brush name="Wooden Palisade (steel gate)"/>
+			<brush name="Wooden Palisade Railing"/>
+			<item id="3513"/>
+			<item fromid="3521" toid="3529"/>
+			<brush name="ornamented sandstone railing"/>
+			<brush name="sandstone railing"/>
+			<brush name="jungle stone railing"/>
+			<brush name="grass wall"/>
+			<brush name="thin bamboo wall"/>
 			<brush name="fence"/>
 			<brush name="dark fence"/>
 			<!-- This does not work 'perfectly yet
@@ -285,6 +460,15 @@
 	
 	<tileset name="Stairs">
 		<terrain>
+			<!-- Stairs -->
+			<item fromid="1385"/>
+			<item fromid="1396"/>
+			<item fromid="3687"/>
+			<item fromid="3688"/>
+			<brush name="ramp"/>
+			<!-- Ladders -->
+			<item fromid="1386"/>
+			<item fromid="3678"/>
 			<brush name="wooden ladder hole"/>
 			<brush name="wooden trapdoor"/>
 			<brush name="stairs down"/>
@@ -355,6 +539,12 @@
 			<item id="1872"/>
 			<item id="1880"/>
 		</doodad>
+		<raw>
+		<item fromid="1809" toid="1944"/>
+		<item fromid="2037" toid="2040"/>
+		<item fromid="2058" toid="2061"/>
+		<item fromid="2066" toid="2069"/>
+		</raw>
 	</tileset>
 	
 	<tileset name="Interior">
@@ -392,7 +582,7 @@
 			<item id="2034"/>
 			<brush name="oven - on"/>
 			<brush name="oven - off"/>
-			<brush name="map board"/>
+
 			-- MUSIC!1111111 --
 			<brush name="piano"/>
 			<brush name="harp"/>
@@ -419,7 +609,7 @@
 			<brush name="bench"/>
 			<brush name="gilded throne"/>
 			<brush name="dull throne"/>
-			<brush name="large throne"/>
+
 			-- carpets --
 			<brush name="brown bear skin rug"/>
 			<brush name="white bear skin rug"/>
@@ -477,6 +667,8 @@
 		<doodad>
 			<brush name="stone altar"/>
 			<brush name="decorative altar"/>
+			<brush name="sacrifical stone"/>
+			<brush name="sacrifical stone with blood"/>
 			
 			-- coffins --
 			<brush name="stone coffin (no rose)"/>
@@ -484,6 +676,7 @@
 			<brush name="stone coffin (blue rose)"/>
 			<brush name="stone coffin (red rose)"/>
 			<brush name="buried stone coffin"/>
+			<item fromid="1406" toid="1409"/>
 			<brush name="sarcophagus"/>
 			
 			-- Campfires --
@@ -502,6 +695,11 @@
 			<item id="1378"/>
 			<brush name="normal fountain - on"/>
 			<brush name="normal fountain - off"/>
+			<brush name="normal fountain - off"/>
+			<brush name="horizontal mill"/>
+			<brush name="vertical mill"/>
+			<brush name="draw well"/>
+			<brush name="fishing net"/>
 		</doodad>
 		<raw>
 			<item fromid="486"/>
@@ -549,8 +747,13 @@
 		</raw>
 	</tileset>
 
+	<tileset name="Furniture kits">
+		<items_and_raw>
+		<item fromid="3901" toid="3938"/>
+		</items_and_raw>
+	</tileset>
 	<tileset name="Equipment">
-		<items>
+		<items_and_raw>
 			-- Helmets --
 			<item fromid="2128"/>
 			<item fromid="2342" toid="2343"/>
@@ -596,11 +799,11 @@
 			<item fromid="2358"/>
 			<item fromid="2640" toid="2646"/>
 			<item fromid="3982"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Ornaments">
-		<items>
+		<items_and_raw>
 			-- Amulets --
 			<item fromid="2661"/>
 			<item fromid="2161"/>
@@ -631,17 +834,23 @@
 			<item fromid="2123"/>
 			<item fromid="2124"/>
 			<item fromid="2127"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Tools">
-		<items>
+		<items_and_raw>
 			<item fromid="2548" toid="2580"/>
-		</items>
+			<item fromid="2120"/>
+		</items_and_raw>
 	</tileset>
 
+	<tileset name="Valuables">
+		<items_and_raw>
+		<item fromid="2139" toid="2216"/>
+		</items_and_raw>
+	</tileset>
 	<tileset name="Weapons">
-		<items>
+		<items_and_raw>
 			-- Swords --
 			<item fromid="2376" toid="2377"/>
 			<item fromid="2379"/>
@@ -698,18 +907,18 @@
 			-- Magic --
 			<item fromid="2181" toid="2186"/>
 			<item fromid="2187" toid="2191"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Shields">
-		<items>
+		<items_and_raw>
 			<item fromid="2509" toid="2542"/>
 			<item fromid="3973" toid="3975"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Trinkets">
-		<items>
+		<items_and_raw>
 			-- Some random stuff --
 			<item id="2036"/> -- Watch (Also ID 6091, 6092, but those are useless?) --
 			-- Trinkets --
@@ -785,12 +994,12 @@
 			<item fromid="2632" toid="2637"/>
 			<item id="2638"/>
 			<item id="2639"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Collectables">
-		<items>
-		</items>
+		<items_and_raw>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Magic Fields">
@@ -813,14 +1022,14 @@
 	</tileset>
 	
 	<tileset name="Containers">
-		<items>
+		<items_and_raw>
 	        <item fromid="1987" toid="1989"/>
 	        <item fromid="1990" toid="2004"/>
 	        <item fromid="3939" toid="3940"/>
 	        <item fromid="2365"/>
 	        <item fromid="2330" toid="2331"/>
 	        <item fromid="2595" toid="2596"/>
-		</items>
+		</items_and_raw>
 		<raw>
 	        <item fromid="1987" toid="1989"/>
 	        <item fromid="1990" toid="2004"/>
@@ -832,7 +1041,7 @@
 	</tileset>
 	
 	<tileset name="Writables">
-		<items>
+		<items_and_raw>
 			<item fromid="1947" toid="1986"/>
 			<item id="2345"/>
 			<item id="2347"/>
@@ -846,16 +1055,18 @@
 			<item id="4853"/>
 			<item id="4854"/>
 			<item id="4855"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Food">
-		<items>
+		<items_and_raw>
 			<item id="2666"/>
+			<item fromid="2667" toid="2696"/>
+			<item fromid="2787" toid="2796"/>
 			<item id="2035"/>
 			<item id="2032"/>
 			<item id="2032"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 	
 	<tileset name="Trash">
@@ -876,9 +1087,9 @@
 	</tileset>
 
 	<tileset name="Runes">
-		<items>
+		<items_and_raw>
 			<item fromid="2260" toid="2316"/>
-		</items>
+		</items_and_raw>
 	</tileset>
 
 	<tileset name="Corpses">
@@ -907,6 +1118,7 @@
 			<item fromid="423"/>
 			<item fromid="427" toid="429"/>
 			<item fromid="432" toid="433"/>
+			<item fromid="1388" toid="1395"/>
 			<item fromid="3135" toid="3138"/>
 			<item fromid="3219" toid="3220"/>
 			<item fromid="4834" toid="4837"/>
@@ -917,7 +1129,9 @@
 			<item fromid="475" toid="476"/>
 			<item fromid="479" toid="480"/>
 			<item fromid="924"/>
-			
+
+			<item fromid="1387"/>
+			<item fromid="1397"/>
 			<!-- Ladders -->
 			<item fromid="1386"/>
 			<item fromid="3678"/>
@@ -928,4 +1142,166 @@
 			<item fromid="3687" toid="3688"/>
 		</raw>
 	</tileset>
+	
+	<tileset name="Monsters">
+		<creatures>
+			<creature name="amazon" type="monster" looktype="137" lookhead="113" lookbody="120" looklegs="114" lookfeet="132"/>
+			<creature name="ancient scarab" type="monster" looktype="79"/>
+			<creature name="assassin" type="monster" looktype="129" lookhead="95" lookbody="95" looklegs="95" lookfeet="95"/>
+			<creature name="badger" type="monster" looktype="105"/>
+			<creature name="bandit" type="monster" looktype="129" lookhead="58" lookbody="59" looklegs="45" lookfeet="114"/>
+			<creature name="banshee" type="monster" looktype="78"/>
+			<creature name="bat" type="monster" looktype="122"/>
+			<creature name="bear" type="monster" looktype="16"/>
+			<creature name="behemoth" type="monster" looktype="55"/>
+			<creature name="beholder" type="monster" looktype="17"/>
+			<creature name="black knight" type="monster" looktype="131" lookhead="95" lookbody="95" looklegs="95" lookfeet="95"/>
+			<creature name="blue djinn" type="monster" looktype="80"/>
+			<creature name="bonebeast" type="monster" looktype="101"/>
+			<creature name="bug" type="monster" looktype="45"/>
+			<creature name="butterfly" type="monster" looktype="10"/>
+			<creature name="carniphila" type="monster" looktype="120"/>
+			<creature name="cave rat" type="monster" looktype="56"/>
+			<creature name="centipede" type="monster" looktype="124"/>
+			<creature name="chicken" type="monster" looktype="111"/>
+			<creature name="cobra" type="monster" looktype="81"/>
+			<creature name="crab" type="monster" looktype="112"/>
+			<creature name="crocodile" type="monster" looktype="119"/>
+			<creature name="crypt shambler" type="monster" looktype="100"/>
+			<creature name="cyclops" type="monster" looktype="22"/>
+			<creature name="dark monk" type="monster" looktype="225"/>
+ 			<creature name="deer" type="monster" looktype="31"/>
+			<creature name="demon" type="monster" looktype="35"/>
+			<creature name="demon skeleton" type="monster" looktype="37"/>
+			<creature name="dog" type="monster" looktype="32"/>
+			<creature name="dragon" type="monster" looktype="34"/>
+			<creature name="dragon lord" type="monster" looktype="39"/>
+			<creature name="dwarf" type="monster" looktype="69"/>
+			<creature name="dwarf geomancer" type="monster" looktype="66"/>
+			<creature name="dwarf guard" type="monster" looktype="70"/>
+			<creature name="dwarf soldier" type="monster" looktype="71"/>
+			<creature name="dworc fleshhunter" type="monster" looktype="215"/>
+			<creature name="dworc venomsniper" type="monster" looktype="216"/>
+			<creature name="dworc voodoomaster" type="monster" looktype="214"/>
+			<creature name="efreet" type="monster" looktype="103"/>
+			<creature name="elder beholder" type="monster" looktype="108"/>
+			<creature name="elephant" type="monster" looktype="211"/>
+			<creature name="elf" type="monster" looktype="62"/>
+			<creature name="elf arcanist" type="monster" looktype="63"/>
+			<creature name="elf Scout" type="monster" looktype="64"/>
+			<creature name="fire devil" type="monster" looktype="40"/>
+			<creature name="fire elemental" type="monster" looktype="49"/>
+			<creature name="flamingo" type="monster" looktype="212"/>
+			<creature name="frost troll" type="monster" looktype="53"/>
+			<creature name="gargoyle" type="monster" looktype="95"/>
+			<creature name="gazer" type="monster" looktype="109"/>
+			<creature name="ghost" type="monster" looktype="48"/>
+			<creature name="ghoul" type="monster" looktype="18"/>
+			<creature name="giant spider" type="monster" looktype="38"/>
+			<creature name="goblin" type="monster" looktype="61"/>
+			<creature name="green djinn" type="monster" looktype="51"/>
+			<creature name="hero" type="monster" looktype="73"/>
+			<creature name="hunter" type="monster" looktype="129" lookhead="95" lookbody="116" looklegs="121" lookfeet="115"/>
+			<creature name="hyaena" type="monster" looktype="94"/>
+			<creature name="hydra" type="monster" looktype="121"/>
+			<creature name="kongra" type="monster" looktype="116"/>
+			<creature name="larva" type="monster" looktype="82"/>
+			<creature name="lich" type="monster" looktype="99" lookhead="95" lookbody="116" looklegs="119" lookfeet="115"/>
+			<creature name="lion" type="monster" looktype="41"/>
+			<creature name="lizard sentinel" type="monster" looktype="114"/>
+			<creature name="lizard snakecharmer" type="monster" looktype="115"/>
+			<creature name="lizard templar" type="monster" looktype="113"/>
+			<creature name="marid" type="monster" looktype="104"/>
+			<creature name="merlkin" type="monster" looktype="117"/>
+			<creature name="minotaur" type="monster" looktype="25"/>
+			<creature name="minotaur archer" type="monster" looktype="24"/>
+			<creature name="minotaur guard" type="monster" looktype="29"/>
+			<creature name="minotaur mage" type="monster" looktype="23"/>
+			<creature name="monk" type="monster" looktype="57"/>
+			<creature name="mummy" type="monster" looktype="65"/>
+			<creature name="necromancer" type="monster" looktype="9"/>
+			<creature name="orc" type="monster" looktype="5"/>
+			<creature name="orc berserker" type="monster" looktype="8"/>
+			<creature name="orc leader" type="monster" looktype="59"/>
+			<creature name="orc rider" type="monster" looktype="4"/>
+			<creature name="orc shaman" type="monster" looktype="6"/>
+			<creature name="orc spearman" type="monster" looktype="50"/>
+			<creature name="orc warlord" type="monster" looktype="2"/>
+			<creature name="orc warrior" type="monster" looktype="7"/>
+			<creature name="panda" type="monster" looktype="123"/>
+			<creature name="parrot" type="monster" looktype="217"/>
+			<creature name="pig" type="monster" looktype="60"/>
+			<creature name="poison spider" type="monster" looktype="36"/>
+			<creature name="polar bear" type="monster" looktype="42"/>
+			<creature name="priestess" type="monster" looktype="58"/>
+			<creature name="rabbit" type="monster" looktype="74"/>
+			<creature name="rat" type="monster" looktype="21"/>
+			<creature name="rotworm" type="monster" looktype="26"/>
+			<creature name="scarab" type="monster" looktype="83"/>
+			<creature name="scorpion" type="monster" looktype="43"/>
+			<creature name="serpent spawn" type="monster" looktype="220"/>
+			<creature name="sheep" type="monster" looktype="14"/>
+			<creature name="sibang" type="monster" looktype="118"/>
+			<creature name="skeleton" type="monster" looktype="33"/>
+			<creature name="skunk" type="monster" looktype="106"/>
+			<creature name="slime" type="monster" looktype="19"/>
+			<creature name="smuggler" type="monster" looktype="134" lookhead="95" looklegs="113" lookfeet="115"/>
+			<creature name="snake" type="monster" looktype="28"/>
+			<creature name="spider" type="monster" looktype="30"/>
+			<creature name="spit nettle" type="monster" looktype="221"/>
+			<creature name="stalker" type="monster" looktype="128" lookhead="95" lookbody="116" looklegs="95" lookfeet="114"/>
+			<creature name="stone golem" type="monster" looktype="67"/>
+			<creature name="swamp troll" type="monster" looktype="76"/>
+			<creature name="tarantula" type="monster" looktype="219"/>
+			<creature name="terror bird" type="monster" looktype="218"/>
+			<creature name="tiger" type="monster" looktype="125"/>
+			<creature name="troll" type="monster" looktype="15"/>
+			<creature name="valkyrie" type="monster" looktype="139" lookhead="113" lookbody="57" looklegs="95" lookfeet="113"/>
+			<creature name="vampire" type="monster" looktype="68"/>
+			<creature name="war wolf" type="monster" looktype="3"/>
+			<creature name="warlock" type="monster" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128"/>
+			<creature name="wasp" type="monster" looktype="44"/>
+			<creature name="wild warrior" type="monster" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57"/>
+			<creature name="winter wolf" type="monster" looktype="52"/>
+			<creature name="witch" type="monster" looktype="54"/>
+			<creature name="wolf" type="monster" looktype="27"/>
+			<creature name="yeti" type="monster" looktype="110"/>
+			<creature name="black sheep" type="monster" looktype="13"/>
+			<creature name="butterfly blue" type="monster" looktype="227"/>
+			<creature name="butterfly purple" type="monster" looktype="213"/>
+			<creature name="butterfly yellow" type="monster" looktype="10"/>
+			<creature name="butterfly red" type="monster" looktype="228"/>
+		</creatures>
+	</tileset>
+	
+	<tileset name="Tibia Bosses">
+		<creatures>
+			<creature name="deathslicer" type="monster" looktype="102"/>
+			<creature name="flamethrower" type="monster"/>
+			<creature name="magicthrower" type="monster" lookitem="1560"/>
+			<creature name="plaguethrower" type="monster"/>
+			<creature name="shredderthrower" type="monster"/>
+			<creature name="demongoblin" type="monster" looktype="35"/>
+			<creature name="Tiquandas Revenge" type="monster" looktype="120"/>
+			<creature name="Demodras" type="monster" looktype="204"/>
+			<creature name="Dharalion" type="monster" looktype="203"/>
+			<creature name="Fernfang" type="monster" looktype="206"/>
+			<creature name="General Murius" type="monster" looktype="202"/>
+			<creature name="Grorlam" type="monster" looktype="205"/>
+			<creature name="Necropharus" type="monster" looktype="209"/>
+			<creature name="The Evil Eye" type="monster" looktype="210"/>
+			<creature name="The Horned Fox" type="monster" looktype="202"/>
+			<creature name="The Old Widow" type="monster" looktype="208"/>
+			<creature name="Ashmunrah" type="monster" looktype="87"/>
+			<creature name="Dipthrah" type="monster" looktype="87"/>
+			<creature name="Mahrdis" type="monster" looktype="90"/>
+			<creature name="Morguthis" type="monster" looktype="90"/>
+			<creature name="Omruc" type="monster" looktype="90"/>
+			<creature name="Rahemos" type="monster" looktype="87"/>
+			<creature name="Thalas" type="monster" looktype="90"/>
+			<creature name="Vashresamun" type="monster" looktype="90"/>
+			<creature name="Orshabaal" type="monster" looktype="201"/>  
+		</creatures>
+	</tileset>
+
 </materials>

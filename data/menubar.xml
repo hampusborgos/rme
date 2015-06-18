@@ -62,7 +62,7 @@
             <item name="Clear $Modified State" action="CLEAR_MODIFIED_STATE" help="Clears the modified state from all tiles."/>
         </menu>
         <separator/>
-        <item name="$Goto Position..." hotkey="Ctrl+G" action="GOTO_POSITION" help="Go to a specific XYZ position."/>
+        <item name="$Go To Position..." hotkey="Ctrl+G" action="GOTO_POSITION" help="Go to a specific XYZ position."/>
         <item name="$Jump to Brush..." hotkey="J" action="JUMP_TO_BRUSH" help="Jump to a brush."/>
         <item name="Jump to $Item..." hotkey="Ctrl+J" action="JUMP_TO_ITEM_BRUSH" help="Jump to an item brush (RAW palette)."/>
         <separator/>

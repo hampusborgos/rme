@@ -1098,19 +1098,19 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 
 	int subtype = -1;
 
-	int xdiv = pos.x % spr->xdiv;
-	int ydiv = pos.y % spr->ydiv;
-	int zdiv = pos.z % spr->zdiv;
+	int pattern_x = pos.x % spr->pattern_x;
+	int pattern_y = pos.y % spr->pattern_y;
+	int pattern_z = pos.z % spr->pattern_z;
 
 	if(it.isSplash() || it.isFluidContainer()) {
 		subtype = item->getSubtype();
 	} else if(it.isHangable) {
 		if(tile->hasProperty(ISVERTICAL)) {
-			xdiv = 2;
+			pattern_x = 2;
 		} else if(tile->hasProperty(ISHORIZONTAL)) {
-			xdiv = 1;
+			pattern_x = 1;
 		} else {
-			xdiv = -0;
+			pattern_x = -0;
 		}
 	} else if(it.stackable) {
 		if(item->getSubtype() <= 1)
@@ -1143,12 +1143,12 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 	int tme = 0; //GetTime() % itype->FPA;
 	for(int cx = 0; cx != spr->width; cx++) {
 		for(int cy = 0; cy != spr->height; cy++) {
-			for(int cf = 0; cf != spr->frames; cf++) {
+			for(int cf = 0; cf != spr->layers; cf++) {
 				int texnum = spr->getHardwareID(cx,cy,cf,
 					subtype,
-					xdiv,
-					ydiv,
-					zdiv,
+					pattern_x,
+					pattern_y,
+					pattern_z,
 					tme
 				);
 				glBlitTexture(screenx-cx*32, screeny-cy*32, texnum, red, green, blue, alpha);
@@ -1196,21 +1196,21 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 
 	int subtype = -1;
 
-	int xdiv = pos.x % spr->xdiv;
-	int ydiv = pos.y % spr->ydiv;
-	int zdiv = pos.z % spr->zdiv;
+	int pattern_x = pos.x % spr->pattern_x;
+	int pattern_y = pos.y % spr->pattern_y;
+	int pattern_z = pos.z % spr->pattern_z;
 
 	if(it.isSplash() || it.isFluidContainer()) {
 		subtype = item->getSubtype();
 	} else if(it.isHangable) {
-		xdiv = 0;
+		pattern_x = 0;
 		/*
 		if(tile->hasProperty(ISVERTICAL)) {
-			xdiv = 2;
+			pattern_x = 2;
 		} else if(tile->hasProperty(ISHORIZONTAL)) {
-			xdiv = 1;
+			pattern_x = 1;
 		} else {
-			xdiv = -0;
+			pattern_x = -0;
 		}
 		*/
 	} else if(it.stackable) {
@@ -1244,12 +1244,12 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 	int tme = 0; //GetTime() % itype->FPA;
 	for(int cx = 0; cx != spr->width; ++cx) {
 		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->frames; ++cf) {
+			for(int cf = 0; cf != spr->layers; ++cf) {
 				int texnum = spr->getHardwareID(cx,cy,cf,
 					subtype,
-					xdiv,
-					ydiv,
-					zdiv,
+					pattern_x,
+					pattern_y,
+					pattern_z,
 					tme
 				);
 				glBlitTexture(screenx-cx*32, screeny-cy*32, texnum, red, green, blue, alpha);
@@ -1267,7 +1267,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int 
 	int tme = 0; //GetTime() % itype->FPA;
 	for(int cx = 0; cx != spr->width; ++cx) {
 		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->frames; ++cf) {
+			for(int cf = 0; cf != spr->layers; ++cf) {
 				int texnum = spr->getHardwareID(cx,cy,cf,-1,0,0,0,tme);
 				//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
 				glBlitTexture(screenx-cx*32, screeny-cy*32, texnum, red, green, blue, alpha);
@@ -1284,7 +1284,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int re
 	int tme = 0; //GetTime() % itype->FPA;
 	for(int cx = 0; cx != spr->width; ++cx) {
 		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->frames; ++cf) {
+			for(int cf = 0; cf != spr->layers; ++cf) {
 				int texnum = spr->getHardwareID(cx,cy,cf,-1,0,0,0,tme);
 				//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
 				glBlitTexture(screenx-cx*32, screeny-cy*32, texnum, red, green, blue, alpha);
@@ -1298,7 +1298,7 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 	if(outfit.lookItem != 0)
 	{
 		ItemType& it = item_db[outfit.lookItem];
-		BlitSpriteType(screenx, screeny, it.clientID, red, green, blue, alpha);
+		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
 	}
 	else
 	{

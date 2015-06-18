@@ -25,6 +25,7 @@
 #include "filehandle.h"
 #include "settings.h"
 #include "gui.h"
+#include "otml.h"
 
 #include <wx/mstream.h>
 #include "pngfiles.h"
@@ -59,8 +60,12 @@ static uint32_t TemplateOutfitLookupTable[] = {
 GraphicManager::GraphicManager() :
 	client_version(nullptr),
 	unloaded(true),
-	datVersion(DAT_VERSION_UNKNOWN),
-	sprVersion(SPR_VERSION_UNKNOWN),
+	dat_format(DAT_FORMAT_UNKNOWN),
+	otfi_found(false),
+	is_extended(false),
+	has_transparency(false),
+	has_frame_durations(false),
+	has_frame_groups(false),
 	loaded_textures(0),
 	lastclean(0)
 {
@@ -82,6 +87,11 @@ GraphicManager::~GraphicManager()
 	{
 		delete iter->second;
 	}
+}
+
+bool GraphicManager::hasTransparency() const
+{
+	return has_transparency;
 }
 
 bool GraphicManager::isUnloaded() const
@@ -341,6 +351,35 @@ bool GraphicManager::loadEditorSprites()
 	return true;
 }
 
+bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings)
+{
+	otfi_found = wxFileExists(filename.GetFullPath());
+	if (otfi_found)
+	{
+		std::string path = std::string(filename.GetFullPath().mb_str());
+		OTMLDocumentPtr doc = OTMLDocument::parse(path);
+
+		if(doc->size() == 0 || !doc->hasChildAt("DatSpr")) {
+			error += wxT("'DatSpr' tag not found");
+			return false;
+		}
+
+		OTMLNodePtr node = doc->get("DatSpr");
+		is_extended = node->valueAt<bool>("extended");
+		has_transparency = node->valueAt<bool>("transparency");
+		has_frame_durations = node->valueAt<bool>("frame-durations");
+		has_frame_groups = node->valueAt<bool>("frame-groups");
+	}
+	else
+	{
+		is_extended = false;
+		has_transparency = false;
+		has_frame_durations = false;
+		has_frame_groups = false;
+	}
+	return true;
+}
+
 bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& error, wxArrayString& warnings)
 {
 	// items.otb has most of the info we need. This only loads the GameSprite metadata
@@ -365,21 +404,12 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	// We don't load distance/effects, if we would, just add effect_count & distance_count here
 	uint32_t maxclientID = item_count + creature_count;
 
-	bool (GraphicManager::*loadFlags)(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	datVersion = client_version->getDatVersionForSignature(datSignature);
-	switch (datVersion)
-	{
-		case DAT_VERSION_74: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer74; break;
-		case DAT_VERSION_76: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer76; break;
-		case DAT_VERSION_78: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer78; break;
-		case DAT_VERSION_86: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
-			// Same .dat loader, the change is only sprite id -> u32
-		case DAT_VERSION_96: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer86; break;
-		case DAT_VERSION_1010: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1010; break;
-		case DAT_VERSION_1021: loadFlags = &GraphicManager::loadSpriteMetadataFlagsVer1021; break;
-		default:
-			error = wxT("Unknown .dat format version.");
-			return false;
+	dat_format = client_version->getDatFormatForSignature(datSignature);
+
+	if(!otfi_found) {
+		is_extended = dat_format >= DAT_FORMAT_96;
+		has_frame_durations = dat_format >= DAT_FORMAT_1050;
+		has_frame_groups = dat_format >= DAT_FORMAT_1057;
 	}
 
 	uint16_t id = minclientID;
@@ -392,57 +422,75 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		sType->id = id;
 
 		// Load the sprite flags
-		if (!(this->*loadFlags)(file, sType, error, warnings))
+		if (!loadSpriteMetadataFlags(file, sType, error, warnings))
 		{
 			wxString msg;
 			msg << wxT("Failed to load flags for sprite ") << sType->id;
 			warnings.push_back(msg);
 		}
 
-		// Size and GameSprite data
-		file.getByte(sType->width);
-		file.getByte(sType->height);
-		if((sType->width > 1) || (sType->height > 1)){
-			file.skip(1); // No idea what this is....
+		// Reads the group count
+		uint8_t group_count = 1;
+		if (has_frame_groups && id > item_count) {
+			file.getU8(group_count);
 		}
 
-		file.getU8(sType->frames); // Number of blendframes (some sprites consist of several merged sprites)
-		file.getU8(sType->xdiv);
-		file.getU8(sType->ydiv);
-		if(datVersion <= DAT_VERSION_74)
-			sType->zdiv = 1;
-		else
-			file.getU8(sType->zdiv); // Is this ever used? Maybe it means something else?
-		file.getU8(sType->animation_length); // Length of animation
-
-		sType->numsprites =
-			(int)sType->width * (int)sType->height *
-			(int)sType->frames *
-			(int)sType->xdiv * (int)sType->ydiv * sType->zdiv *
-			(int)sType->animation_length;
-
-		// Read the sprite ids
-		for(uint32_t i = 0; i < sType->numsprites; ++i)
+		for (uint32_t k = 0; k < group_count; ++k)
 		{
-			uint32_t sprite_id;
-			if (datVersion >= DAT_VERSION_96)
-			{
-				file.getU32(sprite_id);
+			// Skipping the group type
+			if (has_frame_groups && id > item_count) {
+				file.skip(1);
 			}
+
+			// Size and GameSprite data
+			file.getByte(sType->width);
+			file.getByte(sType->height);
+
+			// Skipping the exact size
+			if ((sType->width > 1) || (sType->height > 1)){
+				file.skip(1);
+			}
+
+			file.getU8(sType->layers); // Number of blendframes (some sprites consist of several merged sprites)
+			file.getU8(sType->pattern_x);
+			file.getU8(sType->pattern_y);
+			if (dat_format <= DAT_FORMAT_74)
+				sType->pattern_z = 1;
 			else
-			{
-				uint16_t u16 = 0;
-				file.getU16(u16);
-				sprite_id = u16;
+				file.getU8(sType->pattern_z);
+			file.getU8(sType->frames); // Length of animation
+
+			// Skipping the frame duration
+			if (has_frame_durations && sType->frames > 1) {
+				file.skip(6 + 8 * sType->frames);
 			}
-			
-			if(image_space[sprite_id] == nullptr)
+
+			sType->numsprites =
+				(int)sType->width * (int)sType->height *
+				(int)sType->layers *
+				(int)sType->pattern_x * (int)sType->pattern_y * sType->pattern_z *
+				(int)sType->frames;
+
+			// Read the sprite ids
+			for (uint32_t i = 0; i < sType->numsprites; ++i)
 			{
-				GameSprite::NormalImage* img = newd GameSprite::NormalImage();
-				img->id = sprite_id;
-				image_space[sprite_id] = img;
+				uint32_t sprite_id;
+				if (is_extended) {
+					file.getU32(sprite_id);
+				} else {
+					uint16_t u16 = 0;
+					file.getU16(u16);
+					sprite_id = u16;
+				}
+
+				if (image_space[sprite_id] == nullptr)
+				{
+					GameSprite::NormalImage* img = newd GameSprite::NormalImage();
+					img->id = sprite_id;
+					image_space[sprite_id] = img;
+				}
+				sType->spriteList.push_back(static_cast<GameSprite::NormalImage*>(image_space[sprite_id]));
 			}
-			sType->spriteList.push_back(static_cast<GameSprite::NormalImage*>(image_space[sprite_id]));
 		}
 		++id;
 	}
@@ -450,833 +498,182 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	return true;
 }
 
-bool GraphicManager::loadSpriteMetadataFlagsVer74(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
+bool GraphicManager::loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
 {
-	// read the options until we find a 0xff
-	uint8_t lastopt;
-	uint8_t optbyte = 0xff;
+	uint8_t prev_flag = 0;
+	uint8_t flag = DatFlagLast;
 
-	do
+	for (int i = 0; i < DatFlagLast; ++i)
 	{
-		lastopt = optbyte;
-		file.getByte(optbyte);
-		switch(optbyte)
+		prev_flag = flag;
+		file.getU8(flag);
+
+		if (flag == DatFlagLast) {
+			return true;
+		}
+		if (dat_format >= DAT_FORMAT_1010) {
+			/* In 10.10+ all attributes from 16 and up were
+			* incremented by 1 to make space for 16 as
+			* "No Movement Animation" flag.
+			*/
+			if (flag == 16)
+				flag = DatFlagNoMoveAnimation;
+			else if (flag > 16)
+				flag -= 1;
+		} else if (dat_format >= DAT_FORMAT_86) {
+			/* Default attribute values follow
+			* the format of 8.6-9.86.
+			* Therefore no changes here.
+			*/
+		} else if (dat_format >= DAT_FORMAT_78) {
+			/* In 7.80-8.54 all attributes from 8 and higher were
+			* incremented by 1 to make space for 8 as
+			* "Item Charges" flag.
+			*/
+			if (flag == 8) {
+				flag = DatFlagChargeable;
+			} else if (flag > 8)
+				flag -= 1;
+		} else if (dat_format >= DAT_FORMAT_755) {
+			/* In 7.55-7.72 attributes 23 is "Floor Change". */
+			if (flag == 23)
+				flag = DatFlagFloorChange;
+		} else if (dat_format >= DAT_FORMAT_74) {
+			/* In 7.4-7.5 attribute "Ground Border" did not exist
+			* attributes 1-15 have to be adjusted.
+			* Several other changes in the format.
+			*/
+			if (flag > 0 && flag <= 15)
+				flag += 1;
+			else if (flag == 16)
+				flag = DatFlagLight;
+			else if (flag == 17)
+				flag = DatFlagFloorChange;
+			else if (flag == 18)
+				flag = DatFlagFullGround;
+			else if (flag == 19)
+				flag = DatFlagElevation;
+			else if (flag == 20)
+				flag = DatFlagDisplacement;
+			else if (flag == 22)
+				flag = DatFlagMinimapColor;
+			else if (flag == 23)
+				flag = DatFlagRotateable;
+			else if (flag == 24)
+				flag = DatFlagLyingCorpse;
+			else if (flag == 25)
+				flag = DatFlagHangable;
+			else if (flag == 26)
+				flag = DatFlagHookSouth;
+			else if (flag == 27)
+				flag = DatFlagHookEast;
+			else if (flag == 28)
+				flag = DatFlagAnimateAlways;
+
+			/* "Multi Use" and "Force Use" are swapped */
+			if (flag == DatFlagMultiUse)
+				flag = DatFlagForceUse;
+			else if (flag == DatFlagForceUse)
+				flag = DatFlagMultiUse;
+		}
+
+		switch (flag)
 		{
-			case 0x00:
-				//is groundtile
+			case DatFlagGroundBorder:
+			case DatFlagOnBottom:
+			case DatFlagOnTop:
+			case DatFlagContainer:
+			case DatFlagStackable:
+			case DatFlagForceUse:
+			case DatFlagMultiUse:
+			case DatFlagFluidContainer:
+			case DatFlagSplash:
+			case DatFlagNotWalkable:
+			case DatFlagNotMoveable:
+			case DatFlagBlockProjectile:
+			case DatFlagNotPathable:
+			case DatFlagPickupable:
+			case DatFlagHangable:
+			case DatFlagHookSouth:
+			case DatFlagHookEast:
+			case DatFlagRotateable:
+			case DatFlagDontHide:
+			case DatFlagTranslucent:
+			case DatFlagLyingCorpse:
+			case DatFlagAnimateAlways:
+			case DatFlagFullGround:
+			case DatFlagLook:
+			case DatFlagFloorChange:
+			case DatFlagNoMoveAnimation:
+			case DatFlagChargeable:
+				break;
+
+			case DatFlagGround:
+			case DatFlagWritable:
+			case DatFlagWritableOnce:
+			case DatFlagCloth:
+			case DatFlagLensHelp:
+			case DatFlagUsable:
 				file.skip(2);
 				break;
-			case 0x01: // all OnTop
-				break;
-			case 0x02: // can walk trough (open doors, arces, bug pen fence ??)
-				break;
-			case 0x03:
-				//is a container
-				break;
-			case 0x04:
-				//is stackable
-				break;
-			case 0x05:
-				//is useable
-				break;
-			case 0x06: // ladder up (id 1386)   why a group for just 1 item ???   
-				break;
-			case 0x07: // writtable objects
-				file.skip(2);
-				break;
-			case 0x08: // writtable objects that can't be edited 
-				file.skip(2);
-				break;
-			case 0x09: //can contain fluids
-				break;
-			case 0x0A:
-				//is multitype !!! wrong definition (only water splash on floor)
-				break;
-			case 0x0B:
-				//is blocking
-				break;
-			case 0x0C:
-				//is on moveable
-				break;
-			case 0x0D: // blocks missiles (walls, magic wall etc)
-				//iType->blockingProjectile = true;
-				break;
-			case 0x0E: // blocks monster movement (flowers, parcels etc)
-				break;
-			case 0x0F:
-				//can be equipped
-				break;
-			case 0x10:
-				//makes light (skip 4 bytes)
+
+			case DatFlagLight:
 				file.skip(4);
 				break;
-			case 0x11: // can see what is under (ladder holes, stairs holes etc)
-				break;
-			case 0x12: // ground tiles that don't cause level change
-				//iType->noFloorChange = true;
-				break;
-			case 0x13: // mostly blocking items, but also items that can pile up in level (boxes, chairs etc)
-				file.skip(2);
-				break;
-			case 0x14: // player color templates
-				break;
-			case 0x18: // cropses that don't decay
-				break;
-			case 0x16: // ground, blocking items and mayby some more 
-				file.skip(2);
-				break;
-			case 0x17:  // seems like decorables with 4 states of turning (exception first 4 are unique statues)
-				break;
-			case 0x19:  // wall items
-				break;
-			case 0x1A: 
-				//7.4 (change no data ?? ) action that can be performed (doors-> open, hole->open, book->read) not all included ex. wall torches
-				break;
-			case 0x1B:  // walls 2 types of them same material (total 4 pairs)
-				break;
-			case 0x1C:  // ?? 
-				break;
-			case 0x1D:  // line spot ...
-				file.skip(2);
-				break;
-			case 0xFF:
-				break;
-			default:
-			{
-				wxString err;
-				err << wxT("Tibia.dat: Unknown optbyte '") 
-					<< optbyte << wxT("'") << wxT(" after '") 
-					<< lastopt << wxT("'");
-				warnings.push_back(err);
-				break;
-			}
-		}
-	} while (optbyte != 0xff);
-	return true;
-}
 
-bool GraphicManager::loadSpriteMetadataFlagsVer76(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
-{
-	// read the options until we find a 0xff
-	uint8_t lastopt;
-	uint8_t optbyte = 0xff;
+			case DatFlagDisplacement:
+			{
+				if (dat_format >= DAT_FORMAT_755) {
+					uint16_t offset_x;
+					uint16_t offset_y;
+					file.getU16(offset_x);
+					file.getU16(offset_y);
 
-	do
-	{
-		lastopt = optbyte;
-		file.getByte(optbyte);
-		switch (optbyte)
-		{
-			case 0x00: //is groundtile
-			{
-				file.skip(2);
+					sType->drawoffset_x = offset_x;
+					sType->drawoffset_y = offset_y;
+				} else {
+					sType->drawoffset_x = 8;
+					sType->drawoffset_y = 8;
+				}
 				break;
 			}
-			case 0x01: //all on top
+
+			case DatFlagElevation:
 			{
-				//sType->alwaysOnTop = true;
+				uint16_t draw_height;
+				file.getU16(draw_height);
+				sType->draw_height = draw_height;
 				break;
 			}
-			case 0x02: //can walk trough (open doors, arces, bug pen fence ??)
+
+			case DatFlagMinimapColor:
 			{
-				//sType->alwaysOnTop = true;
-				//sType->canWalkThrough = true;
+				uint16_t minimap_color;
+				file.getU16(minimap_color);
+				sType->minimap_color = minimap_color;
 				break;
 			}
-			case 0x03: //is a container
+
+			case DatFlagMarket:
 			{
-				//sType->group = ITEM_GROUP_CONTAINER;
-				break;
-			}
-			case 0x04: //is stackable
-			{
-				//sType->stackable = true;
-				break;
-			}
-			case 0x05: //is useable
-			{
-				//sType->useable = true;
-				break;
-			}
-			case 0x06: //ladder up (id 1386)   why a group for just 1 item ???   
-			{
-				//sType->ladderUp = true;
-				break;
-			}
-			case 0x07: //writtable objects
-			{
-				//file.skip(2); // Maximum length
-				break;
-			}
-			case 0x08: //writtable objects that can't be edited
-			{
-				file.skip(2);
-				break;
-			}
-			case 0x09: //can contain fluids
-			{
-				file.skip(2);
-				//sType->group = ITEM_GROUP_FLUID;
-				break;
-			}
-			case 0x0A: //liquid with states
-			{
-				//sType->group = ITEM_GROUP_SPLASH;
-				break;
-			}
-			case 0x0B: //is blocking
-			{
-				//sType->blockSolid = true;
-				break;
-			}
-			case 0x0C: //is not moveable
-			{
-				//sType->moveable = false;
-				break;
-			}
-			case 0x0D: //"visibility"- for drawing visible view
-			{
-				//sType->blockProjectile = true;
-				break;
-			}
-			case 0x0E: //blocks creature movement (flowers, parcels etc)
-			{
-				//sType->blockPathFind = true;
-				break;
-			}
-			case 0x0F: //can be equipped
-			{
-				//sType->pickupable = true;
-				break;
-			}
-			case 0x10: //makes light (skip 4 bytes)
-			{
-				break;
-			}
-			case 0x11: //can see what is under (ladder holes, stairs holes etc)
-			{
-				//sType->canSeeThrough = true;
-				break;
-			}
-			case 0x12: //ground tiles that don't cause level change
-			{
-				//sType->floorchange = false;
-				break;
-			}
-			case 0x13: // isVertical
-			{
-				break;
-			}
-			case 0x14: //sprite-drawing related
-			{
-				//sType->hasParameter14 = true;
-				break;
-			}
-			case 0x15:
-			{
-				file.skip(2); // lightlevel
-				file.skip(2); // lightcolor
-				break;
-			}
-			case 0x16: //minimap drawing
-			{
-				uint16_t u16;
-				file.getU16(u16);
-				sType->minimap_color = u16;
-				break;
-			}
-			case 0x17: //seems like decorables with 4 states of turning (exception first 4 are unique statues
-			{
-				//sType->rotable = true;
-				break;
-			}
-			case 0x18: //draw with height offset for all parts (2x2) of the sprite
-			{
+				file.skip(6);
+				std::string marketName;
+				file.getString(marketName);
 				file.skip(4);
 				break;
 			}
-			case 0x19: //hangable objects
-			{
-				file.skip(2);
-				break;
-			}
-			case 0x1A: //vertical objects (walls to hang objects on etc)
-			{
-				//sType->isHorizontal = true;
-				break;  
-			}
-			case 0x1B: //walls 2 types of them same material (total 4 pairs)
-			{
-				//sType->isVertical = true;
-				break;
-			}
-			case 0x1C: // minimap color
-			{
-				uint16_t u16;
-				file.getU16(u16);
-				sType->minimap_color = u16; // Height
-				break;
-			}
-			case 0x1D: //line spot ...
-			{
-				file.skip(2); // ...?
-				break;
-			}
-			case 0x1E: // ground items
-			{
-				break;
-			}
-			case 0xFF:
-			{
-				break;
-			}
+
 			default:
 			{
 				wxString err;
-				err << wxT("Tibia.dat: Unknown optbyte '") 
-					<< (int)optbyte << wxT("'") << wxT(" after '") 
-					<< (int)lastopt << wxT("'");
+				err << wxT("Metadata: Unknown flag: ") << i2ws(flag) << wxT(". Previous flag: ") << i2ws(prev_flag) << wxT(".");
 				warnings.push_back(err);
 				break;
 			}
 		}
-	} while (optbyte != 0xff);
-	return true;
-}
-
-bool GraphicManager::loadSpriteMetadataFlagsVer78(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
-{
-	// read the options until we find a 0xff
-	uint8_t lastopt;
-	uint8_t optbyte = 0xff;
-
-	do
-	{
-		lastopt = optbyte;
-		file.getByte(optbyte);
-		// > 7.6
-		switch(optbyte)
-		{
-			case 0x00: //is groundtile
-				file.skip(2); // speed modifier
-				//speed = read_short;
-				//sType->speed = speed;
-				//sType->group = ITEM_GROUP_GROUND;
-				break;
-			case 0x01: //all OnTop
-				//sType->alwaysOnTop = true;
-				//sType->alwaysOnTopOrder = 1;
-				break;
-			case 0x02: //can walk through
-				//sType->alwaysOnTop = true;
-				//sType->alwaysOnTopOrder = 2;
-				break;
-			case 0x03: //can walk through
-				//sType->alwaysOnTop = true;
-				//sType->alwaysOnTopOrder = 3;
-				break;
-			case 0x04: //is a container
-				//sType->group = ITEM_GROUP_CONTAINER;
-				break;
-			case 0x05: //is stackable
-				//sType->stackable = true;
-				break;
-			case 0x06: //ladders
-				break;
-			case 0x07: //is useable
-				//sType->useable = true;
-				break;
-			case 0x08: //runes
-				//sType->group = ITEM_GROUP_RUNE;
-				break;
-			case 0x09: //writeable objects
-				//sType->group = ITEM_GROUP_WRITEABLE;
-				//sType->readable = true;
-				file.skip(2);
-				//file.getU16(); //maximum text length?
-				break;
-			case 0x0A: //writeable objects that can't be edited
-				//sType->readable = true;
-				file.skip(2);
-				//file.getU16(); //maximum text length?
-				break;
-			case 0x0B: //can contain fluids
-				//sType->group = ITEM_GROUP_FLUID;
-				break;
-			case 0x0C: //liquid with states
-				//sType->group = ITEM_GROUP_SPLASH;
-				break;
-			case 0x0D: //is blocking
-				//sType->blockSolid = true;
-				break;
-			case 0x0E: //is not moveable
-				//sType->moveable = false;
-				break;
-			case 0x0F: //blocks missiles (walls, magic wall etc)
-				//sType->blockProjectile = true;
-				break;
-			case 0x10: //blocks monster movement (flowers, parcels etc)
-				//sType->blockPathFind = true;
-				break;
-			case 0x11: //can be equipped
-				//sType->pickupable = true;
-				break;
-			case 0x12: //wall items
-				//sType->isHangable = true;
-				break;
-			case 0x13:
-				//sType->isHorizontal = true;
-				break;
-			case 0x14:
-				//sType->isVertical = true;
-				break;
-			case 0x15: //rotateable items
-				//sType->rotateable = true;
-				break;
-			case 0x16: //light info ..
-				file.skip(2);
-				file.skip(2);
-				//file.getU16(); // level
-				//file.getU16(); // color
-				//sType->lightColor = lightcolor;
-				break;
-			case 0x17: // No object has this...
-				break;
-			case 0x18: //floor change down
-				break;
-			case 0x19: { //Draw offset
-				uint16_t x;
-				uint16_t y;
-				file.getU16(x);
-				file.getU16(y);
-
-				sType->drawoffset_x = x;
-				sType->drawoffset_y = y;
-			} break;
-			case 0x1A: {
-				uint16_t u16;
-				file.getU16(u16);
-				sType->draw_height = u16; // Height
-			} break;
-			case 0x1B://draw with height offset for all parts (2x2) of the sprite
-				break;
-			case 0x1C: // offset life-bar (for larger monsters)
-				break;
-			case 0x1D: { // Minimap color
-				uint16_t u16;
-				file.getU16(u16);
-				sType->minimap_color = u16;
-			} break;
-			case 0x1E:  {// Floor change?
-				file.skip(2);
-				//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
-				//file.getByte(); // always 4
-			} break;
-			case 0x1F:
-				break;
-			case 0x20: // LookThrough
-				break;
-			case 0xFF:
-				break;
-			default: {
-				wxString err;
-				err << wxT("Tibia.dat: Unknown optbyte '") 
-					<< (int)optbyte << wxT("'") << wxT(" after '") 
-					<< (int)lastopt << wxT("'");
-				warnings.push_back(err);
-
-				return false;
-			} break;
-		}
-	} while (optbyte != 0xff);
-	return true;
-}
-
-bool GraphicManager::loadSpriteMetadataFlagsVer86(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
-{
-	// read the options until we find a 0xff
-	uint8_t lastopt;
-	uint8_t optbyte = 0xff;
-
-	do
-	{
-		lastopt = optbyte;
-		file.getByte(optbyte);
-		switch(optbyte)
-		{
-			case 0x00: //is groundtile
-				file.skip(2); // speed modifier
-				//speed = read_short;
-				//sType->speed = speed;
-				//sType->group = ITEM_GROUP_GROUND;
-				break;
-			case 0x01: //all OnTop
-				//sType->alwaysOnTop = true;
-				//sType->alwaysOnTopOrder = 1;
-				break;
-			case 0x02: //can walk through
-				//sType->alwaysOnTop = true;
-				//sType->alwaysOnTopOrder = 2;
-				break;
-			case 0x03: //can walk through
-				//sType->alwaysOnTop = true;
-				//sType->alwaysOnTopOrder = 3;
-				break;
-			case 0x04: //is a container
-				//sType->group = ITEM_GROUP_CONTAINER;
-				break;
-			case 0x05: //is stackable
-				//sType->stackable = true;
-				break;
-			case 0x06: //ladders
-				break;
-			case 0x07: //is useable
-				//sType->useable = true;
-				break;
-			case 0x08: //writeable objects
-				//sType->group = ITEM_GROUP_WRITEABLE;
-				//sType->readable = true;
-				file.skip(2);
-				//file.getU16(); //maximum text length?
-				break;
-			case 0x09: //writeable objects that can't be edited
-				//sType->readable = true;
-				file.skip(2);
-				//file.getU16(); //maximum text length?
-				break;
-			case 0x0A: //can contain fluids
-				//sType->group = ITEM_GROUP_FLUID;
-				break;
-			case 0x0B: //liquid with states
-				//sType->group = ITEM_GROUP_SPLASH;
-				break;
-			case 0x0C: //is blocking
-				//sType->blockSolid = true;
-				break;
-			case 0x0D: //is not moveable
-				//sType->moveable = false;
-				break;
-			case 0x0E: //blocks missiles (walls, magic wall etc)
-				//sType->blockProjectile = true;
-				break;
-			case 0x0F: //blocks monster movement (flowers, parcels etc)
-				//sType->blockPathFind = true;
-				break;
-			case 0x10: //can be equipped
-				//sType->pickupable = true;
-				break;
-			case 0x11: //wall items
-				//sType->isHangable = true;
-				break;
-			case 0x12:
-				//sType->isHorizontal = true;
-				break;
-			case 0x13:
-				//sType->isVertical = true;
-				break;
-			case 0x14: //rotateable items
-				//sType->rotateable = true;
-				break;
-			case 0x15: //light info ..
-				file.skip(2);
-				file.skip(2);
-				//file.getU16(); // level
-				//file.getU16(); // color
-				//sType->lightColor = lightcolor;
-				break;
-			case 0x16: // No object has this...
-				break;
-			case 0x17: //floor change down
-				break;
-			case 0x18: { //Draw offset
-				uint16_t x;
-				uint16_t y;
-				file.getU16(x);
-				file.getU16(y);
-
-				sType->drawoffset_x = x;
-				sType->drawoffset_y = y;
-			} break;
-			case 0x19: {
-				uint16_t u16;
-				file.getU16(u16);
-				sType->draw_height = u16; // Height
-			} break;
-			case 0x1A://draw with height offset for all parts (2x2) of the sprite
-				break;
-			case 0x1B: // offset life-bar (for larger monsters)
-				break;
-			case 0x1C: { // Minimap color
-				uint16_t u16;
-				file.getU16(u16);
-				sType->minimap_color = u16;
-			} break;
-			case 0x1D:  {// Floor change?
-				file.skip(2);
-				//file.getByte(); // 86 -> openable holes, 77-> can be used to go down, 76 can be used to go up, 82 -> stairs up, 79 switch,
-				//file.getByte(); // always 4
-			} break;
-			case 0x1E:
-				break;
-			case 0x1F: // LookThrough
-				break;
-			// All stuff below is hacky speculation
-			case 0x20: // Cloth slot
-				file.skip(2); // clothSlot
-				break;
-			case 0x21: // Market
-				{
-				/* marketCategory = */ file.skip(2);
-                /* marketTradeAs  = */ file.skip(2);
-                /* marketShowAs = */ file.skip(2);
-				std::string marketName;
-				file.getString(marketName);
-                /* marketRestrictProfession = */ file.skip(2);
-                /* marketRestrictLevel = */ file.skip(2);
-                break;
-			}
-			case 0xFF:
-				break;
-			default: {
-				wxString err;
-				err << wxT("Tibia.dat: Unknown optbyte '") 
-					<< (int)optbyte << wxT("'") << wxT(" after '") 
-					<< (int)lastopt << wxT("'");
-				warnings.push_back(err);
-
-				return false;
-			} break;
-		}
-	} while (optbyte != 0xff);
-	return true;
-}
-
-bool GraphicManager::loadSpriteMetadataFlagsVer1010(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
-{
-	uint8_t currentByte;
-	uint8_t lastByte = VER_1010_FLAG_LAST;
-	while (true) {
-		file.getByte(currentByte);
-		switch (currentByte) {
-			case VER_1010_FLAG_BANK:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_CLIP:
-				break;
-			case VER_1010_FLAG_BOTTOM:
-				break;
-			case VER_1010_FLAG_TOP:
-				break;
-			case VER_1010_FLAG_CONTAINER:
-				break;
-			case VER_1010_FLAG_CUMULATIVE:
-				break;
-			case VER_1010_FLAG_FORCEUSE:
-				break;
-			case VER_1010_FLAG_MULTIUSE:
-				break;
-			case VER_1010_FLAG_WRITE:
-			case VER_1010_FLAG_WRITEONCE:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_LIQUIDCONTAINER:
-				break;
-			case VER_1010_FLAG_LIQUIDPOOL:
-				break;
-			case VER_1010_FLAG_UNPASS:
-				break;
-			case VER_1010_FLAG_UNMOVE:
-				break;
-			case VER_1010_FLAG_UNSIGHT:
-				break;
-			case VER_1010_FLAG_AVOID:
-				break;
-			case VER_1010_FLAG_NOMOVEMENTANIMATION:
-				break;
-			case VER_1010_FLAG_TAKE:
-				break;
-			case VER_1010_FLAG_HANG:
-				break;
-			case VER_1010_FLAG_HOOKSOUTH:
-				break;
-			case VER_1010_FLAG_HOOKEAST:
-				break;
-			case VER_1010_FLAG_ROTATE:
-				break;
-			case VER_1010_FLAG_LIGHT: {
-				file.skip(2);
-				file.skip(2);
-				break;
-			}
-			case VER_1010_FLAG_DONTHIDE:
-				break;
-			case VER_1010_FLAG_TRANSLUCENT:
-				break;
-			case VER_1010_FLAG_SHIFT: {
-				file.getU16(sType->drawoffset_x);
-				file.getU16(sType->drawoffset_y);
-				break;
-			}
-			case VER_1010_FLAG_HEIGHT:
-				file.getU16(sType->draw_height);
-				break;
-			case VER_1010_FLAG_LYINGOBJECT:
-				break;
-			case VER_1010_FLAG_ANIMATEALWAYS:
-				break;
-			case VER_1010_FLAG_AUTOMAP:
-				file.getU16(sType->minimap_color);
-				break;
-			case VER_1010_FLAG_LENSHELP:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_FULLBANK:
-				break;
-			case VER_1010_FLAG_IGNORELOOK:
-				break;
-			case VER_1010_FLAG_CLOTHES:
-				file.skip(2);
-				break;
-			case VER_1010_FLAG_MARKET: {
-				/* marketCategory = */ file.skip(2);
-				/* marketTradeAs  = */ file.skip(2);
-				/* marketShowAs = */ file.skip(2);
-				std::string marketName;
-				file.getString(marketName);
-				/* marketRestrictProfession = */ file.skip(2);
-				/* marketRestrictLevel = */ file.skip(2);
-				break;
-			}
-			case VER_1010_FLAG_ANIMATION:
-				break;
-			case VER_1010_FLAG_LAST:
-				return true;
-			default: {
-				warnings.push_back(
-					wxT("Tibia.dat: Unknown optbyte '") + std::to_string(int32_t(currentByte)) + wxT("'") +
-					wxT(" after '") + std::to_string(int32_t(lastByte)) + wxT("'")
-				);
-				return false;
-			}
-		}
-		lastByte = currentByte;
 	}
-}
 
-bool GraphicManager::loadSpriteMetadataFlagsVer1021(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings)
-{
-	uint8_t currentByte;
-	uint8_t lastByte = VER_1021_FLAG_LAST;
-	while (true) {
-		file.getByte(currentByte);
-		switch (currentByte) {
-			case VER_1021_FLAG_BANK:
-				file.skip(2);
-				break;
-			case VER_1021_FLAG_CLIP:
-				break;
-			case VER_1021_FLAG_BOTTOM:
-				break;
-			case VER_1021_FLAG_TOP:
-				break;
-			case VER_1021_FLAG_CONTAINER:
-				break;
-			case VER_1021_FLAG_CUMULATIVE:
-				break;
-			case VER_1021_FLAG_FORCEUSE:
-				break;
-			case VER_1021_FLAG_MULTIUSE:
-				break;
-			case VER_1021_FLAG_WRITE:
-			case VER_1021_FLAG_WRITEONCE:
-				file.skip(2);
-				break;
-			case VER_1021_FLAG_LIQUIDCONTAINER:
-				break;
-			case VER_1021_FLAG_LIQUIDPOOL:
-				break;
-			case VER_1021_FLAG_UNPASS:
-				break;
-			case VER_1021_FLAG_UNMOVE:
-				break;
-			case VER_1021_FLAG_UNSIGHT:
-				break;
-			case VER_1021_FLAG_AVOID:
-				break;
-			case VER_1021_FLAG_NOMOVEMENTANIMATION:
-				break;
-			case VER_1021_FLAG_TAKE:
-				break;
-			case VER_1021_FLAG_HANG:
-				break;
-			case VER_1021_FLAG_HOOKSOUTH:
-				break;
-			case VER_1021_FLAG_HOOKEAST:
-				break;
-			case VER_1021_FLAG_ROTATE:
-				break;
-			case VER_1021_FLAG_LIGHT: {
-				file.skip(2);
-				file.skip(2);
-				break;
-			}
-			case VER_1021_FLAG_DONTHIDE:
-				break;
-			case VER_1021_FLAG_TRANSLUCENT:
-				break;
-			case VER_1021_FLAG_SHIFT: {
-				file.getU16(sType->drawoffset_x);
-				file.getU16(sType->drawoffset_y);
-				break;
-			}
-			case VER_1021_FLAG_HEIGHT:
-				file.getU16(sType->draw_height);
-				break;
-			case VER_1021_FLAG_LYINGOBJECT:
-				break;
-			case VER_1021_FLAG_ANIMATEALWAYS:
-				break;
-			case VER_1021_FLAG_AUTOMAP:
-				file.getU16(sType->minimap_color);
-				break;
-			case VER_1021_FLAG_LENSHELP:
-				file.skip(2);
-				break;
-			case VER_1021_FLAG_FULLBANK:
-				break;
-			case VER_1021_FLAG_IGNORELOOK:
-				break;
-			case VER_1021_FLAG_CLOTHES:
-				file.skip(2);
-				break;
-			case VER_1021_FLAG_MARKET: {
-				/* marketCategory = */ file.skip(2);
-				/* marketTradeAs  = */ file.skip(2);
-				/* marketShowAs = */ file.skip(2);
-				std::string marketName;
-				file.getString(marketName);
-				/* marketRestrictProfession = */ file.skip(2);
-				/* marketRestrictLevel = */ file.skip(2);
-				break;
-			}
-			case VER_1021_FLAG_DEFAULT_ACTION: {
-				file.skip(2);
-				break;
-			}
-			case VER_1021_FLAG_USABLE:
-				break;
-			case VER_1021_FLAG_LAST:
-				return true;
-			default: {
-				warnings.push_back(
-					wxT("Tibia.dat: Unknown optbyte '") + std::to_string(int32_t(currentByte)) + wxT("'") +
-					wxT(" after '") + std::to_string(int32_t(lastByte)) + wxT("'")
-				);
-				return false;
-			}
-		}
-		lastByte = currentByte;
-	}
+	return true;
 }
 
 bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings)
@@ -1298,26 +695,14 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 	
 	uint32_t sprSignature;
 	safe_get(U32, sprSignature);
-	
+
 	uint32_t total_pics = 0;
-	sprVersion = client_version->getSprVersionForSignature(sprSignature);
-	switch (sprVersion)
-	{
-		case SPR_VERSION_70:
-		{
-			uint16_t u16 = 0;
-			safe_get(U16, u16);
-			total_pics = u16;
-
-			break;
-		}
-		case SPR_VERSION_96:
-			safe_get(U32, total_pics);
-			break;
-
-		default:
-			error = wxT("Unrecognized spr signature");
-			return false;
+	if (is_extended) {
+		safe_get(U32, total_pics);
+	} else {
+		uint16_t u16 = 0;
+		safe_get(U16, u16);
+		total_pics = u16;
 	}
 
 	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES) == false) {
@@ -1390,25 +775,8 @@ bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite
 		return false;
 	unloaded = false;
 
-	switch (sprVersion)
-	{
-		case SPR_VERSION_70:
-			// Sprite ids start at 1, so signature is implicitly skipped
-			// Then skip the 2 byte total_pics
-			if(!fh.seek(2 + sprite_id * sizeof(uint32_t)))
-				return false;
-			break;
-
-		case SPR_VERSION_96:
-			// Sprite ids start at 1, so signature is implicitly skipped
-			// Then skip the 4 byte total_pics
-			if(!fh.seek(4 + sprite_id * sizeof(uint32_t)))
-				return false;
-			break;
-
-		default:
-			return false;
-	}
+	if (!fh.seek((is_extended ? 4 : 2) + sprite_id * sizeof(uint32_t)))
+		return false;
 
 	uint32_t to_seek = 0;
 	if(fh.getU32(to_seek))
@@ -1498,11 +866,11 @@ GameSprite::GameSprite() :
 	id(0),
 	height(0),
 	width(0),
+	layers(0),
+	pattern_x(0),
+	pattern_y(0),
+	pattern_z(0),
 	frames(0),
-	xdiv(0),
-	ydiv(0),
-	zdiv(0),
-	animation_length(0),
 	numsprites(0),
 	draw_height(0),
 	drawoffset_x(0),
@@ -1551,12 +919,12 @@ uint8_t GameSprite::getMiniMapColor() const {
 	return minimap_color;
 }
 
-GLuint GameSprite::getHardwareID(int _x, int _y, int _frame, int _count, int _xdiv, int _ydiv, int _zdiv, int _timeframe) {
+GLuint GameSprite::getHardwareID(int _x, int _y, int _layer, int _count, int _pattern_x, int _pattern_y, int _pattern_z, int _frame) {
 	uint32_t v;
 	if(_count >= 0 && height <= 1 && width <= 1) {
 		v = _count;
 	} else {
-		v = ((((((_timeframe)*ydiv+_ydiv)*xdiv+_xdiv)*frames+_frame)*height+_y)*width+_x);
+		v = ((((((_frame)*pattern_y+_pattern_y)*pattern_x+_pattern_x)*layers+_layer)*height+_y)*width+_x);
 	}
 	if(v >= numsprites) {
 		if(numsprites == 1) {
@@ -1592,9 +960,9 @@ GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const 
 	return img;
 }
 
-GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _timeframe) {
+GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame) {
 	uint32_t v;
-	v = ((((_dir) * frames) * height+_y) * width+_x);
+	v = ((((_dir) * layers) * height+_y) * width+_x);
 	if(v >= numsprites) {
 		if(numsprites == 1) {
 			v = 0;
@@ -1602,7 +970,7 @@ GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit
 			v %= numsprites;
 		}
 	}
-	if(frames > 1) { // Template
+	if(layers > 1) { // Template
 		TemplateImage* img = getTemplateImage(v, _outfit);
 		return img->getHardwareID();
 	}
@@ -1621,7 +989,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[2*2*32*32*3];
 			memset(rgb, bgshade, 2*2*32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32[2][2] = {
 					{spriteList[(cf*2+1)*2+1]->getRGBData(),spriteList[(cf*2+1)*2]->getRGBData()},
 					{spriteList[cf*4+1]->getRGBData(),spriteList[cf*4]->getRGBData()}
@@ -1659,7 +1027,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[2*2*32*32*3];
 			memset(rgb, bgshade, 2*2*32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32[2] = {
 					spriteList[cf*2+1]->getRGBData(),
 					spriteList[cf*2+0]->getRGBData()
@@ -1692,7 +1060,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[2*2*32*32*3];
 			memset(rgb, bgshade, 2*2*32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32[2] = {
 					spriteList[cf*2+1]->getRGBData(),
 					spriteList[cf*2+0]->getRGBData()
@@ -1725,7 +1093,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz) {
 			rgb = newd uint8_t[32*32*3];
 			memset(rgb, bgshade, 32*32*3);
 
-			for(int cf = 0; cf != frames; ++cf) {
+			for(int cf = 0; cf != layers; ++cf) {
 				uint8_t* rgb32x32 = spriteList[cf]->getRGBData();
 				if(!rgb32x32) continue;
 
@@ -1943,6 +1311,8 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
+	uint8_t bits_per_pixel = gui.gfx.hasTransparency() ? 4 : 3;
+
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
 		bytes += 2;
@@ -1975,7 +1345,7 @@ uint8_t* GameSprite::NormalImage::getRGBData() {
 			rgb32x32[96*y+x*3+1] = green;
 			rgb32x32[96*y+x*3+2] = blue;
 
-			bytes += 3;
+			bytes += bits_per_pixel;
 
 			x++;
 			if(x >= 32) {
@@ -2032,6 +1402,8 @@ uint8_t* GameSprite::NormalImage::getRGBAData() {
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
+	bool transparency = gui.gfx.hasTransparency();
+	uint8_t bits_per_pixel = transparency ? 4 : 3;
 
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
@@ -2061,12 +1433,13 @@ uint8_t* GameSprite::NormalImage::getRGBAData() {
 			uint8_t red   = dump[bytes+0];
 			uint8_t green = dump[bytes+1];
 			uint8_t blue  = dump[bytes+2];
+			uint8_t alpha = transparency ? dump[bytes + 3] : 0xFF;
 			rgba32x32[128*y+x*4+0] = red;
 			rgba32x32[128*y+x*4+1] = green;
 			rgba32x32[128*y+x*4+2] = blue;
-			rgba32x32[128*y+x*4+3] = 0xFF; //Opaque pixel
+			rgba32x32[128*y+x*4+3] = alpha; //Opaque pixel
 
-			bytes += 3;
+			bytes += bits_per_pixel;
 
 			x++;
 			if(x >= 32) {

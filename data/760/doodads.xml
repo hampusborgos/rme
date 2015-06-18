@@ -333,11 +333,6 @@
 		<alternate> <item id="2786" chance="10"/> </alternate>
 	</brush>
 	
-	<brush name="banana tree" type="doodad" server_lookid="5390" draggable="true" on_blocking="false" thickness="13/100">
-		<alternate> <item id="5390" chance="10"/> </alternate>
-		<alternate> <item id="5391" chance="10"/> </alternate>
-	</brush>
-	
 	<brush name="lilypads" type="doodad" server_lookid="2758" draggable="true" on_blocking="true" thickness="10/100">
 		<item id="2755" chance="20"/>
 		<item id="2756" chance="10"/>
@@ -655,21 +650,6 @@
 		</alternate>
 	</brush>
 	
-	<brush name="map board" type="doodad" server_lookid="5656" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="5655"/> </tile>
-				<tile x="1" y="0"> <item id="5656"/> </tile>
-			</composite>
-		</alternate>
-		<alternate> -- east --
-			<composite chance="10">
-				<tile x="0" y="0"> <item id="5657"/> </tile>
-				<tile x="0" y="1"> <item id="5658"/> </tile>
-			</composite>
-		</alternate>
-	</brush>
-	
 	<brush name="wooden chest" type="doodad" server_lookid="1740" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
 		<alternate> -- south --
 			<item id="1740" chance="10"/>
@@ -970,15 +950,6 @@
 				<tile x="0" y="0"> <item id="1664"/> </tile>
 				<tile x="0" y="1"> <item id="1665"/> </tile>
 			</composite>
-		</alternate>
-	</brush>
-	
-	<brush name="large throne" type="doodad" server_lookid="5915" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
-			<item id="5915" chance="10"/>
-		</alternate>
-		<alternate> -- east --
-			<item id="5916" chance="10"/>
 		</alternate>
 	</brush>
 	
@@ -1437,7 +1408,7 @@
 			<item id="5074" chance="10"/>
 		</alternate>
 		<alternate> -- east --
-			<item id="5075" chance="10"/>
+			<item id="5075	" chance="10"/>
 		</alternate>
 	</brush>
 	
@@ -1728,6 +1699,26 @@
 		<table align="alone"> <item id="2615" chance="10"/> </table>
 	</brush>
 	
+	<brush name="sacrifical stone" type="table" server_lookid="2617">
+		<table align="north"> <item id="2616" chance="10"/> </table>
+		<table align="vertical"> <item id="2618" chance="10"/> </table>
+		<table align="south"> <item id="2611" chance="10"/> </table>
+		<table align="west"> <item id="2617" chance="10"/> </table>
+		<table align="horizontal"> <item id="2619" chance="10"/> </table>
+		<table align="east"> <item id="2613" chance="10"/> </table>
+		<table align="alone"> <item id="2618" chance="10"/> </table>
+	</brush>
+	
+	<brush name="sacrifical stone with blood" type="table" server_lookid="2612">
+		<table align="north"> <item id="2610" chance="10"/> </table>
+		<table align="vertical"> <item id="2620" chance="10"/> </table>
+		<table align="south"> <item id="2622" chance="10"/> </table>
+		<table align="west"> <item id="2612" chance="10"/> </table>
+		<table align="horizontal"> <item id="2621" chance="10"/> </table>
+		<table align="east"> <item id="2623" chance="10"/> </table>
+		<table align="alone"> <item id="2621" chance="10"/> </table>
+	</brush>
+	
 	<brush name="big brown table, horizontal" type="carpet" server_lookid="1606">
 		<carpet align="n"      id="1606"/>
 		<carpet align="s"      id="1603"/>
@@ -1999,17 +1990,65 @@
 	</brush>
 	
 	<brush name="red carpet" type="carpet" server_lookid="4398">
-		<carpet align="n"      id="4401"/>
-		<carpet align="e"      id="4397"/>
-		<carpet align="s"      id="4395"/>
-		<carpet align="w"      id="4399"/>
-		<carpet align="cnw"    id="4402"/>
-		<carpet align="cne"    id="4400"/>
-		<carpet align="cse"    id="4394"/>
-		<carpet align="csw"    id="4396"/>
-		<carpet align="center" id="4398"/>
+		<carpet align="n"      id="1801"/>
+		<carpet align="e"      id="1797"/>
+		<carpet align="s"      id="1795"/>
+		<carpet align="w"      id="1799"/>
+		<carpet align="cnw"    id="1802"/>
+		<carpet align="cne"    id="1800"/>
+		<carpet align="cse"    id="1794"/>
+		<carpet align="csw"    id="1796"/>
+		<carpet align="center" id="1798"/>
+</brush>
+	
+	<brush name="fishing net" type="wall" server_lookid="3874">
+		<wall type="pole"> 
+	        <item id="3877" chance="1"/>
+		</wall>
+		<wall type="horizontal">
+			<item id="3875" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3879" chance="1"/>
+		</wall>
+		<wall type="south end">
+			<item id="3880" chance="1"/>
+		</wall>
+		<wall type="east end">
+			<item id="3876" chance="1"/>
+		</wall>
+		<wall type="north end">
+			<item id="3878" chance="1"/>
+		</wall>
+		<wall type="west end">
+			<item id="3874" chance="1"/>
+		</wall>
 	</brush>
 	
+	<brush name="vertical mill" type="doodad" server_lookid="1379" draggable="true" on_blocking="true" thickness="10/10">
+			<composite chance="10">
+				<tile x="0" y="0"> <item id="1379"/> </tile>
+				<tile x="1" y="0"> <item id="1380"/> </tile>
+			</composite>
+
+	</brush>
+
+	<brush name="horizontal mill" type="doodad" server_lookid="1381" draggable="true" on_blocking="true" thickness="10/10">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="1381"/> </tile>
+			<tile x="1" y="0"> <item id="1382"/> </tile>
+			<tile x="0" y="1"> <item id="1383"/> </tile>
+			<tile x="1" y="1"> <item id="1384"/> </tile>
+		</composite>
+	</brush>
+	
+	<brush name="draw well" type="doodad" server_lookid="1368" draggable="true" on_blocking="true" thickness="10/10">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="1368"/> </tile>
+			<tile x="1" y="0"> <item id="1369"/> </tile>
+		</composite>
+	</brush>
+		
 	<!-- Trash -->
 	
 	<brush name="broken bottles" type="doodad" server_lookid="2024" draggable="true" on_blocking="true" thickness="6/10">
