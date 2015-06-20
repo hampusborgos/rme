@@ -360,7 +360,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 
 	topsizer->Add(boxsizer, wxSizerFlags(3).Expand().Border(wxALL, 20));
-	SetSize(220, 0);
+	//SetSize(220, 0);
 
 	wxSizer* std_sizer = newd wxBoxSizer(wxHORIZONTAL);
 	std_sizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
