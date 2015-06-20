@@ -47,11 +47,24 @@ For more details you can follow [this tutorial](http://otland.net/threads/compil
 ### Linux
 ===============
 
-Assuming that you have all required tools to compile (gcc, cmake, boost, mesa, wxWidgets, libarchive) clone the project, open you terminal and do the following commands:
+```bash
 
-```
+# Installing dependencies
+sudo apt-get install git libboost-system-dev libboost-thread-dev libglu1-mesa-dev libwxgtk3.0-dev libarchive-dev 
+
+# Clone the project
+git clone git@github.com:ottools/rme.git
+
+# Go to RME Folder
+cd rme
+
+# Preparing to build
 mkdir build && cd build
 cmake ..
+
+# Building
 make -j `nproc`
+
+# Running and enjoy
 ./rme
 ```
