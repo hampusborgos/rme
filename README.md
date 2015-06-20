@@ -53,7 +53,7 @@ For more details you can follow [this tutorial](http://otland.net/threads/compil
 sudo apt-get install git libboost-system-dev libboost-thread-dev libglu1-mesa-dev libwxgtk3.0-dev libarchive-dev 
 
 # Clone the project
-git clone git@github.com:ottools/rme.git
+git clone git@github.com:hjnilsson/rme.git
 
 # Go to RME Folder
 cd rme
