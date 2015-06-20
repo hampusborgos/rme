@@ -152,14 +152,10 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 		}
 
 		std::string extensionUrl = extensionNode.attribute("url").as_string();
-		if (extensionUrl.length()) {
-			extensionUrl.erase(std::remove(extensionUrl.begin(), extensionUrl.end(), '\''));
-		}
+		extensionUrl.erase(std::remove(extensionUrl.begin(), extensionUrl.end(), '\''), extensionUrl.end());
 
 		std::string extensionAuthorLink = extensionNode.attribute("authorurl").as_string();
-		if (extensionAuthorLink.length()) {
-			extensionAuthorLink.erase(std::remove(extensionAuthorLink.begin(), extensionAuthorLink.end(), '\''));
-		}
+		extensionAuthorLink.erase(std::remove(extensionAuthorLink.begin(), extensionAuthorLink.end(), '\''), extensionAuthorLink.end());
 
 		MaterialsExtension* materialExtension = newd MaterialsExtension(extensionName, extensionAuthor, extensionDescription);
 		materialExtension->url = extensionUrl;
