@@ -36,8 +36,8 @@ class LivePeer : public LiveSocket
 		void updateCursor(const Position& position) {}
 
 	protected:
-		void parseLoginPacket(NetworkMessage message);
-		void parseEditorPacket(NetworkMessage message);
+		void parseLoginPacket(NetworkMessage& message);
+		void parseEditorPacket(NetworkMessage& message);
 
 		// login packets
 		void parseHello(NetworkMessage& message);

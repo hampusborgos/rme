@@ -162,9 +162,6 @@ std::string LiveClient::getHostName() const
 void LiveClient::receiveHeader()
 {
 	readMessage.position = 0;
-	if (readMessage.buffer.size() < 4) {
-		readMessage.buffer.resize(4);
-	}
 	boost::asio::async_read(*socket,
 		boost::asio::buffer(readMessage.buffer, 4),
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
@@ -195,7 +192,7 @@ void LiveClient::receive(uint32_t packetSize)
 				logMessage(wxString() + getHostName() + wxT(": Could not receive packet[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
 			} else {
 				wxTheApp->CallAfter([this]() {
-					parsePacket(std::move(readMessage));
+					parsePacket(readMessage);
 					receiveHeader();
 				});
 			}
@@ -342,7 +339,7 @@ void LiveClient::queryNode(int32_t ndx, int32_t ndy, bool underground)
 	queryNodeList.insert(nd);
 }
 
-void LiveClient::parsePacket(NetworkMessage message)
+void LiveClient::parsePacket(NetworkMessage& message)
 {
 	uint8_t packetType;
 	while (message.position < message.buffer.size()) {

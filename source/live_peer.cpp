@@ -84,9 +84,9 @@ void LivePeer::receive(uint32_t packetSize)
 			} else {
 				wxTheApp->CallAfter([this]() {
 					if (connected) {
-						parseEditorPacket(std::move(readMessage));
+						parseEditorPacket(readMessage);
 					} else {
-						parseLoginPacket(std::move(readMessage));
+						parseLoginPacket(readMessage);
 					}
 					receiveHeader();
 				});
@@ -108,7 +108,7 @@ void LivePeer::send(NetworkMessage& message)
 	);
 }
 
-void LivePeer::parseLoginPacket(NetworkMessage message)
+void LivePeer::parseLoginPacket(NetworkMessage& message)
 {
 	uint8_t packetType;
 	while (message.position < message.buffer.size()) {
@@ -129,7 +129,7 @@ void LivePeer::parseLoginPacket(NetworkMessage message)
 	}
 }
 
-void LivePeer::parseEditorPacket(NetworkMessage message)
+void LivePeer::parseEditorPacket(NetworkMessage& message)
 {
 	uint8_t packetType;
 	while (message.position < message.buffer.size()) {
