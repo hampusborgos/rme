@@ -23,7 +23,7 @@
 #include "main.h"
 
 #include "dcbutton.h"
-#include "numbertextctrl.h"
+#include "positionctrl.h"
 
 class GameSprite;
 class MapTab;
@@ -277,7 +277,7 @@ protected:
 };
 
 /**
- * Jump to position dialog
+ * Go to position dialog
  * Allows entry of 3 coordinates and goes there instantly
  */
 class GotoPositionDialog : public wxDialog 
@@ -286,13 +286,12 @@ public:
 	GotoPositionDialog(wxWindow* parent, Editor& editor);
 	~GotoPositionDialog() {}
 
-	void OnTypeText(wxKeyEvent&);
-	void OnClipboardText(wxClipboardTextEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 
 protected:
 	Editor& editor;
+	PositionCtrl* posctrl;
 
 	DECLARE_EVENT_TABLE();
 };
@@ -340,7 +339,6 @@ public:
 	virtual ~EditTownsDialog();
 
 	void OnListBoxChange(wxCommandEvent&);
-	void OnClipboardText(wxClipboardTextEvent&);
 	void OnClickSelectTemplePosition(wxCommandEvent&);
 	void OnClickAdd(wxCommandEvent&);
 	void OnClickRemove(wxCommandEvent&);
@@ -362,9 +360,7 @@ protected:
 	wxTextCtrl* name_field;
 	wxTextCtrl* id_field;
 
-	NumberTextCtrl* x_templepos_field;
-	NumberTextCtrl* y_templepos_field;
-	NumberTextCtrl* z_templepos_field;
+	PositionCtrl* temple_position;
 	wxButton* remove_button;
 	wxButton* select_position_button;
 

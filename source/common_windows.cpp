@@ -18,7 +18,7 @@
 #include "gui.h"
 #include "application.h"
 #include "common_windows.h"
-#include "numbertextctrl.h"
+#include "positionctrl.h"
 
 #ifdef _MSC_VER
 	#pragma warning(disable:4018) // signed/unsigned mismatch
@@ -1455,23 +1455,10 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	sizer->Add(tmpsizer, 0, wxEXPAND | wxALL, 10);
 
 	// Temple position
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Temple Position"));
-
-	x_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, map.getWidth(), wxWANTS_CHARS, wxT("X"), wxDefaultPosition, wxSize(60, 20));
-	x_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(x_templepos_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
-
-	y_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, map.getHeight(), wxWANTS_CHARS, wxT("Y"), wxDefaultPosition, wxSize(60, 20));
-	y_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(y_templepos_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
-
-	z_templepos_field = newd NumberTextCtrl(this, wxID_ANY, 0, 0, 15, wxWANTS_CHARS, wxT("Z"), wxDefaultPosition, wxSize(35, 20));
-	z_templepos_field->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(EditTownsDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(z_templepos_field, 1, wxEXPAND | wxLEFT | wxBOTTOM, 5);
-
+	temple_position = newd PositionCtrl(this, wxT("Temple Position"), 0, 0, 0, map.getWidth(), map.getHeight());
 	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, wxT("Go To"));
-	tmpsizer->Add(select_position_button, 0, wxLEFT | wxRIGHT | wxBOTTOM, 5);
-	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
+	temple_position->Add(select_position_button, 0, wxLEFT | wxRIGHT | wxBOTTOM, 5);
+	sizer->Add(temple_position, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 	// OK/Cancel buttons
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -1579,10 +1566,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 			}
 
 			if(old_town) {
-				Position templepos;
-				templepos.x = x_templepos_field->GetIntValue();
-				templepos.y = y_templepos_field->GetIntValue();
-				templepos.z = z_templepos_field->GetIntValue();
+				Position templepos = temple_position->GetPosition();
 
 				//printf("Changed town %d:%s\n", old_town_id, old_town->getName().c_str());
 				//printf("New values %d:%s:%d:%d:%d\n", town_id, town_name.c_str(), templepos.x, templepos.y, templepos.z);
@@ -1608,9 +1592,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 	if(town_list.size() > size_t(new_selection))
 	{
 		name_field->Enable(true);
-		x_templepos_field->Enable(true);
-		y_templepos_field->Enable(true);
-		z_templepos_field->Enable(true);
+		temple_position->Enable(true);
 		select_position_button->Enable(true);
 
 		// Change the values to reflect the newd selection
@@ -1622,19 +1604,13 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 		name_field->SetValue(town_name);
 		town_id << long(town->getID());
 		id_field->SetValue(town_id);
-
-		x_templepos_field->SetIntValue(town->getTemplePosition().x);
-		y_templepos_field->SetIntValue(town->getTemplePosition().y);
-		z_templepos_field->SetIntValue(town->getTemplePosition().z);
-
+		temple_position->SetPosition(town->getTemplePosition());
 		town_listbox->SetSelection(new_selection);
 	}
 	else
 	{
 		name_field->Enable(false);
-		x_templepos_field->Enable(false);
-		y_templepos_field->Enable(false);
-		z_templepos_field->Enable(false);
+		temple_position->Enable(false);
 		select_position_button->Enable(false);
 	}
 	Refresh();
@@ -1645,30 +1621,9 @@ void EditTownsDialog::OnListBoxChange(wxCommandEvent& event)
 	UpdateSelection(event.GetSelection());
 }
 
-void EditTownsDialog::OnClipboardText(wxClipboardTextEvent& evt)
-{
-	wxWindow* w = FindFocus();
-	if (w->GetParent() == this)
-	{
-		Position pos;
-		if (posFromClipboard(pos.x, pos.y, pos.z))
-		{
-			x_templepos_field->SetIntValue(pos.x);
-			y_templepos_field->SetIntValue(pos.y);
-			z_templepos_field->SetIntValue(pos.z);
-		}
-		else
-			evt.Skip();
-	}
-}
-
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
 {
-	Position templepos;
-	templepos.x = x_templepos_field->GetIntValue();
-	templepos.y = y_templepos_field->GetIntValue();
-	templepos.z = z_templepos_field->GetIntValue();
-
+	Position templepos = temple_position->GetPosition();
 	gui.CenterOnPosition(templepos);
 }
 
@@ -1754,10 +1709,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			if(old_town)
 			{
-				Position templepos;
-				templepos.x = x_templepos_field->GetIntValue();
-				templepos.y = y_templepos_field->GetIntValue();
-				templepos.z = z_templepos_field->GetIntValue();
+				Position templepos = temple_position->GetPosition();
 
 				//printf("Changed town %d:%s\n", old_town_id, old_town->getName().c_str());
 				//printf("New values %d:%s:%d:%d:%d\n", town_id, town_name.c_str(), templepos.x, templepos.y, templepos.z);
@@ -1837,72 +1789,17 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 {
 	Map& map = editor.map;
 
-
-	// Create topsizer
+	// create topsizer
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
-	wxSizer* tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	NumberTextCtrl* ctrl;
 
-	// Add the x, y, z controls to the window
-	// Note that all flags are 0, else the arrow keys will increase/decrease
-	//  the values, but we rather want it to work more like a text control.
-
-	// Add X position spin ctrl
-	ctrl = newd NumberTextCtrl(this, wxID_ANY,
-		0, 0, map.getWidth(), // value, min, max
-		wxWANTS_CHARS, wxT("X"), // style name
-		wxDefaultPosition, wxSize(70, -1));
-
-	// Selecting all text in the first control
-	ctrl->SetSelection(-1, -1);
-
-	// We connect the OnTypeText handler from this window (using us as event object)
-	// this way we don't have to subclass
-	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
-	ctrl->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(GotoPositionDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(ctrl, 2, wxCENTER);
-
-	// Add Y position spin ctrl
-	ctrl = newd NumberTextCtrl(this, wxID_ANY,
-		0, 0, map.getHeight(), // value, min, max
-		wxWANTS_CHARS, wxT("Y"), // style name
-		wxDefaultPosition, wxSize(70, -1));
-	
-	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
-	ctrl->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(GotoPositionDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(ctrl, 2, wxCENTER);
-
-	// Add Z position spin ctrl
-	ctrl = newd NumberTextCtrl(this, wxID_ANY,
-		0, 0, 15, // value, min, max
-		wxWANTS_CHARS, wxT("Z"), // style name
-		wxDefaultPosition, wxSize(40, -1));
-	
-	ctrl->Connect(wxEVT_KEY_DOWN, wxKeyEventHandler(GotoPositionDialog::OnTypeText), nullptr, this);
-	ctrl->Connect(wxEVT_TEXT_PASTE, wxClipboardTextEventHandler(GotoPositionDialog::OnClipboardText), nullptr, this);
-	tmpsizer->Add(ctrl, 1, wxCENTER);
-
-
-	// Add sizer with borders, no need for bottom as it will be handled by the
-	// OK/Cancel sizer below
-	sizer->Add(tmpsizer, 0, wxTOP | wxLEFT | wxRIGHT, 20);
+	posctrl = newd PositionCtrl(this, wxT("Destination"), map.getWidth() / 2, map.getHeight() / 2, 7, map.getWidth(), map.getHeight());
+	sizer->Add(posctrl, 0, wxTOP | wxLEFT | wxRIGHT, 20);
 
 	// OK/Cancel buttons
-	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
+	wxSizer* tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
 	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
 	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
 	sizer->Add(tmpsizer, 0, wxALL | wxCENTER, 20); // Border to top too
-
-	// Set some sensible default
-	NumberTextCtrl *x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
-	NumberTextCtrl *y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
-	NumberTextCtrl *z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
-
-	x->SetValue(wxstr(i2s(editor.map.getWidth() / 2)));
-	y->SetValue(wxstr(i2s(editor.map.getHeight() / 2)));
-	z->SetValue(wxT("7"));
-	
-	x->SetSelection(0, x->GetLastPosition());
 
 	SetSizerAndFit(sizer);
 }
@@ -1914,72 +1811,6 @@ void GotoPositionDialog::OnClickCancel(wxCommandEvent &)
 
 void GotoPositionDialog::OnClickOK(wxCommandEvent &)
 {
-	NumberTextCtrl* x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
-	NumberTextCtrl* y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
-	NumberTextCtrl* z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
-
-	gui.CenterOnPosition(Position(x->GetIntValue(), y->GetIntValue(), z->GetIntValue()));
-
+	gui.CenterOnPosition(posctrl->GetPosition());
 	EndModal(1);
-}
-
-void GotoPositionDialog::OnTypeText(wxKeyEvent& evt)
-{
-	// We have a special key handler for allowing tab & space to change input field. :)
-	switch(evt.GetKeyCode())
-	{
-		case WXK_SPACE:
-		case WXK_TAB:
-		{
-			// Tab and space switch focus
-			wxWindow* w = FindFocus();
-			if(w->GetParent() == this)
-			{
-				w->Navigate(
-					(evt.ShiftDown()?
-					wxNavigationKeyEvent::IsBackward :
-					wxNavigationKeyEvent::IsForward)
-					);
-				wxWindow* w = FindFocus();
-				NumberTextCtrl* n = dynamic_cast<NumberTextCtrl*>(w);
-				if(n)
-					n->SetSelection(0, n->GetLastPosition());
-			}
-		}
-		break;
-		case WXK_RETURN:
-			{
-				NumberTextCtrl* x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
-				NumberTextCtrl* y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
-				NumberTextCtrl* z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
-				
-				if(x->GetIntValue() != 0 && y->GetIntValue() != 0)
-					gui.CenterOnPosition(Position(x->GetIntValue(), y->GetIntValue(), z->GetIntValue()));
-				EndModal(1);
-			}
-			break;
-		default:
-			// No key we're interested in, ensure event is handled as normal
-			evt.Skip();
-	}
-}
-
-void GotoPositionDialog::OnClipboardText(wxClipboardTextEvent& evt)
-{
-	wxWindow* w = FindFocus();
-	if (w->GetParent() == this)
-	{
-		Position pos;
-		if (posFromClipboard(pos.x, pos.y, pos.z))
-		{
-			NumberTextCtrl* x = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("X")));
-			x->SetIntValue(pos.x);
-			NumberTextCtrl* y = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Y")));
-			y->SetIntValue(pos.y);
-			NumberTextCtrl* z = static_cast<NumberTextCtrl*>(FindWindowByName(wxT("Z")));
-			z->SetIntValue(pos.z);
-		}
-		else
-			evt.Skip();
-	}
 }
