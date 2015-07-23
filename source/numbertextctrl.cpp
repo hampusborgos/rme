@@ -18,18 +18,18 @@
 // $Id: numbertextctrl.hpp 280 2010-02-14 23:46:31Z admin $
 
 #include "main.h"
-
 #include "numbertextctrl.h"
 
 BEGIN_EVENT_TABLE(NumberTextCtrl, wxTextCtrl)
-	EVT_TEXT(wxID_ANY, NumberTextCtrl::OnEnterText)
+	EVT_KILL_FOCUS(NumberTextCtrl::OnKillFocus)
+	EVT_TEXT_ENTER(wxID_ANY, NumberTextCtrl::OnTextEnter)
 END_EVENT_TABLE()
 
 NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long value, long minvalue, long maxvalue,
 		const wxPoint& pos, const wxSize& sz,
 		long style, const wxString& name) :
-	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxDefaultValidator, name),
+	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NUMERIC), name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 }
@@ -38,7 +38,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long value, long minvalue, long maxvalue,
 		long style, const wxString& name,
 		const wxPoint& pos, const wxSize& sz) :
-	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxDefaultValidator, name),
+	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NUMERIC), name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 }
@@ -47,52 +47,15 @@ NumberTextCtrl::~NumberTextCtrl()
 {
 }
 
-void NumberTextCtrl::OnEnterText(wxCommandEvent& evt)
+void NumberTextCtrl::OnKillFocus(wxFocusEvent& evt)
 {
-	//printf("%d\n", (int)GetInsertionPoint());
-	wxString text = GetValue();
-	wxString ntext;
+	CheckRange();
+	evt.Skip();
+}
 
-	int p = GetInsertionPoint();
-	if(text.size() && text[0] == wxT('-'))
-		ntext.Append(wxT('-'));
-
-	for(size_t s = 0; s < text.size(); ++s)
-	{
-		if(text[s] >= '0' && text[s] <= '9')
-			ntext.Append(text[s]);
-		else
-			--p;
-	}
-
-	// Check that value is in range
-	long v;
-	if(ntext.ToLong(&v))
-	{
-		if(v < minval)
-			v = minval;
-		else if(v > maxval)
-			v = maxval;
-
-		ntext.clear();
-		ntext << v;
-		lastval = v;
-	}
-	else
-	{
-		ntext.clear();
-		ntext << lastval;
-	}
-
-	// Check if there was any change
-	if(ntext != text)
-	{
-		// User input was invalid, change the text to the cleaned one.
-
-		// ChangeValue doesn't generate events
-		ChangeValue(ntext);
-		SetInsertionPoint(p);
-	}
+void NumberTextCtrl::OnTextEnter(wxCommandEvent& evt)
+{
+	CheckRange();
 }
 
 void NumberTextCtrl::SetIntValue(long v)
@@ -109,5 +72,38 @@ long NumberTextCtrl::GetIntValue()
 	if(GetValue().ToLong(&l))
 		return l;
 	return 0;
+}
+
+void NumberTextCtrl::CheckRange()
+{
+	wxString text = GetValue();
+	wxString ntext;
+
+	for(size_t s = 0; s < text.size(); ++s) {
+		if (text[s] >= '0' && text[s] <= '9')
+			ntext.Append(text[s]);
+	}
+
+	// Check that value is in range
+	long v;
+	if(ntext.size() != 0 && ntext.ToLong(&v)) {
+		if (v < minval)
+			v = minval;
+		else if(v > maxval)
+			v = maxval;
+
+		ntext.clear();
+		ntext << v;
+		lastval = v;
+	} else {
+		ntext.clear();
+		ntext << lastval;
+	}
+
+	// Check if there was any change
+	if(ntext != text) {
+		// ChangeValue doesn't generate events
+		ChangeValue(ntext);
+	}
 }
 

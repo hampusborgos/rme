@@ -34,11 +34,15 @@ public:
 		const wxPoint& pos = wxDefaultPosition, const wxSize& sz = wxDefaultSize);
 	~NumberTextCtrl();
 
-	void OnEnterText(wxCommandEvent&);
+	void OnKillFocus(wxFocusEvent&);
+	void OnTextEnter(wxCommandEvent&);
 
 	long GetIntValue();
 	void SetIntValue(long v);
+
 protected:
+	void CheckRange();
+
 	long minval, maxval, lastval;
 	DECLARE_EVENT_TABLE();
 };

@@ -23,15 +23,15 @@
 PositionCtrl::PositionCtrl(wxWindow* parent, const wxString& label, long x, long y, long z, long maxx, long maxy, long maxz) :
 wxStaticBoxSizer(wxHORIZONTAL, parent, label)
 {
-	x_field = newd NumberTextCtrl(parent, wxID_ANY, x, 0, maxx, wxWANTS_CHARS, wxT("X"), wxDefaultPosition, wxSize(60, 20));
+	x_field = newd NumberTextCtrl(parent, wxID_ANY, x, 0, maxx, wxTE_PROCESS_ENTER, wxT("X"), wxDefaultPosition, wxSize(60, 20));
 	x_field->Bind(wxEVT_TEXT_PASTE, &PositionCtrl::OnClipboardText, this);
 	Add(x_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
-	y_field = newd NumberTextCtrl(parent, wxID_ANY, y, 0, maxy, wxWANTS_CHARS, wxT("Y"), wxDefaultPosition, wxSize(60, 20));
+	y_field = newd NumberTextCtrl(parent, wxID_ANY, y, 0, maxy, wxTE_PROCESS_ENTER, wxT("Y"), wxDefaultPosition, wxSize(60, 20));
 	y_field->Bind(wxEVT_TEXT_PASTE, &PositionCtrl::OnClipboardText, this);
 	Add(y_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
-	z_field = newd NumberTextCtrl(parent, wxID_ANY, z, 0, maxz, wxWANTS_CHARS, wxT("Z"), wxDefaultPosition, wxSize(35, 20));
+	z_field = newd NumberTextCtrl(parent, wxID_ANY, z, 0, maxz, wxTE_PROCESS_ENTER, wxT("Z"), wxDefaultPosition, wxSize(35, 20));
 	z_field->Bind(wxEVT_TEXT_PASTE, &PositionCtrl::OnClipboardText, this);
 	Add(z_field, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
 }
