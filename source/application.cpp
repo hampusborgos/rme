@@ -36,6 +36,8 @@
 #include "complexitem.h"
 #include "creature.h"
 
+#include "../brushes/icon/rme_icon.xpm"
+
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_CLOSE(MainFrame::OnExit)
 
@@ -265,6 +267,11 @@ bool Application::OnInit()
 			}
 		}
 	}
+
+	// Loads the rme icon
+	wxIcon* icon = newd wxIcon(rme_icon);
+	gui.root->SetIcon(*icon);
+	delete icon;
 
 	// Keep track of first event loop entry
 	startup = true;
