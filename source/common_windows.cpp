@@ -24,7 +24,6 @@
 	#pragma warning(disable:4018) // signed/unsigned mismatch
 #endif
 
-
 // ============================================================================
 // Map Properties Window
 
@@ -60,8 +59,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	version_choice->Append(wxT("OTServ 0.6.1"));
 	version_choice->Append(wxT("OTServ 0.7.0 (revscriptsys)"));
 
-	switch(map.getVersion().otbm)
-	{
+	switch(map.getVersion().otbm) {
 		case MAP_OTBM_1:
 			version_choice->SetSelection(0);
 			break;
@@ -147,12 +145,9 @@ void MapPropertiesWindow::UpdateProtocolList()
 	protocol_choice->Clear();
 	
 	ClientVersionList versions;
-	if (settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS))
-	{
+	if(settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS)) {
 		versions = ClientVersion::getAllVisible();
-	}
-	else
-	{
+	} else {
 		MapVersionID map_version = MAP_OTBM_1;
 		if(ver.Contains(wxT("0.5.0")))
 			map_version = MAP_OTBM_1;
@@ -164,7 +159,7 @@ void MapPropertiesWindow::UpdateProtocolList()
 			map_version = MAP_OTBM_4;
 
 		ClientVersionList protocols = ClientVersion::getAllForOTBMVersion(map_version);
-		for (ClientVersionList::const_iterator p = protocols.begin(); p != protocols.end(); ++p)
+		for(ClientVersionList::const_iterator p = protocols.begin(); p != protocols.end(); ++p)
 			protocol_choice->Append(wxstr((*p)->getName()));
 	}
 	protocol_choice->SetSelection(0);
@@ -189,11 +184,9 @@ struct MapConversionContext
 
 	void operator()(Map& map, Tile* tile, long long done)
 	{
-		if (tile->creature)
-		{
+		if(tile->creature) {
 			CreatureMap::iterator f = creature_types.find(tile->creature->getName());
-			if (f == creature_types.end())
-			{
+			if(f == creature_types.end()) {
 				CreatureInfo info = {
 					tile->creature->getName(),
 					tile->creature->isNpc(),
@@ -215,27 +208,18 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	wxString ver = version_choice->GetStringSelection();
 
 	new_ver.client = ClientVersion::get(nstr(protocol_choice->GetStringSelection()))->getID();
-	if(ver.Contains(wxT("0.5.0")))
-	{
+	if(ver.Contains(wxT("0.5.0"))) {
 		new_ver.otbm = MAP_OTBM_1;
-	}
-	else if(ver.Contains(wxT("0.6.0")))
-	{
+	} else if(ver.Contains(wxT("0.6.0"))) {
 		new_ver.otbm = MAP_OTBM_2;
-	}
-	else if(ver.Contains(wxT("0.6.1")))
-	{
+	} else if(ver.Contains(wxT("0.6.1"))) {
 		new_ver.otbm = MAP_OTBM_3;
-	}
-	else if(ver.Contains(wxT("0.7.0")))
-	{
+	} else if(ver.Contains(wxT("0.7.0"))) {
 		new_ver.otbm = MAP_OTBM_4;
 	}
 
-	if(new_ver.client != old_ver.client)
-	{
-		if(gui.GetOpenMapCount() > 1) 
-		{
+	if(new_ver.client != old_ver.client) {
+		if(gui.GetOpenMapCount() > 1)  {
 			gui.PopupDialog(this, wxT("Error"), 
 				wxT("You can not change editor version with multiple maps open"), wxOK);
 			return;
@@ -247,12 +231,10 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		gui.GetCurrentEditor()->selection.clear();
 		gui.GetCurrentEditor()->actionQueue->clear();	
 
-		if(new_ver.client < old_ver.client) 
-		{
+		if(new_ver.client < old_ver.client)  {
 			int ret = gui.PopupDialog(this, wxT("Notice"),
 				wxT("Converting to a previous version may have serious side-effects, are you sure you want to do this?"), wxYES | wxNO);
-			if(ret != wxID_YES) 
-			{
+			if(ret != wxID_YES)  {
 				return;
 			}
 			UnnamedRenderingLock();
@@ -265,8 +247,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			map.convert(new_ver, true);
 
 			// Load the new version
-			if(!gui.LoadVersion(new_ver.client, error, warnings)) 
-			{
+			if(!gui.LoadVersion(new_ver.client, error, warnings))  {
 				gui.ListDialog(this, wxT("Warnings"), warnings);
 				gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
 				gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
@@ -276,24 +257,17 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			// Remove all creatures that were present are present in the new version
-			for (MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin();
-					cs != conversion_context.creature_types.end();)
-			{
-				if (creature_db[cs->first])
+			for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end();) {
+				if(creature_db[cs->first])
 					cs = conversion_context.creature_types.erase(cs);
 				else
 					++cs;
 			}
 
-			if (conversion_context.creature_types.size() > 0)
-			{
+			if(conversion_context.creature_types.size() > 0) {
 				int add = gui.PopupDialog(this, wxT("Unrecognized creatures"), wxT("There were creatures on the old version that are not present in this and were on the map, do you want to add them to this version as well?"), wxYES | wxNO);
-				if (add == wxID_YES)
-				{
-					for (MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin();
-							cs != conversion_context.creature_types.end();
-							++cs)
-					{
+				if(add == wxID_YES) {
+					for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end(); ++cs) {
 						MapConversionContext::CreatureInfo info = cs->second;
 						creature_db.addCreatureType(info.name, info.is_npc, info.outfit);
 					}
@@ -301,12 +275,9 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			map.cleanInvalidTiles(true);
-		}
-		else 
-		{
+		} else  {
 			UnnamedRenderingLock();
-			if(!gui.LoadVersion(new_ver.client, error, warnings)) 
-			{
+			if(!gui.LoadVersion(new_ver.client, error, warnings))  {
 				gui.ListDialog(this, wxT("Warnings"), warnings);
 				gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
 				gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
@@ -316,8 +287,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 			map.convert(new_ver, true);
 		}
-	}
-	else{
+	} else {
 		map.convert(new_ver, true);
 	}
 
@@ -328,8 +298,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	// Only resize if we have to
 	int new_map_width = width_spin->GetValue();
 	int new_map_height = height_spin->GetValue();
-	if(new_map_width != map.getWidth() || new_map_height != map.getHeight()) 
-	{
+	if(new_map_width != map.getWidth() || new_map_height != map.getHeight())  {
 		map.setWidth(new_map_width);
 		map.setHeight(new_map_height);
 		gui.FitViewToMap(view);
@@ -347,7 +316,7 @@ void MapPropertiesWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 
 MapPropertiesWindow::~MapPropertiesWindow() 
 {
-
+	////
 }
 
 // ============================================================================
@@ -429,6 +398,7 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 
 ImportMapWindow::~ImportMapWindow() 
 {
+	////
 }
 
 void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
@@ -436,12 +406,9 @@ void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 	wxFileDialog file(this, wxT("Import..."), wxT(""), wxT(""), wxT("*.otbm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	int ok = file.ShowModal();
 
-	if(ok == wxID_OK) 
-	{
+	if(ok == wxID_OK)  {
 		file_text_field->ChangeValue(file.GetPath());
-	}
-	else 
-	{
+	} else {
 		return;
 	}
 }
@@ -450,8 +417,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	if(Validate() && TransferDataFromWindow()) {
 		wxFileName fn = file_to_import;
-		if(fn.FileExists() == false) 
-		{
+		if(!fn.FileExists())  {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified map file doesn't exist"), wxOK);
 		}
 
@@ -460,13 +426,11 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		long import_y_offset;
 		y_offset.ToLong(&import_y_offset);
 
-		if(import_x_offset < -65000 || import_x_offset > 65000) 
-		{
+		if(import_x_offset < -65000 || import_x_offset > 65000)  {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified x offset needs to be in the range -65000 to 65000"), wxOK);
 			return;
 		}
-		if(import_y_offset < -65000 || import_y_offset > 65000) 
-		{
+		if(import_y_offset < -65000 || import_y_offset > 65000)  {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified y offset needs to be in the range -65000 to 65000"), wxOK);
 			return;
 		}
@@ -474,14 +438,12 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		ImportType spawn_import_type = IMPORT_DONT;
 		ImportType house_import_type = IMPORT_DONT;
 
-		switch(spawn_options->GetSelection()) 
-		{
+		switch(spawn_options->GetSelection())  {
 			case 0: spawn_import_type = IMPORT_MERGE; break;
 			case 1: spawn_import_type = IMPORT_DONT; break;
 		}
 
-		switch(house_options->GetSelection()) 
-		{
+		switch(house_options->GetSelection())  {
 			case 0: house_import_type = IMPORT_SMART_MERGE; break;
 			case 1: house_import_type = IMPORT_MERGE; break;
 			case 2: house_import_type = IMPORT_INSERT; break;
@@ -551,16 +513,14 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 
 ExportMiniMapWindow::~ExportMiniMapWindow() 
 {
+	////
 }
 
 void ExportMiniMapWindow::OnExportTypeChange(wxCommandEvent& event) 
 {
-	if(event.GetSelection() == 2) 
-	{
+	if(event.GetSelection() == 2)  {
 		floor_number->Enable(true);
-	} 
-	else
-	{
+	} else {
 		floor_number->Enable(false);
 	}
 }
@@ -570,14 +530,11 @@ void ExportMiniMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 	wxFileDialog file(this, wxT("Export..."), wxT(""), wxT(""), wxT("*.bmp"), wxFD_SAVE);
 	int ok = file.ShowModal();
 
-	if(ok == wxID_OK) 
-	{
+	if(ok == wxID_OK)  {
 		FileName fn(file.GetPath());
 		fn.SetName(fn.GetName() + wxT("_%d"));
 		file_text_field->ChangeValue(fn.GetFullPath());
-	} 
-	else 
-	{
+	} else {
 		return;
 	}
 }
@@ -586,14 +543,12 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	std::string filename = nstr(file_text_field->GetValue());
 	size_t d_pos = filename.find("%d");
-	if(d_pos == std::string::npos) 
-	{
+	if(d_pos == std::string::npos)  {
 		gui.PopupDialog(this, wxT("Error"), wxT("You need to put a %d in the filename (this will be replaced by the floor number)"), wxYES | wxNO);
 		return;
 	}
 	size_t i_pos = filename.find_first_of("*?:/\"<>|");
-	if(i_pos != std::string::npos) 
-	{
+	if(i_pos != std::string::npos) {
 #ifdef __WINDOWS__
 		if(!(filename[i_pos] == ':' && i_pos == 1))
 #else
@@ -620,31 +575,27 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	gui.CreateLoadBar(wxT("Exporting minimap"));
 	try 
 	{
-		switch(floor_options->GetSelection()) 
-		{
-			case 0: 
-			{ // All floors
-					for(int floor = 0; floor < 16; ++floor) 
-					{
-						gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
-						FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-						editor.exportMiniMap(fn, floor, true);
-					}
-			} break;
-			case 1:
-			{ // Ground floor
+		switch(floor_options->GetSelection()) {
+			case 0: { // All floors
+				for(int floor = 0; floor < 16; ++floor) {
+					gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
+					FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
+					editor.exportMiniMap(fn, floor, true);
+				}
+				break;
+			}
+			case 1: { // Ground floor
 				FileName fn = wxstr(pre_sep + "ground" + post_sep);
 				editor.exportMiniMap(fn, 7, true);
 				gui.DestroyLoadBar();
+				break;
 			}
-			break;
-			case 2:
-			{ // Specific floors
+			case 2: { // Specific floors
 				int floor = floor_number->GetValue();
 				FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
 				editor.exportMiniMap(fn, floor, true);
-			} 
-			break;
+				break;
+			}
 		}
 	}
 	catch(std::bad_alloc&) 
@@ -670,14 +621,10 @@ END_EVENT_TABLE()
 
 void KeyForwardingTextCtrl::OnKeyDown(wxKeyEvent& event) 
 {
-	if(
-		event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_DOWN || 
-		event.GetKeyCode() == WXK_PAGEDOWN || event.GetKeyCode() == WXK_PAGEUP) 
-	{
+	if(event.GetKeyCode() == WXK_UP || event.GetKeyCode() == WXK_DOWN || 
+		event.GetKeyCode() == WXK_PAGEDOWN || event.GetKeyCode() == WXK_PAGEUP) {
 		GetParent()->GetEventHandler()->AddPendingEvent(event);
-	} 
-	else 
-	{
+	} else {
 		event.Skip();
 	}
 }
@@ -723,7 +670,7 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 
 FindDialog::~FindDialog() 
 {
-	// ...
+	////
 }
 
 void FindDialog::OnKeyDown(wxKeyEvent& event) 
@@ -732,14 +679,11 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 	item_list->GetSize(&w, &h);
 	size_t amount = 1; 
 
-	switch(event.GetKeyCode())
-	{
+	switch(event.GetKeyCode()) {
 		case WXK_PAGEUP:
 			amount = h / 32 + 1;
-		case WXK_UP:
-		{
-			if(item_list->GetItemCount() > 0) 
-			{
+		case WXK_UP: {
+			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
 				if(n == wxNOT_FOUND) 
 					n = 0;
@@ -749,12 +693,12 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 					n = 0;
 				item_list->SetSelection(n);
 			}
+			break;
 		}
-		break;
+
 		case WXK_PAGEDOWN:
 			amount = h / 32 + 1;
-		case WXK_DOWN:
-		{
+		case WXK_DOWN: {
 			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
 				size_t itemcount = item_list->GetItemCount();
@@ -767,10 +711,11 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 
 				item_list->SetSelection(n);
 			}
+			break;
 		}
-		break;
-	default:
-		event.Skip();
+		default:
+			event.Skip();
+			break;
 	}
 }
 
@@ -817,6 +762,7 @@ FindItemDialog::FindItemDialog(wxWindow* parent, wxString title) : FindDialog(pa
 
 FindItemDialog::~FindItemDialog() 
 {
+	////
 }
 
 void FindItemDialog::setCondition(bool condition(const ItemType&)) {
@@ -837,27 +783,22 @@ void FindItemDialog::OnClickListInternal(wxCommandEvent& event)
 void FindItemDialog::OnClickOKInternal()
 {
 	// This is kind of stupid as it would fail unless the "Please enter a search string" wasn't there
-	if(item_list->GetItemCount() > 0)
-	{
-		if(item_list->GetSelection() == wxNOT_FOUND)
-		{
+	if(item_list->GetItemCount() > 0) {
+		if(item_list->GetSelection() == wxNOT_FOUND) {
 			item_list->SetSelection(0);
 		}
 
 		RAWBrush* brush = dynamic_cast<RAWBrush*>(item_list->GetSelectedBrush());
-		if(brush == nullptr)
-		{
+		if(brush == nullptr) {
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 			bool do_search = (search_string.size() >= 2);
 
-			if(do_search)
-			{
-				for(int id = 0; id <= item_db.getMaxID(); ++id) 
-				{
+			if(do_search) {
+				for(int id = 0; id <= item_db.getMaxID(); ++id) {
 					ItemType& it = item_db[id];
-					if(it.id == 0 || (extra_condition && extra_condition(it) == false))
+					if(it.id == 0 || (extra_condition && !extra_condition(it)))
 						continue;
 
 					RAWBrush* raw = it.raw_brush;
@@ -873,9 +814,7 @@ void FindItemDialog::OnClickOKInternal()
 					break;
 				}
 			}
-		}
-		else 
-		{
+		} else {
 			result_brush = brush;
 			result_id = brush->getItemID();
 		}
@@ -890,12 +829,10 @@ void FindItemDialog::RefreshContentsInternal()
 	std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 	bool do_search = (search_string.size() >= 2);
 
-	if(do_search) 
-	{
-		for(int id = 0; id <= item_db.getMaxID(); ++id) 
-		{
+	if(do_search) {
+		for(int id = 0; id <= item_db.getMaxID(); ++id) {
 			ItemType& it = item_db[id];
-			if(it.id == 0 || (extra_condition && extra_condition(it) == false))
+			if(it.id == 0 || (extra_condition && !extra_condition(it)))
 				continue;
 
 			RAWBrush* raw = it.raw_brush;
@@ -925,13 +862,13 @@ FindBrushDialog::FindBrushDialog(wxWindow* parent, wxString title) : FindDialog(
 
 FindBrushDialog::~FindBrushDialog() 
 {
+	////
 }
 
 void FindBrushDialog::OnClickListInternal(wxCommandEvent& event) 
 {
 	Brush* brush = item_list->GetSelectedBrush();
-	if(brush) 
-	{
+	if(brush) {
 		result_brush = brush;
 		EndModal(1);
 	}
@@ -940,25 +877,20 @@ void FindBrushDialog::OnClickListInternal(wxCommandEvent& event)
 void FindBrushDialog::OnClickOKInternal() 
 {
 	// This is kind of stupid as it would fail unless the "Please enter a search string" wasn't there
-	if(item_list->GetItemCount() > 0) 
-	{
-		if(item_list->GetSelection() == wxNOT_FOUND) 
-		{
+	if(item_list->GetItemCount() > 0) {
+		if(item_list->GetSelection() == wxNOT_FOUND) {
 			item_list->SetSelection(0);
 		}
 		Brush* brush = item_list->GetSelectedBrush();
-		if(brush == nullptr) 
-		{
+		if(brush == nullptr) {
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 			bool do_search = (search_string.size() >= 2);
 
-			if(do_search) 
-			{
+			if(do_search) {
 				const BrushMap& map = brushes.getMap();
-				for(BrushMap::const_iterator iter = map.begin(); iter != map.end(); ++iter) 
-				{
+				for(BrushMap::const_iterator iter = map.begin(); iter != map.end(); ++iter) {
 					const Brush* brush = iter->second;
 					if(as_lower_str(brush->getName()).find(search_string) == std::string::npos)
 						continue;
@@ -973,11 +905,9 @@ void FindBrushDialog::OnClickOKInternal()
 				}
 
 				// Did we not find a matching brush?
-				if(!result_brush)
-				{
+				if(!result_brush) {
 					// Then let's search the RAWs
-					for(int id = 0; id <= item_db.getMaxID(); ++id)
-					{
+					for(int id = 0; id <= item_db.getMaxID(); ++id) {
 						ItemType& it = item_db[id];
 						if(it.id == 0)
 							continue;
@@ -996,9 +926,7 @@ void FindBrushDialog::OnClickOKInternal()
 				}
 				// Done!
 			}
-		} 
-		else 
-		{
+		} else {
 			result_brush = brush;
 		}
 	}
@@ -1012,15 +940,13 @@ void FindBrushDialog::RefreshContentsInternal()
 	std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 	bool do_search = (search_string.size() >= 2);
 
-	if(do_search) 
-	{
+	if(do_search) {
 		const BrushMap& brushes_map = brushes.getMap();
 		
 		// We store the raws so they display last of all results
 		std::deque<const RAWBrush*> raws;
 
-		for(BrushMap::const_iterator iter = brushes_map.begin(); iter != brushes_map.end(); ++iter) 
-		{
+		for(BrushMap::const_iterator iter = brushes_map.begin(); iter != brushes_map.end(); ++iter) {
 			const Brush* brush = iter->second;
 
 			if(as_lower_str(brush->getName()).find(search_string) == std::string::npos)
@@ -1032,8 +958,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			item_list->AddBrush(const_cast<Brush*>(brush));
 		}
 
-		for(int id = 0; id <= item_db.getMaxID(); ++id)
-		{
+		for(int id = 0; id <= item_db.getMaxID(); ++id) {
 			ItemType& it = item_db[id];
 			if(it.id == 0)
 				continue;
@@ -1048,18 +973,14 @@ void FindBrushDialog::RefreshContentsInternal()
 			item_list->AddBrush(raw);
 		}
 
-		while(raws.size() > 0) 
-		{
+		while(raws.size() > 0) {
 			item_list->AddBrush(const_cast<RAWBrush*>(raws.front()));
 			raws.pop_front();
 		}
 
-		if(item_list->GetItemCount() > 0) 
-		{
+		if(item_list->GetItemCount() > 0) {
 			item_list->SetSelection(0);
-		}
-		else 
-		{
+		} else {
 			item_list->SetNoMatches();
 		}
 	}
@@ -1128,7 +1049,7 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 
 ReplaceItemDialog::~ReplaceItemDialog() 
 {
-	// ...
+	////
 }
 
 void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event) 
@@ -1138,14 +1059,11 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 	item_list->GetSize(&w, &h);
 	size_t amount = 1; 
 
-	switch(event.GetKeyCode())
-	{
+	switch(event.GetKeyCode()) {
 		case WXK_PAGEUP:
 			amount = h / 32 + 1;
-		case WXK_UP:
-		{
-			if(item_list->GetItemCount() > 0) 
-			{
+		case WXK_UP: {
+			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
 				if(n == wxNOT_FOUND) 
 					n = 0;
@@ -1155,12 +1073,11 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 					n = 0;
 				item_list->SetSelection(n);
 			}
+			break;
 		}
-		break;
 		case WXK_PAGEDOWN:
 			amount = h / 32 + 1;
-		case WXK_DOWN:
-		{
+		case WXK_DOWN: {
 			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
 				size_t itemcount = item_list->GetItemCount();
@@ -1173,16 +1090,17 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 
 				item_list->SetSelection(n);
 			}
+			break;
 		}
-		break;
-	default:
-		event.Skip();
+		default:
+			event.Skip();
+			break;
 	}
 }
 
 void ReplaceItemDialog::OnTextIdle(wxTimerEvent& event) 
 {
-	if (&event.GetTimer() == &find_idle_input_timer)
+	if(&event.GetTimer() == &find_idle_input_timer)
 		RefreshContents(find_item_list);
 	else
 		RefreshContents(with_item_list);
@@ -1190,7 +1108,7 @@ void ReplaceItemDialog::OnTextIdle(wxTimerEvent& event)
 
 void ReplaceItemDialog::OnTextChange(wxCommandEvent& event) 
 {
-	if (event.GetEventObject() == find_item_field)
+	if(event.GetEventObject() == find_item_field)
 		find_idle_input_timer.Start(800, true);
 	else
 		with_idle_input_timer.Start(800, true);
@@ -1199,8 +1117,7 @@ void ReplaceItemDialog::OnTextChange(wxCommandEvent& event)
 void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event)) 
 {
 	// This is kind of stupid as it would fail unless the "Please enter a search string" wasn't there
-	if(find_item_list->GetItemCount() > 0 && with_item_list->GetItemCount() > 0)
-	{
+	if(find_item_list->GetItemCount() > 0 && with_item_list->GetItemCount() > 0) {
 		if(find_item_list->GetSelection() == wxNOT_FOUND)
 			find_item_list->SetSelection(0);
 		if(with_item_list->GetSelection() == wxNOT_FOUND)
@@ -1210,8 +1127,7 @@ void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		result_with_brush = dynamic_cast<RAWBrush*>(with_item_list->GetSelectedBrush());
 	}
 
-	if (result_find_brush == nullptr || result_with_brush == nullptr)
-	{
+	if(result_find_brush == nullptr || result_with_brush == nullptr) {
 		result_find_brush = nullptr;
 		result_with_brush = nullptr;
 
@@ -1236,8 +1152,7 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 	std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 	bool do_search = (search_string.size() >= 2);
 
-	if(do_search) 
-	{
+	if(do_search) {
 		for(int id = 0; id <= item_db.getMaxID(); ++id) 
 		{
 			ItemType& it = item_db[id];
@@ -1284,6 +1199,7 @@ FindDialogListBox::FindDialogListBox(wxWindow* parent, wxWindowID id) :
 
 FindDialogListBox::~FindDialogListBox() 
 {
+	////
 }
 
 void FindDialogListBox::Clear() 
@@ -1324,29 +1240,20 @@ Brush* FindDialogListBox::GetSelectedBrush()
 
 void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 {
-	if(no_matches)
-	{
+	if(no_matches) {
 		dc.DrawText(wxT("No matches for your search."), rect.GetX() + 40, rect.GetY() + 6);
-	}
-	else if(cleared) 
-	{
+	} else if(cleared) {
 		dc.DrawText(wxT("Please enter your search string."), rect.GetX() + 40, rect.GetY() + 6);
-	} 
-	else
-	{
+	} else {
 		ASSERT(n < brushlist.size());
 		Sprite* spr = gui.gfx.getSprite(brushlist[n]->getLookID());
-		if(spr)
-		{
+		if(spr) {
 			spr->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 		}
 
-		if(int(n) == GetSelection()) 
-		{
+		if(int(n) == GetSelection())  {
 			dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
-		}
-		else 
-		{
+		} else {
 			dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 		}
 
@@ -1371,6 +1278,7 @@ wxDialog(parent, wxID_ANY, title,
 	edit_creature(nullptr),
 	edit_spawn(nullptr)
 {
+	////
 }
 
 ObjectPropertiesWindowBase::ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Creature* creature, wxPoint position /* = wxDefaultPosition */) :
@@ -1382,6 +1290,7 @@ wxDialog(parent, wxID_ANY, title,
 	edit_creature(creature),
 	edit_spawn(nullptr)
 {
+	////
 }
 
 ObjectPropertiesWindowBase::ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Spawn* spawn, wxPoint position /* = wxDefaultPosition */) :
@@ -1393,6 +1302,7 @@ wxDialog(parent, wxID_ANY, title,
 	edit_creature(nullptr),
 	edit_spawn(spawn)
 {
+	////
 }
 
 Item* ObjectPropertiesWindowBase::getItemBeingEdited()
@@ -1423,14 +1333,10 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* tmpsizer;
 
-	for(TownMap::const_iterator town_iter = map.towns.begin();
-			town_iter != map.towns.end();
-			++town_iter)
-	{
+	for(TownMap::const_iterator town_iter = map.towns.begin(); town_iter != map.towns.end(); ++town_iter) {
 		Town* town = town_iter->second;
 		town_list.push_back(newd Town(*town));
-		if(max_town_id < town->getID()) 
-		{
+		if(max_town_id < town->getID())  {
 			max_town_id = town->getID();
 		}
 	}
@@ -1473,10 +1379,7 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 
 EditTownsDialog::~EditTownsDialog()
 {
-	for(std::vector<Town*>::iterator town_iter = town_list.begin();
-			town_iter != town_list.end();
-			++town_iter)
-	{
+	for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
 		delete *town_iter;
 	}
 }
@@ -1488,30 +1391,21 @@ void EditTownsDialog::BuildListBox(bool doselect)
 	wxArrayString town_name_list;
 	uint32_t selection_before = 0;
 
-	if(doselect && id_field->GetValue().ToLong(&tmplong))
-	{
+	if(doselect && id_field->GetValue().ToLong(&tmplong)) {
 		uint32_t old_town_id = tmplong;
 
-		for(std::vector<Town*>::iterator town_iter = town_list.begin();
-				town_iter != town_list.end();
-				++town_iter)
-		{
-			if(old_town_id == (*town_iter)->getID())
-			{
+		for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
+			if(old_town_id == (*town_iter)->getID()) {
 				selection_before = (*town_iter)->getID();
 				break;
 			}
 		}
 	}
 
-	for(std::vector<Town*>::iterator town_iter = town_list.begin();
-			town_iter != town_list.end();
-			++town_iter)
-	{
+	for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
 		Town* town = *town_iter;
 		town_name_list.Add(wxstr(town->getName()));
-		if(max_town_id < town->getID())
-		{
+		if(max_town_id < town->getID()) {
 			max_town_id = town->getID();
 		}
 	}
@@ -1520,17 +1414,11 @@ void EditTownsDialog::BuildListBox(bool doselect)
 	remove_button->Enable(town_listbox->GetCount() != 0);
 	select_position_button->Enable(false);
 
-	if(doselect)
-	{
-		if(selection_before)
-		{
+	if(doselect) {
+		if(selection_before) {
 			int i = 0;
-			for(std::vector<Town*>::iterator town_iter = town_list.begin();
-					town_iter != town_list.end();
-					++town_iter)
-			{
-				if(selection_before == (*town_iter)->getID())
-				{
+			for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
+				if(selection_before == (*town_iter)->getID()) {
 					town_listbox->SetSelection(i);
 					return;
 				}
@@ -1546,20 +1434,14 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 	long tmplong;
 
 	// Save old values
-	if(town_list.size() > 0)
-	{
-		if(id_field->GetValue().ToLong(&tmplong))
-		{
+	if(town_list.size() > 0) {
+		if(id_field->GetValue().ToLong(&tmplong)) {
 			uint32_t old_town_id = tmplong;
 
 			Town* old_town = nullptr;
 
-			for(std::vector<Town*>::iterator town_iter = town_list.begin();
-					town_iter != town_list.end();
-					++town_iter)
-			{
-				if(old_town_id == (*town_iter)->getID())
-				{
+			for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
+				if(old_town_id == (*town_iter)->getID()) {
 					old_town = *town_iter;
 					break;
 				}
@@ -1576,8 +1458,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 				wxString old_name = wxstr(old_town->getName());
 
 				old_town->setName(nstr(new_name));
-				if(new_name != old_name)
-				{
+				if(new_name != old_name) {
 					// Name has changed, update list
 					BuildListBox(false);
 				}
@@ -1589,8 +1470,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 	town_name.Clear();
 	town_id.Clear();
 
-	if(town_list.size() > size_t(new_selection))
-	{
+	if(town_list.size() > size_t(new_selection)) {
 		name_field->Enable(true);
 		temple_position->Enable(true);
 		select_position_button->Enable(true);
@@ -1606,9 +1486,7 @@ void EditTownsDialog::UpdateSelection(int new_selection)
 		id_field->SetValue(town_id);
 		temple_position->SetPosition(town->getTemplePosition());
 		town_listbox->SetSelection(new_selection);
-	}
-	else
-	{
+	} else {
 		name_field->Enable(false);
 		temple_position->Enable(false);
 		select_position_button->Enable(false);
@@ -1642,8 +1520,7 @@ void EditTownsDialog::OnClickAdd(wxCommandEvent& WXUNUSED(event))
 void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 {
 	long tmplong;
-	if(id_field->GetValue().ToLong(&tmplong))
-	{
+	if(id_field->GetValue().ToLong(&tmplong)) {
 		uint32_t old_town_id = tmplong;
 
 		Town* town = nullptr;
@@ -1651,10 +1528,8 @@ void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 		std::vector<Town*>::iterator town_iter = town_list.begin();
 
 		int selection_index = 0;
-		while(town_iter != town_list.end())
-		{
-			if(old_town_id == (*town_iter)->getID())
-			{
+		while(town_iter != town_list.end()) {
+			if(old_town_id == (*town_iter)->getID()) {
 				town = *town_iter;
 				break;
 			}
@@ -1664,13 +1539,9 @@ void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 		if(!town) return;
 
 		Map& map = editor.map;
-		for(HouseMap::iterator house_iter = map.houses.begin();
-				house_iter != map.houses.end();
-				++house_iter)
-		{
+		for(HouseMap::iterator house_iter = map.houses.begin(); house_iter != map.houses.end(); ++house_iter) {
 			House* house = house_iter->second;
-			if(house->townid == town->getID())
-			{
+			if(house->townid == town->getID()) {
 				gui.PopupDialog(this, wxT("Error"), wxT("You cannot delete a town which still has houses associated with it."), wxOK);
 				return;
 			}
@@ -1687,28 +1558,21 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	long tmplong = 0;
 
-	if(Validate() && TransferDataFromWindow())
-	{
+	if(Validate() && TransferDataFromWindow()) {
 		// Save old values
-		if(town_list.size() > 0 && id_field->GetValue().ToLong(&tmplong))
-		{
+		if(town_list.size() > 0 && id_field->GetValue().ToLong(&tmplong)) {
 			uint32_t old_town_id = tmplong;
 
 			Town* old_town = nullptr;
 
-			for(std::vector<Town*>::iterator town_iter = town_list.begin();
-					town_iter != town_list.end();
-					++town_iter)
-			{
-				if(old_town_id == (*town_iter)->getID())
-				{
+			for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
+				if(old_town_id == (*town_iter)->getID()) {
 					old_town = *town_iter;
 					break;
 				}
 			}
 
-			if(old_town)
-			{
+			if(old_town) {
 				Position templepos = temple_position->GetPosition();
 
 				//printf("Changed town %d:%s\n", old_town_id, old_town->getName().c_str());
@@ -1719,8 +1583,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				wxString old_name = wxstr(old_town->getName());
 
 				old_town->setName(nstr(new_name));
-				if(new_name != old_name)
-				{
+				if(new_name != old_name) {
 					// Name has changed, update list
 					BuildListBox(true);
 				}
@@ -1730,19 +1593,15 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		Towns& towns = editor.map.towns;
 
 		// Verify the newd information
-		for(std::vector<Town*>::iterator town_iter = town_list.begin();
-				town_iter != town_list.end();
-				++town_iter)
-		{
+		for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
 			Town* town = *town_iter;
 			if(town->getName() == "") {
 				gui.PopupDialog(this, wxT("Error"), wxT("You can't have a town with an empty name."), wxOK);
 				return;
 			}
-			if(town->getTemplePosition().isValid() == false ||
-					town->getTemplePosition().x > editor.map.getWidth() ||
-					town->getTemplePosition().y > editor.map.getHeight())
-			{
+			if(!town->getTemplePosition().isValid() ||
+				town->getTemplePosition().x > editor.map.getWidth() ||
+				town->getTemplePosition().y > editor.map.getHeight()) {
 				wxString msg;
 				msg << wxT("The town ") << wxstr(town->getName()) << wxT(" has an invalid temple position.");
 				gui.PopupDialog(this, wxT("Error"), msg, wxOK);
@@ -1754,10 +1613,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		towns.clear();
 
 		// Build the newd town map
-		for(std::vector<Town*>::iterator town_iter = town_list.begin();
-				town_iter != town_list.end();
-				++town_iter)
-		{
+		for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
 			towns.addTown(*town_iter);
 		}
 		town_list.clear();

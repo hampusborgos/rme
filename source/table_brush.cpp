@@ -18,25 +18,28 @@ uint32_t TableBrush::table_types[256];
 TableBrush::TableBrush() :
 	look_id(0)
 {
+	////
 }
 
-TableBrush::~TableBrush() {
+TableBrush::~TableBrush()
+{
+	////
 }
 
 bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	look_id = item_db[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].clientID;
-	if (look_id == 0) {
+	if(look_id == 0) {
 		look_id = pugi::cast<uint16_t>(node.attribute("lookid").value());
 	}
 
-	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
-		if (as_lower_str(childNode.name()) != "table") {
+	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+		if(as_lower_str(childNode.name()) != "table") {
 			continue;
 		}
 
 		const std::string& alignString = childNode.attribute("align").as_string();
-		if (alignString.empty()) {
+		if(alignString.empty()) {
 			warnings.push_back(wxT("Could not read type tag of table node\n"));
 			continue;
 		}
@@ -61,22 +64,22 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			continue;
 		}
 
-		for (pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
-			if (as_lower_str(subChildNode.name()) != "item") {
+		for(pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
+			if(as_lower_str(subChildNode.name()) != "item") {
 				continue;
 			}
 
 			uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
-			if (id == 0) {
+			if(id == 0) {
 				warnings.push_back(wxT("Could not read id tag of item node\n"));
 				break;
 			}
 
 			ItemType& it = item_db[id];
-			if (it.id == 0) {
+			if(it.id == 0) {
 				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
 				return false;
-			} else if (it.brush && it.brush != this) {
+			} else if(it.brush && it.brush != this) {
 				warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
 				return false;
 			}
@@ -95,11 +98,13 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	return true;
 }
 
-bool TableBrush::canDraw(BaseMap* map, const Position& position) const {
+bool TableBrush::canDraw(BaseMap* map, const Position& position) const
+{
 	return true;
 }
 
-void TableBrush::undraw(BaseMap* map, Tile* t) {
+void TableBrush::undraw(BaseMap* map, Tile* t)
+{
 	ItemVector::iterator it = t->items.begin();
 	while(it != t->items.end()) {
 		if((*it)->isTable()) {
@@ -116,7 +121,8 @@ void TableBrush::undraw(BaseMap* map, Tile* t) {
 	}
 }
 
-void TableBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void TableBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	undraw(map, tile); // Remove old
 
 	TableNode& tn = table_items[0];
@@ -126,10 +132,7 @@ void TableBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 	int chance = random(1, tn.total_chance);
 	uint16_t type = 0;
 
-	for(std::vector<TableType>::const_iterator table_iter = tn.items.begin();
-			table_iter != tn.items.end();
-			++table_iter)
-	{
+	for(std::vector<TableType>::const_iterator table_iter = tn.items.begin(); table_iter != tn.items.end(); ++table_iter) {
 		if(chance <= table_iter->chance) {
 			type = table_iter->item_id;
 			break;
@@ -143,7 +146,8 @@ void TableBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 }
 
 
-bool hasMatchingTableBrushAtTile(BaseMap* map, TableBrush* table_brush, uint32_t x, uint32_t y, uint32_t z) {
+bool hasMatchingTableBrushAtTile(BaseMap* map, TableBrush* table_brush, uint32_t x, uint32_t y, uint32_t z)
+{
 	Tile* t = map->getTile(x, y, z);
 	if(!t) return false;
 
@@ -171,11 +175,11 @@ void TableBrush::doTables(BaseMap* map, Tile* tile)
 	int32_t y = position.y;
 	int32_t z = position.z;
 
-	for (Item* item : tile->items) {
+	for(Item* item : tile->items) {
 		ASSERT(item);
 
 		TableBrush* table_brush = item->getTableBrush();
-		if (!table_brush) {
+		if(!table_brush) {
 			continue;
 		}
 
@@ -221,8 +225,8 @@ void TableBrush::doTables(BaseMap* map, Tile* tile)
 		}
 
 		uint32_t tiledata = 0;
-		for (int32_t i = 0; i < 8; ++i) {
-			if (neighbours[i]) {
+		for(int32_t i = 0; i < 8; ++i) {
+			if(neighbours[i]) {
 				// Same table as this one, calculate what border
 				tiledata |= 1 << i;
 			}
@@ -237,8 +241,8 @@ void TableBrush::doTables(BaseMap* map, Tile* tile)
 		int32_t chance = random(1, tn.total_chance);
 		uint16_t id = 0;
 
-		for (const TableType& tableType : tn.items) {
-			if (chance <= tableType.chance) {
+		for(const TableType& tableType : tn.items) {
+			if(chance <= tableType.chance) {
 				id = tableType.item_id;
 				break;
 			}

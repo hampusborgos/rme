@@ -54,11 +54,13 @@ DCButton::DCButton(wxWindow* parent, wxWindowID id, wxPoint pos, int type, Rende
 	SetSprite(sprite_id);
 }
 
-DCButton::~DCButton() {
-	// ...
+DCButton::~DCButton()
+{
+	////
 }
 
-void DCButton::SetSprite(int _sprid) {
+void DCButton::SetSprite(int _sprid)
+{
 	if(_sprid != 0) {
 		sprite = gui.gfx.getSprite(_sprid);
 	} else {
@@ -67,12 +69,14 @@ void DCButton::SetSprite(int _sprid) {
 	Refresh();
 }
 
-void DCButton::SetOverlay(Sprite* espr) {
+void DCButton::SetOverlay(Sprite* espr)
+{
 	overlay = espr;
 	Refresh();
 }
 
-void DCButton::SetValue(bool val) {
+void DCButton::SetValue(bool val)
+{
 	ASSERT(type == DC_BTN_TOGGLE);
 	bool oldval = val;
 	state = val;
@@ -87,12 +91,14 @@ void DCButton::SetValue(bool val) {
 	}
 }
 
-bool DCButton::GetValue() const {
+bool DCButton::GetValue() const
+{
 	ASSERT(type == DC_BTN_TOGGLE);
 	return state;
 }
 
-void DCButton::OnPaint(wxPaintEvent& event) {
+void DCButton::OnPaint(wxPaintEvent& event)
+{
 	wxBufferedPaintDC pdc(this);
 
 	if(gui.gfx.isUnloaded()) {
@@ -118,7 +124,6 @@ void DCButton::OnPaint(wxPaintEvent& event) {
 		size_x = 36;
 		size_y = 36;
 	}
-
 
 	pdc.SetBrush(*wxBLACK);
 	pdc.DrawRectangle(0,0,size_x,size_y);
@@ -166,11 +171,13 @@ void DCButton::OnPaint(wxPaintEvent& event) {
 				overlay->DrawTo(&pdc, SPRITE_SIZE_32x32, 2, 2);
 			}
 		} else if(size == RENDER_SIZE_64x64) {
+			////
 		}
 	}
 }
 
-void DCButton::OnClick(wxMouseEvent& WXUNUSED(evt)) {
+void DCButton::OnClick(wxMouseEvent& WXUNUSED(evt))
+{
 	wxCommandEvent event(type == DC_BTN_TOGGLE? wxEVT_COMMAND_TOGGLEBUTTON_CLICKED : wxEVT_COMMAND_BUTTON_CLICKED, GetId());
 	event.SetEventObject(this);
 
@@ -181,5 +188,4 @@ void DCButton::OnClick(wxMouseEvent& WXUNUSED(evt)) {
 
 	GetEventHandler()->ProcessEvent(event);
 }
-
 

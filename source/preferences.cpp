@@ -37,7 +37,8 @@ BEGIN_EVENT_TABLE(PreferencesWindow, wxDialog)
 	EVT_COLLAPSIBLEPANE_CHANGED(wxID_ANY, PreferencesWindow::OnCollapsiblePane)
 END_EVENT_TABLE()
 
-PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Preferences"), wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX) {
+PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_ANY, wxT("Preferences"), wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX)
+{
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
 	book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
@@ -62,10 +63,13 @@ PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_A
 	// FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
 }
 
-PreferencesWindow::~PreferencesWindow() {
+PreferencesWindow::~PreferencesWindow()
+{
+	////
 }
 
-wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
+wxNotebookPage* PreferencesWindow::CreateGeneralPage() 
+{
 	wxNotebookPage* general_page = newd wxPanel(book, wxID_ANY);
 
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -120,7 +124,8 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage() {
 	return general_page;
 }
 
-wxNotebookPage* PreferencesWindow::CreateEditorPage() {
+wxNotebookPage* PreferencesWindow::CreateEditorPage()
+{
 	wxNotebookPage* editor_page = newd wxPanel(book, wxID_ANY);
 
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -182,7 +187,8 @@ wxNotebookPage* PreferencesWindow::CreateEditorPage() {
 	return editor_page;
 }
 
-wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
+wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
+{
 	wxWindow* tmp;
 	wxNotebookPage* graphics_page = newd wxPanel(book, wxID_ANY);
 
@@ -331,7 +337,8 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage() {
 	return graphics_page;
 }
 
-wxChoice* PreferencesWindow::AddPaletteStyleChoice(wxWindow* parent, wxSizer* sizer, const wxString& short_description, const wxString& description, const std::string& setting) {
+wxChoice* PreferencesWindow::AddPaletteStyleChoice(wxWindow* parent, wxSizer* sizer, const wxString& short_description, const wxString& description, const std::string& setting)
+{
 	wxStaticText* text;
 	sizer->Add(text = newd wxStaticText(parent, wxID_ANY, short_description), 0);
 
@@ -356,7 +363,8 @@ wxChoice* PreferencesWindow::AddPaletteStyleChoice(wxWindow* parent, wxSizer* si
 	return choice;
 }
 
-void PreferencesWindow::SetPaletteStyleChoice(wxChoice* ctrl, int key) {
+void PreferencesWindow::SetPaletteStyleChoice(wxChoice* ctrl, int key)
+{
 	if(ctrl->GetSelection() == 0) {
 		settings.setString(key, "large icons");
 	} else if(ctrl->GetSelection() == 1) {
@@ -366,7 +374,8 @@ void PreferencesWindow::SetPaletteStyleChoice(wxChoice* ctrl, int key) {
 	}
 }
 
-wxNotebookPage* PreferencesWindow::CreateUIPage() {
+wxNotebookPage* PreferencesWindow::CreateUIPage()
+{
 	wxNotebookPage* ui_page = newd wxPanel(book, wxID_ANY);
 
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -500,12 +509,9 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	client_list_window->SetVirtualSize( 500, 1000 );
 
 	int version_counter = 0;
-	for (ClientVersionList::iterator version_iter = versions.begin();
-		 version_iter != versions.end();
-		 ++version_iter)
-	{
+	for(ClientVersionList::iterator version_iter = versions.begin(); version_iter != versions.end(); ++version_iter) {
 		const ClientVersion* version = *version_iter;
-		if (!version->isVisible())
+		if(!version->isVisible())
 			continue;
 		
 		default_version_choice->Append(wxstr(version->getName()));
@@ -524,7 +530,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 		tmp_text->SetToolTip(tooltip);
 		dir_picker->SetToolTip(tooltip);
 
-		if (version->getID() == settings.getInteger(Config::DEFAULT_CLIENT_VERSION))
+		if(version->getID() == settings.getInteger(Config::DEFAULT_CLIENT_VERSION))
 			default_version_choice->SetSelection(version_counter);
 
 		version_counter++;
@@ -677,18 +683,18 @@ void PreferencesWindow::Apply()
 	// Client
 	ClientVersionList versions = ClientVersion::getAllVisible();
 	int version_counter = 0;
-	for (ClientVersionList::iterator version_iter = versions.begin();
+	for(ClientVersionList::iterator version_iter = versions.begin();
 		 version_iter != versions.end();
 		 ++version_iter)
 	{
 		ClientVersion* version = *version_iter;
 
 		wxString dir = version_dir_pickers[version_counter]->GetPath();
-		if (dir.Length() > 0 && dir.Last() != wxT('/') && dir.Last() != wxT('\\'))
+		if(dir.Length() > 0 && dir.Last() != wxT('/') && dir.Last() != wxT('\\'))
 			dir.Append(wxT("/"));
 		version->setClientPath(FileName(dir));
 		
-		if (version->getName() == default_version_choice->GetStringSelection())
+		if(version->getName() == default_version_choice->GetStringSelection())
 			settings.setInteger(Config::DEFAULT_CLIENT_VERSION, version->getID());
 
 		version_counter++;

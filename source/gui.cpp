@@ -33,7 +33,6 @@
 
 const wxEventType EVT_UPDATE_MENUS = wxNewEventType();
 
-
 // Global GUI instance
 GUI gui;
 
@@ -89,8 +88,7 @@ GUI::~GUI()
 
 wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
 {
-	if(OGLContext == nullptr)
-    {
+	if(OGLContext == nullptr) {
 #ifdef __WXOSX__
         /*
         wxGLContext(AGLPixelFormat fmt, wxGLCanvas *win,
@@ -152,16 +150,13 @@ wxString GUI::GetExecDirectory()
 
 wxString GUI::GetLocalDataDirectory()
 {
-	if(settings.getInteger(Config::INDIRECTORY_INSTALLATION))
-	{
+	if(settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
 		FileName dir = GetDataDirectory();
 		dir.AppendDir(wxT("user"));
 		dir.AppendDir(wxT("data"));
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
 		return dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);;
-	}
-	else
-	{
+	} else {
 		FileName dir = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetUserDataDir();
 #ifdef __WINDOWS__
 		dir.AppendDir(wxT("Remere's Map Editor"));
@@ -176,15 +171,12 @@ wxString GUI::GetLocalDataDirectory()
 
 wxString GUI::GetLocalDirectory()
 {
-	if(settings.getInteger(Config::INDIRECTORY_INSTALLATION))
-	{
+	if(settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
 		FileName dir = GetDataDirectory();
 		dir.AppendDir(wxT("user"));
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
 		return dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);;
-	}
-	else
-	{
+	} else {
 		FileName dir = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetUserDataDir();
 #ifdef __WINDOWS__
 		dir.AppendDir(wxT("Remere's Map Editor"));
@@ -199,13 +191,11 @@ wxString GUI::GetLocalDirectory()
 wxString GUI::GetExtensionsDirectory()
 {
 	std::string cfg_str = settings.getString(Config::EXTENSIONS_DIRECTORY);
-	if(cfg_str.size())
-	{
+	if(cfg_str.size()) {
 		FileName dir;
 		dir.Assign(wxstr(cfg_str));
 		wxString path;
-		if(dir.DirExists())
-		{
+		if(dir.DirExists()) {
 			path = dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 			return path;
 		}
@@ -244,14 +234,12 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 
 bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force)
 {
-	if(ClientVersion::get(ver) == nullptr)
-	{
+	if(ClientVersion::get(ver) == nullptr) {
 		error = wxT("Unsupported client version! (8)");
 		return false;
 	}
 	
-	if(ver != loaded_version || force)
-	{
+	if(ver != loaded_version || force) {
 		if(getLoadedVersion() != nullptr)
 			// There is another version loaded right now, save window layout
 			gui.SavePerspective();
@@ -265,10 +253,8 @@ bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warni
 		UnloadVersion();
 
 		loaded_version = ver;
-		if(getLoadedVersion()->hasValidPaths() == false)
-		{
-			if(getLoadedVersion()->loadValidPaths() == false)
-			{
+		if(!getLoadedVersion()->hasValidPaths()) {
+			if(!getLoadedVersion()->loadValidPaths()) {
 				error = wxT("Couldn't load relevant data files");
 				loaded_version = CLIENT_VERSION_NONE;
 				return false;
@@ -301,7 +287,8 @@ bool GUI::AreHotkeysEnabled() const
 	return hotkeys_enabled;
 }
 
-ClientVersionID GUI::GetCurrentVersionID() const {
+ClientVersionID GUI::GetCurrentVersionID() const
+{
 	if(loaded_version != CLIENT_VERSION_NONE) {
 		return getLoadedVersion()->getID();
 	}
@@ -339,8 +326,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	gui.gfx.client_version = getLoadedVersion();
 	
 	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.otfi"));
-	if(!gui.gfx.loadOTFI(otfi_path, error, warnings))
-	{
+	if(!gui.gfx.loadOTFI(otfi_path, error, warnings)) {
 		error = wxT("Couldn't load tibia.otfi: ") + error;
 		gui.DestroyLoadBar();
 		UnloadVersion();
@@ -351,8 +337,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	gui.SetLoadDone(0, wxT("Loading Tibia.dat ..."));
 	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.dat"));
 	
-	if(!gui.gfx.loadSpriteMetadata(dat_path, error, warnings))
-	{
+	if(!gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
 		error = wxT("Couldn't load tibia.dat: ") + error;
 		gui.DestroyLoadBar();
 		UnloadVersion();
@@ -362,8 +347,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.spr"));
 
 	gui.SetLoadDone(10, wxT("Loading Tibia.spr ..."));
-	if(!gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings))
-	{
+	if(!gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
 		error = wxT("Couldn't load tibia.spr: ") + error;
 		gui.DestroyLoadBar();
 		UnloadVersion();
@@ -371,8 +355,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	gui.SetLoadDone(20, wxT("Loading items.otb ..."));
-	if(!item_db.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.otb")), error, warnings))
-	{
+	if(!item_db.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.otb")), error, warnings)) {
 		error = wxT("Couldn't load items.otb: ") + error;
 		gui.DestroyLoadBar();
 		UnloadVersion();
@@ -380,14 +363,12 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	gui.SetLoadDone(30, wxT("Loading items.xml ..."));
-	if(!item_db.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.xml")), error, warnings))
-	{
+	if(!item_db.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.xml")), error, warnings)) {
 		warnings.push_back(wxT("Couldn't load items.xml: ") + error);
 	}
 
 	gui.SetLoadDone(45, wxT("Loading creatures.xml ..."));
-	if(!creature_db.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("creatures.xml")), true, error, warnings))
-	{
+	if(!creature_db.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("creatures.xml")), true, error, warnings)) {
 		warnings.push_back(wxT("Couldn't load creatures.xml: ") + error);
 	}
 
@@ -401,14 +382,12 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	gui.SetLoadDone(50, wxT("Loading materials.xml ..."));
-	if(!materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("materials.xml")), error, warnings))
-	{
+	if(!materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("materials.xml")), error, warnings)) {
 		warnings.push_back(wxT("Couldn't load materials.xml: ") + error);
 	}
 
 	gui.SetLoadDone(70, wxT("Loading extensions..."));
-	if(!materials.loadExtensions(extension_path, error, warnings))
-	{
+	if(!materials.loadExtensions(extension_path, error, warnings)) {
 		//warnings.push_back(wxT("Couldn't load extensions: ") + error);
 	}
 
@@ -439,8 +418,7 @@ void GUI::UnloadVersion()
 	hatch_door_brush = nullptr;
 	window_door_brush = nullptr;
 
-	if(loaded_version != CLIENT_VERSION_NONE)
-	{
+	if(loaded_version != CLIENT_VERSION_NONE) {
 		//gui.UnloadVersion();
 		materials.clear();
 		brushes.clear();
@@ -482,10 +460,8 @@ double GUI::GetCurrentZoom()
 
 void GUI::FitViewToMap()
 {
-	for(int index = 0; index < tabbook->GetTabCount(); ++index)
-	{
-		if(MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(index)))
-		{
+	for(int index = 0; index < tabbook->GetTabCount(); ++index) {
+		if(MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(index))) {
 			tab->GetView()->FitToMap();
 		}
 	}
@@ -493,10 +469,8 @@ void GUI::FitViewToMap()
 
 void GUI::FitViewToMap(MapTab* mt)
 {
-	for(int index = 0; index < tabbook->GetTabCount(); ++index)
-	{
-		if(MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(index)))
-		{
+	for(int index = 0; index < tabbook->GetTabCount(); ++index) {
+		if(MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(index))) {
 			if(tab->HasSameReference(mt)) {
 				tab->GetView()->FitToMap();
 			}
@@ -531,7 +505,7 @@ bool GUI::NewMap()
 
 bool GUI::LoadMap(FileName name)
 {
-	if(GetCurrentEditor() && GetCurrentMap().hasChanged() == false && GetCurrentMap().hasFile() == false)
+	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
 		gui.CloseCurrentEditor();
 
 	Editor* ed;
@@ -584,8 +558,7 @@ EditorTab* GUI::GetCurrentTab()
 
 MapTab* GUI::GetCurrentMapTab() const
 {
-	if(tabbook && tabbook->GetTabCount() > 0)
-	{
+	if(tabbook && tabbook->GetTabCount() > 0) {
 		EditorTab* tab = tabbook->GetCurrentTab();
 		MapTab* etab = dynamic_cast<MapTab*>(tab);
 		return etab;
@@ -604,8 +577,7 @@ int GUI::GetOpenMapCount()
 {
 	std::set<Map*> open_maps;
 
-	for(int i = 0; i < tabbook->GetTabCount(); ++i)
-	{
+	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
 		MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
 		if(tab)
 			open_maps.insert(open_maps.begin(), tab->GetMap());
@@ -618,10 +590,8 @@ int GUI::GetOpenMapCount()
 bool GUI::ShouldSave()
 {
 	const Map& map = GetCurrentMap();
-	if(map.hasChanged())
-	{
-		if(map.getTileCount() == 0)
-		{
+	if(map.hasChanged()) {
+		if(map.getTileCount() == 0) {
 			Editor* editor = GetCurrentEditor();
 			ASSERT(editor);
 			return editor->actionQueue->canUndo();
@@ -648,20 +618,16 @@ void GUI::CloseCurrentEditor()
 
 bool GUI::CloseLiveEditors(LiveSocket* sock)
 {
-	for(int i = 0; i < tabbook->GetTabCount(); ++i)
-	{
+	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(i));
-		if(mt)
-		{
+		if(mt) {
 			Editor* editor = mt->GetEditor();
 			if(editor->GetLiveClient() == sock)
 				tabbook->DeleteTab(i--);
 		}
 		LiveLogTab* lt = dynamic_cast<LiveLogTab*>(tabbook->GetTab(i));
-		if (lt)
-		{
-			if (lt->GetSocket() == sock)
-			{
+		if(lt) {
+			if(lt->GetSocket() == sock) {
 				lt->Disconnect();
 				tabbook->DeleteTab(i--);
 			}
@@ -674,26 +640,18 @@ bool GUI::CloseLiveEditors(LiveSocket* sock)
 
 bool GUI::CloseAllEditors()
 {
-	for(int i = 0; i < tabbook->GetTabCount(); ++i)
-	{
+	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(i));
-		if(mt)
-		{
-			if(mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged())
-			{
+		if(mt) {
+			if(mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged()) {
 				tabbook->SetFocusedTab(i);
-				if(!root->DoQuerySave(false))
-				{
+				if(!root->DoQuerySave(false)) {
 					return false;
-				}
-				else
-				{
+				} else {
 					RefreshPalettes();
 					tabbook->DeleteTab(i--);
 				}
-			}
-			else
-			{
+			} else {
 				tabbook->DeleteTab(i--);
 			}
 		}
@@ -706,8 +664,7 @@ bool GUI::CloseAllEditors()
 void GUI::NewMapView()
 {
 	MapTab* mt = GetCurrentMapTab();
-	if(mt)
-	{
+	if(mt) {
 		MapTab* edit = newd MapTab(mt);
 		edit->OnSwitchEditorMode(mode);
 
@@ -721,8 +678,8 @@ void GUI::NewMapView()
 
 void GUI::LoadPerspective()
 {
-	if (!IsVersionLoaded()) {
-		if (settings.getInteger(Config::WINDOW_MAXIMIZED)) {
+	if(!IsVersionLoaded()) {
+		if(settings.getInteger(Config::WINDOW_MAXIMIZED)) {
 			root->Maximize();
 		} else {
 			root->SetSize(wxSize(
@@ -735,8 +692,8 @@ void GUI::LoadPerspective()
 		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
 
 		std::vector<std::string> palette_list;
-		for (char c : layout) {
-			if (c == '|') {
+		for(char c : layout) {
+			if(c == '|') {
 				palette_list.push_back(tmp);
 				tmp.clear();
 			} else {
@@ -744,35 +701,35 @@ void GUI::LoadPerspective()
 			}
 		}
 
-		if (!tmp.empty()) {
+		if(!tmp.empty()) {
 			palette_list.push_back(tmp);
 		}
 
-		for (const std::string& name : palette_list) {
+		for(const std::string& name : palette_list) {
 			PaletteWindow* palette = CreatePalette();
 
 			wxAuiPaneInfo& info = aui_manager->GetPane(palette);
 			aui_manager->LoadPaneInfo(wxstr(name), info);
 
-			if (info.IsFloatable()) {
+			if(info.IsFloatable()) {
 				bool offscreen = true;
-				for (uint32_t index = 0; index < wxDisplay::GetCount(); ++index) {
+				for(uint32_t index = 0; index < wxDisplay::GetCount(); ++index) {
 					wxDisplay display(index);
 					wxRect rect = display.GetClientArea();
-					if (rect.Contains(info.floating_pos)) {
+					if(rect.Contains(info.floating_pos)) {
 						offscreen = false;
 						break;
 					}
 				}
 
-				if (offscreen) {
+				if(offscreen) {
 					info.Dock();
 				}
 			}
 		}
 
-		if (settings.getInteger(Config::MINIMAP_VISIBLE)) {
-			if (!minimap) {
+		if(settings.getInteger(Config::MINIMAP_VISIBLE)) {
+			if(!minimap) {
 				wxAuiPaneInfo info;
 
 				const wxString& data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
@@ -788,18 +745,18 @@ void GUI::LoadPerspective()
 			}
 
 			wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
-			if (info.IsFloatable()) {
+			if(info.IsFloatable()) {
 				bool offscreen = true;
-				for (uint32_t index = 0; index < wxDisplay::GetCount(); ++index) {
+				for(uint32_t index = 0; index < wxDisplay::GetCount(); ++index) {
 					wxDisplay display(index);
 					wxRect rect = display.GetClientArea();
-					if (rect.Contains(info.floating_pos)) {
+					if(rect.Contains(info.floating_pos)) {
 						offscreen = false;
 						break;
 					}
 				}
 
-				if (offscreen) {
+				if(offscreen) {
 					info.Dock();
 				}
 			}
@@ -819,17 +776,13 @@ void GUI::SavePerspective()
 	settings.setInteger(Config::MINIMAP_VISIBLE, minimap? 1: 0);
 	
 	wxString pinfo;
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		if(aui_manager->GetPane(*piter).IsShown())
 			pinfo << aui_manager->SavePaneInfo(aui_manager->GetPane(*piter)) << wxT("|");
 	}
 	settings.setString(Config::PALETTE_LAYOUT, nstr(pinfo));
 
-	if(minimap)
-	{
+	if(minimap) {
 		wxString s = aui_manager->SavePaneInfo(aui_manager->GetPane(minimap));
 		settings.setString(Config::MINIMAP_LAYOUT, nstr(s));
 	}
@@ -837,8 +790,7 @@ void GUI::SavePerspective()
 
 void GUI::HideSearchWindow()
 {
-	if(search_result_window)
-	{
+	if(search_result_window) {
 		aui_manager->GetPane(search_result_window).Show(false);
 		aui_manager->Update();
 	}
@@ -846,13 +798,10 @@ void GUI::HideSearchWindow()
 
 SearchResultWindow* GUI::ShowSearchWindow()
 {
-	if(search_result_window == nullptr)
-	{
+	if(search_result_window == nullptr) {
 		search_result_window = newd SearchResultWindow(root);
 		aui_manager->AddPane(search_result_window, wxAuiPaneInfo().Caption(wxT("Search Results")));
-	}
-	else
-	{
+	} else {
 		aui_manager->GetPane(search_result_window).Show();
 	}
 	aui_manager->Update();
@@ -876,10 +825,7 @@ PaletteWindow* GUI::NewPalette()
 
 void GUI::RefreshPalettes(Map* m, bool usedefault)
 {
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		(*piter)->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : nullptr): nullptr));
 	}
 	SelectBrush();
@@ -887,10 +833,7 @@ void GUI::RefreshPalettes(Map* m, bool usedefault)
 
 void GUI::RefreshOtherPalettes(PaletteWindow* p)
 {
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		if(*piter != p)
 			(*piter)->OnUpdate(IsEditorOpen()? &GetCurrentMap() : nullptr);
 	}
@@ -899,7 +842,7 @@ void GUI::RefreshOtherPalettes(PaletteWindow* p)
 
 PaletteWindow* GUI::CreatePalette()
 {
-	if(IsVersionLoaded() == false)
+	if(!IsVersionLoaded())
 		return nullptr;
 	
 	PaletteWindow* palette = newd PaletteWindow(root, materials.tilesets);
@@ -922,10 +865,7 @@ void GUI::ActivatePalette(PaletteWindow* p)
 
 void GUI::DestroyPalettes()
 {
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		PaletteWindow* palette = *piter;
 		aui_manager->DetachPane(palette);
 		palette->Destroy();
@@ -940,10 +880,7 @@ void GUI::RebuildPalettes()
 	// Palette lits might be modified due to active palette changes
 	// Use a temporary list for iterating
 	PaletteList tmp = palettes;
-	for(PaletteList::iterator piter = tmp.begin();
-		piter != tmp.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = tmp.begin(); piter != tmp.end(); ++piter) {
 		(*piter)->ReloadSettings(IsEditorOpen()? &GetCurrentMap() : nullptr);
 	}
 	aui_manager->Update();
@@ -954,10 +891,7 @@ void GUI::ShowPalette()
 	if(palettes.empty())
 		return;
 
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		if(aui_manager->GetPane(*piter).IsShown())
 			return;
 	}
@@ -985,15 +919,12 @@ void GUI::SelectPalettePage(PaletteType pt)
 
 void GUI::CreateMinimap()
 {
-	if(IsVersionLoaded() == false) 
+	if(!IsVersionLoaded()) 
 		return;
 
-	if(minimap)
-	{
+	if(minimap) {
 		aui_manager->GetPane(minimap).Show(true);
-	}
-	else
-	{
+	} else {
 		minimap = newd MinimapWindow(root);
 		minimap->Show(true);
 		aui_manager->AddPane(minimap, wxAuiPaneInfo().Caption(wxT("Minimap")));
@@ -1003,8 +934,7 @@ void GUI::CreateMinimap()
 
 void GUI::HideMinimap()
 {
-	if(minimap)
-	{
+	if(minimap) {
 		aui_manager->GetPane(minimap).Show(false);
 		aui_manager->Update();
 	}
@@ -1012,8 +942,7 @@ void GUI::HideMinimap()
 
 void GUI::DestroyMinimap()
 {
-	if(minimap)
-	{
+	if(minimap) {
 		aui_manager->DetachPane(minimap);
 		aui_manager->Update();
 		minimap->Destroy();
@@ -1023,14 +952,10 @@ void GUI::DestroyMinimap()
 
 void GUI::UpdateMinimap(bool immediate)
 {
-	if(IsMinimapVisible())
-	{
-		if(immediate)
-		{
+	if(IsMinimapVisible()) {
+		if(immediate) {
 			minimap->Refresh();
-		}
-		else
-		{
+		} else {
 			minimap->DelayedUpdate();
 		}
 	}
@@ -1038,11 +963,9 @@ void GUI::UpdateMinimap(bool immediate)
 
 bool GUI::IsMinimapVisible() const
 {
-	if(minimap)
-	{
+	if(minimap) {
 		const wxAuiPaneInfo& pi = aui_manager->GetPane(minimap);
-		if(pi.IsShown())
-		{
+		if(pi.IsShown()) {
 			return true;
 		}
 	}
@@ -1054,24 +977,24 @@ bool GUI::IsMinimapVisible() const
 void GUI::RefreshView()
 {
 	EditorTab* editorTab = GetCurrentTab();
-	if (!editorTab) {
+	if(!editorTab) {
 		return;
 	}
 
-	if (!dynamic_cast<MapTab*>(editorTab)) {
+	if(!dynamic_cast<MapTab*>(editorTab)) {
 		editorTab->GetWindow()->Refresh();
 		return;
 	}
 
 	std::vector<EditorTab*> editorTabs;
-	for (int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
+	for(int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
 		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
-		if (mapTab) {
+		if(mapTab) {
 			editorTabs.push_back(mapTab);
 		}
 	}
 
-	for (EditorTab* editorTab : editorTabs) {
+	for(EditorTab* editorTab : editorTabs) {
 		editorTab->GetWindow()->Refresh();
 	}
 }
@@ -1090,10 +1013,9 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	progressBar->SetSize(280, -1);
 	progressBar->Show(true);
 	
-	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx)
-	{
+	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
-		if (mt && mt->GetEditor()->IsLiveServer())
+		if(mt && mt->GetEditor()->IsLiveServer())
 			mt->GetEditor()->GetLiveServer()->startOperation(progressText);
 	}
 	progressBar->Update(0);
@@ -1107,14 +1029,14 @@ void GUI::SetLoadScale(int32_t from, int32_t to)
 
 bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 {
-	if (done == 100) {
+	if(done == 100) {
 		DestroyLoadBar();
 		return true;
-	} else if (done == currentProgress) {
+	} else if(done == currentProgress) {
 		return true;
 	}
 
-	if (!newMessage.empty()) {
+	if(!newMessage.empty()) {
 		progressText = newMessage;
 	}
 
@@ -1122,7 +1044,7 @@ bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 	newProgress = std::max<int32_t>(0, std::min<int32_t>(100, newProgress));
 	
 	bool skip = false;
-	if (progressBar) {
+	if(progressBar) {
 		progressBar->Update(
 			newProgress,
 			wxString::Format(wxT("%s (%d%%)"), progressText, newProgress),
@@ -1131,11 +1053,11 @@ bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 		currentProgress = newProgress;
 	}
 
-	for (int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
+	for(int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
 		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
-		if (mapTab && mapTab->GetEditor()) {
+		if(mapTab && mapTab->GetEditor()) {
 			LiveServer* server = mapTab->GetEditor()->GetLiveServer();
-			if (server) {
+			if(server) {
 				server->updateOperation(newProgress);
 			}
 		}
@@ -1146,14 +1068,14 @@ bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 
 void GUI::DestroyLoadBar()
 {
-	if (progressBar) {
+	if(progressBar) {
 		progressBar->Show(false);
 		currentProgress = -1;
 
 		progressBar->Destroy();
 		progressBar = nullptr;
 
-		if (root->IsActive()) {
+		if(root->IsActive()) {
 			root->Raise();
 		} else {
 			root->RequestUserAttention();
@@ -1164,8 +1086,7 @@ void GUI::DestroyLoadBar()
 void GUI::CenterOnPosition(Position p)
 {
 	MapTab* tab = GetCurrentMapTab();
-	if(tab)
-	{
+	if(tab) {
 		tab->CenterOnPosition(p);
 	}
 }
@@ -1173,16 +1094,14 @@ void GUI::CenterOnPosition(Position p)
 void GUI::DoPaste()
 {
 	MapTab* mt = GetCurrentMapTab();
-	if(mt)
-	{
+	if(mt) {
 		copybuffer.paste(*mt->GetEditor(), mt->GetCanvas()->GetCursorPosition());
 	}
 }
 
 void GUI::StartPasting()
 {
-	if(GetCurrentEditor())
-	{
+	if(GetCurrentEditor()) {
 		pasting = true;
 		secondary_map = &copybuffer.getBufferMap();
 	}
@@ -1190,8 +1109,7 @@ void GUI::StartPasting()
 
 void GUI::EndPasting()
 {
-	if(pasting)
-	{
+	if(pasting) {
 		pasting = false;
 		secondary_map = nullptr;
 	}
@@ -1207,8 +1125,7 @@ int GUI::GetCurrentFloor()
 void GUI::ChangeFloor(int new_floor)
 {
 	MapTab* tab = GetCurrentMapTab();
-	if(tab)
-	{
+	if(tab) {
 		int old_floor = GetCurrentFloor();
 		if(new_floor < 0) return;
 		if(new_floor > 15) return;
@@ -1242,21 +1159,15 @@ void GUI::SetTitle(wxString title)
 #  endif
 #endif
 #ifdef __EXPERIMENTAL__
-	if(title != wxT(""))
-	{
+	if(title != wxT("")) {
 		gui.root->SetTitle(title << wxT(" - Remere's Map Editor BETA") << TITLE_APPEND);
-	}
-	else
-	{
+	} else {
 		gui.root->SetTitle(wxString(wxT("Remere's Map Editor BETA")) << TITLE_APPEND);
 	}
 #else
-	if(title != wxT(""))
-	{
+	if(title != wxT("")) {
 		gui.root->SetTitle(title << wxT(" - Remere's Map Editor") << TITLE_APPEND);
-	}
-	else
-	{
+	} else {
 		gui.root->SetTitle(wxString(wxT("Remere's Map Editor")) << TITLE_APPEND);
 	}
 #endif
@@ -1264,17 +1175,13 @@ void GUI::SetTitle(wxString title)
 
 void GUI::UpdateTitle()
 {
-	if(tabbook->GetTabCount() > 0)
-	{
+	if(tabbook->GetTabCount() > 0) {
 		SetTitle(tabbook->GetCurrentTab()->GetTitle());
-		for(int idx = 0; idx < tabbook->GetTabCount(); ++idx)
-		{
+		for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 			if(tabbook->GetTab(idx))
 				tabbook->SetTabLabel(idx, tabbook->GetTab(idx)->GetTitle());
 		}
-	}
-	else
-	{
+	} else {
 		SetTitle(wxT(""));
 	}
 }
@@ -1287,12 +1194,9 @@ void GUI::UpdateMenus()
 
 void GUI::SwitchMode()
 {
-	if(mode == DRAWING_MODE)
-	{
+	if(mode == DRAWING_MODE) {
 		SetSelectionMode();
-	}
-	else
-	{
+	} else {
 		SetDrawingMode();
 	}
 }
@@ -1303,8 +1207,7 @@ void GUI::SetSelectionMode()
 		return;
 	
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(dbrush)
-	{
+	if(dbrush) {
 		secondary_map = nullptr;
 	}
 	
@@ -1318,11 +1221,9 @@ void GUI::SetDrawingMode()
 		return;
 	
 	std::set<MapTab*> al;
-	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx)
-	{
+	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		EditorTab* et = tabbook->GetTab(idx);
-		if(MapTab* mt = dynamic_cast<MapTab*>(et))
-		{
+		if(MapTab* mt = dynamic_cast<MapTab*>(et)) {
 			if(al.find(mt) != al.end())
 				continue;
 
@@ -1335,12 +1236,9 @@ void GUI::SetDrawingMode()
 	}
 
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(dbrush)
-	{
+	if(dbrush) {
 		secondary_map = doodad_buffer_map;
-	}
-	else
-	{
+	} else {
 		secondary_map = nullptr;
 	}
 	
@@ -1351,14 +1249,11 @@ void GUI::SetDrawingMode()
 void GUI::SetBrushSizeInternal(int nz)
 {
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(nz != brush_size && dbrush && dbrush->oneSizeFitsAll() == false)
-	{
+	if(nz != brush_size && dbrush && !dbrush->oneSizeFitsAll()) {
 		brush_size = nz;
 		FillDoodadPreviewBuffer();
 		secondary_map = doodad_buffer_map;
-	}
-	else
-	{
+	} else {
 		brush_size = nz;
 	}
 }
@@ -1367,9 +1262,7 @@ void GUI::SetBrushSize(int nz)
 {
 	SetBrushSizeInternal(nz);
 
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter)
 	{
 		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
 	}
@@ -1378,8 +1271,7 @@ void GUI::SetBrushSize(int nz)
 void GUI::SetBrushVariation(int nz)
 {
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(nz != brush_variation && dbrush)
-	{
+	if(nz != brush_variation && dbrush) {
 		// Monkey!
 		brush_variation = nz;
 		FillDoodadPreviewBuffer();
@@ -1390,8 +1282,7 @@ void GUI::SetBrushVariation(int nz)
 void GUI::SetBrushShape(BrushShape bs)
 {
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(bs != brush_shape && dbrush && dbrush->oneSizeFitsAll() == false)
-	{
+	if(bs != brush_shape && dbrush && !dbrush->oneSizeFitsAll()) {
 		// Donkey!
 		brush_shape = bs;
 		FillDoodadPreviewBuffer();
@@ -1399,10 +1290,7 @@ void GUI::SetBrushShape(BrushShape bs)
 	}
 	brush_shape = bs;
 	
-	for(PaletteList::iterator piter = palettes.begin();
-		piter != palettes.end();
-		++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
 	}
 }
@@ -1411,14 +1299,12 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 {
 	use_custom_thickness = on;
 
-	if(x != -1 || y != -1)
-	{
+	if(x != -1 || y != -1) {
 		custom_thickness_mod = float(max(x, 1)) / float(max(y, 1));
 	}
 
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(dbrush)
-	{
+	if(dbrush) {
 		FillDoodadPreviewBuffer();
 	}
 
@@ -1429,11 +1315,9 @@ void GUI::SetBrushThickness(int low, int ceil)
 {
 	custom_thickness_mod = float(max(low, 1)) / float(max(ceil, 1));
 	
-	if(use_custom_thickness)
-	{
+	if(use_custom_thickness) {
 		DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-		if(dbrush)
-		{
+		if(dbrush) {
 			FillDoodadPreviewBuffer();
 		}
 	}
@@ -1443,31 +1327,43 @@ void GUI::SetBrushThickness(int low, int ceil)
 
 void GUI::DecreaseBrushSize(bool wrap)
 {
-	switch(brush_size)
-	{
+	switch(brush_size) {
 		case 0: {
 			if(wrap) {
 				SetBrushSize(11);
 			}
-		} break;
+			break;
+		}
 		case 1: {
 			SetBrushSize(0);
-		} break;
-		case 2: case 3: {
+			break;
+		}
+		case 2:
+		case 3: {
 			SetBrushSize(1);
-		} break;
-		case 4: case 5: {
+			break;
+		}
+		case 4:
+		case 5: {
 			SetBrushSize(2);
-		} break;
-		case 6: case 7: {
+			break;
+		}
+		case 6:
+		case 7: {
 			SetBrushSize(4);
-		} break;
-		case 8: case 9: case 10: {
+			break;
+		}
+		case 8:
+		case 9:
+		case 10: {
 			SetBrushSize(6);
-		} break;
-		case 11: default: {
+			break;
+		}
+		case 11:
+		default: {
 			SetBrushSize(8);
-		} break;
+			break;
+		}
 	}
 }
 
@@ -1476,27 +1372,40 @@ void GUI::IncreaseBrushSize(bool wrap)
 	switch(brush_size) {
 		case 0: {
 			SetBrushSize(1);
-		} break;
+			break;
+		}
 		case 1: {
 			SetBrushSize(2);
-		} break;
-		case 2: case 3: {
+			break;
+		}
+		case 2:
+		case 3: {
 			SetBrushSize(4);
-		} break;
-		case 4: case 5: {
+			break;
+		}
+		case 4:
+		case 5: {
 			SetBrushSize(6);
-		} break;
-		case 6: case 7: {
+			break;
+		}
+		case 6:
+		case 7: {
 			SetBrushSize(8);
-		} break;
-		case 8: case 9: case 10: {
+			break;
+		}
+		case 8:
+		case 9:
+		case 10: {
 			SetBrushSize(11);
-		} break;
-		case 11: default: {
+			break;
+		}
+		case 11:
+		default: {
 			if(wrap) {
 				SetBrushSize(0);
 			}
-		} break;
+			break;
+		}
 	}
 }
 
@@ -1572,9 +1481,7 @@ void GUI::SelectBrushInternal(Brush* brush)
 void GUI::SelectPreviousBrush()
 {
 	if(previous_brush)
-	{
 		SelectBrush(previous_brush);
-	}
 }
 
 void GUI::FillDoodadPreviewBuffer()
@@ -1590,20 +1497,14 @@ void GUI::FillDoodadPreviewBuffer()
 
 	int object_count = 0;
 	int area;
-	if(GetBrushShape() == BRUSHSHAPE_SQUARE)
-	{
+	if(GetBrushShape() == BRUSHSHAPE_SQUARE) {
 		area = 2*GetBrushSize();
 		area = area*area + 1;
-	}
-	else
-	{
-		if(GetBrushSize() == 1)
-		{
+	} else {
+		if(GetBrushSize() == 1) {
 			// There is a huge deviation here with the other formula.
 			area = 5;
-		}
-		else
-		{
+		} else {
 			area = int(0.5 + GetBrushSize() * GetBrushSize() * PI);
 		}
 	}
@@ -1612,51 +1513,42 @@ void GUI::FillDoodadPreviewBuffer()
 
 	Position center_pos(0x8000, 0x8000, 0x8);
 
-	if(brush_size > 0 && brush->oneSizeFitsAll() == false)
-	{
-		while(object_count < final_object_count)
-		{
+	if(brush_size > 0 && !brush->oneSizeFitsAll()) {
+		while(object_count < final_object_count) {
 			int retries = 0;
 			bool exit = false;
 
 			// Try to place objects 5 times
-			while(retries < 5 && exit == false) 
-			{
+			while(retries < 5 && !exit) {
 				
 				int pos_retries = 0;
 				int xpos = 0, ypos = 0;
 				bool found_pos = false;
-				if(GetBrushShape() == BRUSHSHAPE_CIRCLE)
-				{
-					while(pos_retries < 5 && found_pos == false)
-					{
+				if(GetBrushShape() == BRUSHSHAPE_CIRCLE) {
+					while(pos_retries < 5 && !found_pos) {
 						xpos = random(-brush_size, brush_size);
 						ypos = random(-brush_size, brush_size);
 						float distance = sqrt(float(xpos*xpos) + float(ypos*ypos));
-						if (distance < gui.GetBrushSize() + 0.005) {
+						if(distance < gui.GetBrushSize() + 0.005) {
 							found_pos = true;
 						} else {
 							++pos_retries;
 						}
 					}
-				}
-				else
-				{
+				} else {
 					found_pos = true;
 					xpos = random(-brush_size, brush_size);
 					ypos = random(-brush_size, brush_size);
 				}
 
-				if(found_pos == false)
-				{
+				if(!found_pos) {
 					++retries;
 					continue;
 				}
 
 				// Decide whether the zone should have a composite or several single objects.
 				bool fail = false;
-				if(random(brush->getTotalChance(GetBrushVariation())) <= brush->getCompositeChance(GetBrushVariation()))
-				{
+				if(random(brush->getTotalChance(GetBrushVariation())) <= brush->getCompositeChance(GetBrushVariation())) {
 					// Composite
 					const CompositeTileList& composites = brush->getComposite(GetBrushVariation());
 
@@ -1666,17 +1558,14 @@ void GUI::FillDoodadPreviewBuffer()
 							++composite_iter)
 					{
 						Position pos = center_pos + composite_iter->first + Position(xpos, ypos, 0);
-						if(Tile* tile = doodad_buffer_map->getTile(pos))
-						{
-							if(tile->size() > 0)
-							{
+						if(Tile* tile = doodad_buffer_map->getTile(pos)) {
+							if(tile->size() > 0) {
 								fail = true;
 								break;
 							}
 						}
 					}
-					if(fail)
-					{
+					if(fail) {
 						++retries;
 						break;
 					}
@@ -1702,21 +1591,15 @@ void GUI::FillDoodadPreviewBuffer()
 						doodad_buffer_map->setTile(tile->getPosition(), tile);
 					}
 					exit = true;
-				}
-				else if(brush->hasSingleObjects(GetBrushVariation()))
-				{
+				} else if(brush->hasSingleObjects(GetBrushVariation())) {
 					Position pos = center_pos + Position(xpos, ypos, 0);
 					Tile* tile = doodad_buffer_map->getTile(pos);
-					if(tile)
-					{
-						if(tile->size() > 0)
-						{
+					if(tile) {
+						if(tile->size() > 0) {
 							fail = true;
 							break;
 						}
-					}
-					else
-					{
+					} else {
 						tile = doodad_buffer_map->allocator(doodad_buffer_map->createTileL(pos));
 					}
 					int variation = GetBrushVariation();
@@ -1725,20 +1608,16 @@ void GUI::FillDoodadPreviewBuffer()
 					doodad_buffer_map->setTile(tile->getPosition(), tile);
 					exit = true;
 				}
-				if(fail)
-				{
+				if(fail) {
 					++retries;
 					break;
 				}
 			}
 			++object_count;
 		}
-	}
-	else
-	{
+	} else {
 		if(brush->hasCompositeObjects(GetBrushVariation()) &&
-				random(brush->getTotalChance(GetBrushVariation())) <= brush->getCompositeChance(GetBrushVariation()))
-		{
+				random(brush->getTotalChance(GetBrushVariation())) <= brush->getCompositeChance(GetBrushVariation())) {
 			// Composite
 			const CompositeTileList& composites = brush->getComposite(GetBrushVariation());
 
@@ -1747,8 +1626,7 @@ void GUI::FillDoodadPreviewBuffer()
 			// Transfer items to the buffer
 			for(CompositeTileList::const_iterator composite_iter = composites.begin();
 					composite_iter != composites.end();
-					++composite_iter)
-			{
+					++composite_iter) {
 				Position pos = center_pos + composite_iter->first;
 				const ItemVector& items = composite_iter->second;
 				Tile* tile = doodad_buffer_map->allocator(doodad_buffer_map->createTileL(pos));
@@ -1762,9 +1640,7 @@ void GUI::FillDoodadPreviewBuffer()
 				}
 				doodad_buffer_map->setTile(tile->getPosition(), tile);
 			}
-		}
-		else if(brush->hasSingleObjects(GetBrushVariation()))
-		{
+		} else if(brush->hasSingleObjects(GetBrushVariation())) {
 			Tile* tile = doodad_buffer_map->allocator(doodad_buffer_map->createTileL(center_pos));
 			int variation = GetBrushVariation();
 			brush->draw(doodad_buffer_map, tile, &variation);
@@ -1801,8 +1677,7 @@ void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& para
 	wxListBox* item_list = newd wxListBox(dlg, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE);
 	item_list->SetMinSize(wxSize(500, 300));
 
-	for(size_t i = 0; i != list_items.GetCount();)
-	{
+	for(size_t i = 0; i != list_items.GetCount();) {
 		wxString str = list_items[i];
 		size_t pos = str.find(wxT("\n"));
 		if(pos != wxString::npos) {
@@ -1872,8 +1747,7 @@ void GUI::LoadHotkeys()
 	
 	std::string line;
 	int index = 0;
-	while(getline(is, line))
-	{
+	while(getline(is, line)) {
 		std::istringstream line_is;
 		line_is.str(line);
 		line_is >> hotkeys[index];
@@ -1885,27 +1759,27 @@ void GUI::LoadHotkeys()
 Hotkey::Hotkey() :
 	type(NONE)
 {
-	//..
+	////
 }
 
 Hotkey::Hotkey(Position _pos) : type(POSITION), pos(_pos)
 {
-	//...
+	////
 }
 
 Hotkey::Hotkey(Brush* brush) : type(BRUSH), brushname(brush->getName())
 {
-	//...
+	////
 }
 
 Hotkey::Hotkey(std::string _name) : type(BRUSH), brushname(_name)
 {
-	//...
+	////
 }
 
 Hotkey::~Hotkey()
 {
-	//...
+	////
 }
 
 std::ostream& operator<<(std::ostream& os, const Hotkey& hotkey)

@@ -29,10 +29,12 @@ Creature::Creature(CreatureType* ctype) : direction(SOUTH), spawntime(0), saved(
 
 Creature::Creature(std::string ctype_name) : type_name(ctype_name), direction(SOUTH), spawntime(0), saved(false), selected(false)
 {
+	////
 }
 
 Creature::~Creature()
 {
+	////
 }
 
 std::string Creature::DirID2Name(uint16_t id) {
@@ -45,12 +47,13 @@ std::string Creature::DirID2Name(uint16_t id) {
 	}
 }
 
-uint16_t Creature::DirName2ID(std::string dir) {
+uint16_t Creature::DirName2ID(std::string dir)
+{
 	to_lower_str(dir);
-	if (dir == "north") return NORTH;
-	if (dir == "east") return EAST;
-	if (dir == "south") return SOUTH;
-	if (dir == "west") return WEST;
+	if(dir == "north") return NORTH;
+	if(dir == "east") return EAST;
+	if(dir == "south") return SOUTH;
+	if(dir == "west") return WEST;
 	return SOUTH;
 }
 

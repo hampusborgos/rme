@@ -126,26 +126,22 @@ bool Item::unserializeItemNode_OTMM(const IOMap& maphandle, BinaryNode* node)
 
 void Item::serializeItemAttributes_OTMM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
-	if(getSubtype() > 0)
-	{
+	if(getSubtype() > 0) {
 		stream.addU8(OTMM_ATTR_SUBTYPE);
 		stream.addU16(getSubtype());
 	}
 
-	if(getActionID())
-	{
+	if(getActionID()) {
 		stream.addU8(OTMM_ATTR_ACTION_ID);
 		stream.addU16(getActionID());
 	}
 
-	if(getUniqueID())
-	{
+	if(getUniqueID()) {
 		stream.addU8(OTMM_ATTR_UNIQUE_ID);
 		stream.addU16(getUniqueID());
 	}
 
-	if(getText().length() > 0)
-	{
+	if(getText().length() > 0) {
 		stream.addU8(OTMM_ATTR_TEXT);
 		stream.addString(getText());
 	}
@@ -610,10 +606,8 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						uint16_t creature_x, creature_y;
 						uint8_t creature_z;
 						if(!creatureNode->getU16(creature_x) ||
-								!creatureNode->getU16(creature_y) ||
-								!creatureNode->getU8(creature_z)
-							)
-						{
+							!creatureNode->getU16(creature_y) ||
+							!creatureNode->getU8(creature_z) ) {
 							warning(wxT("Could not read creature position."));
 							continue;
 						}
@@ -936,10 +930,7 @@ bool IOMapOTMM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 						}
 					} f.endNode(); // OTMM_SPAWN_AREA
 				}
-				for(CreatureList::iterator iter = creature_list.begin();
-						iter != creature_list.end();
-						++iter)
-				{
+				for(CreatureList::iterator iter = creature_list.begin(); iter != creature_list.end(); ++iter) {
 					(*iter)->reset();
 				}
 			} f.endNode(); // OTMM_SPAWN_DATA

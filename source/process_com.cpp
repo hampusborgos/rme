@@ -26,15 +26,19 @@
 
 // Server!
 
-RMEProcessServer::RMEProcessServer() {
+RMEProcessServer::RMEProcessServer()
+{
+	////
 }
 
-RMEProcessServer::~RMEProcessServer() {
+RMEProcessServer::~RMEProcessServer()
+{
+	////
 }
 
 wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic)
 {
-	if (topic == wxT("rme_talk")) {
+	if(topic == wxT("rme_talk")) {
 		return newd RMEProcessConnection();
 	}
 	return nullptr;
@@ -42,26 +46,35 @@ wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic)
 
 // Client!
 
-RMEProcessClient::RMEProcessClient() : proc(nullptr) {
+RMEProcessClient::RMEProcessClient() : proc(nullptr)
+{
+	////
 }
 
-RMEProcessClient::~RMEProcessClient() {
+RMEProcessClient::~RMEProcessClient()
+{
 	delete proc;
 }
 
-wxConnectionBase* RMEProcessClient::OnMakeConnection() {
+wxConnectionBase* RMEProcessClient::OnMakeConnection()
+{
 	return proc = newd RMEProcessConnection();
 }
 
 // Connection
 
-RMEProcessConnection::RMEProcessConnection() : wxConnection() {
+RMEProcessConnection::RMEProcessConnection() : wxConnection()
+{
+	////
 }
 
-RMEProcessConnection::~RMEProcessConnection() {
+RMEProcessConnection::~RMEProcessConnection()
+{
+	////
 }
 
-bool RMEProcessConnection::OnPoke(const wxString& topic, const wxString& item, wxChar* data, int size, wxIPCFormat format) {
+bool RMEProcessConnection::OnPoke(const wxString& topic, const wxString& item, wxChar* data, int size, wxIPCFormat format)
+{
 	if(topic == wxT("rme_talk") && item == wxT("map_open")) {
 		std::string s(reinterpret_cast<char*>(data), size);
 		gui.LoadMap(FileName(wxString(s.c_str(), wxConvUTF8)));
@@ -70,7 +83,8 @@ bool RMEProcessConnection::OnPoke(const wxString& topic, const wxString& item, w
 	return false;
 }
 
-void RMEProcessConnection::AskToLoad(FileName map) {
+void RMEProcessConnection::AskToLoad(FileName map)
+{
 	std::string maps = (const char*)map.GetFullPath().mb_str(wxConvUTF8);
 	char* c = newd char[maps.length()];
 	memcpy(c, maps.c_str(), maps.length());

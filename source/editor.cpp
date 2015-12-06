@@ -41,8 +41,9 @@ Editor::Editor(CopyBuffer& copybuffer) :
 	bool ok = true;
 
 	ClientVersionID defaultVersion = ClientVersionID(settings.getInteger(Config::DEFAULT_CLIENT_VERSION));
-	if (defaultVersion == CLIENT_VERSION_NONE)
+	if(defaultVersion == CLIENT_VERSION_NONE)
 		defaultVersion = ClientVersion::getLatestVersion()->getID();
+
 	if(gui.GetCurrentVersionID() != defaultVersion) {
 		if(gui.CloseAllEditors()) {
 			ok = gui.LoadVersion(defaultVersion, error, warnings);
@@ -53,7 +54,7 @@ Editor::Editor(CopyBuffer& copybuffer) :
 		}
 	}
 
-	if(ok == false)
+	if(!ok)
 		throw std::runtime_error("Couldn't load client version");
 
 	MapVersion version;
@@ -106,7 +107,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		wxArrayString warnings;
 		if(gui.CloseAllEditors()) {
 			success = gui.LoadVersion(ver.client, error, warnings);
-			if (!success)
+			if(!success)
 				gui.PopupDialog(wxT("Error"), error, wxOK);
 			else
 				gui.ListDialog(wxT("Warnings"), warnings);
@@ -115,13 +116,11 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		}
 	}
 
-	if(success)
-	{
+	if(success) {
 		ScopedLoadingBar LoadingBar("Loading OTBM map...");
 		success = map.open(nstr(fn.GetFullPath()));
 		/* TODO
-		if(success && ver.client == CLIENT_VERSION_854_BAD)
-		{
+		if(success && ver.client == CLIENT_VERSION_854_BAD) {
 			int ok = gui.PopupDialog(wxT("Incorrect OTB"), wxT("This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes."), wxYES | wxNO);
 			
 			if(ok == wxID_YES){
@@ -145,7 +144,7 @@ Editor::Editor(CopyBuffer& copybuffer, LiveClient* client) :
 }
 
 Editor::~Editor() {
-	if (IsLive()) {
+	if(IsLive()) {
 		CloseLiveServer();
 	}
 
@@ -154,23 +153,25 @@ Editor::~Editor() {
 	delete actionQueue;
 }
 
-void Editor::addBatch(BatchAction* action, int stacking_delay) {
+void Editor::addBatch(BatchAction* action, int stacking_delay)
+{
 	actionQueue->addBatch(action, stacking_delay);
 	gui.UpdateMenus();
 }
 
-void Editor::addAction(Action* action, int stacking_delay ) {
+void Editor::addAction(Action* action, int stacking_delay )
+{
 	actionQueue->addAction(action, stacking_delay);
 	gui.UpdateMenus();
 }
 
-void Editor::saveMap(FileName filename, bool showdialog) {
+void Editor::saveMap(FileName filename, bool showdialog)
+{
 	std::string savefile = filename.GetFullPath().mb_str(wxConvUTF8).data();
 	bool save_as = false;
 	bool save_otgz = false;
 
-	if(savefile.empty())
-	{
+	if(savefile.empty()) {
 		savefile = map.filename;
 		
 		FileName c1(wxstr(savefile));
@@ -178,10 +179,8 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		save_as = c1 != c2;
 	}
 
-
 	// If not named yet, propagate the file name to the auxilliary files
-	if(map.unnamed)
-	{
+	if(map.unnamed) {
 		FileName _name(filename);
 		_name.SetExt(wxT("xml"));
 
@@ -202,36 +201,29 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 	//converter.Assign(wxstr(savefile));
 	std::string backup_otbm, backup_house, backup_spawn;
 
-	if (converter.GetExt() == "otgz")
-	{
+	if(converter.GetExt() == "otgz") {
 		save_otgz = true;
-		if(converter.FileExists())
-		{
+		if(converter.FileExists()) {
 			backup_otbm = map_path + nstr(converter.GetName()) + ".otgz~";
 			std::remove(backup_otbm.c_str());
 			std::rename(savefile.c_str(), backup_otbm.c_str());
 		}
-	}
-	else
-	{
-		if(converter.FileExists())
-		{
+	} else {
+		if(converter.FileExists()) {
 			backup_otbm = map_path + nstr(converter.GetName()) + ".otbm~";
 			std::remove(backup_otbm.c_str());
 			std::rename(savefile.c_str(), backup_otbm.c_str());
 		}
 
 		converter.SetFullName(wxstr(map.housefile));
-		if(converter.FileExists())
-		{
+		if(converter.FileExists()) {
 			backup_house = map_path + nstr(converter.GetName()) + ".xml~";
 			std::remove(backup_house.c_str());
 			std::rename((map_path + map.housefile).c_str(), backup_house.c_str());
 		}
 
 		converter.SetFullName(wxstr(map.spawnfile));
-		if(converter.FileExists())
-		{
+		if(converter.FileExists()) {
 			backup_spawn = map_path + nstr(converter.GetName()) + ".xml~";
 			std::remove(backup_spawn.c_str());
 			std::rename((map_path + map.spawnfile).c_str(), backup_spawn.c_str());
@@ -255,36 +247,32 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		map.filename = fn.GetFullPath().mb_str(wxConvUTF8);
 		map.name = fn.GetFullName().mb_str(wxConvUTF8);
 
-		if (showdialog)
+		if(showdialog)
 			gui.CreateLoadBar("Saving OTBM map...");
 		
 		// Perform the actual save
 		IOMapOTBM mapsaver(map.getVersion());
 		bool success = mapsaver.saveMap(map, fn);
 
-		if (showdialog)
+		if(showdialog)
 			gui.DestroyLoadBar();
 
 		// Check for errors...
-		if(!success)
-		{
+		if(!success) {
 			// Rename the temporary backup files back to their previous names
-			if(!backup_otbm.empty())
-			{
+			if(!backup_otbm.empty()) {
 				converter.SetFullName(wxstr(savefile));
 				std::string otbm_filename = map_path + nstr(converter.GetName());
 				std::rename(backup_otbm.c_str(), std::string(otbm_filename + (save_otgz ? ".otgz" : ".otbm")).c_str());
 			}
 
-			if(!backup_house.empty())
-			{
+			if(!backup_house.empty()) {
 				converter.SetFullName(wxstr(map.housefile));
 				std::string house_filename = map_path + nstr(converter.GetName());
 				std::rename(backup_house.c_str(), std::string(house_filename + ".xml").c_str());
 			}
 
-			if(!backup_spawn.empty())
-			{
+			if(!backup_spawn.empty()) {
 				converter.SetFullName(wxstr(map.spawnfile));
 				std::string spawn_filename = map_path + nstr(converter.GetName());
 				std::rename(backup_spawn.c_str(), std::string(spawn_filename + ".xml").c_str());
@@ -307,8 +295,7 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 	
 
 	// Move to permanent backup
-	if(save_as == false && settings.getInteger(Config::ALWAYS_MAKE_BACKUP))
-	{
+	if(!save_as && settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
 		// Move temporary backups to their proper files
 		time_t t = time(nullptr);
 		tm* current_time = localtime(&t);
@@ -325,29 +312,24 @@ void Editor::saveMap(FileName filename, bool showdialog) {
 		date << "-" << current_time->tm_min;
 		date << "-" << current_time->tm_sec;
 
-		if(!backup_otbm.empty())
-		{
+		if(!backup_otbm.empty()) {
 			converter.SetFullName(wxstr(savefile));
 			std::string otbm_filename = map_path + nstr(converter.GetName());
 			std::rename(backup_otbm.c_str(), std::string(otbm_filename + "." + date.str() + (save_otgz ? ".otgz" : ".otbm")).c_str());
 		}
 
-		if(!backup_house.empty())
-		{
+		if(!backup_house.empty()) {
 			converter.SetFullName(wxstr(map.housefile));
 			std::string house_filename = map_path + nstr(converter.GetName());
 			std::rename(backup_house.c_str(), std::string(house_filename + "." + date.str() + ".xml").c_str());
 		}
 
-		if(!backup_spawn.empty())
-		{
+		if(!backup_spawn.empty()) {
 			converter.SetFullName(wxstr(map.spawnfile));
 			std::string spawn_filename = map_path + nstr(converter.GetName());
 			std::rename(backup_spawn.c_str(), std::string(spawn_filename + "." + date.str() + ".xml").c_str());
 		}
-	}
-	else
-	{
+	} else {
 		// Delete the temporary files
 		std::remove(backup_otbm.c_str());
 		std::remove(backup_house.c_str());
@@ -395,9 +377,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	std::map<uint32_t, uint32_t> house_id_map;
 
 	if(house_import_type != IMPORT_DONT) {
-		for(TownMap::iterator tit = imported_map.towns.begin();
-				tit != imported_map.towns.end();)
-		{
+		for(TownMap::iterator tit = imported_map.towns.begin(); tit != imported_map.towns.end();) {
 			Town* imported_town = tit->second;
 			Town* current_town = map.towns.getTown(imported_town->getID());
 
@@ -414,7 +394,8 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 						++tit;
 						continue;
 					}
-				} break;
+					break;
+				}
 				case IMPORT_SMART_MERGE: {
 					if(current_town) {
 						// Compare and insert/merge depending on parameters
@@ -432,17 +413,20 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 					} else {
 						town_id_map[imported_town->getID()] = imported_town->getID();
 					}
-				} break;
+					break;
+				}
 				case IMPORT_INSERT: {
 					// Find a newd id and replace old
 					uint32_t new_id = map.towns.getEmptyID();
 					imported_town->setID(new_id);
 					town_id_map[imported_town->getID()] = new_id;
-				} break;
+					break;
+				}
 				case IMPORT_DONT: {
 					++tit;
 					continue; // Should never happend..?
-				} break;
+					break; // Continue or break ?
+				}
 			}
 
 			map.towns.addTown(imported_town);
@@ -464,9 +448,8 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 			}
 #endif
 		}
-		for(HouseMap::iterator hit = imported_map.houses.begin();
-				hit != imported_map.houses.end();)
-		{
+
+		for(HouseMap::iterator hit = imported_map.houses.begin(); hit != imported_map.houses.end();) {
 			House* imported_house = hit->second;
 			House* current_house = map.houses.getHouse(imported_house->id);
 			imported_house->townid = town_id_map[imported_house->townid];
@@ -483,7 +466,8 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 						if(newexit.isValid()) current_house->setExit(&map, newexit);
 						continue;
 					}
-				} break;
+					break;
+				}
 				case IMPORT_SMART_MERGE: {
 					if(current_house) {
 						// Compare and insert/merge depending on parameters
@@ -503,19 +487,22 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 					} else {
 						house_id_map[imported_house->id] = imported_house->id;
 					}
-				} break;
+					break;
+				}
 				case IMPORT_INSERT: {
 					// Find a newd id and replace old
 					uint32_t new_id = map.houses.getEmptyID();
 					house_id_map[imported_house->id] = new_id;
 					imported_house->id = new_id;
-				} break;
+					break;
+				}
 				case IMPORT_DONT: {
 					++hit;
 					Position newexit = oldexit + offset;
 					if(newexit.isValid()) imported_house->setExit(&map, newexit);
-					continue; // Should never happend..?
-				} break;
+						continue; // Should never happend..?
+					break;
+				}
 			}
 
 			Position newexit = oldexit + offset;
@@ -542,22 +529,16 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	}
 
 	std::map<Position, Spawn*> spawn_map;
-	if(spawn_import_type != IMPORT_DONT)
-	{
-		for(SpawnPositionList::iterator siter = imported_map.spawns.begin();
-				siter != imported_map.spawns.end();)
-		{
+	if(spawn_import_type != IMPORT_DONT) {
+		for(SpawnPositionList::iterator siter = imported_map.spawns.begin(); siter != imported_map.spawns.end();) {
 			Position old_spawn_pos = *siter;
 			Position new_spawn_pos = *siter + offset;
-			switch(spawn_import_type)
-			{
+			switch(spawn_import_type) {
 				case IMPORT_SMART_MERGE:
 				case IMPORT_INSERT:
-				case IMPORT_MERGE: 
-				{
+				case IMPORT_MERGE: {
 					Tile* imported_tile = imported_map.getTile(old_spawn_pos);
-					if(imported_tile)
-					{
+					if(imported_tile) {
 						ASSERT(imported_tile->spawn);
 						spawn_map[new_spawn_pos] = imported_tile->spawn;
 
@@ -576,20 +557,18 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 						else
 							siter = imported_map.spawns.end();
 					}
-				} break;
-				case IMPORT_DONT:
-				{
+					break;
+				}
+				case IMPORT_DONT: {
 					++siter;
-				} break;
+					break;
+				}
 			}
 		}
 	}
 
 	// Plain merge of waypoints, very simple! :)
-	for(WaypointMap::iterator iter = imported_map.waypoints.begin();
-		iter != imported_map.waypoints.end();
-		++iter)
-	{
+	for(WaypointMap::iterator iter = imported_map.waypoints.begin(); iter != imported_map.waypoints.end(); ++iter) {
 		iter->second->pos += offset;
 	}
 
@@ -599,10 +578,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 
 	uint64_t tiles_merged = 0;
 	uint64_t tiles_to_import = imported_map.tilecount;
-	for(MapIterator mit = imported_map.begin();
-			mit != imported_map.end();
-			++mit)
-	{
+	for(MapIterator mit = imported_map.begin(); mit != imported_map.end(); ++mit) {
 		if(tiles_merged % 8092 == 0) {
 			gui.SetLoadDone(int(100.0 * tiles_merged / tiles_to_import));
 		}
@@ -615,7 +591,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 			continue;
 		}
 
-		if(resizemap == false && (new_pos.x > map.getWidth() || new_pos.y > map.getHeight())) {
+		if(!resizemap && (new_pos.x > map.getWidth() || new_pos.y > map.getHeight())) {
 			if(resize_asked) {
 				++discarded_tiles;
 				continue;
@@ -657,10 +633,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 		}
 
 		if(offset != Position(0,0,0)) {
-			for(ItemVector::iterator iter = import_tile->items.begin();
-					iter != import_tile->items.end();
-					++iter)
-			{
+			for(ItemVector::iterator iter = import_tile->items.begin(); iter != import_tile->items.end(); ++iter) {
 				Item* item = *iter;
 				if(Teleport* teleport = dynamic_cast<Teleport*>(item)) {
 					teleport->setDestination(teleport->getDestination() + offset);
@@ -677,10 +650,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 		map.setTile(new_pos, import_tile, true);
 	}
 
-	for(std::map<Position, Spawn*>::iterator spawn_iter = spawn_map.begin();
-			spawn_iter != spawn_map.end();
-			++spawn_iter)
-	{
+	for(std::map<Position, Spawn*>::iterator spawn_iter = spawn_map.begin(); spawn_iter != spawn_map.end(); ++spawn_iter) {
 		Position pos = spawn_iter->first;
 		TileLocation* location = map.createTileL(pos);
 		Tile* tile = location->get();
@@ -710,12 +680,12 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 
 void Editor::borderizeSelection()
 {
-	if (selection.size() == 0) {
+	if(selection.size() == 0) {
 		gui.SetStatusText(wxT("No items selected. Can't borderize."));
 	}
 
 	Action* action = actionQueue->createAction(ACTION_BORDERIZE);
-	for (Tile* tile : selection) {
+	for(Tile* tile : selection) {
 		Tile* newTile = tile->deepCopy(map);
 		newTile->borderize(&map);
 		newTile->select();
@@ -726,13 +696,13 @@ void Editor::borderizeSelection()
 
 void Editor::borderizeMap(bool showdialog)
 {
-	if (showdialog) {
+	if(showdialog) {
 		gui.CreateLoadBar(wxT("Borderizing map..."));
 	}
 
 	uint64_t tiles_done = 0;
-	for (TileLocation* tileLocation : map) {
-		if (showdialog && tiles_done % 4096 == 0) {
+	for(TileLocation* tileLocation : map) {
+		if(showdialog && tiles_done % 4096 == 0) {
 			gui.SetLoadDone(static_cast<int32_t>(tiles_done / double(map.tilecount) * 100.0));
 		}
 
@@ -743,27 +713,27 @@ void Editor::borderizeMap(bool showdialog)
 		++tiles_done;
 	}
 
-	if (showdialog) {
+	if(showdialog) {
 		gui.DestroyLoadBar();
 	}
 }
 
 void Editor::randomizeSelection()
 {
-	if (selection.size() == 0) {
+	if(selection.size() == 0) {
 		gui.SetStatusText(wxT("No items selected. Can't randomize."));
 	}
 
 	Action* action = actionQueue->createAction(ACTION_RANDOMIZE);
-	for (Tile* tile : selection) {
+	for(Tile* tile : selection) {
 		Tile* newTile = tile->deepCopy(map);
 		GroundBrush* groundBrush = newTile->getGroundBrush();
-		if (groundBrush && groundBrush->isReRandomizable()) {
+		if(groundBrush && groundBrush->isReRandomizable()) {
 			groundBrush->draw(&map, newTile, nullptr);
 
 			Item* oldGround = tile->ground;
 			Item* newGround = newTile->ground;
-			if (oldGround && newGround) {
+			if(oldGround && newGround) {
 				newGround->setActionID(oldGround->getActionID());
 				newGround->setUniqueID(oldGround->getUniqueID());
 			}
@@ -777,13 +747,13 @@ void Editor::randomizeSelection()
 
 void Editor::randomizeMap(bool showdialog)
 {
-	if (showdialog) {
+	if(showdialog) {
 		gui.CreateLoadBar(wxT("Randomizing map..."));
 	}
 
 	uint64_t tiles_done = 0;
-	for (TileLocation* tileLocation : map) {
-		if (showdialog && tiles_done % 4096 == 0) {
+	for(TileLocation* tileLocation : map) {
+		if(showdialog && tiles_done % 4096 == 0) {
 			gui.SetLoadDone(static_cast<int32_t>(tiles_done / double(map.tilecount) * 100.0));
 		}
 
@@ -791,11 +761,11 @@ void Editor::randomizeMap(bool showdialog)
 		ASSERT(tile);
 
 		GroundBrush* groundBrush = tile->getGroundBrush();
-		if (groundBrush) {
+		if(groundBrush) {
 			Item* oldGround = tile->ground;
 
 			uint16_t actionId, uniqueId;
-			if (oldGround) {
+			if(oldGround) {
 				actionId = oldGround->getActionID();
 				uniqueId = oldGround->getUniqueID();
 			} else {
@@ -805,7 +775,7 @@ void Editor::randomizeMap(bool showdialog)
 			groundBrush->draw(&map, tile, nullptr);
 
 			Item* newGround = tile->ground;
-			if (newGround) {
+			if(newGround) {
 				newGround->setActionID(actionId);
 				newGround->setUniqueID(uniqueId);
 			}
@@ -814,12 +784,13 @@ void Editor::randomizeMap(bool showdialog)
 		++tiles_done;
 	}
 
-	if (showdialog) {
+	if(showdialog) {
 		gui.DestroyLoadBar();
 	}
 }
 
-void Editor::clearInvalidHouseTiles(bool showdialog) {
+void Editor::clearInvalidHouseTiles(bool showdialog)
+{
 	if(showdialog) {
 		gui.CreateLoadBar(wxT("Clearing invalid house tiles..."));
 	}
@@ -852,10 +823,7 @@ void Editor::clearInvalidHouseTiles(bool showdialog) {
 	}
 
 	uint64_t tiles_done = 0;
-	for(MapIterator map_iter = map.begin();
-			map_iter != map.end();
-			++map_iter)
-	{
+	for(MapIterator map_iter = map.begin(); map_iter != map.end(); ++map_iter) {
 		if(showdialog && tiles_done % 4096 == 0) {
 			gui.SetLoadDone(int(tiles_done / double(map.tilecount) * 100.0));
 		}
@@ -875,17 +843,14 @@ void Editor::clearInvalidHouseTiles(bool showdialog) {
 	}
 }
 
-void Editor::clearModifiedTileState(bool showdialog) {
+void Editor::clearModifiedTileState(bool showdialog)
+{
 	if(showdialog) {
 		gui.CreateLoadBar(wxT("Clearing modified state from all tiles..."));
 	}
-
 	
 	uint64_t tiles_done = 0;
-	for(MapIterator map_iter = map.begin();
-			map_iter != map.end();
-			++map_iter)
-	{
+	for(MapIterator map_iter = map.begin(); map_iter != map.end(); ++map_iter) {
 		if(showdialog && tiles_done % 4096 == 0) {
 			gui.SetLoadDone(int(tiles_done / double(map.tilecount) * 100.0));
 		}
@@ -912,9 +877,7 @@ void Editor::moveSelection(Position offset)
 	TileVector tmp_storage;
 
 	// Update the tiles with the newd positions
-	for(TileVector::iterator it = selection.begin();
-		it != selection.end(); ++it)
-	{
+	for(TileVector::iterator it = selection.begin(); it != selection.end(); ++it) {
 		// First we get the old tile and it's position
 		Tile* tile = (*it);
 		//const Position pos = tile->getPosition();
@@ -930,10 +893,7 @@ void Editor::moveSelection(Position offset)
 		// Get all the selected items from the NEW source tile and iterate through them
 		// This transfers ownership to the temporary tile
 		ItemVector tile_selection = new_src_tile->popSelectedItems();
-		for(ItemVector::iterator iit = tile_selection.begin();
-			iit != tile_selection.end();
-			iit++)
-		{
+		for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); iit++) {
 			// Add the copied item to the newd destination tile,
 			Item* item = (*iit);
 			tmp_storage_tile->addItem(item);
@@ -968,14 +928,11 @@ void Editor::moveSelection(Position offset)
 	// Remove old borders (and create some newd?)
 	if(settings.getInteger(Config::USE_AUTOMAGIC) &&
 			settings.getInteger(Config::BORDERIZE_DRAG) &&
-			selection.size() < size_t(settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD)))
-	{
+			selection.size() < size_t(settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
-		for(TileVector::iterator it = tmp_storage.begin();
-			it != tmp_storage.end(); ++it)
-		{
+		for(TileVector::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
 			Position pos = (*it)->getPosition();
 			// Go through all neighbours
 			Tile* t;
@@ -1009,9 +966,7 @@ void Editor::moveSelection(Position offset)
 
 	// New action for adding the destination tiles
 	action = actionQueue->createAction(batchAction);
-	for(TileVector::iterator it = tmp_storage.begin();
-		it != tmp_storage.end(); ++it)
-	{
+	for(TileVector::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
 		Tile* tile = (*it);
 		const Position old_pos = tile->getPosition();
 		Position new_pos;
@@ -1051,8 +1006,7 @@ void Editor::moveSelection(Position offset)
 	// Create borders
 	if(settings.getInteger(Config::USE_AUTOMAGIC) &&
 			settings.getInteger(Config::BORDERIZE_DRAG) &&
-			selection.size() < size_t(settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD)))
-	{
+			selection.size() < size_t(settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
@@ -1104,7 +1058,8 @@ void Editor::moveSelection(Position offset)
 	selection.updateSelectionCount();
 }
 
-void Editor::destroySelection() {
+void Editor::destroySelection()
+{
 	if(selection.size() == 0) {
 		gui.SetStatusText(wxT("No selected items to delete."));
 	} else {
@@ -1122,10 +1077,7 @@ void Editor::destroySelection() {
 			Tile* newtile = tile->deepCopy(map);
 
 			ItemVector tile_selection = newtile->popSelectedItems();
-			for(ItemVector::iterator iit = tile_selection.begin();
-				iit != tile_selection.end();
-				++iit)
-			{
+			for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
 				++item_count;
 				// Delete the items from the tile
 				delete *iit;
@@ -1195,7 +1147,8 @@ void Editor::destroySelection() {
 }
 
 	// Macro to avoid useless code repetition
-void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder, Tile* buffer_tile, Tile* new_tile) {
+void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder, Tile* buffer_tile, Tile* new_tile)
+{
 	if(doodad_brush->doNewBorders() && settings.getInteger(Config::USE_AUTOMAGIC)) {
 		tilestoborder.push_back(Position(new_tile->getPosition().x, new_tile->getPosition().y, new_tile->getPosition().z));
 		if(buffer_tile->hasGround()) {
@@ -1213,17 +1166,14 @@ void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder
 	}
 }
 
-void removeDuplicateWalls(Tile* buffer, Tile* tile) {
-	for(ItemVector::const_iterator iter = buffer->items.begin();
-		iter != buffer->items.end();
-		++iter)
-	{
+void removeDuplicateWalls(Tile* buffer, Tile* tile)
+{
+	for(ItemVector::const_iterator iter = buffer->items.begin(); iter != buffer->items.end(); ++iter) {
 		if((*iter)->getWallBrush()) {
 			tile->cleanWalls((*iter)->getWallBrush());
 		}
 	}
 }
-
 
 void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 {
@@ -1244,13 +1194,10 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 		Position delta_pos = offset - Position(0x8000, 0x8000, 0x8);
 		PositionList tilestoborder;
 
-		for(MapIterator map_iter = buffer_map->begin();
-				map_iter != buffer_map->end();
-				++map_iter)
-		{
+		for(MapIterator map_iter = buffer_map->begin(); map_iter != buffer_map->end(); ++map_iter) {
 			Tile* buffer_tile = (*map_iter)->get();
 			Position pos = buffer_tile->getPosition() + delta_pos;
-			if(pos.isValid() == false) {
+			if(!pos.isValid()) {
 				continue;
 			}
 			
@@ -1261,10 +1208,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 				if(tile) {
 					bool place = true;
 					if(!doodad_brush->placeOnDuplicate() && !alt) {
-						for(ItemVector::const_iterator iter = tile->items.begin();
-							iter != tile->items.end();
-							++iter)
-						{
+						for(ItemVector::const_iterator iter = tile->items.begin(); iter != tile->items.end(); ++iter) {
 							if(doodad_brush->ownsItem(*iter)) {
 								place = false;
 								break;
@@ -1286,13 +1230,10 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 					action->addChange(newd Change(new_tile));
 				}
 			} else {
-				if(tile && tile->isBlocking() == false) {
+				if(tile && !tile->isBlocking()) {
 					bool place = true;
 					if(!doodad_brush->placeOnDuplicate() && !alt) {
-						for(ItemVector::const_iterator iter = tile->items.begin();
-							iter != tile->items.end();
-							++iter)
-						{
+						for(ItemVector::const_iterator iter = tile->items.begin(); iter != tile->items.end(); ++iter) {
 							if(doodad_brush->ownsItem(*iter)) {
 								place = false;
 								break;
@@ -1318,10 +1259,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 			tilestoborder.sort();
 			tilestoborder.unique();
 
-			for(PositionList::const_iterator iter = tilestoborder.begin();
-					iter != tilestoborder.end();
-					++iter)
-			{
+			for(PositionList::const_iterator iter = tilestoborder.begin(); iter != tilestoborder.end(); ++iter) {
 				Tile* t = map.getTile(*iter);
 				if(t) {
 					Tile* new_tile = t->deepCopy(map);
@@ -1429,7 +1367,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, bool alt, bool dodr
 					brush->draw(&map, new_tile);
 					new_tile->borderize(&map);
 					action->addChange(newd Change(new_tile));
-				} else if(dodraw == false && tile->hasOptionalBorder()) {
+				} else if(!dodraw && tile->hasOptionalBorder()) {
 					Tile* new_tile = tile->deepCopy(map);
 					brush->undraw(&map, new_tile);
 					new_tile->borderize(&map);
@@ -1828,7 +1766,7 @@ LiveServer* Editor::StartLiveServer()
 
 void Editor::BroadcastNodes(DirtyList& dirtyList)
 {
-	if (IsLiveClient()) {
+	if(IsLiveClient()) {
 		live_client->sendChanges(dirtyList);
 	} else {
 		live_server->broadcastNodes(dirtyList);
@@ -1838,14 +1776,14 @@ void Editor::BroadcastNodes(DirtyList& dirtyList)
 void Editor::CloseLiveServer()
 {
 	ASSERT(IsLive());
-	if (live_client) {
+	if(live_client) {
 		live_client->close();
 
 		delete live_client;
 		live_client = nullptr;
 	}
 	
-	if (live_server) {
+	if(live_server) {
 		live_server->close();
 
 		delete live_server;

@@ -97,17 +97,20 @@ HousePalettePanel::HousePalettePanel(wxWindow* parent, wxWindowID id) :
 	SetSizerAndFit(topsizer);
 }
 
-HousePalettePanel::~HousePalettePanel() {
-	// ...
+HousePalettePanel::~HousePalettePanel()
+{
+	////
 }
 
-void HousePalettePanel::SetMap(Map* m) {
+void HousePalettePanel::SetMap(Map* m)
+{
 	gui.house_brush->setHouse(nullptr);
 	map = m;
 	OnUpdate();
 }
 
-void HousePalettePanel::OnSwitchIn() {
+void HousePalettePanel::OnSwitchIn()
+{
 	PalettePanel::OnSwitchIn();
 	// Extremely ugly hack to fix layout issue
 	if(do_resize_on_display) {
@@ -116,22 +119,24 @@ void HousePalettePanel::OnSwitchIn() {
 	}
 }
 
-void HousePalettePanel::OnLayoutFixTimer(wxTimerEvent& WXUNUSED(event)) {
+void HousePalettePanel::OnLayoutFixTimer(wxTimerEvent& WXUNUSED(event))
+{
 	wxWindow* w = this;
 	while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
 	
-	if(w)
-	{
+	if(w) {
 		w->SetSize(w->GetSize().GetWidth(), w->GetSize().GetHeight() + 1);
 		w->SetSize(w->GetSize().GetWidth(), w->GetSize().GetHeight() - 1);
 	}
 }
 
-void HousePalettePanel::SelectFirstBrush() {
+void HousePalettePanel::SelectFirstBrush()
+{
 	SelectHouseBrush();
 }
 
-Brush* HousePalettePanel::GetSelectedBrush() const {
+Brush* HousePalettePanel::GetSelectedBrush() const
+{
 	if(select_position_button->GetValue()) {
 		House* house = GetCurrentlySelectedHouse();
 		if(house)
@@ -140,20 +145,17 @@ Brush* HousePalettePanel::GetSelectedBrush() const {
 	} else if(house_brush_button->GetValue()) {
 		gui.house_brush->setHouse(GetCurrentlySelectedHouse());
 		return (gui.house_brush->getHouseID() != 0? gui.house_brush : nullptr);
-	} else {
-		return nullptr;
 	}
+	return nullptr;
 }
 
-bool HousePalettePanel::SelectBrush(const Brush* whatbrush) {
+bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
+{
 	const HouseBrush* house_brush = dynamic_cast<const HouseBrush*>(whatbrush);
 	const SpawnBrush* spawn_brush = dynamic_cast<const SpawnBrush*>(whatbrush);
 
 	if(house_brush && map != nullptr) {
-		for(HouseMap::iterator house_iter = map->houses.begin();
-				house_iter != map->houses.end();
-				++house_iter)
-		{
+		for(HouseMap::iterator house_iter = map->houses.begin(); house_iter != map->houses.end(); ++house_iter) {
 			if(house_iter->second->id == house_brush->getHouseID()) {
 				for(uint32_t i = 0; i < town_choice->GetCount(); ++i) {
 					Town* town = reinterpret_cast<Town*>(town_choice->GetClientData(i));
@@ -177,15 +179,18 @@ bool HousePalettePanel::SelectBrush(const Brush* whatbrush) {
 	return false;
 }
 
-int HousePalettePanel::GetSelectedBrushSize() const {
+int HousePalettePanel::GetSelectedBrushSize() const
+{
 	return 0;
 }
 
-PaletteType HousePalettePanel::GetType() const {
+PaletteType HousePalettePanel::GetType() const
+{
 	return TILESET_HOUSE;
 }
 
-void HousePalettePanel::SelectTown(size_t index) {
+void HousePalettePanel::SelectTown(size_t index)
+{
 	ASSERT(town_choice->GetCount() >= index);
 
 	if(map == nullptr || town_choice->GetCount() == 0) {
@@ -197,17 +202,14 @@ void HousePalettePanel::SelectTown(size_t index) {
 		// Clear the old houselist
 		house_list->Clear();
 
-		for(HouseMap::iterator house_iter = map->houses.begin();
-				house_iter != map->houses.end();
-				++house_iter)
-		{
+		for(HouseMap::iterator house_iter = map->houses.begin(); house_iter != map->houses.end(); ++house_iter) {
 			if(what_town) {
 				if(house_iter->second->townid == what_town->getID()) {
 					house_list->Append(wxstr(house_iter->second->getDescription()), house_iter->second);
 				}
 			} else {
 				// "No Town" selected!
-				if (map->towns.getTown(house_iter->second->townid) == nullptr) {
+				if(map->towns.getTown(house_iter->second->townid) == nullptr) {
 					// The town doesn't exist
 					house_list->Append(wxstr(house_iter->second->getDescription()), house_iter->second);
 				}
@@ -218,11 +220,12 @@ void HousePalettePanel::SelectTown(size_t index) {
 		SelectHouse(0);
 		town_choice->SetSelection(index);
 		add_house_button->Enable(what_town != nullptr);
-		ASSERT(what_town == nullptr || add_house_button->IsEnabled() || IsEnabled() == false);
+		ASSERT(what_town == nullptr || add_house_button->IsEnabled() || !IsEnabled());
 	}
 }
 
-void HousePalettePanel::SelectHouse(size_t index) {
+void HousePalettePanel::SelectHouse(size_t index)
+{
 	ASSERT(house_list->GetCount() >= index);
 
 	if(house_list->GetCount() > 0) {
@@ -245,14 +248,16 @@ void HousePalettePanel::SelectHouse(size_t index) {
 	gui.RefreshView();
 }
 
-House* HousePalettePanel::GetCurrentlySelectedHouse() const {
+House* HousePalettePanel::GetCurrentlySelectedHouse() const
+{
 	if(house_list->GetCount() > 0) {
 		return reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
 	}
 	return nullptr;
 }
 
-void HousePalettePanel::SelectHouseBrush() {
+void HousePalettePanel::SelectHouseBrush()
+{
 	if(house_list->GetCount() > 0) {
 		house_brush_button->SetValue(true);
 		select_position_button->SetValue(false);
@@ -262,7 +267,8 @@ void HousePalettePanel::SelectHouseBrush() {
 	}
 }
 
-void HousePalettePanel::SelectExitBrush() {
+void HousePalettePanel::SelectExitBrush()
+{
 	if(house_list->GetCount() > 0) {
 		house_brush_button->SetValue(false);
 		select_position_button->SetValue(true);
@@ -279,13 +285,9 @@ void HousePalettePanel::OnUpdate()
 	town_choice->Clear();
 	house_list->Clear();
 
-	if(map->towns.count() != 0)
-	{
+	if(map->towns.count() != 0) {
 		// Create choice control
-		for(TownMap::iterator town_iter = map->towns.begin();
-				town_iter != map->towns.end();
-				++town_iter)
-		{
+		for(TownMap::iterator town_iter = map->towns.begin(); town_iter != map->towns.end(); ++town_iter) {
 			town_choice->Append(wxstr(town_iter->second->getName()), town_iter->second);
 		}
 		town_choice->Append(wxT("No Town"), (void*)(nullptr));
@@ -297,9 +299,7 @@ void HousePalettePanel::OnUpdate()
 			SelectTown(old_town_selection-1);
 		
 		house_list->Enable(true);
-	}
-	else
-	{
+	} else {
 		town_choice->Append(wxT("No Town"), (void*)(nullptr));
 		select_position_button->Enable(false);
 		select_position_button->SetValue(false);
@@ -377,12 +377,10 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 		return;
 
 	House* house = reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
-	if(house)
-	{
+	if(house) {
 		wxDialog* d = newd EditHouseDialog(gui.root, map, house);
 		int ret = d->ShowModal();
-		if(ret == 1)
-		{
+		if(ret == 1) {
 			// Something changed, change name of house
 			house_list->SetString(house_list->GetSelection(), wxstr(house->getDescription()));
 			refresh_timer.Start(300, true);
@@ -393,20 +391,17 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 {
 	int selection_index = house_list->GetSelection();
-	if(selection_index != wxNOT_FOUND)
-	{
+	if(selection_index != wxNOT_FOUND) {
 		House* house = reinterpret_cast<House*>(house_list->GetClientData(selection_index));
 		map->houses.removeHouse(house);
 		house_list->Delete(selection_index);
 		refresh_timer.Start(300, true);
 
-		if(int(house_list->GetCount()) <= selection_index)
-		{
+		if(int(house_list->GetCount()) <= selection_index) {
 			selection_index -= 1;
 		}
 
-		if(selection_index >= 0 && house_list->GetCount())
-		{
+		if(selection_index >= 0 && house_list->GetCount()) {
 			house_list->SetSelection(selection_index);
 		}
 		gui.SelectBrush();
@@ -468,11 +463,13 @@ EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
 	SetSizerAndFit(sizer);
 }
 
-EditHouseDialog::~EditHouseDialog() {
-	// ...
+EditHouseDialog::~EditHouseDialog()
+{
+	////
 }
 
-void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event)) {
+void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
+{
 	if(Validate() && TransferDataFromWindow()) {
 		// Verify the newd information
 		long new_house_rent;
@@ -490,10 +487,7 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event)) {
 
 		if(settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
 			Houses& houses = map->houses;
-			for(HouseMap::const_iterator house_iter = houses.begin();
-					house_iter != houses.end();
-					++house_iter)
-			{
+			for(HouseMap::const_iterator house_iter = houses.begin(); house_iter != houses.end(); ++house_iter) {
 				House* house = house_iter->second;
 				ASSERT(house);
 				if(wxstr(house->name) == house_name && house->id != what_house->id) {
@@ -514,7 +508,8 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event)) {
 	}
 }
 
-void EditHouseDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event)) {
+void EditHouseDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event))
+{
 	// Just close this window
 	EndModal(0);
 }

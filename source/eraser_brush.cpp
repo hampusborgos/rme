@@ -12,28 +12,34 @@
 //=============================================================================
 // Eraser brush
 
-EraserBrush::EraserBrush() {
+EraserBrush::EraserBrush()
+{
+	////
 }
 
-EraserBrush::~EraserBrush() {
+EraserBrush::~EraserBrush()
+{
+	////
 }
 
-std::string EraserBrush::getName() const {
+std::string EraserBrush::getName() const
+{
 	return "Eraser";
 }
 
-int EraserBrush::getLookID() const {
+int EraserBrush::getLookID() const
+{
 	return EDITOR_SPRITE_ERASER;
 }
 
-bool EraserBrush::canDraw(BaseMap* map, const Position& position) const {
+bool EraserBrush::canDraw(BaseMap* map, const Position& position) const
+{
 	return true;
 }
 
-void EraserBrush::undraw(BaseMap* map, Tile* tile) {
-	for(ItemVector::iterator item_iter = tile->items.begin();
-			item_iter != tile->items.end();)
-	{
+void EraserBrush::undraw(BaseMap* map, Tile* tile)
+{
+	for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();) {
 		Item* item = *item_iter;
 		if(item->isComplex() && settings.getInteger(Config::ERASER_LEAVE_UNIQUE)) {
 			++item_iter;
@@ -44,7 +50,7 @@ void EraserBrush::undraw(BaseMap* map, Tile* tile) {
 	}
 	if(tile->ground) {
 		if(settings.getInteger(Config::ERASER_LEAVE_UNIQUE)) {
-			if(tile->ground->isComplex() == false) {
+			if(!tile->ground->isComplex()) {
 				delete tile->ground;
 				tile->ground = nullptr;
 			}
@@ -55,11 +61,10 @@ void EraserBrush::undraw(BaseMap* map, Tile* tile) {
 	}
 }
 
-void EraserBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void EraserBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	// Draw is undraw, undraw is super-undraw!
-	for(ItemVector::iterator item_iter = tile->items.begin();
-			item_iter != tile->items.end();)
-	{
+	for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();) {
 		Item* item = *item_iter;
 		if((item->isComplex() || item->isBorder()) && settings.getInteger(Config::ERASER_LEAVE_UNIQUE)) {
 			++item_iter;

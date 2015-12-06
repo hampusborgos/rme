@@ -19,7 +19,7 @@ LivePeer::LivePeer(LiveServer* server, boost::asio::ip::tcp::socket socket) : Li
 
 LivePeer::~LivePeer()
 {
-	if (socket.is_open()) {
+	if(socket.is_open()) {
 		socket.close();
 	}
 }
@@ -31,11 +31,11 @@ void LivePeer::close()
 
 bool LivePeer::handleError(const boost::system::error_code& error)
 {
-	if (error == boost::asio::error::eof || error == boost::asio::error::connection_reset) {
+	if(error == boost::asio::error::eof || error == boost::asio::error::connection_reset) {
 		logMessage(wxString() + getHostName() + wxT(": disconnected."));
 		close();
 		return true;
-	} else if (error == boost::asio::error::connection_aborted) {
+	} else if(error == boost::asio::error::connection_aborted) {
 		logMessage(name + wxT(" have left the server."));
 		return true;
 	}
@@ -53,11 +53,11 @@ void LivePeer::receiveHeader()
 	boost::asio::async_read(socket,
 		boost::asio::buffer(readMessage.buffer, 4),
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
-			if (error) {
-				if (!handleError(error)) {
+			if(error) {
+				if(!handleError(error)) {
 					logMessage(wxString() + getHostName() + wxT(": ") + error.message());
 				}
-			} else if (bytesReceived < 4) {
+			} else if(bytesReceived < 4) {
 				logMessage(wxString() + getHostName() + wxT(": Could not receive header[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
 			} else {
 				receive(readMessage.read<uint32_t>());
@@ -72,15 +72,15 @@ void LivePeer::receive(uint32_t packetSize)
 	boost::asio::async_read(socket,
 		boost::asio::buffer(&readMessage.buffer[readMessage.position], packetSize),
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
-			if (error) {
-				if (!handleError(error)) {
+			if(error) {
+				if(!handleError(error)) {
 					logMessage(wxString() + getHostName() + wxT(": ") + error.message());
 				}
-			} else if (bytesReceived < readMessage.buffer.size() - 4) {
+			} else if(bytesReceived < readMessage.buffer.size() - 4) {
 				logMessage(wxString() + getHostName() + wxT(": Could not receive packet[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
 			} else {
 				wxTheApp->CallAfter([this]() {
-					if (connected) {
+					if(connected) {
 						parseEditorPacket(std::move(readMessage));
 					} else {
 						parseLoginPacket(std::move(readMessage));
@@ -98,7 +98,7 @@ void LivePeer::send(NetworkMessage& message)
 	boost::asio::async_write(socket,
 		boost::asio::buffer(message.buffer, message.size + 4),
 		[this](const boost::system::error_code& error, size_t bytesTransferred) -> void {
-			if (error) {
+			if(error) {
 				logMessage(wxString() + getHostName() + wxT(": ") + error.message());
 			}
 		}
@@ -108,7 +108,7 @@ void LivePeer::send(NetworkMessage& message)
 void LivePeer::parseLoginPacket(NetworkMessage message)
 {
 	uint8_t packetType;
-	while (message.position < message.buffer.size()) {
+	while(message.position < message.buffer.size()) {
 		packetType = message.read<uint8_t>();
 		switch (packetType) {
 			case PACKET_HELLO_FROM_CLIENT:
@@ -129,7 +129,7 @@ void LivePeer::parseLoginPacket(NetworkMessage message)
 void LivePeer::parseEditorPacket(NetworkMessage message)
 {
 	uint8_t packetType;
-	while (message.position < message.buffer.size()) {
+	while(message.position < message.buffer.size()) {
 		packetType = message.read<uint8_t>();
 		switch (packetType) {
 			case PACKET_REQUEST_NODES:
@@ -164,13 +164,13 @@ void LivePeer::parseEditorPacket(NetworkMessage message)
 
 void LivePeer::parseHello(NetworkMessage& message)
 {
-	if (connected) {
+	if(connected) {
 		close();
 		return;
 	}
 
 	uint32_t rmeVersion = message.read<uint32_t>();
-	if (rmeVersion != __RME_VERSION_ID__) {
+	if(rmeVersion != __RME_VERSION_ID__) {
 		NetworkMessage outMessage;
 		outMessage.write<uint8_t>(PACKET_KICK);
 		outMessage.write<std::string>("Wrong editor version.");
@@ -181,7 +181,7 @@ void LivePeer::parseHello(NetworkMessage& message)
 	}
 
 	uint32_t netVersion = message.read<uint32_t>();
-	if (netVersion != __LIVE_NET_VERSION__) {
+	if(netVersion != __LIVE_NET_VERSION__) {
 		NetworkMessage outMessage;
 		outMessage.write<uint8_t>(PACKET_KICK);
 		outMessage.write<std::string>("Wrong protocol version.");
@@ -195,7 +195,7 @@ void LivePeer::parseHello(NetworkMessage& message)
 	std::string nickname = message.read<std::string>();
 	std::string password = message.read<std::string>();
 
-	if (server->getPassword() != wxString(password.c_str(), wxConvUTF8)) {
+	if(server->getPassword() != wxString(password.c_str(), wxConvUTF8)) {
 		log->Message(wxT("Client tried to connect, but used the wrong password, connection refused."));
 		close();
 		return;
@@ -205,7 +205,7 @@ void LivePeer::parseHello(NetworkMessage& message)
 	log->Message(name + wxT(" (") + getHostName() + wxT(") connected."));
 
 	NetworkMessage outMessage;
-	if (static_cast<ClientVersionID>(clientVersion) != gui.GetCurrentVersionID()) {
+	if(static_cast<ClientVersionID>(clientVersion) != gui.GetCurrentVersionID()) {
 		outMessage.write<uint8_t>(PACKET_CHANGE_CLIENT_VERSION);
 		outMessage.write<uint32_t>(gui.GetCurrentVersionID());
 	} else {
@@ -216,7 +216,7 @@ void LivePeer::parseHello(NetworkMessage& message)
 
 void LivePeer::parseReady(NetworkMessage& message)
 {
-	if (connected) {
+	if(connected) {
 		close();
 		return;
 	}
@@ -225,7 +225,7 @@ void LivePeer::parseReady(NetworkMessage& message)
 
 	// Find free client id
 	clientId = server->getFreeClientId();
-	if (clientId == 0) {
+	if(clientId == 0) {
 		NetworkMessage outMessage;
 		outMessage.write<uint8_t>(PACKET_KICK);
 		outMessage.write<std::string>("Server is full.");
@@ -252,7 +252,7 @@ void LivePeer::parseReady(NetworkMessage& message)
 void LivePeer::parseNodeRequest(NetworkMessage& message)
 {
 	Map& map = server->getEditor()->map;
-	for (uint32_t nodes = message.read<uint32_t>(); nodes != 0; --nodes) {
+	for(uint32_t nodes = message.read<uint32_t>(); nodes != 0; --nodes) {
 		uint32_t ind = message.read<uint32_t>();
 
 		int32_t ndx = ind >> 18;
@@ -260,7 +260,7 @@ void LivePeer::parseNodeRequest(NetworkMessage& message)
 		bool underground = ind & 1;
 	
 		QTreeNode* node = map.createLeaf(ndx * 4, ndy * 4);
-		if (node) {
+		if(node) {
 			sendNode(clientId, node, ndx, ndy, underground ? 0xFF00 : 0x00FF);
 		}
 	}
@@ -280,12 +280,12 @@ void LivePeer::parseReceiveChanges(NetworkMessage& message)
 	NetworkedAction* action = static_cast<NetworkedAction*>(editor.actionQueue->createAction(ACTION_REMOTE));
 	action->owner = clientId;
 
-	if (tileNode) do {
+	if(tileNode) do {
 		Tile* tile = readTile(tileNode, editor, nullptr);
-		if (tile) {
+		if(tile) {
 			action->addChange(newd Change(tile));
 		}
-	} while (tileNode->advance());
+	} while(tileNode->advance());
 	mapReader.close();
 
 	editor.actionQueue->addAction(action);
@@ -311,7 +311,7 @@ void LivePeer::parseCursorUpdate(NetworkMessage& message)
 	LiveCursor cursor = readCursor(message);
 	cursor.id = clientId;
 
-	if (cursor.color != color) {
+	if(cursor.color != color) {
 		setUsedColor(cursor.color);
 		server->updateClientList();
 	}

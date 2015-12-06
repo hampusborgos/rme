@@ -22,34 +22,37 @@ RAWBrush::RAWBrush(uint16_t itemid) :
 		itemtype = &it;
 }
 
-RAWBrush::~RAWBrush() {
-
+RAWBrush::~RAWBrush()
+{
+	////
 }
 
-int RAWBrush::getLookID() const {
+int RAWBrush::getLookID() const
+{
 	if(itemtype)
 		return itemtype->clientID;
 	return 0;
 }
 
-uint16_t RAWBrush::getItemID() const {
+uint16_t RAWBrush::getItemID() const
+{
     return itemtype->id;
 }
 
-std::string RAWBrush::getName() const {
+std::string RAWBrush::getName() const
+{
 	if(itemtype)
 		return i2s(itemtype->id) + " - " + itemtype->name + itemtype->editorsuffix;
 	return "RAWBrush";
 }
 
-void RAWBrush::undraw(BaseMap* map, Tile* tile) {
+void RAWBrush::undraw(BaseMap* map, Tile* tile)
+{
 	if(tile->ground && tile->ground->getID() == itemtype->id) {
 		delete tile->ground;
 		tile->ground = nullptr;
 	}
-	for(ItemVector::iterator iter = tile->items.begin();
-			iter != tile->items.end();)
-	{
+	for(ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
 		Item* item = *iter;
 		if(item->getID() == itemtype->id) {
 			delete item;
@@ -60,14 +63,13 @@ void RAWBrush::undraw(BaseMap* map, Tile* tile) {
 	}
 }
 
-void RAWBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
-	if(!itemtype) {return;}
+void RAWBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
+	if(!itemtype) return;
 
 	bool b = parameter? *reinterpret_cast<bool*>(parameter) : false;
 	if((settings.getInteger(Config::RAW_LIKE_SIMONE) && !b) && itemtype->alwaysOnBottom && itemtype->alwaysOnTopOrder == 2) {
-		for(ItemVector::iterator iter = tile->items.begin();
-				iter != tile->items.end();)
-		{
+		for(ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
 			Item* item = *iter;
 			if(item->getTopOrder() == itemtype->alwaysOnTopOrder) {
 				delete item;

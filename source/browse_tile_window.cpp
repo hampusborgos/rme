@@ -53,6 +53,7 @@ wxVListBox(parent, id, wxDefaultPosition, wxSize(200, 180), wxLB_MULTIPLE), edit
 
 BrowseTileListBox::~BrowseTileListBox()
 {
+	////
 }
 
 void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
@@ -61,15 +62,13 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	Item* item = item_iterator->second;
 	
 	Sprite* sprite = gui.gfx.getSprite(item->getClientID());
-	if (sprite)
+	if(sprite)
 		sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
-	if (IsSelected(n))
-	{
+	if(IsSelected(n)) {
 		item->select();
 		dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
-	}
-	else {
+	} else {
 		item->deselect();
 		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 	}
@@ -86,15 +85,14 @@ wxCoord BrowseTileListBox::OnMeasureItem(size_t n) const
 
 void BrowseTileListBox::RemoveSelected()
 {
-	if (GetItemCount() == 0 || GetSelectedCount() == 0) return;
+	if(GetItemCount() == 0 || GetSelectedCount() == 0) return;
 
 	Clear();
 	items.clear();
 
 	// Delete the items from the tile
 	ItemVector tile_selection = edit_tile->popSelectedItems();
-	for (ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit)
-	{
+	for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
 		delete *iit;
 	}
 
@@ -106,14 +104,12 @@ void BrowseTileListBox::RemoveSelected()
 void BrowseTileListBox::UpdateItems()
 {
 	int n = 0;
-	for (ItemVector::reverse_iterator it = edit_tile->items.rbegin(); it != edit_tile->items.rend(); ++it)
-	{
+	for(ItemVector::reverse_iterator it = edit_tile->items.rbegin(); it != edit_tile->items.rend(); ++it) {
 		items[n] = (*it);
 		++n;
 	}
 
-	if (edit_tile->ground)
-	{
+	if(edit_tile->ground) {
 		items[n] = edit_tile->ground;
 		++n;
 	}
@@ -164,6 +160,7 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 
 BrowseTileWindow::~BrowseTileWindow()
 {
+	////
 }
 
 void BrowseTileWindow::OnClickDelete(wxCommandEvent& WXUNUSED(event))

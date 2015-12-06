@@ -36,22 +36,26 @@ SearchResultWindow::SearchResultWindow(wxWindow* parent) :
 	SetSizerAndFit(sizer);
 }
 
-SearchResultWindow::~SearchResultWindow() {
+SearchResultWindow::~SearchResultWindow()
+{
 	Clear();
 }
 
-void SearchResultWindow::Clear() {
+void SearchResultWindow::Clear()
+{
 	for(uint32_t n = 0; n < result_list->GetCount(); ++n) {
 		delete reinterpret_cast<Position*>(result_list->GetClientData(n));
 	}
 	result_list->Clear();
 }
 
-void SearchResultWindow::AddPosition(wxString description, Position pos) {
+void SearchResultWindow::AddPosition(wxString description, Position pos)
+{
 	result_list->Append(description << wxT(" (") << pos.x << wxT(":") << pos.y << wxT(":") << pos.z << wxT(")"), newd Position(pos));
 }
 
-void SearchResultWindow::OnClickResult(wxCommandEvent& event) {
+void SearchResultWindow::OnClickResult(wxCommandEvent& event)
+{
 	Position* pos = reinterpret_cast<Position*>(event.GetClientData());
 	if(pos) {
 		gui.CenterOnPosition(*pos);

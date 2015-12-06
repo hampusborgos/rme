@@ -208,14 +208,18 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	SetSizerAndFit(topsizer);
 }
 
-AboutWindow::~AboutWindow() {
+AboutWindow::~AboutWindow()
+{
+	////
 }
 
-void AboutWindow::OnClickOK(wxCommandEvent& WXUNUSED(event)) {
+void AboutWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
+{
 	EndModal(0);
 }
 
-void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event)) {
+void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event))
+{
 	FileName path;
 	try {
 		path = wxStandardPaths::Get().GetExecutablePath();
@@ -234,7 +238,8 @@ void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event)) {
 	gui.ShowTextBox(this, wxT("License"), wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
 }
 
-void AboutWindow::OnTetris(wxCommandEvent&) {
+void AboutWindow::OnTetris(wxCommandEvent&)
+{
 	if(!game_panel) {
 		DestroyChildren();
 		game_panel = newd TetrisPanel(this);
@@ -246,7 +251,8 @@ void AboutWindow::OnTetris(wxCommandEvent&) {
 	}
 }
 
-void AboutWindow::OnSnake(wxCommandEvent&) {
+void AboutWindow::OnSnake(wxCommandEvent&)
+{
 	if(!game_panel) {
 		DestroyChildren();
 		game_panel = newd SnakePanel(this);
@@ -279,32 +285,40 @@ GamePanel::GamePanel(wxWindow *parent, int width, int height) :
 	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 }
 
-GamePanel::~GamePanel() {
+GamePanel::~GamePanel()
+{
+	////
 }
 
-void GamePanel::OnPaint(wxPaintEvent&) {
+void GamePanel::OnPaint(wxPaintEvent&)
+{
 	wxBufferedPaintDC pdc(this);
 	Render(pdc);
 }
 
-void GamePanel::OnKeyDown(wxKeyEvent& event) {
+void GamePanel::OnKeyDown(wxKeyEvent& event)
+{
 	switch(event.GetKeyCode()) {
 		case WXK_ESCAPE: {
 			if(dead) return;
 			wxDialog* dlg = (wxDialog*)GetParent();
 			dlg->EndModal(0);
-		} break;
+			break;
+		}
 		default: {
 			OnKey(event, true);
-		} break;
+			break;
+		}
 	}
 }
 
-void GamePanel::OnKeyUp(wxKeyEvent& event) {
+void GamePanel::OnKeyUp(wxKeyEvent& event)
+{
 	OnKey(event, false);
 }
 
-void GamePanel::OnIdle(wxIdleEvent& event) {
+void GamePanel::OnIdle(wxIdleEvent& event)
+{
 	int time = game_timer.Time();
 	if(time > 1000 / getFPS()) {
 		game_timer.Start();
@@ -318,15 +332,18 @@ void GamePanel::OnIdle(wxIdleEvent& event) {
 //=============================================================================
 // TetrisPanel - A window with a Tetris game!
 
-TetrisPanel::TetrisPanel(wxWindow* parent) : GamePanel(parent, 16*TETRIS_MAPWIDTH, 16*TETRIS_MAPHEIGHT) {
+TetrisPanel::TetrisPanel(wxWindow* parent) : GamePanel(parent, 16*TETRIS_MAPWIDTH, 16*TETRIS_MAPHEIGHT)
+{
 	NewGame();
 }
 
-TetrisPanel::~TetrisPanel() {
+TetrisPanel::~TetrisPanel()
+{
+	////
 }
 
-
-const wxBrush& TetrisPanel::GetBrush(Color color) const {
+const wxBrush& TetrisPanel::GetBrush(Color color) const
+{
 	static std::unique_ptr<wxBrush> yellow_brush;
 	static std::unique_ptr<wxBrush> purple_brush;
 
@@ -347,14 +364,15 @@ const wxBrush& TetrisPanel::GetBrush(Color color) const {
 	return *brush;
 }
 
-void TetrisPanel::Render(wxDC& pdc) {
+void TetrisPanel::Render(wxDC& pdc)
+{
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
 	for(int y = 0; y < TETRIS_MAPHEIGHT; ++y) {
 		for(int x = 0; x < TETRIS_MAPWIDTH; ++x) {
 			pdc.SetBrush(GetBrush(map[x][y]));
-			pdc.DrawRectangle(x*16, y*16, 16, 16);
+			pdc.DrawRectangle(x * 16, y * 16, 16, 16);
 		}
 	} 
 
@@ -362,48 +380,56 @@ void TetrisPanel::Render(wxDC& pdc) {
 		for(int x = 0; x < 4; ++x) {
 			if(block.structure[x][y] != NO_COLOR) {
 				pdc.SetBrush(GetBrush(block.structure[x][y]));
-				pdc.DrawRectangle(
-					(block.x + x)*16,
-					(block.y + y)*16,
-					16, 16);
+				pdc.DrawRectangle((block.x + x) * 16, (block.y + y) * 16, 16, 16);
 			}
 		}
 	}
 }
 
-void TetrisPanel::OnKey(wxKeyEvent& event, bool down) {
-	if(!down) return;
-	if(dead) return;
+void TetrisPanel::OnKey(wxKeyEvent& event, bool down)
+{
+	if(!down || dead) return;
+
 	switch(event.GetKeyCode()) {
 		case WXK_SPACE: {
 			if(paused())
 				unpause();
 			else pause();
-		} break;
-		case WXK_NUMPAD_UP: case WXK_UP: {
+			break;
+		}
+		case WXK_NUMPAD_UP:
+		case WXK_UP: {
 			if(dead) return;
 			unpause();
 			RotateBlock();
-		} break;
-		case WXK_NUMPAD_DOWN: case WXK_DOWN: {
+			break;
+		}
+		case WXK_NUMPAD_DOWN:
+		case WXK_DOWN: {
 			if(dead) return;
 			unpause();
 			MoveBlock(0, 1);
-		} break;
-		case WXK_NUMPAD_LEFT: case WXK_LEFT: {
+			break;
+		}
+		case WXK_NUMPAD_LEFT:
+		case WXK_LEFT: {
 			if(dead) return;
 			unpause();
 			MoveBlock(-1, 0);
-		} break;
-		case WXK_NUMPAD_RIGHT: case WXK_RIGHT: {
+			break;
+		}
+		case WXK_NUMPAD_RIGHT:
+		case WXK_RIGHT: {
 			if(dead) return;
 			unpause();
 			MoveBlock(1, 0);
-		} break;
+			break;
+		}
 	}
 }
 
-void TetrisPanel::NewGame() {
+void TetrisPanel::NewGame()
+{
 	NewBlock();
 	score = 0;
 	lines = 0;
@@ -420,29 +446,30 @@ void TetrisPanel::NewGame() {
 	AddScore(0); // Update title
 }
 
-void TetrisPanel::AddScore(int lines_added) {
+void TetrisPanel::AddScore(int lines_added)
+{
 	lines += lines_added;
-	score += lines_added*lines_added*10;
+	score += lines_added*lines_added * 10;
 	wxString title = wxT("Remere's Tetris : ");
 	title << score << wxT(" points  ");
 	title << lines << wxT(" lines");
 	((wxTopLevelWindow*)GetParent())->SetTitle(title);
 }
 
-void TetrisPanel::GameLoop(int time) {
+void TetrisPanel::GameLoop(int time)
+{
 	MoveBlock(0, 1);
 }
 
-bool TetrisPanel::BlockCollisionTest(int mx, int my) const {
+bool TetrisPanel::BlockCollisionTest(int mx, int my) const
+{
 	int nx = block.x + mx;
 	int ny = block.y + my;
 
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			if(block.structure[x][y] != NO_COLOR) {
-				if(nx + x < 0 || nx + x > TETRIS_MAPWIDTH - 1 ||
-					ny + y < 0 || ny + y > TETRIS_MAPHEIGHT - 1)
-				{
+				if(nx + x < 0 || nx + x > TETRIS_MAPWIDTH - 1 || ny + y < 0 || ny + y > TETRIS_MAPHEIGHT - 1) {
 					return true;
 				}
 			}
@@ -461,7 +488,8 @@ bool TetrisPanel::BlockCollisionTest(int mx, int my) const {
 	return false;
 }
 
-void TetrisPanel::RemoveRow(int row) {
+void TetrisPanel::RemoveRow(int row)
+{
 	for(int x = 0; x < TETRIS_MAPWIDTH; ++x) {
 		for(int y = row; y > 0; --y) { //Move all above one step down
 			map[x][y] = map[x][y-1];
@@ -469,7 +497,8 @@ void TetrisPanel::RemoveRow(int row) {
 	}
 }
 
-void TetrisPanel::NewBlock() {
+void TetrisPanel::NewBlock()
+{
 	block.x = TETRIS_MAPWIDTH / 2;
 	block.y = -1;
 
@@ -478,6 +507,7 @@ void TetrisPanel::NewBlock() {
 			block.structure[x][y] = NO_COLOR;
 		}
 	}
+
 	switch(random(FIRST_BLOCK, LAST_BLOCK)) {
 		case BLOCK_TOWER: {
 			block.structure[1][0] = RED;
@@ -485,47 +515,55 @@ void TetrisPanel::NewBlock() {
 			block.structure[1][2] = RED;
 			block.structure[1][3] = RED;
 			block.y = 0;
-		} break;
+			break;
+		}
 		default: case BLOCK_SQUARE: {
 			block.structure[1][1] = BLUE;
 			block.structure[1][2] = BLUE;
 			block.structure[2][1] = BLUE;
 			block.structure[2][2] = BLUE;
-		} break;
+			break;
+		}
 		case BLOCK_TRIANGLE: {
 			block.structure[1][1] = STEEL;
 			block.structure[0][2] = STEEL;
 			block.structure[1][2] = STEEL;
 			block.structure[2][2] = STEEL;
-		} break;
+			break;
+		}
 		case BLOCK_Z: {
 			block.structure[0][1] = YELLOW;
 			block.structure[1][1] = YELLOW;
 			block.structure[1][2] = YELLOW;
 			block.structure[2][2] = YELLOW;
-		} break;
+			break;
+		}
 		case BLOCK_S: {
 			block.structure[2][1] = GREEN;
 			block.structure[1][1] = GREEN;
 			block.structure[1][2] = GREEN;
 			block.structure[0][2] = GREEN;
-		} break;
+			break;
+		}
 		case BLOCK_J: {
 			block.structure[1][1] = WHITE;
 			block.structure[2][1] = WHITE;
 			block.structure[2][2] = WHITE;
 			block.structure[2][3] = WHITE;
-		} break;
+			break;
+		}
 		case BLOCK_L: {
 			block.structure[2][1] = PURPLE;
 			block.structure[1][1] = PURPLE;
 			block.structure[1][2] = PURPLE;
 			block.structure[1][3] = PURPLE;
+			// break; missing add it?
 		}
 	}
 }
 
-void TetrisPanel::MoveBlock(int x, int y) {
+void TetrisPanel::MoveBlock(int x, int y)
+{
 	if(BlockCollisionTest(x, y)) {
 		if(y == 1) { // moving down...
 			if(block.y < 1) { // Out of bounds!
@@ -570,7 +608,8 @@ void TetrisPanel::MoveBlock(int x, int y) {
 	Refresh();
 }
 
-void TetrisPanel::RotateBlock() {
+void TetrisPanel::RotateBlock()
+{
 	Block temp;
 
 	for(int y = 0; y < 4; ++y) {
@@ -582,9 +621,7 @@ void TetrisPanel::RotateBlock() {
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			if(temp.structure[x][y] != NO_COLOR) {
-				if(block.x + x < 0 || block.x + x > TETRIS_MAPWIDTH - 1 ||
-					block.y + y < 0 || block.y + y > TETRIS_MAPHEIGHT - 1)
-				{
+				if(block.x + x < 0 || block.x + x > TETRIS_MAPWIDTH - 1 || block.y + y < 0 || block.y + y > TETRIS_MAPHEIGHT - 1) {
 					return;
 				}
 			}
@@ -613,14 +650,18 @@ void TetrisPanel::RotateBlock() {
 //=============================================================================
 // SnakePanel - A window with a Snake game!
 
-SnakePanel::SnakePanel(wxWindow* parent) : GamePanel(parent, 16*SNAKE_MAPWIDTH, 16*SNAKE_MAPHEIGHT) {
+SnakePanel::SnakePanel(wxWindow* parent) : GamePanel(parent, 16*SNAKE_MAPWIDTH, 16*SNAKE_MAPHEIGHT)
+{
 	NewGame();
 }
 
-SnakePanel::~SnakePanel() {
+SnakePanel::~SnakePanel()
+{
+	////
 }
 
-void SnakePanel::Render(wxDC& pdc) {
+void SnakePanel::Render(wxDC& pdc)
+{
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
@@ -651,38 +692,48 @@ void SnakePanel::Render(wxDC& pdc) {
 	} 
 }
 
-void SnakePanel::OnKey(wxKeyEvent& event, bool down) {
+void SnakePanel::OnKey(wxKeyEvent& event, bool down)
+{
 	if(!down) return;
-	switch(event.GetKeyCode()) {
-		case WXK_SPACE: {
-			if(paused())
+
+	int keyCode = event.GetKeyCode();
+	if (keyCode == WXK_SPACE) {
+		if (paused())
+			unpause();
+		else
+			pause();
+	} else if (!dead) {
+		switch (keyCode) {
+			case WXK_NUMPAD_UP:
+			case WXK_UP: {
 				unpause();
-			else pause();
-		} break;
-		case WXK_NUMPAD_UP: case WXK_UP: {
-			if(dead) return;
-			unpause();
-			Move(NORTH);
-		} break;
-		case WXK_NUMPAD_DOWN: case WXK_DOWN: {
-			if(dead) return;
-			unpause();
-			Move(SOUTH);
-		} break;
-		case WXK_NUMPAD_LEFT: case WXK_LEFT: {
-			if(dead) return;
-			unpause();
-			Move(WEST);
-		} break;
-		case WXK_NUMPAD_RIGHT: case WXK_RIGHT: {
-			if(dead) return;
-			unpause();
-			Move(EAST);
-		} break;
+				Move(NORTH);
+				break;
+			}
+			case WXK_NUMPAD_DOWN:
+			case WXK_DOWN: {
+				unpause();
+				Move(SOUTH);
+				break;
+			}
+			case WXK_NUMPAD_LEFT:
+			case WXK_LEFT: {
+				unpause();
+				Move(WEST);
+				break;
+			}
+			case WXK_NUMPAD_RIGHT:
+			case WXK_RIGHT: {
+				unpause();
+				Move(EAST);
+				break;
+			}
+		}
 	}
 }
 
-void SnakePanel::NewGame() {
+void SnakePanel::NewGame()
+{
 	length = 3;
 	game_timer.Start();
 	last_dir = NORTH;
@@ -700,17 +751,20 @@ void SnakePanel::NewGame() {
 	UpdateTitle(); // Update title
 }
 
-void SnakePanel::UpdateTitle() {
+void SnakePanel::UpdateTitle()
+{
 	wxString title = wxT("Remere's Snake : ");
 	title << length << wxT(" segments");
 	((wxTopLevelWindow*)GetParent())->SetTitle(title);
 }
 
-void SnakePanel::GameLoop(int time) {
+void SnakePanel::GameLoop(int time)
+{
 	Move(last_dir);
 }
 
-void SnakePanel::NewApple() {
+void SnakePanel::NewApple()
+{
 	bool possible = false;
 	for(int y = 0; y < SNAKE_MAPHEIGHT; ++y) {
 		for(int x = 0; x < SNAKE_MAPWIDTH; ++x) {
@@ -734,14 +788,15 @@ void SnakePanel::NewApple() {
 	}
 }
 
-void SnakePanel::Move(int dir) {
-	if(
-			(last_dir == NORTH && dir == SOUTH) ||
-			(last_dir == WEST && dir == EAST) ||
-			(last_dir == EAST && dir == WEST) ||
-			(last_dir == SOUTH && dir == NORTH)) {
+void SnakePanel::Move(int dir)
+{
+	if((last_dir == NORTH && dir == SOUTH) ||
+		(last_dir == WEST && dir == EAST) ||
+		(last_dir == EAST && dir == WEST) ||
+		(last_dir == SOUTH && dir == NORTH)) {
 		return;
 	}
+
 	int nx = 0, ny = 0;
 	int head_x = 0, head_y = 0;
 	for(int y = 0; y < SNAKE_MAPHEIGHT; ++y) {
@@ -756,20 +811,25 @@ void SnakePanel::Move(int dir) {
 		case NORTH: {
 			nx = head_x;
 			ny = head_y - 1;
-		} break;
+			break;
+		}
 		case SOUTH: {
 			nx = head_x;
 			ny = head_y + 1;
-		} break;
+			break;
+		}
 		case WEST: {
 			nx = head_x - 1;
 			ny = head_y;
-		} break;
+			break;
+		}
 		case EAST: {
 			nx = head_x + 1;
 			ny = head_y;
-		} break;
-		default: return;
+			break;
+		}
+		default:
+			return;
 	}
 	
 	if(map[nx][ny] > 0 || nx < 0 || ny < 0 || nx >= SNAKE_MAPWIDTH || ny >= SNAKE_MAPHEIGHT) {

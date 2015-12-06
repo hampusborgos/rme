@@ -66,8 +66,7 @@ void RMENet::Close()
 {
 	delete connection;
 	connection = nullptr;
-	if(socket)
-	{
+	if(socket) {
 		socket->Destroy();
 		socket = nullptr;
 	}
@@ -79,13 +78,10 @@ void RMENet::Close()
 
 	// schedule this object for deletion
 	wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : nullptr;
-	if ( traits )
-	{
+	if( traits ) {
 		// let the traits object decide what to do with us
 		traits->ScheduleForDestroy(this);
-	}
-	else // no app or no traits
-	{
+	} else { // no app or no traits
 		// in wxBase we might have no app object at all, don't leak memory
 		delete this;
 	}

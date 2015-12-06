@@ -39,37 +39,45 @@ PalettePanel::PalettePanel(wxWindow* parent, wxWindowID id, long style) :
 	refresh_timer(this, PALETTE_DELAYED_REFRESH_TIMER),
 	last_brush_size(0)
 {
+	////
 }
 
-PalettePanel::~PalettePanel() {
+PalettePanel::~PalettePanel()
+{
+	////
 }
 
-PaletteWindow* PalettePanel::GetParentPalette() const {	
+PaletteWindow* PalettePanel::GetParentPalette() const
+{
 	const wxWindow* w = this;
 	while((w = w->GetParent()) && dynamic_cast<const PaletteWindow*>(w) == nullptr);
 	return const_cast<PaletteWindow*>(static_cast<const PaletteWindow*>(w));
 }
 
-void PalettePanel::InvalidateContents() {
+void PalettePanel::InvalidateContents()
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->InvalidateContents();
 	}
 }
 
-void PalettePanel::LoadCurrentContents() {
+void PalettePanel::LoadCurrentContents()
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->OnSwitchIn();
 	}
 	Fit();
 }
 
-void PalettePanel::LoadAllContents() {
+void PalettePanel::LoadAllContents()
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->LoadAllContents();
 	}
 }
 
-void PalettePanel::AddToolPanel(PalettePanel* panel) {
+void PalettePanel::AddToolPanel(PalettePanel* panel)
+{
 	wxSizer* sp_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, panel->GetName());
 	sp_sizer->Add(panel, 0, wxEXPAND);
 	GetSizer()->Add(sp_sizer, 0, wxEXPAND);
@@ -82,13 +90,15 @@ void PalettePanel::AddToolPanel(PalettePanel* panel) {
 	tool_bars.push_back(panel);
 }
 
-void PalettePanel::SetToolbarIconSize(bool large_icons) {
+void PalettePanel::SetToolbarIconSize(bool large_icons)
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->SetToolbarIconSize(large_icons);
 	}
 }
 
-wxString PalettePanel::GetName() const {
+wxString PalettePanel::GetName() const
+{
 	switch(GetType()) {
 		case TILESET_TERRAIN: return wxT("Terrain Palette");
 		case TILESET_DOODAD: return wxT("Doodad Palette");
@@ -102,33 +112,40 @@ wxString PalettePanel::GetName() const {
 	return wxEmptyString;
 }
 
-PaletteType PalettePanel::GetType() const {
+PaletteType PalettePanel::GetType() const
+{
 	return TILESET_UNKNOWN;
 }
 
-Brush* PalettePanel::GetSelectedBrush() const {
+Brush* PalettePanel::GetSelectedBrush() const
+{
 	return nullptr;
 }
 
-int PalettePanel::GetSelectedBrushSize() const {
+int PalettePanel::GetSelectedBrushSize() const
+{
 	return 0;
 }
 
-void PalettePanel::SelectFirstBrush() {
+void PalettePanel::SelectFirstBrush()
+{
 	// Do nothing
 }
 
-bool PalettePanel::SelectBrush(const Brush* whatbrush) {
+bool PalettePanel::SelectBrush(const Brush* whatbrush)
+{
 	return false;
 }
 
-void PalettePanel::OnUpdateBrushSize(BrushShape shape, int size) {
+void PalettePanel::OnUpdateBrushSize(BrushShape shape, int size)
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->OnUpdateBrushSize(shape, size);
 	}
 }
 
-void PalettePanel::OnSwitchIn() {
+void PalettePanel::OnSwitchIn()
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->OnSwitchIn();
 	}
@@ -136,14 +153,16 @@ void PalettePanel::OnSwitchIn() {
 	gui.SetBrushSize(last_brush_size);
 }
 
-void PalettePanel::OnSwitchOut() {
+void PalettePanel::OnSwitchOut()
+{
 	last_brush_size = gui.GetBrushSize();
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->OnSwitchOut();
 	}
 }
 
-void PalettePanel::OnUpdate() {
+void PalettePanel::OnUpdate()
+{
 	for(ToolBarList::iterator iter = tool_bars.begin(); iter != tool_bars.end(); ++iter) {
 		(*iter)->OnUpdate();
 	}
@@ -189,9 +208,11 @@ BrushSizePanel::BrushSizePanel(wxWindow* parent) :
 	brushsize8Button(nullptr),
 	brushsize11Button(nullptr)
 {
+	////
 }
 
-void BrushSizePanel::InvalidateContents() {
+void BrushSizePanel::InvalidateContents()
+{
 	if(loaded) {
 		DestroyChildren();
 		SetSizer(nullptr);
@@ -210,11 +231,13 @@ void BrushSizePanel::InvalidateContents() {
 	}
 }
 
-void BrushSizePanel::LoadCurrentContents() {
+void BrushSizePanel::LoadCurrentContents()
+{
 	LoadAllContents();
 }
 
-void BrushSizePanel::LoadAllContents() {
+void BrushSizePanel::LoadAllContents()
+{
 	if(loaded) return;
 
 	wxSizer* size_sizer = newd wxBoxSizer(wxVERTICAL);;
@@ -275,11 +298,13 @@ void BrushSizePanel::LoadAllContents() {
 	loaded = true;
 }
 
-wxString BrushSizePanel::GetName() const {
+wxString BrushSizePanel::GetName() const
+{
 	return wxT("Brush Size");
 }
 
-void BrushSizePanel::SetToolbarIconSize(bool d) {
+void BrushSizePanel::SetToolbarIconSize(bool d)
+{
 	InvalidateContents();
 	large_icons = d;
 }
@@ -288,7 +313,8 @@ void BrushSizePanel::OnSwitchIn() {
 	LoadCurrentContents();
 }
 
-void BrushSizePanel::OnUpdateBrushSize(BrushShape shape, int size) {
+void BrushSizePanel::OnUpdateBrushSize(BrushShape shape, int size)
+{
 	if(shape == BRUSHSHAPE_SQUARE) {
 		brushshapeCircleButton->SetValue(false);
 		brushshapeSquareButton->SetValue(true);
@@ -333,17 +359,20 @@ void BrushSizePanel::OnUpdateBrushSize(BrushShape shape, int size) {
 	}
 }
 
-void BrushSizePanel::OnClickCircleBrush(wxCommandEvent &event) {
+void BrushSizePanel::OnClickCircleBrush(wxCommandEvent &event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetBrushShape(BRUSHSHAPE_CIRCLE);
 }
 
-void BrushSizePanel::OnClickSquareBrush(wxCommandEvent &event) {
+void BrushSizePanel::OnClickSquareBrush(wxCommandEvent &event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetBrushShape(BRUSHSHAPE_SQUARE);
 }
 
-void BrushSizePanel::OnClickBrushSize(int which) {
+void BrushSizePanel::OnClickBrushSize(int which)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetBrushSize(which);
 }
@@ -385,12 +414,16 @@ BrushToolPanel::BrushToolPanel(wxWindow* parent) :
 	nologBrushButton(nullptr),
 	pvpzoneBrushButton(nullptr)
 {
+	////
 }
 
-BrushToolPanel::~BrushToolPanel() {
+BrushToolPanel::~BrushToolPanel()
+{
+	////
 }
 
-void BrushToolPanel::InvalidateContents() {
+void BrushToolPanel::InvalidateContents()
+{
 	if(loaded) {
 		DestroyChildren();
 		SetSizer(nullptr);
@@ -412,11 +445,13 @@ void BrushToolPanel::InvalidateContents() {
 	}
 }
 
-void BrushToolPanel::LoadCurrentContents() {
+void BrushToolPanel::LoadCurrentContents()
+{
 	LoadAllContents();
 }
 
-void BrushToolPanel::LoadAllContents() {
+void BrushToolPanel::LoadAllContents()
+{
 	if(loaded) return;
 
 	wxSizer* size_sizer = newd wxBoxSizer(wxVERTICAL);;
@@ -551,16 +586,19 @@ void BrushToolPanel::LoadAllContents() {
 	loaded = true;
 }
 
-wxString BrushToolPanel::GetName() const {
+wxString BrushToolPanel::GetName() const
+{
 	return wxT("Tools");
 }
 
-void BrushToolPanel::SetToolbarIconSize(bool d) {
+void BrushToolPanel::SetToolbarIconSize(bool d)
+{
 	InvalidateContents();
 	large_icons = d;
 }
 
-void BrushToolPanel::DeselectAll() {
+void BrushToolPanel::DeselectAll()
+{
 	if(loaded) {
 		optionalBorderButton->SetValue(false);
 		eraserButton->SetValue(false);
@@ -577,7 +615,8 @@ void BrushToolPanel::DeselectAll() {
 	}
 }
 
-Brush* BrushToolPanel::GetSelectedBrush() const {
+Brush* BrushToolPanel::GetSelectedBrush() const
+{
 	if(optionalBorderButton->GetValue())
 		return gui.optional_brush;
 	if(eraserButton->GetValue())
@@ -605,7 +644,8 @@ Brush* BrushToolPanel::GetSelectedBrush() const {
 	return nullptr;
 }
 
-bool BrushToolPanel::SelectBrush(const Brush* whatbrush) {
+bool BrushToolPanel::SelectBrush(const Brush* whatbrush)
+{
 	BrushButton* button = nullptr;
 	if(whatbrush == gui.optional_brush) {
 		button = optionalBorderButton;
@@ -642,66 +682,79 @@ bool BrushToolPanel::SelectBrush(const Brush* whatbrush) {
 	return false;
 }
 
-void BrushToolPanel::OnSwitchIn() {
+void BrushToolPanel::OnSwitchIn()
+{
 	LoadCurrentContents();
 }
 
-void BrushToolPanel::OnClickGravelButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickGravelButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.optional_brush);
 }
 
-void BrushToolPanel::OnClickEraserButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickEraserButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.eraser);
 }
 
-void BrushToolPanel::OnClickNormalDoorButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickNormalDoorButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.normal_door_brush);
 }
 
-void BrushToolPanel::OnClickLockedDoorButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickLockedDoorButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.locked_door_brush);
 }
 
-void BrushToolPanel::OnClickMagicDoorButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickMagicDoorButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.magic_door_brush);
 }
 
-void BrushToolPanel::OnClickQuestDoorButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickQuestDoorButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.quest_door_brush);
 }
 
-void BrushToolPanel::OnClickHatchDoorButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickHatchDoorButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.hatch_door_brush);
 }
 
-void BrushToolPanel::OnClickWindowDoorButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickWindowDoorButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.window_door_brush);
 }
 
-void BrushToolPanel::OnClickPZBrushButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickPZBrushButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.pz_brush);
 }
 
-void BrushToolPanel::OnClickNOPVPBrushButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickNOPVPBrushButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.rook_brush);
 }
 
-void BrushToolPanel::OnClickNoLogoutBrushButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickNoLogoutBrushButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.nolog_brush);
 }
 
-void BrushToolPanel::OnClickPVPZoneBrushButton(wxCommandEvent& event) {
+void BrushToolPanel::OnClickPVPZoneBrushButton(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush(gui.pvp_brush);
 }
@@ -723,11 +776,13 @@ BrushButton::BrushButton(wxWindow* parent, Brush* _brush, RenderSize sz, uint32_
 	SetToolTip(wxstr(brush->getName()));
 }
 
-BrushButton::~BrushButton() {
-	// ...
+BrushButton::~BrushButton()
+{
+	////
 }
 
-void BrushButton::OnKey(wxKeyEvent& event) {
+void BrushButton::OnKey(wxKeyEvent& event)
+{
 	gui.AddPendingCanvasEvent(event);
 }
 
@@ -768,14 +823,18 @@ BrushThicknessPanel::BrushThicknessPanel(wxWindow* parent) :
 	SetSizerAndFit(thickness_sizer);
 }
 
-BrushThicknessPanel::~BrushThicknessPanel() {
+BrushThicknessPanel::~BrushThicknessPanel()
+{
+	////
 }
 
-wxString BrushThicknessPanel::GetName() const {
+wxString BrushThicknessPanel::GetName() const
+{
 	return wxT("Brush Thickness");
 }
 
-void BrushThicknessPanel::OnScroll(wxScrollEvent& event) {
+void BrushThicknessPanel::OnScroll(wxScrollEvent& event)
+{
 	static const int lookup_table[10] = {1,2,3,5,8,13,23,35,50,80};
 	use_button->SetValue(true);
 
@@ -787,12 +846,14 @@ void BrushThicknessPanel::OnScroll(wxScrollEvent& event) {
 	gui.SetBrushThickness(true, lookup_table[event.GetPosition()-1], 100);
 }
 
-void BrushThicknessPanel::OnClickCustomThickness(wxCommandEvent& event) {
+void BrushThicknessPanel::OnClickCustomThickness(wxCommandEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetBrushThickness(event.IsChecked());
 }
 
-void BrushThicknessPanel::OnSwitchIn() {
+void BrushThicknessPanel::OnSwitchIn()
+{
 	static const int lookup_table[10] = {1,2,3,5,8,13,23,35,50,80};
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetBrushThickness(lookup_table[slider->GetValue()-1], 100);

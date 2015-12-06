@@ -15,89 +15,90 @@ uint32_t WallBrush::half_border_types[16];
 WallBrush::WallBrush() :
 	redirect_to(nullptr)
 {
-
+	////
 }
 
-WallBrush::~WallBrush() {
-
+WallBrush::~WallBrush()
+{
+	////
 }
 
 bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
-	if ((attribute = node.attribute("lookid"))) {
+	if((attribute = node.attribute("lookid"))) {
 		look_id = pugi::cast<uint16_t>(attribute.value());
 	}
 
-	if ((attribute = node.attribute("server_lookid"))) {
+	if((attribute = node.attribute("server_lookid"))) {
 		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
-	for (pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
+	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
 		const std::string& childName = as_lower_str(childNode.name());
-		if (childName == "wall") {
+		if(childName == "wall") {
 			const std::string& typeString = childNode.attribute("type").as_string();
-			if (typeString.empty()) {
+			if(typeString.empty()) {
 				warnings.push_back(wxT("Could not read type tag of wall node\n"));
 				continue;
 			}
 
 			uint32_t alignment;
-			if (typeString == "vertical") {
+			if(typeString == "vertical") {
 				alignment = WALL_VERTICAL;
-			} else if (typeString == "horizontal") {
+			} else if(typeString == "horizontal") {
 				alignment = WALL_HORIZONTAL;
-			} else if (typeString == "corner") {
+			} else if(typeString == "corner") {
 				alignment = WALL_NORTHWEST_DIAGONAL;
-			} else if (typeString == "pole") {
+			} else if(typeString == "pole") {
 				alignment = WALL_POLE;
-			} else if (typeString == "south end") {
+			} else if(typeString == "south end") {
 				alignment = WALL_SOUTH_END;
-			} else if (typeString == "east end") {
+			} else if(typeString == "east end") {
 				alignment = WALL_EAST_END;
-			} else if (typeString == "north end") {
+			} else if(typeString == "north end") {
 				alignment = WALL_NORTH_END;
-			} else if (typeString == "west end") {
+			} else if(typeString == "west end") {
 				alignment = WALL_WEST_END;
-			} else if (typeString == "south T") {
+			} else if(typeString == "south T") {
 				alignment = WALL_SOUTH_T;
-			} else if (typeString == "east T") {
+			} else if(typeString == "east T") {
 				alignment = WALL_EAST_T;
-			} else if (typeString == "west T") {
+			} else if(typeString == "west T") {
 				alignment = WALL_WEST_T;
-			} else if (typeString == "north T") {
+			} else if(typeString == "north T") {
 				alignment = WALL_NORTH_T;
-			} else if (typeString == "northwest diagonal") {
+			} else if(typeString == "northwest diagonal") {
 				alignment = WALL_NORTHWEST_DIAGONAL;
-			} else if (typeString == "northeast diagonal") {
+			} else if(typeString == "northeast diagonal") {
 				alignment = WALL_NORTHEAST_DIAGONAL;
-			} else if (typeString == "southwest diagonal") {
+			} else if(typeString == "southwest diagonal") {
 				alignment = WALL_SOUTHWEST_DIAGONAL;
-			} else if (typeString == "southeast diagonal") {
+			} else if(typeString == "southeast diagonal") {
 				alignment = WALL_SOUTHEAST_DIAGONAL;
-			} else if (typeString == "intersection") {
+			} else if(typeString == "intersection") {
 				alignment = WALL_INTERSECTION;
-			} else if (typeString == "untouchable") {
+			} else if(typeString == "untouchable") {
 				alignment = WALL_UNTOUCHABLE;
 			} else {
 				warnings.push_back(wxT("Unknown wall alignment '") + wxstr(typeString) + wxT("'\n"));
 				continue;
 			}
 
-			for (pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
+			for(pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
 				const std::string& subChildName = as_lower_str(subChildNode.name());
-				if (subChildName == "item") {
+				if(subChildName == "item") {
 					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
-					if (id == 0) {
+					if(id == 0) {
 						warnings.push_back(wxT("Could not read id tag of item node\n"));
 						break;
 					}
 
 					ItemType& it = item_db[id];
-					if (it.id == 0) {
+					if(it.id == 0) {
 						warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
 						return false;
-					} else if (it.brush && it.brush != this) {
+					} else if(it.brush && it.brush != this) {
 						warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
 						return false;
 					}
@@ -113,26 +114,26 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					wt.chance = wall_items[alignment].total_chance;
 
 					wall_items[alignment].items.push_back(wt);
-				} else if (subChildName == "door") {
+				} else if(subChildName == "door") {
 					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
-					if (id == 0) {
+					if(id == 0) {
 						warnings.push_back(wxT("Could not read id tag of door node\n"));
 						break;
 					}
 
 					const std::string& type = subChildNode.attribute("type").as_string();
-					if (type.empty()) {
+					if(type.empty()) {
 						warnings.push_back(wxT("Could not read type tag of door node\n"));
 						continue;
 					}
 
 					bool isOpen;
 					pugi::xml_attribute openAttribute = subChildNode.attribute("open");
-					if (openAttribute) {
+					if(openAttribute) {
 						isOpen = openAttribute.as_bool();
 					} else {
 						isOpen = true;
-						if (type != "window" && type != "any window" && type != "hatch window") {
+						if(type != "window" && type != "any window" && type != "hatch window") {
 							warnings.push_back(wxT("Could not read open tag of door node\n"));
 							break;
 						}
@@ -142,7 +143,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					if(it.id == 0) {
 						warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
 						return false;
-					} else if (it.brush && it.brush != this) {
+					} else if(it.brush && it.brush != this) {
 						warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
 						return false;
 					}
@@ -202,27 +203,27 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					}
 				}
 			}
-		} else if (childName == "friend") {
+		} else if(childName == "friend") {
 			const std::string& name = childNode.attribute("name").as_string();
-			if (name.empty()) {
+			if(name.empty()) {
 				continue;
 			}
 
-			if (name == "all") {
+			if(name == "all") {
 				//friends.push_back(-1);
 			} else {
 				Brush* brush = brushes.getBrush(name);
-				if (brush) {
+				if(brush) {
 					friends.push_back(brush->getID());
 				} else {
 					warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
 				}
 
-				if (childNode.attribute("redirect").as_bool()) {
+				if(childNode.attribute("redirect").as_bool()) {
 					WallBrush* rd = dynamic_cast<WallBrush*>(brush);
-					if (!rd) {
+					if(!rd) {
 						warnings.push_back(wxT("Wall brush redirect link: '") + wxstr(name) + wxT("' is not a wall brush."));
-					} else if (!redirect_to) {
+					} else if(!redirect_to) {
 						redirect_to = rd;
 					} else {
 						warnings.push_back( wxT("Wall brush '") + wxstr(getName()) + wxT("' has more than one redirect link."));
@@ -234,19 +235,18 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	return true;
 }
 
-void WallBrush::undraw(BaseMap* map, Tile* tile) {
+void WallBrush::undraw(BaseMap* map, Tile* tile)
+{
 	tile->cleanWalls(this);
 }
 
-void WallBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void WallBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	ASSERT(tile);
 	bool b = (parameter? *reinterpret_cast<bool*>(parameter) : false);
 	if(b) {
 		// Find a matching wall item on this tile, and shift the id
-		for(ItemVector::iterator item_iter = tile->items.begin();
-				item_iter != tile->items.end();
-				++item_iter)
-		{
+		for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end(); ++item_iter) {
 			Item* item = *item_iter;
 			if(item->isWall()) {
 				WallBrush* wb = item->getWallBrush();
@@ -327,7 +327,8 @@ void WallBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 	tile->addWallItem(Item::Create(id));
 }
 
-bool hasMatchingWallBrushAtTile(BaseMap* map, WallBrush* wall_brush, uint32_t x, uint32_t y, uint32_t z) {
+bool hasMatchingWallBrushAtTile(BaseMap* map, WallBrush* wall_brush, uint32_t x, uint32_t y, uint32_t z)
+{
 	Tile* t = map->getTile(x, y, z);
 	if(!t) return false;
 
@@ -347,7 +348,8 @@ bool hasMatchingWallBrushAtTile(BaseMap* map, WallBrush* wall_brush, uint32_t x,
 	return false;
 }
 
-void WallBrush::doWalls(BaseMap* map, Tile* tile) {
+void WallBrush::doWalls(BaseMap* map, Tile* tile)
+{
 	ASSERT(tile);
 
 	// For quicker reference
@@ -505,8 +507,7 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile) {
 						int chance = random(1, wn.total_chance);
 						for(std::vector<WallType>::const_iterator node_iter = wn.items.begin();
 								node_iter != wn.items.end();
-								++node_iter)
-						{
+								++node_iter) {
 							if(chance <= node_iter->chance) {
 								id = node_iter->id;
 								break;
@@ -582,25 +583,20 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile) {
 	}
 }
 
-bool WallBrush::hasWall(Item* item) {
+bool WallBrush::hasWall(Item* item)
+{
 	ASSERT(item->isWall());
 	::BorderType bt = item->getWallAlignment();
 
 	WallBrush* test_wall = this;
 
 	while(test_wall != nullptr) {
-		for(std::vector<WallType>::const_iterator it = test_wall->wall_items[int(bt)].items.begin();
-				it != test_wall->wall_items[int(bt)].items.end();
-				++it)
-		{
+		for(std::vector<WallType>::const_iterator it = test_wall->wall_items[int(bt)].items.begin(); it != test_wall->wall_items[int(bt)].items.end(); ++it) {
 			if(it->id == item->getID()) {
 				return true;
 			}
 		}
-		for(std::vector<DoorType>::const_iterator it = test_wall->door_items[int(bt)].begin();
-				it != test_wall->door_items[int(bt)].end();
-				++it)
-		{
+		for(std::vector<DoorType>::const_iterator it = test_wall->door_items[int(bt)].begin(); it != test_wall->door_items[int(bt)].end(); ++it) {
 			if(it->id == item->getID()) {
 				return true;
 			}
@@ -612,12 +608,10 @@ bool WallBrush::hasWall(Item* item) {
 	return false;
 }
 
-::DoorType WallBrush::getDoorTypeFromID(uint16_t id) {
+::DoorType WallBrush::getDoorTypeFromID(uint16_t id)
+{
 	for(int index = 0; index < 16; ++index) {
-		for(std::vector<DoorType>::const_iterator iter = door_items[index].begin();
-				iter != door_items[index].end();
-				++iter)
-		{
+		for(std::vector<DoorType>::const_iterator iter = door_items[index].begin(); iter != door_items[index].end(); ++iter) {
 			if(iter->id == id) {
 				return iter->type;
 			}
@@ -629,15 +623,18 @@ bool WallBrush::hasWall(Item* item) {
 //=============================================================================
 // Wall Decoration brush
 
-WallDecorationBrush::WallDecorationBrush() {
-	// ...
+WallDecorationBrush::WallDecorationBrush()
+{
+	////
 }
 
-WallDecorationBrush::~WallDecorationBrush() {
-	// ...
+WallDecorationBrush::~WallDecorationBrush()
+{
+	////
 }
 
-void WallDecorationBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void WallDecorationBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	ASSERT(tile);
 
 	ItemVector::iterator iter = tile->items.begin();

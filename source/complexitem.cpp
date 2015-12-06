@@ -26,12 +26,12 @@
 // Container
 Container::Container(const uint16_t type) : Item(type, 0)
 {
-	//
+	////
 }
 
 Container::~Container()
 {
-	for (Item* item : contents) {
+	for(Item* item : contents) {
 		delete item;
 	}
 }
@@ -39,20 +39,18 @@ Container::~Container()
 Item* Container::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
-	
 	Container* copyContainer = dynamic_cast<Container*>(copy);
-	if (copyContainer) {
-		for (Item* item : contents) {
+	if(copyContainer) {
+		for(Item* item : contents) {
 			copyContainer->contents.push_back(item->deepCopy());
 		}
 	}
-	
 	return copy;
 }
 
 Item* Container::getItem(size_t index) const
 {
-	if (index < contents.size()) {
+	if(index < contents.size()) {
 		return contents[index];
 	}
 	return nullptr;
@@ -67,7 +65,7 @@ double Container::getWeight()
 Teleport::Teleport(const uint16_t type) : Item(type, 0),
 	destination(0, 0, 0)
 {
-	//
+	////
 }
 
 Item* Teleport::deepCopy() const
@@ -81,7 +79,7 @@ Item* Teleport::deepCopy() const
 Door::Door(const uint16_t type) : Item(type, 0),
 	doorId(0)
 {
-	//
+	////
 }
 
 Item* Door::deepCopy() const
@@ -95,14 +93,14 @@ Item* Door::deepCopy() const
 Depot::Depot(const uint16_t type) : Item(type, 0),
 	depotId(0)
 {
-	//
+	////
 }
 
 Item* Depot::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
 	Depot* copy_depot = dynamic_cast<Depot*>(copy);
-	if (copy_depot) {
+	if(copy_depot) {
 		copy_depot->depotId = depotId;
 	}
 	return copy;

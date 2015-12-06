@@ -83,19 +83,23 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 	OnUpdate();
 }
 
-CreaturePalettePanel::~CreaturePalettePanel() {
-	// ...
+CreaturePalettePanel::~CreaturePalettePanel()
+{
+	////
 }
 
-PaletteType CreaturePalettePanel::GetType() const {
+PaletteType CreaturePalettePanel::GetType() const
+{
 	return TILESET_CREATURE;
 }
 
-void CreaturePalettePanel::SelectFirstBrush() {
+void CreaturePalettePanel::SelectFirstBrush()
+{
 	SelectCreatureBrush();
 }
 
-Brush* CreaturePalettePanel::GetSelectedBrush() const {
+Brush* CreaturePalettePanel::GetSelectedBrush() const
+{
 	if(creature_brush_button->GetValue()) {
 		if(creature_list->GetCount() == 0) {
 			return nullptr;
@@ -113,17 +117,15 @@ Brush* CreaturePalettePanel::GetSelectedBrush() const {
 	return nullptr;
 }
 
-bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush) {
+bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush)
+{
 	bool isCreatureBrush = dynamic_cast<const CreatureBrush*>(whatbrush)? true : false;
 	if(isCreatureBrush) {
 		int current_index = tileset_choice->GetSelection();
 		if(current_index != wxNOT_FOUND) {
 			const TilesetCategory* tsc = reinterpret_cast<const TilesetCategory*>(tileset_choice->GetClientData(current_index));
 			// Select first house
-			for(BrushVector::const_iterator iter = tsc->brushlist.begin();
-					iter != tsc->brushlist.end();
-					++iter)
-			{
+			for(BrushVector::const_iterator iter = tsc->brushlist.begin(); iter != tsc->brushlist.end(); ++iter) {
 				if(*iter == whatbrush) {
 					SelectCreature(whatbrush->getName());
 					return true;
@@ -153,18 +155,17 @@ bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush) {
 	return false;
 }
 
-int CreaturePalettePanel::GetSelectedBrushSize() const {
+int CreaturePalettePanel::GetSelectedBrushSize() const
+{
 	return spawn_size_spin->GetValue();
 }
 
-void CreaturePalettePanel::OnUpdate() {
+void CreaturePalettePanel::OnUpdate()
+{
 	tileset_choice->Clear();
 	materials.createOtherTileset();
 
-	for(TilesetContainer::const_iterator iter = materials.tilesets.begin();
-			iter != materials.tilesets.end();
-			++iter)
-	{
+	for(TilesetContainer::const_iterator iter = materials.tilesets.begin(); iter != materials.tilesets.end(); ++iter) {
 		const TilesetCategory* tsc = iter->second->getCategory(TILESET_CREATURE);
 		if(tsc && tsc->size() > 0) {
 			tileset_choice->Append(wxstr(iter->second->name), const_cast<TilesetCategory*>(tsc));
@@ -177,16 +178,19 @@ void CreaturePalettePanel::OnUpdate() {
 	SelectTileset(0);
 }
 
-void CreaturePalettePanel::OnUpdateBrushSize(BrushShape shape, int size) {
+void CreaturePalettePanel::OnUpdateBrushSize(BrushShape shape, int size)
+{
 	return spawn_size_spin->SetValue(size);
 }
 
-void CreaturePalettePanel::OnSwitchIn() {
+void CreaturePalettePanel::OnSwitchIn()
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetBrushSize(spawn_size_spin->GetValue());
 }
 
-void CreaturePalettePanel::SelectTileset(size_t index) {
+void CreaturePalettePanel::SelectTileset(size_t index)
+{
 	ASSERT(tileset_choice->GetCount() >= index);
 
 	creature_list->Clear();
@@ -208,7 +212,8 @@ void CreaturePalettePanel::SelectTileset(size_t index) {
 	}
 }
 
-void CreaturePalettePanel::SelectCreature(size_t index) {
+void CreaturePalettePanel::SelectCreature(size_t index)
+{
 	// Save the old settings
 	ASSERT(creature_list->GetCount() >= index);
 
@@ -219,7 +224,8 @@ void CreaturePalettePanel::SelectCreature(size_t index) {
 	SelectCreatureBrush();
 }
 
-void CreaturePalettePanel::SelectCreature(std::string name) {
+void CreaturePalettePanel::SelectCreature(std::string name)
+{
 	if(creature_list->GetCount() > 0) {
 		if(!creature_list->SetStringSelection(wxstr(name))) {
 			creature_list->SetSelection(0);
@@ -229,7 +235,8 @@ void CreaturePalettePanel::SelectCreature(std::string name) {
 	SelectCreatureBrush();
 }
 
-void CreaturePalettePanel::SelectCreatureBrush() {
+void CreaturePalettePanel::SelectCreatureBrush()
+{
 	if(creature_list->GetCount() > 0) {
 		creature_brush_button->Enable(true);
 		creature_brush_button->SetValue(true);
@@ -240,42 +247,49 @@ void CreaturePalettePanel::SelectCreatureBrush() {
 	}
 }
 
-void CreaturePalettePanel::SelectSpawnBrush() {
+void CreaturePalettePanel::SelectSpawnBrush()
+{
 	//gui.house_exit_brush->setHouse(house);
 	creature_brush_button->SetValue(false);
 	spawn_brush_button->SetValue(true);
 }
 
-void CreaturePalettePanel::OnTilesetChange(wxCommandEvent& event) {
+void CreaturePalettePanel::OnTilesetChange(wxCommandEvent& event)
+{
 	SelectTileset(event.GetSelection());
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush();
 }
 
-void CreaturePalettePanel::OnListBoxChange(wxCommandEvent& event) {
+void CreaturePalettePanel::OnListBoxChange(wxCommandEvent& event)
+{
 	SelectCreature(event.GetSelection());
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush();
 }
 
-void CreaturePalettePanel::OnClickCreatureBrushButton(wxCommandEvent& event) {
+void CreaturePalettePanel::OnClickCreatureBrushButton(wxCommandEvent& event)
+{
 	SelectCreatureBrush();
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush();
 }
 
-void CreaturePalettePanel::OnClickSpawnBrushButton(wxCommandEvent& event) {
+void CreaturePalettePanel::OnClickSpawnBrushButton(wxCommandEvent& event)
+{
 	SelectSpawnBrush();
 	gui.ActivatePalette(GetParentPalette());
 	gui.SelectBrush();
 }
 
-void CreaturePalettePanel::OnChangeSpawnTime(wxSpinEvent& event) {
+void CreaturePalettePanel::OnChangeSpawnTime(wxSpinEvent& event)
+{
 	gui.ActivatePalette(GetParentPalette());
 	gui.SetSpawnTime(event.GetPosition());
 }
 
-void CreaturePalettePanel::OnChangeSpawnSize(wxSpinEvent& event) {
+void CreaturePalettePanel::OnChangeSpawnSize(wxSpinEvent& event)
+{
 	if(!handling_event) {
 		handling_event = true;
 		gui.ActivatePalette(GetParentPalette());

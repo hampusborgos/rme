@@ -55,6 +55,7 @@ MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
 
 MapWindow::~MapWindow() 
 {
+	////
 }
 
 void MapWindow::SetSize(int x, int y, bool center) 
@@ -101,8 +102,7 @@ void MapWindow::CenterOnPosition(Position p)
 
 	int x = p.x * 32;
 	int y = p.y * 32;
-	if(p.z < 8)
-	{
+	if(p.z < 8) {
 		// Compensate for floor offset above ground
 		x -= (7 - p.z) * 32;
 		y -= (7 - p.z) * 32;
@@ -114,8 +114,7 @@ void MapWindow::CenterOnPosition(Position p)
 
 void MapWindow::Scroll(int x, int y, bool center) 
 {
-	if(center) 
-	{
+	if(center)  {
 		int windowSizeX, windowSizeY;
 
 		canvas->GetSize(&windowSizeX, &windowSizeY);

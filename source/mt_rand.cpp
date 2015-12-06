@@ -36,16 +36,16 @@ mt_get (void *vstate)
 
 #define MAGIC(y) (((y)&0x1) ? 0x9908b0dfUL : 0)
 
-  if (state->mti >= N)
+  if(state->mti >= N)
     {   /* generate N words at one time */
       int kk;
 
-      for (kk = 0; kk < N - M; kk++)
+      for(kk = 0; kk < N - M; kk++)
         {
           unsigned long y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
           mt[kk] = mt[kk + M] ^ (y >> 1) ^ MAGIC(y);
         }
-      for (; kk < N - 1; kk++)
+      for(; kk < N - 1; kk++)
         {
           unsigned long y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
           mt[kk] = mt[kk + (M - N)] ^ (y >> 1) ^ MAGIC(y);
@@ -84,12 +84,12 @@ mt_set (void *vstate, unsigned long int s)
   mt_state_t *state = (mt_state_t *) vstate;
   int i;
 
-  if (s == 0)
+  if(s == 0)
     s = 4357;   /* the default seed is 4357 */
 
   state->mt[0]= s & 0xffffffffUL;
 
-  for (i = 1; i < N; i++)
+  for(i = 1; i < N; i++)
     {
       /* See Knuth's "Art of Computer Programming" Vol. 2, 3rd
          Ed. p.106 for multiplier. */

@@ -46,37 +46,43 @@ MinimapWindow::MinimapWindow(wxWindow* parent) :
 	}
 }
 
-MinimapWindow::~MinimapWindow() {
+MinimapWindow::~MinimapWindow()
+{
 	for(int i = 0; i < 256; ++i) {
 		delete pens[i];
 	}
 }
 
-void MinimapWindow::OnSize(wxSizeEvent& event) {
+void MinimapWindow::OnSize(wxSizeEvent& event)
+{
 	Refresh();
 }
 
-void MinimapWindow::OnClose(wxCloseEvent&) {
+void MinimapWindow::OnClose(wxCloseEvent&)
+{
 	gui.DestroyMinimap();
 }
 
-void MinimapWindow::DelayedUpdate() {
+void MinimapWindow::DelayedUpdate()
+{
 	// We only updated the window AFTER actions have taken place, that
 	// way we don't waste too much performance on updating this window
 	update_timer.Start(settings.getInteger(Config::MINIMAP_UPDATE_DELAY), true);
 }
 
-void MinimapWindow::OnDelayedUpdate(wxTimerEvent& event) {
+void MinimapWindow::OnDelayedUpdate(wxTimerEvent& event)
+{
 	Refresh();
 }
 
-void MinimapWindow::OnPaint(wxPaintEvent& event) {
+void MinimapWindow::OnPaint(wxPaintEvent& event)
+{
 	wxBufferedPaintDC pdc(this);
 	
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
-	if(gui.IsEditorOpen() == false) return;
+	if(!gui.IsEditorOpen()) return;
 	Editor& editor = *gui.GetCurrentEditor();
 	
 	int window_width = GetSize().GetWidth();
@@ -139,8 +145,7 @@ void MinimapWindow::OnPaint(wxPaintEvent& event) {
 			}
 		}
 
-		if(settings.getInteger(Config::MINIMAP_VIEW_BOX))
-		{
+		if(settings.getInteger(Config::MINIMAP_VIEW_BOX)) {
 			pdc.SetPen(*wxWHITE_PEN);
 			// Draw the rectangle on the minimap
 			
@@ -164,13 +169,11 @@ void MinimapWindow::OnPaint(wxPaintEvent& event) {
 			view_end_x = view_start_x + screensize_x / tile_size + 1;
 			view_end_y = view_start_y + screensize_y / tile_size + 1;
 
-			for(int x = view_start_x; x <= view_end_x; ++x)
-			{
+			for(int x = view_start_x; x <= view_end_x; ++x) {
 				pdc.DrawPoint(x - start_x, view_start_y - start_y);
 				pdc.DrawPoint(x - start_x, view_end_y - start_y);
 			}
-			for(int y = view_start_y; y < view_end_y; ++y)
-			{
+			for(int y = view_start_y; y < view_end_y; ++y) {
 				pdc.DrawPoint(view_start_x - start_x, y - start_y);
 				pdc.DrawPoint(view_end_x - start_x, y - start_y);
 			}
@@ -178,8 +181,9 @@ void MinimapWindow::OnPaint(wxPaintEvent& event) {
 	}
 }
 
-void MinimapWindow::OnMouseClick(wxMouseEvent& event) {
-	if(gui.IsEditorOpen() == false) return;
+void MinimapWindow::OnMouseClick(wxMouseEvent& event)
+{
+	if(!gui.IsEditorOpen()) return;
 	int new_map_x = last_start_x + event.GetX();
 	int new_map_y = last_start_y + event.GetY();
 	gui.CenterOnPosition(Position(new_map_x, new_map_y, gui.GetCurrentFloor()));
@@ -187,7 +191,8 @@ void MinimapWindow::OnMouseClick(wxMouseEvent& event) {
 	gui.RefreshView();
 }
 
-void MinimapWindow::OnKey(wxKeyEvent& event) {
+void MinimapWindow::OnKey(wxKeyEvent& event)
+{
 	if(gui.GetCurrentTab() != nullptr) {
 		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}

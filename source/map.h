@@ -159,10 +159,7 @@ inline void foreach_ItemOnMap(Map& map, ForeachType& foreach) {
 				do {
 					container = containers.front();
 					ItemVector& v = container->getVector();
-					for(ItemVector::iterator containeriter = v.begin();
-							containeriter != v.end();
-							++containeriter)
-					{
+					for(ItemVector::iterator containeriter = v.begin(); containeriter != v.end(); ++containeriter) {
 						Item* i = *containeriter;
 						Container* c = dynamic_cast<Container*>(i);
 						foreach(map, tile, i, done);
@@ -198,11 +195,9 @@ inline long long remove_if_TileOnMap(Map& map, RemoveIfType& remove_if)
 	long long removed = 0;
 	long long total = map.getTileCount();
 
-	while(tileiter != end)
-	{
+	while(tileiter != end) {
 		Tile* tile = (*tileiter)->get();
-		if(remove_if(map, tile, removed, done, total))
-		{
+		if(remove_if(map, tile, removed, done, total)) {
 			map.setTile(tile->getPosition(), nullptr, true);
 			++removed;
 		}
@@ -221,26 +216,21 @@ inline long long remove_if_ItemOnMap(Map& map, RemoveIfType& remove_if) {
 	MapIterator tileiter = map.begin();
 	MapIterator end = map.end();
 
-	while(tileiter != end)
-	{
+	while(tileiter != end) {
 		Tile* tile = (*tileiter)->get();
 
-		if(tile->ground)
-		{
-			if(remove_if(map, tile->ground, removed, done))
-			{
+		if(tile->ground) {
+			if(remove_if(map, tile->ground, removed, done)) {
 				delete tile->ground;
 				tile->ground = nullptr;
 				++removed;
 			}
 		}
 
-		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); )
-		{
+		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ) {
 			Item* item = *itemiter;
 
-			if(remove_if(map, item, removed, done))
-			{
+			if(remove_if(map, item, removed, done)) {
 				itemiter = tile->items.erase(itemiter);
 				delete item;
 				++removed;

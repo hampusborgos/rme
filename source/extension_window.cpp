@@ -36,6 +36,7 @@ ExtensionsDialog::ExtensionsDialog(wxWindow* parent) :
 
 ExtensionsDialog::~ExtensionsDialog()
 {
+	////
 }
 
 void ExtensionsDialog::OnClickLink(wxHtmlLinkEvent& evt)
@@ -68,10 +69,7 @@ void ExtensionsDialog::OnClickOpenFolder(wxCommandEvent& evt)
 wxString ExtensionsDialog::HTML() const
 {
 	wxString markup;
-	for (MaterialsExtensionList::const_iterator me = materials.getExtensions().begin();
-			me != materials.getExtensions().end();
-			++me)
-	{
+	for(MaterialsExtensionList::const_iterator me = materials.getExtensions().begin(); me != materials.getExtensions().end(); ++me) {
 		markup << HTMLForExtension(*me);
 		markup << "<hr>";
 	}
@@ -88,7 +86,7 @@ wxString ExtensionsDialog::HTMLForExtension(MaterialsExtension* me) const
 		<< "<td width='100px'><b>Extension</b></td>"
 		<< "<td>";
 	
-	if (me->url.empty())
+	if(me->url.empty())
 		markup << me->name;
 	else
 		markup << "<a href='" << me->url << "'>" << me->name << "</a>";
@@ -101,7 +99,7 @@ wxString ExtensionsDialog::HTMLForExtension(MaterialsExtension* me) const
 		<< "<td width='100px'><b>Author</b></td>"
 		<< "<td>";
 
-	if (me->author_url.empty())
+	if(me->author_url.empty())
 		markup << me->author;
 	else
 		markup << "<a href='" << me->author_url << "'>" << me->author << "</a>";

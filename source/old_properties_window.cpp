@@ -73,14 +73,14 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		int additional_height = 0;
 
 		int32_t maxColumns;
-		if (use_large_sprites) {
+		if(use_large_sprites) {
 			maxColumns = 6;
 		} else {
 			maxColumns = 12;
 		}
 
-		for (uint32_t index = 0; index < container->getVolume(); ++index) {
-			if (!horizontal_sizer) {
+		for(uint32_t index = 0; index < container->getVolume(); ++index) {
+			if(!horizontal_sizer) {
 				horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
 			}
 
@@ -90,7 +90,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 			container_items.push_back(containerItemButton);
 			horizontal_sizer->Add(containerItemButton);
 
-			if (((index + 1) % maxColumns) == 0) {
+			if(((index + 1) % maxColumns) == 0) {
 				contents_sizer->Add(horizontal_sizer);
 				horizontal_sizer = nullptr;
 				additional_height += additional_height_increment;
@@ -152,17 +152,17 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		// Splash types
 		splash_type_field = newd wxChoice(this, wxID_ANY);
-		if (edit_item->isFluidContainer()) {
+		if(edit_item->isFluidContainer()) {
 			splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int32_t(LIQUID_NONE));
 		}
 
-		for (SplashType splashType = LIQUID_FIRST; splashType != LIQUID_LAST; ++splashType) {
+		for(SplashType splashType = LIQUID_FIRST; splashType != LIQUID_LAST; ++splashType) {
 			splash_type_field->Append(wxstr(Item::LiquidID2Name(splashType)), newd int32_t(splashType));
 		}
 
-		if (item->getSubtype()) {
+		if(item->getSubtype()) {
 			const std::string& what = Item::LiquidID2Name(item->getSubtype());
-			if (what == "Unknown") {
+			if(what == "Unknown") {
 				splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int32_t(LIQUID_NONE));
 			}
 			splash_type_field->SetStringSelection(wxstr(what));
@@ -208,9 +208,9 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 					found = true;
 				}
 				depot_id_field->Append(wxstr(town_iter->second->getName()), newd int(town_iter->second->getID()));
-				if(found == false) ++to_select_index;
+				if(!found) ++to_select_index;
 			}
-			if(found == false) {
+			if(!found) {
 				if(depot->getDepotID() != 0) {
 					depot_id_field->Append(wxT("Undefined Town (id:") + i2ws(depot->getDepotID()) + wxT(")"), newd int(depot->getDepotID()));
 				}
@@ -260,7 +260,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		if(item->isClientCharged()) max_count = 250;
 		if(item->isExtraCharged()) max_count = 65500;
 		count_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_item->getCount()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, max_count, edit_item->getCount());
-		if(item->isStackable() == false && item->isCharged() == false) {
+		if(!item->isStackable() && !item->isCharged()) {
 			count_field->Enable(false);
 		}
 		subsizer->Add(count_field, wxSizerFlags(1).Expand());
@@ -284,7 +284,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		if(door) {
 			subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Door ID")));
 			door_id_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(door->getDoorID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFF, door->getDoorID());
-			if(!edit_tile || edit_tile->isHouseTile() == false) {
+			if(!edit_tile || !edit_tile->isHouseTile()) {
 				door_id_field->Disable();
 			}
 			subsizer->Add(door_id_field, wxSizerFlags(1).Expand());
@@ -351,7 +351,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Direction")));
 	direction_field = newd wxChoice(this, wxID_ANY);
 
-	for (Direction dir = DIRECTION_FIRST; dir <= DIRECTION_LAST; ++dir) {
+	for(Direction dir = DIRECTION_FIRST; dir <= DIRECTION_LAST; ++dir) {
 		direction_field->Append(wxstr(Creature::DirID2Name(dir)), newd int32_t(dir));
 	}
 	direction_field->SetSelection(edit_creature->getDirection());
@@ -412,23 +412,18 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 OldPropertiesWindow::~OldPropertiesWindow()
 {
 	// Warning: edit_item may no longer be valid, DONT USE IT!
-	if(splash_type_field)
-	{
-		for(uint32_t i = 0; i < splash_type_field->GetCount(); ++i)
-		{
+	if(splash_type_field) {
+		for(uint32_t i = 0; i < splash_type_field->GetCount(); ++i) {
 			delete reinterpret_cast<int*>(splash_type_field->GetClientData(i));
 		}
 	}
-	if (direction_field)
-	{
-		for (uint32_t i = 0; i < direction_field->GetCount(); ++i) {
+	if(direction_field) {
+		for(uint32_t i = 0; i < direction_field->GetCount(); ++i) {
 			delete reinterpret_cast<int*>(direction_field->GetClientData(i));
 		}
 	}
-	if(depot_id_field)
-	{
-		for(uint32_t i = 0; i < depot_id_field->GetCount(); ++i)
-		{
+	if(depot_id_field) {
+		for(uint32_t i = 0; i < depot_id_field->GetCount(); ++i) {
 			delete reinterpret_cast<int*>(depot_id_field->GetClientData(i));
 		}
 	}
@@ -437,9 +432,9 @@ OldPropertiesWindow::~OldPropertiesWindow()
 void OldPropertiesWindow::OnFocusChange(wxFocusEvent& event)
 {
 	wxWindow* win = event.GetWindow();
-	if (wxSpinCtrl* spin = dynamic_cast<wxSpinCtrl*>(win))
+	if(wxSpinCtrl* spin = dynamic_cast<wxSpinCtrl*>(win))
 		spin->SetSelection(-1, -1);
-	else if (wxTextCtrl* text = dynamic_cast<wxTextCtrl*>(win))
+	else if(wxTextCtrl* text = dynamic_cast<wxTextCtrl*>(win))
 		text->SetSelection(-1, -1);
 }
 
@@ -621,7 +616,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		int* new_dir = reinterpret_cast<int*>(direction_field->GetClientData(
 			direction_field->GetSelection()));
 
-		if (new_dir) {
+		if(new_dir) {
 			edit_creature->setDirection((Direction)*new_dir);
 		}
 	} else if(edit_spawn) {
@@ -640,8 +635,8 @@ void OldPropertiesWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 void OldPropertiesWindow::Update()
 {
 	Container* container = dynamic_cast<Container*>(edit_item);
-	if (container) {
-		for (uint32_t i = 0; i < container->getVolume(); ++i) {
+	if(container) {
+		for(uint32_t i = 0; i < container->getVolume(); ++i) {
 			container_items[i]->setItem(container->getItem(i));
 		}
 	}

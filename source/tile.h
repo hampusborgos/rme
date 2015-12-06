@@ -24,7 +24,6 @@
 #include "item.h"
 #include "map_region.h"
 
-
 enum {
 	TILESTATE_NONE           = 0x0000,
 	TILESTATE_PROTECTIONZONE = 0x0001,
@@ -98,7 +97,7 @@ public: //Functions
 	// PZ
 	bool isPZ() const { return testFlags(mapflags, TILESTATE_PROTECTIONZONE); }
 	void setPZ(bool pz) {
-		if (pz) {
+		if(pz) {
 			mapflags |= TILESTATE_PROTECTIONZONE;
 		} else {
 			mapflags &= ~TILESTATE_PROTECTIONZONE;
@@ -154,7 +153,7 @@ public: //Functions
 
 	bool hasOptionalBorder() const { return testFlags(statflags, TILESTATE_OP_BORDER); }
 	void setOptionalBorder(bool b) {
-		if (b) {
+		if(b) {
 			statflags |= TILESTATE_OP_BORDER;
 		} else {
 			statflags &= ~TILESTATE_OP_BORDER;
@@ -251,10 +250,7 @@ inline bool Tile::isHouseExit() const {
 inline bool Tile::hasHouseExit(uint32_t exit) const {
 	const HouseExitList* house_exits = getHouseExits();
 	if(house_exits) {
-		for(HouseExitList::const_iterator iter = house_exits->begin();
-				iter != house_exits->end();
-				++iter)
-		{
+		for(HouseExitList::const_iterator iter = house_exits->begin(); iter != house_exits->end(); ++iter) {
 			if(*iter == exit) {
 				return true;
 			}
@@ -286,6 +282,5 @@ inline void Tile::unsetStatFlags(uint16_t _flags) {
 inline uint16_t Tile::getStatFlags() const {
 	return statflags;
 }
-
 
 #endif

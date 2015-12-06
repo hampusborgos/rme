@@ -27,28 +27,22 @@ BaseMap::BaseMap() :
 	tilecount(0),
 	root(*this)
 {
-	// ...
+	////
 }
 
 BaseMap::~BaseMap()
 {
-	// ...
+	////
 }
 
 void BaseMap::clear(bool del)
 {
 	PositionVector pos_vec;
-	for(MapIterator map_iter = begin();
-			map_iter != end();
-			++map_iter)
-	{
+	for(MapIterator map_iter = begin(); map_iter != end(); ++map_iter) {
 		Tile* t = (*map_iter)->get();
 		pos_vec.push_back(t->getPosition());
 	}
-	for(PositionVector::iterator pos_iter = pos_vec.begin();
-			pos_iter != pos_vec.end();
-			++pos_iter)
-	{
+	for(PositionVector::iterator pos_iter = pos_vec.begin(); pos_iter != pos_vec.end(); ++pos_iter) {
 		setTile(*pos_iter, nullptr, del);
 	}
 }
@@ -74,8 +68,7 @@ TileLocation* BaseMap::getTileL(int x, int y, int z)
 {
 	ASSERT(z < MAP_HEIGHT);
 	QTreeNode* leaf = root.getLeaf(x, y);
-	if(leaf)
-	{
+	if(leaf) {
 		Floor* floor = leaf->getFloor(z);
 		if(floor)
 			return &floor->locs[(x & 3)*4 + (y & 3)];
@@ -148,10 +141,12 @@ MapIterator::MapIterator(BaseMap* _map) :
 	current_tile(nullptr),
 	map(_map)
 {
+	////
 }
 
 MapIterator::~MapIterator()
 {
+	////
 }
 
 MapIterator::MapIterator(const MapIterator& other)

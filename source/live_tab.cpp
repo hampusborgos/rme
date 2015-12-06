@@ -116,7 +116,7 @@ LiveLogTab::~LiveLogTab()
 
 wxString LiveLogTab::GetTitle() const
 {
-	if (socket) {
+	if(socket) {
 		return wxT("Live Log - ") + socket->getHostName();
 	}
 	return wxT("Live Log - Disconnected");
@@ -197,7 +197,7 @@ void LiveLogTab::OnDeselectChatbox(wxFocusEvent& evt)
 void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>& updatedClients)
 {
 	// Delete old rows
-	if (user_list->GetNumberRows() > 0) {
+	if(user_list->GetNumberRows() > 0) {
 		user_list->DeleteRows(0, user_list->GetNumberRows());
 	}
 
@@ -205,7 +205,7 @@ void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>&
 	user_list->AppendRows(clients.size());
 
 	int32_t i = 0;
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		LivePeer* peer = clientEntry.second;
 		user_list->SetCellBackgroundColour(peer->getUsedColor(), i, 0);
 		user_list->SetCellValue(i2ws((peer->getClientId() >> 1) + 1), i, 1);

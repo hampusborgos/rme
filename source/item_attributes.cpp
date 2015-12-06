@@ -10,6 +10,7 @@
 ItemAttributes::ItemAttributes() : 
 	attributes(nullptr)
 {
+	////
 }
 
 ItemAttributes::ItemAttributes(const ItemAttributes& o)
@@ -31,14 +32,14 @@ void ItemAttributes::createAttributes()
 
 void ItemAttributes::clearAllAttributes()
 {
-	if (attributes)
+	if(attributes)
 		delete attributes;
 	attributes = nullptr;
 }
 
 ItemAttributeMap ItemAttributes::getAttributes() const
 {
-	if (attributes)
+	if(attributes)
 		return *attributes;
 	return ItemAttributeMap();
 }
@@ -155,6 +156,7 @@ bool ItemAttributes::hasBooleanAttribute(const std::string& key) const
 
 ItemAttribute::ItemAttribute() : type(ItemAttribute::NONE)
 {
+	////
 }
 
 
@@ -214,7 +216,7 @@ ItemAttribute::~ItemAttribute()
 
 void ItemAttribute::clear()
 {
-	if(type == STRING){
+	if(type == STRING) {
 		(reinterpret_cast<std::string*>(&data))->~basic_string();
 		type = NONE;
 	}
@@ -279,13 +281,13 @@ const bool* ItemAttribute::getBoolean() const
 bool ItemAttributes::unserializeAttributeMap(const IOMap& maphandle, BinaryNode* stream)
 {
 	uint16_t n;
-	if(stream->getU16(n)){
+	if(stream->getU16(n)) {
 		createAttributes();
 
 		std::string key;
 		ItemAttribute attrib;
 
-		while(n--){
+		while(n--) {
 			if(!stream->getString(key))
 				return false;
 			if(!attrib.unserialize(maphandle, stream))
@@ -303,7 +305,7 @@ void ItemAttributes::serializeAttributeMap(const IOMap& maphandle, NodeFileWrite
 
 	ItemAttributeMap::const_iterator attribute = attributes->begin();
 	int i = 0;
-	while(attribute != attributes->end() && i <= 0xFFFF){
+	while(attribute != attributes->end() && i <= 0xFFFF) {
 		const std::string& key = attribute->first;
 		if(key.size() > 0xFFFF)
 			f.addString(key.substr(0, 65535));
@@ -322,42 +324,36 @@ bool ItemAttribute::unserialize(const IOMap& maphandle, BinaryNode* stream)
 	stream->getU8(rtype);
 
 	// Read contents
-	switch(rtype)
-	{
-		case STRING:
-		{
+	switch(rtype) {
+		case STRING: {
 			std::string str;
 			if(!stream->getLongString(str))
 				return false;
 			set(str);
 			break;
 		}
-		case INTEGER:
-		{
+		case INTEGER: {
 			uint32_t u32;
 			if(!stream->getU32(u32))
 				return false;
 			set(*reinterpret_cast<int32_t*>(&u32));
 			break;
 		}
-		case FLOAT:
-		{
+		case FLOAT: {
 			uint32_t u32;
 			if(!stream->getU32(u32))
 				return false;
 			set((double)*reinterpret_cast<float*>(&u32));
 			break;
 		}
-		case DOUBLE:
-		{
+		case DOUBLE: {
 			uint64_t u64;
 			if(!stream->getU64(u64))
 				return false;
 			set(*reinterpret_cast<double*>(&u64));
 			break;
 		}
-		case BOOLEAN:
-		{
+		case BOOLEAN: {
 			uint8_t b;
 			if(!stream->getU8(b))
 				return false;
@@ -375,7 +371,7 @@ void ItemAttribute::serialize(const IOMap& maphandle, NodeFileWriteHandle& f) co
 	f.addU8((uint8_t)(type));
 
 	// Write contents
-	switch(type){
+	switch(type) {
 		case STRING:
 			f.addLongString(*getString());
 			break;

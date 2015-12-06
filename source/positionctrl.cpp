@@ -38,6 +38,7 @@ wxStaticBoxSizer(wxHORIZONTAL, parent, label)
 
 PositionCtrl::~PositionCtrl()
 {
+	////
 }
 
 Position PositionCtrl::GetPosition() const

@@ -31,10 +31,12 @@ const wxEventType EVT_UPDATE_CHECK_FINISHED = wxNewEventType();
 
 UpdateChecker::UpdateChecker()
 {
+	////
 }
 
 UpdateChecker::~UpdateChecker()
 {
+	////
 }
 
 void UpdateChecker::connect(wxEvtHandler* receiver)
@@ -61,25 +63,25 @@ UpdateConnectionThread::UpdateConnectionThread(wxEvtHandler* receiver, wxURL* ur
 	receiver(receiver),
 	url(url)
 {
+	////
 }
 
 UpdateConnectionThread::~UpdateConnectionThread()
 {
+	////
 }
 
 wxThread::ExitCode UpdateConnectionThread::Entry()
 {
 	wxInputStream* input = url->GetInputStream();
-	if(!input)
-	{
+	if(!input) {
 		delete input;
 		delete url;
 		return 0;
 	}
 
 	std::string data;
-	while(input->Eof() == false)
-	{
+	while(!input->Eof()) {
 		data += input->GetC();
 	}
 
@@ -90,6 +92,5 @@ wxThread::ExitCode UpdateConnectionThread::Entry()
 	if(receiver) receiver->AddPendingEvent(event);
 	return 0;
 }
-
 
 #endif

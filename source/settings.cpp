@@ -42,7 +42,9 @@ Settings::Settings() : store(Config::LAST)
 	setDefaults();
 }
 
-Settings::~Settings() {
+Settings::~Settings()
+{
+	////
 }
 
 wxConfigBase& Settings::getConfigObject()
@@ -52,18 +54,19 @@ wxConfigBase& Settings::getConfigObject()
 
 bool Settings::getBoolean(uint32_t key) const
 {
-	if (key > Config::LAST) {
+	if(key > Config::LAST) {
 		return false;
 	}
 
 	const DynamicValue& dv = store[key];
-	if (dv.type == TYPE_INT) {
+	if(dv.type == TYPE_INT) {
 		return dv.intval != 0;
 	}
 	return false;
 }
 
-int Settings::getInteger(uint32_t key) const {
+int Settings::getInteger(uint32_t key) const
+{
 	if(key > Config::LAST) return 0;
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_INT)
@@ -71,7 +74,8 @@ int Settings::getInteger(uint32_t key) const {
 	return 0;
 }
 
-float Settings::getFloat(uint32_t key) const {
+float Settings::getFloat(uint32_t key) const
+{
 	if(key > Config::LAST) return 0.0;
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_FLOAT) {
@@ -80,7 +84,8 @@ float Settings::getFloat(uint32_t key) const {
 	return 0.0;
 }
 
-std::string Settings::getString(uint32_t key) const {
+std::string Settings::getString(uint32_t key) const
+{
 	if(key > Config::LAST) return "";
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_STR && dv.strval != nullptr)
@@ -88,8 +93,8 @@ std::string Settings::getString(uint32_t key) const {
 	return "";
 }
 
-
-void Settings::setInteger(uint32_t key, int newval) {
+void Settings::setInteger(uint32_t key, int newval)
+{
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_INT) {
@@ -100,7 +105,8 @@ void Settings::setInteger(uint32_t key, int newval) {
 	}
 }
 
-void Settings::setFloat(uint32_t key, float newval) {
+void Settings::setFloat(uint32_t key, float newval)
+{
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_FLOAT) {
@@ -111,7 +117,8 @@ void Settings::setFloat(uint32_t key, float newval) {
 	}
 }
 
-void Settings::setString(uint32_t key, std::string newval) {
+void Settings::setString(uint32_t key, std::string newval)
+{
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_STR) {
@@ -123,7 +130,8 @@ void Settings::setString(uint32_t key, std::string newval) {
 	}
 }
 
-std::string Settings::DynamicValue::str() {
+std::string Settings::DynamicValue::str()
+{
 	switch(type) {
 		case TYPE_FLOAT:return f2s(floatval);
 		case TYPE_STR:  return std::string(*strval);
@@ -133,7 +141,8 @@ std::string Settings::DynamicValue::str() {
 	}
 }
 
-void Settings::IO(IOMode mode) {
+void Settings::IO(IOMode mode)
+{
 	wxConfigBase* conf = (mode == DEFAULT? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
 
 	using namespace Config;
@@ -311,8 +320,8 @@ void Settings::IO(IOMode mode) {
 #undef String
 }
 
-
-void Settings::load() {
+void Settings::load()
+{
 	wxConfigBase* conf;
 #ifdef __WINDOWS__
 	FileName filename(wxT("rme.cfg"));
@@ -327,22 +336,16 @@ void Settings::load() {
 	}
 #else
 	FileName filename(wxT("./rme.cfg"));
-	if(filename.FileExists())
-	{ // Use local file if it exists
+	if(filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
-	}
-	else
-	{ // Else use global (user-specific) conf
+	} else { // Else use global (user-specific) conf
 		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg"));
-		if(filename.FileExists())
-		{
+		if(filename.FileExists()) {
 			wxFileInputStream file(filename.GetFullPath());
 			conf = newd wxFileConfig(file);
-		}
-		else
-		{
+		} else {
 			wxStringInputStream dummy(wxT(""));
 			conf = newd wxFileConfig(dummy, wxConvAuto());
 		}		
@@ -357,8 +360,7 @@ void Settings::save(bool endoftheworld)
 {
 	IO(SAVE);
 #ifdef __WINDOWS__
-	if(use_file_cfg)
-	{
+	if(use_file_cfg) {
 		wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
 		if(!conf)
 			return;
@@ -371,13 +373,10 @@ void Settings::save(bool endoftheworld)
 	if(!conf)
 		return;
 	FileName filename(wxT("./rme.cfg"));
-	if(filename.FileExists())
-	{ // Use local file if it exists
+	if(filename.FileExists()) { // Use local file if it exists
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
-	}
-	else
-	{ // Else use global (user-specific) conf
+	} else { // Else use global (user-specific) conf
 		wxString path = wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg");
 		filename.Assign(path);
 		filename.Mkdir(0755, wxPATH_MKDIR_FULL);
@@ -385,13 +384,10 @@ void Settings::save(bool endoftheworld)
 		conf->Save(file);
 	}
 #endif
-	if(endoftheworld)
-	{
+	if(endoftheworld) {
 		wxConfigBase* conf = dynamic_cast<wxConfigBase*>(wxConfig::Get());
 		wxConfig::Set(nullptr);
 		delete conf;
 	}
 }
-
-
 

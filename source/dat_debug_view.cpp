@@ -26,11 +26,9 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 	wxVListBox(parent, id, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE)
 {
 	int n = 0;
-	for(int id = 0; id < gui.gfx.getItemSpriteMaxID(); ++id)
-	{
+	for(int id = 0; id < gui.gfx.getItemSpriteMaxID(); ++id) {
 		Sprite* spr = gui.gfx.getSprite(id);
-		if(spr)
-		{
+		if(spr) {
 			sprites[n] = spr;
 			++n;
 		}
@@ -40,6 +38,7 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 
 DatDebugViewListBox::~DatDebugViewListBox() 
 {
+	////
 }
 
 void DatDebugViewListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
@@ -48,12 +47,9 @@ void DatDebugViewListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) con
 	if(spr_iter != sprites.end())
 		spr_iter->second->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
-	if(int(n) == GetSelection()) 
-	{
+	if(int(n) == GetSelection())  {
 		dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
-	}
-	else 
-	{
+	} else {
 		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 	}
 
@@ -90,13 +86,16 @@ DatDebugView::DatDebugView(wxWindow* parent) : wxPanel(parent)
 
 DatDebugView::~DatDebugView()
 {
+	////
 }
 
 void DatDebugView::OnTextChange(wxCommandEvent& evt)
 {
+	////
 }
 
 void DatDebugView::OnClickList(wxCommandEvent& evt)
 {
+	////
 }
 

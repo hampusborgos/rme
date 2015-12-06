@@ -26,24 +26,24 @@ LiveClient::~LiveClient()
 bool LiveClient::connect(const std::string& address, uint16_t port)
 {
 	NetworkConnection& connection = NetworkConnection::getInstance();
-	if (!connection.start()) {
+	if(!connection.start()) {
 		setLastError(wxT("The previous connection has not been terminated yet."));
 		return false;
 	}
 
 	auto& service = connection.get_service();
-	if (!resolver) {
+	if(!resolver) {
 		resolver = std::make_shared<boost::asio::ip::tcp::resolver>(service);
 	}
 
-	if (!socket) {
+	if(!socket) {
 		socket = std::make_shared<boost::asio::ip::tcp::socket>(service);
 	}
 
 	boost::asio::ip::tcp::resolver::query query(address, std::to_string(port));
 	resolver->async_resolve(query, [this](const boost::system::error_code& error, boost::asio::ip::tcp::resolver::iterator endpoint_iterator) -> void
 	{
-		if (error) {
+		if(error) {
 			logMessage(wxT("Error: ") + error.message());
 		} else {
 			tryConnect(endpoint_iterator);
@@ -51,8 +51,8 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 	});
 
 	/*
-	if (!client->WaitOnConnect(5, 0)) {
-		if (log)
+	if(!client->WaitOnConnect(5, 0)) {
+		if(log)
 			log->Disconnect();
 		last_err = wxT("Connection timed out.");
 		client->Destroy();
@@ -61,8 +61,7 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 		return false;
 	}
 	
-	if(!client->IsConnected())
-	{
+	if(!client->IsConnected()) {
 		if(log)
 			log->Disconnect();
 		last_err = wxT("Connection refused by peer.");
@@ -80,11 +79,11 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 
 void LiveClient::tryConnect(boost::asio::ip::tcp::resolver::iterator endpoint_iterator)
 {
-	if (stopped) {
+	if(stopped) {
 		return;
 	}
 
-	if (endpoint_iterator == boost::asio::ip::tcp::resolver::iterator()) {
+	if(endpoint_iterator == boost::asio::ip::tcp::resolver::iterator()) {
 		return;
 	}
 
@@ -92,10 +91,10 @@ void LiveClient::tryConnect(boost::asio::ip::tcp::resolver::iterator endpoint_it
 
 	boost::asio::async_connect(*socket, endpoint_iterator, [this](boost::system::error_code error, boost::asio::ip::tcp::resolver::iterator endpoint_iterator) -> void
 	{
-		if (!socket->is_open()) {
+		if(!socket->is_open()) {
 			tryConnect(++endpoint_iterator);
-		} else if (error) {
-			if (handleError(error)) {
+		} else if(error) {
+			if(handleError(error)) {
 				tryConnect(++endpoint_iterator);
 			} else {
 				wxTheApp->CallAfter([this]() {
@@ -105,7 +104,7 @@ void LiveClient::tryConnect(boost::asio::ip::tcp::resolver::iterator endpoint_it
 			}
 		} else {
 			socket->set_option(boost::asio::ip::tcp::no_delay(true), error);
-			if (error) {
+			if(error) {
 				wxTheApp->CallAfter([this]() {
 					close();
 				});
@@ -119,15 +118,15 @@ void LiveClient::tryConnect(boost::asio::ip::tcp::resolver::iterator endpoint_it
 
 void LiveClient::close()
 {
-	if (resolver) {
+	if(resolver) {
 		resolver->cancel();
 	}
 
-	if (socket) {
+	if(socket) {
 		socket->close();
 	}
 
-	if (log) {
+	if(log) {
 		log->Message(wxT("Disconnected from server."));
 		log->Disconnect();
 		log = nullptr;
@@ -138,13 +137,13 @@ void LiveClient::close()
 
 bool LiveClient::handleError(const boost::system::error_code& error)
 {
-	if (error == boost::asio::error::eof || error == boost::asio::error::connection_reset) {
+	if(error == boost::asio::error::eof || error == boost::asio::error::connection_reset) {
 		wxTheApp->CallAfter([this]() {
 			log->Message(wxString() + getHostName() + wxT(": disconnected."));
 			close();
 		});
 		return true;
-	} else if (error == boost::asio::error::connection_aborted) {
+	} else if(error == boost::asio::error::connection_aborted) {
 		logMessage(wxT("You have left the server."));
 		return true;
 	}
@@ -153,7 +152,7 @@ bool LiveClient::handleError(const boost::system::error_code& error)
 
 std::string LiveClient::getHostName() const
 {
-	if (!socket) {
+	if(!socket) {
 		return "not connected";
 	}
 	return socket->remote_endpoint().address().to_string();
@@ -165,11 +164,11 @@ void LiveClient::receiveHeader()
 	boost::asio::async_read(*socket,
 		boost::asio::buffer(readMessage.buffer, 4),
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
-			if (error) {
-				if (!handleError(error)) {
+			if(error) {
+				if(!handleError(error)) {
 					logMessage(wxString() + getHostName() + wxT(": ") + error.message());
 				}
-			} else if (bytesReceived < 4) {
+			} else if(bytesReceived < 4) {
 				logMessage(wxString() + getHostName() + wxT(": Could not receive header[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
 			} else {
 				receive(readMessage.read<uint32_t>());
@@ -184,11 +183,11 @@ void LiveClient::receive(uint32_t packetSize)
 	boost::asio::async_read(*socket,
 		boost::asio::buffer(&readMessage.buffer[readMessage.position], packetSize),
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
-			if (error) {
-				if (!handleError(error)) {
+			if(error) {
+				if(!handleError(error)) {
 					logMessage(wxString() + getHostName() + wxT(": ") + error.message());
 				}
-			} else if (bytesReceived < readMessage.buffer.size() - 4) {
+			} else if(bytesReceived < readMessage.buffer.size() - 4) {
 				logMessage(wxString() + getHostName() + wxT(": Could not receive packet[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
 			} else {
 				wxTheApp->CallAfter([this]() {
@@ -206,7 +205,7 @@ void LiveClient::send(NetworkMessage& message)
 	boost::asio::async_write(*socket,
 		boost::asio::buffer(message.buffer, message.size + 4),
 		[this](const boost::system::error_code& error, size_t bytesTransferred) -> void {
-			if (error) {
+			if(error) {
 				logMessage(wxString() + getHostName() + wxT(": ") + error.message());
 			}
 		}
@@ -269,7 +268,7 @@ void LiveClient::sendHello()
 
 void LiveClient::sendNodeRequests()
 {
-	if (queryNodeList.empty()) {
+	if(queryNodeList.empty()) {
 		return;
 	}
 
@@ -277,7 +276,7 @@ void LiveClient::sendNodeRequests()
 	message.write<uint8_t>(PACKET_REQUEST_NODES);
 
 	message.write<uint32_t>(queryNodeList.size());
-	for (uint32_t node : queryNodeList) {
+	for(uint32_t node : queryNodeList) {
 		message.write<uint32_t>(node);
 	}
 
@@ -288,12 +287,12 @@ void LiveClient::sendNodeRequests()
 void LiveClient::sendChanges(DirtyList& dirtyList)
 {
 	ChangeList& changeList = dirtyList.GetChanges();
-	if (changeList.empty()) {
+	if(changeList.empty()) {
 		return;
 	}
 	
 	mapWriter.reset();
-	for (Change* change : changeList) {
+	for(Change* change : changeList) {
 		switch (change->getType()) {
 			case CHANGE_TILE: {
 				const Position& position = static_cast<Tile*>(change->getData())->getPosition();
@@ -342,7 +341,7 @@ void LiveClient::queryNode(int32_t ndx, int32_t ndy, bool underground)
 void LiveClient::parsePacket(NetworkMessage message)
 {
 	uint8_t packetType;
-	while (message.position < message.buffer.size()) {
+	while(message.position < message.buffer.size()) {
 		packetType = message.read<uint8_t>();
 		switch (packetType) {
 			case PACKET_HELLO_FROM_SERVER:
@@ -410,7 +409,7 @@ void LiveClient::parseClientAccepted(NetworkMessage& message)
 void LiveClient::parseChangeClientVersion(NetworkMessage& message)
 {
 	ClientVersionID clientVersion = static_cast<ClientVersionID>(message.read<uint32_t>());
-	if (!gui.CloseAllEditors()) {
+	if(!gui.CloseAllEditors()) {
 		close();
 		return;
 	}
@@ -468,7 +467,7 @@ void LiveClient::parseStartOperation(NetworkMessage& message)
 void LiveClient::parseUpdateOperation(NetworkMessage& message)
 {
 	int32_t percent = message.read<uint32_t>();
-	if (percent >= 100) {
+	if(percent >= 100) {
 		gui.SetStatusText(wxT("Server Operation Finished."));
 	} else {
 		gui.SetStatusText(wxT("Server Operation in Progress: ") + currentOperation + wxT("... (") + std::to_string(percent) + wxT("%)"));

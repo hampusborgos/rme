@@ -248,7 +248,7 @@ private:
 
 inline int VersionComparisonPredicate(ClientVersion* a, ClientVersion* b)
 {
-	if (a->getID() < b->getID()) {
+	if(a->getID() < b->getID()) {
 		return 1;
 	}
 	return 0;

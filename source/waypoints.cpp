@@ -25,8 +25,7 @@
 void Waypoints::addWaypoint(Waypoint* wp)
 {
 	removeWaypoint(wp->name);
-	if(wp->pos != Position())
-	{
+	if(wp->pos != Position()) {
 		Tile* t = map.getTile(wp->pos);
 		if(!t)
 			map.setTile(wp->pos, t = map.allocator(map.createTileL(wp->pos)));

@@ -24,12 +24,12 @@
 
 Spawns::Spawns()
 {
-	//
+	////
 }
 
 Spawns::~Spawns()
 {
-	//
+	////
 }
 
 void Spawns::addSpawn(Tile* tile)

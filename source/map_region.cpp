@@ -20,6 +20,7 @@ TileLocation::TileLocation() :
 	waypoint_count(0),
 	house_exits(nullptr)
 {
+	////
 }
 
 TileLocation::~TileLocation()
@@ -47,8 +48,7 @@ Floor::Floor(int sx, int sy, int z)
 	sx = sx & ~3;
 	sy = sy & ~3;
 
-	for(int i = 0; i < 16; ++i)
-	{
+	for(int i = 0; i < 16; ++i) {
 		locs[i].position.x = sx + (i >> 2);
 		locs[i].position.y = sy + (i & 3);
 		locs[i].position.z = z;
@@ -69,8 +69,7 @@ QTreeNode::QTreeNode(BaseMap& map) :
 
 QTreeNode::~QTreeNode()
 {
-	if(isLeaf)
-	{
+	if(isLeaf) {
 		delete array[0];
 		delete array[1];
 		delete array[2];
@@ -87,9 +86,7 @@ QTreeNode::~QTreeNode()
 		delete array[13];
 		delete array[14];
 		delete array[15];
-	}
-	else
-	{
+	} else {
 		delete child[0];
 		delete child[1];
 		delete child[2];
@@ -113,23 +110,16 @@ QTreeNode* QTreeNode::getLeaf(int x, int y)
 {
 	QTreeNode* node = this;
 	uint32_t cx = x, cy = y;
-	while(node)
-	{
-		if(node->isLeaf)
-		{
+	while(node) {
+		if(node->isLeaf) {
 			return node;
-		}
-		else
-		{
+		} else {
 			uint32_t index = ((cx & 0xC000) >> 14) | ((cy & 0xC000) >> 12);
-			if(node->child[index])
-			{
+			if(node->child[index]) {
 				node = node->child[index];
 				cx <<= 2;
 				cy <<= 2;
-			}
-			else
-			{
+			} else {
 				return nullptr;
 			}
 		}
@@ -142,27 +132,20 @@ QTreeNode* QTreeNode::getLeafForce(int x, int y)
 	QTreeNode* node = this;
 	uint32_t cx = x, cy = y;
 	int level = 6;
-	while(node)
-	{
+	while(node) {
 		uint32_t index = ((cx & 0xC000) >> 14) | ((cy & 0xC000) >> 12);
 
 		QTreeNode*& qt = node->child[index];
-		if(qt)
-		{
+		if(qt) {
 			if(qt->isLeaf)
 				return qt;
 
-		}
-		else
-		{
-			if(level == 0)
-			{
+		} else {
+			if(level == 0) {
 				qt = newd QTreeNode(map);
 				qt->isLeaf = true;
 				return qt;
-			}
-			else
-			{
+			} else {
 				qt = newd QTreeNode(map);
 			}
 		}
@@ -191,7 +174,7 @@ bool QTreeNode::isVisible(bool underground)
 
 bool QTreeNode::isRequested(bool underground)
 {
-	if (underground) {
+	if(underground) {
 		return testFlags(visible, 4);
 	} else {
 		return testFlags(visible, 8);
@@ -210,7 +193,7 @@ void QTreeNode::clearVisible(uint32_t u)
 
 bool QTreeNode::isVisible(uint32_t client, bool underground)
 {
-	if (underground) {
+	if(underground) {
 		return testFlags(visible >> 16, 1 << client);
 	} else {
 		return testFlags(visible, 1 << client);
@@ -219,15 +202,12 @@ bool QTreeNode::isVisible(uint32_t client, bool underground)
 
 void QTreeNode::setVisible(bool underground, bool value)
 {
-	if(underground)
-	{
+	if(underground) {
 		if(value)
 			visible |= 2;
 		else
 			visible &= ~2;
-	}
-	else // overground
-	{
+	} else { // overground
 		if(value)
 			visible |= 1;
 		else

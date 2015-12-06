@@ -32,6 +32,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NUMERIC), name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
+	////
 }
 
 NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
@@ -41,10 +42,12 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NUMERIC), name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
+	////
 }
 
 NumberTextCtrl::~NumberTextCtrl()
 {
+	////
 }
 
 void NumberTextCtrl::OnKillFocus(wxFocusEvent& evt)
@@ -80,14 +83,14 @@ void NumberTextCtrl::CheckRange()
 	wxString ntext;
 
 	for(size_t s = 0; s < text.size(); ++s) {
-		if (text[s] >= '0' && text[s] <= '9')
+		if(text[s] >= '0' && text[s] <= '9')
 			ntext.Append(text[s]);
 	}
 
 	// Check that value is in range
 	long v;
 	if(ntext.size() != 0 && ntext.ToLong(&v)) {
-		if (v < minval)
+		if(v < minval)
 			v = minval;
 		else if(v > maxval)
 			v = maxval;

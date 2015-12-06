@@ -93,11 +93,13 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 	Fit();
 }
 
-PaletteWindow::~PaletteWindow() {
-	// ...
+PaletteWindow::~PaletteWindow()
+{
+	////
 }
 
-PalettePanel* PaletteWindow::CreateTerrainPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateTerrainPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_TERRAIN);
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_TERRAIN_STYLE)));
 
@@ -112,7 +114,8 @@ PalettePanel* PaletteWindow::CreateTerrainPalette(wxWindow *parent, const Tilese
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateDoodadPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateDoodadPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_DOODAD);
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_DOODAD_STYLE)));
 
@@ -125,38 +128,41 @@ PalettePanel* PaletteWindow::CreateDoodadPalette(wxWindow *parent, const Tileset
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateItemPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateItemPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_ITEM);
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_ITEM_STYLE)));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
 	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
 	panel->AddToolPanel(size_panel);
-
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateHousePalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateHousePalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	HousePalettePanel* panel = newd HousePalettePanel(parent);
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
 	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
 	panel->AddToolPanel(size_panel);
-
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateWaypointPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateWaypointPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	WaypointPalettePanel* panel = newd WaypointPalettePanel(parent);
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateCreaturePalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateCreaturePalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	CreaturePalettePanel* panel = newd CreaturePalettePanel(parent);
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_RAW);
 	panel->SetListType(wxstr(settings.getString(Config::PALETTE_RAW_STYLE)));
 
@@ -167,7 +173,8 @@ PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetCon
 	return panel;
 }
 
-void PaletteWindow::ReloadSettings(Map* map) {
+void PaletteWindow::ReloadSettings(Map* map)
+{
 	if(terrain_palette) {
 		terrain_palette->SetListType(wxstr(settings.getString(Config::PALETTE_TERRAIN_STYLE)));
 		terrain_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
@@ -194,8 +201,8 @@ void PaletteWindow::ReloadSettings(Map* map) {
 	InvalidateContents();
 }
 
-
-void PaletteWindow::LoadCurrentContents() {
+void PaletteWindow::LoadCurrentContents()
+{
 	if(!choicebook) return;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	panel->LoadCurrentContents();
@@ -204,7 +211,8 @@ void PaletteWindow::LoadCurrentContents() {
 	Update();
 }
 
-void PaletteWindow::InvalidateContents() {
+void PaletteWindow::InvalidateContents()
+{
 	if(!choicebook) return;
 	for(size_t iz = 0; iz < choicebook->GetPageCount(); ++iz) {
 		PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetPage(iz));
@@ -222,7 +230,8 @@ void PaletteWindow::InvalidateContents() {
 	}
 }
 
-void PaletteWindow::SelectPage(PaletteType id) {
+void PaletteWindow::SelectPage(PaletteType id)
+{
 	if(!choicebook) return;
 	if(id == GetSelectedPage()) {
 		return;
@@ -238,26 +247,30 @@ void PaletteWindow::SelectPage(PaletteType id) {
 	}
 }
 
-Brush* PaletteWindow::GetSelectedBrush() const {
+Brush* PaletteWindow::GetSelectedBrush() const
+{
 	if(!choicebook) return nullptr;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	return panel->GetSelectedBrush();
 }
 
-int PaletteWindow::GetSelectedBrushSize() const {
+int PaletteWindow::GetSelectedBrushSize() const
+{
 	if(!choicebook) return 0;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	return panel->GetSelectedBrushSize();
 }
 
-PaletteType PaletteWindow::GetSelectedPage() const {
+PaletteType PaletteWindow::GetSelectedPage() const
+{
 	if(!choicebook) return TILESET_UNKNOWN;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	ASSERT(panel);
 	return panel->GetType();
 }
 
-bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary) {
+bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary)
+{
 	if(!choicebook) return false;
 
 	if(dynamic_cast<const HouseBrush*>(whatbrush) && house_palette) {
@@ -269,34 +282,39 @@ bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary) {
 	switch(primary) {
 		case TILESET_TERRAIN: {
 			// This is already searched first
-		} break;
+			break;
+		}
 		case TILESET_DOODAD: {
 			// Ok, search doodad before terrain
 			if(doodad_palette && doodad_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_DOODAD);
 				return true;
 			}
-		} break;
+			break;
+		}
 		case TILESET_ITEM: {
 			if(item_palette && item_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_ITEM);
 				return true;
 			}
-		} break;
+			break;
+		}
 		case TILESET_CREATURE: {
 			if(creature_palette && creature_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_CREATURE);
 				return true;
 			}
-		} break;
+			break;
+		}
 		case TILESET_RAW: {
 			if(raw_palette && raw_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_RAW);
 				return true;
 			}
-		} break;
-		default: {
-		} break;
+			break;
+		}
+		default:
+			break;
 	}
 
 	// Test if it's a terrain brush
@@ -340,7 +358,8 @@ bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary) {
 	return false;
 }
 
-void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event) {
+void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event)
+{
 	event.Skip();
 	if(!choicebook) return;
 	
@@ -357,19 +376,22 @@ void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event) {
 	}
 }
 
-void PaletteWindow::OnPageChanged(wxChoicebookEvent& event) {
+void PaletteWindow::OnPageChanged(wxChoicebookEvent& event)
+{
 	if(!choicebook) return;
 	gui.SelectBrush();
 }
 
-void PaletteWindow::OnUpdateBrushSize(BrushShape shape, int size) {
+void PaletteWindow::OnUpdateBrushSize(BrushShape shape, int size)
+{
 	if(!choicebook) return;
 	PalettePanel* page = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	ASSERT(page);
 	page->OnUpdateBrushSize(shape, size);
 }
 
-void PaletteWindow::OnUpdate(Map* map) {
+void PaletteWindow::OnUpdate(Map* map)
+{
 	if(creature_palette) {
 		creature_palette->OnUpdate();
 	}
@@ -382,14 +404,16 @@ void PaletteWindow::OnUpdate(Map* map) {
 	}
 }
 
-void PaletteWindow::OnKey(wxKeyEvent& event) {
+void PaletteWindow::OnKey(wxKeyEvent& event)
+{
 	if(gui.GetCurrentTab() != nullptr) {
 		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}
 }
 
-void PaletteWindow::OnClose(wxCloseEvent& event) {
-	if(event.CanVeto() == false) {
+void PaletteWindow::OnClose(wxCloseEvent& event)
+{
+	if(!event.CanVeto()) {
 		// We can't do anything! This sucks!
 		// (application is closed, we have to destroy ourselves)
 		Destroy();

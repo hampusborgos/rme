@@ -81,18 +81,17 @@ Item::Item(unsigned short _type, unsigned short _count) :
 
 Item::~Item()
 {
+	////
 }
 
 Item* Item::deepCopy() const
 {
 	Item* copy = Create(id, subtype);
-	if(copy)
-	{
+	if(copy) {
 		copy->selected = selected;
 		if(attributes)
 			copy->attributes = newd ItemAttributeMap(*attributes);
 	}
-
 	return copy;
 }
 
@@ -104,23 +103,17 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 	old_item->setID(new_id);
 	// Through the magic of deepCopy, this will now be a pointer to an item of the correct type.
 	Item* new_item = old_item->deepCopy();
-	if(parent)
-	{
+	if(parent) {
 		// Find the old item and remove it from the tile, insert this one instead!
-		if(old_item == parent->ground)
-		{
+		if(old_item == parent->ground) {
 			delete old_item;
 			parent->ground = new_item;
 			return new_item;
 		}
 
 		std::queue<Container*> containers;
-		for(ItemVector::iterator item_iter = parent->items.begin();
-			item_iter != parent->items.end();
-			++item_iter)
-		{
-			if(*item_iter == old_item)
-			{
+		for(ItemVector::iterator item_iter = parent->items.begin(); item_iter != parent->items.end(); ++item_iter) {
+			if(*item_iter == old_item) {
 				delete old_item;
 				item_iter = parent->items.erase(item_iter);
 				parent->items.insert(item_iter, new_item);
@@ -128,25 +121,20 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 			}
 			
 			Container* c = dynamic_cast<Container*>(*item_iter);
-			if (c)
+			if(c)
 				containers.push(c);
 		}
 
-		while(containers.size() > 0)
-		{
+		while(containers.size() != 0) {
 			Container* container = containers.front();
 			ItemVector& v = container->getVector();
-			for(ItemVector::iterator item_iter = v.begin();
-					item_iter != v.end();
-					++item_iter)
-			{
+			for(ItemVector::iterator item_iter = v.begin(); item_iter != v.end(); ++item_iter) {
 				Item* i = *item_iter;
 				Container* c = dynamic_cast<Container*>(i);
 				if(c)
 					containers.push(c);
 
-				if (i == old_item)
-				{
+				if(i == old_item) {
 					// Found it!
 					item_iter = v.erase(item_iter);
 					v.insert(item_iter, new_item);
@@ -167,7 +155,8 @@ uint32_t Item::memsize() const
 	return mem;
 }
 
-void Item::setID(uint16_t newid) {
+void Item::setID(uint16_t newid)
+{
 	id = newid;
 }
 
@@ -240,7 +229,8 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 	return false;
 }
 
-std::pair<int, int> Item::getDrawOffset() const {
+std::pair<int, int> Item::getDrawOffset() const
+{
 	ItemType& it = item_db[id];
 	if(it.sprite != nullptr) {
 		return it.sprite->getDrawOffset();
@@ -263,19 +253,23 @@ void Item::setUniqueID(unsigned short n)
 	setAttribute("uid", n);
 }
 
-void Item::setActionID(unsigned short n) {
+void Item::setActionID(unsigned short n)
+{
 	setAttribute("aid", n);
 }
 
-void Item::setText(const std::string& str) {
+void Item::setText(const std::string& str)
+{
 	setAttribute("text", str);
 }
 
-void Item::setDescription(const std::string& str) {
+void Item::setDescription(const std::string& str)
+{
 	setAttribute("desc", str);
 }
 
-double Item::getWeight() {
+double Item::getWeight()
+{
 	ItemType& it = item_db[id];
 	if(it.isStackable()) {
 		return it.weight * subtype;
@@ -283,15 +277,18 @@ double Item::getWeight() {
 	return it.weight;
 }
 
-bool Item::canHoldText() const {
+bool Item::canHoldText() const
+{
 	return isReadable() || canWriteText();
 }
 
-bool Item::canHoldDescription() const {
+bool Item::canHoldDescription() const
+{
 	return item_db[id].allowDistRead;
 }
 
-uint8_t Item::getMiniMapColor() const {
+uint8_t Item::getMiniMapColor() const
+{
 	GameSprite* spr = item_db[id].sprite;
 	if(spr) {
 		return spr->getMiniMapColor();
@@ -299,7 +296,8 @@ uint8_t Item::getMiniMapColor() const {
 	return 0;
 }
 
-GroundBrush* Item::getGroundBrush() const {
+GroundBrush* Item::getGroundBrush() const
+{
 	ItemType& it = item_db[id];
 	if(!it.isGroundTile()) {
 		return nullptr;
@@ -307,7 +305,8 @@ GroundBrush* Item::getGroundBrush() const {
 	return dynamic_cast<GroundBrush*>(it.brush);
 }
 
-TableBrush* Item::getTableBrush() const {
+TableBrush* Item::getTableBrush() const
+{
 	ItemType& it = item_db[id];
 	if(!it.isTable) {
 		return nullptr;
@@ -315,7 +314,8 @@ TableBrush* Item::getTableBrush() const {
 	return dynamic_cast<TableBrush*>(it.brush);
 }
 
-CarpetBrush* Item::getCarpetBrush() const {
+CarpetBrush* Item::getCarpetBrush() const
+{
 	ItemType& it = item_db[id];
 	if(!it.isCarpet) {
 		return nullptr;
@@ -323,7 +323,8 @@ CarpetBrush* Item::getCarpetBrush() const {
 	return dynamic_cast<CarpetBrush*>(it.brush);
 }
 
-DoorBrush* Item::getDoorBrush() const {
+DoorBrush* Item::getDoorBrush() const
+{
 	ItemType& it = item_db[id];
 	if(!it.isWall || !it.isBrushDoor) {
 		return nullptr;
@@ -335,28 +336,35 @@ DoorBrush* Item::getDoorBrush() const {
 		case WALL_DOOR_NORMAL: {
 			db = gui.normal_door_brush;
 		} break;
+
 		case WALL_DOOR_LOCKED: {
 			db = gui.locked_door_brush;
 		} break;
+
 		case WALL_DOOR_QUEST: {
 			db = gui.quest_door_brush;
 		} break;
+
 		case WALL_DOOR_MAGIC: {
 			db = gui.magic_door_brush;
 		} break;
+
 		case WALL_WINDOW: {
 			db = gui.window_door_brush;
 		} break;
+
 		case WALL_HATCH_WINDOW: {
 			db = gui.hatch_door_brush;
 		} break;
+
 		default: {
 		} break;
 	}
 	return db;
 }
 
-WallBrush* Item::getWallBrush() const {
+WallBrush* Item::getWallBrush() const
+{
 	ItemType& it = item_db[id];
 	if(!it.isWall) {
 		return nullptr;
@@ -364,7 +372,8 @@ WallBrush* Item::getWallBrush() const {
 	return dynamic_cast<WallBrush*>(it.brush);
 }
 
-BorderType Item::getWallAlignment() const {
+BorderType Item::getWallAlignment() const
+{
 	ItemType& it = item_db[id];
 	if(!it.isWall) {
 		return BORDER_NONE;
@@ -372,7 +381,8 @@ BorderType Item::getWallAlignment() const {
 	return it.border_alignment;
 }
 
-BorderType Item::getBorderAlignment() const {
+BorderType Item::getBorderAlignment() const
+{
 	ItemType& it = item_db[id];
 	return it.border_alignment;
 }
@@ -380,7 +390,8 @@ BorderType Item::getBorderAlignment() const {
 // ============================================================================
 // Static conversions
 
-std::string Item::LiquidID2Name(uint16_t id) {
+std::string Item::LiquidID2Name(uint16_t id)
+{
 	switch(id) {
 		case LIQUID_NONE: return "None";
 		case LIQUID_WATER: return "Water";
@@ -406,7 +417,8 @@ std::string Item::LiquidID2Name(uint16_t id) {
 	}
 }
 
-uint16_t Item::LiquidName2ID(std::string liquid) {
+uint16_t Item::LiquidName2ID(std::string liquid)
+{
 	to_lower_str(liquid);
 	if(liquid == "none") return LIQUID_NONE;
 	if(liquid == "water") return LIQUID_WATER;
@@ -437,12 +449,12 @@ Item* Item::Create(pugi::xml_node xml)
 	pugi::xml_attribute attribute;
 
 	int32_t id = 0;
-	if ((attribute = xml.attribute("id"))) {
+	if((attribute = xml.attribute("id"))) {
 		id = pugi::cast<int32_t>(attribute.value());
 	}
 
 	int32_t count = 1;
-	if ((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
+	if((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
 		count = pugi::cast<int32_t>(attribute.value());
 	}
 
