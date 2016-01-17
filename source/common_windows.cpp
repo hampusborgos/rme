@@ -219,7 +219,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if(new_ver.client != old_ver.client) {
-		if(gui.GetOpenMapCount() > 1)  {
+		if(gui.GetOpenMapCount() > 1) {
 			gui.PopupDialog(this, wxT("Error"), 
 				wxT("You can not change editor version with multiple maps open"), wxOK);
 			return;
@@ -231,10 +231,10 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		gui.GetCurrentEditor()->selection.clear();
 		gui.GetCurrentEditor()->actionQueue->clear();	
 
-		if(new_ver.client < old_ver.client)  {
+		if(new_ver.client < old_ver.client) {
 			int ret = gui.PopupDialog(this, wxT("Notice"),
 				wxT("Converting to a previous version may have serious side-effects, are you sure you want to do this?"), wxYES | wxNO);
-			if(ret != wxID_YES)  {
+			if(ret != wxID_YES) {
 				return;
 			}
 			UnnamedRenderingLock();
@@ -247,7 +247,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			map.convert(new_ver, true);
 
 			// Load the new version
-			if(!gui.LoadVersion(new_ver.client, error, warnings))  {
+			if(!gui.LoadVersion(new_ver.client, error, warnings)) {
 				gui.ListDialog(this, wxT("Warnings"), warnings);
 				gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
 				gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
@@ -277,7 +277,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			map.cleanInvalidTiles(true);
 		} else  {
 			UnnamedRenderingLock();
-			if(!gui.LoadVersion(new_ver.client, error, warnings))  {
+			if(!gui.LoadVersion(new_ver.client, error, warnings)) {
 				gui.ListDialog(this, wxT("Warnings"), warnings);
 				gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
 				gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
@@ -298,7 +298,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	// Only resize if we have to
 	int new_map_width = width_spin->GetValue();
 	int new_map_height = height_spin->GetValue();
-	if(new_map_width != map.getWidth() || new_map_height != map.getHeight())  {
+	if(new_map_width != map.getWidth() || new_map_height != map.getHeight()) {
 		map.setWidth(new_map_width);
 		map.setHeight(new_map_height);
 		gui.FitViewToMap(view);
@@ -406,7 +406,7 @@ void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 	wxFileDialog file(this, wxT("Import..."), wxT(""), wxT(""), wxT("*.otbm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	int ok = file.ShowModal();
 
-	if(ok == wxID_OK)  {
+	if(ok == wxID_OK) {
 		file_text_field->ChangeValue(file.GetPath());
 	} else {
 		return;
@@ -417,7 +417,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	if(Validate() && TransferDataFromWindow()) {
 		wxFileName fn = file_to_import;
-		if(!fn.FileExists())  {
+		if(!fn.FileExists()) {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified map file doesn't exist"), wxOK);
 		}
 
@@ -426,11 +426,11 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		long import_y_offset;
 		y_offset.ToLong(&import_y_offset);
 
-		if(import_x_offset < -65000 || import_x_offset > 65000)  {
+		if(import_x_offset < -65000 || import_x_offset > 65000) {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified x offset needs to be in the range -65000 to 65000"), wxOK);
 			return;
 		}
-		if(import_y_offset < -65000 || import_y_offset > 65000)  {
+		if(import_y_offset < -65000 || import_y_offset > 65000) {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified y offset needs to be in the range -65000 to 65000"), wxOK);
 			return;
 		}
@@ -438,12 +438,12 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		ImportType spawn_import_type = IMPORT_DONT;
 		ImportType house_import_type = IMPORT_DONT;
 
-		switch(spawn_options->GetSelection())  {
+		switch(spawn_options->GetSelection()) {
 			case 0: spawn_import_type = IMPORT_MERGE; break;
 			case 1: spawn_import_type = IMPORT_DONT; break;
 		}
 
-		switch(house_options->GetSelection())  {
+		switch(house_options->GetSelection()) {
 			case 0: house_import_type = IMPORT_SMART_MERGE; break;
 			case 1: house_import_type = IMPORT_MERGE; break;
 			case 2: house_import_type = IMPORT_INSERT; break;
@@ -518,7 +518,7 @@ ExportMiniMapWindow::~ExportMiniMapWindow()
 
 void ExportMiniMapWindow::OnExportTypeChange(wxCommandEvent& event) 
 {
-	if(event.GetSelection() == 2)  {
+	if(event.GetSelection() == 2) {
 		floor_number->Enable(true);
 	} else {
 		floor_number->Enable(false);
@@ -530,7 +530,7 @@ void ExportMiniMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 	wxFileDialog file(this, wxT("Export..."), wxT(""), wxT(""), wxT("*.bmp"), wxFD_SAVE);
 	int ok = file.ShowModal();
 
-	if(ok == wxID_OK)  {
+	if(ok == wxID_OK) {
 		FileName fn(file.GetPath());
 		fn.SetName(fn.GetName() + wxT("_%d"));
 		file_text_field->ChangeValue(fn.GetFullPath());
@@ -543,7 +543,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	std::string filename = nstr(file_text_field->GetValue());
 	size_t d_pos = filename.find("%d");
-	if(d_pos == std::string::npos)  {
+	if(d_pos == std::string::npos) {
 		gui.PopupDialog(this, wxT("Error"), wxT("You need to put a %d in the filename (this will be replaced by the floor number)"), wxYES | wxNO);
 		return;
 	}
@@ -1251,7 +1251,7 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 			spr->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 		}
 
-		if(int(n) == GetSelection())  {
+		if(int(n) == GetSelection()) {
 			dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
 		} else {
 			dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
@@ -1336,7 +1336,7 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	for(TownMap::const_iterator town_iter = map.towns.begin(); town_iter != map.towns.end(); ++town_iter) {
 		Town* town = town_iter->second;
 		town_list.push_back(newd Town(*town));
-		if(max_town_id < town->getID())  {
+		if(max_town_id < town->getID()) {
 			max_town_id = town->getID();
 		}
 	}

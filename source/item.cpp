@@ -335,30 +335,31 @@ DoorBrush* Item::getDoorBrush() const
 	switch(wb->getDoorTypeFromID(id)) {
 		case WALL_DOOR_NORMAL: {
 			db = gui.normal_door_brush;
-		} break;
-
+			break;
+		}
 		case WALL_DOOR_LOCKED: {
 			db = gui.locked_door_brush;
-		} break;
-
+			break;
+		}
 		case WALL_DOOR_QUEST: {
 			db = gui.quest_door_brush;
-		} break;
-
+			break;
+		}
 		case WALL_DOOR_MAGIC: {
 			db = gui.magic_door_brush;
-		} break;
-
+			break;
+		}
 		case WALL_WINDOW: {
 			db = gui.window_door_brush;
-		} break;
-
+			break;
+		}
 		case WALL_HATCH_WINDOW: {
 			db = gui.hatch_door_brush;
-		} break;
-
+			break;
+		}
 		default: {
-		} break;
+			break;
+		}
 	}
 	return db;
 }

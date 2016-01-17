@@ -114,7 +114,7 @@ void MapWindow::CenterOnPosition(Position p)
 
 void MapWindow::Scroll(int x, int y, bool center) 
 {
-	if(center)  {
+	if(center) {
 		int windowSizeX, windowSizeY;
 
 		canvas->GetSize(&windowSizeX, &windowSizeY);

@@ -172,7 +172,7 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 	if(event.IsEditCancelled())
 		return;
 
-	if(wpname == "")  {
+	if(wpname == "") {
 		map->waypoints.removeWaypoint(oldwpname);
 		gui.RefreshPalettes();
 	} else if(wp) {

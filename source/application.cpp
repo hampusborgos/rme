@@ -276,7 +276,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 
 	// Handle any command line argument (open map...)
 	std::pair<bool, FileName> ff = ParseCommandLineMap();
-	if(ff.first)  {
+	if(ff.first) {
 		gui.LoadMap(ff.second);
 	} else {
 		if(settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
