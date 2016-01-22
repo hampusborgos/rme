@@ -773,7 +773,11 @@ namespace OnSearchForItem
 				gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
 			}
 
-			if(item->getID() == itemid || item->getActionID() == actionid || item->getUniqueID() == uniqueid) {
+			uint16_t itemId = item->getID();
+			uint16_t aid = item->getActionID();
+			uint16_t uid = item->getUniqueID();
+
+			if((itemid > 100 && itemId == itemid) || (actionid > 0 && aid == actionid) || (uniqueid > 0 && uid == uniqueid)) {
 				found.push_back(std::make_pair(tile, item));
 				if(found.size() >= size_t(settings.getInteger(Config::REPLACE_SIZE)))
 					more_than_value = true;
