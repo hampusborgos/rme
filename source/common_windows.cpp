@@ -650,7 +650,7 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 	result_brush(nullptr),
 	result_id(0)
 {
-    sizer = newd wxBoxSizer(wxVERTICAL);
+	sizer = newd wxBoxSizer(wxVERTICAL);
 
 	search_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	search_field->SetFocus();
@@ -758,19 +758,19 @@ void FindDialog::RefreshContents()
 
 FindItemDialog::FindItemDialog(wxWindow* parent, wxString title) : FindDialog(parent, title)
 {
-    // Labels
-    sizer->Insert(1, newd wxStaticText(this, wxID_ANY, wxT("Action ID")), 0, wxEXPAND);
-    action_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-    action_field->SetFocus();
-    sizer->Insert(2, action_field, 0, wxEXPAND);
+	// Labels
+	sizer->Insert(1, newd wxStaticText(this, wxID_ANY, wxT("Action ID")), 0, wxEXPAND);
+	action_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	action_field->SetFocus();
+	sizer->Insert(2, action_field, 0, wxEXPAND);
 
-    sizer->Insert(3, newd wxStaticText(this, wxID_ANY, wxT("Unique ID")), 0, wxEXPAND);
-    unique_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-    unique_field->SetFocus();
-    sizer->Insert(4, unique_field, 0, wxEXPAND);
+	sizer->Insert(3, newd wxStaticText(this, wxID_ANY, wxT("Unique ID")), 0, wxEXPAND);
+	unique_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	unique_field->SetFocus();
+	sizer->Insert(4, unique_field, 0, wxEXPAND);
 
-    actionid = 0;
-    uniqueid = 0;
+	actionid = 0;
+	uniqueid = 0;
 
 	extra_condition = nullptr;
 	RefreshContents();
@@ -810,20 +810,20 @@ void FindItemDialog::OnClickOKInternal()
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
-            try {
-                actionid = boost::lexical_cast<int>(nstr(action_field->GetValue()).c_str());
-            } catch(boost::bad_lexical_cast &) {
-                actionid = -1;
-            }
+			try {
+				actionid = boost::lexical_cast<int>(nstr(action_field->GetValue()).c_str());
+			} catch(boost::bad_lexical_cast &) {
+				actionid = -1;
+			}
 
-            try {
-                uniqueid = boost::lexical_cast<int>(nstr(unique_field->GetValue()).c_str());
-            } catch(boost::bad_lexical_cast &) {
-                uniqueid = -1;
-            }
+			try {
+				uniqueid = boost::lexical_cast<int>(nstr(unique_field->GetValue()).c_str());
+			} catch(boost::bad_lexical_cast &) {
+				uniqueid = -1;
+			}
 
-            bool do_search = (search_string.size() >= 2) || actionid > -1 || uniqueid > -1;
-            if(do_search) {
+			bool do_search = (search_string.size() >= 2) || actionid > -1 || uniqueid > -1;
+			if(do_search) {
 				for(int id = 0; id <= item_db.getMaxID(); ++id) {
 					ItemType& it = item_db[id];
 					if(it.id == 0 || (extra_condition && !extra_condition(it)))
@@ -834,13 +834,13 @@ void FindItemDialog::OnClickOKInternal()
 						continue;
 
 					if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
-                        continue;
+						continue;
 
 					// Found one!
 					result_brush = raw;
 					result_id = raw->getItemID();
 					break;
-                }
+				}
 			}
 		} else {
 			result_brush = brush;
@@ -852,7 +852,7 @@ void FindItemDialog::OnClickOKInternal()
 
 void FindItemDialog::RefreshContentsInternal() 
 {
-    item_list->Clear();
+	item_list->Clear();
 
 	std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 	bool do_search = (search_string.size() >= 2);
@@ -868,19 +868,19 @@ void FindItemDialog::RefreshContentsInternal()
 				continue;
 
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
-                continue;
+				continue;
 
 			item_list->AddBrush(raw);
 		}
 
-        if(item_list->GetItemCount() > 0) {
-            item_list->SetSelection(0);
-        }
-        else {
-            item_list->SetNoMatches();
-        }
-    }
-    item_list->RefreshAll();
+		if(item_list->GetItemCount() > 0) {
+			item_list->SetSelection(0);
+		}
+		else {
+			item_list->SetNoMatches();
+		}
+	}
+	item_list->RefreshAll();
 }
 
 // ============================================================================
