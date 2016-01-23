@@ -761,12 +761,10 @@ FindItemDialog::FindItemDialog(wxWindow* parent, wxString title) : FindDialog(pa
 	// Labels
 	sizer->Insert(1, newd wxStaticText(this, wxID_ANY, wxT("Action ID")), 0, wxEXPAND);
 	action_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	action_field->SetFocus();
 	sizer->Insert(2, action_field, 0, wxEXPAND);
 
 	sizer->Insert(3, newd wxStaticText(this, wxID_ANY, wxT("Unique ID")), 0, wxEXPAND);
 	unique_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	unique_field->SetFocus();
 	sizer->Insert(4, unique_field, 0, wxEXPAND);
 
 	actionid = 0;
