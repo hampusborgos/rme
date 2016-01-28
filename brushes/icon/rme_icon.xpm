@@ -1,5 +1,5 @@
 /* XPM */
-static char *rme_icon[] = {
+static const char *rme_icon[] = {
 /* width height ncolors chars_per_pixel */
 "48 48 256 2",
 "   c #000001",
