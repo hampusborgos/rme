@@ -285,21 +285,18 @@ void MapDrawer::DrawMap()
 					if(pos.z >= MAP_LAYERS || pos.z < 0) {
 						continue;
 					}
+
 					Tile* tile = gui.secondary_map->getTile(pos);
-
 					if(tile) {
-						int draw_x = map_x * TILE_SIZE - view_scroll_x;
-						int draw_y = map_y * TILE_SIZE - view_scroll_y;
-
 						// Compensate for underground/overground
+						int offset;
 						if(map_z <= GROUND_LAYER)
-							draw_x -= (GROUND_LAYER - map_z) * TILE_SIZE;
+							offset = (GROUND_LAYER - map_z) * TILE_SIZE;
 						else
-							draw_x -= TILE_SIZE * (floor - map_z);
-						if(map_z <= GROUND_LAYER)
-							draw_y -= (GROUND_LAYER - map_z) * TILE_SIZE;
-						else
-							draw_y -= TILE_SIZE * (floor - map_z);
+							offset = TILE_SIZE * (floor - map_z);
+
+						int draw_x = ((map_x * TILE_SIZE) - view_scroll_x) - offset;
+						int draw_y = ((map_y * TILE_SIZE) - view_scroll_y) - offset;
 
 						// Draw ground
 						uint8_t r = 160, g = 160, b = 160;
@@ -350,8 +347,10 @@ void MapDrawer::DrawMap()
 			}
 		}
 
-		start_x -= 1; end_x += 1;
-		start_y -= 1; end_y += 1;
+		--start_x;
+		--start_y;
+		++end_x;
+		++end_y;
 	}
 
 	if(!options.show_only_colors)
@@ -461,16 +460,14 @@ void MapDrawer::DrawDraggingShadow()
 
 			// On screen and dragging?
 			if(pos.x+2 > start_x && pos.x < end_x && pos.y+2 > start_y && pos.y < end_y && (move_x != 0 || move_y != 0 || move_z != 0)) {
-				int draw_x = pos.x * TILE_SIZE - view_scroll_x;
+				int offset;
+				if (pos.z <= GROUND_LAYER)
+					offset = (GROUND_LAYER - pos.z) * TILE_SIZE;
+				else
+					offset = TILE_SIZE * (floor - pos.z);
 
-				if(pos.z <= GROUND_LAYER)
-					draw_x -= (GROUND_LAYER - pos.z) * TILE_SIZE;
-				else draw_x -= TILE_SIZE * (floor - pos.z);
-
-				int draw_y = pos.y * TILE_SIZE - view_scroll_y;
-				if(pos.z <= GROUND_LAYER)
-					draw_y -= (GROUND_LAYER - pos.z) * TILE_SIZE;
-				else draw_y -= TILE_SIZE * (floor - pos.z);
+				int draw_x = ((pos.x * TILE_SIZE) - view_scroll_x) - offset;
+				int draw_y = ((pos.y * TILE_SIZE) - view_scroll_y) - offset;
 
 				ItemVector toRender = tile->getSelectedItems();
 				Tile* desttile = editor.map.getTile(pos);
@@ -503,17 +500,14 @@ void MapDrawer::DrawHigherFloors()
 			for(int map_y = start_y; map_y <= end_y; map_y++) {
 				Tile* tile = editor.map.getTile(map_x, map_y, map_z);
 				if(tile) {
-					int draw_x = map_x * TILE_SIZE - view_scroll_x;
-					if(map_z <= GROUND_LAYER)
-						draw_x -= (GROUND_LAYER - map_z) * TILE_SIZE;
+					int offset;
+					if (map_z <= GROUND_LAYER)
+						offset = (GROUND_LAYER - map_z) * TILE_SIZE;
 					else
-						draw_x -= TILE_SIZE*(floor - map_z);
+						offset = TILE_SIZE*(floor - map_z);
 
-					int draw_y = map_y * TILE_SIZE - view_scroll_y;
-					if(map_z <= GROUND_LAYER)
-						draw_y -= (GROUND_LAYER - map_z) * TILE_SIZE;
-					else
-						draw_y -= TILE_SIZE*(floor - map_z);
+					int draw_x = ((map_x * TILE_SIZE) - view_scroll_x) - offset;
+					int draw_y = ((map_y * TILE_SIZE) - view_scroll_y) - offset;
 
 					//Position pos = tile->getPosition();
 
@@ -586,13 +580,8 @@ void MapDrawer::DrawSelectionBox()
 
 void MapDrawer::DrawLiveCursors()
 {
-	if(options.ingame) {
+	if(options.ingame || !editor.IsLive())
 		return;
-	}
-
-	if(!editor.IsLive()) {
-		return;
-	}
 
 	LiveSocket& live = editor.GetLive();
 	for(LiveCursor& cursor : live.getCursorList()) {
@@ -613,19 +602,14 @@ void MapDrawer::DrawLiveCursors()
 			);
 		}
 
-		float draw_x = (cursor.pos.x * TILE_SIZE) - view_scroll_x;
-		if(cursor.pos.z <= GROUND_LAYER) {
-			draw_x -= (GROUND_LAYER - cursor.pos.z) * TILE_SIZE;
-		} else {
-			draw_x -= TILE_SIZE * (floor - cursor.pos.z);
-		}
+		int offset;
+		if (cursor.pos.z <= GROUND_LAYER)
+			offset = (GROUND_LAYER - cursor.pos.z) * TILE_SIZE;
+		else
+			offset = TILE_SIZE * (floor - cursor.pos.z);
 
-		float draw_y = (cursor.pos.y * TILE_SIZE) - view_scroll_y;
-		if(cursor.pos.z <= GROUND_LAYER) {
-			draw_y -= (GROUND_LAYER - cursor.pos.z) * TILE_SIZE;
-		} else {
-			draw_y -= TILE_SIZE * (floor - cursor.pos.z);
-		}
+		float draw_x = ((cursor.pos.x * TILE_SIZE) - view_scroll_x) - offset;
+		float draw_y = ((cursor.pos.y * TILE_SIZE) - view_scroll_y) - offset;
 
 		glColor(cursor.color);
 		glBegin(GL_QUADS);
@@ -1267,17 +1251,14 @@ void MapDrawer::DrawTile(TileLocation* location) {
 
 	bool only_colors = options.show_only_colors;
 
-	int draw_x = map_x * TILE_SIZE - view_scroll_x;
-	if(map_z <= GROUND_LAYER)
-		draw_x -= (GROUND_LAYER - map_z) * TILE_SIZE;
+	int offset;
+	if (map_z <= GROUND_LAYER)
+		offset = (GROUND_LAYER - map_z) * TILE_SIZE;
 	else
-		draw_x -= TILE_SIZE * (floor - map_z);
+		offset = TILE_SIZE * (floor - map_z);
 
-	int draw_y = map_y * TILE_SIZE - view_scroll_y;
-	if(map_z <= GROUND_LAYER)
-		draw_y -= (GROUND_LAYER - map_z) * TILE_SIZE;
-	else
-		draw_y -= TILE_SIZE * (floor - map_z);
+	int draw_x = ((map_x * TILE_SIZE) - view_scroll_x) - offset;
+	int draw_y = ((map_y * TILE_SIZE) - view_scroll_y) - offset;
 
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
