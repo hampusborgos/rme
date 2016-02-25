@@ -344,7 +344,7 @@ bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, i
 	return false;
 }
 
-bool Editor::exportMiniMap(FileName filename, int floor /*= 7*/, bool displaydialog)
+bool Editor::exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
 	return map.exportMinimap(filename, floor, displaydialog);
 }
@@ -973,7 +973,7 @@ void Editor::moveSelection(Position offset)
 
 		new_pos = old_pos - offset;
 
-		if(new_pos.z < 0 && new_pos.z > 15) {
+		if(new_pos.z < 0 && new_pos.z > MAP_MAX_LAYER) {
 			delete tile;
 			continue;
 		}

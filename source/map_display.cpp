@@ -86,7 +86,7 @@ END_EVENT_TABLE()
 MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	wxGLCanvas(parent, wxID_ANY, nullptr, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
 	editor(editor),
-	floor(7),
+	floor(GROUND_LAYER),
 	zoom(1.0),
 	cursor_x(-1),
 	cursor_y(-1),
@@ -272,20 +272,20 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 	static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 
 	if(screen_x < 0) {
-		*map_x = (start_x + screen_x) / 32;
+		*map_x = (start_x + screen_x) / TILE_SIZE;
 	} else {
-		*map_x = int(start_x + (screen_x*zoom)) / 32;
+		*map_x = int(start_x + (screen_x * zoom)) / TILE_SIZE;
 	}
 
 	if(screen_y < 0) {
-		*map_y = (start_y + screen_y) / 32;
+		*map_y = (start_y + screen_y) / TILE_SIZE;
 	} else {
-		*map_y = int(start_y + (screen_y*zoom)) / 32;
+		*map_y = int(start_y + (screen_y * zoom)) / TILE_SIZE;
 	}
 
-	if(floor <= 7) {
-		*map_x += 7 - floor;
-		*map_y += 7 - floor;
+	if(floor <= GROUND_LAYER) {
+		*map_x += GROUND_LAYER - floor;
+		*map_y += GROUND_LAYER - floor;
 	}/* else {
 		*map_x += 15-floor;
 		*map_y += 15-floor;
@@ -870,17 +870,17 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 						case SELECT_ALL_FLOORS: {
 							start_x = last_click_map_x;
 							start_y = last_click_map_y;
-							start_z = MAP_HEIGHT-1;
+							start_z = MAP_MAX_LAYER;
 							end_x = mouse_map_x;
 							end_y = mouse_map_y;
 							end_z = floor;
 
 							if(settings.getInteger(Config::COMPENSATED_SELECT)) {
-								start_x -= (floor < 7? 7-floor : 0);
-								start_y -= (floor < 7? 7-floor : 0);
+								start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
-								end_x -= (floor < 7? 7-floor : 0);
-								end_y -= (floor < 7? 7-floor : 0);
+								end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 							}
 
 							numtiles = (start_z - end_z) * (end_x - start_x) * (end_y - start_y);
@@ -890,20 +890,20 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 							start_x = last_click_map_x;
 							start_y = last_click_map_y;
 							if(floor < 8) {
-								start_z = 7;
+								start_z = GROUND_LAYER;
 							} else {
-								start_z = std::min(15, floor + 2);
+								start_z = std::min(MAP_MAX_LAYER, floor + 2);
 							}
 							end_x = mouse_map_x;
 							end_y = mouse_map_y;
 							end_z = floor;
 
 							if(settings.getInteger(Config::COMPENSATED_SELECT)) {
-								start_x -= (floor < 7? 7-floor : 0);
-								start_y -= (floor < 7? 7-floor : 0);
+								start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
-								end_x -= (floor < 7? 7-floor : 0);
-								end_y -= (floor < 7? 7-floor : 0);
+								end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 							}
 							break;
 						}
@@ -1265,17 +1265,17 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 
 					start_x = last_click_map_x;
 					start_y = last_click_map_y;
-					start_z = MAP_HEIGHT-1;
+					start_z = MAP_MAX_LAYER;
 					end_x = mouse_map_x;
 					end_y = mouse_map_y;
 					end_z = floor;
 
 					if(settings.getInteger(Config::COMPENSATED_SELECT)) {
-						start_x -= (floor < 7? 7-floor : 0);
-						start_y -= (floor < 7? 7-floor : 0);
+						start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
-						end_x -= (floor < 7? 7-floor : 0);
-						end_y -= (floor < 7? 7-floor : 0);
+						end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 					}
 
 					for(int z = start_z; z >= end_z; z--) {
@@ -1286,7 +1286,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 								editor.selection.add(tile);
 								}
 						}
-						if(z <= 7 && settings.getInteger(Config::COMPENSATED_SELECT)) {
+						if(z <= GROUND_LAYER && settings.getInteger(Config::COMPENSATED_SELECT)) {
 							start_x++; start_y++;
 							end_x++; end_y++;
 						}
@@ -1300,7 +1300,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 					start_x = last_click_map_x;
 					start_y = last_click_map_y;
 					if(floor < 8) {
-						start_z = 7;
+						start_z = GROUND_LAYER;
 					} else {
 						start_z = std::min(15, floor + 2);
 					}
@@ -1309,11 +1309,11 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 					end_z = floor;
 
 					if(settings.getInteger(Config::COMPENSATED_SELECT)) {
-						start_x -= (floor < 7? 7-floor : 0);
-						start_y -= (floor < 7? 7-floor : 0);
+						start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
-						end_x -= (floor < 7? 7-floor : 0);
-						end_y -= (floor < 7? 7-floor : 0);
+						end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 					}
 
 					for(int z = start_z; z >= end_z; z--) {
@@ -1324,7 +1324,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 								editor.selection.add(tile);
 							}
 						}
-						if(z <= 7 && settings.getInteger(Config::COMPENSATED_SELECT)) {
+						if(z <= GROUND_LAYER && settings.getInteger(Config::COMPENSATED_SELECT)) {
 							start_x++; start_y++;
 							end_x++; end_y++;
 						}
@@ -1501,9 +1501,9 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y-32*10*zoom));
+				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y - TILE_SIZE * 10 * zoom));
 			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y-32*3*zoom));
+				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y - TILE_SIZE * 3 * zoom));
 			}
 			UpdatePositionStatus();
 			Refresh();
@@ -1514,9 +1514,9 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y+32*10*zoom));
+				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y + TILE_SIZE * 10 * zoom));
 			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y+32*3*zoom));
+				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y + TILE_SIZE * 3 * zoom));
 			}
 			UpdatePositionStatus();
 			Refresh();
@@ -1527,9 +1527,9 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x-32*10*zoom), start_y);
+				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x - TILE_SIZE * 10 * zoom), start_y);
 			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x-32*3*zoom), start_y);
+				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x - TILE_SIZE * 3 * zoom), start_y);
 			}
 			UpdatePositionStatus();
 			Refresh();
@@ -1540,9 +1540,9 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x+32*10*zoom), start_y);
+				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x + TILE_SIZE * 10 * zoom), start_y);
 			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x+32*3*zoom), start_y);
+				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x + TILE_SIZE * 3 * zoom), start_y);
 			}
 			UpdatePositionStatus();
 			Refresh();
@@ -1606,13 +1606,13 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 				if(gui.IsSelectionMode()) {
 					int view_start_x, view_start_y;
 					static_cast<MapWindow*>(GetParent())->GetViewStart(&view_start_x, &view_start_y);
-					int view_start_map_x = view_start_x / 32, view_start_map_y = view_start_y / 32;
+					int view_start_map_x = view_start_x / TILE_SIZE, view_start_map_y = view_start_y / TILE_SIZE;
 
 					int view_screensize_x, view_screensize_y;
 					static_cast<MapWindow*>(GetParent())->GetViewSize(&view_screensize_x, &view_screensize_y);
 
-					int map_x = int(view_start_map_x + (view_screensize_x*zoom) / 32 / 2);
-					int map_y = int(view_start_map_y + (view_screensize_y*zoom) / 32 / 2);
+					int map_x = int(view_start_map_x + (view_screensize_x * zoom) / TILE_SIZE / 2);
+					int map_y = int(view_start_map_y + (view_screensize_y * zoom) / TILE_SIZE / 2);
 
 					hk = Hotkey(Position(map_x, map_y, floor));
 				} else if(gui.GetCurrentBrush()) {
@@ -1632,7 +1632,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 					int map_y = hk.GetPosition().y;
 					int map_z = hk.GetPosition().z;
 
-					static_cast<MapWindow*>(GetParent())->Scroll(32*map_x, 32*map_y, true);
+					static_cast<MapWindow*>(GetParent())->Scroll(TILE_SIZE * map_x, TILE_SIZE * map_y, true);
 					floor = map_z;
 
 					gui.SetStatusText(wxT("Used hotkey ") + i2ws(index));
@@ -2017,7 +2017,7 @@ void MapCanvas::Reset()
 	cursor_y = 0;
 
 	zoom = 1.0;
-	floor = 7;
+	floor = GROUND_LAYER;
 
 	dragging = false;
 	boundbox_selection = false;

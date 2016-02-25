@@ -66,7 +66,7 @@ public: // Functions
 	wxString getLoaderError() const {return map.getError();}
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);
-	bool exportMiniMap(FileName filename, int floor /*= 7*/, bool displaydialog);
+	bool exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog);
 
 	// Adds an action to the action queue (this allows the user to undo the action)
 	// Invalidates the action pointer

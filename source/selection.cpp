@@ -359,7 +359,7 @@ wxThread::ExitCode SelectionThread::Entry()
 				selection.add(tile);
 			}
 		}
-		if(z <= 7 && settings.getInteger(Config::COMPENSATED_SELECT)) {
+		if(z <= GROUND_LAYER && settings.getInteger(Config::COMPENSATED_SELECT)) {
 			++start.x; ++start.y;
 			++end.x; ++end.y;
 		}

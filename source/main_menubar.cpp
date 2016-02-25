@@ -1264,8 +1264,8 @@ namespace OnMapRemoveUnreachable
 				ez = 9;
 			} else {
 				// underground
-				sz = std::max(pos.z - 2, 7);
-				ez = std::min(pos.z + 2, 15);
+				sz = std::max(pos.z - 2, GROUND_LAYER);
+				ez = std::min(pos.z + 2, MAP_MAX_LAYER);
 			}
 
 			for(int z = sz; z <= ez; ++z) {

@@ -92,7 +92,7 @@ void MapWindow::GetViewSize(int* x, int* y)
 
 void MapWindow::FitToMap() 
 {
-	SetSize(editor.map.getWidth()*32, editor.map.getHeight()*32, true);
+	SetSize(editor.map.getWidth() * TILE_SIZE, editor.map.getHeight() * TILE_SIZE, true);
 }
 
 void MapWindow::CenterOnPosition(Position p) 
@@ -100,12 +100,12 @@ void MapWindow::CenterOnPosition(Position p)
 	if(p == Position())
 		return;
 
-	int x = p.x * 32;
-	int y = p.y * 32;
+	int x = p.x * TILE_SIZE;
+	int y = p.y * TILE_SIZE;
 	if(p.z < 8) {
 		// Compensate for floor offset above ground
-		x -= (7 - p.z) * 32;
-		y -= (7 - p.z) * 32;
+		x -= (GROUND_LAYER - p.z) * TILE_SIZE;
+		y -= (GROUND_LAYER - p.z) * TILE_SIZE;
 	}
 
 	Scroll(x, y, true);

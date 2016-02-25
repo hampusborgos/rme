@@ -271,7 +271,7 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 		for(MapIterator it = tiles->begin(); it != tiles->end(); ++it) {
 			bool add_me = false; // If this tile is touched
 			Position pos = (*it)->getPosition() - copyPos + toPosition;
-			if(pos.z < 0 || pos.z >= MAP_HEIGHT) {
+			if(pos.z < 0 || pos.z >= MAP_LAYERS) {
 				continue;
 			}
 			// Go through all neighbours

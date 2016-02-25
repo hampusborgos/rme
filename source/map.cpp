@@ -80,10 +80,10 @@ bool Map::open(const std::string file)
 
 	for(int x = 20; ; x += 2) {
 		int y = 22;
-		Tile* old = getTile(x, y, 7);
+		Tile* old = getTile(x, y, GROUND_LAYER);
 		if(old) {
 			y -= 2;
-			Tile* new_ = getTile(x, y, 7);
+			Tile* new_ = getTile(x, y, GROUND_LAYER);
 			if(new_) {
 				if(old->ground || old->items.size()) {
 					out << "\tvecval.clear();\n";
@@ -470,7 +470,7 @@ SpawnList Map::getSpawnList(Tile* where)
 	return list;
 }
 
-bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog)
+bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
 	uint8_t* pic = nullptr;
 

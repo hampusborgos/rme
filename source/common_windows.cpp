@@ -93,12 +93,12 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 		subsizer->Add(
 			width_spin = 
 				newd wxSpinCtrl(this, wxID_ANY, wxstr(i2s(map.getWidth())),
-					wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, 65000), wxSizerFlags(1).Expand()
+				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, MAP_MAX_WIDTH), wxSizerFlags(1).Expand()
 			);
 		subsizer->Add(
 			height_spin = 
 				newd wxSpinCtrl(this, wxID_ANY, wxstr(i2s(map.getHeight())),
-				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, 65000), wxSizerFlags(1).Expand()
+				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, MAP_MAX_HEIGHT), wxSizerFlags(1).Expand()
 			);
 		grid_sizer->Add(subsizer, 1, wxEXPAND);
 	}
@@ -495,7 +495,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	// House options
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Floor options"));
 	floor_options = newd wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
-	floor_number = newd wxSpinCtrl(this, wxID_ANY, wxT("7"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 15, 7);
+	floor_number = newd wxSpinCtrl(this, wxID_ANY, i2ws(GROUND_LAYER), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, MAP_MAX_LAYER, GROUND_LAYER);
 	floor_number->Enable(false);
 	floor_options->SetSelection(0);
 	tmpsizer->Add(floor_options, 5, wxEXPAND);
@@ -586,7 +586,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 			case 1: { // Ground floor
 				FileName fn = wxstr(pre_sep + "ground" + post_sep);
-				editor.exportMiniMap(fn, 7, true);
+				editor.exportMiniMap(fn, GROUND_LAYER, true);
 				gui.DestroyLoadBar();
 				break;
 			}
@@ -1648,7 +1648,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 	// create topsizer
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	posctrl = newd PositionCtrl(this, wxT("Destination"), map.getWidth() / 2, map.getHeight() / 2, 7, map.getWidth(), map.getHeight());
+	posctrl = newd PositionCtrl(this, wxT("Destination"), map.getWidth() / 2, map.getHeight() / 2, GROUND_LAYER, map.getWidth(), map.getHeight());
 	sizer->Add(posctrl, 0, wxTOP | wxLEFT | wxRIGHT, 20);
 
 	// OK/Cancel buttons

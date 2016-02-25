@@ -20,7 +20,8 @@
 #include "numbertextctrl.h"
 #include "position.h"
 
-PositionCtrl::PositionCtrl(wxWindow* parent, const wxString& label, long x, long y, long z, long maxx, long maxy, long maxz) :
+PositionCtrl::PositionCtrl(wxWindow* parent, const wxString& label, int x, int y, int z,
+	int maxx /*= MAP_MAX_WIDTH*/, int maxy /*= MAP_MAX_HEIGHT*/, int maxz /*= MAP_MAX_LAYER*/) :
 wxStaticBoxSizer(wxHORIZONTAL, parent, label)
 {
 	x_field = newd NumberTextCtrl(parent, wxID_ANY, x, 0, maxx, wxTE_PROCESS_ENTER, wxT("X"), wxDefaultPosition, wxSize(60, 20));

@@ -166,7 +166,7 @@ void Action::commit(DirtyList* dirty_list)
 				
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.map.getLeaf(pos.x, pos.y);
-					if(!nd || !nd->isVisible(pos.z > 7)) {
+					if(!nd || !nd->isVisible(pos.z > GROUND_LAYER)) {
 						// Delete all changes that affect tiles outside our view
 						c->clear();
 						++it;
@@ -309,7 +309,7 @@ void Action::undo(DirtyList* dirty_list)
 				
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.map.getLeaf(pos.x, pos.y);
-					if(!nd || !nd->isVisible(pos.z > 7)) {
+					if(!nd || !nd->isVisible(pos.z > GROUND_LAYER)) {
 						// Delete all changes that affect tiles outside our view
 						c->clear();
 						++it;

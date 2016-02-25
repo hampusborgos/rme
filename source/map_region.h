@@ -106,8 +106,8 @@ protected:
 	bool isLeaf;
 	union {
 		QTreeNode* child[16];
-		Floor* array[MAP_HEIGHT];
-#if 16 != MAP_HEIGHT
+		Floor* array[MAP_LAYERS];
+#if 16 != MAP_LAYERS
 #    error "You need to rewrite the QuadTree in order to handle more or less than 16 floors"
 #endif
 	};

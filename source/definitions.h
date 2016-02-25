@@ -107,7 +107,17 @@
 #define RAD2DEG (180.0/DEG)
 
 // The height of the map (there should be more checks for this...)
-#define MAP_HEIGHT 16
+#define MAP_LAYERS 16
+
+#define MAP_MAX_WIDTH 65000
+#define MAP_MAX_HEIGHT 65000
+#define MAP_MAX_LAYER 15
+
+// The size of the tile in pixels
+#define TILE_SIZE 32
+
+// The sea layer
+#define GROUND_LAYER 7
 
 // wxString conversions
 #define nstr(str) std::string((const char*)(str.mb_str(wxConvUTF8)))
