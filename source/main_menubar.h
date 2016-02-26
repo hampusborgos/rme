@@ -80,6 +80,9 @@ namespace MenuBar
 		MAP_STATISTICS,
 		NEW_VIEW,
 		TOGGLE_FULLSCREEN,
+		ZOOM_IN,
+		ZOOM_OUT,
+		ZOOM_NORMAL,
 		SHOW_SHADE,
 		SHOW_ALL_FLOORS,
 		GHOST_ITEMS,
@@ -215,6 +218,9 @@ public:
 	// View Menu
 	void OnNewView(wxCommandEvent& event);
 	void OnToggleFullscreen(wxCommandEvent& event);
+	void OnZoomIn(wxCommandEvent& event);
+	void OnZoomOut(wxCommandEvent& event);
+	void OnZoomNormal(wxCommandEvent& event);
 	void OnChangeViewSettings(wxCommandEvent& event);
 
 	// Network menu

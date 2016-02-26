@@ -458,6 +458,13 @@ double GUI::GetCurrentZoom()
 	return 1.0;
 }
 
+void GUI::SetCurrentZoom(double zoom)
+{
+	MapTab* tab = GetCurrentMapTab();
+	if(tab)
+		tab->GetCanvas()->SetZoom(zoom);
+}
+
 void GUI::FitViewToMap()
 {
 	for(int index = 0; index < tabbook->GetTabCount(); ++index) {
@@ -1127,11 +1134,11 @@ void GUI::ChangeFloor(int new_floor)
 	MapTab* tab = GetCurrentMapTab();
 	if(tab) {
 		int old_floor = GetCurrentFloor();
-		if(new_floor < 0) return;
-		if(new_floor > 15) return;
+		if(new_floor < 0 || new_floor > MAP_MAX_LAYER)
+			return;
+
 		if(old_floor != new_floor)
 			tab->GetCanvas()->ChangeFloor(new_floor);
-
 	}
 }
 

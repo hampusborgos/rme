@@ -84,6 +84,10 @@
         <item name="$Enter Fullscreen" hotkey="F11" action="TOGGLE_FULLSCREEN" help="Changes between fullscreen mode and windowed mode."/>
         <item name="$Take Screenshot" hotkey="F10" action="TAKE_SCREENSHOT" help="Saves the current view to the disk."/>
         <separator/>
+        <item name="Zoom In" hotkey="Ctrl++" action="ZOOM_IN" help="Increase the zoom."/>
+        <item name="Zoom Out" hotkey="Ctrl+-" action="ZOOM_OUT" help="Decrease the zoom."/>
+        <item name="Zoom Normal" hotkey="Ctrl+0" action="ZOOM_NORMAL" help="Normal zoom(100%)."/>
+        <separator/>
         <item name="$Show shade" hotkey="Q" action="SHOW_SHADE" help="Shade lower floors."/>
         <item name="Show $all floors" hotkey="Ctrl+W" action="SHOW_ALL_FLOORS" help="If not checked other floors are hidden."/>
         <item name="Ghost $loose items" hotkey="G" action="GHOST_ITEMS" help="Ghost items (except ground)."/>

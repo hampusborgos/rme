@@ -369,7 +369,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	}
 
 	wxStatusBar* statusbar = CreateStatusBar();
-	statusbar->SetFieldsCount(3);
+	statusbar->SetFieldsCount(4);
 	SetStatusText( wxString(wxT("Welcome to Remere's Map Editor ")) << __W_RME_VERSION__);
 
 	// Le sizer

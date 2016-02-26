@@ -116,6 +116,10 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
 
+	MAKE_ACTION(ZOOM_IN, wxITEM_NORMAL, OnZoomIn);
+	MAKE_ACTION(ZOOM_OUT, wxITEM_NORMAL, OnZoomOut);
+	MAKE_ACTION(ZOOM_NORMAL, wxITEM_NORMAL, OnZoomNormal);
+
 	MAKE_ACTION(SHOW_SHADE, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_ALL_FLOORS, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(GHOST_ITEMS, wxITEM_CHECK, OnChangeViewSettings);
@@ -312,6 +316,9 @@ void MainMenuBar::Update()
 	EnableItem(MAP_STATISTICS, is_local);
 
 	EnableItem(NEW_VIEW, has_map);
+	EnableItem(ZOOM_IN, has_map);
+	EnableItem(ZOOM_OUT, has_map);
+	EnableItem(ZOOM_NORMAL, has_map);
 
 	EnableItem(WIN_MINIMAP, loaded);
 	EnableItem(NEW_PALETTE, loaded);
@@ -1650,6 +1657,23 @@ void MainMenuBar::OnTakeScreenshot(wxCommandEvent& WXUNUSED(event))
 		path, wxstr(settings.getString(Config::SCREENSHOT_FORMAT))
 	);
 
+}
+
+void MainMenuBar::OnZoomIn(wxCommandEvent& event)
+{
+	double zoom = gui.GetCurrentZoom();
+	gui.SetCurrentZoom(zoom - 0.1);
+}
+
+void MainMenuBar::OnZoomOut(wxCommandEvent& event)
+{
+	double zoom = gui.GetCurrentZoom();
+	gui.SetCurrentZoom(zoom + 0.1);
+}
+
+void MainMenuBar::OnZoomNormal(wxCommandEvent& event)
+{
+	gui.SetCurrentZoom(1.0);
 }
 
 void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)

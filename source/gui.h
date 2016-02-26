@@ -196,7 +196,9 @@ public:
 
 	int GetCurrentFloor();
 	void ChangeFloor(int newfloor);
+
 	double GetCurrentZoom();
+	void SetCurrentZoom(double zoom);
 
 	void SwitchMode();
 	void SetSelectionMode();

@@ -136,6 +136,21 @@ void MapCanvas::Refresh()
 	wxGLCanvas::Refresh();
 }
 
+void MapCanvas::SetZoom(double value)
+{
+	if(value < 0.125)
+		value = 0.125;
+
+	if(value > 25.00)
+		value = 25.0;
+
+	if(zoom != value) {
+		zoom = value;
+		UpdateZoomStatus();
+		Refresh();
+	}
+}
+
 void MapCanvas::GetViewBox(int* view_scroll_x, int* view_scroll_y, int* screensize_x, int* screensize_y) const
 {
 	static_cast<MapWindow*>(GetParent())->GetViewSize(screensize_x, screensize_y);
@@ -349,6 +364,14 @@ void MapCanvas::UpdatePositionStatus(int x, int y)
 	gui.root->SetStatusText(ss, 1);
 }
 
+void MapCanvas::UpdateZoomStatus()
+{
+	int percentage = (int)((1.0 / zoom) * 100);
+	wxString ss;
+	ss << wxT("zoom: ") << percentage << wxT("%");
+	gui.root->SetStatusText(ss, 3);
+}
+
 void MapCanvas::OnMouseMove(wxMouseEvent& event)
 {
 	if(screendragging) {
@@ -372,6 +395,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 
 	if(map_update) {
 		UpdatePositionStatus(cursor_x, cursor_y);
+		UpdateZoomStatus();
 	}
 
 	if(gui.IsSelectionMode()) {
@@ -1392,6 +1416,8 @@ void MapCanvas::OnWheel(wxMouseEvent& event)
 			zoom = 25.0;
 		}
 
+		UpdateZoomStatus();
+
 		int screensize_x, screensize_y;
 		static_cast<MapWindow*>(GetParent())->GetViewSize(&screensize_x, &screensize_y);
 
@@ -1459,6 +1485,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			static_cast<MapWindow*>(GetParent())->ScrollRelative(-scroll_x, -scroll_y);
 
 			UpdatePositionStatus();
+			UpdateZoomStatus();
 			Refresh();
 			break;
 		}
@@ -1481,6 +1508,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			static_cast<MapWindow*>(GetParent())->ScrollRelative(-scroll_x, -scroll_y);
 
 			UpdatePositionStatus();
+			UpdateZoomStatus();
 			Refresh();
 			break;
 		}
