@@ -119,6 +119,9 @@
 // The sea layer
 #define GROUND_LAYER 7
 
+#define CLIENT_MAP_WIDTH 18
+#define CLIENT_MAP_HEIGHT 14
+
 // wxString conversions
 #define nstr(str) std::string((const char*)(str.mb_str(wxConvUTF8)))
 #define wxstr(str) wxString((str).c_str(), wxConvUTF8)
