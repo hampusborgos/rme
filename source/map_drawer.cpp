@@ -522,7 +522,7 @@ void MapDrawer::DrawDraggingShadow()
 			// On screen and dragging?
 			if(pos.x+2 > start_x && pos.x < end_x && pos.y+2 > start_y && pos.y < end_y && (move_x != 0 || move_y != 0 || move_z != 0)) {
 				int offset;
-				if (pos.z <= GROUND_LAYER)
+				if(pos.z <= GROUND_LAYER)
 					offset = (GROUND_LAYER - pos.z) * TILE_SIZE;
 				else
 					offset = TILE_SIZE * (floor - pos.z);

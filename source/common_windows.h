@@ -98,9 +98,8 @@ protected:
 	Editor& editor;
 
 	wxTextCtrl* file_text_field;
-
-	wxString x_offset, y_offset;
-	wxString file_to_import;
+	wxSpinCtrl* x_offset_ctrl;
+	wxSpinCtrl* y_offset_ctrl;
 
 	wxChoice* house_options;
 	wxChoice* spawn_options;

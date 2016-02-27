@@ -329,71 +329,65 @@ BEGIN_EVENT_TABLE(ImportMapWindow, wxDialog)
 END_EVENT_TABLE()
 
 ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Import map"), wxDefaultPosition, wxSize(280,227)),
+	wxDialog(parent, wxID_ANY, wxT("Import Map"), wxDefaultPosition, wxSize(350, 315)),
 	editor(editor)
 {
-	// Setup data variabels
-	file_to_import = wxT("");
-	x_offset = wxT("0");
-	y_offset = wxT("0");
-
-	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
-	wxSizer* tmpsizer;
+	wxBoxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
+	wxStaticBoxSizer* tmpsizer;
 
 	// File
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Map file"));
-	tmpsizer->Add(file_text_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(185,20), 0, wxTextValidator(wxFILTER_ASCII, &file_to_import)));
-	tmpsizer->Add(newd wxButton(this, MAP_WINDOW_FILE_BUTTON, wxT("Browse")));
-	sizer->Add(tmpsizer);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Map File")), wxHORIZONTAL);
+	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxT(""), wxDefaultPosition, wxSize(220, 20));
+	tmpsizer->Add(file_text_field, 0, wxALL, 5);
+	wxButton* browse_button = newd wxButton(tmpsizer->GetStaticBox(), MAP_WINDOW_FILE_BUTTON, wxT("Browse..."), wxDefaultPosition, wxSize(80, 23));
+	tmpsizer->Add(browse_button, 0, wxALL, 5);
+	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
 
 	// Import offset
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Import offset"));
-	wxStaticText* width_field = newd wxStaticText(this, wxID_ANY, wxT("X offset"));
-	tmpsizer->Add(width_field);
-	wxTextCtrl* x_size_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(85,20), 0, wxTextValidator(wxFILTER_NUMERIC, &x_offset));
-	tmpsizer->Add(x_size_field);
-
-	tmpsizer->Add(10, 20);
-
-	wxStaticText* height_field = newd wxStaticText(this, wxID_ANY, wxT("Y offset"));
-	tmpsizer->Add(height_field);
-	wxTextCtrl* y_size_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(85,20), 0, wxTextValidator(wxFILTER_NUMERIC, &y_offset));
-	tmpsizer->Add(y_size_field);
-	sizer->Add(tmpsizer);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Import Offset")), wxHORIZONTAL);
+	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, wxT("Offset X:")), 0, wxALL | wxEXPAND, 5);
+	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 20), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	tmpsizer->Add(x_offset_ctrl, 0, wxALL, 5);
+	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, wxT("Offset Y:")), 0, wxALL, 5);
+	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 20), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	tmpsizer->Add(y_offset_ctrl, 0, wxALL, 5);
+	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 	// Import options
 	wxArrayString house_choices;
 	house_choices.Add(wxT("Smart Merge"));
 	house_choices.Add(wxT("Insert"));
 	house_choices.Add(wxT("Merge"));
-	house_choices.Add(wxT("Don't import"));
+	house_choices.Add(wxT("Don't Import"));
 
 	// House options
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("House import behaviour"));
-	house_options = newd wxChoice(this, wxID_ANY, wxDefaultPosition, wxSize(260,20), house_choices);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("House Import Behaviour")), wxVERTICAL);
+	house_options = newd wxChoice(tmpsizer->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, house_choices);
 	house_options->SetSelection(0);
-	tmpsizer->Add(house_options);
-	sizer->Add(tmpsizer);
+	tmpsizer->Add(house_options, 0, wxALL | wxEXPAND, 5);
+	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 	// Import options
 	wxArrayString spawn_choices;
 	spawn_choices.Add(wxT("Merge"));
-	spawn_choices.Add(wxT("Don't import"));
+	spawn_choices.Add(wxT("Don't Import"));
 
 	// Spawn options
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Spawn import behaviour"));
-	spawn_options = newd wxChoice(this, wxID_ANY, wxDefaultPosition, wxSize(260,20), spawn_choices);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Spawn Import Behaviour")), wxVERTICAL);
+	spawn_options = newd wxChoice(tmpsizer->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, spawn_choices);
 	spawn_options->SetSelection(0);
-	tmpsizer->Add(spawn_options);
-	sizer->Add(tmpsizer);
+	tmpsizer->Add(spawn_options, 0, wxALL | wxEXPAND, 5);
+	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 	// OK/Cancel buttons
-	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
-	sizer->Add(tmpsizer, wxSizerFlags(1).Center());
+	wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
+	buttons->Add(newd wxButton(this, wxID_OK, wxT("Ok")), 0, wxALL, 5);
+	buttons->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALL, 5);
+	sizer->Add(buttons, wxSizerFlags(1).Center());
 
-	SetSizerAndFit(sizer);
+	SetSizer(sizer);
+	Layout();
+	Centre(wxBOTH);
 }
 
 ImportMapWindow::~ImportMapWindow() 
@@ -403,35 +397,19 @@ ImportMapWindow::~ImportMapWindow()
 
 void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog file(this, wxT("Import..."), wxT(""), wxT(""), wxT("*.otbm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-	int ok = file.ShowModal();
+	wxFileDialog dialog(this, wxT("Import..."), wxT(""), wxT(""), wxT("*.otbm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	int ok = dialog.ShowModal();
 
-	if(ok == wxID_OK) {
-		file_text_field->ChangeValue(file.GetPath());
-	} else {
-		return;
-	}
+	if (ok == wxID_OK)
+		file_text_field->ChangeValue(dialog.GetPath());
 }
 
 void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event)) 
 {
 	if(Validate() && TransferDataFromWindow()) {
-		wxFileName fn = file_to_import;
+		wxFileName fn = file_text_field->GetValue();
 		if(!fn.FileExists()) {
 			gui.PopupDialog(this, wxT("Error"), wxT("The specified map file doesn't exist"), wxOK);
-		}
-
-		long import_x_offset;
-		x_offset.ToLong(&import_x_offset);
-		long import_y_offset;
-		y_offset.ToLong(&import_y_offset);
-
-		if(import_x_offset < -65000 || import_x_offset > 65000) {
-			gui.PopupDialog(this, wxT("Error"), wxT("The specified x offset needs to be in the range -65000 to 65000"), wxOK);
-			return;
-		}
-		if(import_y_offset < -65000 || import_y_offset > 65000) {
-			gui.PopupDialog(this, wxT("Error"), wxT("The specified y offset needs to be in the range -65000 to 65000"), wxOK);
 			return;
 		}
 
@@ -452,7 +430,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 		EndModal(1);
 
-		editor.importMap(fn, import_x_offset, import_y_offset, house_import_type, spawn_import_type);
+		editor.importMap(fn, x_offset_ctrl->GetValue(), y_offset_ctrl->GetValue(), house_import_type, spawn_import_type);
 	}
 }
 
