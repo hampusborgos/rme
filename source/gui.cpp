@@ -232,14 +232,14 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 		wxLogError(wxString() + wxT("Could not find data directory.\n"));
 }
 
-bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force)
+bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& warnings, bool force)
 {
-	if(ClientVersion::get(ver) == nullptr) {
+	if(ClientVersion::get(version) == nullptr) {
 		error = wxT("Unsupported client version! (8)");
 		return false;
 	}
 	
-	if(ver != loaded_version || force) {
+	if(version != loaded_version || force) {
 		if(getLoadedVersion() != nullptr)
 			// There is another version loaded right now, save window layout
 			gui.SavePerspective();
@@ -252,7 +252,7 @@ bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warni
 		// Destroy the previous version
 		UnloadVersion();
 
-		loaded_version = ver;
+		loaded_version = version;
 		if(!getLoadedVersion()->hasValidPaths()) {
 			if(!getLoadedVersion()->loadValidPaths()) {
 				error = wxT("Couldn't load relevant data files");
@@ -260,8 +260,8 @@ bool GUI::LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warni
 				return false;
 			}
 		}
-		bool ret = LoadDataFiles(error, warnings);
 
+		bool ret = LoadDataFiles(error, warnings);
 		if(ret)
 			gui.LoadPerspective();
 		else
@@ -436,9 +436,9 @@ void GUI::UnloadVersion()
 
 void GUI::SaveCurrentMap(FileName filename, bool showdialog)
 {
-	Editor* edit = GetCurrentEditor();
-	if(edit)
-		edit->saveMap(filename, showdialog);
+	Editor* editor = GetCurrentEditor();
+	if(editor)
+		editor->saveMap(filename, showdialog);
 
 	UpdateTitle();
 	root->UpdateMenubar();
@@ -487,10 +487,10 @@ void GUI::FitViewToMap(MapTab* mt)
 
 bool GUI::NewMap()
 {
-	Editor* ed;
+	Editor* editor;
 	try
 	{
-		ed = newd Editor(copybuffer);
+		editor = newd Editor(copybuffer);
 	}
 	catch(std::runtime_error& e)
 	{
@@ -498,8 +498,8 @@ bool GUI::NewMap()
 		return false;
 	}
 
-	MapTab* edit = newd MapTab(tabbook, ed);
-	edit->OnSwitchEditorMode(mode);
+	MapTab* mapTab = newd MapTab(tabbook, editor);
+	mapTab->OnSwitchEditorMode(mode);
 
 	SetStatusText(wxT("Created new map"));
 	UpdateTitle();
@@ -515,10 +515,10 @@ bool GUI::LoadMap(FileName name)
 	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
 		gui.CloseCurrentEditor();
 
-	Editor* ed;
+	Editor* editor;
 	try
 	{
-		ed = newd Editor(copybuffer, name);
+		editor = newd Editor(copybuffer, name);
 	}
 	catch(std::runtime_error& e)
 	{
@@ -526,37 +526,38 @@ bool GUI::LoadMap(FileName name)
 		return false;
 	}
 
-	MapTab* edit = newd MapTab(tabbook, ed);
-	edit->OnSwitchEditorMode(mode);
+	MapTab* mapTab = newd MapTab(tabbook, editor);
+	mapTab->OnSwitchEditorMode(mode);
 
 	root->AddRecentFile(name);
 		
-	edit->GetView()->FitToMap();
+	mapTab->GetView()->FitToMap();
 	UpdateTitle();
-	ListDialog(wxT("Map loader errors"), edit->GetMap()->getWarnings());
+	ListDialog(wxT("Map loader errors"), mapTab->GetMap()->getWarnings());
 	root->DoQueryImportCreatures();
 
-	FitViewToMap(edit);
+	FitViewToMap(mapTab);
 	root->UpdateMenubar();
 	return true;
 }
 
 Editor* GUI::GetCurrentEditor()
 {
-	MapTab* etab = GetCurrentMapTab();
-	if(etab)
-		return etab->GetEditor();
+	MapTab* mapTab = GetCurrentMapTab();
+	if(mapTab)
+		return mapTab->GetEditor();
 	return nullptr;
 }
 
-EditorTab* GUI::GetTab(int idx) {
+EditorTab* GUI::GetTab(int idx)
+{
 	return tabbook->GetTab(idx);
 }
 
-int GUI::GetTabCount() const {
+int GUI::GetTabCount() const
+{
 	return tabbook->GetTabCount();
 }
-
 
 EditorTab* GUI::GetCurrentTab()
 {
@@ -566,9 +567,9 @@ EditorTab* GUI::GetCurrentTab()
 MapTab* GUI::GetCurrentMapTab() const
 {
 	if(tabbook && tabbook->GetTabCount() > 0) {
-		EditorTab* tab = tabbook->GetCurrentTab();
-		MapTab* etab = dynamic_cast<MapTab*>(tab);
-		return etab;
+		EditorTab* editorTab = tabbook->GetCurrentTab();
+		MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+		return mapTab;
 	}
 	return nullptr;
 }
@@ -611,9 +612,9 @@ bool GUI::ShouldSave()
 
 void GUI::AddPendingCanvasEvent(wxEvent& event)
 {
-	MapTab* etab = GetCurrentMapTab();
-	if(etab)
-		etab->GetCanvas()->GetEventHandler()->AddPendingEvent(event);
+	MapTab* mapTab = GetCurrentMapTab();
+	if(mapTab)
+		mapTab->GetCanvas()->GetEventHandler()->AddPendingEvent(event);
 }
 
 void GUI::CloseCurrentEditor()
@@ -626,16 +627,16 @@ void GUI::CloseCurrentEditor()
 bool GUI::CloseLiveEditors(LiveSocket* sock)
 {
 	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
-		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(i));
-		if(mt) {
-			Editor* editor = mt->GetEditor();
+		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
+		if(mapTab) {
+			Editor* editor = mapTab->GetEditor();
 			if(editor->GetLiveClient() == sock)
 				tabbook->DeleteTab(i--);
 		}
-		LiveLogTab* lt = dynamic_cast<LiveLogTab*>(tabbook->GetTab(i));
-		if(lt) {
-			if(lt->GetSocket() == sock) {
-				lt->Disconnect();
+		LiveLogTab* liveLogTab = dynamic_cast<LiveLogTab*>(tabbook->GetTab(i));
+		if(liveLogTab) {
+			if(liveLogTab->GetSocket() == sock) {
+				liveLogTab->Disconnect();
 				tabbook->DeleteTab(i--);
 			}
 		}
@@ -648,9 +649,9 @@ bool GUI::CloseLiveEditors(LiveSocket* sock)
 bool GUI::CloseAllEditors()
 {
 	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
-		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(i));
-		if(mt) {
-			if(mt->IsUniqueReference() && mt->GetMap() && mt->GetMap()->hasChanged()) {
+		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
+		if(mapTab) {
+			if(mapTab->IsUniqueReference() && mapTab->GetMap() && mapTab->GetMap()->hasChanged()) {
 				tabbook->SetFocusedTab(i);
 				if(!root->DoQuerySave(false)) {
 					return false;
@@ -670,10 +671,10 @@ bool GUI::CloseAllEditors()
 
 void GUI::NewMapView()
 {
-	MapTab* mt = GetCurrentMapTab();
-	if(mt) {
-		MapTab* edit = newd MapTab(mt);
-		edit->OnSwitchEditorMode(mode);
+	MapTab* mapTab = GetCurrentMapTab();
+	if(mapTab) {
+		MapTab* newMapTab = newd MapTab(mapTab);
+		newMapTab->OnSwitchEditorMode(mode);
 
 		SetStatusText(wxT("Created newd view"));
 		UpdateTitle();
@@ -1090,20 +1091,18 @@ void GUI::DestroyLoadBar()
 	}
 }
 
-void GUI::CenterOnPosition(Position p)
+void GUI::CenterOnPosition(Position position)
 {
-	MapTab* tab = GetCurrentMapTab();
-	if(tab) {
-		tab->CenterOnPosition(p);
-	}
+	MapTab* mapTab = GetCurrentMapTab();
+	if(mapTab)
+		mapTab->CenterOnPosition(position);
 }
 
 void GUI::DoPaste()
 {
-	MapTab* mt = GetCurrentMapTab();
-	if(mt) {
-		copybuffer.paste(*mt->GetEditor(), mt->GetCanvas()->GetCursorPosition());
-	}
+	MapTab* mapTab = GetCurrentMapTab();
+	if(mapTab)
+		copybuffer.paste(*mapTab->GetEditor(), mapTab->GetCanvas()->GetCursorPosition());
 }
 
 void GUI::StartPasting()
@@ -1229,16 +1228,16 @@ void GUI::SetDrawingMode()
 	
 	std::set<MapTab*> al;
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
-		EditorTab* et = tabbook->GetTab(idx);
-		if(MapTab* mt = dynamic_cast<MapTab*>(et)) {
-			if(al.find(mt) != al.end())
+		EditorTab* editorTab = tabbook->GetTab(idx);
+		if(MapTab* mapTab = dynamic_cast<MapTab*>(editorTab)) {
+			if(al.find(mapTab) != al.end())
 				continue;
 
-			Editor* editor = mt->GetEditor();
+			Editor* editor = mapTab->GetEditor();
 			editor->selection.start();
 			editor->selection.clear();
 			editor->selection.finish();
-			al.insert(mt);
+			al.insert(mapTab);
 		}
 	}
 
@@ -1269,8 +1268,7 @@ void GUI::SetBrushSize(int nz)
 {
 	SetBrushSizeInternal(nz);
 
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter)
-	{
+	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
 	}
 }
@@ -1433,6 +1431,7 @@ int GUI::GetBrushSize() const
 {
 	return brush_size;
 }
+
 int GUI::GetBrushVariation() const
 {
 	return brush_variation;
