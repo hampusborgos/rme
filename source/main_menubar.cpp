@@ -401,7 +401,7 @@ void MainMenuBar::AddRecentFile(FileName file)
 void MainMenuBar::UpdateFloorMenu()
 {
 	if(gui.IsEditorOpen()) {
-		for(int i = 0; i < 16; ++i)
+		for(int i = 0; i < MAP_LAYERS; ++i)
 			CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + i), false);
 		CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + gui.GetCurrentFloor()), true);
 	}

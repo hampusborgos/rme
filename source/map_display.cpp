@@ -308,8 +308,8 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 		*map_x += GROUND_LAYER - floor;
 		*map_y += GROUND_LAYER - floor;
 	}/* else {
-		*map_x += 15-floor;
-		*map_y += 15-floor;
+		*map_x += MAP_MAX_LAYER - floor;
+		*map_y += MAP_MAX_LAYER - floor;
 	}*/
 }
 
@@ -1332,7 +1332,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 					if(floor < 8) {
 						start_z = GROUND_LAYER;
 					} else {
-						start_z = std::min(15, floor + 2);
+						start_z = std::min(MAP_MAX_LAYER, floor + 2);
 					}
 					end_x = mouse_map_x;
 					end_y = mouse_map_y;
@@ -2015,7 +2015,7 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::ChangeFloor(int new_floor)
 {
-	ASSERT(new_floor >= 0 || new_floor <= 15);
+	ASSERT(new_floor >= 0 || new_floor <= MAP_MAX_LAYER);
 	int old_floor = floor;
 	floor = new_floor;
 	if(old_floor != new_floor) {
