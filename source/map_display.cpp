@@ -1525,14 +1525,18 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			Refresh();
 			break;
 		}
-		case WXK_NUMPAD_UP: case WXK_UP: {
+		case WXK_NUMPAD_UP:
+		case WXK_UP: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y - TILE_SIZE * 10 * zoom));
-			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y - TILE_SIZE * 3 * zoom));
-			}
+			
+			int tiles = 3;
+			if(event.ControlDown())
+				tiles = 10;
+			else if(zoom == 1.0)
+				tiles = 1;
+			
+			static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y - TILE_SIZE * tiles * zoom));
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1541,11 +1545,14 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_DOWN: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y + TILE_SIZE * 10 * zoom));
-			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y + TILE_SIZE * 3 * zoom));
-			}
+			
+			int tiles = 3;
+			if(event.ControlDown())
+				tiles = 10;
+			else if(zoom == 1.0)
+				tiles = 1;
+			
+			static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y + TILE_SIZE * tiles * zoom));
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1554,11 +1561,14 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_LEFT: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x - TILE_SIZE * 10 * zoom), start_y);
-			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x - TILE_SIZE * 3 * zoom), start_y);
-			}
+			
+			int tiles = 3;
+			if(event.ControlDown())
+				tiles = 10;
+			else if(zoom == 1.0)
+				tiles = 1;
+			
+			static_cast<MapWindow*>(GetParent())->Scroll(int(start_x - TILE_SIZE * tiles * zoom), start_y);
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1567,11 +1577,14 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_RIGHT: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			if(event.ControlDown()) {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x + TILE_SIZE * 10 * zoom), start_y);
-			} else {
-				static_cast<MapWindow*>(GetParent())->Scroll(int(start_x + TILE_SIZE * 3 * zoom), start_y);
-			}
+			
+			int tiles = 3;
+			if(event.ControlDown())
+				tiles = 10;
+			else if(zoom == 1.0)
+				tiles = 1;
+			
+			static_cast<MapWindow*>(GetParent())->Scroll(int(start_x + TILE_SIZE * tiles * zoom), start_y);
 			UpdatePositionStatus();
 			Refresh();
 			break;
