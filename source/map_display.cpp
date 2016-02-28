@@ -145,7 +145,13 @@ void MapCanvas::SetZoom(double value)
 		value = 25.0;
 
 	if(zoom != value) {
+		int center_x, center_y;
+		GetScreenCenter(&center_x, &center_y);
+
 		zoom = value;
+		static_cast<MapWindow*>(GetParent())->CenterOnPosition(Position(center_x, center_y, floor));
+
+		UpdatePositionStatus();
 		UpdateZoomStatus();
 		Refresh();
 	}
