@@ -337,7 +337,7 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 
 	// File
 	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Map File")), wxHORIZONTAL);
-	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxT(""), wxDefaultPosition, wxSize(220, 20));
+	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxT(""), wxDefaultPosition, wxSize(230, 23));
 	tmpsizer->Add(file_text_field, 0, wxALL, 5);
 	wxButton* browse_button = newd wxButton(tmpsizer->GetStaticBox(), MAP_WINDOW_FILE_BUTTON, wxT("Browse..."), wxDefaultPosition, wxSize(80, 23));
 	tmpsizer->Add(browse_button, 0, wxALL, 5);
@@ -346,10 +346,10 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 	// Import offset
 	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Import Offset")), wxHORIZONTAL);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, wxT("Offset X:")), 0, wxALL | wxEXPAND, 5);
-	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 20), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
 	tmpsizer->Add(x_offset_ctrl, 0, wxALL, 5);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, wxT("Offset Y:")), 0, wxALL, 5);
-	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 20), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
 	tmpsizer->Add(y_offset_ctrl, 0, wxALL, 5);
 	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
