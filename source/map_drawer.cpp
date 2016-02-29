@@ -384,12 +384,6 @@ void MapDrawer::DrawIngameBox()
 			glVertex2f(box_start_x, 0);
 			glVertex2f(0, 0);
 		glEnd();
-
-		glColor4ub(255, 0, 0, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
 	}
 
 	if(box_end_map_x < end_x) {
@@ -399,12 +393,6 @@ void MapDrawer::DrawIngameBox()
 			glVertex2f(screensize_x * zoom, screensize_y * zoom);
 			glVertex2f(screensize_x * zoom, 0);
 			glVertex2f(box_end_x, 0);
-		glEnd();
-
-		glColor4ub(255, 0, 0, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
 		glEnd();
 	}
 
@@ -416,12 +404,6 @@ void MapDrawer::DrawIngameBox()
 			glVertex2f(box_end_x, 0);
 			glVertex2f(box_start_x, 0);
 		glEnd();
-
-		glColor4ub(255, 0, 0, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
 	}
 
 	if(box_end_map_y < end_y) {
@@ -432,50 +414,30 @@ void MapDrawer::DrawIngameBox()
 			glVertex2f(box_end_x, box_end_y);
 			glVertex2f(box_start_x, box_end_y);
 		glEnd();
-
-		glColor4ub(255, 0, 0, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
 	}
 
-	box_start_map_x += 1;
-	box_end_map_x -= 2;
-	box_start_map_y += 1;
-	box_end_map_y -= 2;
+	glColor4ub(255, 0, 0, 128);
+	glBegin(GL_LINE_STRIP);
+		glVertex2f(box_start_x, box_start_y);
+		glVertex2f(box_end_x, box_start_y);
+		glVertex2f(box_end_x, box_end_y);
+		glVertex2f(box_start_x, box_end_y);
+		glVertex2f(box_start_x, box_start_y);
+	glEnd();
 
-	if(box_start_map_x >= start_x) {
-		glColor4ub(255, 255, 255, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
-	}
+	box_start_x += TILE_SIZE;
+	box_start_y += TILE_SIZE;
+	box_end_x -= 2 * TILE_SIZE;
+	box_end_y -= 2 * TILE_SIZE;
 
-	if(box_end_map_x < end_x) {
-		glColor4ub(255, 255, 255, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
-	}
-
-	if(box_start_map_y >= start_y) {
-		glColor4ub(255, 255, 255, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_start_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
-	}
-
-	if(box_end_map_y < end_y) {
-		glColor4ub(255, 255, 255, 128);
-		glBegin(GL_LINES);
-			glVertex2f(box_start_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-			glVertex2f(box_end_map_x * TILE_SIZE - view_scroll_x, box_end_map_y * TILE_SIZE - view_scroll_y);
-		glEnd();
-	}
+	glColor4ub(0, 255, 0, 128);
+	glBegin(GL_LINE_STRIP);
+		glVertex2f(box_start_x, box_start_y);
+		glVertex2f(box_end_x, box_start_y);
+		glVertex2f(box_end_x, box_end_y);
+		glVertex2f(box_start_x, box_end_y);
+		glVertex2f(box_start_x, box_start_y);
+	glEnd();
 }
 
 void MapDrawer::DrawGrid()
