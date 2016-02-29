@@ -365,10 +365,11 @@ void MapDrawer::DrawIngameBox()
 	int center_x = start_x + int(screensize_x * zoom / 64);
 	int center_y = start_y + int(screensize_y * zoom / 64);
 	
+	int offset_y = 2;
 	int box_start_map_x = center_x;
-	int box_start_map_y = center_y + 1;
+	int box_start_map_y = center_y + offset_y;
 	int box_end_map_x = center_x + CLIENT_MAP_WIDTH;
-	int box_end_map_y = center_y + CLIENT_MAP_HEIGHT;
+	int box_end_map_y = center_y + CLIENT_MAP_HEIGHT + offset_y;
 	
 	int box_start_x = box_start_map_x * TILE_SIZE - view_scroll_x;
 	int box_start_y = box_start_map_y * TILE_SIZE - view_scroll_y;
