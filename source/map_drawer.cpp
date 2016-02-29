@@ -155,9 +155,9 @@ void MapDrawer::Draw()
 		DrawSelectionBox();
 	DrawLiveCursors();
 	DrawBrush();
-	DrawIngameBox();
 	if(options.show_grid)
 		DrawGrid();
+	DrawIngameBox();
 	//DrawTooltips();
 }
 
