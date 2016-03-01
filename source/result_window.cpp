@@ -51,7 +51,7 @@ void SearchResultWindow::Clear()
 
 void SearchResultWindow::AddPosition(wxString description, Position pos)
 {
-	result_list->Append(description << wxT(" (") << pos.x << wxT(":") << pos.y << wxT(":") << pos.z << wxT(")"), newd Position(pos));
+	result_list->Append(description << wxT(" (") << pos.x << wxT(",") << pos.y << wxT(",") << pos.z << wxT(")"), newd Position(pos));
 }
 
 void SearchResultWindow::OnClickResult(wxCommandEvent& event)

@@ -413,7 +413,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 			int move_x = drag_start_x - mouse_map_x;
 			int move_y = drag_start_y - mouse_map_y;
 			int move_z = drag_start_z - floor;
-			ss << wxT("Dragging ") << -move_x << wxT(":") << -move_y << wxT(":") << -move_z;
+			ss << wxT("Dragging ") << -move_x << wxT(",") << -move_y << wxT(",") << -move_z;
 			gui.SetStatusText(ss);
 
 			Refresh();
