@@ -1649,6 +1649,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	choicesizer->Add(newd wxButton(dg, wxID_CANCEL, wxT("OK")), wxSizerFlags(1).Center());
 	topsizer->Add(choicesizer, wxSizerFlags(1).Center());
 	dg->SetSizerAndFit(topsizer);
+	dg->Centre(wxBOTH);
 
 	int ret = dg->ShowModal();
 

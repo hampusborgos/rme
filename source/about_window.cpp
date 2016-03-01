@@ -206,6 +206,7 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	SetAcceleratorTable(accel);
 
 	SetSizerAndFit(topsizer);
+	Centre(wxBOTH);
 }
 
 AboutWindow::~AboutWindow()

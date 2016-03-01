@@ -82,6 +82,7 @@ DatDebugView::DatDebugView(wxWindow* parent) : wxPanel(parent)
 	sizer->Add(item_list, 1, wxEXPAND | wxALL, 2);
 
 	SetSizerAndFit(sizer);
+	Centre(wxBOTH);
 }
 
 DatDebugView::~DatDebugView()

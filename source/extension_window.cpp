@@ -32,6 +32,7 @@ ExtensionsDialog::ExtensionsDialog(wxWindow* parent) :
 	topSizer->Add(buttonSizer, 0, wxCENTER | wxLEFT | wxRIGHT | wxBOTTOM, 20);
 
 	SetSizerAndFit(topSizer);
+	Centre(wxBOTH);
 }
 
 ExtensionsDialog::~ExtensionsDialog()

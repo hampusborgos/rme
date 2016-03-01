@@ -46,6 +46,7 @@ PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile*
 	topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
 
 	SetSizerAndFit(topSizer);
+	Centre(wxBOTH);
 }
 
 PropertiesWindow::~PropertiesWindow()

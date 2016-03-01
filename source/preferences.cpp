@@ -59,7 +59,7 @@ PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_A
 	sizer->Add(subsizer, 0, wxCENTER | wxLEFT | wxBOTTOM | wxRIGHT, 10);
 
 	SetSizerAndFit(sizer);
-
+	Centre(wxBOTH);
 	// FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
 }
 

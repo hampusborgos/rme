@@ -130,7 +130,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	topsizer->Add(subsizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
 
 	SetSizerAndFit(topsizer);
-	
+	Centre(wxBOTH);
 	UpdateProtocolList();
 
 	ClientVersion* current_version = ClientVersion::get(map.getVersion().client);
@@ -487,6 +487,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	sizer->Add(tmpsizer, 0, wxCENTER);
 
 	SetSizerAndFit(sizer);
+	Centre(wxBOTH);
 }
 
 ExportMiniMapWindow::~ExportMiniMapWindow() 
@@ -642,6 +643,7 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 	sizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
 
 	SetSizerAndFit(sizer);
+	Centre(wxBOTH);
 	// We can't call it here since it calls an abstract function, call in child constructors instead.
 	// RefreshContents();
 }
@@ -1019,6 +1021,7 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 	topsizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
 
 	SetSizerAndFit(topsizer);
+	Centre(wxBOTH);
 	
 	RefreshContents(find_item_list);
 	RefreshContents(with_item_list);
@@ -1351,7 +1354,7 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	sizer->Add(tmpsizer, 0, wxCENTER | wxALL, 10);
 
 	SetSizerAndFit(sizer);
-
+	Centre(wxBOTH);
 	BuildListBox(true);
 }
 
@@ -1636,6 +1639,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 	sizer->Add(tmpsizer, 0, wxALL | wxCENTER, 20); // Border to top too
 
 	SetSizerAndFit(sizer);
+	Centre(wxBOTH);
 }
 
 void GotoPositionDialog::OnClickCancel(wxCommandEvent &)
