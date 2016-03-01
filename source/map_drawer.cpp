@@ -416,6 +416,7 @@ void MapDrawer::DrawIngameBox()
 		glEnd();
 	}
 
+	// client hidden tiles
 	glColor4ub(255, 0, 0, 128);
 	glBegin(GL_LINE_STRIP);
 		glVertex2f(box_start_x, box_start_y);
@@ -430,6 +431,22 @@ void MapDrawer::DrawIngameBox()
 	box_end_x -= 2 * TILE_SIZE;
 	box_end_y -= 2 * TILE_SIZE;
 
+	// client visible tiles
+	glColor4ub(0, 255, 0, 128);
+	glBegin(GL_LINE_STRIP);
+		glVertex2f(box_start_x, box_start_y);
+		glVertex2f(box_end_x, box_start_y);
+		glVertex2f(box_end_x, box_end_y);
+		glVertex2f(box_start_x, box_end_y);
+		glVertex2f(box_start_x, box_start_y);
+	glEnd();
+
+	box_start_x += 7 * TILE_SIZE;
+	box_start_y += 5 * TILE_SIZE;
+	box_end_x = box_start_x + TILE_SIZE;
+	box_end_y = box_start_y + TILE_SIZE;
+
+	// client player position
 	glColor4ub(0, 255, 0, 128);
 	glBegin(GL_LINE_STRIP);
 		glVertex2f(box_start_x, box_start_y);
