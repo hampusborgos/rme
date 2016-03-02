@@ -602,7 +602,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 	int mouse_map_x, mouse_map_y;
 	ScreenToMap(event.GetX(), event.GetY(), &mouse_map_x, &mouse_map_y);
 
-	if(event.ControlDown() && event.ShiftDown()) {
+	if(event.ControlDown() && event.AltDown()) {
 		Tile* tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
 		if(tile && tile->size() > 0) {
 			Item* item = tile->getTopItem();
