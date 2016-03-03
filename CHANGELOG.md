@@ -5,7 +5,7 @@ Features:
 * In-game box improvements. Now the hidden tiles, visible tiles and player position are displayed.
 * New _Zoom In_, _Zoom Out_ and _Zoom Normal_ menus.
 * New keyboard shortcuts:
-	- **Ctrl+Alt+Click** Select the relative brush of an items.
+	- **Ctrl+Alt+Click** Select the relative brush of an item.
 	- **Ctrl++** Zoom In
 	- **Ctrl+-** Zoom Out
 	- **Ctrl+0** Zoom Normal(100%)
