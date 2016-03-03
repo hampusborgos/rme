@@ -150,9 +150,9 @@ void LiveLogTab::Message(const wxString& str)
 
 	log->AppendRows(1);
 	int n = log->GetNumberRows() - 1;
-	log->SetCellValue(time, n, 0);
-	log->SetCellValue(speaker, n, 1);
-	log->SetCellValue(str, n, 2);
+	log->SetCellValue(n, 0, time);
+	log->SetCellValue(n, 1, speaker);
+	log->SetCellValue(n, 2, str);
 }
 
 void LiveLogTab::Chat(const wxString& speaker, const wxString& str)
@@ -165,9 +165,9 @@ void LiveLogTab::Chat(const wxString& speaker, const wxString& str)
 
 	log->AppendRows(1);
 	int n = log->GetNumberRows() - 1;
-	log->SetCellValue(time, n, 0);
-	log->SetCellValue(speaker, n, 1);
-	log->SetCellValue(str, n, 2);
+	log->SetCellValue(n, 0, time);
+	log->SetCellValue(n, 1, speaker);
+	log->SetCellValue(n, 2, str);
 }
 
 void LiveLogTab::OnChat(wxCommandEvent& evt)
@@ -207,9 +207,9 @@ void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>&
 	int32_t i = 0;
 	for(auto& clientEntry : clients) {
 		LivePeer* peer = clientEntry.second;
-		user_list->SetCellBackgroundColour(peer->getUsedColor(), i, 0);
-		user_list->SetCellValue(i2ws((peer->getClientId() >> 1) + 1), i, 1);
-		user_list->SetCellValue(peer->getName(), i, 2);
+		user_list->SetCellBackgroundColour(i, 0, peer->getUsedColor());
+		user_list->SetCellValue(i, 1, i2ws((peer->getClientId() >> 1) + 1));
+		user_list->SetCellValue(i, 2, peer->getName());
 		++i;
 	}
 }

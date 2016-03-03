@@ -168,39 +168,39 @@ void PropertiesWindow::SetGridValue(wxGrid* grid, int rowIndex, std::string labe
 	types.Add(wxT("Boolean"));
 	types.Add(wxT("String"));
 
-	grid->SetCellValue(label, rowIndex, 0);
+	grid->SetCellValue(rowIndex, 0, label);
 	switch (attr.type) {
 		case ItemAttribute::STRING: {
-			grid->SetCellValue(wxT("String"), rowIndex, 1);
-			grid->SetCellValue(wxstr(*attr.getString()), rowIndex, 2);
+			grid->SetCellValue(rowIndex, 1, wxT("String"));
+			grid->SetCellValue(rowIndex, 2, wxstr(*attr.getString()));
 			break;
 		}
 		case ItemAttribute::INTEGER: {
-			grid->SetCellValue(wxT("Number"), rowIndex, 1);
-			grid->SetCellValue(i2ws(*attr.getInteger()), rowIndex, 2);
+			grid->SetCellValue(rowIndex, 1, wxT("Number"));
+			grid->SetCellValue(rowIndex, 2, i2ws(*attr.getInteger()));
 			grid->SetCellEditor(rowIndex, 2, new wxGridCellNumberEditor);
 			break;
 		}
 		case ItemAttribute::DOUBLE:
 		case ItemAttribute::FLOAT: {
-			grid->SetCellValue(wxT("Float"), rowIndex, 1);
+			grid->SetCellValue(rowIndex, 1, wxT("Float"));
 			wxString f;
 			f << *attr.getFloat();
-			grid->SetCellValue(f, rowIndex, 2);
+			grid->SetCellValue(rowIndex, 2, f);
 			grid->SetCellEditor(rowIndex, 2, new wxGridCellFloatEditor);
 			break;
 		}
 		case ItemAttribute::BOOLEAN: {
-			grid->SetCellValue(wxT("Boolean"), rowIndex, 1);
-			grid->SetCellValue(*attr.getBoolean() ? wxT("1") : wxT(""), rowIndex, 2);
+			grid->SetCellValue(rowIndex, 1, wxT("Boolean"));
+			grid->SetCellValue(rowIndex, 2, *attr.getBoolean() ? wxT("1") : wxT(""));
 			grid->SetCellRenderer(rowIndex, 2, new wxGridCellBoolRenderer);
 			grid->SetCellEditor(rowIndex, 2, new wxGridCellBoolEditor);
 			break;
 		}
 		default: {
-			grid->SetCellValue(wxT("Unknown"), rowIndex, 1);
-			grid->SetCellBackgroundColour(*wxLIGHT_GREY, rowIndex, 1);
-			grid->SetCellBackgroundColour(*wxLIGHT_GREY, rowIndex, 2);
+			grid->SetCellValue(rowIndex, 1, wxT("Unknown"));
+			grid->SetCellBackgroundColour(rowIndex, 1, *wxLIGHT_GREY);
+			grid->SetCellBackgroundColour(rowIndex, 2, *wxLIGHT_GREY);
 			grid->SetReadOnly(rowIndex, 1, true);
 			grid->SetReadOnly(rowIndex, 2, true);
 			break;
