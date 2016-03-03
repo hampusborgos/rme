@@ -282,12 +282,17 @@ void MainMenuBar::Update()
 	EnableItem(GENERATE_MAP, false);
 
 	EnableItem(IMPORT_MAP, is_local);
+	EnableItem(IMPORT_MONSTERS, is_local);
 	EnableItem(IMPORT_MINIMAP, false);
 	EnableItem(EXPORT_MINIMAP, is_local);
 
 	EnableItem(FIND_ITEM, is_host);
 	EnableItem(REPLACE_ITEM, is_local);
+	EnableItem(SEARCH_EVERYTHING, is_host);
 	EnableItem(SEARCH_UNIQUE, is_host);
+	EnableItem(SEARCH_ACTION, is_host);
+	EnableItem(SEARCH_CONTAINER, is_host);
+	EnableItem(SEARCH_WRITEABLE, is_host);
 
 	EnableItem(CUT, has_map);
 	EnableItem(COPY, has_map);
@@ -301,11 +306,11 @@ void MainMenuBar::Update()
 	EnableItem(JUMP_TO_BRUSH, loaded);
 	EnableItem(JUMP_TO_ITEM_BRUSH, loaded);
 
-	EnableItem(CLEAR_INVALID_HOUSES, is_local);
-	EnableItem(MAP_CLEANUP, is_host);
 	EnableItem(MAP_REMOVE_ITEMS, is_host);
 	EnableItem(MAP_REMOVE_CORPSES, is_local);
 	EnableItem(MAP_REMOVE_UNREACHABLE_TILES, is_local);
+	EnableItem(CLEAR_INVALID_HOUSES, is_local);
+	EnableItem(CLEAR_MODIFIED_STATE, is_local);
 
 	EnableItem(EDIT_TOWNS, is_local);
 	EnableItem(EDIT_ITEMS, false);
