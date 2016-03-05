@@ -470,150 +470,77 @@ SpawnList Map::getSpawnList(Tile* where)
 	return list;
 }
 
-bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
+bool Map::exportMinimap(FileName filename, wxBitmapType type, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
-	uint8_t* pic = nullptr;
+	// TODO Divide huge maps into pieces.
 
-	try
-	{
-		int min_x = 0x10000, min_y = 0x10000;
-		int max_x = 0x00000, max_y = 0x00000;
+	if(size() == 0)
+		return true;
 
-		if(size() == 0)
-			return true;
+	int min_x = MAP_MAX_WIDTH + 1;
+	int min_y = MAP_MAX_HEIGHT + 1;
+	int max_x = 0;
+	int max_y = 0;
 
-		for(MapIterator mit = begin(); mit != end(); ++mit) {
-			if((*mit)->get() == nullptr || (*mit)->empty())
-				continue;
-			
-			Position pos = (*mit)->getPosition();
+	for(MapIterator mit = begin(); mit != end(); ++mit) {
+		if((*mit)->get() == nullptr || (*mit)->empty())
+			continue;
 
-			if(pos.x < min_x)
-				min_x = pos.x;
+		Position pos = (*mit)->getPosition();
 
-			if(pos.y < min_y)
-				min_y = pos.y;
+		if(pos.x < min_x)
+			min_x = pos.x;
 
-			if(pos.x > max_x)
-				max_x = pos.x;
+		if(pos.y < min_y)
+			min_y = pos.y;
 
-			if(pos.y > max_y)
-				max_y = pos.y;
+		if(pos.x > max_x)
+			max_x = pos.x;
 
-		}
-
-		int minimap_width = max_x - min_x+1;
-		int minimap_height = max_y - min_y+1;
-
-		pic = newd uint8_t[minimap_width*minimap_height]; // 1 byte per pixel
-			
-		memset(pic, 0, minimap_width*minimap_height);
-
-		int tiles_iterated = 0;
-		for(MapIterator mit = begin(); mit != end(); ++mit) {
-			Tile* tile = (*mit)->get();
-			++tiles_iterated;
-			if(tiles_iterated % 8192 == 0 && displaydialog)
-				gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
-				
-			if(tile->empty() || tile->getZ() != floor)
-				continue;
-
-			//std::cout << "Pixel : " << (tile->getY() - min_y) * width + (tile->getX() - min_x) << std::endl;
-			uint32_t pixelpos = (tile->getY() - min_y) * minimap_width + (tile->getX() - min_x);
-			uint8_t& pixel = pic[pixelpos];
-
-			for(ItemVector::const_reverse_iterator item_iter = tile->items.rbegin(); item_iter != tile->items.rend(); ++item_iter) {
-				if((*item_iter)->getMiniMapColor()) {
-					pixel = (*item_iter)->getMiniMapColor();
-					break;
-				}
-			}
-			if(pixel == 0)
-				// check ground too
-				if(tile->hasGround())
-					pixel = tile->ground->getMiniMapColor();
-		}
-
-		// Create a file for writing
-		FileWriteHandle fh(nstr(filename.GetFullPath()));
-
-		if(!fh.isOpen()) {
-			delete[] pic;
-			return false;
-		}
-		// Store the magic number
-		fh.addRAW("BM");
-
-		// Store the file size
-		// We need to predict how large it will be
-		uint32_t file_size =
-					14 // header
-					+40 // image data header
-					+256*4 // color palette
-					+((minimap_width + 3) / 4 * 4) * height; // pixels
-		fh.addU32(file_size);
-
-		// Two values reserved, must always be 0.
-		fh.addU16(0);
-		fh.addU16(0);
-
-		// Bitmapdata offset
-		fh.addU32(14 + 40 + 256*4);
-
-		// Header size
-		fh.addU32(40);
-
-		// Header width/height
-		fh.addU32(minimap_width);
-		fh.addU32(minimap_height);
-
-		// Color planes
-		fh.addU16(1);
-
-		// bits per pixel, OT map format is 8
-		fh.addU16(8);
-
-		// compression type, 0 is no compression
-		fh.addU32(0);
-
-		// image size, 0 is valid if we use no compression
-		fh.addU32(0);
-
-		// horizontal/vertical resolution in pixels / meter
-		fh.addU32(4000);
-		fh.addU32(4000);
-
-		// Number of colors
-		fh.addU32(256);
-		// Important colors, 0 is all
-		fh.addU32(0);
-
-		// Write the color palette
-		for(int i = 0; i < 256; ++i)
-			fh.addU32(uint32_t(minimap_color[i]));
-
-		// Bitmap width must be divisible by four, calculate how much padding we need
-		int padding = ((minimap_width & 3) != 0? 4-(minimap_width & 3) : 0);
-		// Bitmap rows are saved in reverse order
-		for(int y = minimap_height-1; y >= 0; --y) {
-			fh.addRAW(pic + y*minimap_width, minimap_width);
-			for(int i = 0; i < padding; ++i) {
-				fh.addU8(0);
-			}
-			if(y % 100 == 0 && displaydialog) {
-				gui.SetLoadDone(90 + int((minimap_height-y) / double(minimap_height) * 10.0));
-			}
-		}
-
-		delete[] pic;
-		//fclose(file);
-		fh.close();
-	}
-	catch(...)
-	{
-		delete[] pic;
+		if(pos.y > max_y)
+			max_y = pos.y;
 	}
 
+	int minimap_width = max_x - min_x + 1;
+	int minimap_height = max_y - min_y + 1;
+	uint8_t* pixels = newd uint8_t[minimap_width * minimap_height * 3]; // 3 bytes per pixel
+	memset(pixels, 0, minimap_width * minimap_height * 3);
+
+	int tiles_iterated = 0;
+	for(MapIterator mit = begin(); mit != end(); ++mit) {
+		Tile* tile = (*mit)->get();
+		++tiles_iterated;
+		if(tiles_iterated % 8192 == 0 && displaydialog)
+			gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
+
+		if(tile == nullptr || tile->empty() || tile->getZ() != floor)
+			continue;
+
+		uint8_t color = 0;
+
+		for(ItemVector::const_reverse_iterator item_iter = tile->items.rbegin(); item_iter != tile->items.rend(); ++item_iter) {
+			if((*item_iter)->getMiniMapColor()) {
+				color = (*item_iter)->getMiniMapColor();
+				break;
+			}
+		}
+
+		if(color == 0) {
+			if(tile->hasGround()) {
+				color = tile->ground->getMiniMapColor();
+			}
+		}
+
+		uint32_t index = ((tile->getY() - min_y) * minimap_width + (tile->getX() - min_x)) * 3;
+
+		pixels[index    ] = (uint8_t)(int(color / 36) % 6 * 51); // red
+		pixels[index + 1] = (uint8_t)(int(color / 6) % 6 * 51);  // green
+		pixels[index + 2] = (uint8_t)(color % 6 * 51);           // blue
+	}
+
+	wxImage* image = newd wxImage(minimap_width, minimap_height, pixels, true);
+	image->SaveFile(filename.GetFullPath(), type);
+	image->Destroy();
+	delete[] pixels;
 	return true;
 }

@@ -506,15 +506,13 @@ void ExportMiniMapWindow::OnExportTypeChange(wxCommandEvent& event)
 
 void ExportMiniMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event)) 
 {
-	wxFileDialog file(this, wxT("Export..."), wxT(""), wxT(""), wxT("*.bmp"), wxFD_SAVE);
+	wxFileDialog file(this, wxT("Export..."), wxT(""), wxT(""), wxT("*.png"), wxFD_SAVE);
 	int ok = file.ShowModal();
 
 	if(ok == wxID_OK) {
 		FileName fn(file.GetPath());
 		fn.SetName(fn.GetName() + wxT("_%d"));
 		file_text_field->ChangeValue(fn.GetFullPath());
-	} else {
-		return;
 	}
 }
 
@@ -554,25 +552,26 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	gui.CreateLoadBar(wxT("Exporting minimap"));
 	try 
 	{
+		wxBitmapType type = wxBITMAP_TYPE_PNG;
 		switch(floor_options->GetSelection()) {
 			case 0: { // All floors
 				for(int floor = 0; floor < MAP_LAYERS; ++floor) {
 					gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
 					FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-					editor.exportMiniMap(fn, floor, true);
+					editor.exportMiniMap(fn, type, floor, true);
 				}
 				break;
 			}
 			case 1: { // Ground floor
 				FileName fn = wxstr(pre_sep + "ground" + post_sep);
-				editor.exportMiniMap(fn, GROUND_LAYER, true);
+				editor.exportMiniMap(fn, type, GROUND_LAYER, true);
 				gui.DestroyLoadBar();
 				break;
 			}
 			case 2: { // Specific floors
 				int floor = floor_number->GetValue();
 				FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-				editor.exportMiniMap(fn, floor, true);
+				editor.exportMiniMap(fn, type, floor, true);
 				break;
 			}
 		}

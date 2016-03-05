@@ -344,11 +344,10 @@ bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, i
 	return false;
 }
 
-bool Editor::exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
+bool Editor::exportMiniMap(FileName filename, wxBitmapType type, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
-	return map.exportMinimap(filename, floor, displaydialog);
+	return map.exportMinimap(filename, type, floor, displaydialog);
 }
-
 
 bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type)
 {
