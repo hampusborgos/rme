@@ -27,10 +27,11 @@ class BrowseTileListBox;
 class BrowseTileWindow : public wxDialog
 {
 public:
-	BrowseTileWindow(wxWindow* parent, const Map* map, Tile* tile, wxPoint position = wxDefaultPosition);
+	BrowseTileWindow(wxWindow* parent, Tile* tile, wxPoint position = wxDefaultPosition);
 	~BrowseTileWindow();
 
 	void OnClickDelete(wxCommandEvent&);
+	void OnClickSelectRaw(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 

@@ -1795,7 +1795,7 @@ void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 	ASSERT(tile->isSelected());
 	Tile* new_tile = tile->deepCopy(editor.map);
 
-	wxDialog* w = new BrowseTileWindow(gui.root, &editor.map, new_tile, wxPoint(cursor_x, cursor_y));
+	wxDialog* w = new BrowseTileWindow(gui.root, new_tile, wxPoint(cursor_x, cursor_y));
 	
 	int ret = w->ShowModal();
 	if(ret != 0) {

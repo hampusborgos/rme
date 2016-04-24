@@ -18,6 +18,8 @@
 #include "main.h"
 
 #include "map.h"
+#include "gui.h"
+#include "raw_brush.h"
 #include "tile.h"
 #include "graphics.h"
 #include "gui.h"
@@ -34,6 +36,7 @@ public:
 
 	void OnDrawItem(wxDC& dc, const wxRect& rect, size_t index) const;
 	wxCoord OnMeasureItem(size_t index) const;
+	Item* GetSelectedItem();
 	void RemoveSelected();
 
 protected:
@@ -86,6 +89,14 @@ wxCoord BrowseTileListBox::OnMeasureItem(size_t n) const
 	return 32;
 }
 
+Item* BrowseTileListBox::GetSelectedItem()
+{
+	if(GetItemCount() == 0 || GetSelectedCount() == 0)
+		return nullptr;
+
+	return edit_tile->getTopSelectedItem();
+}
+
 void BrowseTileListBox::RemoveSelected()
 {
 	if(GetItemCount() == 0 || GetSelectedCount() == 0) return;
@@ -125,11 +136,12 @@ void BrowseTileListBox::UpdateItems()
 
 BEGIN_EVENT_TABLE(BrowseTileWindow, wxDialog)
 	EVT_BUTTON(wxID_REMOVE, BrowseTileWindow::OnClickDelete)
+	EVT_BUTTON(wxID_FIND, BrowseTileWindow::OnClickSelectRaw)
 	EVT_BUTTON(wxID_OK, BrowseTileWindow::OnClickOK)
 	EVT_BUTTON(wxID_CANCEL, BrowseTileWindow::OnClickCancel)
 END_EVENT_TABLE()
 
-BrowseTileWindow::BrowseTileWindow(wxWindow* parent, const Map* map, Tile* tile, wxPoint position /* = wxDefaultPosition */) :
+BrowseTileWindow::BrowseTileWindow(wxWindow* parent, Tile* tile, wxPoint position /* = wxDefaultPosition */) :
 wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -140,7 +152,11 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	pos << wxT("x=") << tile->getX() << wxT(",  y=") << tile->getY() << wxT(",  z=") << tile->getZ();
 
 	wxSizer* infoSizer = newd wxBoxSizer(wxVERTICAL);
-	infoSizer->Add(newd wxButton(this, wxID_REMOVE, wxT("Delete")), wxSizerFlags(0).Left());
+    wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
+	buttons->Add(newd wxButton(this, wxID_REMOVE, wxT("Delete")));
+	buttons->AddSpacer(5);
+	buttons->Add(newd wxButton(this, wxID_FIND, wxT("RAW")));
+	infoSizer->Add(buttons);
 	infoSizer->AddSpacer(5);
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Position:  ") + pos), wxSizerFlags(0).Left());
 	infoSizer->Add(item_count_txt = newd wxStaticText(this, wxID_ANY, wxT("Item count:  ") + i2ws(item_list->GetItemCount())), wxSizerFlags(0).Left());
@@ -170,6 +186,15 @@ void BrowseTileWindow::OnClickDelete(wxCommandEvent& WXUNUSED(event))
 {
 	item_list->RemoveSelected();
 	item_count_txt->SetLabelText(wxT("Item count: ") + i2ws(item_list->GetItemCount()));
+}
+
+void BrowseTileWindow::OnClickSelectRaw(wxCommandEvent& WXUNUSED(event))
+{
+	Item* item = item_list->GetSelectedItem();
+	if(item && item->getRAWBrush())
+		gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
+
+	EndModal(1);
 }
 
 void BrowseTileWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
