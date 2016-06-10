@@ -155,7 +155,7 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
     wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
 	buttons->Add(newd wxButton(this, wxID_REMOVE, wxT("Delete")));
 	buttons->AddSpacer(5);
-	buttons->Add(newd wxButton(this, wxID_FIND, wxT("RAW")));
+	buttons->Add(newd wxButton(this, wxID_FIND, wxT("Select RAW")));
 	infoSizer->Add(buttons);
 	infoSizer->AddSpacer(5);
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Position:  ") + pos), wxSizerFlags(0).Left());
