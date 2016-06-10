@@ -117,7 +117,8 @@ enum DatFormat
 	DAT_FORMAT_96,
 	DAT_FORMAT_1010,
 	DAT_FORMAT_1050,
-	DAT_FORMAT_1057
+	DAT_FORMAT_1057,
+	DAT_FORMAT_1092
 };
 
 enum DatFlags : uint8_t
@@ -157,6 +158,9 @@ enum DatFlags : uint8_t
 	DatFlagCloth = 32,
 	DatFlagMarket = 33,
 	DatFlagUsable = 34,
+	DatFlagWrappable = 35,
+	DatFlagUnwrappable = 36,
+	DatFlagTopEffect = 37,
 
 	DatFlagFloorChange = 252,
 	DatFlagNoMoveAnimation = 253, // 10.10: real value is 16, but we need to do this for backwards compatibility

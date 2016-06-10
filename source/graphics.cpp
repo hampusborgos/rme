@@ -575,6 +575,9 @@ bool GraphicManager::loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* s
 			case DatFlagAnimateAlways:
 			case DatFlagFullGround:
 			case DatFlagLook:
+			case DatFlagWrappable:
+			case DatFlagUnwrappable:
+			case DatFlagTopEffect:
 			case DatFlagFloorChange:
 			case DatFlagNoMoveAnimation:
 			case DatFlagChargeable:
