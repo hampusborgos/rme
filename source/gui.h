@@ -273,6 +273,8 @@ public:
 	void StartPasting();
 	void EndPasting();
 	void DoPaste();
+	bool DoUndo();
+	bool DoRedo();
 
 	// Editor interface
 	EditorTab* GetCurrentTab();

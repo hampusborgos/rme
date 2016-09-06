@@ -50,6 +50,8 @@ public:
 	static int luaGuiLoadMap(lua_State* L);
 	static int luaGuiShouldSaveMap(lua_State* L);
 	static int luaGuiSaveCurrentMap(lua_State* L);
+	static int luaGuiDoUndo(lua_State* L);
+	static int luaGuiDoRedo(lua_State* L);
 	static int luaGuiGetCurrentFloor(lua_State* L);
 	static int luaGuiSetCurrentFloor(lua_State* L);
 	static int luaGuiSetCenterPosition(lua_State* L);

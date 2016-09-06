@@ -2,6 +2,8 @@
 -- g_gui.loadMap(path)
 -- g_gui.shouldSaveCurrentMap()
 -- g_gui.saveCurrentMap()
+-- g_gui.doUndo()
+-- g_gui.doRedo()
 -- g_gui.getCurrentFloor()
 -- g_gui.setCurrentFloor(floor)
 -- g_gui.setCenterPosition(position)

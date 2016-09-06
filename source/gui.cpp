@@ -1134,6 +1134,44 @@ void GUI::EndPasting()
 	}
 }
 
+bool GUI::DoUndo()
+{
+	if(!IsEditorOpen())
+		return false;
+
+	Editor* editor = GetCurrentEditor();
+	if(editor->actionQueue->canUndo()) {
+		editor->actionQueue->undo();
+		if(editor->selection.size() > 0)
+			SetSelectionMode();
+		SetStatusText(wxT("Undo action"));
+		UpdateMinimap();
+		root->UpdateMenubar();
+		root->Refresh();
+		return true;
+	}
+	return false;
+}
+
+bool GUI::DoRedo()
+{
+	if (!IsEditorOpen())
+		return false;
+
+	Editor* editor = GetCurrentEditor();
+	if(editor->actionQueue->canRedo()) {
+		editor->actionQueue->redo();
+		if(editor->selection.size() > 0)
+			SetSelectionMode();
+		SetStatusText(wxT("Redo action"));
+		UpdateMinimap();
+		root->UpdateMenubar();
+		root->Refresh();
+		return true;
+	}
+	return false;
+}
+
 int GUI::GetCurrentFloor()
 {
 	MapTab* tab = GetCurrentMapTab();

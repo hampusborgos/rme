@@ -151,6 +151,20 @@ int LuaInterface::luaGuiSaveCurrentMap(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaGuiDoUndo(lua_State* L)
+{
+	// g_gui.doUndo()
+	pushBoolean(L, g_gui.DoUndo());
+	return 1;
+}
+
+int LuaInterface::luaGuiDoRedo(lua_State* L)
+{
+	// g_gui.doRedo()
+	pushBoolean(L, g_gui.DoRedo());
+	return 1;
+}
+
 int LuaInterface::luaGuiGetCurrentFloor(lua_State* L)
 {
 	// g_gui.getCurrentFloor()
@@ -290,6 +304,8 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "loadMap", LuaInterface::luaGuiLoadMap);
 	registerMethod("g_gui", "shouldSaveCurrentMap", LuaInterface::luaGuiShouldSaveMap);
 	registerMethod("g_gui", "saveCurrentMap", LuaInterface::luaGuiSaveCurrentMap);
+	registerMethod("g_gui", "doUndo", LuaInterface::luaGuiDoUndo);
+	registerMethod("g_gui", "doRedo", LuaInterface::luaGuiDoRedo);
 	registerMethod("g_gui", "getCurrentFloor", LuaInterface::luaGuiGetCurrentFloor);
 	registerMethod("g_gui", "setCurrentFloor", LuaInterface::luaGuiSetCurrentFloor);
 	registerMethod("g_gui", "setCenterPosition", LuaInterface::luaGuiSetCenterPosition);
