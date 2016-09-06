@@ -282,6 +282,7 @@ public:
 	bool IsEditorOpen() const;
 	void CloseCurrentEditor();
 	Editor* GetCurrentEditor();
+	Editor* GetEditorAt(int index);
 	MapTab* GetCurrentMapTab() const;
 	void CycleTab(bool forward = true);
 	bool CloseLiveEditors(LiveSocket* sock);

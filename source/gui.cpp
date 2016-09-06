@@ -549,6 +549,16 @@ Editor* GUI::GetCurrentEditor()
 	return nullptr;
 }
 
+Editor* GUI::GetEditorAt(int index)
+{
+	if(tabbook && index >= 0 && index < tabbook->GetTabCount()) {
+		EditorTab* editorTab = tabbook->GetTab(index);
+		MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+		return mapTab->GetEditor();
+	}
+	return nullptr;
+}
+
 EditorTab* GUI::GetTab(int idx)
 {
 	return tabbook->GetTab(idx);
