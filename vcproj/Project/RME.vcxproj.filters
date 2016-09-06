@@ -50,6 +50,9 @@
     <Filter Include="json">
       <UniqueIdentifier>{053b3f61-2179-4de8-9730-6c7f10063023}</UniqueIdentifier>
     </Filter>
+    <Filter Include="scripting">
+      <UniqueIdentifier>{ffd4f4af-23e2-4635-91aa-f4bec4c8dd6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\about_window.h">
@@ -76,7 +79,7 @@
     <ClInclude Include="..\..\source\common.h">
       <Filter>common</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\source\otml.h">
+    <ClInclude Include="..\..\source\otml.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\common_windows.h">
@@ -356,8 +359,11 @@
     <ClInclude Include="..\..\source\browse_tile_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\source\positionctrl.h">
+    <ClInclude Include="..\..\source\positionctrl.h">
       <Filter>gui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\luascript.h">
+      <Filter>scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -624,8 +630,11 @@
     <ClCompile Include="..\..\source\browse_tile_window.cpp">
       <Filter>gui\dialogs</Filter>
     </ClCompile>
-	<ClCompile Include="..\..\source\positionctrl.cpp">
+    <ClCompile Include="..\..\source\positionctrl.cpp">
       <Filter>gui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\luascript.cpp">
+      <Filter>scripting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

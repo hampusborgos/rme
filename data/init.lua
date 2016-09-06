@@ -1,0 +1,8 @@
+-- g_gui.newMap()
+-- g_gui.loadMap(path)
+-- g_gui.shouldSaveCurrentMap()
+-- g_gui.saveCurrentMap()
+-- g_gui.getCurrentFloor()
+-- g_gui.setCurrentFloor(floor)
+-- g_gui.setCenterPosition(position)
+-- g_gui.showTextBox(title, contents)

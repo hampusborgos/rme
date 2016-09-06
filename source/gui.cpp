@@ -1101,11 +1101,14 @@ void GUI::DestroyLoadBar()
 	}
 }
 
-void GUI::CenterOnPosition(Position position)
+bool GUI::CenterOnPosition(Position position)
 {
 	MapTab* mapTab = GetCurrentMapTab();
-	if(mapTab)
+	if(mapTab) {
 		mapTab->CenterOnPosition(position);
+		return true;
+	}
+	return false;
 }
 
 void GUI::DoPaste()

@@ -35,6 +35,7 @@
 #include "map.h"
 #include "complexitem.h"
 #include "creature.h"
+#include "luascript.h"
 
 #include "../brushes/icon/rme_icon.xpm"
 
@@ -175,6 +176,15 @@ bool Application::OnInit()
 
 	// Show all windows
 	g_gui.root->Show(true);
+
+	// Initialize and load lua
+	if(g_lua.init()) {
+		wxFileName filename;
+		filename.Assign(g_gui.getFoundDataDirectory() + wxT("init.lua"));
+		if(!g_lua.loadFile(filename)) {
+			wxLogError(wxT("Unable to run script init.lua!"));
+		}
+	}
 
 	// Set idle event handling mode
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);

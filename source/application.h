@@ -33,6 +33,7 @@ class Creature;
 class MainFrame;
 class MapWindow;
 class wxEventLoopBase;
+class LuaInterface;
 
 class Application : public wxApp
 {

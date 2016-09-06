@@ -58,6 +58,7 @@ class EditTownsDialog;
 class ItemButton;
 
 class LiveSocket;
+class LuaInterface;
 
 extern const wxEventType EVT_UPDATE_MENUS;
 
@@ -241,7 +242,6 @@ public:
 	void DecreaseBrushSize(bool wrap = false);
 	void IncreaseBrushSize(bool wrap = false);
 
-
 	// Fetch different useful directories
 	static wxString GetExecDirectory();
 	static wxString GetDataDirectory();
@@ -262,7 +262,7 @@ public:
 	bool IsVersionLoaded() const {return loaded_version != CLIENT_VERSION_NONE;}
 
 	// Centers current view on position
-	void CenterOnPosition(Position pos);
+	bool CenterOnPosition(Position pos);
 	// Refresh the view canvas
 	void RefreshView();
 	// Fit all/specified current map view to map dimensions
@@ -294,7 +294,7 @@ public:
 	int GetOpenMapCount();
 	bool ShouldSave();
 	void SaveCurrentMap(FileName filename, bool showdialog); // "" means default filename
-	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(wxT("")), showdialog);}
+	void SaveCurrentMap(bool showdialog = true) { SaveCurrentMap(wxString(wxT("")), showdialog); }
 	bool NewMap();
 	bool LoadMap(FileName fn);
 
