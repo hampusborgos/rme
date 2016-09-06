@@ -28,7 +28,7 @@ ${CMAKE_CURRENT_LIST_DIR}/extension_window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/filehandle.cpp
 ${CMAKE_CURRENT_LIST_DIR}/graphics.cpp
 ${CMAKE_CURRENT_LIST_DIR}/ground_brush.cpp
-${CMAKE_CURRENT_LIST_DIR}/g_gui.cpp
+${CMAKE_CURRENT_LIST_DIR}/gui.cpp
 ${CMAKE_CURRENT_LIST_DIR}/house_brush.cpp
 ${CMAKE_CURRENT_LIST_DIR}/house.cpp
 ${CMAKE_CURRENT_LIST_DIR}/house_exit_brush.cpp
