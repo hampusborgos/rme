@@ -219,6 +219,160 @@ int LuaInterface::luaGuiShowTextBox(lua_State* L)
 	return 1;
 }
 
+// Tile
+int LuaInterface::luaTileCreate(lua_State* L)
+{
+	// Tile(x, y, z)
+	// Tile(position)
+	Editor* editor = g_gui.GetCurrentEditor();
+	if(!editor) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Map& map = editor->map;
+
+	Tile* tile;
+	if(isTable(L, 2)) {
+		const Position& position = getPosition(L, 2);
+		tile = map.getTile(position);
+	} else {
+		uint8_t z = getNumber<uint8_t>(L, 4);
+		uint16_t y = getNumber<uint16_t>(L, 3);
+		uint16_t x = getNumber<uint16_t>(L, 2);
+		tile = map.getTile(x, y, z);
+	}
+
+	if(tile) {
+		pushUserdata<Tile>(L, tile);
+		setMetatable(L, -1, "Tile");
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileGetPosition(lua_State* L)
+{
+	// Tile:getPosition()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		const Position position = tile->getPosition();
+		pushPosition(L, position);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsHouse(lua_State* L)
+{
+	// Tile:isHouse()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->isHouseTile());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsHouseExit(lua_State* L)
+{
+	// Tile:isHouseExit()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->isHouseExit());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsPvP(lua_State* L)
+{
+	// Tile:isPvP()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, (tile->getMapFlags() & TILESTATE_PVPZONE) == TILESTATE_PVPZONE);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsNoPvP(lua_State* L)
+{
+	// Tile:isNoPvP()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, (tile->getMapFlags() & TILESTATE_NOPVP) == TILESTATE_NOPVP);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsNoLogout(lua_State* L)
+{
+	// Tile:isNoLogout()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, (tile->getMapFlags() & TILESTATE_NOLOGOUT) == TILESTATE_NOLOGOUT);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsPZ(lua_State* L)
+{
+	// Tile:isPZ()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->isPZ());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsBlocking(lua_State* L)
+{
+	// Tile:isBlocking()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->isBlocking());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsSelected(lua_State* L)
+{
+	// Tile:isSelected()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->isSelected());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsModified(lua_State* L)
+{
+	// Tile:isModified()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->isModified());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
 void LuaInterface::registerClass(const std::string& className, const std::string& baseClass, lua_CFunction newFunction/* = nullptr*/)
 {
 	// className = {}
@@ -327,6 +481,20 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "getCenterPosition", LuaInterface::luaGuiGetCenterPosition);
 	registerMethod("g_gui", "setCenterPosition", LuaInterface::luaGuiSetCenterPosition);
 	registerMethod("g_gui", "showTextBox", LuaInterface::luaGuiShowTextBox);
+
+	// Tile
+	registerClass("Tile", "", LuaInterface::luaTileCreate);
+	registerMetaMethod("Tile", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Tile", "getPosition", LuaInterface::luaTileGetPosition);
+	registerMethod("Tile", "isHouse", LuaInterface::luaTileIsHouse);
+	registerMethod("Tile", "isHouseExit", LuaInterface::luaTileIsHouseExit);
+	registerMethod("Tile", "isPvP", LuaInterface::luaTileIsPvP);
+	registerMethod("Tile", "isNoPvP", LuaInterface::luaTileIsNoPvP);
+	registerMethod("Tile", "isNoLogout", LuaInterface::luaTileIsNoLogout);
+	registerMethod("Tile", "isPZ", LuaInterface::luaTileIsPZ);
+	registerMethod("Tile", "isBlocking", LuaInterface::luaTileIsBlocking);
+	registerMethod("Tile", "isSelected", LuaInterface::luaTileIsSelected);
+	registerMethod("Tile", "isModified", LuaInterface::luaTileIsModified);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)

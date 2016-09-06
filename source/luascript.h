@@ -58,6 +58,19 @@ public:
 	static int luaGuiSetCenterPosition(lua_State* L);
 	static int luaGuiShowTextBox(lua_State* L);
 
+	// Tile
+	static int luaTileCreate(lua_State* L);
+	static int luaTileGetPosition(lua_State* L);
+	static int luaTileIsHouse(lua_State* L);
+	static int luaTileIsHouseExit(lua_State* L);
+	static int luaTileIsPvP(lua_State* L);
+	static int luaTileIsNoPvP(lua_State* L);
+	static int luaTileIsNoLogout(lua_State* L);
+	static int luaTileIsPZ(lua_State* L);
+	static int luaTileIsBlocking(lua_State* L);
+	static int luaTileIsSelected(lua_State* L);
+	static int luaTileIsModified(lua_State* L);
+
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }
 
