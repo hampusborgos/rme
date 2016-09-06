@@ -196,10 +196,10 @@ int LuaInterface::luaGuiSetCenterPosition(lua_State* L)
 
 int LuaInterface::luaGuiShowTextBox(lua_State* L)
 {
-	// g_gui.showTextBox(title, contents)
-	const wxString& contents = getString(L, 1);
-	const wxString& title = getString(L, 2);
-	g_gui.ShowTextBox(title, contents);
+	// g_gui.showTextBox(title, text)
+	const wxString& text = getString(L, 2);
+	const wxString& title = getString(L, 1);
+	g_gui.ShowTextBox(g_gui.root, title, text);
 	return 1;
 }
 
@@ -308,6 +308,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "doRedo", LuaInterface::luaGuiDoRedo);
 	registerMethod("g_gui", "getCurrentFloor", LuaInterface::luaGuiGetCurrentFloor);
 	registerMethod("g_gui", "setCurrentFloor", LuaInterface::luaGuiSetCurrentFloor);
+	registerMethod("g_gui", "getCenterPosition", LuaInterface::luaGuiGetCenterPosition);
 	registerMethod("g_gui", "setCenterPosition", LuaInterface::luaGuiSetCenterPosition);
 	registerMethod("g_gui", "showTextBox", LuaInterface::luaGuiShowTextBox);
 }
@@ -315,7 +316,7 @@ void LuaInterface::registerFunctions()
 int LuaInterface::luaErrorHandler(lua_State* L)
 {
 	const wxString& errorMessage = popString(L);
-	g_gui.ShowTextBox(wxT("Error"), errorMessage);
+	g_gui.ShowTextBox(g_gui.root, wxT("Error"), errorMessage);
 	return 1;
 }
 

@@ -1655,3 +1655,36 @@ void GotoPositionDialog::OnClickOK(wxCommandEvent &)
 	g_gui.CenterOnPosition(posctrl->GetPosition());
 	EndModal(1);
 }
+
+// ============================================================================
+// Text Box Dialog
+
+BEGIN_EVENT_TABLE(TextBox, wxDialog)
+	EVT_BUTTON(wxID_OK, TextBox::OnClickOK)
+END_EVENT_TABLE()
+
+TextBox::TextBox(wxWindow* parent, const wxString& title, const wxString& text):
+	wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX)
+{
+	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
+	wxTextCtrl* text_field = newd wxTextCtrl(this, wxID_ANY, text, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
+	text_field->SetMinSize(wxSize(400, 550));
+	topsizer->Add(text_field, wxSizerFlags(5).Expand());
+
+	wxSizer* choicesizer = newd wxBoxSizer(wxHORIZONTAL);
+	choicesizer->Add(newd wxButton(this, wxID_CANCEL, wxT("OK")), wxSizerFlags(1).Center());
+	topsizer->Add(choicesizer, wxSizerFlags(0).Center());
+	
+	SetSizerAndFit(topsizer);
+	Centre(wxBOTH);
+}
+
+TextBox::~TextBox()
+{
+	////
+}
+
+void TextBox::OnClickOK(wxCommandEvent&)
+{
+	EndModal(1);
+}

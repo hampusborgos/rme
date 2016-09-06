@@ -366,4 +366,15 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
+class TextBox : public wxDialog
+{
+public:
+	TextBox(wxWindow* parent, const wxString& title, const wxString& text);
+	virtual ~TextBox();
+
+	void OnClickOK(wxCommandEvent&);
+
+	DECLARE_EVENT_TABLE();
+};
+
 #endif

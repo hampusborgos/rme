@@ -177,8 +177,8 @@ public:
 	void ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec);
 	void ListDialog(const wxString& title, const wxArrayString& vec) { ListDialog(nullptr, title, vec); }
 
-	void ShowTextBox(wxWindow* parent, wxString title, wxString contents);
-	void ShowTextBox(const wxString& title, const wxString& contents) {ShowTextBox(nullptr, title, contents);}
+	void ShowTextBox(wxWindow* parent, const wxString& title, const wxString& text);
+	void ShowTextBox(const wxString& title, const wxString& text) { ShowTextBox(nullptr, title, text); }
 
 	// Get the current GL context
 	// Param is required if the context is to be created.
