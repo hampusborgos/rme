@@ -186,6 +186,22 @@ int LuaInterface::luaGuiSetCurrentFloor(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaGuiGetCenterPosition(lua_State* L)
+{
+	// g_gui.getCenterPosition()
+	MapTab* mapTab = g_gui.GetCurrentMapTab();
+	if (mapTab) {
+		MapCanvas* canvas = mapTab->GetCanvas();
+		int x, y, z = canvas->GetFloor();
+		canvas->GetScreenCenter(&x, &y);
+		const Position position(x, y, z);
+		pushPosition(L, position);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaInterface::luaGuiSetCenterPosition(lua_State* L)
 {
 	// g_gui.setCenterPosition(position)

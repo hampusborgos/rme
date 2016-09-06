@@ -54,6 +54,7 @@ public:
 	static int luaGuiDoRedo(lua_State* L);
 	static int luaGuiGetCurrentFloor(lua_State* L);
 	static int luaGuiSetCurrentFloor(lua_State* L);
+	static int luaGuiGetCenterPosition(lua_State* L);
 	static int luaGuiSetCenterPosition(lua_State* L);
 	static int luaGuiShowTextBox(lua_State* L);
 
@@ -158,6 +159,18 @@ public:
 	{
 		pushString(L, value);
 		lua_setfield(L, -2, index);
+	}
+	inline static bool getBoolean(lua_State* L, int32_t arg)
+	{
+		return lua_toboolean(L, arg) != 0;
+	}
+	inline static bool getBoolean(lua_State* L, int32_t arg, bool defaultValue)
+	{
+		const auto parameters = lua_gettop(L);
+		if(parameters == 0 || arg > parameters) {
+			return defaultValue;
+		}
+		return lua_toboolean(L, arg) != 0;
 	}
 
 	static int luaErrorHandler(lua_State* L);

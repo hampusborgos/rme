@@ -6,5 +6,6 @@
 -- g_gui.doRedo()
 -- g_gui.getCurrentFloor()
 -- g_gui.setCurrentFloor(floor)
+-- g_gui.getCenterPosition()
 -- g_gui.setCenterPosition(position)
--- g_gui.showTextBox(title, contents)
+-- g_gui.showTextBox(title, text)
