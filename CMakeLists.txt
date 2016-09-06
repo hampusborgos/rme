@@ -14,6 +14,7 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
 
 find_package(OpenGL REQUIRED)
 find_package(LibArchive REQUIRED)
+find_package(LuaJIT REQUIRED)
 
 if(WIN32)
     set(Boost_THREADAPI win32)
