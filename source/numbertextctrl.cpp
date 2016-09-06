@@ -21,7 +21,7 @@
 
 #include "numbertextctrl.h"
 
-BEGIN_EVENT_TABLE(NumberTextCtrl, wxTextCtrl)
+BEGIN_EVENT_TABLE(NumberTextCtrl, wxSpinCtrl)
 	EVT_TEXT(wxID_ANY, NumberTextCtrl::OnEnterText)
 END_EVENT_TABLE()
 
@@ -29,7 +29,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long value, long minvalue, long maxvalue,
 		const wxPoint& pos, const wxSize& sz,
 		long style, const wxString& name) :
-	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxDefaultValidator, name),
+	wxSpinCtrl(parent, id, (wxString() << value), pos, sz, style, minvalue, maxvalue, value, name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 }
@@ -38,7 +38,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long value, long minvalue, long maxvalue,
 		long style, const wxString& name,
 		const wxPoint& pos, const wxSize& sz) :
-	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxDefaultValidator, name),
+	wxSpinCtrl(parent, id, (wxString() << value), pos, sz, style, minvalue, maxvalue, value, name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 }
@@ -47,10 +47,14 @@ NumberTextCtrl::~NumberTextCtrl()
 {
 }
 
+wxTextPos NumberTextCtrl::GetLastPosition() const {
+	return wxstr(i2s(GetValue())).size();
+}
+
 void NumberTextCtrl::OnEnterText(wxCommandEvent& evt)
 {
 	//printf("%d\n", (int)GetInsertionPoint());
-	wxString text = GetValue();
+/*	wxString text = GetValue();
 	wxString ntext;
 
 	int p = GetInsertionPoint();
@@ -92,7 +96,7 @@ void NumberTextCtrl::OnEnterText(wxCommandEvent& evt)
 		// ChangeValue doesn't generate events
 		ChangeValue(ntext);
 		SetInsertionPoint(p);
-	}
+	}*/
 }
 
 void NumberTextCtrl::SetIntValue(long v)
@@ -105,9 +109,6 @@ void NumberTextCtrl::SetIntValue(long v)
 
 long NumberTextCtrl::GetIntValue()
 {
-	long l;
-	if(GetValue().ToLong(&l))
-		return l;
-	return 0;
+	return GetValue();
 }
 
