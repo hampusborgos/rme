@@ -678,10 +678,11 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	return true;
 }
 
-void Editor::borderizeSelection()
+bool Editor::borderizeSelection()
 {
 	if(selection.size() == 0) {
 		g_gui.SetStatusText(wxT("No items selected. Can't borderize."));
+		return false;
 	}
 
 	Action* action = actionQueue->createAction(ACTION_BORDERIZE);
@@ -692,6 +693,7 @@ void Editor::borderizeSelection()
 		action->addChange(newd Change(newTile));
 	}
 	addAction(action);
+	return true;
 }
 
 void Editor::borderizeMap(bool showdialog)
@@ -718,10 +720,11 @@ void Editor::borderizeMap(bool showdialog)
 	}
 }
 
-void Editor::randomizeSelection()
+bool Editor::randomizeSelection()
 {
 	if(selection.size() == 0) {
 		g_gui.SetStatusText(wxT("No items selected. Can't randomize."));
+		return false;
 	}
 
 	Action* action = actionQueue->createAction(ACTION_RANDOMIZE);
@@ -743,6 +746,7 @@ void Editor::randomizeSelection()
 		}
 	}
 	addAction(action);
+	return true;
 }
 
 void Editor::randomizeMap(bool showdialog)
@@ -866,8 +870,13 @@ void Editor::clearModifiedTileState(bool showdialog)
 	}
 }
 
-void Editor::moveSelection(Position offset)
+bool Editor::moveSelection(Position offset)
 {
+	if (selection.size() == 0) {
+		g_gui.SetStatusText(wxT("No items selected. Can't move the selection."));
+		return false;
+	}
+
 	BatchAction* batchAction = actionQueue->createBatch(ACTION_MOVE); // Our saved action batch, for undo!
 	Action* action;
 
@@ -1056,94 +1065,97 @@ void Editor::moveSelection(Position offset)
 	// Store the action for undo
 	addBatch(batchAction);
 	selection.updateSelectionCount();
+	return true;
 }
 
-void Editor::destroySelection()
+bool Editor::destroySelection()
 {
 	if(selection.size() == 0) {
 		g_gui.SetStatusText(wxT("No selected items to delete."));
-	} else {
-		int tile_count = 0;
-		int item_count = 0;
-		PositionList tilestoborder;
+		return false;
+	}
 
-		BatchAction* batch = actionQueue->createBatch(ACTION_DELETE_TILES);
-		Action* action = actionQueue->createAction(batch);
+	int tile_count = 0;
+	int item_count = 0;
+	PositionList tilestoborder;
 
-		for(TileVector::iterator it = selection.begin(); it != selection.end(); ++it) {
-			tile_count++;
+	BatchAction* batch = actionQueue->createBatch(ACTION_DELETE_TILES);
+	Action* action = actionQueue->createAction(batch);
 
-			Tile* tile = *it;
-			Tile* newtile = tile->deepCopy(map);
+	for(TileVector::iterator it = selection.begin(); it != selection.end(); ++it) {
+		tile_count++;
 
-			ItemVector tile_selection = newtile->popSelectedItems();
-			for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
-				++item_count;
-				// Delete the items from the tile
-				delete *iit;
-			}
+		Tile* tile = *it;
+		Tile* newtile = tile->deepCopy(map);
 
-			if(newtile->creature && newtile->creature->isSelected()) {
-				delete newtile->creature;
-				newtile->creature = nullptr;
-			}
+		ItemVector tile_selection = newtile->popSelectedItems();
+		for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
+			++item_count;
+			// Delete the items from the tile
+			delete *iit;
+		}
 
-			if(newtile->spawn && newtile->spawn->isSelected()) {
-				delete newtile->spawn;
-				newtile->spawn = nullptr;
-			}
+		if(newtile->creature && newtile->creature->isSelected()) {
+			delete newtile->creature;
+			newtile->creature = nullptr;
+		}
 
-			if(settings.getInteger(Config::USE_AUTOMAGIC)) {
-				for(int y = -1; y <= 1; y++) {
-					for(int x = -1; x <= 1; x++) {
-						tilestoborder.push_back(
-							Position(tile->getPosition().x + x,
-							tile->getPosition().y + y,
-							tile->getPosition().z));
-					}
+		if(newtile->spawn && newtile->spawn->isSelected()) {
+			delete newtile->spawn;
+			newtile->spawn = nullptr;
+		}
+
+		if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+			for(int y = -1; y <= 1; y++) {
+				for(int x = -1; x <= 1; x++) {
+					tilestoborder.push_back(
+						Position(tile->getPosition().x + x,
+						tile->getPosition().y + y,
+						tile->getPosition().z));
 				}
 			}
-			action->addChange(newd Change(newtile));
+		}
+		action->addChange(newd Change(newtile));
+	}
+
+	batch->addAndCommitAction(action);
+
+	if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+		// Remove duplicates
+		tilestoborder.sort();
+		tilestoborder.unique();
+
+		action = actionQueue->createAction(batch);
+		for(PositionList::iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
+			TileLocation* location = map.createTileL(*it);
+			Tile* tile = location->get();
+
+			if(tile) {
+				Tile* new_tile = tile->deepCopy(map);
+				new_tile->borderize(&map);
+				new_tile->wallize(&map);
+				new_tile->tableize(&map);
+				new_tile->carpetize(&map);
+				action->addChange(newd Change(new_tile));
+			} else {
+				Tile* new_tile = map.allocator(location);
+				new_tile->borderize(&map);
+				if(new_tile->size()) {
+					action->addChange(newd Change(new_tile));
+				} else {
+					delete new_tile;
+				}
+			}
 		}
 
 		batch->addAndCommitAction(action);
-
-		if(settings.getInteger(Config::USE_AUTOMAGIC)) {
-			// Remove duplicates
-			tilestoborder.sort();
-			tilestoborder.unique();
-
-			action = actionQueue->createAction(batch);
-			for(PositionList::iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
-				TileLocation* location = map.createTileL(*it);
-				Tile* tile = location->get();
-
-				if(tile) {
-					Tile* new_tile = tile->deepCopy(map);
-					new_tile->borderize(&map);
-					new_tile->wallize(&map);
-					new_tile->tableize(&map);
-					new_tile->carpetize(&map);
-					action->addChange(newd Change(new_tile));
-				} else {
-					Tile* new_tile = map.allocator(location);
-					new_tile->borderize(&map);
-					if(new_tile->size()) {
-						action->addChange(newd Change(new_tile));
-					} else {
-						delete new_tile;
-					}
-				}
-			}
-
-			batch->addAndCommitAction(action);
-		}
-
-		addBatch(batch);
-		wxString ss;
-		ss << wxT("Deleted ") << tile_count << wxT(" tile") << (tile_count > 1 ? wxT("s") : wxT("")) <<  wxT(" (") << item_count << wxT(" item") << (item_count > 1? wxT("s") : wxT("")) << wxT(")");
-		g_gui.SetStatusText(ss);
 	}
+
+	addBatch(batch);
+	wxString ss;
+	ss << wxT("Deleted ") << tile_count << wxT(" tile") << (tile_count > 1 ? wxT("s") : wxT("")) << wxT(" (") << item_count << wxT(" item") << (item_count > 1 ? wxT("s") : wxT("")) << wxT(")");
+	g_gui.SetStatusText(ss);
+	return true;
 }
 
 	// Macro to avoid useless code repetition

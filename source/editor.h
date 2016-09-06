@@ -75,13 +75,13 @@ public: // Functions
 
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
-	void moveSelection(Position offset);
+	bool moveSelection(Position offset);
 	// Deletes all selected items
-	void destroySelection();
+	bool destroySelection();
 	// Borderizes the selected region
-	void borderizeSelection();
+	bool borderizeSelection();
 	// Randomizes the ground in the selected region
-	void randomizeSelection();
+	bool randomizeSelection();
 
 	// Same as above although it applies to the entire map
 	// action queue is flushed when these functions are called
