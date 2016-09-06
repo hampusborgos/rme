@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ HousePalettePanel::~HousePalettePanel()
 
 void HousePalettePanel::SetMap(Map* m)
 {
-	gui.house_brush->setHouse(nullptr);
+	g_gui.house_brush->setHouse(nullptr);
 	map = m;
 	OnUpdate();
 }
@@ -123,7 +123,7 @@ void HousePalettePanel::OnLayoutFixTimer(wxTimerEvent& WXUNUSED(event))
 {
 	wxWindow* w = this;
 	while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
-	
+
 	if(w) {
 		w->SetSize(w->GetSize().GetWidth(), w->GetSize().GetHeight() + 1);
 		w->SetSize(w->GetSize().GetWidth(), w->GetSize().GetHeight() - 1);
@@ -140,11 +140,11 @@ Brush* HousePalettePanel::GetSelectedBrush() const
 	if(select_position_button->GetValue()) {
 		House* house = GetCurrentlySelectedHouse();
 		if(house)
-			gui.house_exit_brush->setHouse(house);
-		return (gui.house_exit_brush->getHouseID() != 0? gui.house_exit_brush : nullptr);
+			g_gui.house_exit_brush->setHouse(house);
+		return (g_gui.house_exit_brush->getHouseID() != 0? g_gui.house_exit_brush : nullptr);
 	} else if(house_brush_button->GetValue()) {
-		gui.house_brush->setHouse(GetCurrentlySelectedHouse());
-		return (gui.house_brush->getHouseID() != 0? gui.house_brush : nullptr);
+		g_gui.house_brush->setHouse(GetCurrentlySelectedHouse());
+		return (g_gui.house_brush->getHouseID() != 0? g_gui.house_brush : nullptr);
 	}
 	return nullptr;
 }
@@ -245,7 +245,7 @@ void HousePalettePanel::SelectHouse(size_t index)
 	}
 
 	SelectHouseBrush();
-	gui.RefreshView();
+	g_gui.RefreshView();
 }
 
 House* HousePalettePanel::GetCurrentlySelectedHouse() const
@@ -279,7 +279,7 @@ void HousePalettePanel::OnUpdate()
 {
 	if(map == nullptr)
 		return;
-	
+
 	int old_town_selection = town_choice->GetSelection();
 
 	town_choice->Clear();
@@ -297,7 +297,7 @@ void HousePalettePanel::OnUpdate()
 			SelectTown(old_town_selection);
 		else
 			SelectTown(old_town_selection-1);
-		
+
 		house_list->Enable(true);
 	} else {
 		town_choice->Append(wxT("No Town"), (void*)(nullptr));
@@ -316,13 +316,13 @@ void HousePalettePanel::OnUpdate()
 void HousePalettePanel::OnTownChange(wxCommandEvent& event)
 {
 	SelectTown(event.GetSelection());
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 }
 
 void HousePalettePanel::OnListBoxChange(wxCommandEvent& event)
 {
 	SelectHouse(event.GetSelection());
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 }
 
 void HousePalettePanel::OnListBoxDoubleClick(wxCommandEvent& event)
@@ -330,20 +330,20 @@ void HousePalettePanel::OnListBoxDoubleClick(wxCommandEvent& event)
 	House* house = reinterpret_cast<House*>(event.GetClientData());
 	// I find it extremly unlikely that one actually wants the exit at 0,0,0, so just treat it as the null value
 	if(house && house->getExit() != Position(0,0,0)) {
-		gui.CenterOnPosition(house->getExit());
+		g_gui.CenterOnPosition(house->getExit());
 	}
 }
 
 void HousePalettePanel::OnClickHouseBrushButton(wxCommandEvent& event)
 {
 	SelectHouseBrush();
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 }
 
 void HousePalettePanel::OnClickSelectExitButton(wxCommandEvent& event)
 {
 	SelectExitBrush();
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 }
 
 void HousePalettePanel::OnClickAddHouse(wxCommandEvent& event)
@@ -353,19 +353,19 @@ void HousePalettePanel::OnClickAddHouse(wxCommandEvent& event)
 
 	House* new_house = newd House(*map);
 	new_house->id = map->houses.getEmptyID();
-	
+
 	std::ostringstream os;
 	os << "Unnamed House #" << new_house->id;
 	new_house->name = os.str();
 	Town* town = reinterpret_cast<Town*>(town_choice->GetClientData(town_choice->GetSelection()));
-	
+
 	ASSERT(town);
 	new_house->townid = town->getID();
 
 	map->houses.addHouse(new_house);
 	house_list->Append(wxstr(new_house->getDescription()), new_house);
 	SelectHouse(house_list->FindString(wxstr(new_house->getDescription())));
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 	refresh_timer.Start(300, true);
 }
 
@@ -378,7 +378,7 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 
 	House* house = reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
 	if(house) {
-		wxDialog* d = newd EditHouseDialog(gui.root, map, house);
+		wxDialog* d = newd EditHouseDialog(g_gui.root, map, house);
 		int ret = d->ShowModal();
 		if(ret == 1) {
 			// Something changed, change name of house
@@ -404,9 +404,9 @@ void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 		if(selection_index >= 0 && house_list->GetCount()) {
 			house_list->SetSelection(selection_index);
 		}
-		gui.SelectBrush();
+		g_gui.SelectBrush();
 	}
-	gui.RefreshView();
+	g_gui.RefreshView();
 }
 
 // ============================================================================
@@ -437,7 +437,7 @@ EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Name"));
 	name_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(230,20), 0, wxTextValidator(wxFILTER_ASCII, &house_name));
 	tmpsizer->Add(name_field);
- 
+
 	sizer->Add(tmpsizer, wxSizerFlags().Border(wxALL, 20));
 
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Rent / ID"));
@@ -447,10 +447,10 @@ EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
 	id_field->Enable(false);
 	tmpsizer->Add(id_field);
 	sizer->Add(tmpsizer, wxSizerFlags().Border(wxALL, 20));
-	
+
 	// House options
 	guildhall_field = newd wxCheckBox(this, wxID_ANY, wxT("Guildhall"), wxDefaultPosition);
- 
+
 	sizer->Add(guildhall_field, wxSizerFlags().Border(wxRIGHT | wxLEFT | wxBOTTOM, 20));
 	guildhall_field->SetValue(house->guildhall);
 
@@ -476,12 +476,12 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		house_rent.ToLong(&new_house_rent);
 
 		if(new_house_rent < 0) {
-			gui.PopupDialog(this, wxT("Error"), wxT("House rent cannot be less than 0."), wxOK);
+			g_gui.PopupDialog(this, wxT("Error"), wxT("House rent cannot be less than 0."), wxOK);
 			return;
 		}
 
 		if(house_name.length() == 0) {
-			gui.PopupDialog(this, wxT("Error"), wxT("House name cannot be nil."), wxOK);
+			g_gui.PopupDialog(this, wxT("Error"), wxT("House name cannot be nil."), wxOK);
 			return;
 		}
 
@@ -491,7 +491,7 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				House* house = house_iter->second;
 				ASSERT(house);
 				if(wxstr(house->name) == house_name && house->id != what_house->id) {
-					int ret = gui.PopupDialog(this, wxT("Warning"), wxT("This house name is already in use, are you sure you want to continue?"), wxYES | wxNO);
+					int ret = g_gui.PopupDialog(this, wxT("Warning"), wxT("This house name is already in use, are you sure you want to continue?"), wxYES | wxNO);
 					if(ret == wxID_NO) {
 						return;
 					}

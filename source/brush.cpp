@@ -73,23 +73,23 @@ void Brushes::clear()
 
 void Brushes::init()
 {
-	addBrush(gui.optional_brush = newd OptionalBorderBrush());
-	addBrush(gui.eraser = newd EraserBrush());
-	addBrush(gui.spawn_brush = newd SpawnBrush());
-	addBrush(gui.normal_door_brush = newd DoorBrush(WALL_DOOR_NORMAL));
-	addBrush(gui.locked_door_brush = newd DoorBrush(WALL_DOOR_LOCKED));
-	addBrush(gui.magic_door_brush = newd DoorBrush(WALL_DOOR_MAGIC));
-	addBrush(gui.quest_door_brush = newd DoorBrush(WALL_DOOR_QUEST));
-	addBrush(gui.hatch_door_brush = newd DoorBrush(WALL_HATCH_WINDOW));
-	addBrush(gui.window_door_brush = newd DoorBrush(WALL_WINDOW));
-	addBrush(gui.house_brush = newd HouseBrush());
-	addBrush(gui.house_exit_brush = newd HouseExitBrush());
-	addBrush(gui.waypoint_brush = newd WaypointBrush());
+	addBrush(g_gui.optional_brush = newd OptionalBorderBrush());
+	addBrush(g_gui.eraser = newd EraserBrush());
+	addBrush(g_gui.spawn_brush = newd SpawnBrush());
+	addBrush(g_gui.normal_door_brush = newd DoorBrush(WALL_DOOR_NORMAL));
+	addBrush(g_gui.locked_door_brush = newd DoorBrush(WALL_DOOR_LOCKED));
+	addBrush(g_gui.magic_door_brush = newd DoorBrush(WALL_DOOR_MAGIC));
+	addBrush(g_gui.quest_door_brush = newd DoorBrush(WALL_DOOR_QUEST));
+	addBrush(g_gui.hatch_door_brush = newd DoorBrush(WALL_HATCH_WINDOW));
+	addBrush(g_gui.window_door_brush = newd DoorBrush(WALL_WINDOW));
+	addBrush(g_gui.house_brush = newd HouseBrush());
+	addBrush(g_gui.house_exit_brush = newd HouseExitBrush());
+	addBrush(g_gui.waypoint_brush = newd WaypointBrush());
 
-	addBrush(gui.pz_brush = newd FlagBrush(TILESTATE_PROTECTIONZONE));
-	addBrush(gui.rook_brush = newd FlagBrush(TILESTATE_NOPVP));
-	addBrush(gui.nolog_brush = newd FlagBrush(TILESTATE_NOLOGOUT));
-	addBrush(gui.pvp_brush = newd FlagBrush(TILESTATE_PVPZONE));
+	addBrush(g_gui.pz_brush = newd FlagBrush(TILESTATE_PROTECTIONZONE));
+	addBrush(g_gui.rook_brush = newd FlagBrush(TILESTATE_NOPVP));
+	addBrush(g_gui.nolog_brush = newd FlagBrush(TILESTATE_NOLOGOUT));
+	addBrush(g_gui.pvp_brush = newd FlagBrush(TILESTATE_PVPZONE));
 
 	GroundBrush::init();
 	WallBrush::init();

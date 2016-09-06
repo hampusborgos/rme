@@ -24,7 +24,7 @@ BrushPalettePanel::BrushPalettePanel(wxWindow* parent, const TilesetContainer& t
 	size_panel(nullptr)
 {
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
-	
+
 	// Create the tileset panel
 	wxSizer* ts_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Tileset"));
 	wxChoicebook* tmp_choicebook = newd wxChoicebook(this, wxID_ANY, wxDefaultPosition, wxSize(180,250));
@@ -199,15 +199,15 @@ void BrushPalettePanel::OnPageChanged(wxChoicebookEvent& event)
 	if(!choicebook) {
 		return;
 	}
-	gui.ActivatePalette(GetParentPalette());
-	gui.SelectBrush();
+	g_gui.ActivatePalette(GetParentPalette());
+	g_gui.SelectBrush();
 }
 
 void BrushPalettePanel::OnSwitchIn() {
 	LoadCurrentContents();
-	gui.ActivatePalette(GetParentPalette());
-	gui.SetBrushSizeInternal(last_brush_size);
-	OnUpdateBrushSize(gui.GetBrushShape(), last_brush_size);
+	g_gui.ActivatePalette(GetParentPalette());
+	g_gui.SetBrushSizeInternal(last_brush_size);
+	OnUpdateBrushSize(g_gui.GetBrushShape(), last_brush_size);
 }
 
 // ============================================================================
@@ -352,15 +352,15 @@ void BrushPanel::OnClickListBoxRow(wxCommandEvent& event)
 	// We just notify the GUI of the action, it will take care of everything else
 	ASSERT(brushbox);
 	size_t n = event.GetSelection();
-	
-	
+
+
 	wxWindow* w = this;
 	while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
-	
-	if(w)
-		gui.ActivatePalette(static_cast<PaletteWindow*>(w));
 
-	gui.SelectBrush(tileset->brushlist[n], tileset->getType());
+	if(w)
+		g_gui.ActivatePalette(static_cast<PaletteWindow*>(w));
+
+	g_gui.SelectBrush(tileset->brushlist[n], tileset->getType());
 }
 
 // ============================================================================
@@ -391,15 +391,15 @@ BrushIconBox::BrushIconBox(wxWindow *parent, const TilesetCategory *_tileset, Re
 	for(BrushVector::const_iterator iter = tileset->brushlist.begin(); iter != tileset->brushlist.end(); ++iter) {
 		ASSERT(*iter);
 		++item_counter;
-		
+
 		if(!rowsizer) {
 			rowsizer = newd wxBoxSizer(wxHORIZONTAL);
 		}
-		
+
 		BrushButton* bb = newd BrushButton(this, *iter, rsz);
 		rowsizer->Add(bb);
 		brush_buttons.push_back(bb);
-		
+
 		if(item_counter % width == 0) { // newd row
 			stacksizer->Add(rowsizer);
 			rowsizer = nullptr;
@@ -503,8 +503,8 @@ void BrushIconBox::OnClickBrushButton(wxCommandEvent& event)
 		wxWindow* w = this;
 		while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
 		if(w)
-			gui.ActivatePalette(static_cast<PaletteWindow*>(w));
-		gui.SelectBrush(btn->brush, tileset->getType());
+			g_gui.ActivatePalette(static_cast<PaletteWindow*>(w));
+		g_gui.SelectBrush(btn->brush, tileset->getType());
 	}
 }
 
@@ -562,7 +562,7 @@ bool BrushListBox::SelectBrush(const Brush* whatbrush)
 void BrushListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 {
 	ASSERT(n < tileset->size());
-	Sprite* spr = gui.gfx.getSprite(tileset->brushlist[n]->getLookID());
+	Sprite* spr = g_gui.gfx.getSprite(tileset->brushlist[n]->getLookID());
 	if(spr) {
 		spr->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 	}
@@ -597,8 +597,8 @@ void BrushListBox::OnKey(wxKeyEvent& event)
 			event.Skip(true);
 			} else {
 		default:
-			if(gui.GetCurrentTab() != nullptr) {
-				gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
+			if(g_gui.GetCurrentTab() != nullptr) {
+				g_gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 			}
 		}
 	}

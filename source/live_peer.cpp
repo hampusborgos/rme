@@ -205,9 +205,9 @@ void LivePeer::parseHello(NetworkMessage& message)
 	log->Message(name + wxT(" (") + getHostName() + wxT(") connected."));
 
 	NetworkMessage outMessage;
-	if(static_cast<ClientVersionID>(clientVersion) != gui.GetCurrentVersionID()) {
+	if(static_cast<ClientVersionID>(clientVersion) != g_gui.GetCurrentVersionID()) {
 		outMessage.write<uint8_t>(PACKET_CHANGE_CLIENT_VERSION);
-		outMessage.write<uint32_t>(gui.GetCurrentVersionID());
+		outMessage.write<uint32_t>(g_gui.GetCurrentVersionID());
 	} else {
 		outMessage.write<uint8_t>(PACKET_ACCEPTED_CLIENT);
 	}
@@ -258,7 +258,7 @@ void LivePeer::parseNodeRequest(NetworkMessage& message)
 		int32_t ndx = ind >> 18;
 		int32_t ndy = (ind >> 4) & 0x3FFF;
 		bool underground = ind & 1;
-	
+
 		QTreeNode* node = map.createLeaf(ndx * 4, ndy * 4);
 		if(node) {
 			sendNode(clientId, node, ndx, ndy, underground ? 0xFF00 : 0x00FF);
@@ -290,8 +290,8 @@ void LivePeer::parseReceiveChanges(NetworkMessage& message)
 
 	editor.actionQueue->addAction(action);
 
-	gui.RefreshView();
-	gui.UpdateMinimap();
+	g_gui.RefreshView();
+	g_gui.UpdateMinimap();
 }
 
 void LivePeer::parseAddHouse(NetworkMessage& message)
@@ -317,7 +317,7 @@ void LivePeer::parseCursorUpdate(NetworkMessage& message)
 	}
 
 	server->broadcastCursor(cursor);
-	gui.RefreshView();
+	g_gui.RefreshView();
 }
 
 void LivePeer::parseChatMessage(NetworkMessage& message)

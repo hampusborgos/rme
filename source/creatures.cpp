@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@
 
 CreatureDatabase creature_db;
 
-CreatureType::CreatureType() : 
+CreatureType::CreatureType() :
 	isNpc(false),
 	missing(false),
 	in_other_tileset(false),
@@ -39,7 +39,7 @@ CreatureType::CreatureType() :
 	////
 }
 
-CreatureType::CreatureType(const CreatureType& ct) : 
+CreatureType::CreatureType(const CreatureType& ct) :
 	isNpc(ct.isNpc),
 	missing(ct.missing),
 	in_other_tileset(ct.in_other_tileset),
@@ -93,7 +93,7 @@ CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warn
 
 	if((attribute = node.attribute("looktype"))) {
 		ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
-		if(gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
+		if(g_gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
 			warnings.push_back(wxT("Invalid creature \"") + wxstr(ct->name) + wxT("\" look type #") + std::to_string(ct->outfit.lookType));
 		}
 	}
@@ -219,7 +219,7 @@ CreatureType* CreatureDatabase::operator[](const std::string& name)
 CreatureType* CreatureDatabase::addMissingCreatureType(const std::string& name, bool isNpc)
 {
 	assert((*this)[name] == nullptr);
-	
+
 	CreatureType* ct = newd CreatureType();
 	ct->name = name;
 	ct->isNpc = isNpc;
@@ -233,7 +233,7 @@ CreatureType* CreatureDatabase::addMissingCreatureType(const std::string& name, 
 CreatureType* CreatureDatabase::addCreatureType(const std::string& name, bool isNpc, const Outfit& outfit)
 {
 	assert((*this)[name] == nullptr);
-	
+
 	CreatureType* ct = newd CreatureType();
 	ct->name = name;
 	ct->isNpc = isNpc;
@@ -334,7 +334,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 						tileSet = materials.tilesets["Others"];
 					}
 					ASSERT(tileSet != nullptr);
-					
+
 					Brush* brush = newd CreatureBrush(creatureType);
 					brushes.addBrush(brush);
 
@@ -379,7 +379,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 bool CreatureDatabase::saveToXML(const FileName& filename)
 {
 	pugi::xml_document doc;
-	
+
 	pugi::xml_node decl = doc.prepend_child(pugi::node_declaration);
 	decl.append_attribute("version") = "1.0";
 

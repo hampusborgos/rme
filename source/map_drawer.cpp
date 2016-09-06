@@ -31,7 +31,7 @@ MapDrawer::MapDrawer(const DrawingOptions& options, MapCanvas* canvas, wxPaintDC
 	zoom = canvas->GetZoom();
 	tile_size = int(TILE_SIZE / zoom); // after zoom
 	floor = canvas->GetFloor();
-	
+
 	SetupVars();
 	SetupGL();
 }
@@ -46,7 +46,7 @@ void MapDrawer::SetupVars()
 	}
 	else
 		start_z = floor;
-	
+
 	end_z = floor;
 	superend_z = (floor > GROUND_LAYER ? 8 : 0);
 
@@ -190,16 +190,16 @@ void MapDrawer::DrawMap()
 
 	// The current house we're drawing
 	current_house_id = 0;
-	if(HouseBrush* hb = dynamic_cast<HouseBrush*>(gui.GetCurrentBrush())) {
+	if(HouseBrush* hb = dynamic_cast<HouseBrush*>(g_gui.GetCurrentBrush())) {
 		current_house_id = hb->getHouseID();
-	} else if(HouseExitBrush* heb = dynamic_cast<HouseExitBrush*>(gui.GetCurrentBrush())) {
+	} else if(HouseExitBrush* heb = dynamic_cast<HouseExitBrush*>(g_gui.GetCurrentBrush())) {
 		current_house_id = heb->getHouseID();
 	}
 
 	// Enable texture mode
 	if(!options.show_only_colors)
 		glEnable(GL_TEXTURE_2D);
-	
+
 	for(int map_z = start_z; map_z >= superend_z; map_z--) {
 		if(map_z == end_z && start_z != end_z && options.show_shade) {
 			// Draw shade
@@ -232,7 +232,7 @@ void MapDrawer::DrawMap()
 							nd = editor.map.createLeaf(nd_map_x, nd_map_y);
 							nd->setVisible(false, false);
 						}
-						else 
+						else
 							continue;
 					}
 
@@ -267,13 +267,13 @@ void MapDrawer::DrawMap()
 			glEnable(GL_TEXTURE_2D);
 
 		// Draws the doodad preview or the paste preview (or import preview)
-		if(gui.secondary_map != nullptr && !options.ingame) {
+		if(g_gui.secondary_map != nullptr && !options.ingame) {
 			Position normalPos;
 			Position to(mouse_map_x, mouse_map_y, floor);
 
 			if(canvas->isPasting()) {
 				normalPos = editor.copybuffer.getPosition();
-			} else if(dynamic_cast<DoodadBrush*>(gui.GetCurrentBrush())) {
+			} else if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush())) {
 				normalPos = Position(0x8000, 0x8000, 0x8);
 			}
 
@@ -286,7 +286,7 @@ void MapDrawer::DrawMap()
 						continue;
 					}
 
-					Tile* tile = gui.secondary_map->getTile(pos);
+					Tile* tile = g_gui.secondary_map->getTile(pos);
 					if(tile) {
 						// Compensate for underground/overground
 						int offset;
@@ -364,13 +364,13 @@ void MapDrawer::DrawIngameBox()
 
 	int center_x = start_x + int(screensize_x * zoom / 64);
 	int center_y = start_y + int(screensize_y * zoom / 64);
-	
+
 	int offset_y = 2;
 	int box_start_map_x = center_x;
 	int box_start_map_y = center_y + offset_y;
 	int box_end_map_x = center_x + CLIENT_MAP_WIDTH;
 	int box_end_map_y = center_y + CLIENT_MAP_HEIGHT + offset_y;
-	
+
 	int box_start_x = box_start_map_x * TILE_SIZE - view_scroll_x;
 	int box_start_y = box_start_map_y * TILE_SIZE - view_scroll_y;
 	int box_end_x = box_end_map_x * TILE_SIZE - view_scroll_x;
@@ -583,7 +583,7 @@ void MapDrawer::DrawSelectionBox()
 	int last_click_ry = canvas->last_click_abs_y - view_scroll_y;
 	double cursor_rx = canvas->cursor_x * zoom;
 	double cursor_ry = canvas->cursor_y * zoom;
-	
+
 	double lines[4][4];
 
 	lines[0][0] = last_click_rx;
@@ -664,15 +664,15 @@ void MapDrawer::DrawLiveCursors()
 
 void MapDrawer::DrawBrush()
 {
-	if(!gui.IsDrawingMode())
+	if(!g_gui.IsDrawingMode())
 		return;
-	if(!gui.GetCurrentBrush())
+	if(!g_gui.GetCurrentBrush())
 		return;
 	if(options.ingame)
 		return;
 
 	// This is SO NOT A GOOD WAY TO DO THINGS
-	Brush* brush = gui.GetCurrentBrush();
+	Brush* brush = g_gui.GetCurrentBrush();
 	RAWBrush* rawbrush = dynamic_cast<RAWBrush*>(brush);
 	TerrainBrush* terrainbrush = dynamic_cast<TerrainBrush*>(brush);
 	WallBrush* wall_brush = dynamic_cast<WallBrush*>(brush);
@@ -687,9 +687,9 @@ void MapDrawer::DrawBrush()
 	WaypointBrush* waypoint_brush = dynamic_cast<WaypointBrush*>(brush);
 	FlagBrush* flag_brush = dynamic_cast<FlagBrush*>(brush);
 	EraserBrush* eraser = dynamic_cast<EraserBrush*>(brush);
-	
+
 	BrushColor brushColor = COLOR_BLANK;
-	
+
 	if(terrainbrush || table_brush || carpet_brush)
 		brushColor = COLOR_BRUSH;
 	else if(house_brush)
@@ -752,7 +752,7 @@ void MapDrawer::DrawBrush()
 			if(rawbrush)
 				glEnable(GL_TEXTURE_2D);
 
-			if(gui.GetBrushShape() == BRUSHSHAPE_SQUARE || spawn_brush /* Spawn brush is always square */) {
+			if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE || spawn_brush /* Spawn brush is always square */) {
 				if(rawbrush || optional_brush) {
 					int start_x, end_x;
 					int start_y, end_y;
@@ -801,7 +801,7 @@ void MapDrawer::DrawBrush()
 						glVertex2f(last_click_start_sx, last_click_end_sy);
 					glEnd();
 				}
-			} else if(gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
+			} else if(g_gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
 				// Calculate drawing offsets
 				int start_x, end_x;
 				int start_y, end_y;
@@ -861,10 +861,10 @@ void MapDrawer::DrawBrush()
 		}
 	} else {
 		if(wall_brush) {
-			int start_map_x = mouse_map_x - gui.GetBrushSize();
-			int start_map_y = mouse_map_y - gui.GetBrushSize();
-			int end_map_x   = mouse_map_x + gui.GetBrushSize() + 1;
-			int end_map_y   = mouse_map_y + gui.GetBrushSize() + 1;
+			int start_map_x = mouse_map_x - g_gui.GetBrushSize();
+			int start_map_y = mouse_map_y - g_gui.GetBrushSize();
+			int end_map_x   = mouse_map_x + g_gui.GetBrushSize() + 1;
+			int end_map_y   = mouse_map_y + g_gui.GetBrushSize() + 1;
 
 			int start_sx = start_map_x * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
 			int start_sy = start_map_y * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
@@ -873,7 +873,7 @@ void MapDrawer::DrawBrush()
 
 			int delta_x = end_sx - start_sx;
 			int delta_y = end_sy - start_sy;
-			
+
 			glColor(brushColor);
 			glBegin(GL_QUADS);
 				{
@@ -923,18 +923,18 @@ void MapDrawer::DrawBrush()
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 255, 255, 160);
 			else
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 64, 64, 160);
-			
+
 			glDisable(GL_TEXTURE_2D);
 		} else if(!dynamic_cast<DoodadBrush*>(brush)) {
 			if(rawbrush) { // Textured brush
 				glEnable(GL_TEXTURE_2D);
 			}
-			for(int y = -gui.GetBrushSize()-1; y <= gui.GetBrushSize()+1; y++) {
+			for(int y = -g_gui.GetBrushSize()-1; y <= g_gui.GetBrushSize()+1; y++) {
 				int cy = (mouse_map_y + y) * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
-				for(int x = -gui.GetBrushSize()-1; x <= gui.GetBrushSize()+1; x++) {
+				for(int x = -g_gui.GetBrushSize()-1; x <= g_gui.GetBrushSize()+1; x++) {
 					int cx = (mouse_map_x + x) * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
-					if(gui.GetBrushShape() == BRUSHSHAPE_SQUARE) {
-						if(x >= -gui.GetBrushSize() && x <= gui.GetBrushSize() && y >= -gui.GetBrushSize() && y <= gui.GetBrushSize()) {
+					if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE) {
+						if(x >= -g_gui.GetBrushSize() && x <= g_gui.GetBrushSize() && y >= -g_gui.GetBrushSize() && y <= g_gui.GetBrushSize()) {
 							if(rawbrush) {
 								BlitSpriteType(cx, cy, rawbrush->getItemType()->sprite, 160, 160, 160, 160);
 							} else {
@@ -951,9 +951,9 @@ void MapDrawer::DrawBrush()
 								glEnd();
 							}
 						}
-					} else if(gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
+					} else if(g_gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
 						double distance = sqrt(double(x*x) + double(y*y));
-						if(distance < gui.GetBrushSize()+0.005) {
+						if(distance < g_gui.GetBrushSize()+0.005) {
 							if(rawbrush) {
 								BlitSpriteType(cx, cy, rawbrush->getItemType()->sprite, 160, 160, 160, 160);
 							} else
@@ -997,7 +997,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		glBlitSquare(draw_x, draw_y, 255, 0, 0, alpha);
 		glEnable(GL_TEXTURE_2D);
 		return;
-	} else if(it.id == 459 && !options.ingame) { 
+	} else if(it.id == 459 && !options.ingame) {
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, red, green, 0, alpha/3*2);
 		glEnable(GL_TEXTURE_2D);
@@ -1231,11 +1231,11 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		ItemType& it = item_db[outfit.lookItem];
 		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
 	} else {
-		GameSprite* spr = gui.gfx.getCreatureSprite(outfit.lookType);
+		GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
 		if(!spr || outfit.lookType == 0) {
 			return;
 			/*
-			spr = gui.gfx.getCreatureSprite(138);
+			spr = g_gui.gfx.getCreatureSprite(138);
 			if(!spr)
 				return;
 			 */
@@ -1304,12 +1304,12 @@ void MapDrawer::DrawTile(TileLocation* location) {
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
 		bool showspecial = options.show_only_colors || options.show_special_tiles;
-		
+
 		if(tile->isBlocking() && tile->size() > 0 && options.show_blocking) {
 			g = g/3*2;
 			b = b/3*2;
 		}
-		
+
 		int item_count = tile->items.size();
 		if(options.highlight_items && item_count > 0 && !tile->items.back()->isBorder()) {
 			static const float factor[5] = {0.75f, 0.6f, 0.48f, 0.40f, 0.33f};
@@ -1432,7 +1432,7 @@ void MapDrawer::DrawTooltips()
 		for(int i = 0; i < 8; ++i)
 			glVertex2i(vertexes[i][0], vertexes[i][1]);
 		glEnd();
-		
+
 		glColor4ub(0, 0, 0, 255);
 		glLineWidth(1.0);
 		glBegin(GL_LINES);

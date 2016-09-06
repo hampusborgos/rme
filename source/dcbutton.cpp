@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ DCButton::~DCButton()
 void DCButton::SetSprite(int _sprid)
 {
 	if(_sprid != 0) {
-		sprite = gui.gfx.getSprite(_sprid);
+		sprite = g_gui.gfx.getSprite(_sprid);
 	} else {
 		sprite = nullptr;
 	}
@@ -83,7 +83,7 @@ void DCButton::SetValue(bool val)
 	if(state == oldval) {
 		// Cheap to change value to the old one (which is done ALOT)
 		if(GetValue() && settings.getInteger(Config::USE_GUI_SELECTION_SHADOW)) {
-			SetOverlay(gui.gfx.getSprite(EDITOR_SPRITE_SELECTION_MARKER));
+			SetOverlay(g_gui.gfx.getSprite(EDITOR_SPRITE_SELECTION_MARKER));
 		} else {
 			SetOverlay(nullptr);
 		}
@@ -101,7 +101,7 @@ void DCButton::OnPaint(wxPaintEvent& event)
 {
 	wxBufferedPaintDC pdc(this);
 
-	if(gui.gfx.isUnloaded()) {
+	if(g_gui.gfx.isUnloaded()) {
 		return;
 	}
 

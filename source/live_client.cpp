@@ -60,7 +60,7 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 		delete connection;
 		return false;
 	}
-	
+
 	if(!client->IsConnected()) {
 		if(log)
 			log->Disconnect();
@@ -70,7 +70,7 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 		delete connection;
 		return false;
 	}
-	
+
 	if(log)
 		log->Message(wxT("Connection established!"));
 	*/
@@ -99,7 +99,7 @@ void LiveClient::tryConnect(boost::asio::ip::tcp::resolver::iterator endpoint_it
 			} else {
 				wxTheApp->CallAfter([this]() {
 					close();
-					gui.CloseLiveEditors(this);
+					g_gui.CloseLiveEditors(this);
 				});
 			}
 		} else {
@@ -244,11 +244,11 @@ LiveLogTab* LiveClient::createLogWindow(wxWindow* parent)
 
 MapTab* LiveClient::createEditorWindow()
 {
-	MapTabbook* mtb = dynamic_cast<MapTabbook*>(gui.tabbook);
+	MapTabbook* mtb = dynamic_cast<MapTabbook*>(g_gui.tabbook);
 	ASSERT(mtb);
 
 	MapTab* edit = newd MapTab(mtb, editor);
-	edit->OnSwitchEditorMode(gui.IsSelectionMode() ? SELECTION_MODE : DRAWING_MODE);
+	edit->OnSwitchEditorMode(g_gui.IsSelectionMode() ? SELECTION_MODE : DRAWING_MODE);
 
 	return edit;
 }
@@ -259,7 +259,7 @@ void LiveClient::sendHello()
 	message.write<uint8_t>(PACKET_HELLO_FROM_CLIENT);
 	message.write<uint32_t>(__RME_VERSION_ID__);
 	message.write<uint32_t>(__LIVE_NET_VERSION__);
-	message.write<uint32_t>(gui.GetCurrentVersionID());
+	message.write<uint32_t>(g_gui.GetCurrentVersionID());
 	message.write<std::string>(nstr(name));
 	message.write<std::string>(nstr(password));
 
@@ -290,7 +290,7 @@ void LiveClient::sendChanges(DirtyList& dirtyList)
 	if(changeList.empty()) {
 		return;
 	}
-	
+
 	mapWriter.reset();
 	for(Change* change : changeList) {
 		switch (change->getType()) {
@@ -383,7 +383,7 @@ void LiveClient::parsePacket(NetworkMessage message)
 void LiveClient::parseHello(NetworkMessage& message)
 {
 	ASSERT(editor == nullptr);
-	editor = newd Editor(gui.copybuffer, this);
+	editor = newd Editor(g_gui.copybuffer, this);
 
 	Map& map = editor->map;
 	map.setName("Live Map - " + message.read<std::string>());
@@ -398,7 +398,7 @@ void LiveClient::parseKick(NetworkMessage& message)
 	const std::string& kickMessage = message.read<std::string>();
 	close();
 
-	gui.PopupDialog(wxT("Disconnected"), wxstr(kickMessage), wxOK);
+	g_gui.PopupDialog(wxT("Disconnected"), wxstr(kickMessage), wxOK);
 }
 
 void LiveClient::parseClientAccepted(NetworkMessage& message)
@@ -409,14 +409,14 @@ void LiveClient::parseClientAccepted(NetworkMessage& message)
 void LiveClient::parseChangeClientVersion(NetworkMessage& message)
 {
 	ClientVersionID clientVersion = static_cast<ClientVersionID>(message.read<uint32_t>());
-	if(!gui.CloseAllEditors()) {
+	if(!g_gui.CloseAllEditors()) {
 		close();
 		return;
 	}
 
 	wxString error;
 	wxArrayString warnings;
-	gui.LoadVersion(clientVersion, error, warnings);
+	g_gui.LoadVersion(clientVersion, error, warnings);
 
 	sendReady();
 }
@@ -444,32 +444,32 @@ void LiveClient::parseNode(NetworkMessage& message)
 	receiveNode(message, *editor, action, ndx, ndy, underground);
 	editor->actionQueue->addAction(action);
 
-	gui.RefreshView();
-	gui.UpdateMinimap();
+	g_gui.RefreshView();
+	g_gui.UpdateMinimap();
 }
 
 void LiveClient::parseCursorUpdate(NetworkMessage& message)
 {
 	LiveCursor cursor = readCursor(message);
 	cursors[cursor.id] = cursor;
-	
-	gui.RefreshView();
+
+	g_gui.RefreshView();
 }
 
 void LiveClient::parseStartOperation(NetworkMessage& message)
 {
 	const std::string& operation = message.read<std::string>();
-	
+
 	currentOperation = wxstr(operation);
-	gui.SetStatusText(wxT("Server Operation in Progress: ") + currentOperation + wxT("... (0%)"));
+	g_gui.SetStatusText(wxT("Server Operation in Progress: ") + currentOperation + wxT("... (0%)"));
 }
 
 void LiveClient::parseUpdateOperation(NetworkMessage& message)
 {
 	int32_t percent = message.read<uint32_t>();
 	if(percent >= 100) {
-		gui.SetStatusText(wxT("Server Operation Finished."));
+		g_gui.SetStatusText(wxT("Server Operation Finished."));
 	} else {
-		gui.SetStatusText(wxT("Server Operation in Progress: ") + currentOperation + wxT("... (") + std::to_string(percent) + wxT("%)"));
+		g_gui.SetStatusText(wxT("Server Operation in Progress: ") + currentOperation + wxT("... (") + std::to_string(percent) + wxT("%)"));
 	}
 }

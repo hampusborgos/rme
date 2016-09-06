@@ -37,7 +37,7 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	socket(server)
 {
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
-	
+
 	wxPanel* splitter = newd wxPanel(this);
 	topsizer->Add(splitter, 1, wxEXPAND);
 
@@ -57,7 +57,7 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	//log->SetColLabelSize(0);
 	//log->EnableGridLines(false);
 	log->EnableEditing(false);
-	
+
 	log->SetColLabelValue(0, wxT("Time"));
 	log->SetColMinimalWidth(0, 60);
 	log->SetColSize(0, 60);
@@ -69,12 +69,12 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	log->SetColSize(2, 100);
 
 	log->Connect(wxEVT_SIZE, wxSizeEventHandler(LiveLogTab::OnResizeChat), nullptr, this);
-	
+
 	left_sizer->Add(log, 1, wxEXPAND);
 
 	input = newd wxTextCtrl(left_pane, LIVE_CHAT_TEXTBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize);
 	left_sizer->Add(input, 0, wxEXPAND);
-	
+
 	input->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(LiveLogTab::OnSelectChatbox), nullptr, this);
 	input->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(LiveLogTab::OnDeselectChatbox), nullptr, this);
 
@@ -99,7 +99,7 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 
 	// Finalize
 	SetSizerAndFit(topsizer);
-	
+
 	wxSizer* split_sizer = newd wxBoxSizer(wxHORIZONTAL);
 	split_sizer->Add(left_pane, wxSizerFlags(1).Expand());
 	split_sizer->Add(user_list, wxSizerFlags(0).Expand());
@@ -143,7 +143,7 @@ void LiveLogTab::Message(const wxString& str)
 	wxDateTime t = wxDateTime::Now();
 	wxString time, speaker;
 	time << format00(t.GetHour()) << wxT(":")
-		 << format00(t.GetMinute()) << wxT(":") 
+		 << format00(t.GetMinute()) << wxT(":")
 		 << format00(t.GetSecond());
 
 	speaker << wxT("Server");
@@ -186,12 +186,12 @@ void LiveLogTab::OnResizeClientList(wxSizeEvent& evt)
 
 void LiveLogTab::OnSelectChatbox(wxFocusEvent& evt)
 {
-	gui.DisableHotkeys();
+	g_gui.DisableHotkeys();
 }
 
 void LiveLogTab::OnDeselectChatbox(wxFocusEvent& evt)
 {
-	gui.EnableHotkeys();
+	g_gui.EnableHotkeys();
 }
 
 void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>& updatedClients)

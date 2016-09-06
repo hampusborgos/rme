@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -53,12 +53,12 @@ MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
 	SetSizerAndFit(topsizer);
 }
 
-MapWindow::~MapWindow() 
+MapWindow::~MapWindow()
 {
 	////
 }
 
-void MapWindow::SetSize(int x, int y, bool center) 
+void MapWindow::SetSize(int x, int y, bool center)
 {
 	if(x == 0 || y == 0) return;
 
@@ -72,30 +72,30 @@ void MapWindow::SetSize(int x, int y, bool center)
 	//wxPanel::SetSize(x, y);
 }
 
-void MapWindow::UpdateScrollbars(int nx, int ny) 
+void MapWindow::UpdateScrollbars(int nx, int ny)
 {
 	// nx and ny are size of this window
 	hScroll->SetScrollbar(hScroll->GetThumbPosition(), nx / max(1, hScroll->GetRange()),  max(1, hScroll->GetRange()), 96);
 	vScroll->SetScrollbar(vScroll->GetThumbPosition(), ny / max(1, vScroll->GetRange()),  max(1, vScroll->GetRange()), 96);
 }
 
-void MapWindow::GetViewStart(int* x, int* y) 
+void MapWindow::GetViewStart(int* x, int* y)
 {
 	*x = hScroll->GetThumbPosition();
 	*y = vScroll->GetThumbPosition();
 }
 
-void MapWindow::GetViewSize(int* x, int* y) 
+void MapWindow::GetViewSize(int* x, int* y)
 {
 	canvas->GetSize(x, y);
 }
 
-void MapWindow::FitToMap() 
+void MapWindow::FitToMap()
 {
 	SetSize(editor.map.getWidth() * TILE_SIZE, editor.map.getHeight() * TILE_SIZE, true);
 }
 
-void MapWindow::CenterOnPosition(Position p) 
+void MapWindow::CenterOnPosition(Position p)
 {
 	if(p == Position())
 		return;
@@ -112,45 +112,45 @@ void MapWindow::CenterOnPosition(Position p)
 	canvas->ChangeFloor(p.z);
 }
 
-void MapWindow::Scroll(int x, int y, bool center) 
+void MapWindow::Scroll(int x, int y, bool center)
 {
 	if(center) {
 		int windowSizeX, windowSizeY;
 
 		canvas->GetSize(&windowSizeX, &windowSizeY);
-		x -= int((windowSizeX * gui.GetCurrentZoom()) / 2.0);
-		y -= int((windowSizeY * gui.GetCurrentZoom()) / 2.0);
+		x -= int((windowSizeX * g_gui.GetCurrentZoom()) / 2.0);
+		y -= int((windowSizeY * g_gui.GetCurrentZoom()) / 2.0);
 	}
 
 	hScroll->SetThumbPosition(x);
 	vScroll->SetThumbPosition(y);
-	gui.UpdateMinimap();
+	g_gui.UpdateMinimap();
 }
 
-void MapWindow::ScrollRelative(int x, int y) 
+void MapWindow::ScrollRelative(int x, int y)
 {
 	hScroll->SetThumbPosition(hScroll->GetThumbPosition()+x);
 	vScroll->SetThumbPosition(vScroll->GetThumbPosition()+y);
-	gui.UpdateMinimap();
+	g_gui.UpdateMinimap();
 }
 
 void MapWindow::OnGem(wxCommandEvent& WXUNUSED(event))
 {
-	gui.SwitchMode();
+	g_gui.SwitchMode();
 }
 
-void MapWindow::OnSize(wxSizeEvent& event) 
+void MapWindow::OnSize(wxSizeEvent& event)
 {
 	UpdateScrollbars(event.GetSize().GetWidth(), event.GetSize().GetHeight());
 	event.Skip();
 }
 
-void MapWindow::OnScroll(wxScrollEvent& event) 
+void MapWindow::OnScroll(wxScrollEvent& event)
 {
 	Refresh();
 }
 
-void MapWindow::OnScrollLineDown(wxScrollEvent& event) 
+void MapWindow::OnScrollLineDown(wxScrollEvent& event)
 {
 	if(event.GetOrientation() == wxHORIZONTAL)
 		ScrollRelative(96,0);
@@ -159,7 +159,7 @@ void MapWindow::OnScrollLineDown(wxScrollEvent& event)
 	Refresh();
 }
 
-void MapWindow::OnScrollLineUp(wxScrollEvent& event) 
+void MapWindow::OnScrollLineUp(wxScrollEvent& event)
 {
 	if(event.GetOrientation() == wxHORIZONTAL)
 		ScrollRelative(-96,0);
@@ -168,7 +168,7 @@ void MapWindow::OnScrollLineUp(wxScrollEvent& event)
 	Refresh();
 }
 
-void MapWindow::OnScrollPageDown(wxScrollEvent& event) 
+void MapWindow::OnScrollPageDown(wxScrollEvent& event)
 {
 	if(event.GetOrientation() == wxHORIZONTAL)
 		ScrollRelative(5*96,0);
@@ -177,7 +177,7 @@ void MapWindow::OnScrollPageDown(wxScrollEvent& event)
 	Refresh();
 }
 
-void MapWindow::OnScrollPageUp(wxScrollEvent& event) 
+void MapWindow::OnScrollPageUp(wxScrollEvent& event)
 {
 	if(event.GetOrientation() == wxHORIZONTAL)
 		ScrollRelative(-5*96,0);

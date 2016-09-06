@@ -27,15 +27,15 @@ void ClientVersion::loadVersions()
 	wxFileName file_to_load;
 
 	wxFileName exec_dir_client_xml;
-	exec_dir_client_xml.Assign(gui.GetExecDirectory());
+	exec_dir_client_xml.Assign(g_gui.GetExecDirectory());
 	exec_dir_client_xml.SetFullName(wxT("clients.xml"));
-	
+
 	wxFileName data_dir_client_xml;
-	data_dir_client_xml.Assign(gui.GetDataDirectory());
+	data_dir_client_xml.Assign(g_gui.GetDataDirectory());
 	data_dir_client_xml.SetFullName(wxT("clients.xml"));
 
 	wxFileName work_dir_client_xml;
-	work_dir_client_xml.Assign(gui.getFoundDataDirectory());
+	work_dir_client_xml.Assign(g_gui.getFoundDataDirectory());
 	work_dir_client_xml.SetFullName(wxT("clients.xml"));
 
 	file_to_load = exec_dir_client_xml;
@@ -309,11 +309,11 @@ void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
 			wxLogError(wxT("Unknown client extension data."));
 			continue;
 		}
-			
+
 		if(!fromVersion) {
 			fromVersion = client_versions.begin()->second;
 		}
-		
+
 		if(!toVersion) {
 			toVersion = client_versions.rbegin()->second;
 		}
@@ -411,15 +411,15 @@ ClientVersion* ClientVersion::getLatestVersion()
 
 FileName ClientVersion::getDataPath() const
 {
-	wxString basePath = gui.GetDataDirectory();
+	wxString basePath = g_gui.GetDataDirectory();
 	if(!wxFileName(basePath).DirExists())
-		basePath = gui.getFoundDataDirectory();
+		basePath = g_gui.getFoundDataDirectory();
 	return basePath + data_path + FileName::GetPathSeparator();
 }
 
 FileName ClientVersion::getLocalDataPath() const
 {
-	FileName f = gui.GetLocalDataDirectory() + data_path + FileName::GetPathSeparator();
+	FileName f = g_gui.GetLocalDataDirectory() + data_path + FileName::GetPathSeparator();
 	f.Mkdir(0755, wxPATH_MKDIR_FULL);
 	return f;
 }
@@ -429,7 +429,7 @@ bool ClientVersion::hasValidPaths() const
 	if(!client_path.DirExists()) {
 		return false;
 	}
-	
+
 	FileName dat_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.dat");
 	FileName spr_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.spr");
 	if(!dat_path.FileExists() || !spr_path.FileExists()) {
@@ -477,7 +477,7 @@ bool ClientVersion::hasValidPaths() const
 bool ClientVersion::loadValidPaths()
 {
 	while(!hasValidPaths()) {
-		gui.PopupDialog(
+		g_gui.PopupDialog(
 			wxT("Error"),
 			wxT("Could not locate Tibia.dat and/or Tibia.spr, please navigate to your Tibia ") +
 				name + wxT(" installation folder."),

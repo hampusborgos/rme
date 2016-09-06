@@ -6,14 +6,14 @@
 #include "gui.h"
 
 // ============================================================================
-// 
+//
 
-class DatDebugViewListBox : public wxVListBox 
+class DatDebugViewListBox : public wxVListBox
 {
 public:
 	DatDebugViewListBox(wxWindow* parent, wxWindowID id);
 	~DatDebugViewListBox();
-	
+
 	void OnDrawItem(wxDC& dc, const wxRect& rect, size_t index) const;
 	wxCoord OnMeasureItem(size_t index) const;
 
@@ -26,8 +26,8 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 	wxVListBox(parent, id, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE)
 {
 	int n = 0;
-	for(int id = 0; id < gui.gfx.getItemSpriteMaxID(); ++id) {
-		Sprite* spr = gui.gfx.getSprite(id);
+	for(int id = 0; id < g_gui.gfx.getItemSpriteMaxID(); ++id) {
+		Sprite* spr = g_gui.gfx.getSprite(id);
 		if(spr) {
 			sprites[n] = spr;
 			++n;
@@ -36,7 +36,7 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 	SetItemCount(n);
 }
 
-DatDebugViewListBox::~DatDebugViewListBox() 
+DatDebugViewListBox::~DatDebugViewListBox()
 {
 	////
 }
@@ -65,7 +65,7 @@ wxCoord DatDebugViewListBox::OnMeasureItem(size_t n) const
 }
 
 // ============================================================================
-// 
+//
 
 BEGIN_EVENT_TABLE(DatDebugView, wxPanel)
 	EVT_TEXT(wxID_ANY, DatDebugView::OnTextChange)

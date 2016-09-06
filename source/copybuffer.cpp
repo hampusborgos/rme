@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ void CopyBuffer::clear()
 void CopyBuffer::copy(Editor& editor, int floor)
 {
 	if(editor.selection.size() == 0) {
-		gui.SetStatusText(wxT("No tiles to copy."));
+		g_gui.SetStatusText(wxT("No tiles to copy."));
 		return;
 	}
 
@@ -109,13 +109,13 @@ void CopyBuffer::copy(Editor& editor, int floor)
 
 	std::ostringstream ss;
 	ss << "Copied " << tile_count << " tile" << (tile_count > 1 ? "s" : "") <<  " (" << item_count << " item" << (item_count > 1? "s" : "") << ")";
-	gui.SetStatusText(wxstr(ss.str()));
+	g_gui.SetStatusText(wxstr(ss.str()));
 }
 
 void CopyBuffer::cut(Editor& editor, int floor)
 {
 	if(editor.selection.size() == 0) {
-		gui.SetStatusText(wxT("No tiles to cut."));
+		g_gui.SetStatusText(wxT("No tiles to cut."));
 		return;
 	}
 
@@ -212,7 +212,7 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	editor.addBatch(batch);
 	std::stringstream ss;
 	ss << "Cut out " << tile_count << " tile" << (tile_count > 1 ? "s" : "") <<  " (" << item_count << " item" << (item_count > 1? "s" : "") << ")";
-	gui.SetStatusText(wxstr(ss.str()));
+	g_gui.SetStatusText(wxstr(ss.str()));
 }
 
 void CopyBuffer::paste(Editor& editor, const Position& toPosition)
@@ -229,7 +229,7 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 
 		if(!pos.isValid())
 			continue;
-		
+
 		TileLocation* location = editor.map.createTileL(pos);
 		Tile* copy_tile = buffer_tile->deepCopy(editor.map);
 		Tile* old_dest_tile = location->get();
@@ -294,7 +294,7 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 			if(tile) {
 				Tile* newTile = tile->deepCopy(editor.map);
 				newTile->borderize(&map);
-				
+
 				if(tile->ground && tile->ground->isSelected()) {
 					newTile->selectGround();
 				}

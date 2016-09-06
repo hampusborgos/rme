@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -662,7 +662,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		} \
 	} while(false)
 
-	
+
 	uint32_t sprSignature;
 	safe_get(U32, sprSignature);
 
@@ -1116,7 +1116,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz)
 			wxBitmap bmp(img);
 			dc[sz] = newd wxMemoryDC(bmp);
 			delete[] rgb;
-			gui.gfx.addSpriteToCleanup(this);
+			g_gui.gfx.addSpriteToCleanup(this);
 		} else if(sz == SPRITE_SIZE_32x32) {
 			uint8_t* rgb32x32 = reinterpret_cast<uint8_t*>(malloc(32*32*3));
 
@@ -1149,7 +1149,7 @@ wxMemoryDC* GameSprite::getDC(SpriteSize sz)
 			wxBitmap bmp(img);
 			dc[sz] = newd wxMemoryDC(bmp);
 			delete[] rgb;
-			gui.gfx.addSpriteToCleanup(this);
+			g_gui.gfx.addSpriteToCleanup(this);
 		} else {
 			ASSERT(sz == 0);
 		}
@@ -1195,7 +1195,7 @@ void GameSprite::Image::createGLTexture(GLuint whatid)
 	}
 
 	isGLLoaded = true;
-	gui.gfx.loaded_textures += 1;
+	g_gui.gfx.loaded_textures += 1;
 
 	glBindTexture(GL_TEXTURE_2D, whatid);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Filtering
@@ -1211,7 +1211,7 @@ void GameSprite::Image::createGLTexture(GLuint whatid)
 void GameSprite::Image::unloadGLTexture(GLuint whatid)
 {
 	isGLLoaded = false;
-	gui.gfx.loaded_textures -= 1;
+	g_gui.gfx.loaded_textures -= 1;
 	glDeleteTextures(1, &whatid);
 }
 
@@ -1255,7 +1255,7 @@ uint8_t* GameSprite::NormalImage::getRGBData()
 		if(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 			return nullptr;
 		} else {
-			if(!gui.gfx.loadSpriteDump(dump, size, id)) {
+			if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
 				return nullptr;
 			}
 		}
@@ -1279,7 +1279,7 @@ uint8_t* GameSprite::NormalImage::getRGBData()
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
-	uint8_t bits_per_pixel = gui.gfx.hasTransparency() ? 4 : 3;
+	uint8_t bits_per_pixel = g_gui.gfx.hasTransparency() ? 4 : 3;
 
 	while(bytes < size && y < 32) {
 		chunk_size = dump[bytes] | dump[bytes+1] << 8;
@@ -1346,7 +1346,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 		if(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 			return nullptr;
 		} else {
-			if(!gui.gfx.loadSpriteDump(dump, size, id)) {
+			if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
 				return nullptr;
 			}
 		}
@@ -1371,7 +1371,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 	int x = 0;
 	int y = 0;
 	uint16_t chunk_size;
-	bool transparency = gui.gfx.hasTransparency();
+	bool transparency = g_gui.gfx.hasTransparency();
 	uint8_t bits_per_pixel = transparency ? 4 : 3;
 
 	while(bytes < size && y < 32) {
@@ -1587,7 +1587,7 @@ GLuint GameSprite::TemplateImage::getHardwareID()
 {
 	if(!isGLLoaded) {
 		if(gl_tid == 0) {
-			gl_tid = gui.gfx.getFreeTextureID();
+			gl_tid = g_gui.gfx.getFreeTextureID();
 		}
 		createGLTexture(gl_tid);
 		if(!isGLLoaded) {

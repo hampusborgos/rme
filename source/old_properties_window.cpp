@@ -42,7 +42,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	description_field(nullptr)
 {
 	ASSERT(edit_item);
-	
+
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 	if(Container* container = dynamic_cast<Container*>(edit_item)) {
 		// Container
@@ -50,7 +50,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 		subsizer->AddGrowableCol(1);
-		
+
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("ID ") + i2ws(item->getID())));
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(item->getName()) + wxT("\"")));
 
@@ -61,7 +61,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Unique ID")));
 		unique_id_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
 		subsizer->Add(unique_id_field, wxSizerFlags(1).Expand());
-		
+
 		boxsizer->Add(subsizer, wxSizerFlags(0).Expand());
 
 		// Now we add the subitems!
@@ -113,7 +113,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 		subsizer->AddGrowableCol(1);
-		
+
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("ID ") + i2ws(item->getID())));
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(item->getName()) + wxT("\"")));
 
@@ -125,7 +125,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Unique ID")));
 		unique_id_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
 		subsizer->Add(unique_id_field, wxSizerFlags(1).Expand());
-		
+
 		boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 
 		wxSizer* textsizer = newd wxBoxSizer(wxVERTICAL);
@@ -144,7 +144,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 		subsizer->AddGrowableCol(1);
-		
+
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("ID ") + i2ws(item->getID())));
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(item->getName()) + wxT("\"")));
 
@@ -189,11 +189,11 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		// Depot
 		wxSizer* boxsizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Depot Properties"));
 		wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
-		
+
 		subsizer->AddGrowableCol(1);
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("ID ") + i2ws(item->getID())));
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(item->getName()) + wxT("\"")));
-		
+
 		const Towns& towns = map->towns;
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Depot ID")));
 		depot_id_field = newd wxChoice(this, wxID_ANY);
@@ -231,7 +231,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		// Normal item
 		Door* door = dynamic_cast<Door*>(edit_item);
 		Teleport* teleport = dynamic_cast<Teleport*>(edit_item);
-		
+
 		wxString description;
 		if(door) {
 			ASSERT(tile_parent);
@@ -251,7 +251,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 		subsizer->AddGrowableCol(1);
-		
+
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("ID ") + i2ws(item->getID())));
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(item->getName()) + wxT("\"")));
 
@@ -272,7 +272,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Unique ID")));
 		unique_id_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
 		subsizer->Add(unique_id_field, wxSizerFlags(1).Expand());
-		
+
 		/*
 		if(item->canHoldDescription()) {
 			subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Description")));
@@ -334,13 +334,13 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	description_field(nullptr)
 {
 	ASSERT(edit_creature);
-	
+
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* boxsizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Creature Properties"));
 
 	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
-	
+
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Creature ")));
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("\"") + wxstr(edit_creature->getName()) + wxT("\"")), wxSizerFlags(1).Expand());
 
@@ -385,7 +385,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	description_field(nullptr)
 {
 	ASSERT(edit_spawn);
-	
+
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* boxsizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Spawn Properties"));
 
@@ -407,7 +407,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	std_sizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
 	std_sizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
 	topsizer->Add(std_sizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
-	
+
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
 }
@@ -448,17 +448,17 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			// Container
 			int new_uid = unique_id_field->GetValue();
 			int new_aid = action_id_field->GetValue();
-			
+
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 
@@ -471,23 +471,23 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			std::string text = nstr(text_field->GetValue());
 
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 			if(text.length() >= 0xFFFF) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than 65535 characters, this is not supported by OpenTibia. Reduce the length of the text."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than 65535 characters, this is not supported by OpenTibia. Reduce the length of the text."), wxOK);
 				return;
 			}
 			if(edit_item->canHoldText() && text.length() > edit_item->getMaxWriteLength()) {
-				int ret = gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than the maximum supported length of this book type, do you still want to change it?"), wxYES | wxNO);
+				int ret = g_gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than the maximum supported length of this book type, do you still want to change it?"), wxYES | wxNO);
 				if(ret != wxID_YES) {
 					return;
 				}
@@ -503,15 +503,15 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			int* new_type = reinterpret_cast<int*>(splash_type_field->GetClientData(splash_type_field->GetSelection()));
 
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 			if(new_type) {
@@ -546,24 +546,24 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			if(door) {
 				new_door_id = door_id_field->GetValue();
 			}
-			
+
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 
 			/*
 			if(edit_item->canHoldDescription()) {
 				if(new_desc.length() > 127) {
-					gui.PopupDialog("Error", "Description must be shorter than 127 characters.", wxOK);
+					g_gui.PopupDialog("Error", "Description must be shorter than 127 characters.", wxOK);
 					return;
 				}
 			}
@@ -577,7 +577,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 						if(pos == Position()) {
 							// Do nothing
 						} else if(pos != edit_tile->getPosition()) {
-							int ret = gui.PopupDialog(this, wxT("Warning"), wxT("This doorid conflicts with another one in this house, are you sure you want to continue?"), wxYES | wxNO);
+							int ret = g_gui.PopupDialog(this, wxT("Warning"), wxT("This doorid conflicts with another one in this house, are you sure you want to continue?"), wxYES | wxNO);
 							if(ret == wxID_NO) {
 								return;
 							}
@@ -588,13 +588,13 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			if(teleport) {
 				if(edit_map->getTile(new_dest) == nullptr || edit_map->getTile(new_dest)->isBlocking()) {
-					int ret = gui.PopupDialog(this, wxT("Warning"), wxT("This teleport leads nowhere, or to an invalid location. Do you want to change the destination?"), wxYES | wxNO);
+					int ret = g_gui.PopupDialog(this, wxT("Warning"), wxT("This teleport leads nowhere, or to an invalid location. Do you want to change the destination?"), wxYES | wxNO);
 					if(ret == wxID_YES) {
 						return;
 					}
 				}
 			}
-			
+
 			// Done validating, set the values.
 			if(edit_item->canHoldDescription()) {
 				edit_item->setText(new_desc);

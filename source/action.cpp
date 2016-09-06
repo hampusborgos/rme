@@ -163,7 +163,7 @@ void Action::commit(DirtyList* dirty_list)
 				Tile* newtile = reinterpret_cast<Tile*>(*data);
 				ASSERT(newtile);
 				Position pos = newtile->getPosition();
-				
+
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.map.getLeaf(pos.x, pos.y);
 					if(!nd || !nd->isVisible(pos.z > GROUND_LAYER)) {
@@ -176,7 +176,7 @@ void Action::commit(DirtyList* dirty_list)
 
 				Tile* oldtile = editor.map.swapTile(pos, newtile);
 				TileLocation* location = newtile->getLocation();
-				
+
 				// Update other nodes in the network
 				if(editor.IsLiveServer() && dirty_list)
 					dirty_list->AddPosition(pos.x, pos.y, pos.z);
@@ -265,7 +265,7 @@ void Action::commit(DirtyList* dirty_list)
 					// Change the tiles
 					TileLocation* oldtile = editor.map.getTileL(wp->pos);
 					TileLocation* newtile = editor.map.getTileL(p->second);
-					
+
 					// Only need to remove from old if it actually exists
 					if(p->second != Position())
 						if(oldtile && oldtile->getWaypointCount() > 0)
@@ -306,7 +306,7 @@ void Action::undo(DirtyList* dirty_list)
 				Tile* oldtile = reinterpret_cast<Tile*>(*data);
 				ASSERT(oldtile);
 				Position pos = oldtile->getPosition();
-				
+
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.map.getLeaf(pos.x, pos.y);
 					if(!nd || !nd->isVisible(pos.z > GROUND_LAYER)) {
@@ -358,8 +358,8 @@ void Action::undo(DirtyList* dirty_list)
 					editor.map.removeSpawn(newtile);
 				}
 				*data = newtile;
-				
-				
+
+
 				// Update client dirty list
 				if(editor.IsLiveClient() && dirty_list && type != ACTION_REMOTE) {
 					// Local action, assemble changes
@@ -389,7 +389,7 @@ void Action::undo(DirtyList* dirty_list)
 					// Change the tiles
 					TileLocation* oldtile = editor.map.getTileL(wp->pos);
 					TileLocation* newtile = editor.map.getTileL(p->second);
-					
+
 					// Only need to remove from old if it actually exists
 					if(p->second != Position())
 						if(oldtile && oldtile->getWaypointCount() > 0)
@@ -464,7 +464,7 @@ void BatchAction::addAction(Action* action)
 	}
 
 	ASSERT(action->getType() == type);
-	
+
 	if(!editor.CanEdit()) {
 		delete action;
 		return;
@@ -482,7 +482,7 @@ void BatchAction::addAndCommitAction(Action* action)
 		delete action;
 		return;
 	}
-	
+
 	if(!editor.CanEdit()) {
 		delete action;
 		return;
@@ -572,8 +572,8 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 
 	// Update title
 	if(editor.map.doChange())
-		gui.UpdateTitle();
-		
+		g_gui.UpdateTitle();
+
 	if(batch->type == ACTION_REMOTE) {
 		delete batch;
 		return;

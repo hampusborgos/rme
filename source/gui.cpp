@@ -34,7 +34,7 @@
 const wxEventType EVT_UPDATE_MENUS = wxNewEventType();
 
 // Global GUI instance
-GUI gui;
+GUI g_gui;
 
 // GUI class implementation
 GUI::GUI() :
@@ -45,7 +45,7 @@ GUI::GUI() :
 	search_result_window(nullptr),
 	secondary_map(nullptr),
 	doodad_buffer_map(nullptr),
-	
+
 	house_brush(nullptr),
 	house_exit_brush(nullptr),
 	waypoint_brush(nullptr),
@@ -82,7 +82,7 @@ GUI::GUI() :
 GUI::~GUI()
 {
 	delete doodad_buffer_map;
-	delete gui.aui_manager;
+	delete g_gui.aui_manager;
 	delete OGLContext;
 }
 
@@ -101,7 +101,7 @@ wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
 		OGLContext = newd wxGLContext(win);
 #endif
     }
-    
+
 	return OGLContext;
 }
 
@@ -238,17 +238,17 @@ bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& w
 		error = wxT("Unsupported client version! (8)");
 		return false;
 	}
-	
+
 	if(version != loaded_version || force) {
 		if(getLoadedVersion() != nullptr)
 			// There is another version loaded right now, save window layout
-			gui.SavePerspective();
+			g_gui.SavePerspective();
 
 		// Disable all rendering so the data is not accessed while reloading
 		UnnamedRenderingLock();
 		DestroyPalettes();
 		DestroyMinimap();
-		
+
 		// Destroy the previous version
 		UnloadVersion();
 
@@ -263,7 +263,7 @@ bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& w
 
 		bool ret = LoadDataFiles(error, warnings);
 		if(ret)
-			gui.LoadPerspective();
+			g_gui.LoadPerspective();
 		else
 			loaded_version = CLIENT_VERSION_NONE;
 
@@ -277,12 +277,12 @@ void GUI::EnableHotkeys()
 	hotkeys_enabled = true;
 }
 
-void GUI::DisableHotkeys() 
+void GUI::DisableHotkeys()
 {
 	hotkeys_enabled = false;
 }
 
-bool GUI::AreHotkeysEnabled() const 
+bool GUI::AreHotkeysEnabled() const
 {
 	return hotkeys_enabled;
 }
@@ -311,7 +311,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	FileName data_path = getLoadedVersion()->getDataPath();
 	FileName client_path = getLoadedVersion()->getClientPath();
 	FileName extension_path = GetExtensionsDirectory();
-	
+
 	FileName exec_directory;
 	try
 	{
@@ -323,56 +323,56 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 		return false;
 	}
 
-	gui.gfx.client_version = getLoadedVersion();
-	
+	g_gui.gfx.client_version = getLoadedVersion();
+
 	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.otfi"));
-	if(!gui.gfx.loadOTFI(otfi_path, error, warnings)) {
+	if(!g_gui.gfx.loadOTFI(otfi_path, error, warnings)) {
 		error = wxT("Couldn't load tibia.otfi: ") + error;
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	gui.CreateLoadBar(wxT("Loading data files"));
-	gui.SetLoadDone(0, wxT("Loading Tibia.dat ..."));
+	g_gui.CreateLoadBar(wxT("Loading data files"));
+	g_gui.SetLoadDone(0, wxT("Loading Tibia.dat ..."));
 	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.dat"));
-	
-	if(!gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
+
+	if(!g_gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
 		error = wxT("Couldn't load tibia.dat: ") + error;
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
-	
+
 	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.spr"));
 
-	gui.SetLoadDone(10, wxT("Loading Tibia.spr ..."));
-	if(!gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
+	g_gui.SetLoadDone(10, wxT("Loading Tibia.spr ..."));
+	if(!g_gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
 		error = wxT("Couldn't load tibia.spr: ") + error;
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	gui.SetLoadDone(20, wxT("Loading items.otb ..."));
+	g_gui.SetLoadDone(20, wxT("Loading items.otb ..."));
 	if(!item_db.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.otb")), error, warnings)) {
 		error = wxT("Couldn't load items.otb: ") + error;
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	gui.SetLoadDone(30, wxT("Loading items.xml ..."));
+	g_gui.SetLoadDone(30, wxT("Loading items.xml ..."));
 	if(!item_db.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.xml")), error, warnings)) {
 		warnings.push_back(wxT("Couldn't load items.xml: ") + error);
 	}
 
-	gui.SetLoadDone(45, wxT("Loading creatures.xml ..."));
+	g_gui.SetLoadDone(45, wxT("Loading creatures.xml ..."));
 	if(!creature_db.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("creatures.xml")), true, error, warnings)) {
 		warnings.push_back(wxT("Couldn't load creatures.xml: ") + error);
 	}
 
-	gui.SetLoadDone(45, wxT("Loading user creatures.xml ..."));
+	g_gui.SetLoadDone(45, wxT("Loading user creatures.xml ..."));
 	{
 		FileName cdb = getLoadedVersion()->getLocalDataPath();
 		cdb.SetFullName(wxT("creatures.xml"));
@@ -381,21 +381,21 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 		creature_db.loadFromXML(cdb, false, nerr, nwarn);
 	}
 
-	gui.SetLoadDone(50, wxT("Loading materials.xml ..."));
+	g_gui.SetLoadDone(50, wxT("Loading materials.xml ..."));
 	if(!materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("materials.xml")), error, warnings)) {
 		warnings.push_back(wxT("Couldn't load materials.xml: ") + error);
 	}
 
-	gui.SetLoadDone(70, wxT("Loading extensions..."));
+	g_gui.SetLoadDone(70, wxT("Loading extensions..."));
 	if(!materials.loadExtensions(extension_path, error, warnings)) {
 		//warnings.push_back(wxT("Couldn't load extensions: ") + error);
 	}
 
-	gui.SetLoadDone(70, wxT("Finishing..."));
+	g_gui.SetLoadDone(70, wxT("Finishing..."));
 	brushes.init();
 	materials.createOtherTileset();
 
-	gui.DestroyLoadBar();
+	g_gui.DestroyLoadBar();
 	return true;
 }
 
@@ -419,7 +419,7 @@ void GUI::UnloadVersion()
 	window_door_brush = nullptr;
 
 	if(loaded_version != CLIENT_VERSION_NONE) {
-		//gui.UnloadVersion();
+		//g_gui.UnloadVersion();
 		materials.clear();
 		brushes.clear();
 		item_db.clear();
@@ -513,7 +513,7 @@ bool GUI::NewMap()
 bool GUI::LoadMap(FileName name)
 {
 	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
-		gui.CloseCurrentEditor();
+		g_gui.CloseCurrentEditor();
 
 	Editor* editor;
 	try
@@ -530,7 +530,7 @@ bool GUI::LoadMap(FileName name)
 	mapTab->OnSwitchEditorMode(mode);
 
 	root->AddRecentFile(name);
-		
+
 	mapTab->GetView()->FitToMap();
 	UpdateTitle();
 	ListDialog(wxT("Map loader errors"), mapTab->GetMap()->getWarnings());
@@ -780,9 +780,9 @@ void GUI::SavePerspective()
 	settings.setInteger(Config::WINDOW_MAXIMIZED, root->IsMaximized());
 	settings.setInteger(Config::WINDOW_WIDTH, root->GetSize().GetWidth());
 	settings.setInteger(Config::WINDOW_HEIGHT, root->GetSize().GetHeight());
-	
+
 	settings.setInteger(Config::MINIMAP_VISIBLE, minimap? 1: 0);
-	
+
 	wxString pinfo;
 	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		if(aui_manager->GetPane(*piter).IsShown())
@@ -852,7 +852,7 @@ PaletteWindow* GUI::CreatePalette()
 {
 	if(!IsVersionLoaded())
 		return nullptr;
-	
+
 	PaletteWindow* palette = newd PaletteWindow(root, materials.tilesets);
 	aui_manager->AddPane(palette, wxAuiPaneInfo().Caption(wxT("Palette")).TopDockable(false).BottomDockable(false));
 	aui_manager->Update();
@@ -915,7 +915,7 @@ void GUI::SelectPalettePage(PaletteType pt)
 	PaletteWindow* p = GetPalette();
 	if(!p)
 		return;
-	
+
 	ShowPalette();
 	p->SelectPage(pt);
 	aui_manager->Update();
@@ -927,7 +927,7 @@ void GUI::SelectPalettePage(PaletteType pt)
 
 void GUI::CreateMinimap()
 {
-	if(!IsVersionLoaded()) 
+	if(!IsVersionLoaded())
 		return;
 
 	if(minimap) {
@@ -1010,7 +1010,7 @@ void GUI::RefreshView()
 void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 {
 	progressText = message;
-	
+
 	progressFrom = 0;
 	progressTo = 100;
 	currentProgress = -1;
@@ -1020,7 +1020,7 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	);
 	progressBar->SetSize(280, -1);
 	progressBar->Show(true);
-	
+
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
 		if(mt && mt->GetEditor()->IsLiveServer())
@@ -1050,7 +1050,7 @@ bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 
 	int32_t newProgress = progressFrom + static_cast<int32_t>((done / 100.f) * (progressTo - progressFrom));
 	newProgress = std::max<int32_t>(0, std::min<int32_t>(100, newProgress));
-	
+
 	bool skip = false;
 	if(progressBar) {
 		progressBar->Update(
@@ -1143,12 +1143,12 @@ void GUI::ChangeFloor(int new_floor)
 
 void GUI::SetStatusText(wxString text)
 {
-	gui.root->SetStatusText(text, 0);
+	g_gui.root->SetStatusText(text, 0);
 }
 
 void GUI::SetTitle(wxString title)
 {
-	if(gui.root == nullptr)
+	if(g_gui.root == nullptr)
 		return;
 
 #ifdef NIGHTLY_BUILD
@@ -1166,15 +1166,15 @@ void GUI::SetTitle(wxString title)
 #endif
 #ifdef __EXPERIMENTAL__
 	if(title != wxT("")) {
-		gui.root->SetTitle(title << wxT(" - Remere's Map Editor BETA") << TITLE_APPEND);
+		g_gui.root->SetTitle(title << wxT(" - Remere's Map Editor BETA") << TITLE_APPEND);
 	} else {
-		gui.root->SetTitle(wxString(wxT("Remere's Map Editor BETA")) << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString(wxT("Remere's Map Editor BETA")) << TITLE_APPEND);
 	}
 #else
 	if(title != wxT("")) {
-		gui.root->SetTitle(title << wxT(" - Remere's Map Editor") << TITLE_APPEND);
+		g_gui.root->SetTitle(title << wxT(" - Remere's Map Editor") << TITLE_APPEND);
 	} else {
-		gui.root->SetTitle(wxString(wxT("Remere's Map Editor")) << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString(wxT("Remere's Map Editor")) << TITLE_APPEND);
 	}
 #endif
 }
@@ -1195,7 +1195,7 @@ void GUI::UpdateTitle()
 void GUI::UpdateMenus()
 {
 	wxCommandEvent evt(EVT_UPDATE_MENUS);
-	gui.root->AddPendingEvent(evt);
+	g_gui.root->AddPendingEvent(evt);
 }
 
 void GUI::SwitchMode()
@@ -1211,12 +1211,12 @@ void GUI::SetSelectionMode()
 {
 	if(mode == SELECTION_MODE)
 		return;
-	
+
 	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
 	if(dbrush) {
 		secondary_map = nullptr;
 	}
-	
+
 	tabbook->OnSwitchEditorMode(SELECTION_MODE);
 	mode = SELECTION_MODE;
 }
@@ -1225,7 +1225,7 @@ void GUI::SetDrawingMode()
 {
 	if(mode == DRAWING_MODE)
 		return;
-	
+
 	std::set<MapTab*> al;
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		EditorTab* editorTab = tabbook->GetTab(idx);
@@ -1247,7 +1247,7 @@ void GUI::SetDrawingMode()
 	} else {
 		secondary_map = nullptr;
 	}
-	
+
 	tabbook->OnSwitchEditorMode(DRAWING_MODE);
 	mode = DRAWING_MODE;
 }
@@ -1294,7 +1294,7 @@ void GUI::SetBrushShape(BrushShape bs)
 		secondary_map = doodad_buffer_map;
 	}
 	brush_shape = bs;
-	
+
 	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
 	}
@@ -1319,14 +1319,14 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 void GUI::SetBrushThickness(int low, int ceil)
 {
 	custom_thickness_mod = float(max(low, 1)) / float(max(ceil, 1));
-	
+
 	if(use_custom_thickness) {
 		DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
 		if(dbrush) {
 			FillDoodadPreviewBuffer();
 		}
 	}
-	
+
 	RefreshView();
 }
 
@@ -1446,7 +1446,7 @@ void GUI::SelectBrush()
 {
 	if(palettes.empty())
 		return;
-	
+
 	SelectBrushInternal(palettes.front()->GetSelectedBrush());
 
 	RefreshView();
@@ -1526,7 +1526,7 @@ void GUI::FillDoodadPreviewBuffer()
 
 			// Try to place objects 5 times
 			while(retries < 5 && !exit) {
-				
+
 				int pos_retries = 0;
 				int xpos = 0, ypos = 0;
 				bool found_pos = false;
@@ -1535,7 +1535,7 @@ void GUI::FillDoodadPreviewBuffer()
 						xpos = random(-brush_size, brush_size);
 						ypos = random(-brush_size, brush_size);
 						float distance = sqrt(float(xpos*xpos) + float(ypos*ypos));
-						if(distance < gui.GetBrushSize() + 0.005) {
+						if(distance < g_gui.GetBrushSize() + 0.005) {
 							found_pos = true;
 						} else {
 							++pos_retries;
@@ -1637,7 +1637,7 @@ void GUI::FillDoodadPreviewBuffer()
 				const ItemVector& items = composite_iter->second;
 				Tile* tile = doodad_buffer_map->allocator(doodad_buffer_map->createTileL(pos));
 				//std::cout << pos << " = " << center_pos << " + " << buffer_tile->getPosition() << std::endl;
-				
+
 				for(ItemVector::const_iterator item_iter = items.begin();
 						item_iter != items.end();
 						++item_iter)
@@ -1666,7 +1666,7 @@ long GUI::PopupDialog(wxWindow* parent, wxString title, wxString text, long styl
 
 long GUI::PopupDialog(wxString title, wxString text, long style, wxString configsavename, uint32_t configsavevalue)
 {
-	return gui.PopupDialog(gui.root, title, text, style, configsavename, configsavevalue);
+	return g_gui.PopupDialog(g_gui.root, title, text, style, configsavename, configsavevalue);
 }
 
 void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& param_items)
@@ -1750,14 +1750,14 @@ void GUI::LoadHotkeys()
 {
 	std::istringstream is;
 	is.str(settings.getString(Config::NUMERICAL_HOTKEYS));
-	
+
 	std::string line;
 	int index = 0;
 	while(getline(is, line)) {
 		std::istringstream line_is;
 		line_is.str(line);
 		line_is >> hotkeys[index];
-		
+
 		++index;
 	}
 }

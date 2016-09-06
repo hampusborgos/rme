@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -63,8 +63,8 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 {
 	ItemsMap::const_iterator item_iterator = items.find(int(n));
 	Item* item = item_iterator->second;
-	
-	Sprite* sprite = gui.gfx.getSprite(item->getClientID());
+
+	Sprite* sprite = g_gui.gfx.getSprite(item->getClientID());
 	if(sprite)
 		sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
@@ -78,7 +78,7 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 		item->deselect();
 		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 	}
-	
+
 	wxString label;
 	label << item->getID() << wxT(" - ") << item->getName();
 	dc.DrawText(label, rect.GetX() + 40, rect.GetY() + 6);
@@ -165,7 +165,7 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("No logout:  ") + b2yn(tile->getMapFlags() & TILESTATE_NOLOGOUT)), wxSizerFlags(0).Left());
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("PvP zone:  ") + b2yn(tile->getMapFlags() & TILESTATE_PVPZONE)), wxSizerFlags(0).Left());
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("House:  ") + b2yn(tile->isHouseTile())), wxSizerFlags(0).Left());
-	
+
 	sizer->Add(infoSizer, wxSizerFlags(0).Left().DoubleBorder());
 
 	// OK/Cancel buttons
@@ -192,7 +192,7 @@ void BrowseTileWindow::OnClickSelectRaw(wxCommandEvent& WXUNUSED(event))
 {
 	Item* item = item_list->GetSelectedItem();
 	if(item && item->getRAWBrush())
-		gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
+		g_gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
 
 	EndModal(1);
 }

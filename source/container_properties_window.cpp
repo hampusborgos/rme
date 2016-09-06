@@ -91,7 +91,7 @@ void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 	} else {
 		itemVector.push_back(item);
 	}
-	
+
 	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
 	if(propertyWindow) {
 		propertyWindow->Update();
@@ -127,7 +127,7 @@ void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
 void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 {
 	ASSERT(edit_item);
-	int32_t ret = gui.PopupDialog(GetParent(),
+	int32_t ret = g_gui.PopupDialog(GetParent(),
 		wxT("Remove Item"),
 		wxT("Are you sure you want to remove this item from the container?"),
 		wxYES | wxNO
@@ -151,7 +151,7 @@ void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 
 	itemVector.erase(it);
 	delete edit_item;
-	
+
 	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
 	if(propertyWindow) {
 		propertyWindow->Update();

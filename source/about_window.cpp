@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ protected:
 	virtual void Render(wxDC& pdc) = 0;
 	virtual void GameLoop(int time) = 0;
 	virtual void OnKey(wxKeyEvent& event, bool down) = 0;
-	
+
 	virtual int getFPS() const = 0;
 protected:
 	wxStopWatch game_timer;
@@ -68,7 +68,7 @@ protected:
 	virtual void Render(wxDC& pdc);
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
-	
+
 	virtual int getFPS() const {return lines / 10 + 3;}
 
 	enum Color {
@@ -126,7 +126,7 @@ protected:
 	virtual void Render(wxDC& pdc);
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
-	
+
 	virtual int getFPS() const {return 7;}
 
 	enum {
@@ -164,7 +164,7 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	game_panel(nullptr)
 {
 	wxString about;
-	
+
 	about << wxT("This is an OpenTibia Map Editor created by Remere.\n");
 	about << wxT("Version ") << __W_RME_VERSION__ << wxT(" for ");
 	about <<
@@ -178,7 +178,7 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	wxT("Unsupported OS");
 #endif
 	about << wxT("\n\n");
-	
+
 	about << wxT("Using ") wxVERSION_STRING wxT(" interface\n");
 	about << wxT("OpenGL version ") + wxString((char*)glGetString(GL_VERSION), wxConvUTF8) + wxT("\n");
 	about << wxT("\n");
@@ -235,8 +235,8 @@ void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event))
 	while(gpl.get(ch)) {
 		gpl_str += ch;
 	}
-	
-	gui.ShowTextBox(this, wxT("License"), wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
+
+	g_gui.ShowTextBox(this, wxT("License"), wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
 }
 
 void AboutWindow::OnTetris(wxCommandEvent&)
@@ -375,7 +375,7 @@ void TetrisPanel::Render(wxDC& pdc)
 			pdc.SetBrush(GetBrush(map[x][y]));
 			pdc.DrawRectangle(x * 16, y * 16, 16, 16);
 		}
-	} 
+	}
 
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
@@ -569,7 +569,7 @@ void TetrisPanel::MoveBlock(int x, int y)
 		if(y == 1) { // moving down...
 			if(block.y < 1) { // Out of bounds!
 				dead = true;
-				gui.PopupDialog(wxT("Game Over"), wxT("You reached a score of ") + i2ws(score) + wxT("!"), wxOK);
+				g_gui.PopupDialog(wxT("Game Over"), wxT("You reached a score of ") + i2ws(score) + wxT("!"), wxOK);
 				NewGame();
 				SetFocus();
 			} else {
@@ -638,13 +638,13 @@ void TetrisPanel::RotateBlock()
 			}
 		}
 	}
-		
+
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			block.structure[x][y] = temp.structure[x][y];
 		}
 	}
-	
+
 	Refresh();
 }
 
@@ -668,7 +668,7 @@ void SnakePanel::Render(wxDC& pdc)
 
 	wxBrush snakebrush(wxColor(0, 0, 255));
 	wxBrush applebrush(wxColor(255, 0, 0));
-	
+
 	double lblue  = 1.0;
 	double lred   = 0.5;
 	double lgreen = 0.0;
@@ -690,7 +690,7 @@ void SnakePanel::Render(wxDC& pdc)
 				pdc.DrawRectangle(x*16, y*16, 16, 16);
 			}
 		}
-	} 
+	}
 }
 
 void SnakePanel::OnKey(wxKeyEvent& event, bool down)
@@ -832,11 +832,11 @@ void SnakePanel::Move(int dir)
 		default:
 			return;
 	}
-	
+
 	if(map[nx][ny] > 0 || nx < 0 || ny < 0 || nx >= SNAKE_MAPWIDTH || ny >= SNAKE_MAPHEIGHT) {
 		// Crash
 		dead = true;
-		gui.PopupDialog(wxT("Game Over"), wxT("You reached a length of ") + i2ws(length) + wxT("!"), wxOK);
+		g_gui.PopupDialog(wxT("Game Over"), wxT("You reached a length of ") + i2ws(length) + wxT("!"), wxOK);
 		NewGame();
 		SetFocus();
 	} else {
