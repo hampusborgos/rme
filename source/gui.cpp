@@ -1153,13 +1153,22 @@ void GUI::EndPasting()
 	}
 }
 
+bool GUI::CanUndo()
+{
+	Editor* editor = GetCurrentEditor();
+	return (editor && editor->actionQueue->canUndo());
+}
+
+bool GUI::CanRedo()
+{
+	Editor* editor = GetCurrentEditor();
+	return (editor && editor->actionQueue->canRedo());
+}
+
 bool GUI::DoUndo()
 {
-	if(!IsEditorOpen())
-		return false;
-
 	Editor* editor = GetCurrentEditor();
-	if(editor->actionQueue->canUndo()) {
+	if(editor && editor->actionQueue->canUndo()) {
 		editor->actionQueue->undo();
 		if(editor->selection.size() > 0)
 			SetSelectionMode();
@@ -1174,11 +1183,8 @@ bool GUI::DoUndo()
 
 bool GUI::DoRedo()
 {
-	if (!IsEditorOpen())
-		return false;
-
 	Editor* editor = GetCurrentEditor();
-	if(editor->actionQueue->canRedo()) {
+	if(editor && editor->actionQueue->canRedo()) {
 		editor->actionQueue->redo();
 		if(editor->selection.size() > 0)
 			SetSelectionMode();

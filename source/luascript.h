@@ -53,6 +53,8 @@ public:
 	static int luaGuiLoadMap(lua_State* L);
 	static int luaGuiShouldSaveMap(lua_State* L);
 	static int luaGuiSaveCurrentMap(lua_State* L);
+	static int luaGuiCanUndo(lua_State* L);
+	static int luaGuiCanRedo(lua_State* L);
 	static int luaGuiDoUndo(lua_State* L);
 	static int luaGuiDoRedo(lua_State* L);
 	static int luaGuiGetEditorAt(lua_State* L);

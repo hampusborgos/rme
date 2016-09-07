@@ -178,6 +178,20 @@ int LuaInterface::luaGuiSaveCurrentMap(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaGuiCanUndo(lua_State* L)
+{
+	// g_gui.canUndo()
+	pushBoolean(L, g_gui.CanUndo());
+	return 1;
+}
+
+int LuaInterface::luaGuiCanRedo(lua_State* L)
+{
+	// g_gui.canRedo()
+	pushBoolean(L, g_gui.CanRedo());
+	return 1;
+}
+
 int LuaInterface::luaGuiDoUndo(lua_State* L)
 {
 	// g_gui.doUndo()
@@ -681,6 +695,8 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "loadMap", LuaInterface::luaGuiLoadMap);
 	registerMethod("g_gui", "shouldSaveCurrentMap", LuaInterface::luaGuiShouldSaveMap);
 	registerMethod("g_gui", "saveCurrentMap", LuaInterface::luaGuiSaveCurrentMap);
+	registerMethod("g_gui", "canUndo", LuaInterface::luaGuiCanUndo);
+	registerMethod("g_gui", "canRedo", LuaInterface::luaGuiCanRedo);
 	registerMethod("g_gui", "doUndo", LuaInterface::luaGuiDoUndo);
 	registerMethod("g_gui", "doRedo", LuaInterface::luaGuiDoRedo);
 	registerMethod("g_gui", "getEditorAt", LuaInterface::luaGuiGetEditorAt);

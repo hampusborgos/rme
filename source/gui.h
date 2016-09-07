@@ -273,6 +273,8 @@ public:
 	void StartPasting();
 	void EndPasting();
 	void DoPaste();
+	bool CanUndo();
+	bool CanRedo();
 	bool DoUndo();
 	bool DoRedo();
 
