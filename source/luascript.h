@@ -39,14 +39,17 @@ public:
 
 	bool init();
 
-	wxString runScript(const wxString& script);
+	int runScript(const wxString& script);
 
 	// Push
 	static void pushBoolean(lua_State* L, bool value);
-	static void pushPosition(lua_State* L, const Position& position, int32_t stackpos = 0);
+	static void pushPosition(lua_State* L, const Position& position);
 
 	// Userdata
 	static int luaUserdataCompare(lua_State* L);
+
+	// print
+	static int luaPrint(lua_State* L);
 
 	// g_gui
 	static int luaGuiNewMap(lua_State* L);
@@ -91,7 +94,9 @@ public:
 
 	// Selection
 	static int luaSelectionCreate(lua_State* L);
-	static int luaSelectionGetSize(lua_State* L);
+	static int luaSelectionGetTileCount(lua_State* L);
+	static int luaSelectionGetMinPosition(lua_State* L);
+	static int luaSelectionGetMaxPosition(lua_State* L);
 
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }
@@ -218,6 +223,7 @@ private:
 	void registerTable(const std::string& tableName);
 	void registerMethod(const std::string& className, const std::string& methodName, lua_CFunction func);
 	void registerMetaMethod(const std::string& className, const std::string& methodName, lua_CFunction func);
+	void registerGlobalMethod(const std::string& functionName, lua_CFunction func);
 	void registerFunctions();
 };
 

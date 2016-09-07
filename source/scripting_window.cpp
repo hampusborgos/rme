@@ -55,11 +55,10 @@ ScriptingWindow::~ScriptingWindow()
 void ScriptingWindow::OnRunScript(wxCommandEvent&)
 {
 	log_text_field->SetValue(wxEmptyString);
+	g_lua.runScript(script_text_field->GetValue());
+}
 
-	const wxString& text = script_text_field->GetValue();
-	if (text.IsEmpty())
-		return;
-
-	const wxString& log = g_lua.runScript(text);
-	log_text_field->SetValue(log);
+void ScriptingWindow::AppendLog(const wxString& text)
+{
+	log_text_field->AppendText(text + wxT("\n"));
 }

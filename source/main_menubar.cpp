@@ -745,8 +745,7 @@ void MainMenuBar::OnExportMinimap(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnToolsScripting(wxCommandEvent& WXUNUSED(event))
 {
-	ScriptingWindow window = newd ScriptingWindow(frame);
-	window.ShowModal();
+	g_gui.ShowScriptingWindow();
 }
 
 void MainMenuBar::OnToolsViewDat(wxCommandEvent& WXUNUSED(event))

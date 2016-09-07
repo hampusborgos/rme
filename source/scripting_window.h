@@ -26,6 +26,8 @@ public:
 
 	void OnRunScript(wxCommandEvent&);
 
+	void AppendLog(const wxString& text);
+
 private:
 	wxTextCtrl* script_text_field;
 	wxTextCtrl* log_text_field;

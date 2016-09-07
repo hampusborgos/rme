@@ -845,6 +845,25 @@ SearchResultWindow* GUI::ShowSearchWindow()
 	return search_result_window;
 }
 
+ScriptingWindow* GUI::ShowScriptingWindow()
+{
+	if (!scripting_window) {
+		scripting_window = newd ScriptingWindow(root);
+		scripting_window->ShowModal();
+	}
+	else {
+		scripting_window->Show(true);
+	}
+	return scripting_window;
+}
+
+void GUI::HideScriptingWindow()
+{
+	if(!scripting_window) {
+		scripting_window->Show(false);
+	}
+}
+
 //=============================================================================
 // Palette Window Interface implementation
 

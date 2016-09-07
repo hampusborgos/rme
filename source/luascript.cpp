@@ -45,30 +45,33 @@ bool LuaInterface::init()
 	return true;
 }
 
-wxString LuaInterface::runScript(const wxString& script)
+int LuaInterface::runScript(const wxString& script)
 {
 	if(script.empty()) {
 		lua_pushnil(luaState);
-		return wxEmptyString;
+		return 0;
 	}
 
 	// loads file the script at stack top
 	int ret = luaL_loadbuffer(luaState, script.c_str(), script.length(), "");
-	if (ret != 0)
-		return popString(luaState);
+	if(ret != 0) {
+		luaErrorHandler(luaState);
+		return 0;
+	}
 
 	// check that it is loaded as a function
-	if (!isFunction(luaState, -1)) {
-		return wxEmptyString;
+	if(!isFunction(luaState, -1)) {
+		return 0;
 	}
 
 	// execute it
 	ret = protectedCall(luaState, 0, 0);
-	if (ret != 0) {
-		return popString(luaState);
+	if(ret != 0) {
+		luaErrorHandler(luaState);
+		return 0;
 	}
 
-	return wxT("done!");
+	return 1;
 }
 
 // Push
@@ -77,15 +80,13 @@ void LuaInterface::pushBoolean(lua_State* L, bool value)
 	lua_pushboolean(L, value ? 1 : 0);
 }
 
-void LuaInterface::pushPosition(lua_State* L, const Position& position, int32_t stackpos/* = 0*/)
+void LuaInterface::pushPosition(lua_State* L, const Position& position)
 {
 	lua_createtable(L, 0, 4);
 
 	setField(L, "x", position.x);
 	setField(L, "y", position.y);
 	setField(L, "z", position.z);
-	setField(L, "stackpos", stackpos);
-
 	setMetatable(L, -1, "Position");
 }
 
@@ -144,6 +145,26 @@ int LuaInterface::luaUserdataCompare(lua_State* L)
 {
 	// userdataA == userdataB
 	pushBoolean(L, getUserdata<void>(L, 1) == getUserdata<void>(L, 2));
+	return 1;
+}
+
+// print
+int LuaInterface::luaPrint(lua_State* L)
+{
+	wxString text = wxEmptyString;
+	if (isString(L, 1)) {
+		text = getString(L, 1);
+	} else if(isNumber(L, 1)) {
+		int value = getNumber<int>(L, 1);
+		text = i2ws(value);
+	} else if(isBoolean(L, 1)) {
+		bool value = getBoolean(L, 1);
+		text = value == 0 ? "false": "true";
+	}
+	ScriptingWindow* window = g_gui.ShowScriptingWindow();
+	if(window) {
+		window->AppendLog(text);
+	}
 	return 1;
 }
 
@@ -612,14 +633,40 @@ int LuaInterface::luaSelectionCreate(lua_State* L)
 	return 1;
 }
 
-int LuaInterface::luaSelectionGetSize(lua_State* L)
+int LuaInterface::luaSelectionGetTileCount(lua_State* L)
 {
-	// Selection:getSize()
+	// Selection:getTileCount()
 	Editor* editor = getUserdata<Editor>(L, 1);
 	if(editor) {
 		lua_pushnumber(L, editor->selection.size());
 	} else {
 		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
+int LuaInterface::luaSelectionGetMinPosition(lua_State* L)
+{
+	// Selection:getMinPosition()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->selection.size() > 0) {
+		const Position& position = editor->selection.minPosition();
+		pushPosition(L, position);
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaSelectionGetMaxPosition(lua_State* L)
+{
+	// Selection:getMaxPosition()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->selection.size() > 0) {
+		const Position& position = editor->selection.maxPosition();
+		pushPosition(L, position);
+	} else {
+		lua_pushnil(L);
 	}
 	return 1;
 }
@@ -719,8 +766,18 @@ void LuaInterface::registerMetaMethod(const std::string& className, const std::s
 	lua_pop(luaState, 1);
 }
 
+void LuaInterface::registerGlobalMethod(const std::string& functionName, lua_CFunction func)
+{
+	// _G[functionName] = func
+	lua_pushcfunction(luaState, func);
+	lua_setglobal(luaState, functionName.c_str());
+}
+
 void LuaInterface::registerFunctions()
 {
+	// print
+	registerGlobalMethod("print", LuaInterface::luaPrint);
+
 	// g_gui
 	registerTable("g_gui");
 	registerMethod("g_gui", "newMap", LuaInterface::luaGuiNewMap);
@@ -768,13 +825,18 @@ void LuaInterface::registerFunctions()
 	// Selection
 	registerClass("Selection", "", LuaInterface::luaSelectionCreate);
 	registerMetaMethod("Selection", "__eq", LuaInterface::luaUserdataCompare);
-	registerMethod("Selection", "getSize", LuaInterface::luaSelectionGetSize);
+	registerMethod("Selection", "getTileCount", LuaInterface::luaSelectionGetTileCount);
+	registerMethod("Selection", "getMinPosition", LuaInterface::luaSelectionGetMinPosition);
+	registerMethod("Selection", "getMaxPosition", LuaInterface::luaSelectionGetMaxPosition);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)
 {
-	//const wxString& errorMessage = popString(L);
-	//g_gui.ShowTextBox(g_gui.root, wxT("Error"), errorMessage);
+	const wxString& text = popString(L);
+	ScriptingWindow* window = g_gui.ShowScriptingWindow();
+	if(window) {
+		window->AppendLog(text);
+	}
 	return 1;
 }
 

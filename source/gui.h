@@ -31,6 +31,7 @@
 #include "map_tab.h"
 #include "palette_window.h"
 #include "client_version.h"
+#include "scripting_window.h"
 
 class BaseMap;
 class Map;
@@ -187,6 +188,9 @@ public:
 	// Search Results
 	SearchResultWindow* ShowSearchWindow();
 	void HideSearchWindow();
+
+	ScriptingWindow* ShowScriptingWindow();
+	void HideScriptingWindow();
 
 	// Minimap
 	void CreateMinimap();
@@ -351,6 +355,7 @@ public:
 	MinimapWindow* minimap;
 	DCButton* gem; // The small gem in the lower-right corner
 	SearchResultWindow* search_result_window;
+	ScriptingWindow* scripting_window;
 	GraphicManager gfx;
 
 	BaseMap* secondary_map; // A buffer map
