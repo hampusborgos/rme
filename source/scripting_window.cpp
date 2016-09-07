@@ -20,7 +20,7 @@
 #include "scripting_window.h"
 #include "luascript.h"
 
-static const char LuaKeywords[] =	"and break do else elseif end false for function if"
+static const char LuaKeywords[] =	"and break do else elseif end false for function if "
 									"in local nil not or repeat return then true  until while";
 
 BEGIN_EVENT_TABLE(ScriptingWindow, wxDialog)
@@ -40,7 +40,7 @@ ScriptingWindow::ScriptingWindow(wxWindow* parent) :
 	script_text_field->StyleSetSpec(wxSTC_P_NUMBER, wxT("fore:#007F7F"));
 	script_text_field->StyleSetSpec(wxSTC_P_STRING, wxT("fore:#7F007F"));
 	script_text_field->StyleSetSpec(wxSTC_P_CHARACTER, wxT("fore:#7F007F"));
-	script_text_field->StyleSetSpec(wxSTC_P_WORD, wxT("bold,fore:#F9263E"));
+	script_text_field->StyleSetSpec(wxSTC_P_WORD, wxT("bold,fore:#004EFF"));
 	script_text_field->StyleSetSpec(wxSTC_P_TRIPLE, wxT("fore:#7F0000"));
 	script_text_field->StyleSetSpec(wxSTC_P_TRIPLEDOUBLE, wxT("fore:#7F0000"));
 	script_text_field->StyleSetSpec(wxSTC_P_CLASSNAME, wxT("bold,fore:#0000FF"));
