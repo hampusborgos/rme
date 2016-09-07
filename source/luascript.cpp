@@ -325,6 +325,38 @@ int LuaInterface::luaEditorCreate(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorGetTile(lua_State* L)
+{
+	// Editor:getTile(x, y, z)
+	// Editor:getTile(position)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if (!editor) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Map& map = editor->map;
+	Tile* tile;
+
+	if(isTable(L, 2)) {
+		const Position& position = getPosition(L, 2);
+		tile = map.getTile(position);
+	} else {
+		uint8_t z = getNumber<uint8_t>(L, 4);
+		uint16_t y = getNumber<uint16_t>(L, 3);
+		uint16_t x = getNumber<uint16_t>(L, 2);
+		tile = map.getTile(x, y, z);
+	}
+
+	if(tile) {
+		pushUserdata<Tile>(L, tile);
+		setMetatable(L, -1, "Tile");
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
 int LuaInterface::luaEditorCreateSelection(lua_State* L)
 {
 	// editor:createSelection(start, end)
@@ -711,6 +743,7 @@ void LuaInterface::registerFunctions()
 	// Editor
 	registerClass("Editor", "", LuaInterface::luaEditorCreate);
 	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Editor", "getTile", LuaInterface::luaEditorGetTile);
 	registerMethod("Editor", "createSelection", LuaInterface::luaEditorCreateSelection);
 	registerMethod("Editor", "moveSelection", LuaInterface::luaEditorMoveSelection);
 	registerMethod("Editor", "destroySelection", LuaInterface::luaEditorDestroySelection);

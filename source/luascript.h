@@ -68,6 +68,7 @@ public:
 
 	// Editor
 	static int luaEditorCreate(lua_State* L);
+	static int luaEditorGetTile(lua_State* L);
 	static int luaEditorCreateSelection(lua_State* L);
 	static int luaEditorMoveSelection(lua_State* L);
 	static int luaEditorDestroySelection(lua_State* L);
