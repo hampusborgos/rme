@@ -58,6 +58,13 @@ public:
 	static int luaGuiSetCenterPosition(lua_State* L);
 	static int luaGuiShowTextBox(lua_State* L);
 
+	// Editor
+	static int luaEditorCreate(lua_State* L);
+	static int luaEditorMoveSelection(lua_State* L);
+	static int luaEditorDestroySelection(lua_State* L);
+	static int luaEditorBorderizeSelection(lua_State* L);
+	static int luaEditorRandomizeSelection(lua_State* L);
+
 	// Tile
 	static int luaTileCreate(lua_State* L);
 	static int luaTileGetPosition(lua_State* L);

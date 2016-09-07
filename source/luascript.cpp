@@ -219,6 +219,70 @@ int LuaInterface::luaGuiShowTextBox(lua_State* L)
 	return 1;
 }
 
+// Editor
+int LuaInterface::luaEditorCreate(lua_State* L)
+{
+	// Editor(index)
+	int index = getNumber<int>(L, 2);
+	Editor* editor = g_gui.GetEditorAt(index);
+	if(editor) {
+		pushUserdata<Editor>(L, editor);
+		setMetatable(L, -1, "Editor");
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorMoveSelection(lua_State* L)
+{
+	// editor:moveSelection(position)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		const Position& position = getPosition(L, 2);
+		pushBoolean(L, editor->moveSelection(position));
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorDestroySelection(lua_State* L)
+{
+	// editor:destroySelection()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		pushBoolean(L, editor->destroySelection());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorBorderizeSelection(lua_State* L)
+{
+	// editor:borderizeSelection()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		pushBoolean(L, editor->borderizeSelection());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorRandomizeSelection(lua_State* L)
+{
+	// editor:randomizeSelection()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		pushBoolean(L, editor->randomizeSelection());
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
 // Tile
 int LuaInterface::luaTileCreate(lua_State* L)
 {
@@ -481,6 +545,14 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "getCenterPosition", LuaInterface::luaGuiGetCenterPosition);
 	registerMethod("g_gui", "setCenterPosition", LuaInterface::luaGuiSetCenterPosition);
 	registerMethod("g_gui", "showTextBox", LuaInterface::luaGuiShowTextBox);
+
+	// Editor
+	registerClass("Editor", "", LuaInterface::luaEditorCreate);
+	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Editor", "moveSelection", LuaInterface::luaEditorMoveSelection);
+	registerMethod("Editor", "destroySelection", LuaInterface::luaEditorDestroySelection);
+	registerMethod("Editor", "borderizeSelection", LuaInterface::luaEditorBorderizeSelection);
+	registerMethod("Editor", "randomizeSelection", LuaInterface::luaEditorRandomizeSelection);
 
 	// Tile
 	registerClass("Tile", "", LuaInterface::luaTileCreate);

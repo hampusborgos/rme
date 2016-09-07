@@ -10,6 +10,12 @@
 -- g_gui.setCenterPosition(position)
 -- g_gui.showTextBox(title, text)
 
+-- Editor(index)
+-- Editor:moveSelection(offset)
+-- Editor:destroySelection()
+-- Editor:borderizeSelection()
+-- Editor:randomizeSelection()
+
 -- Tile(x, y, z)
 -- Tile(position)
 -- Tile:getPosition()
