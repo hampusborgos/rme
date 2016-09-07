@@ -27,7 +27,8 @@ enum LuaDataType {
 	LuaData_Unknown,
 
 	LuaData_Editor,
-	LuaData_Tile
+	LuaData_Tile,
+	LuaData_Selection
 };
 
 class LuaInterface
@@ -54,6 +55,9 @@ public:
 	static int luaGuiSaveCurrentMap(lua_State* L);
 	static int luaGuiDoUndo(lua_State* L);
 	static int luaGuiDoRedo(lua_State* L);
+	static int luaGuiGetEditorAt(lua_State* L);
+	static int luaGuiGetCurrentEditor(lua_State* L);
+	static int luaGuiSetCurrentEditor(lua_State* L);
 	static int luaGuiGetCurrentFloor(lua_State* L);
 	static int luaGuiSetCurrentFloor(lua_State* L);
 	static int luaGuiGetCenterPosition(lua_State* L);
@@ -67,6 +71,7 @@ public:
 	static int luaEditorDestroySelection(lua_State* L);
 	static int luaEditorBorderizeSelection(lua_State* L);
 	static int luaEditorRandomizeSelection(lua_State* L);
+	static int luaEditorGetSelection(lua_State* L);
 
 	// Tile
 	static int luaTileCreate(lua_State* L);
@@ -80,6 +85,10 @@ public:
 	static int luaTileIsBlocking(lua_State* L);
 	static int luaTileIsSelected(lua_State* L);
 	static int luaTileIsModified(lua_State* L);
+
+	// Selection
+	static int luaSelectionCreate(lua_State* L);
+	static int luaSelectionGetSize(lua_State* L);
 
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }

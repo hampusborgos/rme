@@ -280,10 +280,11 @@ public:
 	EditorTab* GetCurrentTab();
 	EditorTab* GetTab(int idx);
 	int GetTabCount() const;
-	bool IsAnyEditorOpen() const;
 	bool IsEditorOpen() const;
 	void CloseCurrentEditor();
 	Editor* GetCurrentEditor();
+	void SetCurrentEditor(Editor* editor);
+	void SetCurrentEditor(int index);
 	Editor* GetEditorAt(int index);
 	MapTab* GetCurrentMapTab() const;
 	void CycleTab(bool forward = true);

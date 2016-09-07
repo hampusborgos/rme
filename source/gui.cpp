@@ -549,6 +549,25 @@ Editor* GUI::GetCurrentEditor()
 	return nullptr;
 }
 
+void GUI::SetCurrentEditor(Editor* editor)
+{
+	for (int i = tabbook->GetTabCount() - 1; i >= 0; i--) {
+		EditorTab* editorTab = tabbook->GetTab(i);
+		MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+		if (editor == mapTab->GetEditor()) {
+			tabbook->SetFocusedTab(i);
+			break;
+		}
+	}
+}
+
+void GUI::SetCurrentEditor(int index)
+{
+	if(tabbook && index >= 0 && index < tabbook->GetTabCount()) {
+		tabbook->SetFocusedTab(index);
+	}
+}
+
 Editor* GUI::GetEditorAt(int index)
 {
 	if(tabbook && index >= 0 && index < tabbook->GetTabCount()) {

@@ -19,6 +19,7 @@
 #include "luascript.h"
 #include "gui.h"
 #include "editor.h"
+#include "selection.h"
 
 LuaInterface g_lua;
 
@@ -191,6 +192,56 @@ int LuaInterface::luaGuiDoRedo(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaGuiGetEditorAt(lua_State* L)
+{
+	if (isNumber(L, 1)) {
+		int index = getNumber<int>(L, 1);
+		Editor* editor = g_gui.GetEditorAt(index);
+		if(editor) {
+			pushUserdata<Editor>(L, editor);
+			setMetatable(L, -1, "Editor");
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaInterface::luaGuiGetCurrentEditor(lua_State* L)
+{
+	Editor* editor = g_gui.GetCurrentEditor();
+	if(editor) {
+		pushUserdata<Editor>(L, editor);
+		setMetatable(L, -1, "Editor");
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaGuiSetCurrentEditor(lua_State* L)
+{
+	if(g_gui.IsEditorOpen()) {
+		if(isUserdata(L, 1)) {
+			Editor* editor = getUserdata<Editor>(L, 1);
+			if(editor) {
+				g_gui.SetCurrentEditor(editor);
+				pushBoolean(L, true);
+				return 1;
+			}
+		} else if(isNumber(L, 1)) {
+			int index = getNumber<int>(L, 1);
+			g_gui.SetCurrentEditor(index);
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
 int LuaInterface::luaGuiGetCurrentFloor(lua_State* L)
 {
 	// g_gui.getCurrentFloor()
@@ -269,12 +320,13 @@ int LuaInterface::luaEditorCreateSelection(lua_State* L)
 		const Position& start = getPosition(L, 2);
 		const Position& end = getPosition(L, 3);
 		if(editor->createSelection(start, end)) {
-			pushBoolean(L, true);
+			pushUserdata<Editor>(L, editor);
+			setMetatable(L, -1, "Selection");
 			return 1;
 		}
 	}
 
-	pushBoolean(L, false);
+	lua_pushnil(L);
 	return 1;
 }
 
@@ -324,6 +376,20 @@ int LuaInterface::luaEditorRandomizeSelection(lua_State* L)
 	} else {
 		pushBoolean(L, false);
 	}
+	return 1;
+}
+
+int LuaInterface::luaEditorGetSelection(lua_State* L)
+{
+	// editor:getSelection()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		pushUserdata<Editor>(L, editor);
+		setMetatable(L, -1, "Selection");
+		return 1;
+	}
+
+	lua_pushnil(L);
 	return 1;
 }
 
@@ -481,6 +547,37 @@ int LuaInterface::luaTileIsModified(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaSelectionCreate(lua_State* L)
+{
+	// Selection(editor, start, end)
+	Editor* editor = getUserdata<Editor>(L, 2);
+	if(editor) {
+		g_gui.SetSelectionMode();
+		const Position& start = getPosition(L, 3);
+		const Position& end = getPosition(L, 4);
+		if(editor->createSelection(start, end)) {
+			pushUserdata<Editor>(L, editor);
+			setMetatable(L, -1, "Selection");
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaInterface::luaSelectionGetSize(lua_State* L)
+{
+	// Selection:getSize()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		lua_pushnumber(L, editor->selection.size());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
 void LuaInterface::registerClass(const std::string& className, const std::string& baseClass, lua_CFunction newFunction/* = nullptr*/)
 {
 	// className = {}
@@ -536,6 +633,8 @@ void LuaInterface::registerClass(const std::string& className, const std::string
 		lua_pushnumber(luaState, LuaData_Editor);
 	} else if(className == "Tile") {
 		lua_pushnumber(luaState, LuaData_Tile);
+	} else if(className == "Selection") {
+		lua_pushnumber(luaState, LuaData_Selection);
 	} else {
 		lua_pushnumber(luaState, LuaData_Unknown);
 	}
@@ -584,6 +683,9 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "saveCurrentMap", LuaInterface::luaGuiSaveCurrentMap);
 	registerMethod("g_gui", "doUndo", LuaInterface::luaGuiDoUndo);
 	registerMethod("g_gui", "doRedo", LuaInterface::luaGuiDoRedo);
+	registerMethod("g_gui", "getEditorAt", LuaInterface::luaGuiGetEditorAt);
+	registerMethod("g_gui", "getCurrentEditor", LuaInterface::luaGuiGetCurrentEditor);
+	registerMethod("g_gui", "setCurrentEditor", LuaInterface::luaGuiSetCurrentEditor);
 	registerMethod("g_gui", "getCurrentFloor", LuaInterface::luaGuiGetCurrentFloor);
 	registerMethod("g_gui", "setCurrentFloor", LuaInterface::luaGuiSetCurrentFloor);
 	registerMethod("g_gui", "getCenterPosition", LuaInterface::luaGuiGetCenterPosition);
@@ -598,6 +700,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Editor", "destroySelection", LuaInterface::luaEditorDestroySelection);
 	registerMethod("Editor", "borderizeSelection", LuaInterface::luaEditorBorderizeSelection);
 	registerMethod("Editor", "randomizeSelection", LuaInterface::luaEditorRandomizeSelection);
+	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
 
 	// Tile
 	registerClass("Tile", "", LuaInterface::luaTileCreate);
@@ -612,6 +715,11 @@ void LuaInterface::registerFunctions()
 	registerMethod("Tile", "isBlocking", LuaInterface::luaTileIsBlocking);
 	registerMethod("Tile", "isSelected", LuaInterface::luaTileIsSelected);
 	registerMethod("Tile", "isModified", LuaInterface::luaTileIsModified);
+
+	// Selection
+	registerClass("Selection", "", LuaInterface::luaSelectionCreate);
+	registerMetaMethod("Selection", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Selection", "getSize", LuaInterface::luaSelectionGetSize);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)
