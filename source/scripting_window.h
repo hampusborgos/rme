@@ -18,6 +18,8 @@
 #ifndef RME_SCRIPTING_WINDOW_H_
 #define RME_SCRIPTING_WINDOW_H_
 
+#include <wx/stc/stc.h>
+
 class ScriptingWindow : public wxDialog
 {
 public:
@@ -29,7 +31,7 @@ public:
 	void AppendLog(const wxString& text);
 
 private:
-	wxTextCtrl* script_text_field;
+	wxStyledTextCtrl* script_text_field;
 	wxTextCtrl* log_text_field;
 	wxButton* run_button;
 

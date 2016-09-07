@@ -13,11 +13,11 @@ class BatchAction;
 
 class SelectionThread;
 
-class Selection
+class SelectionArea
 {
 public:
-	Selection(Editor& editor);
-	~Selection();
+	SelectionArea(Editor& editor);
+	~SelectionArea();
 
 	// Selects the items on the tile/tiles
 	// Won't work outside a selection session
@@ -91,10 +91,10 @@ protected:
 	virtual ExitCode Entry();
 	Editor& editor;
 	Position start, end;
-	Selection selection;
+	SelectionArea selection;
 	Action* result;
 
-	friend class Selection;
+	friend class SelectionArea;
 };
 
 #endif

@@ -53,7 +53,7 @@ int LuaInterface::runScript(const wxString& script)
 	}
 
 	// loads file the script at stack top
-	int ret = luaL_loadbuffer(luaState, script.c_str(), script.length(), "");
+	int ret = luaL_loadbuffer(luaState, script.c_str(), script.length(), "line");
 	if(ret != 0) {
 		luaErrorHandler(luaState);
 		return 0;

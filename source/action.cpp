@@ -153,7 +153,7 @@ size_t Action::memsize() const
 
 void Action::commit(DirtyList* dirty_list)
 {
-	editor.selection.start(Selection::INTERNAL);
+	editor.selection.start(SelectionArea::INTERNAL);
 	ChangeList::const_iterator it = changes.begin();
 	while(it != changes.end()) {
 		Change* c = *it;
@@ -286,7 +286,7 @@ void Action::commit(DirtyList* dirty_list)
 		}
 		++it;
 	}
-	editor.selection.finish(Selection::INTERNAL);
+	editor.selection.finish(SelectionArea::INTERNAL);
 	commited = true;
 }
 
@@ -295,7 +295,7 @@ void Action::undo(DirtyList* dirty_list)
 	if(changes.empty())
 		return;
 
-	editor.selection.start(Selection::INTERNAL);
+	editor.selection.start(SelectionArea::INTERNAL);
 	ChangeList::reverse_iterator it = changes.rbegin();
 
 	while(it != changes.rend()) {
@@ -410,7 +410,7 @@ void Action::undo(DirtyList* dirty_list)
 		}
 		++it;
 	}
-	editor.selection.finish(Selection::INTERNAL);
+	editor.selection.finish(SelectionArea::INTERNAL);
 	commited = false;
 }
 

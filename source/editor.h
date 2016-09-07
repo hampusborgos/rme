@@ -34,7 +34,7 @@ protected:
 public:
 	// Public members
 	ActionQueue* actionQueue;
-	Selection selection;
+	SelectionArea selection;
 	CopyBuffer& copybuffer;
 	GroundBrush* replace_brush;
 	Map map; // The map that is being edited

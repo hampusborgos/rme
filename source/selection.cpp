@@ -26,7 +26,7 @@
 #include "editor.h"
 #include "gui.h"
 
-Selection::Selection(Editor& editor) :
+SelectionArea::SelectionArea(Editor& editor) :
 	busy(false),
 	editor(editor),
 	session(nullptr),
@@ -35,13 +35,13 @@ Selection::Selection(Editor& editor) :
 	////
 }
 
-Selection::~Selection()
+SelectionArea::~SelectionArea()
 {
 	delete subsession;
 	delete session;
 }
 
-Position Selection::minPosition() const
+Position SelectionArea::minPosition() const
 {
 	Position minPos(0x10000, 0x10000, 0x10);
 	for(TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
@@ -56,7 +56,7 @@ Position Selection::minPosition() const
 	return minPos;
 }
 
-Position Selection::maxPosition() const
+Position SelectionArea::maxPosition() const
 {
 	Position maxPos(0, 0, 0);
 	for(TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
@@ -71,7 +71,7 @@ Position Selection::maxPosition() const
 	return maxPos;
 }
 
-void Selection::add(Tile* tile, Item* item)
+void SelectionArea::add(Tile* tile, Item* item)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -91,7 +91,7 @@ void Selection::add(Tile* tile, Item* item)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile, Spawn* spawn)
+void SelectionArea::add(Tile* tile, Spawn* spawn)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -107,7 +107,7 @@ void Selection::add(Tile* tile, Spawn* spawn)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile, Creature* creature)
+void SelectionArea::add(Tile* tile, Creature* creature)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -123,7 +123,7 @@ void Selection::add(Tile* tile, Creature* creature)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile)
+void SelectionArea::add(Tile* tile)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -134,7 +134,7 @@ void Selection::add(Tile* tile)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::remove(Tile* tile, Item* item)
+void SelectionArea::remove(Tile* tile, Item* item)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -149,7 +149,7 @@ void Selection::remove(Tile* tile, Item* item)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::remove(Tile* tile, Spawn* spawn)
+void SelectionArea::remove(Tile* tile, Spawn* spawn)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -163,7 +163,7 @@ void Selection::remove(Tile* tile, Spawn* spawn)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::remove(Tile* tile, Creature* creature)
+void SelectionArea::remove(Tile* tile, Creature* creature)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -177,7 +177,7 @@ void Selection::remove(Tile* tile, Creature* creature)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::remove(Tile* tile)
+void SelectionArea::remove(Tile* tile)
 {
 	ASSERT(subsession);
 
@@ -187,7 +187,7 @@ void Selection::remove(Tile* tile)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::addInternal(Tile* tile)
+void SelectionArea::addInternal(Tile* tile)
 {
 	ASSERT(tile);
 
@@ -195,7 +195,7 @@ void Selection::addInternal(Tile* tile)
 	erase_iterator = tiles.begin();
 }
 
-void Selection::removeInternal(Tile* tile)
+void SelectionArea::removeInternal(Tile* tile)
 {
 	ASSERT(tile);
 #ifdef __DEBUG_MODE__
@@ -228,7 +228,7 @@ void Selection::removeInternal(Tile* tile)
 	} while(true);
 }
 
-void Selection::clear()
+void SelectionArea::clear()
 {
 	if(session) {
 		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++) {
@@ -244,7 +244,7 @@ void Selection::clear()
 	}
 }
 
-void Selection::start(SessionFlags flags)
+void SelectionArea::start(SessionFlags flags)
 {
 	if(!(flags & INTERNAL)) {
 		if(flags & SUBTHREAD) {
@@ -258,7 +258,7 @@ void Selection::start(SessionFlags flags)
 	busy = true;
 }
 
-void Selection::commit()
+void SelectionArea::commit()
 {
 	erase_iterator = tiles.begin();
 	if(session) {
@@ -276,7 +276,7 @@ void Selection::commit()
 	}
 }
 
-void Selection::finish(SessionFlags flags)
+void SelectionArea::finish(SessionFlags flags)
 {
 	erase_iterator = tiles.begin();
 	if(!(flags & INTERNAL)) {
@@ -300,7 +300,7 @@ void Selection::finish(SessionFlags flags)
 	busy = false;
 }
 
-void Selection::updateSelectionCount()
+void SelectionArea::updateSelectionCount()
 {
 	if(size() > 0) {
 		wxString ss;
@@ -313,7 +313,7 @@ void Selection::updateSelectionCount()
 	}
 }
 
-void Selection::join(SelectionThread* thread)
+void SelectionArea::join(SelectionThread* thread)
 {
 	thread->Wait();
 
@@ -348,7 +348,7 @@ void SelectionThread::Execute()
 
 wxThread::ExitCode SelectionThread::Entry()
 {
-	selection.start(Selection::SUBTHREAD);
+	selection.start(SelectionArea::SUBTHREAD);
 	for(int z = start.z; z >= end.z; --z) {
 		for(int x = start.x; x <= end.x; ++x) {
 			for(int y = start.y; y <= end.y; ++y) {
@@ -365,7 +365,7 @@ wxThread::ExitCode SelectionThread::Entry()
 		}
 	}
 	result = selection.subsession;
-	selection.finish(Selection::SUBTHREAD);
+	selection.finish(SelectionArea::SUBTHREAD);
 
 	return nullptr;
 }

@@ -22,7 +22,7 @@ class Town;
 class Position;
 class Editor;
 class GUI;
-class Selection;
+class SelectionArea;
 class CopyBuffer;
 class ItemType;
 class Creatures;
