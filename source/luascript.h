@@ -38,6 +38,8 @@ public:
 
 	bool init();
 
+	wxString runScript(const wxString& script);
+
 	// Push
 	static void pushBoolean(lua_State* L, bool value);
 	static void pushPosition(lua_State* L, const Position& position, int32_t stackpos = 0);
@@ -195,7 +197,6 @@ public:
 
 	static int luaErrorHandler(lua_State* L);
 	static int protectedCall(lua_State* L, int nargs, int nresults);
-	bool loadFile(const wxFileName& file);
 
 	lua_State* luaState;
 

@@ -365,6 +365,9 @@
     <ClInclude Include="..\..\source\luascript.h">
       <Filter>scripting</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\scripting_window.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -635,6 +638,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\luascript.cpp">
       <Filter>scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\scripting_window.cpp">
+      <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

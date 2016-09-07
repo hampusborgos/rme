@@ -123,11 +123,6 @@
         <item name="$Leave Server" action="LIVE_CLOSE" help="Leave this live mapping session."/>
     </menu>
     -->
-    <!--
-    <menu name="$Debug">
-        <item name="$Debug .dat" action="DEBUG_VIEW_DAT" help="View all item sprites available."/>
-    </menu>
-    -->
     <menu name="F$loor">
         <item name="Floor 0" action="FLOOR_0" help=""/>
         <item name="Floor 1" action="FLOOR_1" help=""/>
@@ -145,6 +140,10 @@
         <item name="Floor 13" action="FLOOR_13" help=""/>
         <item name="Floor 14" action="FLOOR_14" help=""/>
         <item name="Floor 15" action="FLOOR_15" help=""/>
+    </menu>
+    <menu name="$Tools">
+        <item name="$Scripting..." action="TOOLS_SCRIPTING" help=""/>
+        <!--<item name="$Debug .dat" action="TOOLS_VIEW_DAT" help="View all item sprites available."/>-->
     </menu>
     <menu name="$About">
         <item name="$Extensions..." hotkey="F2" action="EXTENSIONS" help=""/>

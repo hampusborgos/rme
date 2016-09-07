@@ -177,14 +177,8 @@ bool Application::OnInit()
 	// Show all windows
 	g_gui.root->Show(true);
 
-	// Initialize and load lua
-	if(g_lua.init()) {
-		wxFileName filename;
-		filename.Assign(g_gui.getFoundDataDirectory() + wxT("init.lua"));
-		if(!g_lua.loadFile(filename)) {
-			wxLogError(wxT("Unable to run script init.lua!"));
-		}
-	}
+	// Initialize lua
+	g_lua.init();
 
 	// Set idle event handling mode
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);

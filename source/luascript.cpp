@@ -44,6 +44,32 @@ bool LuaInterface::init()
 	return true;
 }
 
+wxString LuaInterface::runScript(const wxString& script)
+{
+	if(script.empty()) {
+		lua_pushnil(luaState);
+		return wxEmptyString;
+	}
+
+	// loads file the script at stack top
+	int ret = luaL_loadbuffer(luaState, script.c_str(), script.length(), "");
+	if (ret != 0)
+		return popString(luaState);
+
+	// check that it is loaded as a function
+	if (!isFunction(luaState, -1)) {
+		return wxEmptyString;
+	}
+
+	// execute it
+	ret = protectedCall(luaState, 0, 0);
+	if (ret != 0) {
+		return popString(luaState);
+	}
+
+	return wxT("done!");
+}
+
 // Push
 void LuaInterface::pushBoolean(lua_State* L, bool value)
 {
@@ -571,8 +597,8 @@ void LuaInterface::registerFunctions()
 
 int LuaInterface::luaErrorHandler(lua_State* L)
 {
-	const wxString& errorMessage = popString(L);
-	g_gui.ShowTextBox(g_gui.root, wxT("Error"), errorMessage);
+	//const wxString& errorMessage = popString(L);
+	//g_gui.ShowTextBox(g_gui.root, wxT("Error"), errorMessage);
 	return 1;
 }
 
@@ -588,24 +614,3 @@ int LuaInterface::protectedCall(lua_State* L, int nargs, int nresults)
 	return ret;
 }
 
-bool LuaInterface::loadFile(const wxFileName& file)
-{
-	//loads file as a chunk at stack top
-	int ret = luaL_loadfile(luaState, (file.GetFullPath()).c_str());
-	if(ret != 0) {
-		return false;
-	}
-
-	//check that it is loaded as a function
-	if(!isFunction(luaState, -1)) {
-		return false;
-	}
-
-	//execute it
-	ret = protectedCall(luaState, 0, 0);
-	if(ret != 0) {
-		return false;
-	}
-
-	return true;
-}

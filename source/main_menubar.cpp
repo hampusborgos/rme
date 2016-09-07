@@ -27,6 +27,7 @@
 #include "dat_debug_view.h"
 #include "result_window.h"
 #include "extension_window.h"
+#include "scripting_window.h"
 
 #include "gui.h"
 
@@ -169,7 +170,9 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(FLOOR_14, wxITEM_RADIO, OnChangeFloor);
 	MAKE_ACTION(FLOOR_15, wxITEM_RADIO, OnChangeFloor);
 
-	MAKE_ACTION(DEBUG_VIEW_DAT, wxITEM_NORMAL, OnDebugViewDat);
+	MAKE_ACTION(TOOLS_SCRIPTING, wxITEM_NORMAL, OnToolsScripting);
+	MAKE_ACTION(TOOLS_VIEW_DAT, wxITEM_NORMAL, OnToolsViewDat);
+	
 	MAKE_ACTION(EXTENSIONS, wxITEM_NORMAL, OnListExtensions);
 	MAKE_ACTION(GOTO_WEBSITE, wxITEM_NORMAL, OnGotoWebsite);
 	MAKE_ACTION(ABOUT, wxITEM_NORMAL, OnAbout);
@@ -339,7 +342,7 @@ void MainMenuBar::Update()
 	EnableItem(LIVE_JOIN, loaded);
 	EnableItem(LIVE_CLOSE, is_live);
 
-	EnableItem(DEBUG_VIEW_DAT, loaded);
+	EnableItem(TOOLS_VIEW_DAT, loaded);
 
 	UpdateFloorMenu();
 }
@@ -740,7 +743,13 @@ void MainMenuBar::OnExportMinimap(wxCommandEvent& WXUNUSED(event))
 	}
 }
 
-void MainMenuBar::OnDebugViewDat(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnToolsScripting(wxCommandEvent& WXUNUSED(event))
+{
+	ScriptingWindow window = newd ScriptingWindow(frame);
+	window.ShowModal();
+}
+
+void MainMenuBar::OnToolsViewDat(wxCommandEvent& WXUNUSED(event))
 {
 	wxDialog dlg(frame, wxID_ANY, wxT("Debug .dat file"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 	new DatDebugView(&dlg);
