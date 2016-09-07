@@ -74,6 +74,8 @@ public: // Functions
 	void addAction(Action* action, int stacking_delay = 0);
 
 	// Some simple actions that work on the map (these will work through the undo queue)
+	// Creates a new selected area.
+	bool createSelection(Position start, Position end);
 	// Moves the selected area by the offset
 	bool moveSelection(Position offset);
 	// Deletes all selected items

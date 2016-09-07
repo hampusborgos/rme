@@ -870,6 +870,85 @@ void Editor::clearModifiedTileState(bool showdialog)
 	}
 }
 
+bool Editor::createSelection(Position start, Position end)
+{
+	if(!g_gui.IsSelectionMode() || start == end)
+		return false;
+
+	int tmp = end.x;
+	end.x = start.x > tmp ? start.x : tmp;
+	start.x = start.x > tmp ? tmp : start.x;
+
+	tmp = end.y;
+	end.y = start.y > tmp ? start.y : tmp;
+	start.y = start.y > tmp ? tmp : start.y;
+
+	tmp = end.z;
+	end.z = start.z > tmp ? start.z : tmp;
+	start.z = start.z > tmp ? tmp : start.z;
+
+	int numtiles = 0;
+	int threadcount = std::max(settings.getInteger(Config::WORKER_THREADS), 1);
+	int start_x = 0, start_y = 0, start_z = 0;
+	int end_x = 0, end_y = 0, end_z = 0;
+
+	// Current floor.
+	if(start.z == end.z) {
+		start_z = end_z = end.z;
+		start_x = start.x;
+		start_y = start.y;
+		end_x = end.x;
+		end_y = end.y;
+	}
+
+	if(numtiles < 500) {
+		// No point in threading for such a small set.
+		threadcount = 1;
+	}
+
+	// Subdivide the selection area
+	// We know it's a square, just split it into several areas
+	int width = end_x - start_x;
+	if(width < threadcount) {
+		threadcount = min(1, width);
+	}
+
+	// Let's divide!
+	int remainder = width;
+	int cleared = 0;
+	std::vector<SelectionThread*> threads;
+	if(width == 0) {
+		threads.push_back(newd SelectionThread(*this, Position(start_x, start_y, start_z), Position(start_x, end_y, end_z)));
+	} else {
+		for(int i = 0; i < threadcount; ++i) {
+			int chunksize = width / threadcount;
+			// The last threads takes all the remainder
+			if(i == threadcount - 1) {
+				chunksize = remainder;
+			}
+			threads.push_back(newd SelectionThread(*this, Position(start_x + cleared, start_y, start_z), Position(start_x + cleared + chunksize, end_y, end_z)));
+			cleared += chunksize;
+			remainder -= chunksize;
+		}
+	}
+
+	ASSERT(cleared == width);
+	ASSERT(remainder == 0);
+
+	selection.start(); // Start a selection session
+	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
+		(*iter)->Execute();
+	}
+
+	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
+		selection.join(*iter);
+	}
+
+	selection.finish(); // Finish the selection session
+	selection.updateSelectionCount();
+	return true;
+}
+
 bool Editor::moveSelection(Position offset)
 {
 	if (selection.size() == 0) {

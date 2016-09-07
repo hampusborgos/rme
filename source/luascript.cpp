@@ -260,6 +260,24 @@ int LuaInterface::luaEditorCreate(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorCreateSelection(lua_State* L)
+{
+	// editor:createSelection(start, end)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		g_gui.SetSelectionMode();
+		const Position& start = getPosition(L, 2);
+		const Position& end = getPosition(L, 3);
+		if(editor->createSelection(start, end)) {
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
 int LuaInterface::luaEditorMoveSelection(lua_State* L)
 {
 	// editor:moveSelection(position)
@@ -575,6 +593,7 @@ void LuaInterface::registerFunctions()
 	// Editor
 	registerClass("Editor", "", LuaInterface::luaEditorCreate);
 	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Editor", "createSelection", LuaInterface::luaEditorCreateSelection);
 	registerMethod("Editor", "moveSelection", LuaInterface::luaEditorMoveSelection);
 	registerMethod("Editor", "destroySelection", LuaInterface::luaEditorDestroySelection);
 	registerMethod("Editor", "borderizeSelection", LuaInterface::luaEditorBorderizeSelection);
