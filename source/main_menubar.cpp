@@ -172,7 +172,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 
 	MAKE_ACTION(TOOLS_SCRIPTING, wxITEM_NORMAL, OnToolsScripting);
 	MAKE_ACTION(TOOLS_VIEW_DAT, wxITEM_NORMAL, OnToolsViewDat);
-	
+
 	MAKE_ACTION(EXTENSIONS, wxITEM_NORMAL, OnListExtensions);
 	MAKE_ACTION(GOTO_WEBSITE, wxITEM_NORMAL, OnGotoWebsite);
 	MAKE_ACTION(ABOUT, wxITEM_NORMAL, OnAbout);
@@ -351,16 +351,16 @@ void MainMenuBar::LoadValues()
 {
 	using namespace MenuBar;
 
-	CheckItem(SELECT_MODE_COMPENSATE, settings.getBoolean(Config::COMPENSATED_SELECT));
+	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
 
 	if(IsItemChecked(MenuBar::SELECT_MODE_CURRENT))
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
 	else if(IsItemChecked(MenuBar::SELECT_MODE_LOWER))
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_ALL_FLOORS);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_ALL_FLOORS);
 	else if(IsItemChecked(MenuBar::SELECT_MODE_VISIBLE))
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_VISIBLE_FLOORS);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_VISIBLE_FLOORS);
 
-	switch(settings.getInteger(Config::SELECTION_TYPE)) {
+	switch(g_settings.getInteger(Config::SELECTION_TYPE)) {
 		case SELECT_CURRENT_FLOOR:
 			CheckItem(SELECT_MODE_CURRENT, true);
 			break;
@@ -373,32 +373,32 @@ void MainMenuBar::LoadValues()
 			break;
 	}
 
-	CheckItem(AUTOMAGIC, settings.getBoolean(Config::USE_AUTOMAGIC));
+	CheckItem(AUTOMAGIC, g_settings.getBoolean(Config::USE_AUTOMAGIC));
 
-	CheckItem(SHOW_SHADE, settings.getBoolean(Config::SHOW_SHADE));
-	CheckItem(SHOW_INGAME_BOX, settings.getBoolean(Config::SHOW_INGAME_BOX));
-	CheckItem(SHOW_ALL_FLOORS, settings.getBoolean(Config::SHOW_ALL_FLOORS));
-	CheckItem(GHOST_ITEMS, settings.getBoolean(Config::TRANSPARENT_ITEMS));
-	CheckItem(GHOST_HIGHER_FLOORS, settings.getBoolean(Config::TRANSPARENT_FLOORS));
-	CheckItem(SHOW_EXTRA, !settings.getBoolean(Config::SHOW_EXTRA));
-	CheckItem(SHOW_GRID, settings.getBoolean(Config::SHOW_GRID));
-	CheckItem(HIGHLIGHT_ITEMS, settings.getBoolean(Config::HIGHLIGHT_ITEMS));
-	CheckItem(SHOW_CREATURES, settings.getBoolean(Config::SHOW_CREATURES));
-	CheckItem(SHOW_SPAWNS, settings.getBoolean(Config::SHOW_SPAWNS));
-	CheckItem(SHOW_SPECIAL, settings.getBoolean(Config::SHOW_SPECIAL_TILES));
-	CheckItem(SHOW_ONLY_COLORS, settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS));
-	CheckItem(SHOW_ONLY_MODIFIED, settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES));
-	CheckItem(SHOW_HOUSES, settings.getBoolean(Config::SHOW_HOUSES));
+	CheckItem(SHOW_SHADE, g_settings.getBoolean(Config::SHOW_SHADE));
+	CheckItem(SHOW_INGAME_BOX, g_settings.getBoolean(Config::SHOW_INGAME_BOX));
+	CheckItem(SHOW_ALL_FLOORS, g_settings.getBoolean(Config::SHOW_ALL_FLOORS));
+	CheckItem(GHOST_ITEMS, g_settings.getBoolean(Config::TRANSPARENT_ITEMS));
+	CheckItem(GHOST_HIGHER_FLOORS, g_settings.getBoolean(Config::TRANSPARENT_FLOORS));
+	CheckItem(SHOW_EXTRA, !g_settings.getBoolean(Config::SHOW_EXTRA));
+	CheckItem(SHOW_GRID, g_settings.getBoolean(Config::SHOW_GRID));
+	CheckItem(HIGHLIGHT_ITEMS, g_settings.getBoolean(Config::HIGHLIGHT_ITEMS));
+	CheckItem(SHOW_CREATURES, g_settings.getBoolean(Config::SHOW_CREATURES));
+	CheckItem(SHOW_SPAWNS, g_settings.getBoolean(Config::SHOW_SPAWNS));
+	CheckItem(SHOW_SPECIAL, g_settings.getBoolean(Config::SHOW_SPECIAL_TILES));
+	CheckItem(SHOW_ONLY_COLORS, g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS));
+	CheckItem(SHOW_ONLY_MODIFIED, g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES));
+	CheckItem(SHOW_HOUSES, g_settings.getBoolean(Config::SHOW_HOUSES));
 }
 
 void MainMenuBar::LoadRecentFiles()
 {
-	recentFiles.Load(settings.getConfigObject());
+	recentFiles.Load(g_settings.getConfigObject());
 }
 
 void MainMenuBar::SaveRecentFiles()
 {
-	recentFiles.Save(settings.getConfigObject());
+	recentFiles.Save(g_settings.getConfigObject());
 }
 
 void MainMenuBar::AddRecentFile(FileName file)
@@ -637,7 +637,7 @@ void MainMenuBar::OnOpenRecent(wxCommandEvent& event)
 
 void MainMenuBar::OnOpen(wxCommandEvent& WXUNUSED(event))
 {
-	wxString wildcard = (settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_LOAD_FILE_WILDCARD_OTGZ : MAP_LOAD_FILE_WILDCARD);
+	wxString wildcard = (g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_LOAD_FILE_WILDCARD_OTGZ : MAP_LOAD_FILE_WILDCARD);
 	wxFileDialog filedlg(frame, wxT("Open map file"), wxT(""), wxT(""), wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 
 	int ok = filedlg.ShowModal();
@@ -659,7 +659,7 @@ void MainMenuBar::OnSave(wxCommandEvent& WXUNUSED(event))
 	if(g_gui.GetCurrentMap().hasFile()) {
 		g_gui.SaveCurrentMap(true);
 	} else {
-		wxString wildcard = (settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
+		wxString wildcard = (g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
 		wxFileDialog file(frame, wxT("Save..."), wxT(""), wxT(""), wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 		int ok = file.ShowModal();
 
@@ -673,7 +673,7 @@ void MainMenuBar::OnSaveAs(wxCommandEvent& WXUNUSED(event))
 	if(!g_gui.IsEditorOpen())
 		return;
 
-	wxString wildcard = (settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
+	wxString wildcard = (g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
 	wxFileDialog file(frame, wxT("Save As..."), wxT(""), wxT(""), wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 	int ok = file.ShowModal();
 
@@ -809,7 +809,7 @@ namespace OnSearchForItem
 
 			if(item->getID() == itemid) {
 				found.push_back(std::make_pair(tile, item));
-				if(found.size() >= size_t(settings.getInteger(Config::REPLACE_SIZE)))
+				if(found.size() >= size_t(g_settings.getInteger(Config::REPLACE_SIZE)))
 					more_than_value = true;
 			}
 		}
@@ -833,7 +833,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 		if(func.more_than_value) {
 			wxString msg;
-			msg << wxT("Only the first ") << size_t(settings.getInteger(Config::REPLACE_SIZE)) << wxT(" results will be displayed.");
+			msg << wxT("Only the first ") << size_t(g_settings.getInteger(Config::REPLACE_SIZE)) << wxT(" results will be displayed.");
 			g_gui.PopupDialog(wxT("Notice"), msg, wxOK);
 		}
 
@@ -1043,14 +1043,14 @@ void MainMenuBar::OnSearchForWriteable(wxCommandEvent& WXUNUSED(event)) {
 
 void MainMenuBar::OnSelectionTypeChange(wxCommandEvent& WXUNUSED(event))
 {
-	settings.setInteger(Config::COMPENSATED_SELECT, IsItemChecked(MenuBar::SELECT_MODE_COMPENSATE));
+	g_settings.setInteger(Config::COMPENSATED_SELECT, IsItemChecked(MenuBar::SELECT_MODE_COMPENSATE));
 
 	if(IsItemChecked(MenuBar::SELECT_MODE_CURRENT))
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
 	else if(IsItemChecked(MenuBar::SELECT_MODE_LOWER))
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_ALL_FLOORS);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_ALL_FLOORS);
 	else if(IsItemChecked(MenuBar::SELECT_MODE_VISIBLE))
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_VISIBLE_FLOORS);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_VISIBLE_FLOORS);
 }
 
 
@@ -1092,9 +1092,9 @@ void MainMenuBar::OnPaste(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnToggleAutomagic(wxCommandEvent& WXUNUSED(event))
 {
-	settings.setInteger(Config::USE_AUTOMAGIC, IsItemChecked(MenuBar::AUTOMAGIC));
-	settings.setInteger(Config::BORDER_IS_GROUND, IsItemChecked(MenuBar::AUTOMAGIC));
-	if(settings.getInteger(Config::USE_AUTOMAGIC))
+	g_settings.setInteger(Config::USE_AUTOMAGIC, IsItemChecked(MenuBar::AUTOMAGIC));
+	g_settings.setInteger(Config::BORDER_IS_GROUND, IsItemChecked(MenuBar::AUTOMAGIC));
+	if(g_settings.getInteger(Config::USE_AUTOMAGIC))
 		g_gui.SetStatusText(wxT("Automagic enabled."));
 	else
 		g_gui.SetStatusText(wxT("Automagic disabled."));
@@ -1688,12 +1688,12 @@ void MainMenuBar::OnToggleFullscreen(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnTakeScreenshot(wxCommandEvent& WXUNUSED(event))
 {
-	wxString path = wxstr(settings.getString(Config::SCREENSHOT_DIRECTORY));
+	wxString path = wxstr(g_settings.getString(Config::SCREENSHOT_DIRECTORY));
 	if(path.size() > 0 && (path.Last() == wxT('/') || path.Last() == wxT('\\')))
 		path = path + wxT("/");
 
 	g_gui.GetCurrentMapTab()->GetView()->GetCanvas()->TakeScreenshot(
-		path, wxstr(settings.getString(Config::SCREENSHOT_FORMAT))
+		path, wxstr(g_settings.getString(Config::SCREENSHOT_FORMAT))
 	);
 
 }
@@ -1717,7 +1717,7 @@ void MainMenuBar::OnZoomNormal(wxCommandEvent& event)
 
 void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)
 {
-	settings.setInteger(Config::SHOW_ALL_FLOORS, IsItemChecked(MenuBar::SHOW_ALL_FLOORS));
+	g_settings.setInteger(Config::SHOW_ALL_FLOORS, IsItemChecked(MenuBar::SHOW_ALL_FLOORS));
 	if(IsItemChecked(MenuBar::SHOW_ALL_FLOORS)) {
 		EnableItem(MenuBar::SELECT_MODE_VISIBLE, true);
 		EnableItem(MenuBar::SELECT_MODE_LOWER, true);
@@ -1725,23 +1725,23 @@ void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)
 		EnableItem(MenuBar::SELECT_MODE_VISIBLE, false);
 		EnableItem(MenuBar::SELECT_MODE_LOWER, false);
 		CheckItem(MenuBar::SELECT_MODE_CURRENT, true);
-		settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
+		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_CURRENT_FLOOR);
 	}
-	settings.setInteger(Config::TRANSPARENT_FLOORS, IsItemChecked(MenuBar::GHOST_HIGHER_FLOORS));
-	settings.setInteger(Config::TRANSPARENT_ITEMS, IsItemChecked(MenuBar::GHOST_ITEMS));
-	settings.setInteger(Config::SHOW_INGAME_BOX, IsItemChecked(MenuBar::SHOW_INGAME_BOX));
-	settings.setInteger(Config::SHOW_GRID, IsItemChecked(MenuBar::SHOW_GRID));
-	settings.setInteger(Config::SHOW_EXTRA, !IsItemChecked(MenuBar::SHOW_EXTRA));
+	g_settings.setInteger(Config::TRANSPARENT_FLOORS, IsItemChecked(MenuBar::GHOST_HIGHER_FLOORS));
+	g_settings.setInteger(Config::TRANSPARENT_ITEMS, IsItemChecked(MenuBar::GHOST_ITEMS));
+	g_settings.setInteger(Config::SHOW_INGAME_BOX, IsItemChecked(MenuBar::SHOW_INGAME_BOX));
+	g_settings.setInteger(Config::SHOW_GRID, IsItemChecked(MenuBar::SHOW_GRID));
+	g_settings.setInteger(Config::SHOW_EXTRA, !IsItemChecked(MenuBar::SHOW_EXTRA));
 
-	settings.setInteger(Config::SHOW_SHADE, IsItemChecked(MenuBar::SHOW_SHADE));
-	settings.setInteger(Config::SHOW_SPECIAL_TILES, IsItemChecked(MenuBar::SHOW_SPECIAL));
-	settings.setInteger(Config::SHOW_ONLY_TILEFLAGS, IsItemChecked(MenuBar::SHOW_ONLY_COLORS));
-	settings.setInteger(Config::SHOW_ONLY_MODIFIED_TILES, IsItemChecked(MenuBar::SHOW_ONLY_MODIFIED));
-	settings.setInteger(Config::SHOW_CREATURES, IsItemChecked(MenuBar::SHOW_CREATURES));
-	settings.setInteger(Config::SHOW_SPAWNS, IsItemChecked(MenuBar::SHOW_SPAWNS));
-	settings.setInteger(Config::SHOW_HOUSES, IsItemChecked(MenuBar::SHOW_HOUSES));
-	settings.setInteger(Config::HIGHLIGHT_ITEMS, IsItemChecked(MenuBar::HIGHLIGHT_ITEMS));
-	settings.setInteger(Config::SHOW_BLOCKING, IsItemChecked(MenuBar::SHOW_PATHING));
+	g_settings.setInteger(Config::SHOW_SHADE, IsItemChecked(MenuBar::SHOW_SHADE));
+	g_settings.setInteger(Config::SHOW_SPECIAL_TILES, IsItemChecked(MenuBar::SHOW_SPECIAL));
+	g_settings.setInteger(Config::SHOW_ONLY_TILEFLAGS, IsItemChecked(MenuBar::SHOW_ONLY_COLORS));
+	g_settings.setInteger(Config::SHOW_ONLY_MODIFIED_TILES, IsItemChecked(MenuBar::SHOW_ONLY_MODIFIED));
+	g_settings.setInteger(Config::SHOW_CREATURES, IsItemChecked(MenuBar::SHOW_CREATURES));
+	g_settings.setInteger(Config::SHOW_SPAWNS, IsItemChecked(MenuBar::SHOW_SPAWNS));
+	g_settings.setInteger(Config::SHOW_HOUSES, IsItemChecked(MenuBar::SHOW_HOUSES));
+	g_settings.setInteger(Config::HIGHLIGHT_ITEMS, IsItemChecked(MenuBar::HIGHLIGHT_ITEMS));
+	g_settings.setInteger(Config::SHOW_BLOCKING, IsItemChecked(MenuBar::SHOW_PATHING));
 
 	g_gui.RefreshView();
 }

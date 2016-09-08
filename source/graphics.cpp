@@ -675,7 +675,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 		total_pics = u16;
 	}
 
-	if(!settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
+	if(!g_settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 		spritefile = nstr(datafile.GetFullPath());
 		unloaded = false;
 		return true;
@@ -726,7 +726,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 
 bool GraphicManager::loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite_id)
 {
-	if(settings.getInteger(Config::USE_MEMCACHED_SPRITES))
+	if(g_settings.getInteger(Config::USE_MEMCACHED_SPRITES))
 		return false;
 
 	if(sprite_id == 0) {
@@ -765,8 +765,8 @@ void GraphicManager::addSpriteToCleanup(GameSprite* spr)
 {
 	cleanup_list.push_back(spr);
 	// Clean if needed
-	if(cleanup_list.size() > std::max<uint32_t>(100, settings.getInteger(Config::SOFTWARE_CLEAN_THRESHOLD))) {
-		for(int i = 0; i < settings.getInteger(Config::SOFTWARE_CLEAN_SIZE) && static_cast<uint32_t>(i) < cleanup_list.size(); ++i) {
+	if(cleanup_list.size() > std::max<uint32_t>(100, g_settings.getInteger(Config::SOFTWARE_CLEAN_THRESHOLD))) {
+		for(int i = 0; i < g_settings.getInteger(Config::SOFTWARE_CLEAN_SIZE) && static_cast<uint32_t>(i) < cleanup_list.size(); ++i) {
 			cleanup_list.front()->unloadDC();
 			cleanup_list.pop_front();
 		}
@@ -775,10 +775,10 @@ void GraphicManager::addSpriteToCleanup(GameSprite* spr)
 
 void GraphicManager::garbageCollection()
 {
-	if(settings.getInteger(Config::TEXTURE_MANAGEMENT)) {
+	if(g_settings.getInteger(Config::TEXTURE_MANAGEMENT)) {
 		int t = time(nullptr);
-		if(loaded_textures > settings.getInteger(Config::TEXTURE_CLEAN_THRESHOLD) &&
-			t - lastclean > settings.getInteger(Config::TEXTURE_CLEAN_PULSE)) {
+		if(loaded_textures > g_settings.getInteger(Config::TEXTURE_CLEAN_THRESHOLD) &&
+			t - lastclean > g_settings.getInteger(Config::TEXTURE_CLEAN_PULSE)) {
 			ImageMap::iterator iit = image_space.begin();
 			while(iit != image_space.end()) {
 				iit->second->clean(t);
@@ -941,7 +941,7 @@ GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit
 wxMemoryDC* GameSprite::getDC(SpriteSize sz)
 {
 	if(!dc[sz]) {
-		const int bgshade = settings.getInteger(Config::ICON_BACKGROUND);
+		const int bgshade = g_settings.getInteger(Config::ICON_BACKGROUND);
 
 		uint8_t* rgb = nullptr;
 		uint32_t ht, wt;
@@ -1222,7 +1222,7 @@ void GameSprite::Image::visit()
 
 void GameSprite::Image::clean(int time)
 {
-	if(isGLLoaded && time - lastaccess > settings.getInteger(Config::TEXTURE_LONGEVITY)) {
+	if(isGLLoaded && time - lastaccess > g_settings.getInteger(Config::TEXTURE_LONGEVITY)) {
 		unloadGLTexture(0);
 	}
 }
@@ -1243,7 +1243,7 @@ GameSprite::NormalImage::~NormalImage()
 void GameSprite::NormalImage::clean(int time)
 {
 	Image::clean(time);
-	if(time - lastaccess > 5 && !settings.getInteger(Config::USE_MEMCACHED_SPRITES)) { // We keep dumps around for 5 seconds.
+	if(time - lastaccess > 5 && !g_settings.getInteger(Config::USE_MEMCACHED_SPRITES)) { // We keep dumps around for 5 seconds.
 		delete[] dump;
 		dump = nullptr;
 	}
@@ -1252,7 +1252,7 @@ void GameSprite::NormalImage::clean(int time)
 uint8_t* GameSprite::NormalImage::getRGBData()
 {
 	if(dump == nullptr) {
-		if(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
+		if(g_settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 			return nullptr;
 		} else {
 			if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
@@ -1343,7 +1343,7 @@ uint8_t* GameSprite::NormalImage::getRGBData()
 uint8_t* GameSprite::NormalImage::getRGBAData()
 {
 	if(dump == nullptr) {
-		if(settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
+		if(g_settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 			return nullptr;
 		} else {
 			if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {

@@ -1504,20 +1504,20 @@ void MapDrawer::glColor(MapDrawer::BrushColor color)
 	switch(color) {
 		case COLOR_BRUSH:
 			glColor4ub(
-				settings.getInteger(Config::CURSOR_RED),
-				settings.getInteger(Config::CURSOR_GREEN),
-				settings.getInteger(Config::CURSOR_BLUE),
-				settings.getInteger(Config::CURSOR_ALPHA)
+				g_settings.getInteger(Config::CURSOR_RED),
+				g_settings.getInteger(Config::CURSOR_GREEN),
+				g_settings.getInteger(Config::CURSOR_BLUE),
+				g_settings.getInteger(Config::CURSOR_ALPHA)
 			);
 			break;
 
 		case COLOR_FLAG_BRUSH:
 		case COLOR_HOUSE_BRUSH:
 			glColor4ub(
-				settings.getInteger(Config::CURSOR_ALT_RED),
-				settings.getInteger(Config::CURSOR_ALT_GREEN),
-				settings.getInteger(Config::CURSOR_ALT_BLUE),
-				settings.getInteger(Config::CURSOR_ALT_ALPHA)
+				g_settings.getInteger(Config::CURSOR_ALT_RED),
+				g_settings.getInteger(Config::CURSOR_ALT_GREEN),
+				g_settings.getInteger(Config::CURSOR_ALT_BLUE),
+				g_settings.getInteger(Config::CURSOR_ALT_ALPHA)
 			);
 			break;
 

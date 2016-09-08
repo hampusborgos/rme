@@ -552,7 +552,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						continue;
 					}
 					// Adjust radius
-					radius = min(radius, uint32_t(settings.getInteger(Config::MAX_SPAWN_RADIUS)));
+					radius = min(radius, uint32_t(g_settings.getInteger(Config::MAX_SPAWN_RADIUS)));
 
 					// Create and assign spawn
 					Tile* spawn_tile = map.getTile(spawnpos);
@@ -641,7 +641,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						creature->setSpawnTime(spawntime);
 						creature_tile->creature = creature;
 						if(creature_tile->spawn_count == 0) {
-							// No spawn, create a newd one (this happends if the radius of the spawn has been decreased due to settings)
+							// No spawn, create a newd one (this happends if the radius of the spawn has been decreased due to g_settings)
 							ASSERT(creature_tile->spawn == nullptr);
 							Spawn* spawn = newd Spawn(5);
 							creature_tile->spawn = spawn;

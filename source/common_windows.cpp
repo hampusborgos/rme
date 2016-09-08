@@ -145,7 +145,7 @@ void MapPropertiesWindow::UpdateProtocolList()
 	protocol_choice->Clear();
 
 	ClientVersionList versions;
-	if(settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS)) {
+	if(g_settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS)) {
 		versions = ClientVersion::getAllVisible();
 	} else {
 		MapVersionID map_version = MAP_OTBM_1;
@@ -1674,7 +1674,7 @@ TextBox::TextBox(wxWindow* parent, const wxString& title, const wxString& text):
 	wxSizer* choicesizer = newd wxBoxSizer(wxHORIZONTAL);
 	choicesizer->Add(newd wxButton(this, wxID_CANCEL, wxT("OK")), wxSizerFlags(1).Center());
 	topsizer->Add(choicesizer, wxSizerFlags(0).Center());
-	
+
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
 }

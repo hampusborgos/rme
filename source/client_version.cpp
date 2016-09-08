@@ -109,7 +109,7 @@ void ClientVersion::loadVersions()
 	try
 	{
 		json::mValue read_obj;
-		json::read_or_throw(settings.getString(Config::TIBIA_DATA_DIRS), read_obj);
+		json::read_or_throw(g_settings.getString(Config::TIBIA_DATA_DIRS), read_obj);
 		json::mArray& vers_obj = read_obj.get_array();
 		for(json::mArray::iterator ver_iter = vers_obj.begin(); ver_iter != vers_obj.end(); ++ver_iter) {
 			json::mObject& ver_obj = ver_iter->get_obj();
@@ -342,7 +342,7 @@ void ClientVersion::saveVersions()
 	}
 	std::ostringstream out;
 	json::write(vers_obj, out);
-	settings.setString(Config::TIBIA_DATA_DIRS, out.str());
+	g_settings.setString(Config::TIBIA_DATA_DIRS, out.str());
 }
 
 // Client version class
@@ -436,7 +436,7 @@ bool ClientVersion::hasValidPaths() const
 		return false;
 	}
 
-	if(!settings.getInteger(Config::CHECK_SIGNATURES)) {
+	if(!g_settings.getInteger(Config::CHECK_SIGNATURES)) {
 		return true;
 	}
 

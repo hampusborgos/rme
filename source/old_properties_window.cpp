@@ -67,7 +67,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		// Now we add the subitems!
 		wxSizer* contents_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Contents"));
 
-		bool use_large_sprites = settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
+		bool use_large_sprites = g_settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
 		wxSizer* horizontal_sizer = nullptr;
 		const int additional_height_increment = (use_large_sprites? 40 : 24);
 		int additional_height = 0;
@@ -395,7 +395,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	subsizer->AddGrowableCol(1);
 
 	subsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawn size")));
-	count_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_spawn->getSize()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, settings.getInteger(Config::MAX_SPAWN_RADIUS), edit_spawn->getSize());
+	count_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_spawn->getSize()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, g_settings.getInteger(Config::MAX_SPAWN_RADIUS), edit_spawn->getSize());
 	// count_field->SetSelection(-1, -1);
 	subsizer->Add(count_field, wxSizerFlags(1).Expand());
 
@@ -569,7 +569,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 			*/
 
-			if(door && settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
+			if(door && g_settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
 				if(edit_tile && edit_tile->isHouseTile()) {
 					const House* house = edit_map->houses.getHouse(edit_tile->getHouseID());
 					if(house) {

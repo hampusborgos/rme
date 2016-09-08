@@ -82,7 +82,7 @@ void DCButton::SetValue(bool val)
 	state = val;
 	if(state == oldval) {
 		// Cheap to change value to the old one (which is done ALOT)
-		if(GetValue() && settings.getInteger(Config::USE_GUI_SELECTION_SHADOW)) {
+		if(GetValue() && g_settings.getInteger(Config::USE_GUI_SELECTION_SHADOW)) {
 			SetOverlay(g_gui.gfx.getSprite(EDITOR_SPRITE_SELECTION_MARKER));
 		} else {
 			SetOverlay(nullptr);

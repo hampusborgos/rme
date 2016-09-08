@@ -68,7 +68,7 @@ void RAWBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 	if(!itemtype) return;
 
 	bool b = parameter? *reinterpret_cast<bool*>(parameter) : false;
-	if((settings.getInteger(Config::RAW_LIKE_SIMONE) && !b) && itemtype->alwaysOnBottom && itemtype->alwaysOnTopOrder == 2) {
+	if((g_settings.getInteger(Config::RAW_LIKE_SIMONE) && !b) && itemtype->alwaysOnBottom && itemtype->alwaysOnTopOrder == 2) {
 		for(ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
 			Item* item = *iter;
 			if(item->getTopOrder() == itemtype->alwaysOnTopOrder) {

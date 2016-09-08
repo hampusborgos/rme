@@ -1001,7 +1001,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 
 			int32_t spawntime = pugi::cast<int32_t>(creatureNode.attribute("spawntime").value());
 			if(spawntime == 0) {
-				spawntime = settings.getInteger(Config::DEFAULT_SPAWNTIME);
+				spawntime = g_settings.getInteger(Config::DEFAULT_SPAWNTIME);
 			}
 
 			Direction direction = SOUTH;
@@ -1028,7 +1028,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 
 			radius = std::max<int32_t>(radius, std::abs(creaturePosition.x - spawnPosition.x));
 			radius = std::max<int32_t>(radius, std::abs(creaturePosition.y - spawnPosition.y));
-			radius = std::min<int32_t>(radius, settings.getInteger(Config::MAX_SPAWN_RADIUS));
+			radius = std::min<int32_t>(radius, g_settings.getInteger(Config::MAX_SPAWN_RADIUS));
 
 			Tile* creatureTile;
 			if(creaturePosition == spawnPosition) {
@@ -1238,7 +1238,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 	} else {
 		DiskNodeFileWriteHandle f(
 			nstr(identifier.GetFullPath()),
-			(settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
+			(g_settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
 		);
 
 		if(!f.isOk()) {

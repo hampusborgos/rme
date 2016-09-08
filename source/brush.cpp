@@ -441,7 +441,7 @@ void DoorBrush::undraw(BaseMap* map, Tile* tile)
 		Item* item = *it;
 		if(item->isBrushDoor()) {
 			item->getWallBrush()->draw(map, tile, nullptr);
-			if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+			if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 				tile->wallize(map);
 			}
 			return;
@@ -515,7 +515,7 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 			item = transformItem(item, discarded_id, tile);
 		}
 
-		if(settings.getInteger(Config::AUTO_ASSIGN_DOORID) && tile->isHouseTile()) {
+		if(g_settings.getInteger(Config::AUTO_ASSIGN_DOORID) && tile->isHouseTile()) {
 			Map* mmap = dynamic_cast<Map*>(map);
 			Door* door = dynamic_cast<Door*>(item);
 			if(mmap && door) {

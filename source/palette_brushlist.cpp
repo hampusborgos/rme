@@ -379,9 +379,9 @@ BrushIconBox::BrushIconBox(wxWindow *parent, const TilesetCategory *_tileset, Re
 	ASSERT(tileset->getType() >= TILESET_UNKNOWN && tileset->getType() <= TILESET_HOUSE);
 	int width;
 	if(icon_size == RENDER_SIZE_32x32) {
-		width = max(settings.getInteger(Config::PALETTE_COL_COUNT) / 2 + 1, 1);
+		width = max(g_settings.getInteger(Config::PALETTE_COL_COUNT) / 2 + 1, 1);
 	} else {
-		width = max(settings.getInteger(Config::PALETTE_COL_COUNT) + 1, 1);
+		width = max(g_settings.getInteger(Config::PALETTE_COL_COUNT) + 1, 1);
 	}
 
 	// Create buttons
@@ -589,7 +589,7 @@ void BrushListBox::OnKey(wxKeyEvent& event)
 		case WXK_DOWN:
 		case WXK_LEFT:
 		case WXK_RIGHT:
-			if(settings.getInteger(Config::LISTBOX_EATS_ALL_EVENTS)) {
+			if(g_settings.getInteger(Config::LISTBOX_EATS_ALL_EVENTS)) {
 		case WXK_PAGEUP:
 		case WXK_PAGEDOWN:
 		case WXK_HOME:

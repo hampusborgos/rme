@@ -260,9 +260,9 @@ void DoodadBrush::undraw(BaseMap* map, Tile* tile)
 	for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();) {
 		Item* item = *item_iter;
 		if(item->getDoodadBrush() != nullptr) {
-			if(item->isComplex() && settings.getInteger(Config::ERASER_LEAVE_UNIQUE)) {
+			if(item->isComplex() && g_settings.getInteger(Config::ERASER_LEAVE_UNIQUE)) {
 				++item_iter;
-			} else if(settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE)) {
+			} else if(g_settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE)) {
 				// Only delete items of the same doodad brush
 				if(ownsItem(item)) {
 					delete item;
@@ -280,7 +280,7 @@ void DoodadBrush::undraw(BaseMap* map, Tile* tile)
 	}
 
 	if(tile->ground && tile->ground->getDoodadBrush() != nullptr) {
-		if(settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE)) {
+		if(g_settings.getInteger(Config::DOODAD_BRUSH_ERASE_LIKE)) {
 			// Only delete items of the same doodad brush
 			if(ownsItem(tile->ground)) {
 				delete tile->ground;

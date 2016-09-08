@@ -84,7 +84,7 @@ void SelectionArea::add(Tile* tile, Item* item)
 	Tile* new_tile = tile->deepCopy(editor.map);
 	item->deselect();
 
-	if(settings.getInteger(Config::BORDER_IS_GROUND))
+	if(g_settings.getInteger(Config::BORDER_IS_GROUND))
 		if(item->isBorder())
 			new_tile->selectGround();
 
@@ -144,7 +144,7 @@ void SelectionArea::remove(Tile* tile, Item* item)
 	item->deselect();
 	Tile* new_tile = tile->deepCopy(editor.map);
 	if(tmp) item->select();
-	if(item->isBorder() && settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
+	if(item->isBorder() && g_settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -359,7 +359,7 @@ wxThread::ExitCode SelectionThread::Entry()
 				selection.add(tile);
 			}
 		}
-		if(z <= GROUND_LAYER && settings.getInteger(Config::COMPENSATED_SELECT)) {
+		if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 			++start.x; ++start.y;
 			++end.x; ++end.y;
 		}

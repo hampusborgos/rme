@@ -108,7 +108,7 @@ bool Application::OnInit()
 	wxAppConsole::SetInstance(this);
 
 	// Load some internal stuff
-	settings.load();
+	g_settings.load();
 	FixVersionDiscrapencies();
 	g_gui.LoadHotkeys();
 	ClientVersion::loadVersions();
@@ -116,7 +116,7 @@ bool Application::OnInit()
 #ifdef _USE_PROCESS_COM
 	proc_server = nullptr;
 	// Setup inter-process communice!
-	if(settings.getInteger(Config::ONLY_ONE_INSTANCE)) {
+	if(g_settings.getInteger(Config::ONLY_ONE_INSTANCE)) {
 		{
 			// Prevents WX from complaining 'bout there being no server.
 			wxLogNull nolog;
@@ -133,7 +133,7 @@ bool Application::OnInit()
 					connection->Disconnect();
 #if defined __DEBUG_MODE__ && defined __WINDOWS__
 					g_gui.SaveHotkeys();
-					settings.save(true);
+					g_settings.save(true);
 #endif
 					return false;
 				}
@@ -184,26 +184,26 @@ bool Application::OnInit()
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
 
 	// Goto RME website?
-	if(settings.getInteger(Config::GOTO_WEBSITE_ON_BOOT) == 1) {
+	if(g_settings.getInteger(Config::GOTO_WEBSITE_ON_BOOT) == 1) {
 		::wxLaunchDefaultBrowser(wxT("http://www.remeresmapeditor.com/"), wxBROWSER_NEW_WINDOW);
-		settings.setInteger(Config::GOTO_WEBSITE_ON_BOOT, 0);
+		g_settings.setInteger(Config::GOTO_WEBSITE_ON_BOOT, 0);
 	}
 
 	// Check for updates
 #ifdef _USE_UPDATER_
-	if(settings.getInteger(Config::USE_UPDATER) == -1) {
+	if(g_settings.getInteger(Config::USE_UPDATER) == -1) {
 		int ret = g_gui.PopupDialog(
 			wxT("Notice"),
 			wxT("Do you want the editor to automatically check for updates?\n")
 			wxT("It will connect to the internet if you choose yes.\n")
 			wxT("You can change this setting in the preferences later."), wxYES | wxNO);
 		if(ret == wxID_YES) {
-			settings.setInteger(Config::USE_UPDATER, 1);
+			g_settings.setInteger(Config::USE_UPDATER, 1);
 		} else {
-			settings.setInteger(Config::USE_UPDATER, 0);
+			g_settings.setInteger(Config::USE_UPDATER, 0);
 		}
 	}
-	if(settings.getInteger(Config::USE_UPDATER) == 1) {
+	if(g_settings.getInteger(Config::USE_UPDATER) == 1) {
 		UpdateChecker updater;
 		updater.connect(g_gui.root);
 	}
@@ -283,7 +283,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 	if(ff.first) {
 		g_gui.LoadMap(ff.second);
 	} else {
-		if(settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
+		if(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
 			if(g_gui.NewMap()) {
 				// You generally don't want to save this map...
 				g_gui.GetCurrentEditor()->map.clearChanges();
@@ -295,25 +295,25 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 void Application::FixVersionDiscrapencies()
 {
 	// Here the registry should be fixed, if the version has been changed
-	if(settings.getInteger(Config::VERSION_ID) < MAKE_VERSION_ID(1, 0, 5)) {
-		settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, 0);
+	if(g_settings.getInteger(Config::VERSION_ID) < MAKE_VERSION_ID(1, 0, 5)) {
+		g_settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, 0);
 	}
 
-	if(settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__ && ClientVersion::getLatestVersion() != nullptr){
-		settings.setInteger(Config::DEFAULT_CLIENT_VERSION, ClientVersion::getLatestVersion()->getID());
+	if(g_settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__ && ClientVersion::getLatestVersion() != nullptr){
+		g_settings.setInteger(Config::DEFAULT_CLIENT_VERSION, ClientVersion::getLatestVersion()->getID());
 	}
 
-	wxString ss = wxstr(settings.getString(Config::SCREENSHOT_DIRECTORY));
+	wxString ss = wxstr(g_settings.getString(Config::SCREENSHOT_DIRECTORY));
 	if(ss.empty()) {
 		ss = wxStandardPaths::Get().GetDocumentsDir();
 #ifdef __WINDOWS__
 		ss += wxT("/My Pictures/RME/");
 #endif
 	}
-	settings.setString(Config::SCREENSHOT_DIRECTORY, nstr(ss));
+	g_settings.setString(Config::SCREENSHOT_DIRECTORY, nstr(ss));
 
 	// Set registry to newest version
-	settings.setInteger(Config::VERSION_ID, __RME_VERSION_ID__);
+	g_settings.setInteger(Config::VERSION_ID, __RME_VERSION_ID__);
 }
 
 void Application::Unload()
@@ -325,7 +325,7 @@ void Application::Unload()
 	g_gui.root->SaveRecentFiles();
 	ClientVersion::saveVersions();
 	ClientVersion::unloadVersions();
-	settings.save(true);
+	g_settings.save(true);
 	g_gui.root = nullptr;
 }
 
