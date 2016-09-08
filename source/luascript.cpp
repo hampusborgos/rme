@@ -322,6 +322,30 @@ int LuaInterface::luaGuiSetCenterPosition(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaGuiSetSelectionMode(lua_State* L)
+{
+	// g_gui.setSelectionMode()
+	if(g_gui.IsEditorOpen()) {
+		g_gui.SetSelectionMode();
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}	
+	return 1;
+}
+
+int LuaInterface::luaGuiSetDrawingMode(lua_State* L)
+{
+	// g_gui.setDrawingMode()
+	if(g_gui.IsEditorOpen()) {
+		g_gui.SetDrawingMode();
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
 int LuaInterface::luaGuiShowTextBox(lua_State* L)
 {
 	// g_gui.showTextBox(title, text)
@@ -795,6 +819,8 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "setCurrentFloor", LuaInterface::luaGuiSetCurrentFloor);
 	registerMethod("g_gui", "getCenterPosition", LuaInterface::luaGuiGetCenterPosition);
 	registerMethod("g_gui", "setCenterPosition", LuaInterface::luaGuiSetCenterPosition);
+	registerMethod("g_gui", "setSelectionMode", LuaInterface::luaGuiSetSelectionMode);
+	registerMethod("g_gui", "setDrawingMode", LuaInterface::luaGuiSetDrawingMode);
 	registerMethod("g_gui", "showTextBox", LuaInterface::luaGuiShowTextBox);
 
 	// Editor

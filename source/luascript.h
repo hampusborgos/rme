@@ -67,6 +67,8 @@ public:
 	static int luaGuiSetCurrentFloor(lua_State* L);
 	static int luaGuiGetCenterPosition(lua_State* L);
 	static int luaGuiSetCenterPosition(lua_State* L);
+	static int luaGuiSetSelectionMode(lua_State* L);
+	static int luaGuiSetDrawingMode(lua_State* L);
 	static int luaGuiShowTextBox(lua_State* L);
 
 	// Editor
