@@ -19,6 +19,8 @@ data/user
 *.sdf
 *.suo
 *.obj
+*.db
+*.opendb
 
 vcproj/ipch/
 vcproj/Beta Release/
