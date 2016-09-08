@@ -330,7 +330,7 @@ int LuaInterface::luaGuiSetSelectionMode(lua_State* L)
 		pushBoolean(L, true);
 	} else {
 		pushBoolean(L, false);
-	}	
+	}
 	return 1;
 }
 
@@ -519,7 +519,7 @@ int LuaInterface::luaTileCreate(lua_State* L)
 
 int LuaInterface::luaTileGetPosition(lua_State* L)
 {
-	// Tile:getPosition()
+	// tile:getPosition()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		const Position position = tile->getPosition();
@@ -532,7 +532,7 @@ int LuaInterface::luaTileGetPosition(lua_State* L)
 
 int LuaInterface::luaTileIsHouse(lua_State* L)
 {
-	// Tile:isHouse()
+	// tile:isHouse()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, tile->isHouseTile());
@@ -544,7 +544,7 @@ int LuaInterface::luaTileIsHouse(lua_State* L)
 
 int LuaInterface::luaTileIsHouseExit(lua_State* L)
 {
-	// Tile:isHouseExit()
+	// tile:isHouseExit()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, tile->isHouseExit());
@@ -556,7 +556,7 @@ int LuaInterface::luaTileIsHouseExit(lua_State* L)
 
 int LuaInterface::luaTileIsPvP(lua_State* L)
 {
-	// Tile:isPvP()
+	// tile:isPvP()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, (tile->getMapFlags() & TILESTATE_PVPZONE) == TILESTATE_PVPZONE);
@@ -568,7 +568,7 @@ int LuaInterface::luaTileIsPvP(lua_State* L)
 
 int LuaInterface::luaTileIsNoPvP(lua_State* L)
 {
-	// Tile:isNoPvP()
+	// tile:isNoPvP()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, (tile->getMapFlags() & TILESTATE_NOPVP) == TILESTATE_NOPVP);
@@ -580,7 +580,7 @@ int LuaInterface::luaTileIsNoPvP(lua_State* L)
 
 int LuaInterface::luaTileIsNoLogout(lua_State* L)
 {
-	// Tile:isNoLogout()
+	// tile:isNoLogout()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, (tile->getMapFlags() & TILESTATE_NOLOGOUT) == TILESTATE_NOLOGOUT);
@@ -592,7 +592,7 @@ int LuaInterface::luaTileIsNoLogout(lua_State* L)
 
 int LuaInterface::luaTileIsPZ(lua_State* L)
 {
-	// Tile:isPZ()
+	// tile:isPZ()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, tile->isPZ());
@@ -604,7 +604,7 @@ int LuaInterface::luaTileIsPZ(lua_State* L)
 
 int LuaInterface::luaTileIsBlocking(lua_State* L)
 {
-	// Tile:isBlocking()
+	// tile:isBlocking()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, tile->isBlocking());
@@ -616,7 +616,7 @@ int LuaInterface::luaTileIsBlocking(lua_State* L)
 
 int LuaInterface::luaTileIsSelected(lua_State* L)
 {
-	// Tile:isSelected()
+	// tile:isSelected()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, tile->isSelected());
@@ -628,7 +628,7 @@ int LuaInterface::luaTileIsSelected(lua_State* L)
 
 int LuaInterface::luaTileIsModified(lua_State* L)
 {
-	// Tile:isModified()
+	// tile:isModified()
 	Tile* tile = getUserdata<Tile>(L, 1);
 	if(tile) {
 		pushBoolean(L, tile->isModified());
@@ -657,9 +657,30 @@ int LuaInterface::luaSelectionCreate(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaSelectionGetTiles(lua_State* L)
+{
+	// selection:getTiles()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	TileVector& tiles = editor->selection.getTiles();
+	lua_createtable(L, tiles.size(), 0);
+
+	int index = 0;
+	for(Tile* tile : tiles) {
+		pushUserdata<Tile>(L, tile);
+		setMetatable(L, -1, "Tile");
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
 int LuaInterface::luaSelectionGetTileCount(lua_State* L)
 {
-	// Selection:getTileCount()
+	// selection:getTileCount()
 	Editor* editor = getUserdata<Editor>(L, 1);
 	if(editor) {
 		lua_pushnumber(L, editor->selection.size());
@@ -671,7 +692,7 @@ int LuaInterface::luaSelectionGetTileCount(lua_State* L)
 
 int LuaInterface::luaSelectionGetMinPosition(lua_State* L)
 {
-	// Selection:getMinPosition()
+	// selection:getMinPosition()
 	Editor* editor = getUserdata<Editor>(L, 1);
 	if(editor && editor->selection.size() > 0) {
 		const Position& position = editor->selection.minPosition();
@@ -684,7 +705,7 @@ int LuaInterface::luaSelectionGetMinPosition(lua_State* L)
 
 int LuaInterface::luaSelectionGetMaxPosition(lua_State* L)
 {
-	// Selection:getMaxPosition()
+	// selection:getMaxPosition()
 	Editor* editor = getUserdata<Editor>(L, 1);
 	if(editor && editor->selection.size() > 0) {
 		const Position& position = editor->selection.maxPosition();
@@ -851,6 +872,7 @@ void LuaInterface::registerFunctions()
 	// Selection
 	registerClass("Selection", "", LuaInterface::luaSelectionCreate);
 	registerMetaMethod("Selection", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Selection", "getTiles", LuaInterface::luaSelectionGetTiles);
 	registerMethod("Selection", "getTileCount", LuaInterface::luaSelectionGetTileCount);
 	registerMethod("Selection", "getMinPosition", LuaInterface::luaSelectionGetMinPosition);
 	registerMethod("Selection", "getMaxPosition", LuaInterface::luaSelectionGetMaxPosition);

@@ -67,6 +67,7 @@ public:
 	void updateSelectionCount();
 	TileVector::iterator begin() {return tiles.begin();}
 	TileVector::iterator end() {return tiles.end();}
+	TileVector& getTiles() { return tiles; }
 	Tile* getSelectedTile() {ASSERT(size() == 1); return tiles.front();}
 
 private:
