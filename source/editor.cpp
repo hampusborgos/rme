@@ -876,30 +876,23 @@ bool Editor::createSelection(Position start, Position end)
 		return false;
 
 	int tmp = end.x;
-	end.x = start.x > tmp ? start.x : tmp;
-	start.x = start.x > tmp ? tmp : start.x;
+	end.x = std::min<int>(std::max<int>(tmp, start.x), MAP_MAX_WIDTH);
+	start.x = std::max<int>(std::min<int>(tmp, start.x), 0);
 
 	tmp = end.y;
-	end.y = start.y > tmp ? start.y : tmp;
-	start.y = start.y > tmp ? tmp : start.y;
+	end.y = std::min<int>(std::max<int>(tmp, start.y), MAP_MAX_HEIGHT);
+	start.y = std::max<int>(std::min<int>(tmp, start.y), 0);
 
-	tmp = end.z;
-	end.z = start.z > tmp ? start.z : tmp;
-	start.z = start.z > tmp ? tmp : start.z;
+	tmp = start.z;
+	start.z = std::min<int>(std::max<int>(tmp, end.z), MAP_MAX_LAYER);
+	end.z = std::max<int>(std::min<int>(tmp, end.z), 0);
 
-	int numtiles = 0;
+	// check equality again
+	if(start == end)
+		return false;
+
 	int threadcount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
-	int start_x = 0, start_y = 0, start_z = 0;
-	int end_x = 0, end_y = 0, end_z = 0;
-
-	// Current floor.
-	if(start.z == end.z) {
-		start_z = end_z = end.z;
-		start_x = start.x;
-		start_y = start.y;
-		end_x = end.x;
-		end_y = end.y;
-	}
+	int numtiles = (start.z - end.z) * (end.x - start.x) * (end.y - start.y);
 
 	if(numtiles < 500) {
 		// No point in threading for such a small set.
@@ -908,7 +901,7 @@ bool Editor::createSelection(Position start, Position end)
 
 	// Subdivide the selection area
 	// We know it's a square, just split it into several areas
-	int width = end_x - start_x;
+	int width = end.x - start.x;
 	if(width < threadcount) {
 		threadcount = min(1, width);
 	}
@@ -918,7 +911,7 @@ bool Editor::createSelection(Position start, Position end)
 	int cleared = 0;
 	std::vector<SelectionThread*> threads;
 	if(width == 0) {
-		threads.push_back(newd SelectionThread(*this, Position(start_x, start_y, start_z), Position(start_x, end_y, end_z)));
+		threads.push_back(newd SelectionThread(*this, Position(start.x, start.y, start.z), Position(start.x, end.y, end.z)));
 	} else {
 		for(int i = 0; i < threadcount; ++i) {
 			int chunksize = width / threadcount;
@@ -926,7 +919,7 @@ bool Editor::createSelection(Position start, Position end)
 			if(i == threadcount - 1) {
 				chunksize = remainder;
 			}
-			threads.push_back(newd SelectionThread(*this, Position(start_x + cleared, start_y, start_z), Position(start_x + cleared + chunksize, end_y, end_z)));
+			threads.push_back(newd SelectionThread(*this, Position(start.x + cleared, start.y, start.z), Position(start.x + cleared + chunksize, end.y, end.z)));
 			cleared += chunksize;
 			remainder -= chunksize;
 		}

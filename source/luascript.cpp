@@ -649,6 +649,7 @@ int LuaInterface::luaSelectionCreate(lua_State* L)
 		if(editor->createSelection(start, end)) {
 			pushUserdata<Editor>(L, editor);
 			setMetatable(L, -1, "Selection");
+			g_gui.RefreshView();
 			return 1;
 		}
 	}
