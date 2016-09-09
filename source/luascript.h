@@ -69,7 +69,13 @@ public:
 	static int luaGuiSetCenterPosition(lua_State* L);
 	static int luaGuiSetSelectionMode(lua_State* L);
 	static int luaGuiSetDrawingMode(lua_State* L);
+	static int luaGuiSetStatusText(lua_State* L);
 	static int luaGuiShowTextBox(lua_State* L);
+	static int luaGuiGetExecDirectory(lua_State* L);
+	static int luaGuiGetDataDirectory(lua_State* L);
+	static int luaGuiGetLocalDataDirectory(lua_State* L);
+	static int luaGuiGetLocalDirectory(lua_State* L);
+	static int luaGuiGetExtensionsDirectory(lua_State* L);
 
 	// Editor
 	static int luaEditorCreate(lua_State* L);
@@ -118,7 +124,7 @@ public:
 	static void setMetatable(lua_State* L, int32_t index, const std::string& name);
 
 	//push/pop common structures
-	static void pushString(lua_State* L, const std::string& value);
+	static void pushString(lua_State* L, const wxString& value);
 
 	// Get
 	static wxString getString(lua_State* L, int32_t arg);
@@ -198,7 +204,7 @@ public:
 		lua_pushnumber(L, value);
 		lua_setfield(L, -2, index);
 	}
-	inline static void setField(lua_State* L, const char* index, const std::string& value)
+	inline static void setField(lua_State* L, const char* index, const wxString& value)
 	{
 		pushString(L, value);
 		lua_setfield(L, -2, index);

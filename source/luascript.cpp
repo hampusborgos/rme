@@ -97,7 +97,7 @@ void LuaInterface::setMetatable(lua_State* L, int32_t index, const std::string& 
 	lua_setmetatable(L, index - 1);
 }
 
-void LuaInterface::pushString(lua_State* L, const std::string& value)
+void LuaInterface::pushString(lua_State* L, const wxString& value)
 {
 	lua_pushlstring(L, value.c_str(), value.length());
 }
@@ -346,12 +346,55 @@ int LuaInterface::luaGuiSetDrawingMode(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaGuiSetStatusText(lua_State* L)
+{
+	// g_gui.setStausText(text)
+	const wxString& text = getString(L, 1);
+	g_gui.SetStatusText(text);
+	return 1;
+}
+
 int LuaInterface::luaGuiShowTextBox(lua_State* L)
 {
 	// g_gui.showTextBox(title, text)
 	const wxString& text = getString(L, 2);
 	const wxString& title = getString(L, 1);
 	g_gui.ShowTextBox(g_gui.root, title, text);
+	return 1;
+}
+
+int LuaInterface::luaGuiGetExecDirectory(lua_State* L)
+{
+	// g_gui.getExecDirectory()
+	pushString(L, GUI::GetExecDirectory());
+	return 1;
+}
+
+int LuaInterface::luaGuiGetDataDirectory(lua_State* L)
+{
+	// g_gui.getDataDirectory()
+	pushString(L, GUI::GetDataDirectory());
+	return 1;
+}
+
+int LuaInterface::luaGuiGetLocalDataDirectory(lua_State* L)
+{
+	// g_gui.getLocalDataDirectory()
+	pushString(L, GUI::GetLocalDataDirectory());
+	return 1;
+}
+
+int LuaInterface::luaGuiGetLocalDirectory(lua_State* L)
+{
+	// g_gui.getLocalDirectory()
+	pushString(L, GUI::GetLocalDirectory());
+	return 1;
+}
+
+int LuaInterface::luaGuiGetExtensionsDirectory(lua_State* L)
+{
+	// g_gui.getExtensionsDirectory()
+	pushString(L, GUI::GetExtensionsDirectory());
 	return 1;
 }
 
@@ -843,7 +886,13 @@ void LuaInterface::registerFunctions()
 	registerMethod("g_gui", "setCenterPosition", LuaInterface::luaGuiSetCenterPosition);
 	registerMethod("g_gui", "setSelectionMode", LuaInterface::luaGuiSetSelectionMode);
 	registerMethod("g_gui", "setDrawingMode", LuaInterface::luaGuiSetDrawingMode);
+	registerMethod("g_gui", "setStatusText", LuaInterface::luaGuiSetStatusText);
 	registerMethod("g_gui", "showTextBox", LuaInterface::luaGuiShowTextBox);
+	registerMethod("g_gui", "getExecDirectory", LuaInterface::luaGuiGetExecDirectory);
+	registerMethod("g_gui", "getDataDirectory", LuaInterface::luaGuiGetDataDirectory);
+	registerMethod("g_gui", "getLocalDataDirectory", LuaInterface::luaGuiGetLocalDataDirectory);
+	registerMethod("g_gui", "getLocalDirectory", LuaInterface::luaGuiGetLocalDirectory);
+	registerMethod("g_gui", "getExtensionsDirectory", LuaInterface::luaGuiGetExtensionsDirectory);
 
 	// Editor
 	registerClass("Editor", "", LuaInterface::luaEditorCreate);
