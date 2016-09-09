@@ -81,10 +81,6 @@ public:
 	static int luaEditorCreate(lua_State* L);
 	static int luaEditorGetTile(lua_State* L);
 	static int luaEditorCreateSelection(lua_State* L);
-	static int luaEditorMoveSelection(lua_State* L);
-	static int luaEditorDestroySelection(lua_State* L);
-	static int luaEditorBorderizeSelection(lua_State* L);
-	static int luaEditorRandomizeSelection(lua_State* L);
 	static int luaEditorGetSelection(lua_State* L);
 
 	// Tile
@@ -106,6 +102,11 @@ public:
 	static int luaSelectionGetTileCount(lua_State* L);
 	static int luaSelectionGetMinPosition(lua_State* L);
 	static int luaSelectionGetMaxPosition(lua_State* L);
+	static int luaSelectionMove(lua_State* L);
+	static int luaSelectionOffset(lua_State* L);
+	static int luaSelectionBorderize(lua_State* L);
+	static int luaSelectionRandomize(lua_State* L);
+	static int luaSelectionDestroy(lua_State* L);
 
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }

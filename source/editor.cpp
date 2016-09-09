@@ -942,7 +942,7 @@ bool Editor::createSelection(Position start, Position end)
 	return true;
 }
 
-bool Editor::moveSelection(Position offset)
+bool Editor::moveSelection(const Position& offset)
 {
 	if (selection.size() == 0) {
 		g_gui.SetStatusText(wxT("No items selected. Can't move the selection."));
@@ -1049,10 +1049,8 @@ bool Editor::moveSelection(Position offset)
 	action = actionQueue->createAction(batchAction);
 	for(TileVector::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
 		Tile* tile = (*it);
-		const Position old_pos = tile->getPosition();
-		Position new_pos;
-
-		new_pos = old_pos - offset;
+		const Position& old_pos = tile->getPosition();
+		const Position& new_pos = old_pos - offset;
 
 		if(new_pos.z < 0 && new_pos.z > MAP_MAX_LAYER) {
 			delete tile;

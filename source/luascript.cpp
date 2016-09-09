@@ -454,6 +454,7 @@ int LuaInterface::luaEditorCreateSelection(lua_State* L)
 		const Position& start = getPosition(L, 2);
 		const Position& end = getPosition(L, 3);
 		if(editor->createSelection(start, end)) {
+			g_gui.RefreshView();
 			pushUserdata<Editor>(L, editor);
 			setMetatable(L, -1, "Selection");
 			return 1;
@@ -461,55 +462,6 @@ int LuaInterface::luaEditorCreateSelection(lua_State* L)
 	}
 
 	lua_pushnil(L);
-	return 1;
-}
-
-int LuaInterface::luaEditorMoveSelection(lua_State* L)
-{
-	// editor:moveSelection(position)
-	Editor* editor = getUserdata<Editor>(L, 1);
-	if(editor) {
-		const Position& position = getPosition(L, 2);
-		pushBoolean(L, editor->moveSelection(position));
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaInterface::luaEditorDestroySelection(lua_State* L)
-{
-	// editor:destroySelection()
-	Editor* editor = getUserdata<Editor>(L, 1);
-	if(editor) {
-		pushBoolean(L, editor->destroySelection());
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaInterface::luaEditorBorderizeSelection(lua_State* L)
-{
-	// editor:borderizeSelection()
-	Editor* editor = getUserdata<Editor>(L, 1);
-	if(editor) {
-		pushBoolean(L, editor->borderizeSelection());
-	} else {
-		pushBoolean(L, false);
-	}
-	return 1;
-}
-
-int LuaInterface::luaEditorRandomizeSelection(lua_State* L)
-{
-	// editor:randomizeSelection()
-	Editor* editor = getUserdata<Editor>(L, 1);
-	if(editor) {
-		pushBoolean(L, editor->randomizeSelection());
-	} else {
-		pushBoolean(L, false);
-	}
 	return 1;
 }
 
@@ -690,9 +642,9 @@ int LuaInterface::luaSelectionCreate(lua_State* L)
 		const Position& start = getPosition(L, 3);
 		const Position& end = getPosition(L, 4);
 		if(editor->createSelection(start, end)) {
+			g_gui.RefreshView();
 			pushUserdata<Editor>(L, editor);
 			setMetatable(L, -1, "Selection");
-			g_gui.RefreshView();
 			return 1;
 		}
 	}
@@ -738,7 +690,7 @@ int LuaInterface::luaSelectionGetMinPosition(lua_State* L)
 {
 	// selection:getMinPosition()
 	Editor* editor = getUserdata<Editor>(L, 1);
-	if(editor && editor->selection.size() > 0) {
+	if(editor && editor->hasSelection()) {
 		const Position& position = editor->selection.minPosition();
 		pushPosition(L, position);
 	} else {
@@ -751,12 +703,102 @@ int LuaInterface::luaSelectionGetMaxPosition(lua_State* L)
 {
 	// selection:getMaxPosition()
 	Editor* editor = getUserdata<Editor>(L, 1);
-	if(editor && editor->selection.size() > 0) {
+	if(editor && editor->hasSelection()) {
 		const Position& position = editor->selection.maxPosition();
 		pushPosition(L, position);
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaInterface::luaSelectionMove(lua_State* L)
+{
+	// selection:move(position)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->hasSelection()) {
+		const Position& position = getPosition(L, 2);
+		const Position& minPosition = editor->selection.minPosition();
+		Position offset(position - minPosition);
+		offset.x = -offset.x;
+		offset.y = -offset.y;
+		offset.z = -offset.z;
+		if(editor->moveSelection(offset)) {
+			g_gui.RefreshView();
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaSelectionOffset(lua_State* L)
+{
+	// selection:offset(x[, y = 0[, z = 0]])
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->hasSelection()) {
+		Position offset;
+		offset.x = getNumber<int>(L, 2);
+		offset.y = lua_gettop(L) > 2 ? getNumber<int>(L, 3) : 0;
+		offset.z = lua_gettop(L) > 3 ? getNumber<int>(L, 4) : 0;
+		if(editor->moveSelection(offset)) {
+			g_gui.RefreshView();
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaSelectionBorderize(lua_State* L)
+{
+	// selection:borderize()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->hasSelection()) {
+		if(editor->borderizeSelection()) {
+			g_gui.RefreshView();
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaSelectionRandomize(lua_State* L)
+{
+	// selection:randomize()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->hasSelection()) {
+		if(editor->randomizeSelection()) {
+			g_gui.RefreshView();
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaSelectionDestroy(lua_State* L)
+{
+	// selection:destroy()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor && editor->hasSelection()) {
+		if(editor->destroySelection()) {
+			g_gui.RefreshView();
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
 	return 1;
 }
 
@@ -899,10 +941,6 @@ void LuaInterface::registerFunctions()
 	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
 	registerMethod("Editor", "getTile", LuaInterface::luaEditorGetTile);
 	registerMethod("Editor", "createSelection", LuaInterface::luaEditorCreateSelection);
-	registerMethod("Editor", "moveSelection", LuaInterface::luaEditorMoveSelection);
-	registerMethod("Editor", "destroySelection", LuaInterface::luaEditorDestroySelection);
-	registerMethod("Editor", "borderizeSelection", LuaInterface::luaEditorBorderizeSelection);
-	registerMethod("Editor", "randomizeSelection", LuaInterface::luaEditorRandomizeSelection);
 	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
 
 	// Tile
@@ -926,6 +964,11 @@ void LuaInterface::registerFunctions()
 	registerMethod("Selection", "getTileCount", LuaInterface::luaSelectionGetTileCount);
 	registerMethod("Selection", "getMinPosition", LuaInterface::luaSelectionGetMinPosition);
 	registerMethod("Selection", "getMaxPosition", LuaInterface::luaSelectionGetMaxPosition);
+	registerMethod("Selection", "move", LuaInterface::luaSelectionMove);
+	registerMethod("Selection", "offset", LuaInterface::luaSelectionOffset);
+	registerMethod("Selection", "borderize", LuaInterface::luaSelectionBorderize);
+	registerMethod("Selection", "randomize", LuaInterface::luaSelectionRandomize);
+	registerMethod("Selection", "destroy", LuaInterface::luaSelectionDestroy);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)
