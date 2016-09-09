@@ -329,6 +329,19 @@ SelectionThread::SelectionThread(Editor& editor, Position start, Position end) :
 	editor(editor),
 	start(start),
 	end(end),
+	positions(nullptr),
+	selection(editor),
+	result(nullptr)
+{
+	////
+}
+
+SelectionThread::SelectionThread(Editor& editor, PositionVector* positions) :
+	wxThread(wxTHREAD_JOINABLE),
+	editor(editor),
+	start(),
+	end(),
+	positions(positions),
 	selection(editor),
 	result(nullptr)
 {
@@ -349,23 +362,37 @@ void SelectionThread::Execute()
 wxThread::ExitCode SelectionThread::Entry()
 {
 	selection.start(SelectionArea::SUBTHREAD);
-	for(int z = start.z; z >= end.z; --z) {
-		for(int x = start.x; x <= end.x; ++x) {
-			for(int y = start.y; y <= end.y; ++y) {
-				Tile* tile = editor.map.getTile(x, y, z);
-				if(!tile)
-					continue;
+	Map& map = editor.map;
 
-				selection.add(tile);
+	if(positions) {
+		for(int i = 0; i < positions->size(); ++i) {
+			const Position& position = (*positions)[i];
+			Tile* tile = map.getTile(position);
+			if(!tile)
+				continue;
+
+			selection.add(tile);
+		}
+	} else {
+		for(int z = start.z; z >= end.z; --z) {
+			for(int x = start.x; x <= end.x; ++x) {
+				for(int y = start.y; y <= end.y; ++y) {
+					Tile* tile = map.getTile(x, y, z);
+					if(!tile)
+						continue;
+
+					selection.add(tile);
+				}
+			}
+			if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
+				++start.x; ++start.y;
+				++end.x; ++end.y;
 			}
 		}
-		if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
-			++start.x; ++start.y;
-			++end.x; ++end.y;
-		}
 	}
+	
 	result = selection.subsession;
 	selection.finish(SelectionArea::SUBTHREAD);
-
 	return nullptr;
 }
+

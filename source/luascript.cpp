@@ -117,8 +117,7 @@ wxString LuaInterface::getString(lua_State* L, int32_t arg)
 {
 	size_t len;
 	const char* c_str = lua_tolstring(L, arg, &len);
-	if(!c_str || len == 0)
-	{
+	if(!c_str || len == 0) {
 		return wxString();
 	}
 	return wxString(c_str, len);
@@ -418,7 +417,7 @@ int LuaInterface::luaEditorGetTile(lua_State* L)
 	// Editor:getTile(x, y, z)
 	// Editor:getTile(position)
 	Editor* editor = getUserdata<Editor>(L, 1);
-	if (!editor) {
+	if(!editor) {
 		lua_pushnil(L);
 		return 1;
 	}
@@ -459,6 +458,44 @@ int LuaInterface::luaEditorCreateSelection(lua_State* L)
 			setMetatable(L, -1, "Selection");
 			return 1;
 		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaInterface::luaEditorSelectTiles(lua_State* L)
+{
+	// editor:selectTiles(tiles)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushnil(L);
+	g_gui.SetSelectionMode();
+
+	// remove any current selection.
+	editor->selection.start();
+	editor->selection.clear();
+	editor->selection.finish();
+	editor->selection.updateSelectionCount();
+
+	PositionVector positions;
+	while(lua_next(L, -2) != 0) {
+		Tile* tile = getUserdata<Tile>(L, -1);
+		if(tile) {
+			positions.push_back(tile->getPosition());
+		}
+		lua_pop(L, 1);
+	}
+
+	if(editor->createSelection(positions)) {
+		g_gui.RefreshView();
+		pushUserdata<Editor>(L, editor);
+		setMetatable(L, -1, "Selection");
+		return 1;
 	}
 
 	lua_pushnil(L);
@@ -941,6 +978,7 @@ void LuaInterface::registerFunctions()
 	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
 	registerMethod("Editor", "getTile", LuaInterface::luaEditorGetTile);
 	registerMethod("Editor", "createSelection", LuaInterface::luaEditorCreateSelection);
+	registerMethod("Editor", "selectTiles", LuaInterface::luaEditorSelectTiles);
 	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
 
 	// Tile

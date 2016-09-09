@@ -20,8 +20,8 @@
 #include "scripting_window.h"
 #include "luascript.h"
 
-static const char LuaKeywords[] =	"and break do else elseif end false for function if "
-									"in local nil not or repeat return then true  until while";
+static const char LuaKeywords[] =	"and break do else elseif end false for function if in "
+									"local nil not or repeat return then true  until while pairs";
 
 BEGIN_EVENT_TABLE(ScriptingWindow, wxDialog)
 	EVT_BUTTON(wxID_APPLY, ScriptingWindow::OnRunScript)
@@ -56,7 +56,7 @@ ScriptingWindow::ScriptingWindow(wxWindow* parent) :
 
 	script_text_field->SetMarginType(0, wxSTC_MARGIN_NUMBER);
 	script_text_field->SetMarginWidth(2, 16);
-	script_text_field->SetIndent(2);
+	script_text_field->SetIndent(4);
 	script_text_field->SetKeyWords(0, wxString(LuaKeywords));
 	script_text_field->SetKeyWords(3, wxT("Tile Selection Editor"));
 	sizer->Add(script_text_field, wxSizerFlags(5).Expand());

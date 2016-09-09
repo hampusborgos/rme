@@ -75,8 +75,10 @@ public: // Functions
 
 	// Some simple actions that work on the map (these will work through the undo queue)
 	bool hasSelection() { return selection.size() != 0; }
-	// Creates a new selected area.
+	// Creates a new selected area by start and end positions.
 	bool createSelection(Position start, Position end);
+	// Creates a new selected area by positions.
+	bool createSelection(const PositionVector& positions);
 	// Moves the selected area by the offset
 	bool moveSelection(const Position& offset);
 	// Deletes all selected items

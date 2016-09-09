@@ -85,6 +85,7 @@ private:
 class SelectionThread : public wxThread {
 public:
 	SelectionThread(Editor& editor, Position start, Position end);
+	SelectionThread(Editor& editor, PositionVector* positions);
 	virtual ~SelectionThread();
 
 	void Execute(); // Calls "Create" and then "Run"
@@ -92,6 +93,7 @@ protected:
 	virtual ExitCode Entry();
 	Editor& editor;
 	Position start, end;
+	PositionVector* positions;
 	SelectionArea selection;
 	Action* result;
 

@@ -942,6 +942,42 @@ bool Editor::createSelection(Position start, Position end)
 	return true;
 }
 
+bool Editor::createSelection(const PositionVector& positions)
+{
+	if(!g_gui.IsSelectionMode() || positions.size() == 0)
+		return false;
+
+	int threadcount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
+	int numtiles = positions.size();
+
+	if(numtiles < 500) {
+		threadcount = 1;
+	} else {
+		threadcount = std::min<int>(threadcount, std::max<int>(1, numtiles / 500));
+	}
+
+	std::vector<SelectionThread*> threads;
+	int amount = std::min(numtiles, numtiles / threadcount);
+	for(int i = 0, a = amount; i < threadcount; i++, a += amount) {
+		a = std::min<int>(numtiles, a);
+		PositionVector* range = newd PositionVector(&positions[0], &positions[0] + a);
+		threads.push_back(newd SelectionThread(*this, range));
+	}
+
+	selection.start(); // Start a selection session
+	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
+		(*iter)->Execute();
+	}
+
+	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
+		selection.join(*iter);
+	}
+
+	selection.finish(); // Finish the selection session
+	selection.updateSelectionCount();
+	return true;
+}
+
 bool Editor::moveSelection(const Position& offset)
 {
 	if (selection.size() == 0) {

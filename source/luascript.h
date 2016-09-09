@@ -81,6 +81,7 @@ public:
 	static int luaEditorCreate(lua_State* L);
 	static int luaEditorGetTile(lua_State* L);
 	static int luaEditorCreateSelection(lua_State* L);
+	static int luaEditorSelectTiles(lua_State* L);
 	static int luaEditorGetSelection(lua_State* L);
 
 	// Tile
