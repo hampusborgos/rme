@@ -289,6 +289,7 @@ public:
 	bool IsEditorOpen() const;
 	void CloseCurrentEditor();
 	Editor* GetCurrentEditor();
+	int GetEditorIndex(Editor* editor) const;
 	void SetCurrentEditor(Editor* editor);
 	void SetCurrentEditor(int index);
 	Editor* GetEditorAt(int index);

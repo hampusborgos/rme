@@ -22,6 +22,8 @@
 
 class GUI;
 class Editor;
+class Brush;
+class FlagBrush;
 
 enum LuaDataType {
 	LuaData_Unknown,
@@ -40,10 +42,6 @@ public:
 	bool init();
 
 	int runScript(const wxString& script);
-
-	// Push
-	static void pushBoolean(lua_State* L, bool value);
-	static void pushPosition(lua_State* L, const Position& position);
 
 	// Userdata
 	static int luaUserdataCompare(lua_State* L);
@@ -96,6 +94,10 @@ public:
 	static int luaTileIsBlocking(lua_State* L);
 	static int luaTileIsSelected(lua_State* L);
 	static int luaTileIsModified(lua_State* L);
+	static int luaTileSetPvP(lua_State* L);
+	static int luaTileSetNoPvP(lua_State* L);
+	static int luaTileSetNoLogout(lua_State* L);
+	static int luaTileSetPZ(lua_State* L);
 
 	// Selection
 	static int luaSelectionCreate(lua_State* L);
@@ -127,6 +129,8 @@ public:
 
 	//push/pop common structures
 	static void pushString(lua_State* L, const wxString& value);
+	static void pushBoolean(lua_State* L, bool value);
+	static void pushPosition(lua_State* L, const Position& position);
 
 	// Get
 	static wxString getString(lua_State* L, int32_t arg);
@@ -236,6 +240,8 @@ private:
 	void registerMetaMethod(const std::string& className, const std::string& methodName, lua_CFunction func);
 	void registerGlobalMethod(const std::string& functionName, lua_CFunction func);
 	void registerFunctions();
+
+	static bool setTileFlag(Tile* tile, uint16_t flag, bool enable);
 };
 
 extern LuaInterface g_lua;

@@ -20,6 +20,7 @@
 #include "gui.h"
 #include "editor.h"
 #include "selection.h"
+#include "brush.h"
 
 LuaInterface g_lua;
 
@@ -74,6 +75,11 @@ int LuaInterface::runScript(const wxString& script)
 	return 1;
 }
 
+void LuaInterface::pushString(lua_State* L, const wxString& value)
+{
+	lua_pushlstring(L, value.c_str(), value.length());
+}
+
 // Push
 void LuaInterface::pushBoolean(lua_State* L, bool value)
 {
@@ -82,7 +88,7 @@ void LuaInterface::pushBoolean(lua_State* L, bool value)
 
 void LuaInterface::pushPosition(lua_State* L, const Position& position)
 {
-	lua_createtable(L, 0, 4);
+	lua_createtable(L, 0, 3);
 
 	setField(L, "x", position.x);
 	setField(L, "y", position.y);
@@ -95,11 +101,6 @@ void LuaInterface::setMetatable(lua_State* L, int32_t index, const std::string& 
 {
 	luaL_getmetatable(L, name.c_str());
 	lua_setmetatable(L, index - 1);
-}
-
-void LuaInterface::pushString(lua_State* L, const wxString& value)
-{
-	lua_pushlstring(L, value.c_str(), value.length());
 }
 
 wxString LuaInterface::popString(lua_State* L)
@@ -670,6 +671,70 @@ int LuaInterface::luaTileIsModified(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaTileSetPvP(lua_State* L)
+{
+	// tile:setPvP(enable)
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		bool enable = getBoolean(L, 2);
+		if(setTileFlag(tile, TILESTATE_PVPZONE, enable)) {
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaTileSetNoPvP(lua_State* L)
+{
+	// tile:setNoPvP(enable)
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		bool enable = getBoolean(L, 2);
+		if(setTileFlag(tile, TILESTATE_NOPVP, enable)) {
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaTileSetNoLogout(lua_State* L)
+{
+	// tile:setNoLogout(enable)
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		bool enable = getBoolean(L, 2);
+		if(setTileFlag(tile, TILESTATE_NOLOGOUT, enable)) {
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaTileSetPZ(lua_State* L)
+{
+	// tile:setPZ(enable)
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		bool enable = getBoolean(L, 2);
+		if(setTileFlag(tile, TILESTATE_PROTECTIONZONE, enable)) {
+			pushBoolean(L, true);
+			return 1;
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
 int LuaInterface::luaSelectionCreate(lua_State* L)
 {
 	// Selection(editor, start, end)
@@ -994,6 +1059,10 @@ void LuaInterface::registerFunctions()
 	registerMethod("Tile", "isBlocking", LuaInterface::luaTileIsBlocking);
 	registerMethod("Tile", "isSelected", LuaInterface::luaTileIsSelected);
 	registerMethod("Tile", "isModified", LuaInterface::luaTileIsModified);
+	registerMethod("Tile", "setPvP", LuaInterface::luaTileSetPvP);
+	registerMethod("Tile", "setNoPvP", LuaInterface::luaTileSetNoPvP);
+	registerMethod("Tile", "setNoLogout", LuaInterface::luaTileSetNoLogout);
+	registerMethod("Tile", "setPZ", LuaInterface::luaTileSetPZ);
 
 	// Selection
 	registerClass("Selection", "", LuaInterface::luaSelectionCreate);
@@ -1031,3 +1100,45 @@ int LuaInterface::protectedCall(lua_State* L, int nargs, int nresults)
 	return ret;
 }
 
+bool LuaInterface::setTileFlag(Tile* tile, uint16_t flag, bool enable)
+{
+	if (tile && tile->hasGround()) {
+		Editor* editor = g_gui.GetCurrentEditor(); // TODO get editor by tile.
+		if (editor && editor->CanEdit()) {
+			FlagBrush* brush = nullptr;
+			switch (flag)
+			{
+				case TILESTATE_PVPZONE:
+					brush = g_gui.pvp_brush;
+					break;
+
+				case TILESTATE_NOPVP:
+					brush = g_gui.rook_brush;
+					break;
+
+				case TILESTATE_NOLOGOUT:
+					brush = g_gui.nolog_brush;
+					break;
+
+				case TILESTATE_PROTECTIONZONE:
+					brush = g_gui.pz_brush;
+					break;
+
+				default:
+					return false;
+			}
+
+			g_gui.SetDrawingMode();
+			g_gui.SelectBrushInternal(brush);
+			PositionVector positions;
+			positions.push_back(tile->getPosition());
+			if (enable)
+				editor->draw(positions, false);
+			else
+				editor->undraw(positions, false);
+			g_gui.RefreshView();
+			return true;
+		}
+	}
+	return false;
+}
