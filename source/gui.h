@@ -294,6 +294,7 @@ public:
 	void SetCurrentEditor(int index);
 	Editor* GetEditorAt(int index);
 	MapTab* GetCurrentMapTab() const;
+	MapTab* GetMapTab(Editor* editor) const;
 	void CycleTab(bool forward = true);
 	bool CloseLiveEditors(LiveSocket* sock);
 	bool CloseAllEditors();

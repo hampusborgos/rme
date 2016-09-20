@@ -620,6 +620,20 @@ MapTab* GUI::GetCurrentMapTab() const
 	return nullptr;
 }
 
+MapTab* GUI::GetMapTab(Editor* editor) const
+{
+	if(tabbook) {
+		for(int i = tabbook->GetTabCount() - 1; i >= 0; i--) {
+			EditorTab* editorTab = tabbook->GetTab(i);
+			MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+			if(editor == mapTab->GetEditor()) {
+				return mapTab;
+			}
+		}
+	}
+	return nullptr;
+}
+
 Map& GUI::GetCurrentMap()
 {
 	Editor* editor = GetCurrentEditor();

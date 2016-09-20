@@ -413,10 +413,104 @@ int LuaInterface::luaEditorCreate(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorGetMapDescription(lua_State* L)
+{
+	// editor:getMapDescription()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		pushString(L, editor->map.getMapDescription());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorSetMapDescription(lua_State* L)
+{
+	// editor:setMapDescription(newDescription)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		const wxString& description = getString(L, 2);
+		editor->map.setMapDescription(std::string(description.mb_str()));
+		pushBoolean(L, true);
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorGetMapWidth(lua_State* L)
+{
+	// editor:getMapWidth()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		lua_pushnumber(L, editor->map.getWidth());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorSetMapWidth(lua_State* L)
+{
+	// editor:setMapWidth(newWidth)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		int32_t width = getNumber<int32_t>(L, 2);
+		width = std::max<int32_t>(MAP_MIN_WIDTH, std::min<int32_t>(MAP_MAX_WIDTH, width));
+		if(width != editor->map.getWidth()) {
+			MapTab* mapTab = g_gui.GetMapTab(editor);
+			if(mapTab) {
+				editor->map.setWidth(width);
+				g_gui.FitViewToMap(mapTab);
+				pushBoolean(L, true);
+				return 1;
+			}
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaEditorGetMapHeight(lua_State* L)
+{
+	// editor:getMapHeight()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		lua_pushnumber(L, editor->map.getHeight());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
+int LuaInterface::luaEditorSetMapHeight(lua_State* L)
+{
+	// editor:setMapHeight(newHeight)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(editor) {
+		int32_t height = getNumber<int32_t>(L, 2);
+		height = std::max<int32_t>(MAP_MIN_HEIGHT, std::min<int32_t>(MAP_MAX_HEIGHT, height));
+		if(height != editor->map.getHeight()) {
+			MapTab* mapTab = g_gui.GetMapTab(editor);
+			if(mapTab) {
+				editor->map.setHeight(height);
+				g_gui.FitViewToMap(mapTab);
+				pushBoolean(L, true);
+				return 1;
+			}
+		}
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
 int LuaInterface::luaEditorGetTile(lua_State* L)
 {
-	// Editor:getTile(x, y, z)
-	// Editor:getTile(position)
+	// editor:getTile(x, y, z)
+	// editor:getTile(position)
 	Editor* editor = getUserdata<Editor>(L, 1);
 	if(!editor) {
 		lua_pushnil(L);
@@ -1041,6 +1135,12 @@ void LuaInterface::registerFunctions()
 	// Editor
 	registerClass("Editor", "", LuaInterface::luaEditorCreate);
 	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Editor", "getMapDescription", LuaInterface::luaEditorGetMapDescription);
+	registerMethod("Editor", "setMapDescription", LuaInterface::luaEditorSetMapDescription);
+	registerMethod("Editor", "getMapWidth", LuaInterface::luaEditorGetMapWidth);
+	registerMethod("Editor", "setMapWidth", LuaInterface::luaEditorSetMapWidth);
+	registerMethod("Editor", "getMapHeight", LuaInterface::luaEditorGetMapHeight);
+	registerMethod("Editor", "setMapHeight", LuaInterface::luaEditorSetMapHeight);
 	registerMethod("Editor", "getTile", LuaInterface::luaEditorGetTile);
 	registerMethod("Editor", "createSelection", LuaInterface::luaEditorCreateSelection);
 	registerMethod("Editor", "selectTiles", LuaInterface::luaEditorSelectTiles);

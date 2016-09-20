@@ -77,6 +77,12 @@ public:
 
 	// Editor
 	static int luaEditorCreate(lua_State* L);
+	static int luaEditorGetMapDescription(lua_State* L);
+	static int luaEditorSetMapDescription(lua_State* L);
+	static int luaEditorGetMapWidth(lua_State* L);
+	static int luaEditorSetMapWidth(lua_State* L);
+	static int luaEditorGetMapHeight(lua_State* L);
+	static int luaEditorSetMapHeight(lua_State* L);
 	static int luaEditorGetTile(lua_State* L);
 	static int luaEditorCreateSelection(lua_State* L);
 	static int luaEditorSelectTiles(lua_State* L);
