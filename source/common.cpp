@@ -250,3 +250,12 @@ wxString b2yn(bool v)
 
 	return s;
 }
+
+wxString resolvePath(const wxString& path)
+{
+	wxString fullPath = path;
+	if(!path.EndsWith(wxT("/")));
+		fullPath = fullPath + wxT("/");
+	return fullPath;
+}
+

@@ -75,6 +75,14 @@ int LuaInterface::runScript(const wxString& script)
 	return 1;
 }
 
+void LuaInterface::print(const wxString& text)
+{
+	if(!text.empty()) {
+		ScriptingWindow* window = g_gui.ShowScriptingWindow();
+		window->AppendLog(text);
+	}
+}
+
 void LuaInterface::pushString(lua_State* L, const wxString& value)
 {
 	lua_pushlstring(L, value.c_str(), value.length());
@@ -106,7 +114,7 @@ void LuaInterface::setMetatable(lua_State* L, int32_t index, const std::string& 
 wxString LuaInterface::popString(lua_State* L)
 {
 	if(lua_gettop(L) == 0) {
-		return wxString();
+		return wxEmptyString;
 	}
 
 	wxString str(getString(L, -1));
@@ -119,7 +127,7 @@ wxString LuaInterface::getString(lua_State* L, int32_t arg)
 	size_t len;
 	const char* c_str = lua_tolstring(L, arg, &len);
 	if(!c_str || len == 0) {
-		return wxString();
+		return wxEmptyString;
 	}
 	return wxString(c_str, len);
 }
@@ -982,6 +990,120 @@ int LuaInterface::luaSelectionRandomize(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaSelectionSaveAsMinimap(lua_State* L)
+{
+	// selection:saveAsMinimap(directory, fileName)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor || !editor->hasSelection()) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	const wxString& path = getString(L, 2);
+	const wxFileName& directory = resolvePath(path);
+	if(!directory.IsDirWritable()) {
+		g_lua.print(wxT("[selection:saveAsMinimap]: The provided directory is not writable."));
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	const wxString& fileName = getString(L, 3);
+	if(fileName.empty()) {
+		g_lua.print(wxT("[selection:saveAsMinimap]: The parameter 'fileName' must be non-nil and non-empty."));
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	int min_x = MAP_MAX_WIDTH + 1;
+	int min_y = MAP_MAX_HEIGHT + 1;
+	int min_z = MAP_MAX_LAYER + 1;
+	int max_x = 0;
+	int max_y = 0;
+	int max_z = 0;
+
+	const TileVector& tiles = editor->selection.getTiles();
+	for(Tile* tile : tiles) {
+		if(tile->empty())
+			continue;
+
+		Position pos = tile->getPosition();
+
+		if(pos.x < min_x)
+			min_x = pos.x;
+
+		if(pos.y < min_y)
+			min_y = pos.y;
+
+		if(pos.z < min_z)
+			min_z = pos.z;
+
+		if(pos.x > max_x)
+			max_x = pos.x;
+
+		if(pos.y > max_y)
+			max_y = pos.y;
+
+		if(pos.z > max_z)
+			max_z = pos.z;
+	}
+
+	int numtiles = (max_x - min_x) * (max_y - min_y);
+	int minimap_width = max_x - min_x + 1;
+	int minimap_height = max_y - min_y + 1;
+
+	if(numtiles == 0 || minimap_width > 2048 || minimap_height > 2048) {
+		g_lua.print(wxT("[selection:saveAsMinimap]: Tile count == 0 or minimap size greater than 2048px"));
+		pushBoolean(L, false);
+		return 1;
+	}
+	
+	int tiles_iterated = 0;
+
+	for(int z = min_z; z <= max_z; z++) {
+		uint8_t* pixels = newd uint8_t[minimap_width * minimap_height * 3]; // 3 bytes per pixel
+		memset(pixels, 0, minimap_width * minimap_height * 3);
+
+		for(Tile* tile : tiles) {
+			if(tile->getZ() != z)
+				continue;
+
+			++tiles_iterated;
+			if (tiles_iterated % 8192 == 0)
+				g_gui.SetLoadDone(int(tiles_iterated / double(tiles.size()) * 90.0));
+
+			if (tile->empty())
+				continue;
+
+			uint8_t color = 0;
+
+			for(Item* item : tile->items) {
+				if(item->getMiniMapColor() != 0) {
+					color = item->getMiniMapColor();
+					break;
+				}
+			}
+
+			if(color == 0 && tile->hasGround())
+				color = tile->ground->getMiniMapColor();
+
+			uint32_t index = ((tile->getY() - min_y) * minimap_width + (tile->getX() - min_x)) * 3;
+
+			pixels[index] = (uint8_t)(int(color / 36) % 6 * 51);     // red
+			pixels[index + 1] = (uint8_t)(int(color / 6) % 6 * 51);  // green
+			pixels[index + 2] = (uint8_t)(color % 6 * 51);           // blue
+		}
+
+		wxString filePath = directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + fileName + wxT("_") + i2ws(z) + wxT(".png");
+		wxImage* image = newd wxImage(minimap_width, minimap_height, pixels, true);
+		image->SaveFile(filePath, wxBITMAP_TYPE_PNG);
+		image->Destroy();
+		delete[] pixels;
+	}
+
+	pushBoolean(L, true);
+	return 1;
+}
+
 int LuaInterface::luaSelectionDestroy(lua_State* L)
 {
 	// selection:destroy()
@@ -1175,6 +1297,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Selection", "offset", LuaInterface::luaSelectionOffset);
 	registerMethod("Selection", "borderize", LuaInterface::luaSelectionBorderize);
 	registerMethod("Selection", "randomize", LuaInterface::luaSelectionRandomize);
+	registerMethod("Selection", "saveAsMinimap", LuaInterface::luaSelectionSaveAsMinimap);
 	registerMethod("Selection", "destroy", LuaInterface::luaSelectionDestroy);
 }
 

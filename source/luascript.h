@@ -42,6 +42,7 @@ public:
 	bool init();
 
 	int runScript(const wxString& script);
+	void print(const wxString& text);
 
 	// Userdata
 	static int luaUserdataCompare(lua_State* L);
@@ -115,6 +116,7 @@ public:
 	static int luaSelectionOffset(lua_State* L);
 	static int luaSelectionBorderize(lua_State* L);
 	static int luaSelectionRandomize(lua_State* L);
+	static int luaSelectionSaveAsMinimap(lua_State* L);
 	static int luaSelectionDestroy(lua_State* L);
 
 	int getTop();

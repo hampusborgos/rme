@@ -65,6 +65,8 @@ bool posFromClipboard(int& x, int& y, int& z);
 // Returns 'yes' if the defined value is true or 'no' if it is false.
 wxString b2yn(bool v);
 
+wxString resolvePath(const wxString& path);
+
 // Standard math functions
 template <class T>
 inline T abs(T t) {
