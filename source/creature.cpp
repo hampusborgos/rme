@@ -21,13 +21,13 @@
 
 #include "creature.h"
 
-Creature::Creature(CreatureType* ctype) : direction(SOUTH), spawntime(0), saved(false), selected(false)
+Creature::Creature(CreatureType* ctype) : direction(NORTH), spawntime(0), saved(false), selected(false)
 {
 	if(ctype)
 		type_name = ctype->name;
 }
 
-Creature::Creature(std::string ctype_name) : type_name(ctype_name), direction(SOUTH), spawntime(0), saved(false), selected(false)
+Creature::Creature(std::string ctype_name) : type_name(ctype_name), direction(NORTH), spawntime(0), saved(false), selected(false)
 {
 	////
 }
