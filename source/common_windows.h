@@ -196,6 +196,7 @@ protected:
 
 	FindDialogListBox* item_list;
 	KeyForwardingTextCtrl* search_field;
+	wxSizer* sizer;
 	wxTimer idle_input_timer;
 	const Brush* result_brush;
 	int result_id;
@@ -222,11 +223,14 @@ public:
  * Select an item dialog
  * Find out what item was selected through return value of ShowModal() or getResultID
  */
-class FindItemDialog : public FindDialog 
+class FindItemDialog : public FindDialog
 {
 public:
 	FindItemDialog(wxWindow* parent, wxString title = wxT("Jump to Item"));
 	virtual ~FindItemDialog();
+
+	int getActionId() { return actionid; }
+	int getUniqueId() { return uniqueid; }
 
 	void setCondition(bool condition(const ItemType&));
 
@@ -235,7 +239,13 @@ public:
 	virtual void OnClickOKInternal();
 
 protected:
+	int actionid;
+	int uniqueid;
+
 	bool (*extra_condition)(const ItemType&);
+
+	KeyForwardingTextCtrl* action_field;
+	KeyForwardingTextCtrl* unique_field;
 };
 
 /**

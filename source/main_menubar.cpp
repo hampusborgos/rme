@@ -809,9 +809,20 @@ namespace OnSearchForItem
 {
 	struct Finder
 	{
-		Finder(uint16_t itemid) : more_than_value(false), itemid(itemid) {}
+		Finder(uint16_t itemid)
+			: more_than_value(false), itemid(itemid), actionid(0), uniqueid(0) {}
+
+		Finder(uint16_t itemid, uint16_t actionid)
+			: more_than_value(false), itemid(itemid), actionid(actionid), uniqueid(0) {}
+
+		Finder(uint16_t itemid, uint16_t actionid, uint16_t uniqueid)
+			: more_than_value(false), itemid(itemid), actionid(actionid), uniqueid(uniqueid) {}
+
 		bool more_than_value;
 		uint16_t itemid;
+		uint16_t actionid;
+		uint16_t uniqueid;
+
 		std::vector<std::pair<Tile*, Item*> > found;
 
 		void operator()(Map& map, Tile* tile, Item* item, long long done)
@@ -821,11 +832,35 @@ namespace OnSearchForItem
 				gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
 			}
 
-			if(item->getID() == itemid) {
+			uint16_t itemId = item->getID();
+			uint16_t aid = item->getActionID();
+			uint16_t uid = item->getUniqueID();
+
+			if((itemid > 100 && itemId == itemid) || (actionid > 0 && aid == actionid) || (uniqueid > 0 && uid == uniqueid)) {
 				found.push_back(std::make_pair(tile, item));
 				if(found.size() >= size_t(settings.getInteger(Config::REPLACE_SIZE)))
 					more_than_value = true;
 			}
+		}
+
+		wxString desc(Item* item)
+		{
+			wxString label;
+			if(item->getUniqueID() > 0)
+				label << wxT("UID:") << item->getUniqueID() << wxT(" ");
+
+			if(item->getActionID() > 0)
+				label << wxT("AID:") << item->getActionID() << wxT(" ");
+
+			label << wxstr(item->getName());
+
+			if(dynamic_cast<Container*>(item))
+				label << wxT(" (Container) ");
+
+			if(item->getText().length() > 0)
+				label << wxT(" (Text: ") << wxstr(item->getText()) << wxT(") ");
+
+			return label;
 		}
 	};
 }
@@ -837,7 +872,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 	FindItemDialog finder(frame, wxT("Search for Item"));
 	if(finder.ShowModal() != 0) {
-		OnSearchForItem::Finder func(finder.getResultID());
+		OnSearchForItem::Finder func(finder.getResultID(), finder.getActionId(), finder.getUniqueId());
 		gui.CreateLoadBar(wxT("Searching map..."));
 
 		foreach_ItemOnMap(gui.GetCurrentMap(), func);
@@ -856,7 +891,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 		for(std::vector<std::pair<Tile*, Item*> >::const_iterator iter = found.begin(); iter != found.end(); ++iter) {
 			Tile* tile = iter->first;
 			Item* item = iter->second;
-			result->AddPosition(wxstr(item->getName()), tile->getPosition());
+			result->AddPosition(func.desc(item), tile->getPosition());
 		}
 	}
 }
@@ -901,13 +936,13 @@ namespace OnSearchForStuff
 	struct Searcher
 	{
 		Searcher() :
-			search_unique(false),
-			search_action(false),
+			search_unique(-1),
+			search_action(-1),
 			search_container(false),
 			search_writeable(false) {}
 
-		bool search_unique;
-		bool search_action;
+		int search_unique;
+		int search_action;
 		bool search_container;
 		bool search_writeable;
 		std::vector<std::pair<Tile*, Item*> > found;
@@ -918,8 +953,15 @@ namespace OnSearchForStuff
 				gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
 			}
 			Container* container;
-			if((search_unique && item->getUniqueID() > 0) ||
-				(search_action && item->getActionID() > 0) ||
+
+			bool exactUnique = search_unique > 0;
+			bool exactAction = search_action > 0;
+
+			int uid = item->getUniqueID();
+			int aid = item->getActionID();
+
+			if((search_unique == 0 || (exactUnique && uid == search_unique)) ||
+				(search_action == 0 || (exactAction && aid == search_action)) ||
 				(search_container && ((container = dynamic_cast<Container*>(item)) && container->getItemCount())) ||
 				(search_writeable && item->getText().length() > 0)) {
 				found.push_back(std::make_pair(tile, item));
@@ -956,8 +998,8 @@ void MainMenuBar::OnSearchForStuff(wxCommandEvent& WXUNUSED(event))
 	gui.CreateLoadBar(wxT("Searching map..."));
 
 	OnSearchForStuff::Searcher searcher;
-	searcher.search_unique = true;
-	searcher.search_action = true;
+	searcher.search_unique = 0;
+	searcher.search_action = 0;
 	searcher.search_container = true;
 	searcher.search_writeable = true;
 
@@ -981,7 +1023,7 @@ void MainMenuBar::OnSearchForUnique(wxCommandEvent& WXUNUSED(event))
 	gui.CreateLoadBar(wxT("Searching map..."));
 
 	OnSearchForStuff::Searcher searcher;
-	searcher.search_unique = true;
+	searcher.search_unique = 0;
 	foreach_ItemOnMap(gui.GetCurrentMap(), searcher);
 	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
 
@@ -1001,7 +1043,7 @@ void MainMenuBar::OnSearchForAction(wxCommandEvent& WXUNUSED(event)) {
 	gui.CreateLoadBar(wxT("Searching map..."));
 
 	OnSearchForStuff::Searcher searcher;
-	searcher.search_action = true;
+	searcher.search_action = 0;
 	foreach_ItemOnMap(gui.GetCurrentMap(), searcher);
 	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
 
