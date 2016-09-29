@@ -149,7 +149,7 @@ void MapCanvas::SetZoom(double value)
 		GetScreenCenter(&center_x, &center_y);
 
 		zoom = value;
-		static_cast<MapWindow*>(GetParent())->CenterOnPosition(Position(center_x, center_y, floor));
+		static_cast<MapWindow*>(GetParent())->SetScreenCenterPosition(Position(center_x, center_y, floor));
 
 		UpdatePositionStatus();
 		UpdateZoomStatus();
@@ -248,7 +248,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		date << wxT("-") << current_time->tm_hour;
 		date << wxT("-") << current_time->tm_min;
 		date << wxT("-") << current_time->tm_sec;
-		
+
 		int type = 0;
 		path.SetName(date);
 		if(format == wxT("bmp")) {
@@ -279,7 +279,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		} else {
 			gui.PopupDialog(wxT("File error"), wxT("Couldn't open file ") + path.GetFullPath() + wxT(" for writing."), wxOK);
 		}
-		
+
 	}
 
 	Refresh();
@@ -1542,13 +1542,13 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_UP: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			
+
 			int tiles = 3;
 			if(event.ControlDown())
 				tiles = 10;
 			else if(zoom == 1.0)
 				tiles = 1;
-			
+
 			static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y - TILE_SIZE * tiles * zoom));
 			UpdatePositionStatus();
 			Refresh();
@@ -1558,13 +1558,13 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_DOWN: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			
+
 			int tiles = 3;
 			if(event.ControlDown())
 				tiles = 10;
 			else if(zoom == 1.0)
 				tiles = 1;
-			
+
 			static_cast<MapWindow*>(GetParent())->Scroll(start_x, int(start_y + TILE_SIZE * tiles * zoom));
 			UpdatePositionStatus();
 			Refresh();
@@ -1574,13 +1574,13 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_LEFT: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			
+
 			int tiles = 3;
 			if(event.ControlDown())
 				tiles = 10;
 			else if(zoom == 1.0)
 				tiles = 1;
-			
+
 			static_cast<MapWindow*>(GetParent())->Scroll(int(start_x - TILE_SIZE * tiles * zoom), start_y);
 			UpdatePositionStatus();
 			Refresh();
@@ -1590,13 +1590,13 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 		case WXK_RIGHT: {
 			int start_x, start_y;
 			static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
-			
+
 			int tiles = 3;
 			if(event.ControlDown())
 				tiles = 10;
 			else if(zoom == 1.0)
 				tiles = 1;
-			
+
 			static_cast<MapWindow*>(GetParent())->Scroll(int(start_x + TILE_SIZE * tiles * zoom), start_y);
 			UpdatePositionStatus();
 			Refresh();
@@ -1796,7 +1796,7 @@ void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 	Tile* new_tile = tile->deepCopy(editor.map);
 
 	wxDialog* w = new BrowseTileWindow(gui.root, new_tile, wxPoint(cursor_x, cursor_y));
-	
+
 	int ret = w->ShowModal();
 	if(ret != 0) {
 		Action* action = editor.actionQueue->createAction(ACTION_DELETE_TILES);
@@ -1806,7 +1806,7 @@ void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 		// Cancel
 		delete new_tile;
 	}
-	
+
 	w->Destroy();
 }
 
@@ -1837,7 +1837,7 @@ void MapCanvas::OnGotoDestination(wxCommandEvent& WXUNUSED(event))
 	Teleport* teleport = dynamic_cast<Teleport*>(selected_items.front());
 	if(teleport) {
 		Position pos = teleport->getDestination();
-		gui.CenterOnPosition(pos);
+		gui.SetScreenCenterPosition(pos);
 	}
 }
 
@@ -2181,7 +2181,7 @@ void MapPopupMenu::Update()
 					if(topSelectedItem->isRoteable()) {
 						Append( MAP_POPUP_MENU_ROTATE, wxT("&Rotate item"), wxT("Rotate this item"));
 					}
-					
+
 					if(teleport && teleport->noDestination()) {
 						Append( MAP_POPUP_MENU_GOTO, wxT("&Go To Destination"), wxT("Go to the destination of this teleport"));
 					}

@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -37,7 +37,7 @@ BEGIN_EVENT_TABLE(MinimapWindow, wxPanel)
 	EVT_KEY_DOWN(MinimapWindow::OnKey)
 END_EVENT_TABLE()
 
-MinimapWindow::MinimapWindow(wxWindow* parent) : 
+MinimapWindow::MinimapWindow(wxWindow* parent) :
 	wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(205, 130)),
 	update_timer(this)
 {
@@ -78,18 +78,18 @@ void MinimapWindow::OnDelayedUpdate(wxTimerEvent& event)
 void MinimapWindow::OnPaint(wxPaintEvent& event)
 {
 	wxBufferedPaintDC pdc(this);
-	
+
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
 	if(!gui.IsEditorOpen()) return;
 	Editor& editor = *gui.GetCurrentEditor();
-	
+
 	int window_width = GetSize().GetWidth();
 	int window_height = GetSize().GetHeight();
 	//printf("W:%d\tH:%d\n", window_width, window_height);
 	int center_x, center_y;
-	
+
 	MapCanvas* canvas = gui.GetCurrentMapTab()->GetCanvas();
 	canvas->GetScreenCenter(&center_x, &center_y);
 
@@ -97,10 +97,10 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 	int end_x, end_y;
 	start_x = center_x - window_width/2;
 	start_y = center_y - window_height/2;
-	
+
 	end_x = center_x + window_width/2;
 	end_y = center_y + window_height/2;
-	
+
 	if(start_x < 0) {
 		start_x = 0;
 		end_x = window_width;
@@ -148,7 +148,7 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 		if(settings.getInteger(Config::MINIMAP_VIEW_BOX)) {
 			pdc.SetPen(*wxWHITE_PEN);
 			// Draw the rectangle on the minimap
-			
+
 			// Some view info
 			int screensize_x, screensize_y;
 			int view_scroll_x, view_scroll_y;
@@ -186,7 +186,7 @@ void MinimapWindow::OnMouseClick(wxMouseEvent& event)
 	if(!gui.IsEditorOpen()) return;
 	int new_map_x = last_start_x + event.GetX();
 	int new_map_y = last_start_y + event.GetY();
-	gui.CenterOnPosition(Position(new_map_x, new_map_y, gui.GetCurrentFloor()));
+	gui.SetScreenCenterPosition(Position(new_map_x, new_map_y, gui.GetCurrentFloor()));
 	Refresh();
 	gui.RefreshView();
 }

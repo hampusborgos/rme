@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ public:
 	Hotkey(Brush* brush);
 	Hotkey(std::string _brushname);
 	~Hotkey();
-	
+
 	bool IsPosition() const {return type == POSITION;}
 	bool IsBrush() const {return type == BRUSH;}
 	Position GetPosition() const {ASSERT(IsPosition()); return pos;}
@@ -92,7 +92,7 @@ private:
 
 	Position pos;
 	std::string brushname;
-	
+
 	friend std::ostream& operator<<(std::ostream& os, const Hotkey& hotkey);
 	friend std::istream& operator>>(std::istream& os, Hotkey& hotkey);
 };
@@ -262,7 +262,7 @@ public:
 	bool IsVersionLoaded() const {return loaded_version != CLIENT_VERSION_NONE;}
 
 	// Centers current view on position
-	void CenterOnPosition(Position pos);
+	void SetScreenCenterPosition(Position pos);
 	// Refresh the view canvas
 	void RefreshView();
 	// Fit all/specified current map view to map dimensions
@@ -296,7 +296,7 @@ public:
 	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(wxT("")), showdialog);}
 	bool NewMap();
 	bool LoadMap(FileName fn);
-	
+
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);
 	ClientVersion* getLoadedVersion() const {
@@ -372,7 +372,7 @@ public:
 	FlagBrush* pvp_brush;
 
 protected:
-	
+
 	//=========================================================================
 	// Global GUI state
 	//=========================================================================
@@ -380,11 +380,11 @@ protected:
 	PaletteList palettes;
 
 	wxGLContext* OGLContext;
-	
+
 	ClientVersionID loaded_version;
 	EditorMode mode;
 	bool pasting;
-	
+
 	Hotkey hotkeys[10];
 	bool hotkeys_enabled;
 
@@ -400,7 +400,7 @@ protected:
 
 	bool use_custom_thickness;
 	float custom_thickness_mod;
-	
+
 	//=========================================================================
 	// Progress bar tracking
 	//=========================================================================

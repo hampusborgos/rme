@@ -38,7 +38,7 @@ MapTab::MapTab(const MapTab* other) :
 	FitToMap();
 	int x, y;
 	other->GetCanvas()->GetScreenCenter(&x, &y);
-	CenterOnPosition(Position(x, y, other->GetCanvas()->GetFloor()));
+	SetScreenCenterPosition(Position(x, y, other->GetCanvas()->GetFloor()));
 }
 
 MapTab::~MapTab()

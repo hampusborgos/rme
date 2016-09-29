@@ -60,6 +60,7 @@ namespace MenuBar
 		BORDERIZE_MAP,
 		RANDOMIZE_SELECTION,
 		RANDOMIZE_MAP,
+		GOTO_PREVIOUS_POSITION,
 		GOTO_POSITION,
 		JUMP_TO_BRUSH,
 		JUMP_TO_ITEM_BRUSH,
@@ -187,6 +188,7 @@ public:
 	void OnRandomizeMap(wxCommandEvent& event);
 	void OnJumpToBrush(wxCommandEvent& event);
 	void OnJumpToItemBrush(wxCommandEvent& event);
+	void OnGotoPreviousPosition(wxCommandEvent& event);
 	void OnGotoPosition(wxCommandEvent& event);
 	void OnMapRemoveItems(wxCommandEvent& event);
 	void OnMapRemoveCorpses(wxCommandEvent& event);

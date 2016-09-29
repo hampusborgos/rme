@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -123,7 +123,7 @@ void HousePalettePanel::OnLayoutFixTimer(wxTimerEvent& WXUNUSED(event))
 {
 	wxWindow* w = this;
 	while((w = w->GetParent()) && dynamic_cast<PaletteWindow*>(w) == nullptr);
-	
+
 	if(w) {
 		w->SetSize(w->GetSize().GetWidth(), w->GetSize().GetHeight() + 1);
 		w->SetSize(w->GetSize().GetWidth(), w->GetSize().GetHeight() - 1);
@@ -279,7 +279,7 @@ void HousePalettePanel::OnUpdate()
 {
 	if(map == nullptr)
 		return;
-	
+
 	int old_town_selection = town_choice->GetSelection();
 
 	town_choice->Clear();
@@ -297,7 +297,7 @@ void HousePalettePanel::OnUpdate()
 			SelectTown(old_town_selection);
 		else
 			SelectTown(old_town_selection-1);
-		
+
 		house_list->Enable(true);
 	} else {
 		town_choice->Append(wxT("No Town"), (void*)(nullptr));
@@ -330,7 +330,7 @@ void HousePalettePanel::OnListBoxDoubleClick(wxCommandEvent& event)
 	House* house = reinterpret_cast<House*>(event.GetClientData());
 	// I find it extremly unlikely that one actually wants the exit at 0,0,0, so just treat it as the null value
 	if(house && house->getExit() != Position(0,0,0)) {
-		gui.CenterOnPosition(house->getExit());
+		gui.SetScreenCenterPosition(house->getExit());
 	}
 }
 
@@ -353,12 +353,12 @@ void HousePalettePanel::OnClickAddHouse(wxCommandEvent& event)
 
 	House* new_house = newd House(*map);
 	new_house->id = map->houses.getEmptyID();
-	
+
 	std::ostringstream os;
 	os << "Unnamed House #" << new_house->id;
 	new_house->name = os.str();
 	Town* town = reinterpret_cast<Town*>(town_choice->GetClientData(town_choice->GetSelection()));
-	
+
 	ASSERT(town);
 	new_house->townid = town->getID();
 
@@ -437,7 +437,7 @@ EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Name"));
 	name_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(230,20), 0, wxTextValidator(wxFILTER_ASCII, &house_name));
 	tmpsizer->Add(name_field);
- 
+
 	sizer->Add(tmpsizer, wxSizerFlags().Border(wxALL, 20));
 
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Rent / ID"));
@@ -447,10 +447,10 @@ EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
 	id_field->Enable(false);
 	tmpsizer->Add(id_field);
 	sizer->Add(tmpsizer, wxSizerFlags().Border(wxALL, 20));
-	
+
 	// House options
 	guildhall_field = newd wxCheckBox(this, wxID_ANY, wxT("Guildhall"), wxDefaultPosition);
- 
+
 	sizer->Add(guildhall_field, wxSizerFlags().Border(wxRIGHT | wxLEFT | wxBOTTOM, 20));
 	guildhall_field->SetValue(house->guildhall);
 
