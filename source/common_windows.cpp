@@ -82,7 +82,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Client Version")));
 	protocol_choice = newd wxChoice(this, wxID_ANY);
 
-	protocol_choice->SetStringSelection(wxstr(gui.GetCurrentVersion().getName()));
+	protocol_choice->SetStringSelection(wxstr(g_gui.GetCurrentVersion().getName()));
 
 	grid_sizer->Add(protocol_choice, wxSizerFlags(1).Expand());
 
@@ -219,8 +219,8 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	}
 
 	if(new_ver.client != old_ver.client) {
-		if(gui.GetOpenMapCount() > 1) {
-			gui.PopupDialog(this, wxT("Error"),
+		if(g_gui.GetOpenMapCount() > 1) {
+			g_gui.PopupDialog(this, wxT("Error"),
 				wxT("You can not change editor version with multiple maps open"), wxOK);
 			return;
 		}
@@ -228,11 +228,11 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		wxArrayString warnings;
 
 		// Switch version
-		gui.GetCurrentEditor()->selection.clear();
-		gui.GetCurrentEditor()->actionQueue->clear();
+		g_gui.GetCurrentEditor()->selection.clear();
+		g_gui.GetCurrentEditor()->actionQueue->clear();
 
 		if(new_ver.client < old_ver.client) {
-			int ret = gui.PopupDialog(this, wxT("Notice"),
+			int ret = g_gui.PopupDialog(this, wxT("Notice"),
 				wxT("Converting to a previous version may have serious side-effects, are you sure you want to do this?"), wxYES | wxNO);
 			if(ret != wxID_YES) {
 				return;
@@ -247,10 +247,10 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			map.convert(new_ver, true);
 
 			// Load the new version
-			if(!gui.LoadVersion(new_ver.client, error, warnings)) {
-				gui.ListDialog(this, wxT("Warnings"), warnings);
-				gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
-				gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
+			if(!g_gui.LoadVersion(new_ver.client, error, warnings)) {
+				g_gui.ListDialog(this, wxT("Warnings"), warnings);
+				g_gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
+				g_gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
 
 				EndModal(0);
 				return;
@@ -265,7 +265,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			if(conversion_context.creature_types.size() > 0) {
-				int add = gui.PopupDialog(this, wxT("Unrecognized creatures"), wxT("There were creatures on the old version that are not present in this and were on the map, do you want to add them to this version as well?"), wxYES | wxNO);
+				int add = g_gui.PopupDialog(this, wxT("Unrecognized creatures"), wxT("There were creatures on the old version that are not present in this and were on the map, do you want to add them to this version as well?"), wxYES | wxNO);
 				if(add == wxID_YES) {
 					for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end(); ++cs) {
 						MapConversionContext::CreatureInfo info = cs->second;
@@ -277,10 +277,10 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			map.cleanInvalidTiles(true);
 		} else  {
 			UnnamedRenderingLock();
-			if(!gui.LoadVersion(new_ver.client, error, warnings)) {
-				gui.ListDialog(this, wxT("Warnings"), warnings);
-				gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
-				gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
+			if(!g_gui.LoadVersion(new_ver.client, error, warnings)) {
+				g_gui.ListDialog(this, wxT("Warnings"), warnings);
+				g_gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
+				g_gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
 
 				EndModal(0);
 				return;
@@ -301,9 +301,9 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	if(new_map_width != map.getWidth() || new_map_height != map.getHeight()) {
 		map.setWidth(new_map_width);
 		map.setHeight(new_map_height);
-		gui.FitViewToMap(view);
+		g_gui.FitViewToMap(view);
 	}
-	gui.RefreshPalettes();
+	g_gui.RefreshPalettes();
 
 	EndModal(1);
 }
@@ -409,7 +409,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	if(Validate() && TransferDataFromWindow()) {
 		wxFileName fn = file_text_field->GetValue();
 		if(!fn.FileExists()) {
-			gui.PopupDialog(this, wxT("Error"), wxT("The specified map file doesn't exist"), wxOK);
+			g_gui.PopupDialog(this, wxT("Error"), wxT("The specified map file doesn't exist"), wxOK);
 			return;
 		}
 
@@ -523,7 +523,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	std::string filename = nstr(file_text_field->GetValue());
 	size_t d_pos = filename.find("%d");
 	if(d_pos == std::string::npos) {
-		gui.PopupDialog(this, wxT("Error"), wxT("You need to put a %d in the filename (this will be replaced by the floor number)"), wxYES | wxNO);
+		g_gui.PopupDialog(this, wxT("Error"), wxT("You need to put a %d in the filename (this will be replaced by the floor number)"), wxYES | wxNO);
 		return;
 	}
 	size_t i_pos = filename.find_first_of("*?:/\"<>|");
@@ -534,7 +534,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		if(filename[i_pos] != '/')
 #endif
 		{
-			gui.PopupDialog(this, wxT("Error"), wxT("File name contains invalid characters."), wxOK);
+			g_gui.PopupDialog(this, wxT("Error"), wxT("File name contains invalid characters."), wxOK);
 			return;
 		}
 	}
@@ -544,20 +544,20 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	if(filename[0] != '/')
 #endif
 	{
-		gui.PopupDialog(this, wxT("Error"), wxT("Output filename must be absolute."), wxOK);
+		g_gui.PopupDialog(this, wxT("Error"), wxT("Output filename must be absolute."), wxOK);
 		return;
 	}
 
 	std::string pre_sep = filename.substr(0, d_pos);
 	std::string post_sep= filename.substr(d_pos+2);
 
-	gui.CreateLoadBar(wxT("Exporting minimap"));
+	g_gui.CreateLoadBar(wxT("Exporting minimap"));
 	try
 	{
 		switch(floor_options->GetSelection()) {
 			case 0: { // All floors
 				for(int floor = 0; floor < MAP_LAYERS; ++floor) {
-					gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
+					g_gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
 					FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
 					editor.exportMiniMap(fn, floor, true);
 				}
@@ -566,7 +566,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			case 1: { // Ground floor
 				FileName fn = wxstr(pre_sep + "ground" + post_sep);
 				editor.exportMiniMap(fn, GROUND_LAYER, true);
-				gui.DestroyLoadBar();
+				g_gui.DestroyLoadBar();
 				break;
 			}
 			case 2: { // Specific floors
@@ -579,9 +579,9 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	}
 	catch(std::bad_alloc&)
 	{
-		gui.PopupDialog(wxT("Error"), wxT("There is not enough memory available to complete the operation."), wxOK);
+		g_gui.PopupDialog(wxT("Error"), wxT("There is not enough memory available to complete the operation."), wxOK);
 	}
-	gui.DestroyLoadBar();
+	g_gui.DestroyLoadBar();
 	EndModal(1);
 }
 
@@ -622,7 +622,7 @@ BEGIN_EVENT_TABLE(FindDialog, wxDialog)
 END_EVENT_TABLE()
 
 FindDialog::FindDialog(wxWindow* parent, wxString title) :
-	wxDialog(gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
+	wxDialog(g_gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
 	idle_input_timer(this),
 	result_brush(nullptr),
 	result_id(0)
@@ -983,7 +983,7 @@ BEGIN_EVENT_TABLE(ReplaceItemDialog, wxDialog)
 END_EVENT_TABLE()
 
 ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
-	wxDialog(gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
+	wxDialog(g_gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
 	find_idle_input_timer(this),
 	with_idle_input_timer(this)
 {
@@ -1112,7 +1112,7 @@ void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		result_find_brush = nullptr;
 		result_with_brush = nullptr;
 
-		gui.PopupDialog(wxT("Select both items"), wxT("You must select two items for the replacement to work."), wxOK);
+		g_gui.PopupDialog(wxT("Select both items"), wxT("You must select two items for the replacement to work."), wxOK);
 		return;
 	}
 
@@ -1227,7 +1227,7 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 		dc.DrawText(wxT("Please enter your search string."), rect.GetX() + 40, rect.GetY() + 6);
 	} else {
 		ASSERT(n < brushlist.size());
-		Sprite* spr = gui.gfx.getSprite(brushlist[n]->getLookID());
+		Sprite* spr = g_gui.gfx.getSprite(brushlist[n]->getLookID());
 		if(spr) {
 			spr->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 		}
@@ -1486,7 +1486,7 @@ void EditTownsDialog::OnListBoxChange(wxCommandEvent& event)
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
 {
 	Position templepos = temple_position->GetPosition();
-	gui.SetScreenCenterPosition(templepos);
+	g_gui.SetScreenCenterPosition(templepos);
 }
 
 void EditTownsDialog::OnClickAdd(wxCommandEvent& WXUNUSED(event))
@@ -1526,7 +1526,7 @@ void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 		for(HouseMap::iterator house_iter = map.houses.begin(); house_iter != map.houses.end(); ++house_iter) {
 			House* house = house_iter->second;
 			if(house->townid == town->getID()) {
-				gui.PopupDialog(this, wxT("Error"), wxT("You cannot delete a town which still has houses associated with it."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("You cannot delete a town which still has houses associated with it."), wxOK);
 				return;
 			}
 		}
@@ -1580,7 +1580,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
 			Town* town = *town_iter;
 			if(town->getName() == "") {
-				gui.PopupDialog(this, wxT("Error"), wxT("You can't have a town with an empty name."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("You can't have a town with an empty name."), wxOK);
 				return;
 			}
 			if(!town->getTemplePosition().isValid() ||
@@ -1588,7 +1588,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				town->getTemplePosition().y > editor.map.getHeight()) {
 				wxString msg;
 				msg << wxT("The town ") << wxstr(town->getName()) << wxT(" has an invalid temple position.");
-				gui.PopupDialog(this, wxT("Error"), msg, wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), msg, wxOK);
 				return;
 			}
 		}
@@ -1604,7 +1604,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		editor.map.doChange();
 
 		EndModal(1);
-		gui.RefreshPalettes();
+		g_gui.RefreshPalettes();
 	}
 }
 
@@ -1652,6 +1652,6 @@ void GotoPositionDialog::OnClickCancel(wxCommandEvent &)
 
 void GotoPositionDialog::OnClickOK(wxCommandEvent &)
 {
-	gui.SetScreenCenterPosition(posctrl->GetPosition());
+	g_gui.SetScreenCenterPosition(posctrl->GetPosition());
 	EndModal(1);
 }

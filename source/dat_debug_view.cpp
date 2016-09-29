@@ -26,8 +26,8 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 	wxVListBox(parent, id, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE)
 {
 	int n = 0;
-	for(int id = 0; id < gui.gfx.getItemSpriteMaxID(); ++id) {
-		Sprite* spr = gui.gfx.getSprite(id);
+	for(int id = 0; id < g_gui.gfx.getItemSpriteMaxID(); ++id) {
+		Sprite* spr = g_gui.gfx.getSprite(id);
 		if(spr) {
 			sprites[n] = spr;
 			++n;

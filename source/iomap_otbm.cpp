@@ -502,7 +502,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 		bool otbm_loaded = false;
 
 		// Loop over the archive entries until we find the otbm file
-		gui.SetLoadDone(0, wxT("Decompressing archive..."));
+		g_gui.SetLoadDone(0, wxT("Decompressing archive..."));
 		struct archive_entry* entry;
 		while(archive_read_next_header(a.get(), &entry) == ARCHIVE_OK) {
 			std::string entryName = archive_entry_pathname(entry);
@@ -524,7 +524,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 					return false;
 				}
 
-				gui.SetLoadDone(0, wxT("Loading OTBM map..."));
+				g_gui.SetLoadDone(0, wxT("Loading OTBM map..."));
 
 				// Create a read handle on it
 				std::shared_ptr<NodeFileReadHandle> f(
@@ -641,7 +641,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 	if(version.otbm > MAP_OTBM_4) {
 		// Failed to read version
-		if(gui.PopupDialog(wxT("Map error"),
+		if(g_gui.PopupDialog(wxT("Map error"),
 			wxT("The loaded map appears to be a OTBM format that is not supported by the editor.")
 			wxT("Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
 		{
@@ -662,7 +662,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	map.height = u16;
 
 	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MajorVersion) { // OTB major version
-		if(gui.PopupDialog(wxT("Map error"),
+		if(g_gui.PopupDialog(wxT("Map error"),
 			wxT("The loaded map appears to be a items.otb format that deviates from the ")
 			wxT("items.otb loaded by the editor. Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
 		{
@@ -718,7 +718,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	for(BinaryNode* mapNode = mapHeaderNode->getChild(); mapNode != nullptr; mapNode = mapNode->advance()) {
 		++nodes_loaded;
 		if(nodes_loaded % 15 == 0) {
-			gui.SetLoadDone(static_cast<int32_t>(100.0 * f.tell() / f.size()));
+			g_gui.SetLoadDone(static_cast<int32_t>(100.0 * f.tell() / f.size()));
 		}
 
 		uint8_t node_type;
@@ -1154,7 +1154,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		archive_write_set_format_pax_restricted(a);
 		archive_write_open_filename(a, nstr(identifier.GetFullPath()).c_str());
 
-		gui.SetLoadDone(0, wxT("Saving spawns..."));
+		g_gui.SetLoadDone(0, wxT("Saving spawns..."));
 
 		pugi::xml_document spawnDoc;
 		if(saveSpawns(map, spawnDoc)) {
@@ -1178,7 +1178,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			streamData.str("");
 		}
 
-		gui.SetLoadDone(0, wxT("Saving houses..."));
+		g_gui.SetLoadDone(0, wxT("Saving houses..."));
 
 		pugi::xml_document houseDoc;
 		if(saveHouses(map, houseDoc)) {
@@ -1202,12 +1202,12 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			streamData.str("");
 		}
 
-		gui.SetLoadDone(0, wxT("Saving OTBM map..."));
+		g_gui.SetLoadDone(0, wxT("Saving OTBM map..."));
 
 		MemoryNodeFileWriteHandle otbmWriter;
 		saveMap(map, otbmWriter);
 
-		gui.SetLoadDone(75, wxT("Compressing..."));
+		g_gui.SetLoadDone(75, wxT("Compressing..."));
 
 		// Create an archive entry for the otbm file
 		entry = archive_entry_new();
@@ -1229,7 +1229,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		archive_write_close(a);
 		archive_write_free(a);
 
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 		return true;
 	} else {
 		DiskNodeFileWriteHandle f(
@@ -1245,10 +1245,10 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		if(!saveMap(map, f))
 			return false;
 
-		gui.SetLoadDone(99, wxT("Saving spawns..."));
+		g_gui.SetLoadDone(99, wxT("Saving spawns..."));
 		saveSpawns(map, identifier);
 
-		gui.SetLoadDone(99, wxT("Saving houses..."));
+		g_gui.SetLoadDone(99, wxT("Saving houses..."));
 		saveHouses(map, identifier);
 
 		return true;
@@ -1314,7 +1314,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 				// Update progressbar
 				++tiles_saved;
 				if(tiles_saved % 8192 == 0)
-					gui.SetLoadDone(int(tiles_saved / double(map.getTileCount()) * 100.0));
+					g_gui.SetLoadDone(int(tiles_saved / double(map.getTileCount()) * 100.0));
 
 				// Get tile
 				Tile* save_tile = (*map_iterator)->get();

@@ -605,17 +605,17 @@ void PreferencesWindow::Apply()
 	settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, use_memcached_chkbox->GetValue());
 	if(icon_background_choice->GetSelection() == 0) {
 		if(settings.getInteger(Config::ICON_BACKGROUND) != 0) {
-			gui.gfx.cleanSoftwareSprites();
+			g_gui.gfx.cleanSoftwareSprites();
 		}
 		settings.setInteger(Config::ICON_BACKGROUND, 0);
 	} else if(icon_background_choice->GetSelection() == 1) {
 		if(settings.getInteger(Config::ICON_BACKGROUND) != 88) {
-			gui.gfx.cleanSoftwareSprites();
+			g_gui.gfx.cleanSoftwareSprites();
 		}
 		settings.setInteger(Config::ICON_BACKGROUND, 88);
 	} else if(icon_background_choice->GetSelection() == 2) {
 		if(settings.getInteger(Config::ICON_BACKGROUND) != 255) {
-			gui.gfx.cleanSoftwareSprites();
+			g_gui.gfx.cleanSoftwareSprites();
 		}
 		settings.setInteger(Config::ICON_BACKGROUND, 255);
 	}
@@ -708,7 +708,7 @@ void PreferencesWindow::Apply()
 	settings.save();
 
 	if(must_restart) {
-		gui.PopupDialog(this, wxT("Notice"), wxT("You must restart the editor for the changes to take effect."), wxOK);
+		g_gui.PopupDialog(this, wxT("Notice"), wxT("You must restart the editor for the changes to take effect."), wxOK);
 	}
-	gui.RebuildPalettes();
+	g_gui.RebuildPalettes();
 }

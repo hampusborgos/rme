@@ -86,17 +86,17 @@ void WaypointPalettePanel::SelectFirstBrush()
 Brush* WaypointPalettePanel::GetSelectedBrush() const
 {
     long item = waypoint_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-	gui.waypoint_brush->setWaypoint(
+	g_gui.waypoint_brush->setWaypoint(
 		item == -1?
 			nullptr :
 			map->waypoints.getWaypoint(nstr(waypoint_list->GetItemText(item)))
 	);
-	return gui.waypoint_brush;
+	return g_gui.waypoint_brush;
 }
 
 bool WaypointPalettePanel::SelectBrush(const Brush* whatbrush)
 {
-	ASSERT(whatbrush == gui.waypoint_brush);
+	ASSERT(whatbrush == g_gui.waypoint_brush);
 	return false;
 }
 
@@ -152,15 +152,15 @@ void WaypointPalettePanel::OnClickWaypoint(wxListEvent& event)
 	std::string wpname = nstr(event.GetText());
 	Waypoint* wp = map->waypoints.getWaypoint(wpname);
 	if(wp) {
-		gui.SetScreenCenterPosition(wp->pos);
-		gui.waypoint_brush->setWaypoint(wp);
+		g_gui.SetScreenCenterPosition(wp->pos);
+		g_gui.waypoint_brush->setWaypoint(wp);
 	}
 }
 
 void WaypointPalettePanel::OnBeginEditWaypointLabel(wxListEvent& event)
 {
 	// We need to disable all hotkeys, so we can type properly
-	gui.DisableHotkeys();
+	g_gui.DisableHotkeys();
 }
 
 void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
@@ -174,18 +174,18 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 
 	if(wpname == "") {
 		map->waypoints.removeWaypoint(oldwpname);
-		gui.RefreshPalettes();
+		g_gui.RefreshPalettes();
 	} else if(wp) {
 		if(wpname == oldwpname) {
 			; // do nothing
 		} else {
 			if(map->waypoints.getWaypoint(wpname)) {
 				// Already exists a waypoint with this name!
-				gui.SetStatusText(wxT("There already is a waypoint with this name."));
+				g_gui.SetStatusText(wxT("There already is a waypoint with this name."));
 				event.Veto();
 				if(oldwpname == "") {
 					map->waypoints.removeWaypoint(oldwpname);
-					gui.RefreshPalettes();
+					g_gui.RefreshPalettes();
 				}
 			} else {
 				Waypoint* nwp = newd Waypoint(*wp);
@@ -199,7 +199,7 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 				}
 
 				map->waypoints.addWaypoint(nwp);
-				gui.waypoint_brush->setWaypoint(nwp);
+				g_gui.waypoint_brush->setWaypoint(nwp);
 
 				// Refresh other palettes
 				refresh_timer.Start(300, true);
@@ -208,7 +208,7 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 	}
 
 	if(event.IsAllowed())
-		gui.EnableHotkeys();
+		g_gui.EnableHotkeys();
 }
 
 void WaypointPalettePanel::OnClickAddWaypoint(wxCommandEvent& event)
@@ -218,7 +218,7 @@ void WaypointPalettePanel::OnClickAddWaypoint(wxCommandEvent& event)
 		long i = waypoint_list->InsertItem(0, wxT(""));
 		waypoint_list->EditLabel(i);
 
-		//gui.RefreshPalettes();
+		//g_gui.RefreshPalettes();
 	}
 }
 

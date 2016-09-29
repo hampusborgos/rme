@@ -335,7 +335,7 @@ ClientVersionID IOMapOTMM::getVersionInfo(const FileName& filename)
 }
 
 bool IOMapOTMM::loadMap(Map& map, const FileName& identifier, bool showdialog) {
-	if(showdialog) gui.CreateLoadBar(wxT("Loading OTMM map..."));
+	if(showdialog) g_gui.CreateLoadBar(wxT("Loading OTMM map..."));
 	DiskNodeFileReadHandle f(nstr(identifier.GetFullPath()));
 	if(f.isOk() == false) {
 		error(wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage()));
@@ -344,7 +344,7 @@ bool IOMapOTMM::loadMap(Map& map, const FileName& identifier, bool showdialog) {
 
 	bool ret = loadMap(map, f, identifier, showdialog);
 
-	if(showdialog) gui.DestroyLoadBar();
+	if(showdialog) g_gui.DestroyLoadBar();
 
 	return ret;
 }
@@ -403,7 +403,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 	if(mapNode) do {
 		++nodes_loaded;
 		if(showdialog && nodes_loaded % 15 == 0) {
-			gui.SetLoadDone(int(100.0 * f.tell() / f.size()));
+			g_gui.SetLoadDone(int(100.0 * f.tell() / f.size()));
 		}
 		uint8_t node_type;
 		if(!mapNode->getByte(node_type)) {
@@ -773,9 +773,9 @@ bool IOMapOTMM::saveMap(Map& map, const FileName& identifier, bool showdialog) {
 		return false;
 	}
 
-	if(showdialog) gui.CreateLoadBar(wxT("Saving OTMM map..."));
+	if(showdialog) g_gui.CreateLoadBar(wxT("Saving OTMM map..."));
 	bool ret = saveMap(map, f, identifier, showdialog);
-	if(showdialog) gui.DestroyLoadBar();
+	if(showdialog) g_gui.DestroyLoadBar();
 
 	return ret;
 }
@@ -817,7 +817,7 @@ bool IOMapOTMM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 					// Update progressbar
 					++tiles_saved;
 					if(showdialog && tiles_saved % 8192 == 0) {
-						gui.SetLoadDone(int(tiles_saved / double(map.getTileCount()) * 100.0));
+						g_gui.SetLoadDone(int(tiles_saved / double(map.getTileCount()) * 100.0));
 					}
 
 					// Get tile

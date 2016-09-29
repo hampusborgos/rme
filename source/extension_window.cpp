@@ -63,7 +63,7 @@ void ExtensionsDialog::OnClickOpenFolder(wxCommandEvent& evt)
 #error "NOT IMPLEMENTED"
 #endif
 
-	cmd << " " << gui.GetExtensionsDirectory();
+	cmd << " " << g_gui.GetExtensionsDirectory();
 	wxExecute(cmd);
 }
 

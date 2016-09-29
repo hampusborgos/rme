@@ -186,12 +186,12 @@ void LiveLogTab::OnResizeClientList(wxSizeEvent& evt)
 
 void LiveLogTab::OnSelectChatbox(wxFocusEvent& evt)
 {
-	gui.DisableHotkeys();
+	g_gui.DisableHotkeys();
 }
 
 void LiveLogTab::OnDeselectChatbox(wxFocusEvent& evt)
 {
-	gui.EnableHotkeys();
+	g_gui.EnableHotkeys();
 }
 
 void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>& updatedClients)

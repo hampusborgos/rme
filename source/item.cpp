@@ -334,27 +334,27 @@ DoorBrush* Item::getDoorBrush() const
 	// Quite a horrible dependency on a global here, meh.
 	switch(wb->getDoorTypeFromID(id)) {
 		case WALL_DOOR_NORMAL: {
-			db = gui.normal_door_brush;
+			db = g_gui.normal_door_brush;
 			break;
 		}
 		case WALL_DOOR_LOCKED: {
-			db = gui.locked_door_brush;
+			db = g_gui.locked_door_brush;
 			break;
 		}
 		case WALL_DOOR_QUEST: {
-			db = gui.quest_door_brush;
+			db = g_gui.quest_door_brush;
 			break;
 		}
 		case WALL_DOOR_MAGIC: {
-			db = gui.magic_door_brush;
+			db = g_gui.magic_door_brush;
 			break;
 		}
 		case WALL_WINDOW: {
-			db = gui.window_door_brush;
+			db = g_gui.window_door_brush;
 			break;
 		}
 		case WALL_HATCH_WINDOW: {
-			db = gui.hatch_door_brush;
+			db = g_gui.hatch_door_brush;
 			break;
 		}
 		default: {

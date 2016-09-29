@@ -148,7 +148,7 @@ bool Map::convert(MapVersion to, bool showdialog)
 bool Map::convert(const ConversionMap& rm, bool showdialog)
 {
 	if(showdialog)
-		gui.CreateLoadBar(wxT("Converting map ..."));
+		g_gui.CreateLoadBar(wxT("Converting map ..."));
 
 	uint64_t tiles_done = 0;
 	std::vector<uint16_t> id_list;
@@ -262,12 +262,12 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 
 		++tiles_done;
 		if(showdialog && tiles_done % 0x10000 == 0) {
-			gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
+			g_gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
 		}
 	}
 
 	if(showdialog)
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 
 	return true;
 }
@@ -275,7 +275,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 void Map::cleanInvalidTiles(bool showdialog)
 {
 	if(showdialog)
-		gui.CreateLoadBar(wxT("Removing invalid tiles..."));
+		g_gui.CreateLoadBar(wxT("Removing invalid tiles..."));
 
 	uint64_t tiles_done = 0;
 
@@ -297,12 +297,12 @@ void Map::cleanInvalidTiles(bool showdialog)
 
 		++tiles_done;
 		if(showdialog && tiles_done % 0x10000 == 0) {
-			gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
+			g_gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
 		}
 	}
 
 	if(showdialog)
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 }
 
 MapVersion Map::getVersion() const
@@ -514,7 +514,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 			Tile* tile = (*mit)->get();
 			++tiles_iterated;
 			if(tiles_iterated % 8192 == 0 && displaydialog)
-				gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
+				g_gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
 
 			if(tile->empty() || tile->getZ() != floor)
 				continue;
@@ -602,7 +602,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 				fh.addU8(0);
 			}
 			if(y % 100 == 0 && displaydialog) {
-				gui.SetLoadDone(90 + int((minimap_height-y) / double(minimap_height) * 10.0));
+				g_gui.SetLoadDone(90 + int((minimap_height-y) / double(minimap_height) * 10.0));
 			}
 		}
 

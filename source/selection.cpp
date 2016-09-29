@@ -309,7 +309,7 @@ void Selection::updateSelectionCount()
 		} else {
 			ss << size() << wxT(" tiles selected.");
 		}
-		gui.SetStatusText(ss);
+		g_gui.SetStatusText(ss);
 	}
 }
 

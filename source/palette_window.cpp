@@ -379,7 +379,7 @@ void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event)
 void PaletteWindow::OnPageChanged(wxChoicebookEvent& event)
 {
 	if(!choicebook) return;
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 }
 
 void PaletteWindow::OnUpdateBrushSize(BrushShape shape, int size)
@@ -406,8 +406,8 @@ void PaletteWindow::OnUpdate(Map* map)
 
 void PaletteWindow::OnKey(wxKeyEvent& event)
 {
-	if(gui.GetCurrentTab() != nullptr) {
-		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
+	if(g_gui.GetCurrentTab() != nullptr) {
+		g_gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}
 }
 

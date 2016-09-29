@@ -65,7 +65,7 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 		if(mapTab->GetEditor()->IsLive()) {
 			if(mapTab->GetMap()->hasChanged()) {
 				SetFocusedTab(evt.GetInt());
-				if(!gui.root->DoQuerySave(false)) {
+				if(!g_gui.root->DoQuerySave(false)) {
 					needRefresh = false;
 					evt.Veto();
 				}
@@ -73,8 +73,8 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 		}
 
 		if(needRefresh) {
-			gui.RefreshPalettes(nullptr, false);
-			gui.UpdateMenus();
+			g_gui.RefreshPalettes(nullptr, false);
+			g_gui.UpdateMenus();
 		}
 		return;
 	}
@@ -87,7 +87,7 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 
 void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 {
-	gui.UpdateMinimap();
+	g_gui.UpdateMinimap();
 
 	int32_t oldSelection = evt.GetOldSelection();
 	int32_t newSelection = evt.GetSelection();
@@ -108,10 +108,10 @@ void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 
 	// std::cout << oldSelection << " " << newSelection;
 	if(!newMapTab) {
-		gui.RefreshPalettes(nullptr);
+		g_gui.RefreshPalettes(nullptr);
 	} else if(!oldMapTab || !oldMapTab->HasSameReference(newMapTab)) {
-		gui.RefreshPalettes(newMapTab->GetMap());
-		gui.UpdateMenus();
+		g_gui.RefreshPalettes(newMapTab->GetMap());
+		g_gui.UpdateMenus();
 	}
 }
 

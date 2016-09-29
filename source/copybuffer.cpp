@@ -61,7 +61,7 @@ void CopyBuffer::clear()
 void CopyBuffer::copy(Editor& editor, int floor)
 {
 	if(editor.selection.size() == 0) {
-		gui.SetStatusText(wxT("No tiles to copy."));
+		g_gui.SetStatusText(wxT("No tiles to copy."));
 		return;
 	}
 
@@ -109,13 +109,13 @@ void CopyBuffer::copy(Editor& editor, int floor)
 
 	std::ostringstream ss;
 	ss << "Copied " << tile_count << " tile" << (tile_count > 1 ? "s" : "") <<  " (" << item_count << " item" << (item_count > 1? "s" : "") << ")";
-	gui.SetStatusText(wxstr(ss.str()));
+	g_gui.SetStatusText(wxstr(ss.str()));
 }
 
 void CopyBuffer::cut(Editor& editor, int floor)
 {
 	if(editor.selection.size() == 0) {
-		gui.SetStatusText(wxT("No tiles to cut."));
+		g_gui.SetStatusText(wxT("No tiles to cut."));
 		return;
 	}
 
@@ -212,7 +212,7 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	editor.addBatch(batch);
 	std::stringstream ss;
 	ss << "Cut out " << tile_count << " tile" << (tile_count > 1 ? "s" : "") <<  " (" << item_count << " item" << (item_count > 1? "s" : "") << ")";
-	gui.SetStatusText(wxstr(ss.str()));
+	g_gui.SetStatusText(wxstr(ss.str()));
 }
 
 void CopyBuffer::paste(Editor& editor, const Position& toPosition)

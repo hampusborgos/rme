@@ -109,9 +109,9 @@ public: // dtor and ctor
 	~GUI();
 
 private:
-	GUI(const GUI& gui); // Don't copy me
-	GUI& operator=(const GUI& gui); // Don't assign me
-	bool operator==(const GUI& gui); // Don't compare me
+	GUI(const GUI& g_gui); // Don't copy me
+	GUI& operator=(const GUI& g_gui); // Don't assign me
+	bool operator==(const GUI& g_gui); // Don't compare me
 
 public:
 	/**
@@ -419,7 +419,7 @@ protected:
 	friend MapTab::MapTab(const MapTab*);
 };
 
-extern GUI gui;
+extern GUI g_gui;
 
 class RenderingLock
 {
@@ -427,7 +427,7 @@ class RenderingLock
 public:
 	RenderingLock() : acquired(true)
 	{
-		gui.DisableRendering();
+		g_gui.DisableRendering();
 	}
 	~RenderingLock()
 	{
@@ -435,7 +435,7 @@ public:
 	}
 	void release()
 	{
-		gui.EnableRendering();
+		g_gui.EnableRendering();
 		acquired = false;
 	}
 };
@@ -450,21 +450,21 @@ class ScopedLoadingBar
 public:
 	ScopedLoadingBar(wxString message, bool canCancel = false)
 	{
-		gui.CreateLoadBar(message, canCancel);
+		g_gui.CreateLoadBar(message, canCancel);
 	}
 	~ScopedLoadingBar()
 	{
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 	}
 
 	void SetLoadDone(int32_t done, const wxString& newmessage = wxEmptyString)
 	{
-		gui.SetLoadDone(done, newmessage);
+		g_gui.SetLoadDone(done, newmessage);
 	}
 
 	void SetLoadScale(int32_t from, int32_t to)
 	{
-		gui.SetLoadScale(from, to);
+		g_gui.SetLoadScale(from, to);
 	}
 };
 

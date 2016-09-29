@@ -450,15 +450,15 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			int new_aid = action_id_field->GetValue();
 
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 
@@ -471,23 +471,23 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			std::string text = nstr(text_field->GetValue());
 
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 			if(text.length() >= 0xFFFF) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than 65535 characters, this is not supported by OpenTibia. Reduce the length of the text."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than 65535 characters, this is not supported by OpenTibia. Reduce the length of the text."), wxOK);
 				return;
 			}
 			if(edit_item->canHoldText() && text.length() > edit_item->getMaxWriteLength()) {
-				int ret = gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than the maximum supported length of this book type, do you still want to change it?"), wxYES | wxNO);
+				int ret = g_gui.PopupDialog(this, wxT("Error"), wxT("Text is longer than the maximum supported length of this book type, do you still want to change it?"), wxYES | wxNO);
 				if(ret != wxID_YES) {
 					return;
 				}
@@ -503,15 +503,15 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			int* new_type = reinterpret_cast<int*>(splash_type_field->GetClientData(splash_type_field->GetSelection()));
 
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 			if(new_type) {
@@ -548,22 +548,22 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be between 1000 and 65535."), wxOK);
 				return;
 			}
 			if(/* there is no item with the same UID */false) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Unique ID must be unique, this UID is already taken."), wxOK);
 				return;
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
+				g_gui.PopupDialog(this, wxT("Error"), wxT("Action ID must be between 100 and 65535."), wxOK);
 				return;
 			}
 
 			/*
 			if(edit_item->canHoldDescription()) {
 				if(new_desc.length() > 127) {
-					gui.PopupDialog("Error", "Description must be shorter than 127 characters.", wxOK);
+					g_gui.PopupDialog("Error", "Description must be shorter than 127 characters.", wxOK);
 					return;
 				}
 			}
@@ -577,7 +577,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 						if(pos == Position()) {
 							// Do nothing
 						} else if(pos != edit_tile->getPosition()) {
-							int ret = gui.PopupDialog(this, wxT("Warning"), wxT("This doorid conflicts with another one in this house, are you sure you want to continue?"), wxYES | wxNO);
+							int ret = g_gui.PopupDialog(this, wxT("Warning"), wxT("This doorid conflicts with another one in this house, are you sure you want to continue?"), wxYES | wxNO);
 							if(ret == wxID_NO) {
 								return;
 							}
@@ -588,7 +588,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			if(teleport) {
 				if(edit_map->getTile(new_dest) == nullptr || edit_map->getTile(new_dest)->isBlocking()) {
-					int ret = gui.PopupDialog(this, wxT("Warning"), wxT("This teleport leads nowhere, or to an invalid location. Do you want to change the destination?"), wxYES | wxNO);
+					int ret = g_gui.PopupDialog(this, wxT("Warning"), wxT("This teleport leads nowhere, or to an invalid location. Do you want to change the destination?"), wxYES | wxNO);
 					if(ret == wxID_YES) {
 						return;
 					}

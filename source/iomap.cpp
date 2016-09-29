@@ -40,5 +40,5 @@ void IOMap::warning(const wxChar* format, ...)
 
 bool IOMap::queryUser(const wxChar* title, const wxChar* text)
 {
-	return gui.PopupDialog(title, text, wxYES | wxNO) == wxID_YES;
+	return g_gui.PopupDialog(title, text, wxYES | wxNO) == wxID_YES;
 }

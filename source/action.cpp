@@ -572,7 +572,7 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 
 	// Update title
 	if(editor.map.doChange())
-		gui.UpdateTitle();
+		g_gui.UpdateTitle();
 
 	if(batch->type == ACTION_REMOTE) {
 		delete batch;

@@ -127,7 +127,7 @@ void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))
 void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 {
 	ASSERT(edit_item);
-	int32_t ret = gui.PopupDialog(GetParent(),
+	int32_t ret = g_gui.PopupDialog(GetParent(),
 		wxT("Remove Item"),
 		wxT("Are you sure you want to remove this item from the container?"),
 		wxYES | wxNO

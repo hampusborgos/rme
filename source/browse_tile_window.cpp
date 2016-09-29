@@ -64,7 +64,7 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	ItemsMap::const_iterator item_iterator = items.find(int(n));
 	Item* item = item_iterator->second;
 
-	Sprite* sprite = gui.gfx.getSprite(item->getClientID());
+	Sprite* sprite = g_gui.gfx.getSprite(item->getClientID());
 	if(sprite)
 		sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
@@ -192,7 +192,7 @@ void BrowseTileWindow::OnClickSelectRaw(wxCommandEvent& WXUNUSED(event))
 {
 	Item* item = item_list->GetSelectedItem();
 	if(item && item->getRAWBrush())
-		gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
+		g_gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
 
 	EndModal(1);
 }

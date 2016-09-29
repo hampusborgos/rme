@@ -77,7 +77,7 @@ bool RMEProcessConnection::OnPoke(const wxString& topic, const wxString& item, w
 {
 	if(topic == wxT("rme_talk") && item == wxT("map_open")) {
 		std::string s(reinterpret_cast<char*>(data), size);
-		gui.LoadMap(FileName(wxString(s.c_str(), wxConvUTF8)));
+		g_gui.LoadMap(FileName(wxString(s.c_str(), wxConvUTF8)));
 		return true;
 	}
 	return false;

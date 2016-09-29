@@ -60,7 +60,7 @@ void MinimapWindow::OnSize(wxSizeEvent& event)
 
 void MinimapWindow::OnClose(wxCloseEvent&)
 {
-	gui.DestroyMinimap();
+	g_gui.DestroyMinimap();
 }
 
 void MinimapWindow::DelayedUpdate()
@@ -82,15 +82,15 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
-	if(!gui.IsEditorOpen()) return;
-	Editor& editor = *gui.GetCurrentEditor();
+	if(!g_gui.IsEditorOpen()) return;
+	Editor& editor = *g_gui.GetCurrentEditor();
 
 	int window_width = GetSize().GetWidth();
 	int window_height = GetSize().GetHeight();
 	//printf("W:%d\tH:%d\n", window_width, window_height);
 	int center_x, center_y;
 
-	MapCanvas* canvas = gui.GetCurrentMapTab()->GetCanvas();
+	MapCanvas* canvas = g_gui.GetCurrentMapTab()->GetCanvas();
 	canvas->GetScreenCenter(&center_x, &center_y);
 
 	int start_x, start_y;
@@ -124,11 +124,11 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 	last_start_x = start_x;
 	last_start_y = start_y;
 
-	int floor = gui.GetCurrentFloor();
+	int floor = g_gui.GetCurrentFloor();
 
 	//printf("Draw from %d:%d to %d:%d\n", start_x, start_y, end_x, end_y);
 	uint8_t last = 0;
-	if(gui.IsRenderingEnabled()) {
+	if(g_gui.IsRenderingEnabled()) {
 		for(int y = start_y, window_y = 0; y <= end_y; ++y, ++window_y) {
 			for(int x = start_x, window_x = 0; x <= end_x; ++x, ++window_x) {
 				Tile* tile = editor.map.getTile(x, y, floor);
@@ -183,17 +183,17 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 
 void MinimapWindow::OnMouseClick(wxMouseEvent& event)
 {
-	if(!gui.IsEditorOpen()) return;
+	if(!g_gui.IsEditorOpen()) return;
 	int new_map_x = last_start_x + event.GetX();
 	int new_map_y = last_start_y + event.GetY();
-	gui.SetScreenCenterPosition(Position(new_map_x, new_map_y, gui.GetCurrentFloor()));
+	g_gui.SetScreenCenterPosition(Position(new_map_x, new_map_y, g_gui.GetCurrentFloor()));
 	Refresh();
-	gui.RefreshView();
+	g_gui.RefreshView();
 }
 
 void MinimapWindow::OnKey(wxKeyEvent& event)
 {
-	if(gui.GetCurrentTab() != nullptr) {
-		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
+	if(g_gui.GetCurrentTab() != nullptr) {
+		g_gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}
 }

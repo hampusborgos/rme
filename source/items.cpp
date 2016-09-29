@@ -228,7 +228,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 					if(!itemNode->getU16(t->clientID))
 						warnings.push_back(wxT("Invalid item type property (2)"));
 
-					t->sprite = static_cast<GameSprite*>(gui.gfx.getSprite(t->clientID));
+					t->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(t->clientID));
 					break;
 				}
 
@@ -480,7 +480,7 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 					if(!itemNode->getU16(t->clientID))
 						warnings.push_back(wxT("Invalid item type property (2)"));
 
-					t->sprite = static_cast<GameSprite*>(gui.gfx.getSprite(t->clientID));
+					t->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(t->clientID));
 					break;
 				}
 
@@ -627,7 +627,7 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 					if(!itemNode->getU16(t->clientID))
 						warnings.push_back(wxT("Invalid item type property (2)"));
 
-					t->sprite = static_cast<GameSprite*>(gui.gfx.getSprite(t->clientID));
+					t->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(t->clientID));
 					break;
 				}
 
@@ -738,7 +738,7 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 	}
 
 	if(settings.getInteger(Config::CHECK_SIGNATURES)) {
-		if(gui.GetCurrentVersion().getOTBVersion().format_version != MajorVersion) {
+		if(g_gui.GetCurrentVersion().getOTBVersion().format_version != MajorVersion) {
 			error = wxT("Unsupported items.otb version (version ") + i2ws(MajorVersion) + wxT(")");
 			return false;
 		}
@@ -755,7 +755,7 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 
 bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 {
-	ClientVersionID clientVersion = gui.GetCurrentVersionID();
+	ClientVersionID clientVersion = g_gui.GetCurrentVersionID();
 	if(clientVersion < CLIENT_VERSION_980 && id > 20000 && id < 20100) {
 		itemNode = itemNode.next_sibling();
 		return true;

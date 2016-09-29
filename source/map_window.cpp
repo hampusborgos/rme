@@ -137,25 +137,25 @@ void MapWindow::Scroll(int x, int y, bool center)
 		int windowSizeX, windowSizeY;
 
 		canvas->GetSize(&windowSizeX, &windowSizeY);
-		x -= int((windowSizeX * gui.GetCurrentZoom()) / 2.0);
-		y -= int((windowSizeY * gui.GetCurrentZoom()) / 2.0);
+		x -= int((windowSizeX * g_gui.GetCurrentZoom()) / 2.0);
+		y -= int((windowSizeY * g_gui.GetCurrentZoom()) / 2.0);
 	}
 
 	hScroll->SetThumbPosition(x);
 	vScroll->SetThumbPosition(y);
-	gui.UpdateMinimap();
+	g_gui.UpdateMinimap();
 }
 
 void MapWindow::ScrollRelative(int x, int y)
 {
 	hScroll->SetThumbPosition(hScroll->GetThumbPosition()+x);
 	vScroll->SetThumbPosition(vScroll->GetThumbPosition()+y);
-	gui.UpdateMinimap();
+	g_gui.UpdateMinimap();
 }
 
 void MapWindow::OnGem(wxCommandEvent& WXUNUSED(event))
 {
-	gui.SwitchMode();
+	g_gui.SwitchMode();
 }
 
 void MapWindow::OnSize(wxSizeEvent& event)

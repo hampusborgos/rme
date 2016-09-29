@@ -58,6 +58,6 @@ void SearchResultWindow::OnClickResult(wxCommandEvent& event)
 {
 	Position* pos = reinterpret_cast<Position*>(event.GetClientData());
 	if(pos) {
-		gui.SetScreenCenterPosition(*pos);
+		g_gui.SetScreenCenterPosition(*pos);
 	}
 }

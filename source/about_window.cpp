@@ -236,7 +236,7 @@ void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event))
 		gpl_str += ch;
 	}
 
-	gui.ShowTextBox(this, wxT("License"), wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
+	g_gui.ShowTextBox(this, wxT("License"), wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
 }
 
 void AboutWindow::OnTetris(wxCommandEvent&)
@@ -569,7 +569,7 @@ void TetrisPanel::MoveBlock(int x, int y)
 		if(y == 1) { // moving down...
 			if(block.y < 1) { // Out of bounds!
 				dead = true;
-				gui.PopupDialog(wxT("Game Over"), wxT("You reached a score of ") + i2ws(score) + wxT("!"), wxOK);
+				g_gui.PopupDialog(wxT("Game Over"), wxT("You reached a score of ") + i2ws(score) + wxT("!"), wxOK);
 				NewGame();
 				SetFocus();
 			} else {
@@ -836,7 +836,7 @@ void SnakePanel::Move(int dir)
 	if(map[nx][ny] > 0 || nx < 0 || ny < 0 || nx >= SNAKE_MAPWIDTH || ny >= SNAKE_MAPHEIGHT) {
 		// Crash
 		dead = true;
-		gui.PopupDialog(wxT("Game Over"), wxT("You reached a length of ") + i2ws(length) + wxT("!"), wxOK);
+		g_gui.PopupDialog(wxT("Game Over"), wxT("You reached a length of ") + i2ws(length) + wxT("!"), wxOK);
 		NewGame();
 		SetFocus();
 	} else {

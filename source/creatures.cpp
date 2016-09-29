@@ -93,7 +93,7 @@ CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warn
 
 	if((attribute = node.attribute("looktype"))) {
 		ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
-		if(gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
+		if(g_gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
 			warnings.push_back(wxT("Invalid creature \"") + wxstr(ct->name) + wxT("\" look type #") + std::to_string(ct->outfit.lookType));
 		}
 	}
