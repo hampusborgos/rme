@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/settings.hpp $
-// $Id: settings.hpp 323 2010-04-12 20:59:41Z admin $
+// $URL: http://svn.rebarp.se/svn/RME/trunk/source/g_settings.hpp $
+// $Id: g_settings.hpp 323 2010-04-12 20:59:41Z admin $
 
 #include "main.h"
 
@@ -32,7 +32,7 @@
 #include <iostream>
 #include <string>
 
-Settings settings;
+Settings g_settings;
 
 Settings::Settings() : store(Config::LAST)
 #ifdef __WINDOWS__
@@ -329,17 +329,17 @@ void Settings::load()
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		use_file_cfg = true;
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Use registry
 		conf = newd wxConfig(wxT("Remere's Map Editor"), wxT("Remere"), wxT(""), wxT(""), wxCONFIG_USE_GLOBAL_FILE);
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #else
 	FileName filename(wxT("./rme.cfg"));
 	if(filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Else use global (user-specific) conf
 		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg"));
 		if(filename.FileExists()) {
@@ -349,7 +349,7 @@ void Settings::load()
 			wxStringInputStream dummy(wxT(""));
 			conf = newd wxFileConfig(dummy, wxConvAuto());
 		}
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #endif
 	wxConfig::Set(conf);

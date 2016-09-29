@@ -129,7 +129,7 @@ MapCanvas::~MapCanvas()
 
 void MapCanvas::Refresh()
 {
-	if(refresh_watch.Time() > settings.getInteger(Config::HARD_REFRESH_RATE)) {
+	if(refresh_watch.Time() > g_settings.getInteger(Config::HARD_REFRESH_RATE)) {
 		refresh_watch.Start();
 		wxGLCanvas::Update();
 	}
@@ -174,23 +174,23 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 		if(screenshot_buffer != nullptr) {
 			options.SetIngame();
 		} else {
-			options.transparent_floors = settings.getBoolean(Config::TRANSPARENT_FLOORS);
-			options.transparent_items = settings.getBoolean(Config::TRANSPARENT_ITEMS);
-			options.show_ingame_box = settings.getBoolean(Config::SHOW_INGAME_BOX);
-			options.show_grid = settings.getInteger(Config::SHOW_GRID);
-			options.ingame = !settings.getBoolean(Config::SHOW_EXTRA);
-			options.show_all_floors = settings.getBoolean(Config::SHOW_ALL_FLOORS);
-			options.show_creatures = settings.getBoolean(Config::SHOW_CREATURES);
-			options.show_spawns = settings.getBoolean(Config::SHOW_SPAWNS);
-			options.show_houses = settings.getBoolean(Config::SHOW_HOUSES);
-			options.show_shade = settings.getBoolean(Config::SHOW_SHADE);
-			options.show_special_tiles = settings.getBoolean(Config::SHOW_SPECIAL_TILES);
-			options.show_items = settings.getBoolean(Config::SHOW_ITEMS);
-			options.highlight_items = settings.getBoolean(Config::HIGHLIGHT_ITEMS);
-			options.show_blocking = settings.getBoolean(Config::SHOW_BLOCKING);
-			options.show_only_colors = settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
-			options.show_only_modified = settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
-			options.hide_items_when_zoomed = settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
+			options.transparent_floors = g_settings.getBoolean(Config::TRANSPARENT_FLOORS);
+			options.transparent_items = g_settings.getBoolean(Config::TRANSPARENT_ITEMS);
+			options.show_ingame_box = g_settings.getBoolean(Config::SHOW_INGAME_BOX);
+			options.show_grid = g_settings.getInteger(Config::SHOW_GRID);
+			options.ingame = !g_settings.getBoolean(Config::SHOW_EXTRA);
+			options.show_all_floors = g_settings.getBoolean(Config::SHOW_ALL_FLOORS);
+			options.show_creatures = g_settings.getBoolean(Config::SHOW_CREATURES);
+			options.show_spawns = g_settings.getBoolean(Config::SHOW_SPAWNS);
+			options.show_houses = g_settings.getBoolean(Config::SHOW_HOUSES);
+			options.show_shade = g_settings.getBoolean(Config::SHOW_SHADE);
+			options.show_special_tiles = g_settings.getBoolean(Config::SHOW_SPECIAL_TILES);
+			options.show_items = g_settings.getBoolean(Config::SHOW_ITEMS);
+			options.highlight_items = g_settings.getBoolean(Config::HIGHLIGHT_ITEMS);
+			options.show_blocking = g_settings.getBoolean(Config::SHOW_BLOCKING);
+			options.show_only_colors = g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
+			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
+			options.hide_items_when_zoomed = g_settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
 		}
 
 		options.dragging = boundbox_selection;
@@ -340,9 +340,9 @@ void MapCanvas::UpdatePositionStatus(int x, int y)
 	ss = wxT("");
 	Tile* tile = editor.map.getTile(map_x, map_y, floor);
 	if(tile) {
-		if(tile->spawn && settings.getInteger(Config::SHOW_SPAWNS)) {
+		if(tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS)) {
 			ss << wxT("Spawn radius: ") << tile->spawn->getSize();
-		} else if(tile->creature && settings.getInteger(Config::SHOW_CREATURES)) {
+		} else if(tile->creature && g_settings.getInteger(Config::SHOW_CREATURES)) {
 			ss << (tile->creature->isNpc()? wxT("NPC") : wxT("Monster"));
 			ss << wxT(" \"") << wxstr(tile->creature->getName()) << wxT("\" spawntime: ") << tile->creature->getSpawnTime();
 		} else if(Item* item = tile->getTopItem()) {
@@ -381,7 +381,7 @@ void MapCanvas::UpdateZoomStatus()
 void MapCanvas::OnMouseMove(wxMouseEvent& event)
 {
 	if(screendragging) {
-		static_cast<MapWindow*>(GetParent())->ScrollRelative(int(settings.getFloat(Config::SCROLL_SPEED) * zoom*(event.GetX() - cursor_x)), int(settings.getFloat(Config::SCROLL_SPEED) * zoom*(event.GetY() - cursor_y)));
+		static_cast<MapWindow*>(GetParent())->ScrollRelative(int(g_settings.getFloat(Config::SCROLL_SPEED) * zoom*(event.GetX() - cursor_x)), int(g_settings.getFloat(Config::SCROLL_SPEED) * zoom*(event.GetY() - cursor_y)));
 		Refresh();
 	}
 
@@ -525,7 +525,7 @@ void MapCanvas::OnMouseLeftClick(wxMouseEvent& event)
 
 void MapCanvas::OnMouseLeftDoubleClick(wxMouseEvent& event)
 {
-	if(settings.getInteger(Config::DOUBLECLICK_PROPERTIES)) {
+	if(g_settings.getInteger(Config::DOUBLECLICK_PROPERTIES)) {
 		int mouse_map_x, mouse_map_y;
 		ScreenToMap(event.GetX(), event.GetY(), &mouse_map_x, &mouse_map_y);
 		Tile* tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
@@ -533,9 +533,9 @@ void MapCanvas::OnMouseLeftDoubleClick(wxMouseEvent& event)
 		if(tile && tile->size() > 0) {
 			Tile* new_tile = tile->deepCopy(editor.map);
 			wxDialog* w = nullptr;
-			if(new_tile->spawn && settings.getInteger(Config::SHOW_SPAWNS))
+			if(new_tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS))
 				w = newd OldPropertiesWindow(g_gui.root, &editor.map, new_tile, new_tile->spawn);
-			else if(new_tile->creature && settings.getInteger(Config::SHOW_CREATURES))
+			else if(new_tile->creature && g_settings.getInteger(Config::SHOW_CREATURES))
 				w = newd OldPropertiesWindow(g_gui.root, &editor.map, new_tile, new_tile->creature);
 			else if(Item* item = new_tile->getTopItem()) {
 				if(editor.map.getVersion().otbm >= MAP_OTBM_4)
@@ -561,7 +561,7 @@ void MapCanvas::OnMouseLeftDoubleClick(wxMouseEvent& event)
 
 void MapCanvas::OnMouseCenterClick(wxMouseEvent& event)
 {
-	if(settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
+	if(g_settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
 		OnMousePropertiesClick(event);
 	} else {
 		OnMouseCameraClick(event);
@@ -570,7 +570,7 @@ void MapCanvas::OnMouseCenterClick(wxMouseEvent& event)
 
 void MapCanvas::OnMouseCenterRelease(wxMouseEvent& event)
 {
-	if(settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
+	if(g_settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
 		OnMousePropertiesRelease(event);
 	} else {
 		OnMouseCameraRelease(event);
@@ -579,7 +579,7 @@ void MapCanvas::OnMouseCenterRelease(wxMouseEvent& event)
 
 void MapCanvas::OnMouseRightClick(wxMouseEvent& event)
 {
-	if(settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
+	if(g_settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
 		OnMouseCameraClick(event);
 	} else {
 		OnMousePropertiesClick(event);
@@ -588,7 +588,7 @@ void MapCanvas::OnMouseRightClick(wxMouseEvent& event)
 
 void MapCanvas::OnMouseRightRelease(wxMouseEvent& event)
 {
-	if(settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
+	if(g_settings.getInteger(Config::SWITCH_MOUSEBUTTONS)) {
 		OnMouseCameraRelease(event);
 	} else {
 		OnMousePropertiesRelease(event);
@@ -636,7 +636,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 			} else if(event.ControlDown()) {
 				Tile* tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
 				if(tile) {
-					if(tile->spawn && settings.getInteger(Config::SHOW_SPAWNS)) {
+					if(tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS)) {
 						editor.selection.start(); // Start selection session
 						if(tile->spawn->isSelected()) {
 							editor.selection.remove(tile, tile->spawn);
@@ -645,7 +645,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 						}
 						editor.selection.finish(); // Finish selection session
 						editor.selection.updateSelectionCount();
-					} else if(tile->creature && settings.getInteger(Config::SHOW_CREATURES)) {
+					} else if(tile->creature && g_settings.getInteger(Config::SHOW_CREATURES)) {
 						editor.selection.start(); // Start selection session
 						if(tile->creature->isSelected()) {
 							editor.selection.remove(tile, tile->creature);
@@ -684,13 +684,13 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					editor.selection.start(); // Start a selection session
 					editor.selection.clear();
 					editor.selection.commit();
-					if(tile->spawn && settings.getInteger(Config::SHOW_SPAWNS)) {
+					if(tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS)) {
 						editor.selection.add(tile, tile->spawn);
 						dragging = true;
 						drag_start_x = mouse_map_x;
 						drag_start_y = mouse_map_y;
 						drag_start_z = floor;
-					} else if(tile->creature && settings.getInteger(Config::SHOW_CREATURES)) {
+					} else if(tile->creature && g_settings.getInteger(Config::SHOW_CREATURES)) {
 						editor.selection.add(tile, tile->creature);
 						dragging = true;
 						drag_start_x = mouse_map_x;
@@ -890,12 +890,12 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 					}
 
 					int numtiles = 0;
-					int threadcount = std::max(settings.getInteger(Config::WORKER_THREADS), 1);
+					int threadcount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
 
 					int start_x = 0, start_y = 0, start_z = 0;
 					int end_x = 0, end_y = 0, end_z = 0;
 
-					switch(settings.getInteger(Config::SELECTION_TYPE)) {
+					switch(g_settings.getInteger(Config::SELECTION_TYPE)) {
 						case SELECT_CURRENT_FLOOR: {
 							start_z = end_z = floor;
 							start_x = last_click_map_x;
@@ -912,7 +912,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 							end_y = mouse_map_y;
 							end_z = floor;
 
-							if(settings.getInteger(Config::COMPENSATED_SELECT)) {
+							if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 								start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 								start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
@@ -935,7 +935,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 							end_y = mouse_map_y;
 							end_z = floor;
 
-							if(settings.getInteger(Config::COMPENSATED_SELECT)) {
+							if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 								start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 								start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
@@ -993,14 +993,14 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 				// User hasn't moved anything, meaning selection/deselection
 				Tile* tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
 				if(tile) {
-					if(tile->spawn && settings.getInteger(Config::SHOW_SPAWNS)) {
+					if(tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS)) {
 						if(!tile->spawn->isSelected()) {
 							editor.selection.start(); // Start a selection session
 							editor.selection.add(tile, tile->spawn);
 							editor.selection.finish(); // Finish the selection session
 							editor.selection.updateSelectionCount();
 						}
-					} else if(tile->creature && settings.getInteger(Config::SHOW_CREATURES)) {
+					} else if(tile->creature && g_settings.getInteger(Config::SHOW_CREATURES)) {
 						if(!tile->creature->isSelected()) {
 							editor.selection.start(); // Start a selection session
 							editor.selection.add(tile, tile->creature);
@@ -1033,7 +1033,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 				int map_x = start_map_x + (end_map_x - start_map_x)/2;
 				int map_y = start_map_y + (end_map_y - start_map_y)/2;
 
-				int width = min(settings.getInteger(Config::MAX_SPAWN_RADIUS), ((end_map_x - start_map_x)/2 + (end_map_y - start_map_y)/2)/2);
+				int width = min(g_settings.getInteger(Config::MAX_SPAWN_RADIUS), ((end_map_x - start_map_x)/2 + (end_map_y - start_map_y)/2)/2);
 				int old = g_gui.GetBrushSize();
 				g_gui.SetBrushSize(width);
 				editor.draw(Position(map_x, map_y, floor), event.AltDown());
@@ -1225,9 +1225,9 @@ void MapCanvas::OnMousePropertiesClick(wxMouseEvent& event)
 		editor.selection.start(); // Start a selection session
 		editor.selection.clear();
 		editor.selection.commit();
-		if(tile->spawn && settings.getInteger(Config::SHOW_SPAWNS)) {
+		if(tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS)) {
 			editor.selection.add(tile, tile->spawn);
-		} else if(tile->creature && settings.getInteger(Config::SHOW_CREATURES)) {
+		} else if(tile->creature && g_settings.getInteger(Config::SHOW_CREATURES)) {
 			editor.selection.add(tile, tile->creature);
 		} else {
 			Item* item = tile->getTopItem();
@@ -1285,7 +1285,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 			}
 
 			editor.selection.start(); // Start a selection session
-			switch(settings.getInteger(Config::SELECTION_TYPE)) {
+			switch(g_settings.getInteger(Config::SELECTION_TYPE)) {
 				case SELECT_CURRENT_FLOOR: {
 					for(int x = last_click_map_x; x <= mouse_map_x; x++) {
 						for(int y = last_click_map_y; y <= mouse_map_y; y ++) {
@@ -1307,7 +1307,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 					end_y = mouse_map_y;
 					end_z = floor;
 
-					if(settings.getInteger(Config::COMPENSATED_SELECT)) {
+					if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 						start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 						start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
@@ -1323,7 +1323,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 								editor.selection.add(tile);
 								}
 						}
-						if(z <= GROUND_LAYER && settings.getInteger(Config::COMPENSATED_SELECT)) {
+						if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 							start_x++; start_y++;
 							end_x++; end_y++;
 						}
@@ -1345,7 +1345,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 					end_y = mouse_map_y;
 					end_z = floor;
 
-					if(settings.getInteger(Config::COMPENSATED_SELECT)) {
+					if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 						start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 						start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
 
@@ -1361,7 +1361,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 								editor.selection.add(tile);
 							}
 						}
-						if(z <= GROUND_LAYER && settings.getInteger(Config::COMPENSATED_SELECT)) {
+						if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 							start_x++; start_y++;
 							end_x++; end_y++;
 						}
@@ -1416,7 +1416,7 @@ void MapCanvas::OnWheel(wxMouseEvent& event)
 			diff = 0.0;
 		}
 	} else {
-		double diff = -event.GetWheelRotation() * settings.getFloat(Config::ZOOM_SPEED) / 640.0;
+		double diff = -event.GetWheelRotation() * g_settings.getFloat(Config::ZOOM_SPEED) / 640.0;
 		double oldzoom = zoom;
 		zoom += diff;
 
@@ -1982,9 +1982,9 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 
 	wxDialog* w = nullptr;
 
-	if(new_tile->spawn && settings.getInteger(Config::SHOW_SPAWNS))
+	if(new_tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS))
 		w = newd OldPropertiesWindow(g_gui.root, &editor.map, new_tile, new_tile->spawn);
-	else if(new_tile->creature && settings.getInteger(Config::SHOW_CREATURES))
+	else if(new_tile->creature && g_settings.getInteger(Config::SHOW_CREATURES))
 		w = newd OldPropertiesWindow(g_gui.root, &editor.map, new_tile, new_tile->creature);
 	else {
 		ItemVector selected_items = new_tile->getSelectedItems();

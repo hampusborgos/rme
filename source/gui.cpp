@@ -107,7 +107,7 @@ wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
 
 wxString GUI::GetDataDirectory()
 {
-	std::string cfg_str = settings.getString(Config::DATA_DIRECTORY);
+	std::string cfg_str = g_settings.getString(Config::DATA_DIRECTORY);
 	if(cfg_str.size()) {
 		FileName dir;
 		dir.Assign(wxstr(cfg_str));
@@ -150,7 +150,7 @@ wxString GUI::GetExecDirectory()
 
 wxString GUI::GetLocalDataDirectory()
 {
-	if(settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
+	if(g_settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
 		FileName dir = GetDataDirectory();
 		dir.AppendDir(wxT("user"));
 		dir.AppendDir(wxT("data"));
@@ -171,7 +171,7 @@ wxString GUI::GetLocalDataDirectory()
 
 wxString GUI::GetLocalDirectory()
 {
-	if(settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
+	if(g_settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
 		FileName dir = GetDataDirectory();
 		dir.AppendDir(wxT("user"));
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
@@ -190,7 +190,7 @@ wxString GUI::GetLocalDirectory()
 
 wxString GUI::GetExtensionsDirectory()
 {
-	std::string cfg_str = settings.getString(Config::EXTENSIONS_DIRECTORY);
+	std::string cfg_str = g_settings.getString(Config::EXTENSIONS_DIRECTORY);
 	if(cfg_str.size()) {
 		FileName dir;
 		dir.Assign(wxstr(cfg_str));
@@ -687,17 +687,17 @@ void GUI::NewMapView()
 void GUI::LoadPerspective()
 {
 	if(!IsVersionLoaded()) {
-		if(settings.getInteger(Config::WINDOW_MAXIMIZED)) {
+		if(g_settings.getInteger(Config::WINDOW_MAXIMIZED)) {
 			root->Maximize();
 		} else {
 			root->SetSize(wxSize(
-				settings.getInteger(Config::WINDOW_WIDTH),
-				settings.getInteger(Config::WINDOW_HEIGHT)
+				g_settings.getInteger(Config::WINDOW_WIDTH),
+				g_settings.getInteger(Config::WINDOW_HEIGHT)
 			));
 		}
 	} else {
 		std::string tmp;
-		std::string layout = settings.getString(Config::PALETTE_LAYOUT);
+		std::string layout = g_settings.getString(Config::PALETTE_LAYOUT);
 
 		std::vector<std::string> palette_list;
 		for(char c : layout) {
@@ -736,11 +736,11 @@ void GUI::LoadPerspective()
 			}
 		}
 
-		if(settings.getInteger(Config::MINIMAP_VISIBLE)) {
+		if(g_settings.getInteger(Config::MINIMAP_VISIBLE)) {
 			if(!minimap) {
 				wxAuiPaneInfo info;
 
-				const wxString& data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
+				const wxString& data = wxstr(g_settings.getString(Config::MINIMAP_LAYOUT));
 				aui_manager->LoadPaneInfo(data, info);
 
 				minimap = newd MinimapWindow(root);
@@ -748,7 +748,7 @@ void GUI::LoadPerspective()
 			} else {
 				wxAuiPaneInfo& info = aui_manager->GetPane(minimap);
 
-				const wxString& data = wxstr(settings.getString(Config::MINIMAP_LAYOUT));
+				const wxString& data = wxstr(g_settings.getString(Config::MINIMAP_LAYOUT));
 				aui_manager->LoadPaneInfo(data, info);
 			}
 
@@ -777,22 +777,22 @@ void GUI::LoadPerspective()
 
 void GUI::SavePerspective()
 {
-	settings.setInteger(Config::WINDOW_MAXIMIZED, root->IsMaximized());
-	settings.setInteger(Config::WINDOW_WIDTH, root->GetSize().GetWidth());
-	settings.setInteger(Config::WINDOW_HEIGHT, root->GetSize().GetHeight());
+	g_settings.setInteger(Config::WINDOW_MAXIMIZED, root->IsMaximized());
+	g_settings.setInteger(Config::WINDOW_WIDTH, root->GetSize().GetWidth());
+	g_settings.setInteger(Config::WINDOW_HEIGHT, root->GetSize().GetHeight());
 
-	settings.setInteger(Config::MINIMAP_VISIBLE, minimap? 1: 0);
+	g_settings.setInteger(Config::MINIMAP_VISIBLE, minimap? 1: 0);
 
 	wxString pinfo;
 	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		if(aui_manager->GetPane(*piter).IsShown())
 			pinfo << aui_manager->SavePaneInfo(aui_manager->GetPane(*piter)) << wxT("|");
 	}
-	settings.setString(Config::PALETTE_LAYOUT, nstr(pinfo));
+	g_settings.setString(Config::PALETTE_LAYOUT, nstr(pinfo));
 
 	if(minimap) {
 		wxString s = aui_manager->SavePaneInfo(aui_manager->GetPane(minimap));
-		settings.setString(Config::MINIMAP_LAYOUT, nstr(s));
+		g_settings.setString(Config::MINIMAP_LAYOUT, nstr(s));
 	}
 }
 
@@ -1743,13 +1743,13 @@ void GUI::SaveHotkeys() const
 	for(int i = 0; i < 10; ++i) {
 		os << hotkeys[i] << '\n';
 	}
-	settings.setString(Config::NUMERICAL_HOTKEYS, os.str());
+	g_settings.setString(Config::NUMERICAL_HOTKEYS, os.str());
 }
 
 void GUI::LoadHotkeys()
 {
 	std::istringstream is;
-	is.str(settings.getString(Config::NUMERICAL_HOTKEYS));
+	is.str(g_settings.getString(Config::NUMERICAL_HOTKEYS));
 
 	std::string line;
 	int index = 0;

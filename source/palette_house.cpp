@@ -485,7 +485,7 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			return;
 		}
 
-		if(settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
+		if(g_settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
 			Houses& houses = map->houses;
 			for(HouseMap::const_iterator house_iter = houses.begin(); house_iter != houses.end(); ++house_iter) {
 				House* house = house_iter->second;

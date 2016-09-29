@@ -67,7 +67,7 @@ void MinimapWindow::DelayedUpdate()
 {
 	// We only updated the window AFTER actions have taken place, that
 	// way we don't waste too much performance on updating this window
-	update_timer.Start(settings.getInteger(Config::MINIMAP_UPDATE_DELAY), true);
+	update_timer.Start(g_settings.getInteger(Config::MINIMAP_UPDATE_DELAY), true);
 }
 
 void MinimapWindow::OnDelayedUpdate(wxTimerEvent& event)
@@ -145,7 +145,7 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 			}
 		}
 
-		if(settings.getInteger(Config::MINIMAP_VIEW_BOX)) {
+		if(g_settings.getInteger(Config::MINIMAP_VIEW_BOX)) {
 			pdc.SetPen(*wxWHITE_PEN);
 			// Draw the rectangle on the minimap
 

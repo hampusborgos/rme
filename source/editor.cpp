@@ -40,7 +40,7 @@ Editor::Editor(CopyBuffer& copybuffer) :
 	wxArrayString warnings;
 	bool ok = true;
 
-	ClientVersionID defaultVersion = ClientVersionID(settings.getInteger(Config::DEFAULT_CLIENT_VERSION));
+	ClientVersionID defaultVersion = ClientVersionID(g_settings.getInteger(Config::DEFAULT_CLIENT_VERSION));
 	if(defaultVersion == CLIENT_VERSION_NONE)
 		defaultVersion = ClientVersion::getLatestVersion()->getID();
 
@@ -295,7 +295,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 
 
 	// Move to permanent backup
-	if(!save_as && settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
+	if(!save_as && g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
 		// Move temporary backups to their proper files
 		time_t t = time(nullptr);
 		tm* current_time = localtime(&t);
@@ -926,9 +926,9 @@ void Editor::moveSelection(Position offset)
 	batchAction->addAndCommitAction(action);
 
 	// Remove old borders (and create some newd?)
-	if(settings.getInteger(Config::USE_AUTOMAGIC) &&
-			settings.getInteger(Config::BORDERIZE_DRAG) &&
-			selection.size() < size_t(settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
+	if(g_settings.getInteger(Config::USE_AUTOMAGIC) &&
+			g_settings.getInteger(Config::BORDERIZE_DRAG) &&
+			selection.size() < size_t(g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
@@ -982,7 +982,7 @@ void Editor::moveSelection(Position offset)
 		Tile* old_dest_tile = location->get();
 		Tile* new_dest_tile = nullptr;
 
-		if(settings.getInteger(Config::MERGE_MOVE) || !tile->ground) {
+		if(g_settings.getInteger(Config::MERGE_MOVE) || !tile->ground) {
 			// Move items
 			if(old_dest_tile) {
 				new_dest_tile = old_dest_tile->deepCopy(map);
@@ -1004,9 +1004,9 @@ void Editor::moveSelection(Position offset)
 	batchAction->addAndCommitAction(action);
 
 	// Create borders
-	if(settings.getInteger(Config::USE_AUTOMAGIC) &&
-			settings.getInteger(Config::BORDERIZE_DRAG) &&
-			selection.size() < size_t(settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
+	if(g_settings.getInteger(Config::USE_AUTOMAGIC) &&
+			g_settings.getInteger(Config::BORDERIZE_DRAG) &&
+			selection.size() < size_t(g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
@@ -1093,7 +1093,7 @@ void Editor::destroySelection()
 				newtile->spawn = nullptr;
 			}
 
-			if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+			if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 				for(int y = -1; y <= 1; y++) {
 					for(int x = -1; x <= 1; x++) {
 						tilestoborder.push_back(
@@ -1108,7 +1108,7 @@ void Editor::destroySelection()
 
 		batch->addAndCommitAction(action);
 
-		if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+		if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 			// Remove duplicates
 			tilestoborder.sort();
 			tilestoborder.unique();
@@ -1149,7 +1149,7 @@ void Editor::destroySelection()
 	// Macro to avoid useless code repetition
 void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder, Tile* buffer_tile, Tile* new_tile)
 {
-	if(doodad_brush->doNewBorders() && settings.getInteger(Config::USE_AUTOMAGIC)) {
+	if(doodad_brush->doNewBorders() && g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 		tilestoborder.push_back(Position(new_tile->getPosition().x, new_tile->getPosition().y, new_tile->getPosition().z));
 		if(buffer_tile->hasGround()) {
 			for(int y = -1; y <= 1; y++) {
@@ -1431,7 +1431,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 
 			if(tile) {
 				Tile* new_tile = tile->deepCopy(map);
-				if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+				if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 					new_tile->cleanBorders();
 				}
 				if(dodraw)
@@ -1475,7 +1475,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 		// Commit changes to map
 		batch->addAndCommitAction(action);
 
-		if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+		if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 			// Do borders!
 			action = actionQueue->createAction(batch);
 			for(PositionVector::const_iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
@@ -1623,7 +1623,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 			// Commit changes to map
 			batch->addAndCommitAction(action);
 
-			if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+			if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 				// Do borders!
 				action = actionQueue->createAction(batch);
 				for(PositionVector::const_iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
@@ -1671,7 +1671,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 		// Commit changes to map
 		batch->addAndCommitAction(action);
 
-		if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+		if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 			// Do borders!
 			action = actionQueue->createAction(batch);
 			for(PositionVector::const_iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {

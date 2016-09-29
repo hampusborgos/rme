@@ -172,7 +172,7 @@ void CopyBuffer::cut(Editor& editor, int floor)
 			copyPos.y = copied_tile->getY();
 		}
 
-		if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+		if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 			for(int y = -1; y <= 1; y++)
 				for(int x = -1; x <= 1; x++)
 					tilestoborder.push_back(Position(tile->getX() + x, tile->getY() + y, tile->getZ()));
@@ -186,7 +186,7 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	tilestoborder.sort();
 	tilestoborder.unique();
 
-	if(settings.getInteger(Config::USE_AUTOMAGIC)) {
+	if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 		action = editor.actionQueue->createAction(batch);
 		for(PositionList::iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
 			TileLocation* location = editor.map.createTileL(*it);
@@ -236,7 +236,7 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 		Tile* new_dest_tile = nullptr;
 		copy_tile->setLocation(location);
 
-		if(settings.getInteger(Config::MERGE_PASTE) || !copy_tile->ground) {
+		if(g_settings.getInteger(Config::MERGE_PASTE) || !copy_tile->ground) {
 			if(old_dest_tile)
 				new_dest_tile = old_dest_tile->deepCopy(editor.map);
 			else
@@ -262,7 +262,7 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 	}
 	batchAction->addAndCommitAction(action);
 
-	if(settings.getInteger(Config::USE_AUTOMAGIC) && settings.getInteger(Config::BORDERIZE_PASTE)) {
+	if(g_settings.getInteger(Config::USE_AUTOMAGIC) && g_settings.getInteger(Config::BORDERIZE_PASTE)) {
 		action = editor.actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		Map& map = editor.map;

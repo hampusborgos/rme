@@ -55,8 +55,8 @@ bool RMENet::Connect()
 	NetworkMessage* nmsg = AllocMessage();
 	nmsg->AddByte(0x00); // Hello!
 	nmsg->AddU32(__LIVE_NET_VERSION__);
-	nmsg->AddString(settings.getString(Config::LIVE_USERNAME));
-	nmsg->AddString(settings.getString(Config::LIVE_PASSWORD));
+	nmsg->AddString(g_settings.getString(Config::LIVE_USERNAME));
+	nmsg->AddString(g_settings.getString(Config::LIVE_PASSWORD));
 	connection->Send(nmsg);
 
 	return true;

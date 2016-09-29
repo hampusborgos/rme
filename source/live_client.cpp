@@ -218,10 +218,10 @@ void LiveClient::updateCursor(const Position& position)
 	cursor.id = 77; // Unimportant, server fixes it for us
 	cursor.pos = position;
 	cursor.color = wxColor(
-		settings.getInteger(Config::CURSOR_RED),
-		settings.getInteger(Config::CURSOR_GREEN),
-		settings.getInteger(Config::CURSOR_BLUE),
-		settings.getInteger(Config::CURSOR_ALPHA)
+		g_settings.getInteger(Config::CURSOR_RED),
+		g_settings.getInteger(Config::CURSOR_GREEN),
+		g_settings.getInteger(Config::CURSOR_BLUE),
+		g_settings.getInteger(Config::CURSOR_ALPHA)
 	);
 
 	NetworkMessage message;

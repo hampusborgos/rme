@@ -65,13 +65,13 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 	grid->AddGrowableCol(1);
 
 	grid->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawntime")));
-	creature_spawntime_spin = newd wxSpinCtrl(this, PALETTE_CREATURE_SPAWN_TIME, i2ws(settings.getInteger(Config::DEFAULT_SPAWNTIME)), wxDefaultPosition, wxSize(50, 20), wxSP_ARROW_KEYS, 0, 3600, settings.getInteger(Config::DEFAULT_SPAWNTIME));
+	creature_spawntime_spin = newd wxSpinCtrl(this, PALETTE_CREATURE_SPAWN_TIME, i2ws(g_settings.getInteger(Config::DEFAULT_SPAWNTIME)), wxDefaultPosition, wxSize(50, 20), wxSP_ARROW_KEYS, 0, 3600, g_settings.getInteger(Config::DEFAULT_SPAWNTIME));
 	grid->Add(creature_spawntime_spin, 0, wxEXPAND);
 	creature_brush_button = newd wxToggleButton(this, PALETTE_CREATURE_BRUSH_BUTTON, wxT("Place Creature"));
 	grid->Add(creature_brush_button, 0, wxEXPAND);
 
 	grid->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawn size")));
-	spawn_size_spin = newd wxSpinCtrl(this, PALETTE_CREATURE_SPAWN_SIZE, i2ws(5), wxDefaultPosition, wxSize(50, 20), wxSP_ARROW_KEYS, 1, settings.getInteger(Config::MAX_SPAWN_RADIUS), settings.getInteger(Config::CURRENT_SPAWN_RADIUS));
+	spawn_size_spin = newd wxSpinCtrl(this, PALETTE_CREATURE_SPAWN_SIZE, i2ws(5), wxDefaultPosition, wxSize(50, 20), wxSP_ARROW_KEYS, 1, g_settings.getInteger(Config::MAX_SPAWN_RADIUS), g_settings.getInteger(Config::CURRENT_SPAWN_RADIUS));
 	grid->Add(spawn_size_spin, 0, wxEXPAND);
 	spawn_brush_button = newd wxToggleButton(this, PALETTE_SPAWN_BRUSH_BUTTON, wxT("Place Spawn"));
 	grid->Add(spawn_brush_button, 0, wxEXPAND);
@@ -110,8 +110,8 @@ Brush* CreaturePalettePanel::GetSelectedBrush() const
 			return creature_brush;
 		}
 	} else if(spawn_brush_button->GetValue()) {
-		settings.setInteger(Config::CURRENT_SPAWN_RADIUS, spawn_size_spin->GetValue());
-		settings.setInteger(Config::DEFAULT_SPAWNTIME, creature_spawntime_spin->GetValue());
+		g_settings.setInteger(Config::CURRENT_SPAWN_RADIUS, spawn_size_spin->GetValue());
+		g_settings.setInteger(Config::DEFAULT_SPAWNTIME, creature_spawntime_spin->GetValue());
 		return g_gui.spawn_brush;
 	}
 	return nullptr;
@@ -214,7 +214,7 @@ void CreaturePalettePanel::SelectTileset(size_t index)
 
 void CreaturePalettePanel::SelectCreature(size_t index)
 {
-	// Save the old settings
+	// Save the old g_settings
 	ASSERT(creature_list->GetCount() >= index);
 
 	if(creature_list->GetCount() > 0) {

@@ -153,7 +153,7 @@ public:
 	int getDefense() const {return item_db[id].defense;}
 	//int getSlotPosition() const {return item_db[id].slot_position;}
 
-	// Item settings
+	// Item g_settings
 	bool canHoldText() const;
 	bool canHoldDescription() const;
 	bool isReadable() const {return item_db[id].canReadText;}

@@ -18,7 +18,7 @@ public:
 	~PaletteWindow();
 
 	// Interface
-	// Reloads layout settings from settings (and using map)
+	// Reloads layout g_settings from g_settings (and using map)
 	void ReloadSettings(Map* from);
 	// Flushes all pages and forces them to be reloaded from the palette data again
 	void InvalidateContents();

@@ -586,14 +586,14 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 		delete todelete;
 	}
 
-	while(memory_size > size_t(1024 * 1024 * settings.getInteger(Config::UNDO_MEM_SIZE)) && !actions.empty()) {
+	while(memory_size > size_t(1024 * 1024 * g_settings.getInteger(Config::UNDO_MEM_SIZE)) && !actions.empty()) {
 		memory_size -= actions.front()->memsize();
 		delete actions.front();
 		actions.pop_front();
 		current--;
 	}
 
-	if(actions.size() > size_t(settings.getInteger(Config::UNDO_SIZE)) && !actions.empty()) {
+	if(actions.size() > size_t(g_settings.getInteger(Config::UNDO_SIZE)) && !actions.empty()) {
 		memory_size -= actions.front()->memsize();
 		BatchAction* todelete = actions.front();
 		actions.pop_front();
@@ -604,7 +604,7 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 	do {
 		if(!actions.empty()) {
 			BatchAction* lastAction = actions.back();
-			if(lastAction->type == batch->type && settings.getInteger(Config::GROUP_ACTIONS) && time(nullptr) - stacking_delay < lastAction->timestamp) {
+			if(lastAction->type == batch->type && g_settings.getInteger(Config::GROUP_ACTIONS) && time(nullptr) - stacking_delay < lastAction->timestamp) {
 				lastAction->merge(batch);
 				lastAction->timestamp = time(nullptr);
 				memory_size -= lastAction->memsize();

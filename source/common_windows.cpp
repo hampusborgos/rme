@@ -145,7 +145,7 @@ void MapPropertiesWindow::UpdateProtocolList()
 	protocol_choice->Clear();
 
 	ClientVersionList versions;
-	if(settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS)) {
+	if(g_settings.getInteger(Config::USE_OTBM_4_FOR_ALL_MAPS)) {
 		versions = ClientVersion::getAllVisible();
 	} else {
 		MapVersionID map_version = MAP_OTBM_1;

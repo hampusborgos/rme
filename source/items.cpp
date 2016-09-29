@@ -737,7 +737,7 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 		error = wxT("Expected ROOT_ATTR_VERSION as first node of items.otb!");
 	}
 
-	if(settings.getInteger(Config::CHECK_SIGNATURES)) {
+	if(g_settings.getInteger(Config::CHECK_SIGNATURES)) {
 		if(g_gui.GetCurrentVersion().getOTBVersion().format_version != MajorVersion) {
 			error = wxT("Unsupported items.otb version (version ") + i2ws(MajorVersion) + wxT(")");
 			return false;
