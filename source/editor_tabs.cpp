@@ -61,18 +61,20 @@ void MapTabbook::OnNotebookPageClose(wxAuiNotebookEvent& evt)
 
 	MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
 	if(mapTab && mapTab->IsUniqueReference() && mapTab->GetMap()) {
-		gui.UpdateMenus();
+		bool needRefresh = true;
 		if(mapTab->GetEditor()->IsLive()) {
 			if(mapTab->GetMap()->hasChanged()) {
 				SetFocusedTab(evt.GetInt());
-				if(gui.root->DoQuerySave(false)) {
-					gui.RefreshPalettes(nullptr, false);
-				} else {
+				if(!gui.root->DoQuerySave(false)) {
+					needRefresh = false;
 					evt.Veto();
 				}
-			} else {
-				gui.RefreshPalettes(nullptr, false);
 			}
+		}
+
+		if(needRefresh) {
+			gui.RefreshPalettes(nullptr, false);
+			gui.UpdateMenus();
 		}
 		return;
 	}
