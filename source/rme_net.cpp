@@ -37,9 +37,9 @@ bool RMENet::Connect()
 	socket->SetEventHandler(*this, wxID_ANY);
 	socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	socket->Notify(true);
-	
+
 	wxEvtHandler::Connect(wxID_ANY, wxEVT_SOCKET, wxSocketEventHandler(RMENet::HandleEvent));
-	
+
 	socket->Connect(ipaddr, false);
 	if(!socket || !socket->WaitOnConnect(5, 0) ||
 		!socket || !socket->IsConnected())
@@ -51,7 +51,7 @@ bool RMENet::Connect()
 		connection = nullptr;
 		return false;
 	}
- 
+
 	NetworkMessage* nmsg = AllocMessage();
 	nmsg->AddByte(0x00); // Hello!
 	nmsg->AddU32(__LIVE_NET_VERSION__);
@@ -90,7 +90,7 @@ void RMENet::Close()
 void RMENet::HandleEvent(wxSocketEvent& evt)
 {
 	NetworkConnection* connection = reinterpret_cast<NetworkConnection*>(evt.GetClientData());
-	switch(evt.GetSocketEvent()) 
+	switch(evt.GetSocketEvent())
 	{
 		case wxSOCKET_LOST:
 		// Connection was lost, either client disconnecting, or our socket breaking
@@ -111,7 +111,7 @@ void RMENet::HandleEvent(wxSocketEvent& evt)
 		// We got some data to be read.
 		{
 			NetworkMessage* nmsg = connection->Receive();
-			if(nmsg) 
+			if(nmsg)
 			{
 				try
 				{
@@ -152,7 +152,7 @@ void RMENet::OnParsePacket(NetworkMessage* nmsg)
 void RMENet::OnReceiveWelcome(NetworkMessage* nmsg)
 {
 	can_host = nmsg->ReadU8() == 1;
-	
+
 	wxCommandEvent event(EVT_RMENET_CONNECTION_ESTABLISHED);
 	event_dump->AddPendingEvent(event);
 }

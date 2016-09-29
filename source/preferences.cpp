@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -68,13 +68,13 @@ PreferencesWindow::~PreferencesWindow()
 	////
 }
 
-wxNotebookPage* PreferencesWindow::CreateGeneralPage() 
+wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 {
 	wxNotebookPage* general_page = newd wxPanel(book, wxID_ANY);
 
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxStaticText* tmptext;
-	
+
 	always_make_backup_chkbox = newd wxCheckBox(general_page, wxID_ANY, wxT("Always make map backup"));
 	always_make_backup_chkbox->SetValue(settings.getInteger(Config::ALWAYS_MAKE_BACKUP) == 1);
 	sizer->Add(always_make_backup_chkbox, 0, wxLEFT | wxTOP, 5);
@@ -91,7 +91,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 	only_one_instance_chkbox->SetValue(settings.getInteger(Config::ONLY_ONE_INSTANCE) == 1);
 	only_one_instance_chkbox->SetToolTip(wxT("When checked, maps opened using the shell will all be opened in the same instance."));
 	sizer->Add(only_one_instance_chkbox, 0, wxLEFT | wxTOP, 5);
-	
+
 	sizer->AddSpacer(10);
 
 	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(2, 10, 10);
@@ -169,7 +169,7 @@ wxNotebookPage* PreferencesWindow::CreateEditorPage()
 	allow_multiple_orderitems_chkbox->SetValue(settings.getBoolean(Config::RAW_LIKE_SIMONE));
 	allow_multiple_orderitems_chkbox->SetToolTip(wxT("When this option is checked, you can not place several items with the same toporder on one tile using a RAW Brush."));
 	sizer->Add(allow_multiple_orderitems_chkbox, 0, wxLEFT | wxTOP, 5);
-	
+
 	sizer->AddSpacer(10);
 
 	merge_move_chkbox = newd wxCheckBox(editor_page, wxID_ANY, wxT("Use merge move"));
@@ -213,7 +213,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
 
 	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
-	
+
 	// Icon background color
 	icon_background_choice = newd wxChoice(graphics_page, wxID_ANY);
 	icon_background_choice->Append(wxT("Black background"));
@@ -230,7 +230,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
 	subsizer->Add(tmp = newd wxStaticText(graphics_page, wxID_ANY, wxT("Icon background color: ")), 0);
 	subsizer->Add(icon_background_choice, 0);
 	SetWindowToolTip(icon_background_choice, tmp, wxT("This will change the background color on icons in all windows."));
-	
+
 	// Cursor colors
 	subsizer->Add(tmp = newd wxStaticText(graphics_page, wxID_ANY, wxT("Cursor color: ")), 0);
 	subsizer->Add(cursor_color_pick = newd wxColourPickerCtrl(graphics_page, wxID_ANY, wxColor(
@@ -402,9 +402,9 @@ wxNotebookPage* PreferencesWindow::CreateUIPage()
 		wxT("RAW Palette Style:"),
 		wxT("Configures the look of the raw palette."),
 		settings.getString(Config::PALETTE_RAW_STYLE));
-	
+
 	sizer->Add(subsizer, 0, wxALL, 5);
-	
+
 	sizer->AddSpacer(10);
 
 	large_terrain_tools_chkbox = newd wxCheckBox(ui_page, wxID_ANY, wxT("Use large terrain palette tool & size icons"));
@@ -513,9 +513,9 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 		const ClientVersion* version = *version_iter;
 		if(!version->isVisible())
 			continue;
-		
+
 		default_version_choice->Append(wxstr(version->getName()));
-		
+
 		wxString searchtip;
 		searchtip << wxT("Version ") << wxstr(version->getName()) << wxT(" search path");
 		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, searchtip);
@@ -524,7 +524,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, version->getClientPath().GetFullPath());
 		version_dir_pickers.push_back(dir_picker);
 		client_list_sizer->Add(dir_picker, 0);
-		
+
 		wxString tooltip;
 		tooltip << wxT("The editor will look for ") << wxstr(version->getName()) << wxT(" DAT & SPR here.");
 		tmp_text->SetToolTip(tooltip);
@@ -633,7 +633,7 @@ void PreferencesWindow::Apply()
 	} else if(new_format == "BMP") {
 		settings.setString(Config::SCREENSHOT_FORMAT, "bmp");
 	}
-	
+
 	wxColor clr = cursor_color_pick->GetColour();
 		settings.setInteger(Config::CURSOR_RED, clr.Red());
 		settings.setInteger(Config::CURSOR_GREEN, clr.Green());
@@ -669,7 +669,7 @@ void PreferencesWindow::Apply()
 	settings.setInteger(Config::USE_LARGE_CONTAINER_ICONS, large_container_icons_chkbox->GetValue());
 	settings.setInteger(Config::USE_LARGE_CHOOSE_ITEM_ICONS, large_pick_item_icons_chkbox->GetValue());
 
-	
+
 	settings.setInteger(Config::SWITCH_MOUSEBUTTONS, switch_mousebtn_chkbox->GetValue());
 	settings.setInteger(Config::DOUBLECLICK_PROPERTIES, doubleclick_properties_chkbox->GetValue());
 
@@ -693,7 +693,7 @@ void PreferencesWindow::Apply()
 		if(dir.Length() > 0 && dir.Last() != wxT('/') && dir.Last() != wxT('\\'))
 			dir.Append(wxT("/"));
 		version->setClientPath(FileName(dir));
-		
+
 		if(version->getName() == default_version_choice->GetStringSelection())
 			settings.setInteger(Config::DEFAULT_CLIENT_VERSION, version->getID());
 

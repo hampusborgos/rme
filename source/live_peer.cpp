@@ -258,7 +258,7 @@ void LivePeer::parseNodeRequest(NetworkMessage& message)
 		int32_t ndx = ind >> 18;
 		int32_t ndy = (ind >> 4) & 0x3FFF;
 		bool underground = ind & 1;
-	
+
 		QTreeNode* node = map.createLeaf(ndx * 4, ndy * 4);
 		if(node) {
 			sendNode(clientId, node, ndx, ndy, underground ? 0xFF00 : 0x00FF);

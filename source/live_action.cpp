@@ -14,7 +14,7 @@ NetworkedAction::NetworkedAction(Editor& editor, ActionIdentifier ident) :
 	;
 }
 
-NetworkedAction::~NetworkedAction() 
+NetworkedAction::~NetworkedAction()
 {
 	;
 }
@@ -26,12 +26,12 @@ NetworkedBatchAction::NetworkedBatchAction(Editor& editor, NetworkedActionQueue&
 	;
 }
 
-NetworkedBatchAction::~NetworkedBatchAction() 
+NetworkedBatchAction::~NetworkedBatchAction()
 {
 	;
 }
 
-void NetworkedBatchAction::addAndCommitAction(Action* action) 
+void NetworkedBatchAction::addAndCommitAction(Action* action)
 {
 	// If empty, do nothing.
 	if(action->size() == 0) {
@@ -54,7 +54,7 @@ void NetworkedBatchAction::addAndCommitAction(Action* action)
 	queue.broadcast(dirty_list);
 }
 
-void NetworkedBatchAction::commit() 
+void NetworkedBatchAction::commit()
 {
 	// Track changed nodes...
 	DirtyList dirty_list;
@@ -71,7 +71,7 @@ void NetworkedBatchAction::commit()
 	queue.broadcast(dirty_list);
 }
 
-void NetworkedBatchAction::undo() 
+void NetworkedBatchAction::undo()
 {
 	// Track changed nodes...
 	DirtyList dirty_list;
@@ -83,7 +83,7 @@ void NetworkedBatchAction::undo()
 	queue.broadcast(dirty_list);
 }
 
-void NetworkedBatchAction::redo() 
+void NetworkedBatchAction::redo()
 {
 	commit();
 }

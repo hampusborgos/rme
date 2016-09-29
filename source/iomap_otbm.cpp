@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@ bool Item::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute att
 			setSubtype(subtype);
 			break;
 		}
-		
+
 		// The following *should* be handled in the derived classes
 		// However, we still need to handle them here since otherwise things
 		// will break horribly
@@ -431,11 +431,11 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 
 				// Read from the archive
 				int read_bytes = archive_read_data(a.get(), buffer, 8096);
-				
+
 				// Check so it at least contains the 4-byte file id
 				if(read_bytes < 4)
 					return false;
-				
+
 				// Create a read handle on it
 				std::shared_ptr<NodeFileReadHandle> f(new MemoryNodeFileReadHandle(buffer + 4, read_bytes - 4));
 
@@ -511,10 +511,10 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 				// Read the entire OTBM file into a memory region
 				size_t otbm_size = archive_entry_size(entry);
 				std::shared_ptr<uint8_t> otbm_buffer(new uint8_t[otbm_size], [](uint8_t* p) { delete[] p; });
-				
+
 				// Read from the archive
 				size_t read_bytes = archive_read_data(a.get(), otbm_buffer.get(), otbm_size);
-				
+
 				// Check so it at least contains the 4-byte file id
 				if(read_bytes < 4)
 					return false;
@@ -540,10 +540,10 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 			} else if(entryName == "world/houses.xml") {
 				house_buffer_size = archive_entry_size(entry);
 				house_buffer.reset(new uint8_t[house_buffer_size]);
-				
+
 				// Read from the archive
 				size_t read_bytes = archive_read_data(a.get(), house_buffer.get(), house_buffer_size);
-				
+
 				// Check so it at least contains the 4-byte file id
 				if(read_bytes < house_buffer_size) {
 					house_buffer.reset();
@@ -553,10 +553,10 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 			} else if(entryName == "world/spawns.xml") {
 				spawn_buffer_size = archive_entry_size(entry);
 				spawn_buffer.reset(new uint8_t[spawn_buffer_size]);
-				
+
 				// Read from the archive
 				size_t read_bytes = archive_read_data(a.get(), spawn_buffer.get(), spawn_buffer_size);
-				
+
 				// Check so it at least contains the 4-byte file id
 				if(read_bytes < spawn_buffer_size) {
 					spawn_buffer.reset();
@@ -607,7 +607,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 		if(!loadMap(map, f))
 			return false;
-		
+
 		// Read auxilliary files
 		if(!loadHouses(map, filename)) {
 			warning(wxT("Failed to load houses."));
@@ -641,7 +641,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 	if(version.otbm > MAP_OTBM_4) {
 		// Failed to read version
-		if(gui.PopupDialog(wxT("Map error"), 
+		if(gui.PopupDialog(wxT("Map error"),
 			wxT("The loaded map appears to be a OTBM format that is not supported by the editor.")
 			wxT("Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
 		{
@@ -662,7 +662,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	map.height = u16;
 
 	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MajorVersion) { // OTB major version
-		if(gui.PopupDialog(wxT("Map error"), 
+		if(gui.PopupDialog(wxT("Map error"),
 			wxT("The loaded map appears to be a items.otb format that deviates from the ")
 			wxT("items.otb loaded by the editor. Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
 		{
@@ -720,7 +720,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 		if(nodes_loaded % 15 == 0) {
 			gui.SetLoadDone(static_cast<int32_t>(100.0 * f.tell() / f.size()));
 		}
-		
+
 		uint8_t node_type;
 		if(!mapNode->getByte(node_type)) {
 			warning(wxT("Invalid map node"));
@@ -749,12 +749,12 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 						continue;
 					}
 					const Position pos(base_x + x_offset, base_y + y_offset, base_z);
-					
+
 					if(map.getTile(pos)) {
 						warning(wxT("Duplicate tile at %d:%d:%d, discarding duplicate"), pos.x, pos.y, pos.z);
 						continue;
 					}
-					
+
 					tile = map.allocator(map.createTileL(pos));
 					House* house = nullptr;
 					if(tile_type == OTBM_HOUSETILE) {
@@ -895,7 +895,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					warning(wxT("Invalid waypoint type (2)"));
 					continue;
 				}
-				
+
 				Waypoint wp;
 
 				if(!waypointNode->getString(wp.name)) {
@@ -1270,7 +1270,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 	 * to port to newer versions of the editor than a custom binary
 	 * format.
 	 */
-	
+
 	const IOMapOTBM& self = *this;
 
 	FileName tmpName;
@@ -1298,7 +1298,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 			tmpName.Assign(wxstr(map.spawnfile));
 			f.addU8(OTBM_ATTR_EXT_SPAWN_FILE);
 			f.addString(nstr(tmpName.GetFullName()));
-			
+
 			tmpName.Assign(wxstr(map.housefile));
 			f.addU8(OTBM_ATTR_EXT_HOUSE_FILE);
 			f.addString(nstr(tmpName.GetFullName()));
@@ -1342,7 +1342,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 					f.addU8( local_z = pos.z);
 				}
 				f.addNode(save_tile->isHouseTile()? OTBM_HOUSETILE : OTBM_TILE);
-				
+
 				f.addU8(save_tile->getX() & 0xFF);
 				f.addU8(save_tile->getY() & 0xFF);
 

@@ -14,7 +14,7 @@ public:
 	virtual ~WallBrush();
 
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings);
-	
+
 	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
 
 	// Draw to the target tile
@@ -28,7 +28,7 @@ public:
 	// If the specified wall item is part of this wall
 	bool hasWall(Item* item);
 	::DoorType getDoorTypeFromID(uint16_t id);
-	
+
 	virtual bool canSmear() const {return false;}
 	virtual bool canDrag() const {return true;}
 protected:
@@ -63,7 +63,7 @@ class WallDecorationBrush : public WallBrush {
 public:
 	WallDecorationBrush();
 	virtual ~WallDecorationBrush();
-	
+
 	// We use the exact same loading algorithm as normal walls
 
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);

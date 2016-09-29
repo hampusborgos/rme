@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -99,7 +99,7 @@ public:
 	const int32_t* getIntegerAttribute(const std::string& key) const;
 	const double* getFloatAttribute(const std::string& key) const;
 	const bool* getBooleanAttribute(const std::string& key) const;
-	
+
 	// Returns true if the attribute (of that type) exists
 	bool hasStringAttribute(const std::string& key) const;
 	bool hasIntegerAttribute(const std::string& key) const;

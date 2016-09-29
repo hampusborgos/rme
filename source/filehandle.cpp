@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -244,7 +244,7 @@ DiskNodeFileReadHandle::DiskNodeFileReadHandle(const std::string& name, const st
 			error_code = FILE_SYNTAX_ERROR;
 			return;
 		}
-		
+
 		// 0x00 00 00 00 is accepted as a wildcard version
 
 		if(ver[0] != 0 || ver[1] != 0 || ver[2] != 0 || ver[3] != 0) {
@@ -408,7 +408,7 @@ BinaryNode* BinaryNode::advance()
 		uint8_t*& cache = file->cache;
 		size_t& cache_length = file->cache_length;
 		size_t& local_read_index = file->local_read_index;
-		
+
 		if(local_read_index >= cache_length) {
 			if(!file->renewCache()) {
 				// Failed to renew, exit
@@ -417,7 +417,7 @@ BinaryNode* BinaryNode::advance()
 				return nullptr;
 			}
 		}
-		
+
 		uint8_t op = cache[local_read_index];
 		++local_read_index;
 
@@ -456,7 +456,7 @@ void BinaryNode::load()
 				return;
 			}
 		}
-		
+
 		uint8_t op = cache[local_read_index];
 		++local_read_index;
 
@@ -479,7 +479,7 @@ void BinaryNode::load()
 						return;
 					}
 				}
-				
+
 				op = cache[local_read_index];
 				++local_read_index;
 				break;

@@ -29,7 +29,7 @@ void ClientVersion::loadVersions()
 	wxFileName exec_dir_client_xml;
 	exec_dir_client_xml.Assign(gui.GetExecDirectory());
 	exec_dir_client_xml.SetFullName(wxT("clients.xml"));
-	
+
 	wxFileName data_dir_client_xml;
 	data_dir_client_xml.Assign(gui.GetDataDirectory());
 	data_dir_client_xml.SetFullName(wxT("clients.xml"));
@@ -309,11 +309,11 @@ void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
 			wxLogError(wxT("Unknown client extension data."));
 			continue;
 		}
-			
+
 		if(!fromVersion) {
 			fromVersion = client_versions.begin()->second;
 		}
-		
+
 		if(!toVersion) {
 			toVersion = client_versions.rbegin()->second;
 		}
@@ -429,7 +429,7 @@ bool ClientVersion::hasValidPaths() const
 	if(!client_path.DirExists()) {
 		return false;
 	}
-	
+
 	FileName dat_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.dat");
 	FileName spr_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.spr");
 	if(!dat_path.FileExists() || !spr_path.FileExists()) {

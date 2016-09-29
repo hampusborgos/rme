@@ -186,7 +186,7 @@ class ClientVersion : boost::noncopyable
 public:
 	ClientVersion(OtbVersion otb, std::string versionName, wxString path);
 	~ClientVersion() {}
-	
+
 	static void loadVersions();
 	static void unloadVersions();
 	static void saveVersions();
@@ -201,11 +201,11 @@ public:
 	static ClientVersion* getLatestVersion();
 
 	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}
-	
+
 	bool hasValidPaths() const;
 	bool loadValidPaths();
 	void setClientPath(const FileName& dir);
-	
+
 	bool isVisible() const;
 	std::string getName() const;
 
@@ -222,7 +222,7 @@ public:
 
 private:
 	OtbVersion otb;
-	
+
 	std::string name;
 	bool visible;
 	bool usesFuckedUpCharges;

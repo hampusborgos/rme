@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -284,7 +284,7 @@ bool Container::unserializeItemNode_OTMM(const IOMap& maphandle, BinaryNode* nod
 bool Container::serializeItemNode_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const
 {
 	f.addNode(OTMM_ITEM);
-	
+
 	f.addU16(id);
 	serializeItemAttributes_OTMM(maphandle, f);
 
@@ -396,7 +396,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 		return false;
 	}
 
-	
+
 	int nodes_loaded = 0;
 
 	BinaryNode* mapNode = mapHeaderNode->getChild();
@@ -443,12 +443,12 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						continue;
 					}
 					const Position pos(x_offset, y_offset, z_offset);
-					
+
 					if(map.getTile(pos)) {
 						warning(wxT("Duplicate tile at %d:%d:%d, discarding duplicate"), pos.x, pos.y, pos.z);
 						continue;
 					}
-					
+
 					tile = map.allocator(pos);
 					House* house = nullptr;
 					if(tile_type == OTMM_HOUSETILE) {
@@ -490,7 +490,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							} break;
 						}
 					}
-					
+
 					BinaryNode* itemNode = tileNode->getChild();
 					if(itemNode) do {
 						Item* item = nullptr;
@@ -531,7 +531,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						warning(wxT("Invalid spawn type."));
 						continue;
 					}
-					
+
 					// Read position
 					uint16_t spawn_x, spawn_y;
 					uint8_t spawn_z;
@@ -545,7 +545,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						continue;
 					}
 					const Position spawnpos(spawn_x, spawn_y, spawn_z);
-					
+
 					// Read radius
 					if(!spawnNode->getU32(radius)) {
 						warning(wxT("Could not read spawn radius."));
@@ -730,13 +730,13 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						warning(wxT("Could not read house name."));
 						continue;
 					}
-					
+
 					uint32_t town_id;
 					if(!houseNode->getU32(town_id)) {
 						warning(wxT("Could not read house town id."));
 						continue;
 					}
-					
+
 					uint32_t rent;
 					if(!houseNode->getU32(rent)) {
 						warning(wxT("Could not read house rent."));
@@ -767,7 +767,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 
 bool IOMapOTMM::saveMap(Map& map, const FileName& identifier, bool showdialog) {
 	DiskNodeFileWriteHandle f(std::string(identifier.GetFullPath().mb_str(wxConvUTF8)));
-	
+
 	if(f.isOk() == false){
 		error(wxT("Can not open file %s for writing"), (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
 		return false;
@@ -806,12 +806,12 @@ bool IOMapOTMM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 			f.addNode(OTMM_DESCRIPTION); {
 				f.addString(map.getMapDescription());
 			} f.endNode(); // OTMM_DESCRIPTION
-			
+
 			// Start writing tiles
 			uint tiles_saved = 0;
 
 			MapIterator map_iterator = map.begin();
-			
+
 			f.addNode(OTMM_TILE_DATA); {
 				while(map_iterator != map.end()) {
 					// Update progressbar
@@ -920,7 +920,7 @@ bool IOMapOTMM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 												f.addU8(creature_tile->getZ() & 0xf);
 											} f.endNode(); // OTMM_MONSTER
 										}
-										
+
 										// Flag as saved
 										c->save();
 										creature_list.push_back(c);

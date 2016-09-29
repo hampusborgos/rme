@@ -510,7 +510,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	if(total_chance == 0) {
 		randomize = false;
 	}
-	
+
 	return true;
 }
 
@@ -915,7 +915,7 @@ void GroundBrush::doBorders(BaseMap* map, Tile* tile)
 			if(specificCaseBlock->to_replace_id == 0) {
 				continue;
 			}
-			
+
 			if(specificCaseBlock->with_id == 0) {
 				continue;
 			}

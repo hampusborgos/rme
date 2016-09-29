@@ -32,7 +32,7 @@ MapTabbook::MapTabbook(wxWindow *parent, wxWindowID id) :
 	SetSizerAndFit(wxz);
 }
 
-MapTabbook::~MapTabbook() 
+MapTabbook::~MapTabbook()
 {
 	;
 }
@@ -42,7 +42,7 @@ void MapTabbook::CycleTab(bool forward)
 	if(!notebook) {
 		return;
 	}
-	
+
 	int32_t pageCount = notebook->GetPageCount();
 	int32_t currentSelection = notebook->GetSelection();
 

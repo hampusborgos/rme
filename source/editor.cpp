@@ -122,7 +122,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		/* TODO
 		if(success && ver.client == CLIENT_VERSION_854_BAD) {
 			int ok = gui.PopupDialog(wxT("Incorrect OTB"), wxT("This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes."), wxYES | wxNO);
-			
+
 			if(ok == wxID_YES){
 				ver.client = CLIENT_VERSION_854;
 				map.convert(ver);
@@ -173,7 +173,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 
 	if(savefile.empty()) {
 		savefile = map.filename;
-		
+
 		FileName c1(wxstr(savefile));
 		FileName c2(wxstr(map.filename));
 		save_as = c1 != c2;
@@ -191,7 +191,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 
 		map.unnamed = false;
 	}
-	
+
 	// File object to convert between local paths etc.
 	FileName converter;
 	converter.Assign(wxstr(savefile));
@@ -234,9 +234,9 @@ void Editor::saveMap(FileName filename, bool showdialog)
 	{
 		std::string n = nstr(gui.GetLocalDataDirectory()) + ".saving.txt";
 		std::ofstream f(n.c_str(), std::ios::trunc | std::ios::out);
-		f << 
-			backup_otbm << std::endl << 
-			backup_house << std::endl << 
+		f <<
+			backup_otbm << std::endl <<
+			backup_house << std::endl <<
 			backup_spawn << std::endl;
 	}
 
@@ -249,7 +249,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 
 		if(showdialog)
 			gui.CreateLoadBar("Saving OTBM map...");
-		
+
 		// Perform the actual save
 		IOMapOTBM mapsaver(map.getVersion());
 		bool success = mapsaver.saveMap(map, fn);
@@ -281,7 +281,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 			// Display the error
 			gui.PopupDialog(wxT("Error"), wxT("Could not save, unable to open target for writing."), wxOK);
 		}
-		
+
 		// Remove temporary save runfile
 		{
 			std::string n = nstr(gui.GetLocalDataDirectory()) + ".saving.txt";
@@ -292,7 +292,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 		if(!success)
 			return;
 	}
-	
+
 
 	// Move to permanent backup
 	if(!save_as && settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
@@ -619,7 +619,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 		imported_map.setTile(import_tile->getPosition(), nullptr);
 		TileLocation* location = map.createTileL(new_pos);
 
-		
+
 		// Check if we should update any houses
 		int new_houseid = house_id_map[import_tile->getHouseID()];
 		House* house = map.houses.getHouse(new_houseid);
@@ -671,7 +671,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	map.setWidth(newsize_x);
 	map.setHeight(newsize_y);
 	gui.PopupDialog(wxT("Success"), wxT("Map imported successfully, ") + i2ws(discarded_tiles) + wxT(" tiles were discarded as invalid."), wxOK);
- 
+
 	gui.RefreshPalettes();
 	gui.FitViewToMap();
 
@@ -848,7 +848,7 @@ void Editor::clearModifiedTileState(bool showdialog)
 	if(showdialog) {
 		gui.CreateLoadBar(wxT("Clearing modified state from all tiles..."));
 	}
-	
+
 	uint64_t tiles_done = 0;
 	for(MapIterator map_iter = map.begin(); map_iter != map.end(); ++map_iter) {
 		if(showdialog && tiles_done % 4096 == 0) {
@@ -1035,10 +1035,10 @@ void Editor::moveSelection(Position offset)
 			if(tile->ground) {
 				if(tile->ground->getGroundBrush()) {
 					Tile* new_tile = tile->deepCopy(map);
-					
+
 					if(doborders)
 						new_tile->borderize(&map);
-					
+
 					new_tile->wallize(&map);
 					new_tile->tableize(&map);
 					new_tile->carpetize(&map);
@@ -1200,7 +1200,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 			if(!pos.isValid()) {
 				continue;
 			}
-			
+
 			TileLocation* location = map.createTileL(pos);
 			Tile* tile = location->get();
 
@@ -1603,7 +1603,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 				Position pos = *it;
 				TileLocation* location = map.createTileL(pos);
 				Tile* tile = location->get();
-				
+
 				if(tile) {
 					Tile* new_tile = tile->deepCopy(map);
 					// Wall cleaning is exempt from automagic
@@ -1755,7 +1755,7 @@ LiveSocket& Editor::GetLive() const
 
 LiveServer* Editor::StartLiveServer()
 {
-	ASSERT(IsLocal());	
+	ASSERT(IsLocal());
 	live_server = newd LiveServer(*this);
 
 	delete actionQueue;
@@ -1782,7 +1782,7 @@ void Editor::CloseLiveServer()
 		delete live_client;
 		live_client = nullptr;
 	}
-	
+
 	if(live_server) {
 		live_server->close();
 

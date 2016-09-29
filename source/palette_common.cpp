@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -81,7 +81,7 @@ void PalettePanel::AddToolPanel(PalettePanel* panel)
 	wxSizer* sp_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, panel->GetName());
 	sp_sizer->Add(panel, 0, wxEXPAND);
 	GetSizer()->Add(sp_sizer, 0, wxEXPAND);
-	
+
 	//GetSizer()->SetDimension(wxDefaultCoord, wxDefaultCoord, wxDefaultCoord, wxDefaultCoord);
 	//GetSizer()->Layout();
 	Fit();
@@ -254,7 +254,7 @@ void BrushSizePanel::LoadAllContents()
 
 	sub_sizer->Add(brushshapeSquareButton = newd DCButton(this, PALETTE_BRUSHSHAPE_SQUARE, wxDefaultPosition, DC_BTN_TOGGLE, render_size, EDITOR_SPRITE_BRUSH_SD_9x9));
 		brushshapeSquareButton->SetToolTip(wxT("Square brush"));
-	
+
 	sub_sizer->Add(brushshapeCircleButton = newd DCButton(this, PALETTE_BRUSHSHAPE_CIRCLE, wxDefaultPosition, DC_BTN_TOGGLE, render_size, EDITOR_SPRITE_BRUSH_CD_9x9));
 		brushshapeCircleButton->SetToolTip(wxT("Circle brush"));
 	brushshapeSquareButton->SetValue(true);
@@ -288,7 +288,7 @@ void BrushSizePanel::LoadAllContents()
 
 	sub_sizer->Add(brushsize8Button = newd DCButton(this, PALETTE_TERRAIN_BRUSHSIZE_8, wxDefaultPosition, DC_BTN_TOGGLE, render_size, EDITOR_SPRITE_BRUSH_SD_15x15));
 	brushsize8Button->SetToolTip(wxT("Brush size 9"));
-	
+
 	sub_sizer->Add(brushsize11Button = newd DCButton(this, PALETTE_TERRAIN_BRUSHSIZE_11, wxDefaultPosition, DC_BTN_TOGGLE, render_size, EDITOR_SPRITE_BRUSH_SD_19x19));
 		brushsize11Button->SetToolTip(wxT("Brush size 12"));
 
@@ -383,14 +383,14 @@ void BrushSizePanel::OnClickBrushSize(int which)
 BEGIN_EVENT_TABLE(BrushToolPanel, PalettePanel)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, BrushToolPanel::OnClickGravelButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_ERASER, BrushToolPanel::OnClickEraserButton)
-	
+
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_NORMAL_DOOR,BrushToolPanel::OnClickNormalDoorButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_LOCKED_DOOR,BrushToolPanel::OnClickLockedDoorButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_MAGIC_DOOR, BrushToolPanel::OnClickMagicDoorButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_QUEST_DOOR, BrushToolPanel::OnClickQuestDoorButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_HATCH_DOOR, BrushToolPanel::OnClickHatchDoorButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_WINDOW_DOOR,BrushToolPanel::OnClickWindowDoorButton)
-	
+
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_PZ_TOOL,BrushToolPanel::OnClickPZBrushButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_NOPVP_TOOL,BrushToolPanel::OnClickNOPVPBrushButton)
 	EVT_TOGGLEBUTTON(PALETTE_TERRAIN_NOLOGOUT_TOOL,BrushToolPanel::OnClickNoLogoutBrushButton)
@@ -432,13 +432,13 @@ void BrushToolPanel::InvalidateContents()
 		eraserButton =
 		normalDoorButton =
 		lockedDoorButton =
-		magicDoorButton = 
-		questDoorButton = 
-		hatchDoorButton = 
-		windowDoorButton = 
-		pzBrushButton = 
-		nopvpBrushButton = 
-		nologBrushButton = 
+		magicDoorButton =
+		questDoorButton =
+		hatchDoorButton =
+		windowDoorButton =
+		pzBrushButton =
+		nopvpBrushButton =
+		nologBrushButton =
 		pvpzoneBrushButton = nullptr;
 
 		loaded = false;
@@ -465,7 +465,7 @@ void BrushToolPanel::LoadAllContents()
 		// 16x16
 		render_size = RENDER_SIZE_16x16;
 	}*/
-	
+
 	if(large_icons) {
 		// Create the tool page with 32x32 icons
 
@@ -492,7 +492,7 @@ void BrushToolPanel::LoadAllContents()
 		ASSERT(gui.pvp_brush);
 		sub_sizer->Add(pvpzoneBrushButton = newd BrushButton(this, gui.pvp_brush, RENDER_SIZE_32x32, PALETTE_TERRAIN_PVPZONE_TOOL));
 			pvpzoneBrushButton->SetToolTip(wxT("PVP Zone Tool"));
-		
+
 		// New row
 		size_sizer->Add(sub_sizer);
 		sub_sizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -508,11 +508,11 @@ void BrushToolPanel::LoadAllContents()
 		ASSERT(gui.magic_door_brush);
 		sub_sizer->Add(magicDoorButton = newd BrushButton(this, gui.magic_door_brush, RENDER_SIZE_32x32, PALETTE_TERRAIN_MAGIC_DOOR));
 			magicDoorButton->SetToolTip(wxT("Magic Door Tool"));
-			
+
 		ASSERT(gui.quest_door_brush);
 		sub_sizer->Add(questDoorButton = newd BrushButton(this, gui.quest_door_brush, RENDER_SIZE_32x32, PALETTE_TERRAIN_QUEST_DOOR));
 			questDoorButton->SetToolTip(wxT("Quest Door Tool"));
-			
+
 		ASSERT(gui.hatch_door_brush);
 		sub_sizer->Add(hatchDoorButton = newd BrushButton(this, gui.hatch_door_brush, RENDER_SIZE_32x32, PALETTE_TERRAIN_HATCH_DOOR));
 			hatchDoorButton->SetToolTip(wxT("Hatch Window Tool"));
@@ -533,7 +533,7 @@ void BrushToolPanel::LoadAllContents()
 			eraserButton->SetToolTip(wxT("Eraser"));
 
 		sub_sizer->AddSpacer(20);
-		
+
 		ASSERT(gui.normal_door_brush);
 		sub_sizer->Add(normalDoorButton = newd BrushButton(this, gui.normal_door_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_NORMAL_DOOR));
 			normalDoorButton->SetToolTip(wxT("Normal Door Tool"));
@@ -541,15 +541,15 @@ void BrushToolPanel::LoadAllContents()
 		ASSERT(gui.locked_door_brush);
 		sub_sizer->Add(lockedDoorButton = newd BrushButton(this, gui.locked_door_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_LOCKED_DOOR));
 			lockedDoorButton->SetToolTip(wxT("Locked Door Tool"));
-			
+
 		ASSERT(gui.magic_door_brush);
 		sub_sizer->Add(magicDoorButton = newd BrushButton(this, gui.magic_door_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_MAGIC_DOOR));
 			magicDoorButton->SetToolTip(wxT("Magic Door Tool"));
-			
+
 		ASSERT(gui.quest_door_brush);
 		sub_sizer->Add(questDoorButton = newd BrushButton(this, gui.quest_door_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_QUEST_DOOR));
 			questDoorButton->SetToolTip(wxT("Quest Door Tool"));
-			
+
 		ASSERT(gui.hatch_door_brush);
 		sub_sizer->Add(hatchDoorButton = newd BrushButton(this, gui.hatch_door_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_HATCH_DOOR));
 			hatchDoorButton->SetToolTip(wxT("Hatch Window Tool"));
@@ -562,7 +562,7 @@ void BrushToolPanel::LoadAllContents()
 		size_sizer->Add(sub_sizer);
 		sub_sizer = newd wxBoxSizer(wxHORIZONTAL);
 
-		
+
 		ASSERT(gui.pz_brush);
 		sub_sizer->Add(pzBrushButton = newd BrushButton(this, gui.pz_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_PZ_TOOL));
 			pzBrushButton->SetToolTip(wxT("PZ Tool"));
@@ -671,14 +671,14 @@ bool BrushToolPanel::SelectBrush(const Brush* whatbrush)
 		button = nologBrushButton;
 	} else if(whatbrush == gui.pvp_brush) {
 		button = pvpzoneBrushButton;
-	} 
-	
+	}
+
 	DeselectAll();
 	if(button) {
 		button->SetValue(true);
 		return true;
 	}
-	
+
 	return false;
 }
 

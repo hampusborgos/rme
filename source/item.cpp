@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 	Item* newItem = nullptr;
 
 	const ItemType& it = item_db[_type];
-	
+
 	if(it.id != 0){
 		if(it.isDepot()) {
 			newItem = newd Depot(_type);
@@ -119,7 +119,7 @@ Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent)
 				parent->items.insert(item_iter, new_item);
 				return new_item;
 			}
-			
+
 			Container* c = dynamic_cast<Container*>(*item_iter);
 			if(c)
 				containers.push(c);
@@ -207,7 +207,7 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 			if(it.blockPathFind)
 				return true;
 			break;
-		
+
 		case ISVERTICAL:
 			if(it.isVertical)
 				return true;
@@ -222,7 +222,7 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 			if(it.blockSolid && (!it.moveable || getUniqueID() != 0))
 				return true;
 			break;
-		
+
 		default:
 			return false;
 	}

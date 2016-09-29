@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ Settings settings;
 
 Settings::Settings() : store(Config::LAST)
 #ifdef __WINDOWS__
-			   , use_file_cfg(false) 
+			   , use_file_cfg(false)
 #endif
 {
 	setDefaults();
@@ -274,7 +274,7 @@ void Settings::IO(IOMode mode)
 	IntToSave(USE_MEMCACHED_SPRITES, 0);
 	Int(MINIMAP_UPDATE_DELAY, 333);
 	Int(MINIMAP_VIEW_BOX, 1);
-	
+
 	Int(CURSOR_RED, 0);
 	Int(CURSOR_GREEN, 166);
 	Int(CURSOR_BLUE, 0);
@@ -348,7 +348,7 @@ void Settings::load()
 		} else {
 			wxStringInputStream dummy(wxT(""));
 			conf = newd wxFileConfig(dummy, wxConvAuto());
-		}		
+		}
 		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #endif

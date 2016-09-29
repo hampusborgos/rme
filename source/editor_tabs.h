@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ class MapTabbook : public wxPanel
 public:
 	MapTabbook(wxWindow* parent, wxWindowID id);
 	~MapTabbook();
-	
+
 	// Wrapper functions
 	void AddTab(EditorTab* tab, bool select);
 	void SetTabLabel(int idx, wxString label);
@@ -42,7 +42,7 @@ public:
 	wxWindow* GetCurrentPage();
 	EditorTab* GetCurrentTab();
 	EditorTab* GetTab(int idx);
-	
+
 	// Events
 	void OnAllowNotebookDND(wxAuiNotebookEvent& evt);
 	void OnNotebookPageClose(wxAuiNotebookEvent& evt);
@@ -67,7 +67,7 @@ public:
 	virtual wxWindow* GetWindow() const = 0;
 	virtual wxString GetTitle() const = 0;
 
-	// 
+	//
 	virtual void OnSwitchEditorMode(EditorMode mode) {}
 };
 

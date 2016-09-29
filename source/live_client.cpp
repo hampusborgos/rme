@@ -60,7 +60,7 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 		delete connection;
 		return false;
 	}
-	
+
 	if(!client->IsConnected()) {
 		if(log)
 			log->Disconnect();
@@ -70,7 +70,7 @@ bool LiveClient::connect(const std::string& address, uint16_t port)
 		delete connection;
 		return false;
 	}
-	
+
 	if(log)
 		log->Message(wxT("Connection established!"));
 	*/
@@ -290,7 +290,7 @@ void LiveClient::sendChanges(DirtyList& dirtyList)
 	if(changeList.empty()) {
 		return;
 	}
-	
+
 	mapWriter.reset();
 	for(Change* change : changeList) {
 		switch (change->getType()) {
@@ -452,14 +452,14 @@ void LiveClient::parseCursorUpdate(NetworkMessage& message)
 {
 	LiveCursor cursor = readCursor(message);
 	cursors[cursor.id] = cursor;
-	
+
 	gui.RefreshView();
 }
 
 void LiveClient::parseStartOperation(NetworkMessage& message)
 {
 	const std::string& operation = message.read<std::string>();
-	
+
 	currentOperation = wxstr(operation);
 	gui.SetStatusText(wxT("Server Operation in Progress: ") + currentOperation + wxT("... (0%)"));
 }

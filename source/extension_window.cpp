@@ -86,12 +86,12 @@ wxString ExtensionsDialog::HTMLForExtension(MaterialsExtension* me) const
 		<< "< background='#ff0000'>"
 		<< "<td width='100px'><b>Extension</b></td>"
 		<< "<td>";
-	
+
 	if(me->url.empty())
 		markup << me->name;
 	else
 		markup << "<a href='" << me->url << "'>" << me->name << "</a>";
-	
+
 	markup
 		<< "</td>"
 		<< "</tr>"

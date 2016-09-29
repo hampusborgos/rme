@@ -31,7 +31,7 @@ MapDrawer::MapDrawer(const DrawingOptions& options, MapCanvas* canvas, wxPaintDC
 	zoom = canvas->GetZoom();
 	tile_size = int(TILE_SIZE / zoom); // after zoom
 	floor = canvas->GetFloor();
-	
+
 	SetupVars();
 	SetupGL();
 }
@@ -46,7 +46,7 @@ void MapDrawer::SetupVars()
 	}
 	else
 		start_z = floor;
-	
+
 	end_z = floor;
 	superend_z = (floor > GROUND_LAYER ? 8 : 0);
 
@@ -199,7 +199,7 @@ void MapDrawer::DrawMap()
 	// Enable texture mode
 	if(!options.show_only_colors)
 		glEnable(GL_TEXTURE_2D);
-	
+
 	for(int map_z = start_z; map_z >= superend_z; map_z--) {
 		if(map_z == end_z && start_z != end_z && options.show_shade) {
 			// Draw shade
@@ -232,7 +232,7 @@ void MapDrawer::DrawMap()
 							nd = editor.map.createLeaf(nd_map_x, nd_map_y);
 							nd->setVisible(false, false);
 						}
-						else 
+						else
 							continue;
 					}
 
@@ -364,13 +364,13 @@ void MapDrawer::DrawIngameBox()
 
 	int center_x = start_x + int(screensize_x * zoom / 64);
 	int center_y = start_y + int(screensize_y * zoom / 64);
-	
+
 	int offset_y = 2;
 	int box_start_map_x = center_x;
 	int box_start_map_y = center_y + offset_y;
 	int box_end_map_x = center_x + CLIENT_MAP_WIDTH;
 	int box_end_map_y = center_y + CLIENT_MAP_HEIGHT + offset_y;
-	
+
 	int box_start_x = box_start_map_x * TILE_SIZE - view_scroll_x;
 	int box_start_y = box_start_map_y * TILE_SIZE - view_scroll_y;
 	int box_end_x = box_end_map_x * TILE_SIZE - view_scroll_x;
@@ -583,7 +583,7 @@ void MapDrawer::DrawSelectionBox()
 	int last_click_ry = canvas->last_click_abs_y - view_scroll_y;
 	double cursor_rx = canvas->cursor_x * zoom;
 	double cursor_ry = canvas->cursor_y * zoom;
-	
+
 	double lines[4][4];
 
 	lines[0][0] = last_click_rx;
@@ -687,9 +687,9 @@ void MapDrawer::DrawBrush()
 	WaypointBrush* waypoint_brush = dynamic_cast<WaypointBrush*>(brush);
 	FlagBrush* flag_brush = dynamic_cast<FlagBrush*>(brush);
 	EraserBrush* eraser = dynamic_cast<EraserBrush*>(brush);
-	
+
 	BrushColor brushColor = COLOR_BLANK;
-	
+
 	if(terrainbrush || table_brush || carpet_brush)
 		brushColor = COLOR_BRUSH;
 	else if(house_brush)
@@ -873,7 +873,7 @@ void MapDrawer::DrawBrush()
 
 			int delta_x = end_sx - start_sx;
 			int delta_y = end_sy - start_sy;
-			
+
 			glColor(brushColor);
 			glBegin(GL_QUADS);
 				{
@@ -923,7 +923,7 @@ void MapDrawer::DrawBrush()
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 255, 255, 160);
 			else
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 64, 64, 160);
-			
+
 			glDisable(GL_TEXTURE_2D);
 		} else if(!dynamic_cast<DoodadBrush*>(brush)) {
 			if(rawbrush) { // Textured brush
@@ -997,7 +997,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		glBlitSquare(draw_x, draw_y, 255, 0, 0, alpha);
 		glEnable(GL_TEXTURE_2D);
 		return;
-	} else if(it.id == 459 && !options.ingame) { 
+	} else if(it.id == 459 && !options.ingame) {
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, red, green, 0, alpha/3*2);
 		glEnable(GL_TEXTURE_2D);
@@ -1304,12 +1304,12 @@ void MapDrawer::DrawTile(TileLocation* location) {
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
 		bool showspecial = options.show_only_colors || options.show_special_tiles;
-		
+
 		if(tile->isBlocking() && tile->size() > 0 && options.show_blocking) {
 			g = g/3*2;
 			b = b/3*2;
 		}
-		
+
 		int item_count = tile->items.size();
 		if(options.highlight_items && item_count > 0 && !tile->items.back()->isBorder()) {
 			static const float factor[5] = {0.75f, 0.6f, 0.48f, 0.40f, 0.33f};
@@ -1432,7 +1432,7 @@ void MapDrawer::DrawTooltips()
 		for(int i = 0; i < 8; ++i)
 			glVertex2i(vertexes[i][0], vertexes[i][1]);
 		glEnd();
-		
+
 		glColor4ub(0, 0, 0, 255);
 		glLineWidth(1.0);
 		glBegin(GL_LINES);

@@ -30,7 +30,7 @@ public:
 		delete t;
 	}
 
-	// 
+	//
 	Floor* allocateFloor(int x, int y, int z) {
 		return newd Floor(x, y, z);
 	}

@@ -73,7 +73,7 @@ void LiveServer::close()
 		socket->close();
 	}
 }
- 
+
 void LiveServer::acceptClient()
 {
 	static uint32_t id = 0;

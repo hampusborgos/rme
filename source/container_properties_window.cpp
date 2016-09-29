@@ -91,7 +91,7 @@ void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 	} else {
 		itemVector.push_back(item);
 	}
-	
+
 	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
 	if(propertyWindow) {
 		propertyWindow->Update();
@@ -151,7 +151,7 @@ void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 
 	itemVector.erase(it);
 	delete edit_item;
-	
+
 	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
 	if(propertyWindow) {
 		propertyWindow->Update();

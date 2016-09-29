@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -105,7 +105,7 @@ bool Application::OnInit()
 
 	// Tell that we are the real thing
 	wxAppConsole::SetInstance(this);
-	
+
 	// Load some internal stuff
 	settings.load();
 	FixVersionDiscrapencies();
@@ -116,7 +116,7 @@ bool Application::OnInit()
 	proc_server = nullptr;
 	// Setup inter-process communice!
 	if(settings.getInteger(Config::ONLY_ONE_INSTANCE)) {
-		{	
+		{
 			// Prevents WX from complaining 'bout there being no server.
 			wxLogNull nolog;
 
@@ -126,7 +126,7 @@ bool Application::OnInit()
 				RMEProcessConnection* connection = dynamic_cast<RMEProcessConnection*>(n_connection);
 				ASSERT(connection);
 				std::pair<bool, FileName> ff = ParseCommandLineMap();
-				if(ff.first) 
+				if(ff.first)
 				{
 					connection->AskToLoad(ff.second);
 					connection->Disconnect();
@@ -201,7 +201,7 @@ bool Application::OnInit()
 	}
 	if(settings.getInteger(Config::USE_UPDATER) == 1) {
 		UpdateChecker updater;
-		updater.connect(gui.root);	
+		updater.connect(gui.root);
 	}
 #endif
 
@@ -245,7 +245,7 @@ bool Application::OnInit()
 					std::remove(backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
 					std::rename(backup_spawn.c_str(), backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
 				}
-				
+
 				// Load the map
 				gui.LoadMap(wxstr(backup_otbm.substr(0, backup_otbm.size() - 1)));
 				return true;
@@ -288,7 +288,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 	}
 }
 
-void Application::FixVersionDiscrapencies() 
+void Application::FixVersionDiscrapencies()
 {
 	// Here the registry should be fixed, if the version has been changed
 	if(settings.getInteger(Config::VERSION_ID) < MAKE_VERSION_ID(1, 0, 5)) {
@@ -312,7 +312,7 @@ void Application::FixVersionDiscrapencies()
 	settings.setInteger(Config::VERSION_ID, __RME_VERSION_ID__);
 }
 
-void Application::Unload() 
+void Application::Unload()
 {
 	gui.CloseAllEditors();
 	gui.UnloadVersion();
@@ -338,7 +338,7 @@ void Application::OnFatalException()
 	////
 }
 
-std::pair<bool, FileName> Application::ParseCommandLineMap() 
+std::pair<bool, FileName> Application::ParseCommandLineMap()
 {
 	if(argc == 2) {
 		FileName f = wxString(argv[1]);
@@ -375,7 +375,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	// Le sizer
 	gui.aui_manager = newd wxAuiManager(this);
 	gui.tabbook = newd MapTabbook(this, wxID_ANY);
-	
+
 	gui.aui_manager->AddPane(gui.tabbook, wxAuiPaneInfo().CenterPane().Floatable(false).CloseButton(false).PaneBorder(false));
 	//wxAuiNotebook* p = newd wxAuiNotebook(this, wxID_ANY);
 	//gui.tabbook->notebook->AddPage(newd wxPanel(gui.tabbook->notebook), wxT("OMG IS TAB"));
@@ -386,25 +386,25 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	UpdateMenubar();
 }
 
-MainFrame::~MainFrame() 
+MainFrame::~MainFrame()
 {
 	//wxTopLevelWindows.Erase(wxTopLevelWindows.GetFirst());
 }
 
-void MainFrame::OnIdle(wxIdleEvent& event) 
+void MainFrame::OnIdle(wxIdleEvent& event)
 {
 	////
 }
 
 #ifdef _USE_UPDATER_
-void MainFrame::OnUpdateReceived(wxCommandEvent& event) 
+void MainFrame::OnUpdateReceived(wxCommandEvent& event)
 {
 	std::string data = *(std::string*)event.GetClientData();
 	delete (std::string*)event.GetClientData();
 	size_t first_colon = data.find(':');
 	size_t second_colon = data.find(':', first_colon+1);
 
-	if(first_colon == std::string::npos || second_colon == std::string::npos) 
+	if(first_colon == std::string::npos || second_colon == std::string::npos)
 		return;
 
 	std::string update = data.substr(0, first_colon);
@@ -414,7 +414,7 @@ void MainFrame::OnUpdateReceived(wxCommandEvent& event)
 	if(update == "yes") {
 		int ret = gui.PopupDialog(
 			wxT("Update Notice"),
-			wxString(wxT("There is a newd update available (")) << wxstr(verstr) << 
+			wxString(wxT("There is a newd update available (")) << wxstr(verstr) <<
 			wxT("). Do you want to go to the website and download it?"),
 			wxYES | wxNO,
 			wxT("I don't want any update notices"),
@@ -470,12 +470,12 @@ bool MainFrame::DoQueryClose() {
 	return true;
 }
 
-bool MainFrame::DoQuerySave(bool doclose) 
+bool MainFrame::DoQuerySave(bool doclose)
 {
 	if(!gui.IsEditorOpen()) {
 		return true;
 	}
-	
+
 	Editor& editor = *gui.GetCurrentEditor();
 	if(editor.IsLiveClient()) {
 		long ret = gui.PopupDialog(
@@ -540,12 +540,12 @@ bool MainFrame::DoQuerySave(bool doclose)
 	return true;
 }
 
-bool MainFrame::DoQueryImportCreatures() 
+bool MainFrame::DoQueryImportCreatures()
 {
 	if(creature_db.hasMissing()) {
 		int ret = gui.PopupDialog(wxT("Missing creatures"), wxT("There are missing creatures and/or NPC in the editor, do you want to load them from an OT monster/npc file?"), wxYES | wxNO);
 		if(ret == wxID_YES) {
-			do 
+			do
 			{
 				wxFileDialog dlg(gui.root, wxT("Import monster/npc file"), wxT(""),wxT(""),wxT("*.xml"), wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
 				if(dlg.ShowModal() == wxID_OK) {
@@ -557,7 +557,7 @@ bool MainFrame::DoQueryImportCreatures()
 						bool ok = creature_db.importXMLFromOT(FileName(paths[i]), error, warnings);
 						if(ok)
 							gui.ListDialog(wxT("Monster loader errors"), warnings);
-						else 
+						else
 							wxMessageBox(wxT("Error OT data file \"") + paths[i] + wxT("\".\n") + error, wxT("Error"), wxOK | wxICON_INFORMATION, gui.root);
 					}
 				} else {
@@ -570,17 +570,17 @@ bool MainFrame::DoQueryImportCreatures()
 	return true;
 }
 
-void MainFrame::UpdateFloorMenu() 
+void MainFrame::UpdateFloorMenu()
 {
 	menu_bar->UpdateFloorMenu();
 }
 
-bool MainFrame::LoadMap(FileName name) 
+bool MainFrame::LoadMap(FileName name)
 {
 	return gui.LoadMap(name);
 }
 
-void MainFrame::OnExit(wxCloseEvent& event) 
+void MainFrame::OnExit(wxCloseEvent& event)
 {
 	while(gui.IsEditorOpen()) {
 		if(!DoQuerySave()) {
@@ -611,7 +611,7 @@ void MainFrame::LoadRecentFiles()
 	menu_bar->LoadRecentFiles();
 }
 
-void MainFrame::SaveRecentFiles() 
+void MainFrame::SaveRecentFiles()
 {
 	menu_bar->SaveRecentFiles();
 }

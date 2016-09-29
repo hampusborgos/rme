@@ -11,7 +11,7 @@ class TableBrush : public Brush
 {
 public:
 	static void init();
-	
+
 	TableBrush();
 	virtual ~TableBrush();
 

@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ class MapTab;
 /**
  * A toggle button with an item on it.
  */
-class ItemToggleButton : public DCButton 
+class ItemToggleButton : public DCButton
 {
 public:
 	ItemToggleButton(wxWindow* parent, RenderSize size, int lookid, wxWindowID id = wxID_ANY) :
@@ -42,7 +42,7 @@ public:
 /**
  * A button with an item on it.
  */
-class ItemButton : public DCButton 
+class ItemButton : public DCButton
 {
 public:
 	ItemButton(wxWindow* parent, RenderSize size, uint16_t lookid, wxWindowID id = wxID_ANY) :
@@ -54,7 +54,7 @@ public:
  * The map properties window
  * Change map size, protocol etc.
  */
-class MapPropertiesWindow : public wxDialog 
+class MapPropertiesWindow : public wxDialog
 {
 public:
 	MapPropertiesWindow(wxWindow* parent, MapTab* tab, Editor& editor);
@@ -133,7 +133,7 @@ protected:
 /**
  * Text control that will forward up/down pgup / pgdown keys to parent window
  */
-class KeyForwardingTextCtrl : public wxTextCtrl 
+class KeyForwardingTextCtrl : public wxTextCtrl
 {
 public:
 	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
@@ -149,12 +149,12 @@ public:
  * The list inside a find dialog
  * Presents a list of brushes
  */
-class FindDialogListBox : public wxVListBox 
+class FindDialogListBox : public wxVListBox
 {
 public:
 	FindDialogListBox(wxWindow* parent, wxWindowID id);
 	~FindDialogListBox();
-	
+
 	void Clear();
 	void SetNoMatches();
 	void AddBrush(Brush*);
@@ -173,7 +173,7 @@ protected:
  * ShowModal will return 0 or the item id for item dialogs
  * 0 or 1 for brush dialogs
  */
-class FindDialog : public wxDialog 
+class FindDialog : public wxDialog
 {
 public:
 	FindDialog(wxWindow* parent, wxString title);
@@ -207,7 +207,7 @@ protected:
  * Find a brush dialog
  * Find out what brush was returned through GetResult
  */
-class FindBrushDialog : public FindDialog 
+class FindBrushDialog : public FindDialog
 {
 public:
 	FindBrushDialog(wxWindow* parent, wxString title = wxT("Jump to Brush"));
@@ -222,7 +222,7 @@ public:
  * Select an item dialog
  * Find out what item was selected through return value of ShowModal() or getResultID
  */
-class FindItemDialog : public FindDialog 
+class FindItemDialog : public FindDialog
 {
 public:
 	FindItemDialog(wxWindow* parent, wxString title = wxT("Jump to Item"));
@@ -247,7 +247,7 @@ class ReplaceItemDialog : public wxDialog
 public:
 	ReplaceItemDialog(wxWindow* parent, wxString title = wxT("Replace Item"));
 	virtual ~ReplaceItemDialog();
-	
+
 	void OnKeyDown(wxKeyEvent&);
 	void OnTextChange(wxCommandEvent&);
 	void OnTextIdle(wxTimerEvent&);
@@ -268,10 +268,10 @@ protected:
 
 	wxTimer find_idle_input_timer;
 	wxTimer with_idle_input_timer;
-	
+
 	Brush* result_find_brush;
 	Brush* result_with_brush;
-	
+
 	DECLARE_EVENT_TABLE();
 };
 
@@ -279,7 +279,7 @@ protected:
  * Go to position dialog
  * Allows entry of 3 coordinates and goes there instantly
  */
-class GotoPositionDialog : public wxDialog 
+class GotoPositionDialog : public wxDialog
 {
 public:
 	GotoPositionDialog(wxWindow* parent, Editor& editor);
@@ -331,7 +331,7 @@ protected:
 /**
  * The edit towns dialog, ugly as sin.
  */
-class EditTownsDialog : public wxDialog 
+class EditTownsDialog : public wxDialog
 {
 public:
 	EditTownsDialog(wxWindow* parent, Editor& editor);
@@ -344,7 +344,7 @@ public:
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 protected:
-	
+
 	void BuildListBox(bool doselect);
 	void UpdateSelection(int new_selection);
 

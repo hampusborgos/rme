@@ -48,7 +48,7 @@ public:
 		NodeIndex(const NodeIndex& other) : index(other.index), node(other.node) {}
 		int index;
 		QTreeNode* node;
-		
+
 		bool operator==(const NodeIndex& n) const {
 			return n.node == node && n.index == index;
 		}

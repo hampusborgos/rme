@@ -42,7 +42,7 @@ UpdateChecker::~UpdateChecker()
 void UpdateChecker::connect(wxEvtHandler* receiver)
 {
 	wxString address = wxT("http://www.remeresmapeditor.com/update.php");
-	address << wxT("?os=") << 
+	address << wxT("?os=") <<
 #ifdef __WINDOWS__
 	wxT("windows");
 #elif __LINUX__

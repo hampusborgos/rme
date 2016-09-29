@@ -137,7 +137,7 @@ void ItemDatabase::clear()
 bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArrayString& warnings)
 {
 	uint8_t u8;
-	
+
 	for( ; itemNode != nullptr; itemNode = itemNode->advance()) {
 		if(!itemNode->getU8(u8)) {
 			// Invalid!
@@ -204,7 +204,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 				warnings.push_back(wxT("Invalid item type property"));
 				break;
 			}
-			
+
 			switch(attribute) {
 				case ITEM_ATTR_SERVERID: {
 					if(datalen != sizeof(uint16_t)) {
@@ -267,7 +267,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 					uint8_t u8 = 0;
 					if(!itemNode->getU8(u8))
 						warnings.push_back(wxT("Invalid item type property (5)"));
-					
+
 					t->alwaysOnTopOrder = u8;
 					break;
 				}
@@ -277,10 +277,10 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						warnings.push_back(wxT("items.otb: Unexpected data length of item name block (Should be 128 bytes)"));
 						break;
 					}
-					
+
 					uint8_t name[128];
 					memset(&name, 0, 128);
-					
+
 					if(!itemNode->getRAW(name, datalen)) {
 						warnings.push_back(wxT("Invalid item type property (6)"));
 						break;
@@ -728,7 +728,7 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 		safe_get(root, U32, BuildNumber);	// revision
 		std::string csd;
 		csd.resize(128);
-		
+
 		if(!root->getRAW((uint8_t*)csd.data(), 128)) { // CSDVersion ??
 			error = wxstr(f.getErrorMessage());
 			return false;

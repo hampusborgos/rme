@@ -54,16 +54,16 @@ bool Map::open(const std::string file)
 	IOMapOTBM maploader(getVersion());
 
 	bool success = maploader.loadMap(*this, wxstr(file));
-	
+
 	mapVersion = maploader.version;
 
 	warnings = maploader.getWarnings();
-	
+
 	if(!success) {
 		error = maploader.getError();
 		return false;
 	}
-	
+
 	has_changed = false;
 
 	wxFileName fn = wxstr(file);
@@ -131,13 +131,13 @@ bool Map::convert(MapVersion to, bool showdialog)
 	if(to.otbm == MAP_OTBM_4 && to.client < CLIENT_VERSION_850)
 		return false;
 
-	if(mapVersion.client >= CLIENT_VERSION_760 && to.client < CLIENT_VERSION_760) 
+	if(mapVersion.client >= CLIENT_VERSION_760 && to.client < CLIENT_VERSION_760)
 		convert(getReplacementMapFrom760To740(), showdialog);
 
-	if(mapVersion.client < CLIENT_VERSION_810 && to.client >= CLIENT_VERSION_810) 
+	if(mapVersion.client < CLIENT_VERSION_810 && to.client >= CLIENT_VERSION_810)
 		convert(getReplacementMapFrom800To810(), showdialog);
 
-	if(mapVersion.client == CLIENT_VERSION_854_BAD && to.client >= CLIENT_VERSION_854) 
+	if(mapVersion.client == CLIENT_VERSION_854_BAD && to.client >= CLIENT_VERSION_854)
 		convert(getReplacementMapFrom854To854(), showdialog);
 	*/
 	mapVersion = to;
@@ -161,7 +161,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 
 		if(tile->size() == 0)
 			continue;
-		
+
 		// id_list try MTM conversion
 		id_list.clear();
 
@@ -172,7 +172,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 				id_list.push_back((*item_iter)->getID());
 
 		std::sort(id_list.begin(), id_list.end());
-		
+
 		ConversionMap::MTM::const_iterator cfmtm = rm.mtm.end();
 
 		while(id_list.size()) {
@@ -201,7 +201,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 				else
 					++item_iter;
 			}
-		
+
 			const std::vector<uint16_t>& new_items = cfmtm->second;
 			for(std::vector<uint16_t>::const_iterator iit = new_items.begin(); iit != new_items.end(); ++iit) {
 				Item* item = Item::Create(*iit);
@@ -485,7 +485,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 		for(MapIterator mit = begin(); mit != end(); ++mit) {
 			if((*mit)->get() == nullptr || (*mit)->empty())
 				continue;
-			
+
 			Position pos = (*mit)->getPosition();
 
 			if(pos.x < min_x)
@@ -506,7 +506,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 		int minimap_height = max_y - min_y+1;
 
 		pic = newd uint8_t[minimap_width*minimap_height]; // 1 byte per pixel
-			
+
 		memset(pic, 0, minimap_width*minimap_height);
 
 		int tiles_iterated = 0;
@@ -515,7 +515,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 			++tiles_iterated;
 			if(tiles_iterated % 8192 == 0 && displaydialog)
 				gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
-				
+
 			if(tile->empty() || tile->getZ() != floor)
 				continue;
 

@@ -44,7 +44,7 @@ class ContainerItemButton : public ItemButton
 
 		const Map* edit_map;
 		Item* edit_item;
-	
+
 		size_t index;
 
 		friend class ContainerItemPopupMenu;

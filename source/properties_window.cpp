@@ -92,7 +92,7 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 	Container* container = (Container*)edit_item;
 	wxPanel* panel = newd wxPanel(parent, ITEM_PROPERTIES_CONTAINER_TAB);
 	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
-	
+
 	wxSizer* gridSizer = newd wxGridSizer(6, 5, 5);
 
 	bool use_large_sprites = settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
@@ -218,7 +218,7 @@ void PropertiesWindow::OnResize(wxSizeEvent& evt)
 			tWidth += grid->GetColumnWidth(i);
 
 		int wWidth = grid->GetParent()->GetSize().GetWidth();
-		
+
 		grid->SetColumnWidth(2, wWidth - 100 - 80);
 	}
 	*/

@@ -26,7 +26,7 @@ public:
 	Editor(CopyBuffer& copybuffer);
 	~Editor();
 protected:
-	
+
 	// Live Server
 	LiveServer* live_server;
 	LiveClient* live_client;
