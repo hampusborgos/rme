@@ -60,6 +60,7 @@ namespace MenuBar
 		BORDERIZE_MAP,
 		RANDOMIZE_SELECTION,
 		RANDOMIZE_MAP,
+		GOTO_PREVIOUS_POSITION,
 		GOTO_POSITION,
 		JUMP_TO_BRUSH,
 		JUMP_TO_ITEM_BRUSH,
@@ -188,6 +189,7 @@ public:
 	void OnRandomizeMap(wxCommandEvent& event);
 	void OnJumpToBrush(wxCommandEvent& event);
 	void OnJumpToItemBrush(wxCommandEvent& event);
+	void OnGotoPreviousPosition(wxCommandEvent& event);
 	void OnGotoPosition(wxCommandEvent& event);
 	void OnMapRemoveItems(wxCommandEvent& event);
 	void OnMapRemoveCorpses(wxCommandEvent& event);
@@ -256,7 +258,7 @@ public:
 protected:
 	// Load and returns a menu item, also sets accelerator
 	wxObject* LoadItem(pugi::xml_node node, wxMenu* parent, wxArrayString& warnings, wxString& error);
-	// Checks the items in the menus according to the g_settings (in config)
+	// Checks the items in the menus according to the settings (in config)
 	void LoadValues();
 protected:
 
