@@ -33,7 +33,7 @@ public:
 	// The tile will be added to the list of selected tiles, however, the items on the tile won't be selected
 	void addInternal(Tile* tile);
 	void removeInternal(Tile* tile);
-	
+
 	// Clears the selection completely
 	void clear();
 

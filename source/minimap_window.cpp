@@ -186,7 +186,7 @@ void MinimapWindow::OnMouseClick(wxMouseEvent& event)
 	if(!g_gui.IsEditorOpen()) return;
 	int new_map_x = last_start_x + event.GetX();
 	int new_map_y = last_start_y + event.GetY();
-	g_gui.CenterOnPosition(Position(new_map_x, new_map_y, g_gui.GetCurrentFloor()));
+	g_gui.SetScreenCenterPosition(Position(new_map_x, new_map_y, g_gui.GetCurrentFloor()));
 	Refresh();
 	g_gui.RefreshView();
 }

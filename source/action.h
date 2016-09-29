@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ public:
 	static Change* Create(Waypoint* wp, const Position& where);
 	~Change();
 	void clear();
-	
+
 	ChangeType getType() const {return type;}
 	void* getData() const {return data;}
 
@@ -74,7 +74,7 @@ public:
 		uint32_t pos;
 		uint32_t floors;
 	};
-	
+
 	uint32_t owner;
 
 protected:
@@ -185,11 +185,11 @@ class ActionQueue {
 public:
 	ActionQueue(Editor& editor);
 	virtual ~ActionQueue();
-	
+
 	typedef std::deque<BatchAction*> ActionList;
 
 	void resetTimer();
-	
+
 	virtual Action* createAction(ActionIdentifier ident);
 	virtual Action* createAction(BatchAction* parent);
 	virtual BatchAction* createBatch(ActionIdentifier ident);
@@ -203,7 +203,7 @@ public:
 
 	bool canUndo() {return current > 0;}
 	bool canRedo() {return current < actions.size();}
-	
+
 protected:
 	size_t current;
 	size_t memory_size;

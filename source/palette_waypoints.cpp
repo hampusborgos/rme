@@ -152,7 +152,7 @@ void WaypointPalettePanel::OnClickWaypoint(wxListEvent& event)
 	std::string wpname = nstr(event.GetText());
 	Waypoint* wp = map->waypoints.getWaypoint(wpname);
 	if(wp) {
-		g_gui.CenterOnPosition(wp->pos);
+		g_gui.SetScreenCenterPosition(wp->pos);
 		g_gui.waypoint_brush->setWaypoint(wp);
 	}
 }

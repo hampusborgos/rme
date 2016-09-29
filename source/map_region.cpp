@@ -28,7 +28,7 @@ TileLocation::~TileLocation()
 	delete tile;
 	delete house_exits;
 }
-	
+
 int TileLocation::size() const
 {
 	if(tile)
@@ -251,7 +251,7 @@ Tile* QTreeNode::setTile(int x, int y, int z, Tile* newtile)
 {
 	ASSERT(isLeaf);
 	Floor* f = createFloor(x, y, z);
-		
+
 	int offset_x = x & 3;
 	int offset_y = y & 3;
 
@@ -271,7 +271,7 @@ void QTreeNode::clearTile(int x, int y, int z)
 {
 	ASSERT(isLeaf);
 	Floor* f = createFloor(x, y, z);
-		
+
 	int offset_x = x & 3;
 	int offset_y = y & 3;
 

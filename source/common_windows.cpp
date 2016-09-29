@@ -1486,7 +1486,7 @@ void EditTownsDialog::OnListBoxChange(wxCommandEvent& event)
 void EditTownsDialog::OnClickSelectTemplePosition(wxCommandEvent& WXUNUSED(event))
 {
 	Position templepos = temple_position->GetPosition();
-	g_gui.CenterOnPosition(templepos);
+	g_gui.SetScreenCenterPosition(templepos);
 }
 
 void EditTownsDialog::OnClickAdd(wxCommandEvent& WXUNUSED(event))
@@ -1652,7 +1652,7 @@ void GotoPositionDialog::OnClickCancel(wxCommandEvent &)
 
 void GotoPositionDialog::OnClickOK(wxCommandEvent &)
 {
-	g_gui.CenterOnPosition(posctrl->GetPosition());
+	g_gui.SetScreenCenterPosition(posctrl->GetPosition());
 	EndModal(1);
 }
 

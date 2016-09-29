@@ -1170,11 +1170,11 @@ void GUI::DestroyLoadBar()
 	}
 }
 
-bool GUI::CenterOnPosition(Position position)
+bool GUI::SetScreenCenterPosition(Position position)
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab) {
-		mapTab->CenterOnPosition(position);
+		mapTab->SetScreenCenterPosition(position);
 		return true;
 	}
 	return false;

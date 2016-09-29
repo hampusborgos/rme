@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -82,7 +82,7 @@ Tile* Tile::deepCopy(BaseMap& map)
 	it = items.begin();
 	while(it != items.end()) {
 		copy->items.push_back((*it)->deepCopy());
-		++it; 
+		++it;
 	}
 
 	return copy;
@@ -156,7 +156,7 @@ void Tile::merge(Tile* other) {
 	it = other->items.begin();
 	while(it != other->items.end()) {
 		addItem(*it);
-		++it; 
+		++it;
 	}
 	other->items.clear();
 }
@@ -200,7 +200,7 @@ void Tile::addItem(Item* item)
 	}
 
 	ItemVector::iterator it;
-	
+
 	uint16_t gid = item->getGroundEquivalent();
 	if(gid != 0) {
 		delete ground;
@@ -226,7 +226,7 @@ void Tile::addItem(Item* item)
 			it = items.end();
 		}
 	}
-	
+
 	items.insert(it, item);
 
 	if(item->isSelected()) {
@@ -248,7 +248,7 @@ void Tile::select()
 		(*it)->select();
 		++it;
 	}
-	
+
 	statflags |= TILESTATE_SELECTED;
 }
 
@@ -313,7 +313,7 @@ ItemVector Tile::popSelectedItems()
 ItemVector Tile::getSelectedItems()
 {
 	ItemVector selected_items;
-	
+
 	if(!isSelected()) return selected_items;
 
 	if(ground && ground->isSelected()) {
@@ -328,7 +328,7 @@ ItemVector Tile::getSelectedItems()
 			selected_items.push_back(*it);
 		} it++;
 	}
-	
+
 	return selected_items;
 }
 
@@ -376,7 +376,7 @@ bool tilePositionVisualLessThan(const Tile* a, const Tile* b)
 void Tile::update()
 {
 	statflags &= TILESTATE_MODIFIED;
-	
+
 	if(spawn && spawn->isSelected()) {
 		statflags |= TILESTATE_SELECTED;
 	}

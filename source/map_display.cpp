@@ -149,7 +149,7 @@ void MapCanvas::SetZoom(double value)
 		GetScreenCenter(&center_x, &center_y);
 
 		zoom = value;
-		static_cast<MapWindow*>(GetParent())->CenterOnPosition(Position(center_x, center_y, floor));
+		static_cast<MapWindow*>(GetParent())->SetScreenCenterPosition(Position(center_x, center_y, floor));
 
 		UpdatePositionStatus();
 		UpdateZoomStatus();
@@ -1837,7 +1837,7 @@ void MapCanvas::OnGotoDestination(wxCommandEvent& WXUNUSED(event))
 	Teleport* teleport = dynamic_cast<Teleport*>(selected_items.front());
 	if(teleport) {
 		Position pos = teleport->getDestination();
-		g_gui.CenterOnPosition(pos);
+		g_gui.SetScreenCenterPosition(pos);
 	}
 }
 

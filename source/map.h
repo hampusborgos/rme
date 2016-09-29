@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ public:
 	void cleanInvalidTiles(bool showdialog = false);
 	// Save a bmp image of the minimap
 	bool exportMinimap(FileName filename, int floor = GROUND_LAYER, bool showdialog = false);
-	// 
+	//
 	bool convert(MapVersion to, bool showdialog = false);
 	bool convert(const ConversionMap& cm, bool showdialog = false);
 
@@ -77,7 +77,7 @@ public:
 	std::string getFilename() const {return filename;}
 	std::string getName() const {return name;}
 	void setName(const std::string& n) {name = n;}
-	
+
 	// Get map data
 	int getWidth() const {return width;}
 	int getHeight() const {return height;}
@@ -212,7 +212,7 @@ template <typename RemoveIfType>
 inline long long remove_if_ItemOnMap(Map& map, RemoveIfType& remove_if) {
 	long long done = 0;
 	long long removed = 0;
-	
+
 	MapIterator tileiter = map.begin();
 	MapIterator end = map.end();
 

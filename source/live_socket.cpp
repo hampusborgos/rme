@@ -168,7 +168,7 @@ void LiveSocket::receiveFloor(NetworkMessage& message, Editor& editor, Action* a
 		}
 		return;
 	}
-	
+
 	// -1 on address since we skip the first START_NODE when sending
 	const std::string& data = message.read<std::string>();
 	mapReader.assign(reinterpret_cast<const uint8_t*>(data.c_str() - 1), data.size());
@@ -375,7 +375,7 @@ LiveCursor LiveSocket::readCursor(NetworkMessage& message)
 {
 	LiveCursor cursor;
 	cursor.id = message.read<uint32_t>();
-	
+
 	uint8_t r = message.read<uint8_t>();
 	uint8_t g = message.read<uint8_t>();
 	uint8_t b = message.read<uint8_t>();

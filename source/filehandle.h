@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -158,7 +158,7 @@ class NodeFileReadHandle : public FileHandle
 public:
 	NodeFileReadHandle();
 	virtual ~NodeFileReadHandle();
-	
+
 	virtual BinaryNode* getRootNode() = 0;
 
 	virtual size_t size() = 0;
@@ -168,17 +168,17 @@ protected:
 	void freeNode(BinaryNode* node);
 	// Returns false when end-of-file is reached
 	virtual bool renewCache() = 0;
-	
+
 	bool last_was_start;
 	uint8_t* cache;
 	size_t cache_size;
 	size_t cache_length;
 	size_t local_read_index;
-	
+
 	BinaryNode* root_node;
 
 	std::stack<void*> unused;
-	
+
 	friend class BinaryNode;
 };
 
@@ -272,7 +272,7 @@ protected:
 	static uint8_t NODE_START;
 	static uint8_t NODE_END;
 	static uint8_t ESCAPE_CHAR;
-	
+
 	uint8_t* cache;
 	size_t cache_size;
 	size_t local_write_index;
@@ -311,7 +311,7 @@ class MemoryNodeFileWriteHandle : public NodeFileWriteHandle {
 public:
 	MemoryNodeFileWriteHandle();
 	virtual ~MemoryNodeFileWriteHandle();
-	
+
 	void reset();
 	virtual void close();
 

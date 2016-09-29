@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ public:
 	void OnWheel(wxMouseEvent& event);
 	void OnGainMouse(wxMouseEvent& event);
 	void OnLoseMouse(wxMouseEvent& event);
-	
+
 	// Mouse events handlers (called by the above)
 	void OnMouseActionRelease(wxMouseEvent& event);
 	void OnMouseActionClick(wxMouseEvent& event);
@@ -61,7 +61,7 @@ public:
 	void OnMousePropertiesClick(wxMouseEvent& event);
 	void OnMousePropertiesRelease(wxMouseEvent& event);
 
-	// 
+	//
 	void OnCut(wxCommandEvent& event);
 	void OnCopy(wxCommandEvent& event);
 	void OnCopyPosition(wxCommandEvent& event);
@@ -96,7 +96,7 @@ public:
 	void EndPasting();
 	void EnterSelectionMode();
 	void EnterDrawingMode();
-	
+
 	void UpdatePositionStatus(int x = -1, int y = -1);
 	void UpdateZoomStatus();
 
@@ -112,7 +112,7 @@ public:
 protected:
 
 	void getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder);
-	
+
 private:
 	Editor& editor;
 // View related
@@ -134,7 +134,7 @@ private:
 	int drag_start_x;
 	int drag_start_y;
 	int drag_start_z;
-	
+
 	int last_cursor_map_x;
 	int last_cursor_map_y;
 	int last_cursor_map_z;

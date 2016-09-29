@@ -11,7 +11,7 @@ class CarpetBrush : public Brush
 {
 	public:
 		static void init();
-	
+
 		CarpetBrush();
 		virtual ~CarpetBrush();
 

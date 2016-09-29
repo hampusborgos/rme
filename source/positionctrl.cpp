@@ -59,7 +59,7 @@ void PositionCtrl::SetPosition(Position pos)
 }
 
 bool PositionCtrl::Enable(bool enable)
-{ 
+{
 	return (x_field->Enable(enable) && y_field->Enable(enable) && z_field->Enable(enable));
 }
 

@@ -310,12 +310,8 @@ int LuaInterface::luaGuiGetCenterPosition(lua_State* L)
 {
 	// g_gui.getCenterPosition()
 	MapTab* mapTab = g_gui.GetCurrentMapTab();
-	if (mapTab) {
-		MapCanvas* canvas = mapTab->GetCanvas();
-		int x, y, z = canvas->GetFloor();
-		canvas->GetScreenCenter(&x, &y);
-		const Position position(x, y, z);
-		pushPosition(L, position);
+	if(mapTab) {
+		pushPosition(L, mapTab->GetScreenCenterPosition());
 	} else {
 		lua_pushnil(L);
 	}
@@ -326,7 +322,7 @@ int LuaInterface::luaGuiSetCenterPosition(lua_State* L)
 {
 	// g_gui.setCenterPosition(position)
 	const Position& position = getPosition(L, 1);
-	pushBoolean(L, g_gui.CenterOnPosition(position));
+	pushBoolean(L, g_gui.SetScreenCenterPosition(position));
 	return 1;
 }
 
@@ -1056,7 +1052,7 @@ int LuaInterface::luaSelectionSaveAsMinimap(lua_State* L)
 		pushBoolean(L, false);
 		return 1;
 	}
-	
+
 	int tiles_iterated = 0;
 
 	for(int z = min_z; z <= max_z; z++) {

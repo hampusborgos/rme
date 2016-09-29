@@ -330,7 +330,7 @@ void HousePalettePanel::OnListBoxDoubleClick(wxCommandEvent& event)
 	House* house = reinterpret_cast<House*>(event.GetClientData());
 	// I find it extremly unlikely that one actually wants the exit at 0,0,0, so just treat it as the null value
 	if(house && house->getExit() != Position(0,0,0)) {
-		g_gui.CenterOnPosition(house->getExit());
+		g_gui.SetScreenCenterPosition(house->getExit());
 	}
 }
 

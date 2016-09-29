@@ -28,7 +28,7 @@ protected:
 	size_t spawn_count;
 	size_t waypoint_count;
 	HouseExitList* house_exits; // Any house exits pointing here
-	
+
 public:
 
 	// Access tile
@@ -75,7 +75,7 @@ public:
 
 	QTreeNode* getLeaf(int x, int y); // Might return nullptr
 	QTreeNode* getLeafForce(int x, int y); // Will never return nullptr, it will create the node if it's not there
-	
+
 	// Coordinates are NOT relative
 	TileLocation* createTile(int x, int y, int z);
 	TileLocation* getTile(int x, int y, int z);

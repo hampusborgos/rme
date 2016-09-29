@@ -14,10 +14,10 @@ static void mt_set (void *state, unsigned long int s);
 #define M 397
 
 /* most significant w-r bits */
-static const unsigned long UPPER_MASK = 0x80000000UL;   
+static const unsigned long UPPER_MASK = 0x80000000UL;
 
 /* least significant r bits */
-static const unsigned long LOWER_MASK = 0x7fffffffUL;   
+static const unsigned long LOWER_MASK = 0x7fffffffUL;
 
 typedef struct
   {
@@ -60,7 +60,7 @@ mt_get (void *vstate)
     }
 
   /* Tempering */
-  
+
   k = mt[state->mti];
   k ^= (k >> 11);
   k ^= (k << 7) & 0x9d2c5680UL;
@@ -96,7 +96,7 @@ mt_set (void *vstate, unsigned long int s)
 
       state->mt[i] =
         (1812433253UL * (state->mt[i-1] ^ (state->mt[i-1] >> 30)) + i);
-      
+
       state->mt[i] &= 0xffffffffUL;
     }
 

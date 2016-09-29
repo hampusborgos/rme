@@ -5,6 +5,8 @@
 #ifndef RME_MAP_WINDOW_H_
 #define RME_MAP_WINDOW_H_
 
+#include "position.h"
+
 class MapCanvas;
 class DCButton;
 
@@ -26,7 +28,7 @@ public:
 	void OnScrollPageDown(wxScrollEvent& event);
 	void OnScrollPageUp(wxScrollEvent& event);
 	void OnGem(wxCommandEvent& event);
-	
+
 	// Custom interface for MapWindow
 
 	// GetViewSize returns the size of the containing canvas, in pixels
@@ -45,12 +47,14 @@ public:
 	// Scroll this many pixels in X/Y, relative to current position
 	void ScrollRelative(int x, int y);
 
-
 	// Resize scrollbars to fit to the map dimensions
 	// This needs to be called after updating map height/width
 	void FitToMap();
-	// Center on the Position p
-	void CenterOnPosition(Position p);
+
+	// Screen position.
+	Position GetScreenCenterPosition();
+	void SetScreenCenterPosition(Position position);
+	void GoToPreviousCenterPosition();
 
 	// Return the containing canvas
 	MapCanvas* GetCanvas() {return canvas;}
@@ -67,6 +71,9 @@ protected:
 	wxScrollBar* hScroll;
 	wxScrollBar* vScroll;
 
+private:
+	Position previous_position;
+
 	friend class MainFrame;
 	friend class MapCanvas;
 
@@ -79,7 +86,7 @@ protected:
 class MapScrollBar : public wxScrollBar
 {
 public:
-	MapScrollBar(MapWindow* parent, wxWindowID id, long style, wxWindow* canvas) : 
+	MapScrollBar(MapWindow* parent, wxWindowID id, long style, wxWindow* canvas) :
 	  wxScrollBar(parent, id, wxDefaultPosition, wxDefaultSize, style), canvas(canvas) {}
 	virtual ~MapScrollBar() {}
 

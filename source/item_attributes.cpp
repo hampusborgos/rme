@@ -7,7 +7,7 @@
 #include "item_attributes.h"
 #include "filehandle.h"
 
-ItemAttributes::ItemAttributes() : 
+ItemAttributes::ItemAttributes() :
 	attributes(nullptr)
 {
 	////
@@ -78,7 +78,7 @@ void ItemAttributes::eraseAttribute(const std::string& key)
 {
 	if(!attributes)
 		return;
-	
+
 	ItemAttributeMap::iterator iter = attributes->find(key);
 
 	if(iter != attributes->end())
@@ -184,7 +184,7 @@ ItemAttribute::ItemAttribute(const ItemAttribute& o) : type(ItemAttribute::NONE)
 {
 	*this = o;
 }
-	
+
 ItemAttribute& ItemAttribute::operator=(const ItemAttribute& o)
 {
 	if(&o == this)
@@ -204,7 +204,7 @@ ItemAttribute& ItemAttribute::operator=(const ItemAttribute& o)
 		*reinterpret_cast<bool*>(data) = *reinterpret_cast<const bool*>(&o.data);
 	else
 		type = NONE;
-	
+
 	return *this;
 
 }

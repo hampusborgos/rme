@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -60,7 +60,7 @@ public:
 	Brush* getBrush(const std::string& name) const;
 
 	void addBrush(Brush* brush);
-	
+
 	bool unserializeBorder(pugi::xml_node node, wxArrayString& warnings);
 	bool unserializeBrush(pugi::xml_node node, wxArrayString& warnings);
 
@@ -100,9 +100,9 @@ class Brush
 		virtual void setName(const std::string& newName) {
 			ASSERT(_MSG("setName attempted on nameless brush!"));
 		}
-		
+
 		virtual int getLookID() const = 0;
-		
+
 		virtual bool needBorders() const { return false; }
 
 		virtual bool canDrag() const { return false; }
@@ -118,7 +118,7 @@ class Brush
 	protected:
 		static uint32_t id_counter;
 		uint32_t id;
-		
+
 		bool visible; // Visible in any palette?
 };
 
@@ -130,7 +130,7 @@ class TerrainBrush : public Brush
 	public:
 		TerrainBrush();
 		virtual ~TerrainBrush();
-	
+
 		virtual bool canDraw(BaseMap* map, const Position& position) const { return true; }
 
 		virtual std::string getName() const { return name; }
@@ -141,7 +141,7 @@ class TerrainBrush : public Brush
 
 		virtual bool needBorders() const { return true; }
 		virtual bool canDrag() const { return true; }
-	
+
 		bool friendOf(TerrainBrush* other);
 
 	protected:
@@ -149,7 +149,7 @@ class TerrainBrush : public Brush
 		std::string name;
 
 		uint16_t look_id;
-		
+
 		bool hate_friends;
 };
 //=============================================================================
@@ -178,13 +178,13 @@ class DoorBrush : public Brush {
 public:
 	DoorBrush(DoorType _doortype);
 	virtual ~DoorBrush();
-	
+
 	static void switchDoor(Item* door);
 
 	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
-	
+
 	virtual int getLookID() const;
 	virtual std::string getName() const;
 	virtual bool oneSizeFitsAll() const {return true;}
@@ -220,7 +220,7 @@ public:
 	virtual bool canDraw(BaseMap* map, const Position& position) const;
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
-	
+
 	virtual bool needBorders() const {return true;}
 	virtual bool canDrag() const {return true;}
 	virtual int getLookID() const;
@@ -236,10 +236,10 @@ public:
 		for(int i = 0; i < 13; i++) tiles[i] = 0;
 	}
 	~AutoBorder() {}
-	
+
 	static int edgeNameToID(const std::string& edgename);
 	bool load(pugi::xml_node node, wxArrayString& warnings, GroundBrush* owner = nullptr, uint16_t ground_equivalent = 0);
-	
+
 	uint32_t tiles[13];
 	uint32_t id;
 	uint16_t group;

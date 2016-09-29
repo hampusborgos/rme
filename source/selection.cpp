@@ -390,7 +390,7 @@ wxThread::ExitCode SelectionThread::Entry()
 			}
 		}
 	}
-	
+
 	result = selection.subsession;
 	selection.finish(SelectionArea::SUBTHREAD);
 	return nullptr;

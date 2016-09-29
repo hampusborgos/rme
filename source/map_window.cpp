@@ -95,21 +95,40 @@ void MapWindow::FitToMap()
 	SetSize(editor.map.getWidth() * TILE_SIZE, editor.map.getHeight() * TILE_SIZE, true);
 }
 
-void MapWindow::CenterOnPosition(Position p)
+Position MapWindow::GetScreenCenterPosition()
 {
-	if(p == Position())
+	int x, y;
+	canvas->GetScreenCenter(&x, &y);
+	return Position(x, y, canvas->GetFloor());
+}
+
+void MapWindow::SetScreenCenterPosition(Position position)
+{
+	if(position == Position())
 		return;
 
-	int x = p.x * TILE_SIZE;
-	int y = p.y * TILE_SIZE;
-	if(p.z < 8) {
+	int x = position.x * TILE_SIZE;
+	int y = position.y * TILE_SIZE;
+	if(position.z < 8) {
 		// Compensate for floor offset above ground
-		x -= (GROUND_LAYER - p.z) * TILE_SIZE;
-		y -= (GROUND_LAYER - p.z) * TILE_SIZE;
+		x -= (GROUND_LAYER - position.z) * TILE_SIZE;
+		y -= (GROUND_LAYER - position.z) * TILE_SIZE;
+	}
+
+	Position& center = GetScreenCenterPosition();
+	if(previous_position != center) {
+		previous_position.x = center.x;
+		previous_position.y = center.y;
+		previous_position.z = center.z;
 	}
 
 	Scroll(x, y, true);
-	canvas->ChangeFloor(p.z);
+	canvas->ChangeFloor(position.z);
+}
+
+void MapWindow::GoToPreviousCenterPosition()
+{
+	SetScreenCenterPosition(previous_position);
 }
 
 void MapWindow::Scroll(int x, int y, bool center)
