@@ -778,34 +778,12 @@ void MainMenuBar::OnAbout(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnUndo(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	if(g_gui.GetCurrentEditor()->actionQueue->canUndo()) {
-		g_gui.GetCurrentEditor()->actionQueue->undo();
-		if(g_gui.GetCurrentEditor()->selection.size() > 0)
-			g_gui.SetSelectionMode();
-		g_gui.SetStatusText(wxT("Undo action"));
-		g_gui.UpdateMinimap();
-		Update();
-		frame->Refresh();
-	}
+	g_gui.DoUndo();
 }
 
 void MainMenuBar::OnRedo(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	if(g_gui.GetCurrentEditor()->actionQueue->canRedo()) {
-		g_gui.GetCurrentEditor()->actionQueue->redo();
-		if(g_gui.GetCurrentEditor()->selection.size() > 0)
-			g_gui.SetSelectionMode();
-		g_gui.SetStatusText(wxT("Redo action"));
-		g_gui.UpdateMinimap();
-		Update();
-		frame->Refresh();
-	}
+	g_gui.DoRedo();
 }
 
 namespace OnSearchForItem
