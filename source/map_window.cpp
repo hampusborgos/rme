@@ -102,7 +102,7 @@ Position MapWindow::GetScreenCenterPosition()
 	return Position(x, y, canvas->GetFloor());
 }
 
-void MapWindow::SetScreenCenterPosition(Position position)
+void MapWindow::SetScreenCenterPosition(const Position& position)
 {
 	if(position == Position())
 		return;
@@ -115,7 +115,7 @@ void MapWindow::SetScreenCenterPosition(Position position)
 		y -= (GROUND_LAYER - position.z) * TILE_SIZE;
 	}
 
-	Position& center = GetScreenCenterPosition();
+	const Position& center = GetScreenCenterPosition();
 	if(previous_position != center) {
 		previous_position.x = center.x;
 		previous_position.y = center.y;
