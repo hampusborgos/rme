@@ -452,42 +452,64 @@ BEGIN_EVENT_TABLE(ExportMiniMapWindow, wxDialog)
 END_EVENT_TABLE()
 
 ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Export minimap"), wxDefaultPosition, wxSize(260,150)),
+	wxDialog(parent, wxID_ANY, wxT("Export Minimap"), wxDefaultPosition, wxSize(400, 300)),
 	editor(editor)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* tmpsizer;
 
-	// File
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Map file"));
-	tmpsizer->Add(file_text_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize), 5, wxEXPAND);
-	tmpsizer->Add(newd wxButton(this, MAP_WINDOW_FILE_BUTTON, wxT("Browse")), 2);
-	sizer->Add(tmpsizer, 1, wxEXPAND);
+	// Error field
+	error_field = newd wxStaticText(this, wxID_VIEW_DETAILS, wxT(""), wxDefaultPosition, wxDefaultSize);
+	error_field->SetForegroundColour(*wxRED);
+	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
+	tmpsizer->Add(error_field, 0, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
 
-	// Import options
+	// Output folder
+	directory_text_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize);
+	directory_text_field->Bind(wxEVT_KEY_UP, &ExportMiniMapWindow::OnDirectoryChanged, this);
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Output Folder"));
+	tmpsizer->Add(directory_text_field, 1, wxALL, 5);
+	tmpsizer->Add(newd wxButton(this, MAP_WINDOW_FILE_BUTTON, wxT("Browse")), 0, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxALL | wxEXPAND, 5);
+
+	// File name
+	wxString mapName(editor.map.getName().c_str(), wxConvUTF8);
+	file_name_text_field = newd wxTextCtrl(this, wxID_ANY, mapName.BeforeLast('.'), wxDefaultPosition, wxDefaultSize);
+	file_name_text_field->Bind(wxEVT_KEY_UP, &ExportMiniMapWindow::OnFileNameChanged, this);
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("File Name"));
+	tmpsizer->Add(file_name_text_field, 1, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
+
+	// Export options
 	wxArrayString choices;
-	choices.Add(wxT("All floors"));
-	choices.Add(wxT("Ground floor"));
-	choices.Add(wxT("Specific floor"));
+	choices.Add(wxT("All Floors"));
+	choices.Add(wxT("Ground Floor"));
+	choices.Add(wxT("Specific Floor"));
+	
+	if (editor.hasSelection())
+		choices.Add(wxT("Selected Area"));
 
-	// House options
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Floor options"));
+	// Area options
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Area Options"));
 	floor_options = newd wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
 	floor_number = newd wxSpinCtrl(this, wxID_ANY, i2ws(GROUND_LAYER), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, MAP_MAX_LAYER, GROUND_LAYER);
 	floor_number->Enable(false);
 	floor_options->SetSelection(0);
-	tmpsizer->Add(floor_options, 5, wxEXPAND);
-	tmpsizer->Add(floor_number, 2);
-	sizer->Add(tmpsizer, 1, wxEXPAND);
+	tmpsizer->Add(floor_options, 1, wxALL, 5);
+	tmpsizer->Add(floor_number, 0, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
 
 	// OK/Cancel buttons
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
+	tmpsizer->Add(ok_button = newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
 	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
-	sizer->Add(tmpsizer, 0, wxCENTER);
+	sizer->Add(tmpsizer, 0, wxCENTER, 10);
 
-	SetSizerAndFit(sizer);
+	SetSizer(sizer);
+	Layout();
 	Centre(wxBOTH);
+	CheckValues();
 }
 
 ExportMiniMapWindow::~ExportMiniMapWindow()
@@ -497,82 +519,69 @@ ExportMiniMapWindow::~ExportMiniMapWindow()
 
 void ExportMiniMapWindow::OnExportTypeChange(wxCommandEvent& event)
 {
-	if(event.GetSelection() == 2) {
-		floor_number->Enable(true);
-	} else {
-		floor_number->Enable(false);
-	}
+	floor_number->Enable(event.GetSelection() == 2);
 }
 
 void ExportMiniMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog file(this, wxT("Export..."), wxT(""), wxT(""), wxT("*.bmp"), wxFD_SAVE);
-	int ok = file.ShowModal();
-
-	if(ok == wxID_OK) {
-		FileName fn(file.GetPath());
-		fn.SetName(fn.GetName() + wxT("_%d"));
-		file_text_field->ChangeValue(fn.GetFullPath());
-	} else {
-		return;
+	wxDirDialog dialog(NULL, "Select the output folder", "", wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+	if(dialog.ShowModal() == wxID_OK) {
+		const wxString& directory = dialog.GetPath();
+		directory_text_field->ChangeValue(directory);
 	}
+	dialog.Destroy();
+	CheckValues();
+}
+
+void ExportMiniMapWindow::OnDirectoryChanged(wxKeyEvent& event)
+{
+	CheckValues();
+	event.Skip();
+}
+
+void ExportMiniMapWindow::OnFileNameChanged(wxKeyEvent& event)
+{
+	CheckValues();
+	event.Skip();
 }
 
 void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
-	std::string filename = nstr(file_text_field->GetValue());
-	size_t d_pos = filename.find("%d");
-	if(d_pos == std::string::npos) {
-		g_gui.PopupDialog(this, wxT("Error"), wxT("You need to put a %d in the filename (this will be replaced by the floor number)"), wxYES | wxNO);
-		return;
-	}
-	size_t i_pos = filename.find_first_of("*?:/\"<>|");
-	if(i_pos != std::string::npos) {
-#ifdef __WINDOWS__
-		if(!(filename[i_pos] == ':' && i_pos == 1))
-#else
-		if(filename[i_pos] != '/')
-#endif
-		{
-			g_gui.PopupDialog(this, wxT("Error"), wxT("File name contains invalid characters."), wxOK);
-			return;
-		}
-	}
-#ifdef __WINDOWS__
-	if(filename.size() <= 3 || filename[1] != ':' || filename[2] != '\\')
-#else
-	if(filename[0] != '/')
-#endif
-	{
-		g_gui.PopupDialog(this, wxT("Error"), wxT("Output filename must be absolute."), wxOK);
-		return;
-	}
-
-	std::string pre_sep = filename.substr(0, d_pos);
-	std::string post_sep= filename.substr(d_pos+2);
-
 	g_gui.CreateLoadBar(wxT("Exporting minimap"));
+
 	try
 	{
-		switch(floor_options->GetSelection()) {
+		FileName directory(directory_text_field->GetValue());
+
+		switch(floor_options->GetSelection())
+		{
 			case 0: { // All floors
 				for(int floor = 0; floor < MAP_LAYERS; ++floor) {
 					g_gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
-					FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-					editor.exportMiniMap(fn, floor, true);
+					FileName file(file_name_text_field->GetValue() + wxT("_") + i2ws(floor) + wxT(".bmp"));
+					file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
+					editor.exportMiniMap(file, floor, true);
 				}
 				break;
 			}
+
 			case 1: { // Ground floor
-				FileName fn = wxstr(pre_sep + "ground" + post_sep);
-				editor.exportMiniMap(fn, GROUND_LAYER, true);
-				g_gui.DestroyLoadBar();
+				FileName file(file_name_text_field->GetValue() + wxT("_") + i2ws(GROUND_LAYER) + wxT(".bmp"));
+				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
+				editor.exportMiniMap(file, GROUND_LAYER, true);
 				break;
 			}
+
 			case 2: { // Specific floors
 				int floor = floor_number->GetValue();
-				FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-				editor.exportMiniMap(fn, floor, true);
+				FileName file(file_name_text_field->GetValue() + wxT("_") + i2ws(floor) + wxT(".bmp"));
+				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
+				editor.exportMiniMap(file, floor, true);
+				break;
+			}
+
+			case 3: { // Selected area
+				editor.exportSelectionAsMiniMap(directory, file_name_text_field->GetValue());
 				break;
 			}
 		}
@@ -581,6 +590,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	{
 		g_gui.PopupDialog(wxT("Error"), wxT("There is not enough memory available to complete the operation."), wxOK);
 	}
+
 	g_gui.DestroyLoadBar();
 	EndModal(1);
 }
@@ -589,6 +599,38 @@ void ExportMiniMapWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// Just close this window
 	EndModal(0);
+}
+
+void ExportMiniMapWindow::CheckValues()
+{
+	if(directory_text_field->IsEmpty()) {
+		error_field->SetLabel(wxT("Type or select an output folder."));
+		ok_button->Enable(false);
+		return;
+	}
+
+	if (file_name_text_field->IsEmpty()) {
+		error_field->SetLabel(wxT("Type a name for the file."));
+		ok_button->Enable(false);
+		return;
+	}
+
+	FileName directory(directory_text_field->GetValue());
+
+	if (!directory.Exists()) {
+		error_field->SetLabel(wxT("Output folder not found."));
+		ok_button->Enable(false);
+		return;
+	}
+
+	if (!directory.IsDirWritable()) {
+		error_field->SetLabel(wxT("Output folder is not writable."));
+		ok_button->Enable(false);
+		return;
+	}
+
+	error_field->SetLabel(wxEmptyString);
+	ok_button->Enable(true);
 }
 
 // ============================================================================

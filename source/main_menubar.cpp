@@ -740,6 +740,7 @@ void MainMenuBar::OnExportMinimap(wxCommandEvent& WXUNUSED(event))
 	if(g_gui.GetCurrentEditor()) {
 		ExportMiniMapWindow dlg(frame, *g_gui.GetCurrentEditor());
 		dlg.ShowModal();
+		dlg.Destroy();
 	}
 }
 

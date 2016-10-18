@@ -67,12 +67,15 @@ public: // Functions
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);
 	bool exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog);
+	bool exportSelectionAsMiniMap(FileName directory, wxString fileName);
 
 	// Adds an action to the action queue (this allows the user to undo the action)
 	// Invalidates the action pointer
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
 
+	// Selection
+	bool hasSelection() const { return selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
 	void moveSelection(Position offset);

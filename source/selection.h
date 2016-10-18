@@ -64,9 +64,11 @@ public:
 	void join(SelectionThread* thread);
 
 	size_t size() {return tiles.size();}
+	size_t size() const {return tiles.size();}
 	void updateSelectionCount();
 	TileVector::iterator begin() {return tiles.begin();}
 	TileVector::iterator end() {return tiles.end();}
+	TileVector& getTiles() {return tiles; }
 	Tile* getSelectedTile() {ASSERT(size() == 1); return tiles.front();}
 
 private:
