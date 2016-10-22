@@ -927,6 +927,25 @@ namespace OnSearchForStuff
 
 			return label;
 		}
+
+		void sort()
+		{
+			if(search_unique || search_action)
+				std::sort(found.begin(), found.end(), Searcher::compare);
+		}
+
+		static bool compare(const std::pair<Tile*, Item*>& pair1, const std::pair<Tile*, Item*>& pair2)
+		{
+			const Item* item1 = pair1.second;
+			const Item* item2 = pair2.second;
+
+			if(item1->getActionID() != 0 || item2->getActionID() != 0)
+				return item1->getActionID() < item2->getActionID();
+			else if(item1->getUniqueID() != 0 || item2->getUniqueID() != 0)
+				return item1->getUniqueID() < item2->getUniqueID();
+
+			return false;
+		}
 	};
 }
 
@@ -944,6 +963,7 @@ void MainMenuBar::OnSearchForStuff(wxCommandEvent& WXUNUSED(event))
 	searcher.search_writeable = true;
 
 	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
+	searcher.sort();
 	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
 
 	g_gui.DestroyLoadBar();
@@ -965,6 +985,7 @@ void MainMenuBar::OnSearchForUnique(wxCommandEvent& WXUNUSED(event))
 	OnSearchForStuff::Searcher searcher;
 	searcher.search_unique = true;
 	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
+	searcher.sort();
 	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
 
 	g_gui.DestroyLoadBar();
@@ -985,6 +1006,7 @@ void MainMenuBar::OnSearchForAction(wxCommandEvent& WXUNUSED(event)) {
 	OnSearchForStuff::Searcher searcher;
 	searcher.search_action = true;
 	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
+	searcher.sort();
 	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
 
 	g_gui.DestroyLoadBar();
