@@ -1,3 +1,19 @@
+#### 3.2
+
+Features:
+
+* Export minimap by selected area.
+* Search for unique id, action id, containers or writable items on selected area.
+* Go to Previous Position menu. Keyboard shortcut 'P'.
+* Data files for version 10.98.
+* Select Raw button on the Browse Field window.
+
+Fixed bugs:
+
+* Text is hidden after selecting an item from the palette. Issue #144
+* Search result does not sort ids. Issue #126
+* Monster direction is not saved. Issue #132
+
 #### 3.1
 
 Features:
