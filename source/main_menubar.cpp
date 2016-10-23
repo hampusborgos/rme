@@ -76,11 +76,16 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 
 	MAKE_ACTION(FIND_ITEM, wxITEM_NORMAL, OnSearchForItem);
 	MAKE_ACTION(REPLACE_ITEM, wxITEM_NORMAL, OnReplaceItem);
-	MAKE_ACTION(SEARCH_EVERYTHING, wxITEM_NORMAL, OnSearchForStuff);
-	MAKE_ACTION(SEARCH_UNIQUE, wxITEM_NORMAL, OnSearchForUnique);
-	MAKE_ACTION(SEARCH_ACTION, wxITEM_NORMAL, OnSearchForAction);
-	MAKE_ACTION(SEARCH_CONTAINER, wxITEM_NORMAL, OnSearchForContainer);
-	MAKE_ACTION(SEARCH_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteable);
+	MAKE_ACTION(SEARCH_ON_MAP_EVERYTHING, wxITEM_NORMAL, OnSearchForStuffOnMap);
+	MAKE_ACTION(SEARCH_ON_MAP_UNIQUE, wxITEM_NORMAL, OnSearchForUniqueOnMap);
+	MAKE_ACTION(SEARCH_ON_MAP_ACTION, wxITEM_NORMAL, OnSearchForActionOnMap);
+	MAKE_ACTION(SEARCH_ON_MAP_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnMap);
+	MAKE_ACTION(SEARCH_ON_MAP_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnMap);
+	MAKE_ACTION(SEARCH_ON_SELECTION_EVERYTHING, wxITEM_NORMAL, OnSearchForStuffOnSelection);
+	MAKE_ACTION(SEARCH_ON_SELECTION_UNIQUE, wxITEM_NORMAL, OnSearchForUniqueOnSelection);
+	MAKE_ACTION(SEARCH_ON_SELECTION_ACTION, wxITEM_NORMAL, OnSearchForActionOnSelection);
+	MAKE_ACTION(SEARCH_ON_SELECTION_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnSelection);
+	MAKE_ACTION(SEARCH_ON_SELECTION_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnSelection);
 	MAKE_ACTION(SELECT_MODE_COMPENSATE, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_LOWER, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_CURRENT, wxITEM_RADIO, OnSelectionTypeChange);
@@ -273,6 +278,7 @@ void MainMenuBar::Update()
 
 	bool loaded = g_gui.IsVersionLoaded();
 	bool has_map = editor != nullptr;
+	bool has_selection = editor && editor->hasSelection();
 	bool is_live = editor && editor->IsLive();
 	bool is_host = has_map && !editor->IsLiveClient();
 	bool is_local = has_map && !is_live;
@@ -289,11 +295,16 @@ void MainMenuBar::Update()
 
 	EnableItem(FIND_ITEM, is_host);
 	EnableItem(REPLACE_ITEM, is_local);
-	EnableItem(SEARCH_EVERYTHING, is_host);
-	EnableItem(SEARCH_UNIQUE, is_host);
-	EnableItem(SEARCH_ACTION, is_host);
-	EnableItem(SEARCH_CONTAINER, is_host);
-	EnableItem(SEARCH_WRITEABLE, is_host);
+	EnableItem(SEARCH_ON_MAP_EVERYTHING, is_host);
+	EnableItem(SEARCH_ON_MAP_UNIQUE, is_host);
+	EnableItem(SEARCH_ON_MAP_ACTION, is_host);
+	EnableItem(SEARCH_ON_MAP_CONTAINER, is_host);
+	EnableItem(SEARCH_ON_MAP_WRITEABLE, is_host);
+	EnableItem(SEARCH_ON_SELECTION_EVERYTHING, has_selection && is_host);
+	EnableItem(SEARCH_ON_SELECTION_UNIQUE, has_selection && is_host);
+	EnableItem(SEARCH_ON_SELECTION_ACTION, has_selection && is_host);
+	EnableItem(SEARCH_ON_SELECTION_CONTAINER, has_selection && is_host);
+	EnableItem(SEARCH_ON_SELECTION_WRITEABLE, has_selection && is_host);
 
 	EnableItem(CUT, has_map);
 	EnableItem(COPY, has_map);
@@ -822,7 +833,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 		OnSearchForItem::Finder func(finder.getResultID());
 		g_gui.CreateLoadBar(wxT("Searching map..."));
 
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), func);
+		foreach_ItemOnMap(g_gui.GetCurrentMap(), func, false);
 		std::vector<std::pair<Tile*, Item*> >& found = func.found;
 
 		g_gui.DestroyLoadBar();
@@ -858,7 +869,7 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 		g_gui.CreateLoadBar(wxT("Searching & replacing map..."));
 
 		// Search the map
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder);
+		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
 
 		// Replace the items in a second step (can't replace while iterating)
 		for(std::vector<std::pair<Tile*, Item*> >::const_iterator replace_iter = finder.found.begin();
@@ -949,114 +960,54 @@ namespace OnSearchForStuff
 	};
 }
 
-void MainMenuBar::OnSearchForStuff(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnSearchForStuffOnMap(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	g_gui.CreateLoadBar(wxT("Searching map..."));
-
-	OnSearchForStuff::Searcher searcher;
-	searcher.search_unique = true;
-	searcher.search_action = true;
-	searcher.search_container = true;
-	searcher.search_writeable = true;
-
-	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
-	searcher.sort();
-	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
-
-	g_gui.DestroyLoadBar();
-
-	SearchResultWindow* result = g_gui.ShowSearchWindow();
-	result->Clear();
-	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
-		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
-	}
+	SearchItems(true, true, true, true);
 }
 
-void MainMenuBar::OnSearchForUnique(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnSearchForUniqueOnMap(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	g_gui.CreateLoadBar(wxT("Searching map..."));
-
-	OnSearchForStuff::Searcher searcher;
-	searcher.search_unique = true;
-	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
-	searcher.sort();
-	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
-
-	g_gui.DestroyLoadBar();
-
-	SearchResultWindow* result = g_gui.ShowSearchWindow();
-	result->Clear();
-	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
-		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
-	}
+	SearchItems(true, false, false, false);
 }
 
-void MainMenuBar::OnSearchForAction(wxCommandEvent& WXUNUSED(event)) {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	g_gui.CreateLoadBar(wxT("Searching map..."));
-
-	OnSearchForStuff::Searcher searcher;
-	searcher.search_action = true;
-	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
-	searcher.sort();
-	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
-
-	g_gui.DestroyLoadBar();
-
-	SearchResultWindow* result = g_gui.ShowSearchWindow();
-	result->Clear();
-	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
-		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
-	}
-}
-
-void MainMenuBar::OnSearchForContainer(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnSearchForActionOnMap(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	g_gui.CreateLoadBar(wxT("Searching map..."));
-
-	OnSearchForStuff::Searcher searcher;
-	searcher.search_container = true;
-	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
-	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
-
-	g_gui.DestroyLoadBar();
-
-	SearchResultWindow* result = g_gui.ShowSearchWindow();
-	result->Clear();
-	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
-		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
-	}
+	SearchItems(false, true, false, false);
 }
 
-void MainMenuBar::OnSearchForWriteable(wxCommandEvent& WXUNUSED(event)) {
-	if(!g_gui.IsEditorOpen())
-		return;
+void MainMenuBar::OnSearchForContainerOnMap(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(false, false, true, false);
+}
 
-	g_gui.CreateLoadBar(wxT("Searching map..."));
+void MainMenuBar::OnSearchForWriteableOnMap(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(false, false, false, true);
+}
 
-	OnSearchForStuff::Searcher searcher;
-	searcher.search_writeable = true;
-	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher);
-	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
+void MainMenuBar::OnSearchForStuffOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(true, true, true, true, true);
+}
 
-	g_gui.DestroyLoadBar();
+void MainMenuBar::OnSearchForUniqueOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(true, false, false, false, true);
+}
 
-	SearchResultWindow* result = g_gui.ShowSearchWindow();
-	result->Clear();
-	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
-		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
-	}
+void MainMenuBar::OnSearchForActionOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(false, true, false, false, true);
+}
+
+void MainMenuBar::OnSearchForContainerOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(false, false, true, false, true);
+}
+
+void MainMenuBar::OnSearchForWriteableOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	SearchItems(false, false, false, true, true);
 }
 
 void MainMenuBar::OnSelectionTypeChange(wxCommandEvent& WXUNUSED(event))
@@ -1983,4 +1934,36 @@ void MainMenuBar::OnCloseLive(wxCommandEvent& event)
 		g_gui.CloseLiveEditors(&editor->GetLive());
 
 	Update();
+}
+
+void MainMenuBar::SearchItems(bool unique, bool action, bool container, bool writable, bool onSelection/* = false*/)
+{
+	if (!unique && !action && !container && !writable)
+		return;
+
+	if(!g_gui.IsEditorOpen())
+		return;
+
+	if(onSelection)
+		g_gui.CreateLoadBar(wxT("Searching on selected area..."));
+	else
+		g_gui.CreateLoadBar(wxT("Searching on map..."));
+
+	OnSearchForStuff::Searcher searcher;
+	searcher.search_unique = unique;
+	searcher.search_action = action;
+	searcher.search_container = container;
+	searcher.search_writeable = writable;
+
+	foreach_ItemOnMap(g_gui.GetCurrentMap(), searcher, onSelection);
+	searcher.sort();
+	std::vector<std::pair<Tile*, Item*> >& found = searcher.found;
+
+	g_gui.DestroyLoadBar();
+
+	SearchResultWindow* result = g_gui.ShowSearchWindow();
+	result->Clear();
+	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
+		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
+	}
 }

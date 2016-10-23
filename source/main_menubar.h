@@ -46,11 +46,16 @@ namespace MenuBar
 		REDO,
 		FIND_ITEM,
 		REPLACE_ITEM,
-		SEARCH_EVERYTHING,
-		SEARCH_UNIQUE,
-		SEARCH_ACTION,
-		SEARCH_CONTAINER,
-		SEARCH_WRITEABLE,
+		SEARCH_ON_MAP_EVERYTHING,
+		SEARCH_ON_MAP_UNIQUE,
+		SEARCH_ON_MAP_ACTION,
+		SEARCH_ON_MAP_CONTAINER,
+		SEARCH_ON_MAP_WRITEABLE,
+		SEARCH_ON_SELECTION_EVERYTHING,
+		SEARCH_ON_SELECTION_UNIQUE,
+		SEARCH_ON_SELECTION_ACTION,
+		SEARCH_ON_SELECTION_CONTAINER,
+		SEARCH_ON_SELECTION_WRITEABLE,
 		SELECT_MODE_COMPENSATE,
 		SELECT_MODE_CURRENT,
 		SELECT_MODE_LOWER,
@@ -202,11 +207,16 @@ public:
 	void OnPaste(wxCommandEvent& event);
 	void OnSearchForItem(wxCommandEvent& event);
 	void OnReplaceItem(wxCommandEvent& event);
-	void OnSearchForStuff(wxCommandEvent& event);
-	void OnSearchForUnique(wxCommandEvent& event);
-	void OnSearchForAction(wxCommandEvent& event);
-	void OnSearchForContainer(wxCommandEvent& event);
-	void OnSearchForWriteable(wxCommandEvent& event);
+	void OnSearchForStuffOnMap(wxCommandEvent& event);
+	void OnSearchForUniqueOnMap(wxCommandEvent& event);
+	void OnSearchForActionOnMap(wxCommandEvent& event);
+	void OnSearchForContainerOnMap(wxCommandEvent& event);
+	void OnSearchForWriteableOnMap(wxCommandEvent& event);
+	void OnSearchForStuffOnSelection(wxCommandEvent& event);
+	void OnSearchForUniqueOnSelection(wxCommandEvent& event);
+	void OnSearchForActionOnSelection(wxCommandEvent& event);
+	void OnSearchForContainerOnSelection(wxCommandEvent& event);
+	void OnSearchForWriteableOnSelection(wxCommandEvent& event);
 
 	// Map menu
 	void OnMapEditTowns(wxCommandEvent& event);
@@ -256,6 +266,7 @@ protected:
 	wxObject* LoadItem(pugi::xml_node node, wxMenu* parent, wxArrayString& warnings, wxString& error);
 	// Checks the items in the menus according to the settings (in config)
 	void LoadValues();
+	void SearchItems(bool unique, bool action, bool container, bool writable, bool onSelection = false);
 protected:
 
 	MainFrame* frame;
