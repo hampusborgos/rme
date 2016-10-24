@@ -29,7 +29,7 @@ Download
 
 You can find official releases at [remeres mapeditor website](http://remeresmapeditor.com/marklar.php).
 
-If you looking for the 3.0 version, download it [here](https://github.com/hjnilsson/rme/releases/tag/v3.0) until It is added to the official website.
+If you looking for the 3.0 version, download it [here](https://github.com/hjnilsson/rme/releases/) until It is added to the official website.
 
 Compiling
 ==========
