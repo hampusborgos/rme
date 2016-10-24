@@ -22,7 +22,8 @@
 
 #include "main.h"
 
-class SearchResultWindow : public wxPanel {
+class SearchResultWindow : public wxPanel
+{
 public:
 	SearchResultWindow(wxWindow* parent);
 	virtual ~SearchResultWindow();
@@ -31,6 +32,8 @@ public:
 	void AddPosition(wxString description, Position pos);
 
 	void OnClickResult(wxCommandEvent&);
+	void OnClickExport(wxCommandEvent&);
+	void OnClickClear(wxCommandEvent&);
 
 protected:
 	wxListBox* result_list;
