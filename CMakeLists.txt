@@ -13,6 +13,10 @@ set(CMAKE_CXX_FLAGS_RELEASE        "-O4 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
 
 find_package(OpenGL REQUIRED)
+
+if(APPLE)
+    set(CMAKE_PREFIX_PATH /usr/local/opt/libarchive)
+endif()
 find_package(LibArchive REQUIRED)
 
 if(WIN32)
