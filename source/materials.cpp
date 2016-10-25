@@ -18,7 +18,7 @@
 #include "creature_brush.h"
 #include "raw_brush.h"
 
-Materials materials;
+Materials g_materials;
 
 Materials::Materials()
 {

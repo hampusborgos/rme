@@ -329,9 +329,9 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 
 					Tileset* tileSet = nullptr;
 					if(creatureType->isNpc) {
-						tileSet = materials.tilesets["NPCs"];
+						tileSet = g_materials.tilesets["NPCs"];
 					} else {
-						tileSet = materials.tilesets["Others"];
+						tileSet = g_materials.tilesets["Others"];
 					}
 					ASSERT(tileSet != nullptr);
 
@@ -356,9 +356,9 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 
 				Tileset* tileSet = nullptr;
 				if(creatureType->isNpc) {
-					tileSet = materials.tilesets["NPCs"];
+					tileSet = g_materials.tilesets["NPCs"];
 				} else {
-					tileSet = materials.tilesets["Others"];
+					tileSet = g_materials.tilesets["Others"];
 				}
 				ASSERT(tileSet != nullptr);
 

@@ -163,9 +163,9 @@ int CreaturePalettePanel::GetSelectedBrushSize() const
 void CreaturePalettePanel::OnUpdate()
 {
 	tileset_choice->Clear();
-	materials.createOtherTileset();
+	g_materials.createOtherTileset();
 
-	for(TilesetContainer::const_iterator iter = materials.tilesets.begin(); iter != materials.tilesets.end(); ++iter) {
+	for(TilesetContainer::const_iterator iter = g_materials.tilesets.begin(); iter != g_materials.tilesets.end(); ++iter) {
 		const TilesetCategory* tsc = iter->second->getCategory(TILESET_CREATURE);
 		if(tsc && tsc->size() > 0) {
 			tileset_choice->Append(wxstr(iter->second->name), const_cast<TilesetCategory*>(tsc));

@@ -382,18 +382,18 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(50, wxT("Loading materials.xml ..."));
-	if(!materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("materials.xml")), error, warnings)) {
+	if(!g_materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("materials.xml")), error, warnings)) {
 		warnings.push_back(wxT("Couldn't load materials.xml: ") + error);
 	}
 
 	g_gui.SetLoadDone(70, wxT("Loading extensions..."));
-	if(!materials.loadExtensions(extension_path, error, warnings)) {
+	if(!g_materials.loadExtensions(extension_path, error, warnings)) {
 		//warnings.push_back(wxT("Couldn't load extensions: ") + error);
 	}
 
 	g_gui.SetLoadDone(70, wxT("Finishing..."));
 	brushes.init();
-	materials.createOtherTileset();
+	g_materials.createOtherTileset();
 
 	g_gui.DestroyLoadBar();
 	return true;
@@ -420,7 +420,7 @@ void GUI::UnloadVersion()
 
 	if(loaded_version != CLIENT_VERSION_NONE) {
 		//g_gui.UnloadVersion();
-		materials.clear();
+		g_materials.clear();
 		brushes.clear();
 		item_db.clear();
 		gfx.clear();
@@ -853,7 +853,7 @@ PaletteWindow* GUI::CreatePalette()
 	if(!IsVersionLoaded())
 		return nullptr;
 
-	PaletteWindow* palette = newd PaletteWindow(root, materials.tilesets);
+	PaletteWindow* palette = newd PaletteWindow(root, g_materials.tilesets);
 	aui_manager->AddPane(palette, wxAuiPaneInfo().Caption(wxT("Palette")).TopDockable(false).BottomDockable(false));
 	aui_manager->Update();
 

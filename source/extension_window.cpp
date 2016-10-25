@@ -9,7 +9,7 @@
 #include "gui.h"
 #include "materials.h"
 
-extern Materials materials;
+extern Materials g_materials;
 
 BEGIN_EVENT_TABLE(ExtensionsDialog, wxDialog)
 	EVT_HTML_LINK_CLICKED(wxID_ANY, ExtensionsDialog::OnClickLink)
@@ -70,7 +70,7 @@ void ExtensionsDialog::OnClickOpenFolder(wxCommandEvent& evt)
 wxString ExtensionsDialog::HTML() const
 {
 	wxString markup;
-	for(MaterialsExtensionList::const_iterator me = materials.getExtensions().begin(); me != materials.getExtensions().end(); ++me) {
+	for(MaterialsExtensionList::const_iterator me = g_materials.getExtensions().begin(); me != g_materials.getExtensions().end(); ++me) {
 		markup << HTMLForExtension(*me);
 		markup << "<hr>";
 	}
