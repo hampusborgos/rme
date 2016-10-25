@@ -633,9 +633,9 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							warning(wxT("Duplicate creature \"%s\" at %d:%d:%d, discarding"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
 							break;
 						}
-						CreatureType* type = creature_db[name];
+						CreatureType* type = g_creatures[name];
 						if(!type) {
-							type = creature_db.addMissingCreatureType(name, isNPC);
+							type = g_creatures.addMissingCreatureType(name, isNPC);
 						}
 						Creature* creature = newd Creature(type);
 						creature->setSpawnTime(spawntime);

@@ -542,7 +542,7 @@ bool MainFrame::DoQuerySave(bool doclose)
 
 bool MainFrame::DoQueryImportCreatures()
 {
-	if(creature_db.hasMissing()) {
+	if(g_creatures.hasMissing()) {
 		int ret = g_gui.PopupDialog(wxT("Missing creatures"), wxT("There are missing creatures and/or NPC in the editor, do you want to load them from an OT monster/npc file?"), wxYES | wxNO);
 		if(ret == wxID_YES) {
 			do
@@ -554,7 +554,7 @@ bool MainFrame::DoQueryImportCreatures()
 					for(uint32_t i = 0; i < paths.GetCount(); ++i) {
 						wxString error;
 						wxArrayString warnings;
-						bool ok = creature_db.importXMLFromOT(FileName(paths[i]), error, warnings);
+						bool ok = g_creatures.importXMLFromOT(FileName(paths[i]), error, warnings);
 						if(ok)
 							g_gui.ListDialog(wxT("Monster loader errors"), warnings);
 						else
@@ -563,7 +563,7 @@ bool MainFrame::DoQueryImportCreatures()
 				} else {
 					break;
 				}
-			} while(creature_db.hasMissing());
+			} while(g_creatures.hasMissing());
 		}
 	}
 	g_gui.RefreshPalettes();

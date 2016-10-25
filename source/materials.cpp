@@ -274,7 +274,7 @@ void Materials::createOtherTileset()
 		}
 	}
 
-	for(CreatureMap::iterator iter = creature_db.begin(); iter != creature_db.end(); ++iter) {
+	for(CreatureMap::iterator iter = g_creatures.begin(); iter != g_creatures.end(); ++iter) {
 		CreatureType* type = iter->second;
 		if(type->in_other_tileset) {
 			if(type->isNpc) {

@@ -26,7 +26,7 @@
 #include "creature_brush.h"
 #include "pugicast.h"
 
-CreatureDatabase creature_db;
+CreatureDatabase g_creatures;
 
 CreatureType::CreatureType() :
 	isNpc(false),

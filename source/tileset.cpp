@@ -127,7 +127,7 @@ void Tileset::loadCategory(pugi::xml_node node, wxArrayString &warnings)
 			}
 
 			const std::string& creatureName = attribute.as_string();
-			CreatureType* ctype = creature_db[creatureName];
+			CreatureType* ctype = g_creatures[creatureName];
 			if(ctype) {
 				CreatureBrush* brush;
 				if(ctype->brush) {

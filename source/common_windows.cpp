@@ -258,7 +258,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			// Remove all creatures that were present are present in the new version
 			for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end();) {
-				if(creature_db[cs->first])
+				if(g_creatures[cs->first])
 					cs = conversion_context.creature_types.erase(cs);
 				else
 					++cs;
@@ -269,7 +269,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				if(add == wxID_YES) {
 					for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end(); ++cs) {
 						MapConversionContext::CreatureInfo info = cs->second;
-						creature_db.addCreatureType(info.name, info.is_npc, info.outfit);
+						g_creatures.addCreatureType(info.name, info.is_npc, info.outfit);
 					}
 				}
 			}

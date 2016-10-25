@@ -1049,9 +1049,9 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			CreatureType* type = creature_db[name];
+			CreatureType* type = g_creatures[name];
 			if(!type) {
-				type = creature_db.addMissingCreatureType(name, isNpc);
+				type = g_creatures.addMissingCreatureType(name, isNpc);
 			}
 
 			Creature* creature = newd Creature(type);

@@ -368,7 +368,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(45, wxT("Loading creatures.xml ..."));
-	if(!creature_db.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("creatures.xml")), true, error, warnings)) {
+	if(!g_creatures.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("creatures.xml")), true, error, warnings)) {
 		warnings.push_back(wxT("Couldn't load creatures.xml: ") + error);
 	}
 
@@ -378,7 +378,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 		cdb.SetFullName(wxT("creatures.xml"));
 		wxString nerr;
 		wxArrayString nwarn;
-		creature_db.loadFromXML(cdb, false, nerr, nwarn);
+		g_creatures.loadFromXML(cdb, false, nerr, nwarn);
 	}
 
 	g_gui.SetLoadDone(50, wxT("Loading materials.xml ..."));
@@ -427,8 +427,8 @@ void GUI::UnloadVersion()
 
 		FileName cdb = getLoadedVersion()->getLocalDataPath();
 		cdb.SetFullName(wxT("creatures.xml"));
-		creature_db.saveToXML(cdb);
-		creature_db.clear();
+		g_creatures.saveToXML(cdb);
+		g_creatures.clear();
 
 		loaded_version = CLIENT_VERSION_NONE;
 	}
