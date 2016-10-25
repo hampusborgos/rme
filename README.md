@@ -70,3 +70,22 @@ make -j `nproc`
 # Running and enjoy
 ./rme
 ```
+
+### macOS
+===============
+Install the package manager Homebrew: http://brew.sh
+```bash
+
+# Install dependencies
+brew install git cmake wxmac boost libarchive
+
+# Clone the project
+git clone https://github.com/hjnilsson/rme.git
+
+# Create a build directory and build
+mkdir rme/build && cd rme/build && cmake .. && make
+
+# Run
+./rme
+
+```
