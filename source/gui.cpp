@@ -392,7 +392,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(70, wxT("Finishing..."));
-	brushes.init();
+	g_brushes.init();
 	g_materials.createOtherTileset();
 
 	g_gui.DestroyLoadBar();
@@ -421,7 +421,7 @@ void GUI::UnloadVersion()
 	if(loaded_version != CLIENT_VERSION_NONE) {
 		//g_gui.UnloadVersion();
 		g_materials.clear();
-		brushes.clear();
+		g_brushes.clear();
 		g_items.clear();
 		gfx.clear();
 

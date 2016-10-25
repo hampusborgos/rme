@@ -336,7 +336,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 					ASSERT(tileSet != nullptr);
 
 					Brush* brush = newd CreatureBrush(creatureType);
-					brushes.addBrush(brush);
+					g_brushes.addBrush(brush);
 
 					TilesetCategory* tileSetCategory = tileSet->getCategory(TILESET_CREATURE);
 					tileSetCategory->brushlist.push_back(brush);
@@ -363,7 +363,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 				ASSERT(tileSet != nullptr);
 
 				Brush* brush = newd CreatureBrush(creatureType);
-				brushes.addBrush(brush);
+				g_brushes.addBrush(brush);
 
 				TilesetCategory* tileSetCategory = tileSet->getCategory(TILESET_CREATURE);
 				tileSetCategory->brushlist.push_back(brush);

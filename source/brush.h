@@ -74,7 +74,7 @@ protected:
 	friend class GroundBrush;
 };
 
-extern Brushes brushes;
+extern Brushes g_brushes;
 
 //=============================================================================
 // Common brush interface

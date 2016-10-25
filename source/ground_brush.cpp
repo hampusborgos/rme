@@ -216,8 +216,8 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				uint16_t id = pugi::cast<uint16_t>(attribute.value());
-				auto it = brushes.borders.find(id);
-				if(it == brushes.borders.end() || !it->second) {
+				auto it = g_brushes.borders.find(id);
+				if(it == g_brushes.borders.end() || !it->second) {
 					warnings.push_back(wxT("\nCould not find border id ") + std::to_string(id));
 					continue;
 				}
@@ -252,8 +252,8 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(id == 0) {
 					autoBorder = nullptr;
 				} else {
-					auto it = brushes.borders.find(id);
-					if(it == brushes.borders.end() || !it->second) {
+					auto it = g_brushes.borders.find(id);
+					if(it == g_brushes.borders.end() || !it->second) {
 						warnings.push_back(wxT("\nCould not find border id ") + std::to_string(id));
 						continue;
 					}
@@ -272,7 +272,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				} else if(value == "none") {
 					borderBlock->to = 0;
 				} else {
-					Brush* tobrush = brushes.getBrush(value);
+					Brush* tobrush = g_brushes.getBrush(value);
 					if(!tobrush) {
 						warnings.push_back(wxT("To brush ") + wxstr(value) + wxT(" doesn't exist."));
 						continue;
@@ -334,8 +334,8 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t edge_id = AutoBorder::edgeNameToID(attribute.as_string());
-								auto it = brushes.borders.find(border_id);
-								if(it == brushes.borders.end()) {
+								auto it = g_brushes.borders.find(border_id);
+								if(it == g_brushes.borders.end()) {
 									warnings.push_back(wxT("Unknown border id in specific case match block ") + std::to_string(border_id));
 									continue;
 								}
@@ -399,8 +399,8 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t with_id = pugi::cast<int32_t>(attribute.value());
-								auto itt = brushes.borders.find(border_id);
-								if(itt == brushes.borders.end()) {
+								auto itt = g_brushes.borders.find(border_id);
+								if(itt == g_brushes.borders.end()) {
 									warnings.push_back(wxT("Unknown border id in specific case match block ") + std::to_string(border_id));
 									continue;
 								}
@@ -460,7 +460,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(name == "all") {
 					friends.push_back(0xFFFFFFFF);
 				} else {
-					Brush* brush = brushes.getBrush(name);
+					Brush* brush = g_brushes.getBrush(name);
 					if(brush) {
 						friends.push_back(brush->getID());
 					} else {
@@ -475,7 +475,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(name == "all") {
 					friends.push_back(0xFFFFFFFF);
 				} else {
-					Brush* brush = brushes.getBrush(name);
+					Brush* brush = g_brushes.getBrush(name);
 					if(brush) {
 						friends.push_back(brush->getID());
 					} else {

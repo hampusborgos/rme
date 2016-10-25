@@ -1695,7 +1695,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 					g_gui.SetDrawingMode();
 
 					std::string name = hk.GetBrushname();
-					Brush* brush = brushes.getBrush(name);
+					Brush* brush = g_brushes.getBrush(name);
 					if(brush == nullptr) {
 						g_gui.SetStatusText(wxT("Brush \"") + wxstr(name) + wxT("\" not found"));
 						return;

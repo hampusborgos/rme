@@ -46,7 +46,7 @@
 #include "gui.h"
 #include "pugicast.h"
 
-Brushes brushes;
+Brushes g_brushes;
 
 Brushes::Brushes()
 {

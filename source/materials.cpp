@@ -210,12 +210,12 @@ bool Materials::unserializeMaterials(const FileName& filename, pugi::xml_node no
 		} else if(childName == "metaitem") {
 			g_items.loadMetaItem(childNode);
 		} else if(childName == "border") {
-			brushes.unserializeBorder(childNode, warnings);
+			g_brushes.unserializeBorder(childNode, warnings);
 			if(warning.size()) {
 				warnings.push_back(wxT("materials.xml: ") + warning);
 			}
 		} else if(childName == "brush") {
-			brushes.unserializeBrush(childNode, warnings);
+			g_brushes.unserializeBrush(childNode, warnings);
 			if(warning.size()) {
 				warnings.push_back(wxT("materials.xml: ") + warning);
 			}
@@ -235,7 +235,7 @@ void Materials::createOtherTileset()
 		others = tilesets["Others"];
 		others->clear();
 	} else {
-		others = newd Tileset(brushes, "Others");
+		others = newd Tileset(g_brushes, "Others");
 		tilesets["Others"] = others;
 	}
 
@@ -243,7 +243,7 @@ void Materials::createOtherTileset()
 		npc_tileset = tilesets["NPCs"];
 		npc_tileset->clear();
 	} else {
-		npc_tileset = newd Tileset(brushes, "NPCs");
+		npc_tileset = newd Tileset(g_brushes, "NPCs");
 		tilesets["NPCs"] = npc_tileset;
 	}
 
@@ -262,7 +262,7 @@ void Materials::createOtherTileset()
 			} else if(it.raw_brush == nullptr) {
 				brush = it.raw_brush = newd RAWBrush(it.id);
 				it.has_raw = true;
-				brushes.addBrush(it.raw_brush);
+				g_brushes.addBrush(it.raw_brush);
 			} else if(!it.has_raw) {
 				brush = it.raw_brush;
 			} else
@@ -284,7 +284,7 @@ void Materials::createOtherTileset()
 			}
 		} else if(type->brush == nullptr) {
 			type->brush = newd CreatureBrush(type);
-			brushes.addBrush(type->brush);
+			g_brushes.addBrush(type->brush);
 			type->brush->flagAsVisible();
 			type->in_other_tileset = true;
 			if(type->isNpc) {
@@ -311,7 +311,7 @@ bool Materials::unserializeTileset(pugi::xml_node node, wxArrayString& warnings)
 	if(it != tilesets.end()) {
 		tileset = it->second;
 	} else {
-		tileset = newd Tileset(brushes, name);
+		tileset = newd Tileset(g_brushes, name);
 		tilesets.insert(std::make_pair(name, tileset));
 	}
 

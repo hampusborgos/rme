@@ -212,7 +212,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			if(name == "all") {
 				//friends.push_back(-1);
 			} else {
-				Brush* brush = brushes.getBrush(name);
+				Brush* brush = g_brushes.getBrush(name);
 				if(brush) {
 					friends.push_back(brush->getID());
 				} else {
