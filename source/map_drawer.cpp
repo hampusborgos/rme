@@ -1,5 +1,6 @@
 
 #include "main.h"
+#include <glut.h>
 
 #include "editor.h"
 #include "gui.h"
@@ -20,7 +21,7 @@
 #include "table_brush.h"
 #include "waypoint_brush.h"
 
-MapDrawer::MapDrawer(const DrawingOptions& options, MapCanvas* canvas, wxPaintDC& pdc) : canvas(canvas), editor(canvas->editor), pdc(pdc), options(options)
+MapDrawer::MapDrawer(const DrawingOptions& options, MapCanvas* canvas) : canvas(canvas), editor(canvas->editor), options(options)
 {
 	canvas->MouseToMap(&mouse_map_x, &mouse_map_y);
 	canvas->GetViewBox(&view_scroll_x, &view_scroll_y, &screensize_x, &screensize_y);
@@ -107,6 +108,7 @@ void DrawingOptions::SetDefault()
 
 	highlight_items = false;
 	show_blocking = false;
+	show_tooltips = false;
 	show_only_colors = false;
 	show_only_modified = false;
 	hide_items_when_zoomed = true;
@@ -131,6 +133,7 @@ void DrawingOptions::SetIngame()
 
 	highlight_items = false;
 	show_blocking = false;
+	show_tooltips = false;
 	show_only_colors = false;
 	show_only_modified = false;
 	hide_items_when_zoomed = false;
@@ -158,7 +161,8 @@ void MapDrawer::Draw()
 	if(options.show_grid)
 		DrawGrid();
 	DrawIngameBox();
-	//DrawTooltips();
+	if(options.show_tooltips)
+		DrawTooltips();
 }
 
 void MapDrawer::DrawBackground()
@@ -1261,16 +1265,29 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Creature* c, int re
 	BlitCreature(screenx, screeny, c->getLookType(), c->getDirection(), red, green, blue, alpha);
 }
 
-void MapDrawer::MakeTooltip(Item* item, std::ostringstream& tip)
+void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 {
-	if(item->getID() > 100)
-		tip << "id: " << item->getID() << "\n";
-	if(item->getUniqueID() > 0)
-		tip << "uid: " << item->getUniqueID() << "\n";
-	if(item->getActionID() > 0)
-		tip << "aid: " << item->getActionID() << "\n";
-	if(item->getText() != "")
-		tip << "text: " << item->getText() << "\n";
+	const uint16_t id = item->getID();
+	if(id < 100)
+		return;
+
+	const uint16_t unique = item->getUniqueID();
+	const uint16_t action = item->getActionID();
+	const std::string& text = item->getText();
+	if(unique == 0 && action == 0 && text.empty())
+		return;
+
+	if(stream.tellp() > 0)
+		stream << "\n";
+
+	stream << "id: " << id << "\n";
+
+	if(unique > 0)
+		stream << "uid: " << unique << "\n";
+	if(action > 0)
+		stream << "aid: " << action << "\n";
+	if(!text.empty())
+		stream << "text: " << text << "\n";
 }
 
 void MapDrawer::DrawTile(TileLocation* location) {
@@ -1288,7 +1305,7 @@ void MapDrawer::DrawTile(TileLocation* location) {
 	int map_y = location->getY();
 	int map_z = location->getZ();
 
-	//std::ostringstream tooltip;
+	std::ostringstream tooltip;
 
 	bool only_colors = options.show_only_colors;
 
@@ -1359,13 +1376,18 @@ void MapDrawer::DrawTile(TileLocation* location) {
 		} else {
 			BlitItem(draw_x, draw_y, tile, tile->ground, false, r, g, b);
 		}
-		//MakeTooltip(tile->ground, tooltip);
+
+		if(options.show_tooltips)
+			WriteTooltip(tile->ground, tooltip);
 	}
 
 	if(!only_colors) {
 		if(zoom < 10.0 || !options.hide_items_when_zoomed) {
 			for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); it++) {
-				//MakeTooltip(*it, tooltip);
+
+				if(options.show_tooltips)
+					WriteTooltip(*it, tooltip);
+
 				if((*it)->isBorder()) {
 					BlitItem(draw_x, draw_y, tile, *it, false, r, g, b);
 				} else {
@@ -1399,28 +1421,55 @@ void MapDrawer::DrawTile(TileLocation* location) {
 		}
 	}
 
-	//
-	//DrawTooltip(draw_x, draw_y, tooltip.str());
+	if(options.show_tooltips)
+		MakeTooltip(draw_x, draw_y, tooltip.str());
+}
+
+void MapDrawer::DrawText(int x, int y, const char* text)
+{
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glRasterPos2i(x, y);
+	for(const char* c = text; *c != '\0'; c++) {
+		if(*c == '\n') {
+			y += 14;
+			glRasterPos2i(x, y);
+		}
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+	}
+	glDisable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawTooltips()
 {
 	for(std::vector<MapTooltip>::const_iterator tooltip = tooltips.begin(); tooltip != tooltips.end(); ++tooltip) {
-		wxCoord width, height;
-		wxCoord lineHeight;
-		pdc.GetMultiLineTextExtent(wxstr(tooltip->tip), &width, &height, &lineHeight);
+		const char* text = tooltip->text.c_str();
+		int lines = 1;
+		int line_width = 0;
+		int width = 2;
 
-		int start_sx = tooltip->x + 16 - width / 2;
-		int start_sy = tooltip->y + 16 - GROUND_LAYER - height;
-		int end_sx = tooltip->x + 16 + width / 2;
-		int end_sy = tooltip->y + 16 - GROUND_LAYER;
+		for(const char* c = text; *c != '\0'; c++) {
+			if(*c == '\n') {
+				++lines;
+				line_width = 0;
+			} else {
+				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
+			}
+			width = std::max<int>(width, line_width);
+		}
+
+		int start_sx = tooltip->x + 12 - (width / 2);
+		int start_sy = tooltip->y - ((lines * 14) + 4);
+		int end_sx = tooltip->x + 20 + (width / 2);
+		int end_sy = tooltip->y;
 
 		int vertexes [9][2] = {
 			{tooltip->x,  start_sy},
 			{end_sx,      start_sy},
 			{end_sx,      end_sy},
 			{tooltip->x + 23, end_sy},
-			{tooltip->x + 16, end_sy+7},
+			{tooltip->x + 16, end_sy + 16},
 			{tooltip->x +  9, end_sy},
 			{start_sx,    end_sy},
 			{start_sx,    start_sy},
@@ -1441,21 +1490,24 @@ void MapDrawer::DrawTooltips()
 			glVertex2i(vertexes[i+1][0], vertexes[i+1][1]);
 		}
 		glEnd();
+
+		if(zoom <= 1.0)
+			DrawText(start_sx + 3, start_sy + 14, text);
 	}
 }
 
-void MapDrawer::DrawTooltip(int screenx, int screeny, const std::string& s)
+void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text)
 {
-	if(s.empty())
+	if(text.empty())
 		return;
 
 	MapTooltip tooltip;
 	tooltip.x = screenx;
 	tooltip.y = screeny;
-	tooltip.tip = s;
+	tooltip.text = text;
 
-	if(tooltip.tip.at(tooltip.tip.size() - 1) == '\n')
-		tooltip.tip.resize(tooltip.tip.size() - 1);
+	if(tooltip.text.at(tooltip.text.size() - 1) == '\n')
+		tooltip.text.resize(tooltip.text.size() - 1);
 	tooltips.push_back(tooltip);
 }
 
