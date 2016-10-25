@@ -28,7 +28,7 @@ TableBrush::~TableBrush()
 
 bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
-	look_id = item_db[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].clientID;
+	look_id = g_items[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].clientID;
 	if(look_id == 0) {
 		look_id = pugi::cast<uint16_t>(node.attribute("lookid").value());
 	}
@@ -75,7 +75,7 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				break;
 			}
 
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0) {
 				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
 				return false;

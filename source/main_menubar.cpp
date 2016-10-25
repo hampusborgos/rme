@@ -1464,7 +1464,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	item_count += 1; \
 	if(!(_item)->isGroundTile() && !(_item)->isBorder()) { \
 		is_detailed = true; \
-		ItemType& it = item_db[(_item)->getID()]; \
+		ItemType& it = g_items[(_item)->getID()]; \
 		if(it.moveable) { \
 			loose_item_count += 1; \
 		} \

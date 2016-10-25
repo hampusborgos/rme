@@ -377,7 +377,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 	}
 	map.height = u16;
 
-	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MajorVersion) { // OTB major version
+	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MajorVersion) { // OTB major version
 		if(queryUser(wxT("Map error"), wxT("The loaded map appears to be a items.otb format that deviates from the items.otb loaded by the editor. Do you still want to attempt to load the map?"))) {
 			warning(wxT("Unsupported or damaged map version"));
 		} else {
@@ -386,7 +386,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 		}
 	}
 
-	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MinorVersion) { // OTB minor version
+	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MinorVersion) { // OTB minor version
 		warning(wxT("The editor needs an updated items.otb version."));
 	}
 
@@ -796,8 +796,8 @@ bool IOMapOTMM::saveMap(Map& map, NodeFileWriteHandle& f, const FileName& identi
 		f.addU32(1); // Version
 		f.addU16(map.getWidth());
 		f.addU16(map.getHeight());
-		f.addU32(item_db.MajorVersion);
-		f.addU32(item_db.MinorVersion);
+		f.addU32(g_items.MajorVersion);
+		f.addU32(g_items.MinorVersion);
 
 		f.addNode(OTMM_MAP_DATA); {
 			f.addNode(OTMM_EDITOR); {

@@ -38,7 +38,7 @@ Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 	if(_type == 0) return nullptr;
 	Item* newItem = nullptr;
 
-	const ItemType& it = item_db[_type];
+	const ItemType& it = g_items[_type];
 
 	if(it.id != 0){
 		if(it.isDepot()) {
@@ -167,7 +167,7 @@ void Item::setSubtype(uint16_t n)
 
 bool Item::hasSubtype() const
 {
-	const ItemType& it = item_db[id];
+	const ItemType& it = g_items[id];
 	return (it.isFluidContainer() || it.isSplash() || isCharged() || it.stackable || it.charges != 0);
 }
 
@@ -181,7 +181,7 @@ uint16_t Item::getSubtype() const
 
 bool Item::hasProperty(enum ITEMPROPERTY prop) const
 {
-	const ItemType& it = item_db[id];
+	const ItemType& it = g_items[id];
 	switch(prop){
 		case BLOCKSOLID:
 			if(it.blockSolid)
@@ -231,7 +231,7 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 
 std::pair<int, int> Item::getDrawOffset() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(it.sprite != nullptr) {
 		return it.sprite->getDrawOffset();
 	}
@@ -240,7 +240,7 @@ std::pair<int, int> Item::getDrawOffset() const
 
 double Item::getWeight() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(it.stackable) {
 		return it.weight * std::max(1, (int)subtype);
 	}
@@ -270,7 +270,7 @@ void Item::setDescription(const std::string& str)
 
 double Item::getWeight()
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(it.isStackable()) {
 		return it.weight * subtype;
 	}
@@ -284,12 +284,12 @@ bool Item::canHoldText() const
 
 bool Item::canHoldDescription() const
 {
-	return item_db[id].allowDistRead;
+	return g_items[id].allowDistRead;
 }
 
 uint8_t Item::getMiniMapColor() const
 {
-	GameSprite* spr = item_db[id].sprite;
+	GameSprite* spr = g_items[id].sprite;
 	if(spr) {
 		return spr->getMiniMapColor();
 	}
@@ -298,7 +298,7 @@ uint8_t Item::getMiniMapColor() const
 
 GroundBrush* Item::getGroundBrush() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isGroundTile()) {
 		return nullptr;
 	}
@@ -307,7 +307,7 @@ GroundBrush* Item::getGroundBrush() const
 
 TableBrush* Item::getTableBrush() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isTable) {
 		return nullptr;
 	}
@@ -316,7 +316,7 @@ TableBrush* Item::getTableBrush() const
 
 CarpetBrush* Item::getCarpetBrush() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isCarpet) {
 		return nullptr;
 	}
@@ -325,7 +325,7 @@ CarpetBrush* Item::getCarpetBrush() const
 
 DoorBrush* Item::getDoorBrush() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isWall || !it.isBrushDoor) {
 		return nullptr;
 	}
@@ -366,7 +366,7 @@ DoorBrush* Item::getDoorBrush() const
 
 WallBrush* Item::getWallBrush() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isWall) {
 		return nullptr;
 	}
@@ -375,7 +375,7 @@ WallBrush* Item::getWallBrush() const
 
 BorderType Item::getWallAlignment() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isWall) {
 		return BORDER_NONE;
 	}
@@ -384,7 +384,7 @@ BorderType Item::getWallAlignment() const
 
 BorderType Item::getBorderAlignment() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	return it.border_alignment;
 }
 

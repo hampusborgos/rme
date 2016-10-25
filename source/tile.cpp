@@ -406,7 +406,7 @@ void Tile::update()
 			statflags |= TILESTATE_UNIQUE;
 		}
 
-		ItemType& it = item_db[i->getID()];
+		ItemType& it = g_items[i->getID()];
 		if(it.blockSolid) {
 			statflags |= TILESTATE_BLOCKING;
 		}

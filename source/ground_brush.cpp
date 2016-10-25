@@ -66,7 +66,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 
 		const std::string& orientation = attribute.as_string();
 
-		ItemType& it = item_db[itemid];
+		ItemType& it = g_items[itemid];
 		if(it.id == 0) {
 			warnings.push_back(wxT("Invalid item ID ") + std::to_string(itemid) + wxT(" for border ") + std::to_string(id));
 			continue;
@@ -77,7 +77,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 			it.ground_equivalent = ground_equivalent;
 			it.brush = owner;
 
-			ItemType& it2 = item_db[ground_equivalent];
+			ItemType& it2 = g_items[ground_equivalent];
 			it2.has_equivalent = it2.id != 0;
 		}
 
@@ -138,7 +138,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
 	if((attribute = node.attribute("z-order"))) {
@@ -159,7 +159,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			uint16_t itemId = pugi::cast<uint16_t>(childNode.attribute("id").value());
 			int32_t chance = pugi::cast<int32_t>(childNode.attribute("chance").value());
 
-			ItemType& it = item_db[itemId];
+			ItemType& it = g_items[itemId];
 			if(it.id == 0) {
 				warnings.push_back(wxT("\nInvalid item id ") + std::to_string(itemId));
 				return false;
@@ -193,7 +193,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
 
 				// Load from inline definition
-				ItemType& it = item_db[ground_equivalent];
+				ItemType& it = g_items[ground_equivalent];
 				if(it.id == 0) {
 					warnings.push_back(wxT("Invalid id of ground dependency equivalent item.\n"));
 					continue;
@@ -232,7 +232,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
-				ItemType& it = item_db[ground_equivalent];
+				ItemType& it = g_items[ground_equivalent];
 				if(it.id == 0) {
 					warnings.push_back(wxT("Invalid id of ground dependency equivalent item.\n"));
 				}
@@ -408,7 +408,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								AutoBorder* autoBorder = itt->second;
 								ASSERT(autoBorder != nullptr);
 
-								ItemType& it = item_db[with_id];
+								ItemType& it = g_items[with_id];
 								if(it.id == 0) {
 									return false;
 								}
@@ -431,7 +431,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t with_id = pugi::cast<int32_t>(attribute.value());
-								ItemType& it = item_db[with_id];
+								ItemType& it = g_items[with_id];
 								if(it.id == 0) {
 									return false;
 								}

@@ -42,7 +42,7 @@ class GameSprite;
 class GameSprite;
 class ItemDatabase;
 
-extern ItemDatabase item_db;
+extern ItemDatabase g_items;
 
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;

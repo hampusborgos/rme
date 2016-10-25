@@ -983,7 +983,7 @@ void MapDrawer::DrawBrush()
 }
 
 void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
-	ItemType& it = item_db[item->getID()];
+	ItemType& it = g_items[item->getID()];
 
 	if(!options.ingame && !ephemeral && item->isSelected()) {
 		red /= 2;
@@ -1090,7 +1090,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 }
 
 void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
-	ItemType& it = item_db[item->getID()];
+	ItemType& it = g_items[item->getID()];
 
 	if(!options.ingame && !ephemeral && item->isSelected()) {
 		red /= 2;
@@ -1191,7 +1191,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 }
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha) {
-	GameSprite* spr = item_db[spriteid].sprite;
+	GameSprite* spr = g_items[spriteid].sprite;
 	if(spr == nullptr) return;
 	screenx -= spr->getDrawOffset().first;
 	screeny -= spr->getDrawOffset().second;
@@ -1228,7 +1228,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int re
 void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red, int green, int blue, int alpha)
 {
 	if(outfit.lookItem != 0) {
-		ItemType& it = item_db[outfit.lookItem];
+		ItemType& it = g_items[outfit.lookItem];
 		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
 	} else {
 		GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);

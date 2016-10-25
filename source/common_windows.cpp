@@ -486,7 +486,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	choices.Add(wxT("All Floors"));
 	choices.Add(wxT("Ground Floor"));
 	choices.Add(wxT("Specific Floor"));
-	
+
 	if (editor.hasSelection())
 		choices.Add(wxT("Selected Area"));
 
@@ -818,8 +818,8 @@ void FindItemDialog::OnClickOKInternal()
 			bool do_search = (search_string.size() >= 2);
 
 			if(do_search) {
-				for(int id = 0; id <= item_db.getMaxID(); ++id) {
-					ItemType& it = item_db[id];
+				for(int id = 0; id <= g_items.getMaxID(); ++id) {
+					ItemType& it = g_items[id];
 					if(it.id == 0 || (extra_condition && !extra_condition(it)))
 						continue;
 
@@ -852,8 +852,8 @@ void FindItemDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
-		for(int id = 0; id <= item_db.getMaxID(); ++id) {
-			ItemType& it = item_db[id];
+		for(int id = 0; id <= g_items.getMaxID(); ++id) {
+			ItemType& it = g_items[id];
 			if(it.id == 0 || (extra_condition && !extra_condition(it)))
 				continue;
 
@@ -929,8 +929,8 @@ void FindBrushDialog::OnClickOKInternal()
 				// Did we not find a matching brush?
 				if(!result_brush) {
 					// Then let's search the RAWs
-					for(int id = 0; id <= item_db.getMaxID(); ++id) {
-						ItemType& it = item_db[id];
+					for(int id = 0; id <= g_items.getMaxID(); ++id) {
+						ItemType& it = g_items[id];
 						if(it.id == 0)
 							continue;
 
@@ -980,8 +980,8 @@ void FindBrushDialog::RefreshContentsInternal()
 			item_list->AddBrush(const_cast<Brush*>(brush));
 		}
 
-		for(int id = 0; id <= item_db.getMaxID(); ++id) {
-			ItemType& it = item_db[id];
+		for(int id = 0; id <= g_items.getMaxID(); ++id) {
+			ItemType& it = g_items[id];
 			if(it.id == 0)
 				continue;
 
@@ -1176,9 +1176,9 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
-		for(int id = 0; id <= item_db.getMaxID(); ++id)
+		for(int id = 0; id <= g_items.getMaxID(); ++id)
 		{
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0)
 				continue;
 

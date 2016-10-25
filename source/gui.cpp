@@ -355,7 +355,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(20, wxT("Loading items.otb ..."));
-	if(!item_db.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.otb")), error, warnings)) {
+	if(!g_items.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.otb")), error, warnings)) {
 		error = wxT("Couldn't load items.otb: ") + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
@@ -363,7 +363,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(30, wxT("Loading items.xml ..."));
-	if(!item_db.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.xml")), error, warnings)) {
+	if(!g_items.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.xml")), error, warnings)) {
 		warnings.push_back(wxT("Couldn't load items.xml: ") + error);
 	}
 
@@ -422,7 +422,7 @@ void GUI::UnloadVersion()
 		//g_gui.UnloadVersion();
 		g_materials.clear();
 		brushes.clear();
-		item_db.clear();
+		g_items.clear();
 		gfx.clear();
 
 		FileName cdb = getLoadedVersion()->getLocalDataPath();

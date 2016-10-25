@@ -208,7 +208,7 @@ bool Materials::unserializeMaterials(const FileName& filename, pugi::xml_node no
 				warnings.push_back(wxT("Error while loading file \"") + includeName.GetFullName() + wxT("\": ") + subError);
 			}
 		} else if(childName == "metaitem") {
-			item_db.loadMetaItem(childNode);
+			g_items.loadMetaItem(childNode);
 		} else if(childName == "border") {
 			brushes.unserializeBorder(childNode, warnings);
 			if(warning.size()) {
@@ -248,8 +248,8 @@ void Materials::createOtherTileset()
 	}
 
 	// There should really be an iterator to do this
-	for(int32_t id = 0; id <= item_db.getMaxID(); ++id) {
-		ItemType& it = item_db[id];
+	for(int32_t id = 0; id <= g_items.getMaxID(); ++id) {
+		ItemType& it = g_items[id];
 		if(it.id == 0) {
 			continue;
 		}
@@ -323,7 +323,7 @@ bool Materials::unserializeTileset(pugi::xml_node node, wxArrayString& warnings)
 
 bool Materials::isInTileset(Item* item, std::string tilesetName) const
 {
-	const ItemType& it = item_db[item->getID()];
+	const ItemType& it = g_items[item->getID()];
 
 	return it.id != 0 && (
 		isInTileset(it.brush, tilesetName) ||

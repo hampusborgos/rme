@@ -34,7 +34,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -79,7 +79,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 			int32_t chance = pugi::cast<int32_t>(attribute.value());
 
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0) {
 				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
 				continue;
@@ -109,7 +109,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 			int32_t id = pugi::cast<int32_t>(attribute.value());
 
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0) {
 				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
 				return false;

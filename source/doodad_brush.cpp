@@ -77,7 +77,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 				continue;
 			}
 
-			ItemType& it = item_db[item->getID()];
+			ItemType& it = g_items[item->getID()];
 			if(it.id != 0) {
 				it.doodad_brush = this;
 			}
@@ -138,7 +138,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 					if(item) {
 						items.push_back(item);
 
-						ItemType& it = item_db[item->getID()];
+						ItemType& it = g_items[item->getID()];
 						if(it.id != 0) {
 							it.doodad_brush = this;
 						}
@@ -167,7 +167,7 @@ bool DoodadBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
 	if((attribute = node.attribute("on_blocking"))) {

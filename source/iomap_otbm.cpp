@@ -75,7 +75,7 @@ Item* Item::Create_OTBM(const IOMap& maphandle, BinaryNode* stream)
 
 	uint8_t _count = 0;
 
-	const ItemType& iType = item_db[_id];
+	const ItemType& iType = g_items[_id];
 	if(maphandle.version.otbm == MAP_OTBM_1) {
 		if(iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
 			stream->getU8(_count);
@@ -178,7 +178,7 @@ bool Item::unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node)
 void Item::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
 {
 	if(maphandle.version.otbm >= MAP_OTBM_2) {
-		const ItemType& iType = item_db[id];
+		const ItemType& iType = g_items[id];
 		if(iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
 			stream.addU8(OTBM_ATTR_COUNT);
 			stream.addU8(getSubtype());
@@ -191,7 +191,7 @@ void Item::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHan
 			serializeAttributeMap(maphandle, stream);
 		}
 	} else {
-		if(item_db.MinorVersion >= CLIENT_VERSION_820 && isCharged()) {
+		if(g_items.MinorVersion >= CLIENT_VERSION_820 && isCharged()) {
 			stream.addU8(OTBM_ATTR_CHARGES);
 			stream.addU16(getSubtype());
 		}
@@ -227,7 +227,7 @@ void Item::serializeItemCompact_OTBM(const IOMap& maphandle, NodeFileWriteHandle
 	stream.addU16(id);
 
 	/* This is impossible
-	const ItemType& iType = item_db[id];
+	const ItemType& iType = g_items[id];
 
 	if(iType.stackable || iType.isSplash() || iType.isFluidContainer()){
 		stream.addU8(getSubtype());
@@ -240,7 +240,7 @@ bool Item::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f
 	file.addNode(OTBM_ITEM);
 	file.addU16(id);
 	if(maphandle.version.otbm == MAP_OTBM_1) {
-		const ItemType& iType = item_db[id];
+		const ItemType& iType = g_items[id];
 		if(iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
 			file.addU8(getSubtype());
 		}
@@ -373,7 +373,7 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 	file.addU16(id);
 	if(maphandle.version.otbm == MAP_OTBM_1) {
 		// In the ludicrous event that an item is a container AND stackable, we have to do this. :p
-		const ItemType& iType = item_db[id];
+		const ItemType& iType = g_items[id];
 		if(iType.stackable || iType.isSplash() || iType.isFluidContainer()) {
 			file.addU8(getSubtype());
 		}
@@ -661,7 +661,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 	map.height = u16;
 
-	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MajorVersion) { // OTB major version
+	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MajorVersion) { // OTB major version
 		if(g_gui.PopupDialog(wxT("Map error"),
 			wxT("The loaded map appears to be a items.otb format that deviates from the ")
 			wxT("items.otb loaded by the editor. Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
@@ -673,7 +673,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 		}
 	}
 
-	if(!root->getU32(u32) || u32 > (unsigned long)item_db.MinorVersion) { // OTB minor version
+	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MinorVersion) { // OTB minor version
 		warning(wxT("This editor needs an updated items.otb version"));
 	}
 	version.client = (ClientVersionID)u32;
@@ -1283,8 +1283,8 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 		f.addU16(map.width);
 		f.addU16(map.height);
 
-		f.addU32(item_db.MajorVersion);
-		f.addU32(item_db.MinorVersion);
+		f.addU32(g_items.MajorVersion);
+		f.addU32(g_items.MinorVersion);
 
 		f.addNode(OTBM_MAP_DATA);
 		{

@@ -27,7 +27,7 @@
 #include "item.h"
 #include "pugicast.h"
 
-ItemDatabase item_db;
+ItemDatabase g_items;
 
 ItemType::ItemType() :
 	sprite(nullptr),
