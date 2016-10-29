@@ -70,9 +70,10 @@ HousePalettePanel::HousePalettePanel(wxWindow* parent, wxWindowID id) :
 	sidesizer->Add(house_list, 1, wxEXPAND);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(add_house_button = newd wxButton(this, PALETTE_HOUSE_ADD_HOUSE, wxT("Add"), wxDefaultPosition, wxSize(50, -1)), wxSizerFlags(1).Right());
-	tmpsizer->Add(edit_house_button = newd wxButton(this, PALETTE_HOUSE_EDIT_HOUSE, wxT("Edit"), wxDefaultPosition, wxSize(50, -1)), wxSizerFlags(1).Right());
-	tmpsizer->Add(remove_house_button = newd wxButton(this, PALETTE_HOUSE_REMOVE_HOUSE, wxT("Remove"), wxDefaultPosition, wxSize(70, -1)), wxSizerFlags(1).Right());
+	wxSizerFlags sizerFlags(1);
+	tmpsizer->Add(add_house_button = newd wxButton(this, PALETTE_HOUSE_ADD_HOUSE, wxT("Add"), wxDefaultPosition, wxSize(50, -1)), sizerFlags);
+	tmpsizer->Add(edit_house_button = newd wxButton(this, PALETTE_HOUSE_EDIT_HOUSE, wxT("Edit"), wxDefaultPosition, wxSize(50, -1)), sizerFlags);
+	tmpsizer->Add(remove_house_button = newd wxButton(this, PALETTE_HOUSE_REMOVE_HOUSE, wxT("Remove"), wxDefaultPosition, wxSize(70, -1)), sizerFlags);
 	sidesizer->Add(tmpsizer, wxSizerFlags(0).Right());
 
 	topsizer->Add(sidesizer, 1, wxEXPAND);
