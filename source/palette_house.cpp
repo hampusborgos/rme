@@ -66,7 +66,7 @@ HousePalettePanel::HousePalettePanel(wxWindow* parent, wxWindowID id) :
 	town_choice = newd wxChoice(this, PALETTE_HOUSE_TOWN_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)nullptr);
 	sidesizer->Add(town_choice, 0, wxEXPAND);
 
-	house_list = newd wxListBox(this, PALETTE_HOUSE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB | wxLB_SORT);
+	house_list = newd wxListBox(this, PALETTE_HOUSE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB);
 	sidesizer->Add(house_list, 1, wxEXPAND);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
