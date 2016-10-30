@@ -67,6 +67,10 @@ HousePalettePanel::HousePalettePanel(wxWindow* parent, wxWindowID id) :
 	sidesizer->Add(town_choice, 0, wxEXPAND);
 
 	house_list = newd wxListBox(this, PALETTE_HOUSE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB);
+	#ifdef __APPLE__
+	//Used for detecting a deselect
+	house_list->Bind(wxEVT_LEFT_UP, &HousePalettePanel::OnListBoxClick, this);
+	#endif
 	sidesizer->Add(house_list, 1, wxEXPAND);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -251,8 +255,9 @@ void HousePalettePanel::SelectHouse(size_t index)
 
 House* HousePalettePanel::GetCurrentlySelectedHouse() const
 {
-	if(house_list->GetCount() > 0) {
-		return reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
+	int selection = house_list->GetSelection();
+	if(house_list->GetCount() > 0 && selection != wxNOT_FOUND) {
+		return reinterpret_cast<House*>(house_list->GetClientData(selection));
 	}
 	return nullptr;
 }
@@ -376,14 +381,14 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 		return;
 	if(map == nullptr)
 		return;
-
-	House* house = reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
+	int selection = house_list->GetSelection();
+	House* house = reinterpret_cast<House*>(house_list->GetClientData(selection));
 	if(house) {
 		wxDialog* d = newd EditHouseDialog(g_gui.root, map, house);
 		int ret = d->ShowModal();
 		if(ret == 1) {
 			// Something changed, change name of house
-			house_list->SetString(house_list->GetSelection(), wxstr(house->getDescription()));
+			house_list->SetString(selection, wxstr(house->getDescription()));
 			refresh_timer.Start(300, true);
 		}
 	}
@@ -391,24 +396,46 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 
 void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 {
-	int selection_index = house_list->GetSelection();
-	if(selection_index != wxNOT_FOUND) {
-		House* house = reinterpret_cast<House*>(house_list->GetClientData(selection_index));
+	int selection = house_list->GetSelection();
+	if(selection != wxNOT_FOUND) {
+		House* house = reinterpret_cast<House*>(house_list->GetClientData(selection));
 		map->houses.removeHouse(house);
-		house_list->Delete(selection_index);
+		house_list->Delete(selection);
 		refresh_timer.Start(300, true);
 
-		if(int(house_list->GetCount()) <= selection_index) {
-			selection_index -= 1;
+		if(int(house_list->GetCount()) <= selection) {
+			selection -= 1;
 		}
 
-		if(selection_index >= 0 && house_list->GetCount()) {
-			house_list->SetSelection(selection_index);
+		if(selection >= 0 && house_list->GetCount()) {
+			house_list->SetSelection(selection);
+		} else {
+			select_position_button->Enable(false);
+			house_brush_button->Enable(false);
+			edit_house_button->Enable(false);
+			remove_house_button->Enable(false);
 		}
 		g_gui.SelectBrush();
 	}
 	g_gui.RefreshView();
 }
+
+#ifdef __APPLE__
+//On wxMac it is possible to deselect a wxListBox. (Unlike on the other platforms)
+//EVT_LISTBOX is not triggered when the deselection is happening. http://trac.wxwidgets.org/ticket/15603
+//Here we find out if the listbox was deselected using a normal mouse up event so we know when to disable the buttons and brushes.
+void HousePalettePanel::OnListBoxClick(wxMouseEvent& event) {
+	if (house_list->GetSelection() == wxNOT_FOUND) {
+		select_position_button->Enable(false);
+		select_position_button->SetValue(false);
+		house_brush_button->Enable(false);
+		house_brush_button->SetValue(false);
+		edit_house_button->Enable(false);
+		remove_house_button->Enable(false);
+		g_gui.SelectBrush();
+	}
+}
+#endif
 
 // ============================================================================
 // House Edit Dialog
