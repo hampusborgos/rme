@@ -411,7 +411,9 @@ void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 			house_list->SetSelection(selection);
 		} else {
 			select_position_button->Enable(false);
+			select_position_button->SetValue(false);
 			house_brush_button->Enable(false);
+			house_brush_button->SetValue(false);
 			edit_house_button->Enable(false);
 			remove_house_button->Enable(false);
 		}
