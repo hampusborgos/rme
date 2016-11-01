@@ -5,6 +5,8 @@ cmake_install.cmake
 Makefile
 build/
 build.*/
+build-debug
+build-release
 CMakeLists.txt.user*
 
 # RME
