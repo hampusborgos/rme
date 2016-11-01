@@ -283,13 +283,13 @@ void HousePalettePanel::SelectExitBrush()
 
 void HousePalettePanel::OnUpdate()
 {
-	if(map == nullptr)
-		return;
-
 	int old_town_selection = town_choice->GetSelection();
 
 	town_choice->Clear();
 	house_list->Clear();
+
+	if(map == nullptr)
+		return;
 
 	if(map->towns.count() != 0) {
 		// Create choice control
