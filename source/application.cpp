@@ -623,12 +623,3 @@ void MainFrame::PrepareDC(wxDC& dc)
 	dc.SetUserScale( 1.0, 1.0 );
 	dc.SetMapMode( wxMM_TEXT );
 }
-
-#if !defined __DEBUG__ && defined __WXOSX__
-
-void wxOnAssert(wchar_t const*, int, char const*, wchar_t const*, wchar_t const*)
-{
-    ;
-}
-
-#endif
