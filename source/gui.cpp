@@ -436,9 +436,20 @@ void GUI::UnloadVersion()
 
 void GUI::SaveCurrentMap(FileName filename, bool showdialog)
 {
-	Editor* editor = GetCurrentEditor();
-	if(editor)
-		editor->saveMap(filename, showdialog);
+	MapTab* mapTab = GetCurrentMapTab();
+	if(mapTab) {
+		Editor* editor = mapTab->GetEditor();
+		if(editor) {
+			editor->saveMap(filename, showdialog);
+			
+			const std::string& filename = editor->map.getFilename();
+			const Position& position = mapTab->GetScreenCenterPosition();
+			std::ostringstream stream;
+			stream << position;
+			g_settings.setString(Config::RECENT_EDITED_MAP_PATH, filename);
+			g_settings.setString(Config::RECENT_EDITED_MAP_POSITION, stream.str());
+		}
+	}
 
 	UpdateTitle();
 	root->UpdateMenubar();
@@ -538,6 +549,17 @@ bool GUI::LoadMap(FileName name)
 
 	FitViewToMap(mapTab);
 	root->UpdateMenubar();
+
+	std::string path = g_settings.getString(Config::RECENT_EDITED_MAP_PATH);
+	if(!path.empty()) {
+		FileName file(path);
+		if(file == name) {
+			std::istringstream stream(g_settings.getString(Config::RECENT_EDITED_MAP_POSITION));
+			Position position;
+			stream >> position;
+			mapTab->SetScreenCenterPosition(position);
+		}
+	}
 	return true;
 }
 

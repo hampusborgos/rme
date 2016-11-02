@@ -313,6 +313,9 @@ void Settings::IO(IOMode mode)
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);
 	Int(USE_UPDATER, 1);
+	String(RECENT_EDITED_MAP_PATH, "");
+	String(RECENT_EDITED_MAP_POSITION, "");
+
 #undef section
 #undef Int
 #undef IntToSave
