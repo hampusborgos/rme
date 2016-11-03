@@ -69,6 +69,11 @@ public:
 	void OnClickEditHouse(wxCommandEvent& event);
 	void OnClickRemoveHouse(wxCommandEvent& event);
 
+	#ifdef __APPLE__
+	//Used for detecting a deselect
+	void OnListBoxClick(wxMouseEvent& event);
+	#endif
+
 protected:
 	Map* map;
 	wxChoice* town_choice;

@@ -52,18 +52,20 @@ void ExtensionsDialog::OnClickOK(wxCommandEvent& evt)
 
 void ExtensionsDialog::OnClickOpenFolder(wxCommandEvent& evt)
 {
-	wxString cmd;
+	wxString cmd, extensionsDir = g_gui.GetExtensionsDirectory();
 #if defined __WINDOWS__
 	cmd << "explorer";
 #elif defined __APPLE__
 	cmd << "open";
+	extensionsDir.Replace(" ", "\\ "); //Escape spaces
 #elif defined __linux
 	cmd << "xdg-open";
 #else
 #error "NOT IMPLEMENTED"
 #endif
 
-	cmd << " " << g_gui.GetExtensionsDirectory();
+	cmd << " " << extensionsDir;
+
 	wxExecute(cmd);
 }
 
