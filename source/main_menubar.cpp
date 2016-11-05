@@ -399,6 +399,7 @@ void MainMenuBar::LoadValues()
 	CheckItem(SHOW_ONLY_COLORS, g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS));
 	CheckItem(SHOW_ONLY_MODIFIED, g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES));
 	CheckItem(SHOW_HOUSES, g_settings.getBoolean(Config::SHOW_HOUSES));
+	CheckItem(SHOW_PATHING, g_settings.getBoolean(Config::SHOW_BLOCKING));
 }
 
 void MainMenuBar::LoadRecentFiles()
