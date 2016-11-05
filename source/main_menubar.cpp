@@ -1666,7 +1666,7 @@ void MainMenuBar::OnToggleFullscreen(wxCommandEvent& WXUNUSED(event))
 void MainMenuBar::OnTakeScreenshot(wxCommandEvent& WXUNUSED(event))
 {
 	wxString path = wxstr(g_settings.getString(Config::SCREENSHOT_DIRECTORY));
-	if(path.size() > 0 && (path.Last() == wxT('/') || path.Last() == wxT('\\')))
+	if(path.size() > 0 && (path.Last() == '/' || path.Last() == '\\'))
 		path = path + "/";
 
 	g_gui.GetCurrentMapTab()->GetView()->GetCanvas()->TakeScreenshot(

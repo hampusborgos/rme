@@ -690,7 +690,7 @@ void PreferencesWindow::Apply()
 		ClientVersion* version = *version_iter;
 
 		wxString dir = version_dir_pickers[version_counter]->GetPath();
-		if(dir.Length() > 0 && dir.Last() != wxT('/') && dir.Last() != wxT('\\'))
+		if(dir.Length() > 0 && dir.Last() != '/' && dir.Last() != '\\')
 			dir.Append("/");
 		version->setClientPath(FileName(dir));
 

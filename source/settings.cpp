@@ -146,15 +146,15 @@ void Settings::IO(IOMode mode)
 	wxConfigBase* conf = (mode == DEFAULT? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
 
 	using namespace Config;
-#define section(s) if(conf) conf->SetPath("/" wxT(s))
+#define section(s) if(conf) conf->SetPath("/" s)
 #define Int(key, dflt) \
 	do { \
 		if(mode == DEFAULT) { \
 			setInteger(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), getInteger(key)); \
+			conf->Write(#key, getInteger(key)); \
 		} else if(mode == LOAD) { \
-			setInteger(key, conf->Read(wxT(#key), long(dflt))); \
+			setInteger(key, conf->Read(#key, long(dflt))); \
 		} \
 	} while(false)
 #define IntToSave(key, dflt) \
@@ -162,9 +162,9 @@ void Settings::IO(IOMode mode)
 		if(mode == DEFAULT) { \
 			setInteger(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), getInteger(key##_TO_SAVE)); \
+			conf->Write(#key, getInteger(key##_TO_SAVE)); \
 		} else if(mode == LOAD) { \
-			setInteger(key, conf->Read(wxT(#key), (long)dflt)); \
+			setInteger(key, conf->Read(#key, (long)dflt)); \
 			setInteger(key##_TO_SAVE , getInteger(key)); \
 		} \
 	} while(false)
@@ -173,10 +173,10 @@ void Settings::IO(IOMode mode)
 		if(mode == DEFAULT) { \
 			setFloat(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), getFloat(key)); \
+			conf->Write(#key, getFloat(key)); \
 		} else if(mode == LOAD) { \
 			double tmp_float;\
-			conf->Read(wxT(#key), &tmp_float, dflt); \
+			conf->Read(#key, &tmp_float, dflt); \
 			setFloat(key, tmp_float); \
 		} \
 	} while(false)
@@ -185,10 +185,10 @@ void Settings::IO(IOMode mode)
 		if(mode == DEFAULT) { \
 			setString(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), wxstr(getString(key))); \
+			conf->Write(#key, wxstr(getString(key))); \
 		} else if(mode == LOAD) { \
 			wxString str; \
-			conf->Read(wxT(#key), &str, wxT(dflt)); \
+			conf->Read(#key, &str, dflt); \
 			setString(key, nstr(str)); \
 		} \
 	} while(false)

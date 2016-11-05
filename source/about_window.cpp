@@ -179,8 +179,8 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 #endif
 	about << "\n\n";
 
-	about << "Using " wxVERSION_STRING " interface\n";
-	about << "OpenGL version " + wxString((char*)glGetString(GL_VERSION), wxConvUTF8) + "\n";
+	about << "Using " << wxVERSION_STRING << " interface\n";
+	about << "OpenGL version " << wxString((char*)glGetString(GL_VERSION), wxConvUTF8) << "\n";
 	about << "\n";
 	about << "This program comes with ABSOLUTELY NO WARRANTY;\n";
 	about << "for details see the LICENSE file.\n";
