@@ -47,8 +47,8 @@ Editor::Editor(CopyBuffer& copybuffer) :
 	if(g_gui.GetCurrentVersionID() != defaultVersion) {
 		if(g_gui.CloseAllEditors()) {
 			ok = g_gui.LoadVersion(defaultVersion, error, warnings);
-			g_gui.PopupDialog(wxT("Error"), error, wxOK);
-			g_gui.ListDialog(wxT("Warnings"), warnings);
+			g_gui.PopupDialog("Error", error, wxOK);
+			g_gui.ListDialog("Warnings", warnings);
 		} else {
 			throw std::runtime_error("All maps of different versions were not closed.");
 		}
@@ -87,13 +87,13 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 {
 	MapVersion ver;
 	if(!IOMapOTBM::getVersionInfo(fn, ver)) {
-		// g_gui.PopupDialog(wxT("Error"), wxT("Could not open file \"") + fn.GetFullPath() + wxT("\"."), wxOK);
+		// g_gui.PopupDialog("Error", "Could not open file \"" + fn.GetFullPath() + "\".", wxOK);
 		throw std::runtime_error("Could not open file \"" + nstr(fn.GetFullPath()) + "\".\nThis is not a valid OTBM file or it does not exist.");
 	}
 
 	/*
 	if(ver < CLIENT_VERSION_760) {
-		long b = g_gui.PopupDialog(wxT("Error"), wxT("Unsupported Client Version (pre 7.6), do you want to try to load the map anyways?"), wxYES | wxNO);
+		long b = g_gui.PopupDialog("Error", "Unsupported Client Version (pre 7.6), do you want to try to load the map anyways?", wxYES | wxNO);
 		if(b == wxID_NO) {
 			valid_state = false;
 			return;
@@ -108,9 +108,9 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		if(g_gui.CloseAllEditors()) {
 			success = g_gui.LoadVersion(ver.client, error, warnings);
 			if(!success)
-				g_gui.PopupDialog(wxT("Error"), error, wxOK);
+				g_gui.PopupDialog("Error", error, wxOK);
 			else
-				g_gui.ListDialog(wxT("Warnings"), warnings);
+				g_gui.ListDialog("Warnings", warnings);
 		} else {
 			throw std::runtime_error("All maps of different versions were not closed.");
 		}
@@ -121,7 +121,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		success = map.open(nstr(fn.GetFullPath()));
 		/* TODO
 		if(success && ver.client == CLIENT_VERSION_854_BAD) {
-			int ok = g_gui.PopupDialog(wxT("Incorrect OTB"), wxT("This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes."), wxYES | wxNO);
+			int ok = g_gui.PopupDialog("Incorrect OTB", "This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes.", wxYES | wxNO);
 
 			if(ok == wxID_YES){
 				ver.client = CLIENT_VERSION_854;
@@ -182,11 +182,11 @@ void Editor::saveMap(FileName filename, bool showdialog)
 	// If not named yet, propagate the file name to the auxilliary files
 	if(map.unnamed) {
 		FileName _name(filename);
-		_name.SetExt(wxT("xml"));
+		_name.SetExt("xml");
 
-		_name.SetName(filename.GetName() + wxT("-spawn"));
+		_name.SetName(filename.GetName() + "-spawn");
 		map.spawnfile = nstr(_name.GetFullName());
-		_name.SetName(filename.GetName() + wxT("-house"));
+		_name.SetName(filename.GetName() + "-house");
 		map.housefile = nstr(_name.GetFullName());
 
 		map.unnamed = false;
@@ -279,7 +279,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 			}
 
 			// Display the error
-			g_gui.PopupDialog(wxT("Error"), wxT("Could not save, unable to open target for writing."), wxOK);
+			g_gui.PopupDialog("Error", "Could not save, unable to open target for writing.", wxOK);
 		}
 
 		// Remove temporary save runfile
@@ -388,7 +388,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 		return false;
 
 	if(minimap_width > 2048 || minimap_height > 2048) {
-		g_gui.PopupDialog(wxT("Error"), wxT("Minimap size greater than 2048px."), wxOK);
+		g_gui.PopupDialog("Error", "Minimap size greater than 2048px.", wxOK);
 		return false;
 	}
 
@@ -428,7 +428,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 			pixels[index + 2] = (uint8_t)(color % 6 * 51);           // blue
 		}
 
-		FileName file(fileName + wxT("_") + i2ws(z) + wxT(".png"));
+		FileName file(fileName + "_" + i2ws(z) + ".png");
 		file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
 		wxImage* image = newd wxImage(minimap_width, minimap_height, pixels, true);
 		image->SaveFile(file.GetFullPath(), wxBITMAP_TYPE_PNG);
@@ -448,10 +448,10 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	bool loaded = imported_map.open(nstr(filename.GetFullPath()));
 
 	if(!loaded) {
-		g_gui.PopupDialog(wxT("Error"), wxT("Error loading map!\n") + imported_map.getError(), wxOK | wxICON_INFORMATION);
+		g_gui.PopupDialog("Error", "Error loading map!\n" + imported_map.getError(), wxOK | wxICON_INFORMATION);
 		return false;
 	}
-	g_gui.ListDialog(wxT("Warning"), imported_map.getWarnings());
+	g_gui.ListDialog("Warning", imported_map.getWarnings());
 
 	Position offset(import_x_offset, import_y_offset, 0);
 
@@ -460,7 +460,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	int newsize_x = map.getWidth(), newsize_y = map.getHeight();
 	int discarded_tiles = 0;
 
-	g_gui.CreateLoadBar(wxT("Merging maps..."));
+	g_gui.CreateLoadBar("Merging maps...");
 
 	std::map<uint32_t, uint32_t> town_id_map;
 	std::map<uint32_t, uint32_t> house_id_map;
@@ -686,7 +686,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 				continue;
 			} else {
 				resize_asked = true;
-				int ret = g_gui.PopupDialog(wxT("Collision"), wxT("The imported tiles are outside the current map scope. Do you want to resize the map? (Else additional tiles will be removed)"), wxYES | wxNO);
+				int ret = g_gui.PopupDialog("Collision", "The imported tiles are outside the current map scope. Do you want to resize the map? (Else additional tiles will be removed)", wxYES | wxNO);
 
 				if(ret == wxID_YES) {
 					// ...
@@ -759,7 +759,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 
 	map.setWidth(newsize_x);
 	map.setHeight(newsize_y);
-	g_gui.PopupDialog(wxT("Success"), wxT("Map imported successfully, ") + i2ws(discarded_tiles) + wxT(" tiles were discarded as invalid."), wxOK);
+	g_gui.PopupDialog("Success", "Map imported successfully, " + i2ws(discarded_tiles) + " tiles were discarded as invalid.", wxOK);
 
 	g_gui.RefreshPalettes();
 	g_gui.FitViewToMap();
@@ -770,7 +770,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 void Editor::borderizeSelection()
 {
 	if(selection.size() == 0) {
-		g_gui.SetStatusText(wxT("No items selected. Can't borderize."));
+		g_gui.SetStatusText("No items selected. Can't borderize.");
 	}
 
 	Action* action = actionQueue->createAction(ACTION_BORDERIZE);
@@ -786,7 +786,7 @@ void Editor::borderizeSelection()
 void Editor::borderizeMap(bool showdialog)
 {
 	if(showdialog) {
-		g_gui.CreateLoadBar(wxT("Borderizing map..."));
+		g_gui.CreateLoadBar("Borderizing map...");
 	}
 
 	uint64_t tiles_done = 0;
@@ -810,7 +810,7 @@ void Editor::borderizeMap(bool showdialog)
 void Editor::randomizeSelection()
 {
 	if(selection.size() == 0) {
-		g_gui.SetStatusText(wxT("No items selected. Can't randomize."));
+		g_gui.SetStatusText("No items selected. Can't randomize.");
 	}
 
 	Action* action = actionQueue->createAction(ACTION_RANDOMIZE);
@@ -837,7 +837,7 @@ void Editor::randomizeSelection()
 void Editor::randomizeMap(bool showdialog)
 {
 	if(showdialog) {
-		g_gui.CreateLoadBar(wxT("Randomizing map..."));
+		g_gui.CreateLoadBar("Randomizing map...");
 	}
 
 	uint64_t tiles_done = 0;
@@ -881,7 +881,7 @@ void Editor::randomizeMap(bool showdialog)
 void Editor::clearInvalidHouseTiles(bool showdialog)
 {
 	if(showdialog) {
-		g_gui.CreateLoadBar(wxT("Clearing invalid house tiles..."));
+		g_gui.CreateLoadBar("Clearing invalid house tiles...");
 	}
 
 	Houses& houses = map.houses;
@@ -935,7 +935,7 @@ void Editor::clearInvalidHouseTiles(bool showdialog)
 void Editor::clearModifiedTileState(bool showdialog)
 {
 	if(showdialog) {
-		g_gui.CreateLoadBar(wxT("Clearing modified state from all tiles..."));
+		g_gui.CreateLoadBar("Clearing modified state from all tiles...");
 	}
 
 	uint64_t tiles_done = 0;
@@ -1150,7 +1150,7 @@ void Editor::moveSelection(Position offset)
 void Editor::destroySelection()
 {
 	if(selection.size() == 0) {
-		g_gui.SetStatusText(wxT("No selected items to delete."));
+		g_gui.SetStatusText("No selected items to delete.");
 	} else {
 		int tile_count = 0;
 		int item_count = 0;
@@ -1230,7 +1230,7 @@ void Editor::destroySelection()
 
 		addBatch(batch);
 		wxString ss;
-		ss << wxT("Deleted ") << tile_count << wxT(" tile") << (tile_count > 1 ? wxT("s") : wxT("")) <<  wxT(" (") << item_count << wxT(" item") << (item_count > 1? wxT("s") : wxT("")) << wxT(")");
+		ss << "Deleted " << tile_count << " tile" << (tile_count > 1 ? "s" : "") <<  " (" << item_count << " item" << (item_count > 1? "s" : "") << ")";
 		g_gui.SetStatusText(ss);
 	}
 }

@@ -26,7 +26,7 @@ BrushPalettePanel::BrushPalettePanel(wxWindow* parent, const TilesetContainer& t
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
 	// Create the tileset panel
-	wxSizer* ts_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Tileset"));
+	wxSizer* ts_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Tileset");
 	wxChoicebook* tmp_choicebook = newd wxChoicebook(this, wxID_ANY, wxDefaultPosition, wxSize(180,250));
 	ts_sizer->Add(tmp_choicebook, 1, wxEXPAND);
 	topsizer->Add(ts_sizer, 1, wxEXPAND);
@@ -253,13 +253,13 @@ void BrushPanel::SetListType(BrushListType ltype)
 
 void BrushPanel::SetListType(wxString ltype)
 {
-	if(ltype == wxT("small icons")) {
+	if(ltype == "small icons") {
 		SetListType(BRUSHLIST_SMALL_ICONS);
-	} else if(ltype == wxT("large icons")) {
+	} else if(ltype == "large icons") {
 		SetListType(BRUSHLIST_LARGE_ICONS);
-	} else if(ltype == wxT("listbox")) {
+	} else if(ltype == "listbox") {
 		SetListType(BRUSHLIST_LISTBOX);
-	} else if(ltype == wxT("textlistbox")) {
+	} else if(ltype == "textlistbox") {
 		SetListType(BRUSHLIST_TEXT_LISTBOX);
 	}
 }

@@ -335,10 +335,10 @@ ClientVersionID IOMapOTMM::getVersionInfo(const FileName& filename)
 }
 
 bool IOMapOTMM::loadMap(Map& map, const FileName& identifier, bool showdialog) {
-	if(showdialog) g_gui.CreateLoadBar(wxT("Loading OTMM map..."));
+	if(showdialog) g_gui.CreateLoadBar("Loading OTMM map...");
 	DiskNodeFileReadHandle f(nstr(identifier.GetFullPath()));
 	if(f.isOk() == false) {
-		error(wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage()));
+		error("Couldn't open file for reading\nThe error reported was: " + wxstr(f.getErrorMessage()));
 		return false;
 	}
 
@@ -352,7 +352,7 @@ bool IOMapOTMM::loadMap(Map& map, const FileName& identifier, bool showdialog) {
 bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identifier, bool showdialog) {
 	BinaryNode* root = f.getRootNode();
 	if(!root) {
-		error(wxT("Could not read root node."));
+		error("Could not read root node.");
 		return false;
 	}
 	root->skip(1); // Skip the type byte
@@ -362,37 +362,37 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 	uint32_t u32;
 
 	if(!root->getU32(u32) || u32 != 1) { // Version
-		error(wxT("Unsupported or damaged map version."));
+		error("Unsupported or damaged map version.");
 		return false;
 	}
 
 	if(!root->getU16(u16)) {
-		error(wxT("Could not read root header."));
+		error("Could not read root header.");
 		return false;
 	}
 	map.width = u16;
 	if(!root->getU16(u16)) {
-		error(wxT("Could not read root header."));
+		error("Could not read root header.");
 		return false;
 	}
 	map.height = u16;
 
 	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MajorVersion) { // OTB major version
-		if(queryUser(wxT("Map error"), wxT("The loaded map appears to be a items.otb format that deviates from the items.otb loaded by the editor. Do you still want to attempt to load the map?"))) {
-			warning(wxT("Unsupported or damaged map version"));
+		if(queryUser("Map error", "The loaded map appears to be a items.otb format that deviates from the items.otb loaded by the editor. Do you still want to attempt to load the map?")) {
+			warning("Unsupported or damaged map version");
 		} else {
-			error(wxT("Outdated items.otb, could not load map."));
+			error("Outdated items.otb, could not load map.");
 			return false;
 		}
 	}
 
 	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MinorVersion) { // OTB minor version
-		warning(wxT("The editor needs an updated items.otb version."));
+		warning("The editor needs an updated items.otb version.");
 	}
 
 	BinaryNode* mapHeaderNode = root->getChild();
 	if(mapHeaderNode == nullptr || !mapHeaderNode->getByte(u8) || u8 != OTMM_MAP_DATA) {
-		error(wxT("Could not get root child node. Cannot recover from fatal error!"));
+		error("Could not get root child node. Cannot recover from fatal error!");
 		return false;
 	}
 
@@ -407,7 +407,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 		}
 		uint8_t node_type;
 		if(!mapNode->getByte(node_type)) {
-			warning(wxT("Invalid map node"));
+			warning("Invalid map node");
 			continue;
 		}
 		switch(node_type) {
@@ -424,11 +424,11 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					Tile* tile = nullptr;
 					uint8_t tile_type;
 					if(!tileNode->getByte(tile_type)) {
-						warning(wxT("Invalid tile type"));
+						warning("Invalid tile type");
 						continue;
 					}
 					if(tile_type != OTMM_TILE && tile_type != OTMM_HOUSETILE) {
-						warning(wxT("Unknown type of tile node"));
+						warning("Unknown type of tile node");
 						continue;
 					}
 
@@ -439,13 +439,13 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							!tileNode->getU8(z_offset)
 						)
 					{
-						warning(wxT("Could not read position of tile"));
+						warning("Could not read position of tile");
 						continue;
 					}
 					const Position pos(x_offset, y_offset, z_offset);
 
 					if(map.getTile(pos)) {
-						warning(wxT("Duplicate tile at %d:%d:%d, discarding duplicate"), pos.x, pos.y, pos.z);
+						warning("Duplicate tile at %d:%d:%d, discarding duplicate", pos.x, pos.y, pos.z);
 						continue;
 					}
 
@@ -454,7 +454,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					if(tile_type == OTMM_HOUSETILE) {
 						uint32_t house_id;
 						if(!tileNode->getU32(house_id)) {
-							warning(wxT("House tile without house data, discarding tile"));
+							warning("House tile without house data, discarding tile");
 							continue;
 						}
 						if(house_id) {
@@ -465,7 +465,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 								map.houses.addHouse(house);
 							}
 						} else {
-							warning(wxT("Invalid house id from tile %d:%d:%d"), pos.x, pos.y, pos.z);
+							warning("Invalid house id from tile %d:%d:%d", pos.x, pos.y, pos.z);
 						}
 					}
 
@@ -481,12 +481,12 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							case OTMM_ATTR_TILE_FLAGS: {
 								uint32_t flags = 0;
 								if(!tileNode->getU32(flags)) {
-									warning(wxT("Invalid tile flags of tile on %d:%d:%d"), pos.x, pos.y, pos.z);
+									warning("Invalid tile flags of tile on %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								tile->setMapFlags(flags);
 							} break;
 							default: {
-								warning(wxT("Unknown tile attribute at %d:%d:%d"), pos.x, pos.y, pos.z);
+								warning("Unknown tile attribute at %d:%d:%d", pos.x, pos.y, pos.z);
 							} break;
 						}
 					}
@@ -496,19 +496,19 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						Item* item = nullptr;
 						uint8_t item_type;
 						if(!itemNode->getByte(item_type)) {
-							warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
+							warning("Unknown item type %d:%d:%d", pos.x, pos.y, pos.z);
 							continue;
 						}
 						if(item_type == OTMM_ITEM) {
 							item = Item::Create_OTMM(*this, itemNode);
 							if(item) {
 								if(item->unserializeItemNode_OTMM(*this, itemNode) == false) {
-									warning(wxT("Couldn't unserialize item attributes at %d:%d:%d"), pos.x, pos.y, pos.z);
+									warning("Couldn't unserialize item attributes at %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								tile->addItem(item);
 							}
 						} else {
-							warning(wxT("Unknown type of tile child node"));
+							warning("Unknown type of tile child node");
 						}
 					} while(itemNode->advance());
 
@@ -524,11 +524,11 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 				if(spawnNode) do {
 					uint8_t spawn_type;
 					if(!spawnNode->getByte(spawn_type)) {
-						warning(wxT("Could not read spawn type."));
+						warning("Could not read spawn type.");
 						continue;
 					}
 					if(spawn_type != OTMM_SPAWN_AREA) {
-						warning(wxT("Invalid spawn type."));
+						warning("Invalid spawn type.");
 						continue;
 					}
 
@@ -541,14 +541,14 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							!spawnNode->getU8(spawn_z)
 						)
 					{
-						warning(wxT("Could not read spawn position."));
+						warning("Could not read spawn position.");
 						continue;
 					}
 					const Position spawnpos(spawn_x, spawn_y, spawn_z);
 
 					// Read radius
 					if(!spawnNode->getU32(radius)) {
-						warning(wxT("Could not read spawn radius."));
+						warning("Could not read spawn radius.");
 						continue;
 					}
 					// Adjust radius
@@ -557,7 +557,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					// Create and assign spawn
 					Tile* spawn_tile = map.getTile(spawnpos);
 					if(spawn_tile && spawn_tile->spawn) {
-						warning(wxT("Duplicate spawn on position %d:%d:%d\n"), spawn_tile->getX(), spawn_tile->getY(), spawn_tile->getZ());
+						warning("Duplicate spawn on position %d:%d:%d\n", spawn_tile->getX(), spawn_tile->getY(), spawn_tile->getZ());
 						continue;
 					}
 
@@ -574,7 +574,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					if(creatureNode) do {
 						uint8_t creature_type;
 						if(!creatureNode->getByte(creature_type)) {
-							warning(wxT("Could not read type of creature node."));
+							warning("Could not read type of creature node.");
 							continue;
 						}
 						bool isNPC;
@@ -584,21 +584,21 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						if(creature_type == OTMM_NPC) {
 							isNPC = true;
 							if(!creatureNode->getString(name)) {
-								warning(wxT("Could not read name of NPC."));
+								warning("Could not read name of NPC.");
 								return false;
 							}
 						} else if(creature_type == OTMM_MONSTER) {
 							isNPC = false;
 							if(!creatureNode->getString(name)) {
-								warning(wxT("Could not read name of monster."));
+								warning("Could not read name of monster.");
 								return false;
 							}
 							if(!creatureNode->getU32(spawntime)) {
-								warning(wxT("Could not read spawn time of monster."));
+								warning("Could not read spawn time of monster.");
 								return false;
 							}
 						} else {
-							warning(wxT("Unknown creature node type (0x%.2x)."), creature_type);
+							warning("Unknown creature node type (0x%.2x).", creature_type);
 							return false;
 						}
 
@@ -608,7 +608,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 						if(!creatureNode->getU16(creature_x) ||
 							!creatureNode->getU16(creature_y) ||
 							!creatureNode->getU8(creature_z) ) {
-							warning(wxT("Could not read creature position."));
+							warning("Could not read creature position.");
 							continue;
 						}
 						const Position creaturepos(creature_x, creature_y, creature_z);
@@ -626,11 +626,11 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							creature_tile = map.getTile(creaturepos);
 						}
 						if(!creature_tile) {
-							warning(wxT("Discarding creature \"%s\" at %d:%d:%d due to invalid position"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
+							warning("Discarding creature \"%s\" at %d:%d:%d due to invalid position", name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
 							break;
 						}
 						if(creature_tile->creature) {
-							warning(wxT("Duplicate creature \"%s\" at %d:%d:%d, discarding"), name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
+							warning("Duplicate creature \"%s\" at %d:%d:%d, discarding", name.c_str(), creaturepos.x, creaturepos.y, creaturepos.z);
 							break;
 						}
 						CreatureType* type = g_creatures[name];
@@ -655,22 +655,22 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 				if(townNode) do {
 					uint8_t town_type;
 					if(!townNode->getByte(town_type)) {
-						warning(wxT("Could not read town type"));
+						warning("Could not read town type");
 						continue;
 					}
 					if(town_type != OTMM_TOWN) {
-						warning(wxT("Unknown town type"));
+						warning("Unknown town type");
 						continue;
 					}
 					uint32_t town_id;
 					if(!townNode->getU32(town_id)) {
-						warning(wxT("Invalid town id"));
+						warning("Invalid town id");
 						continue;
 					}
 
 					Town* town = map.towns.getTown(town_id);
 					if(town) {
-						warning(wxT("Duplicate town id %d, discarding duplicate"), town_id);
+						warning("Duplicate town id %d, discarding duplicate", town_id);
 						continue;
 					} else {
 						town = newd Town(town_id);
@@ -681,7 +681,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 					}
 					std::string town_name;
 					if(!townNode->getString(town_name)) {
-						warning(wxT("Invalid town name"));
+						warning("Invalid town name");
 						continue;
 					}
 					town->setName(town_name);
@@ -693,7 +693,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							!townNode->getU16(y) ||
 							!townNode->getU8(z))
 					{
-						warning(wxT("Invalid town temple position"));
+						warning("Invalid town temple position");
 						continue;
 					}
 					pos.x = x;
@@ -707,16 +707,16 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 				if(houseNode) do {
 					uint8_t house_type;
 					if(!houseNode->getByte(house_type)) {
-						warning(wxT("Could not read house type"));
+						warning("Could not read house type");
 						continue;
 					}
 					if(house_type != OTMM_HOUSE) {
-						warning(wxT("Unknown house type."));
+						warning("Unknown house type.");
 						continue;
 					}
 					uint32_t house_id;
 					if(!houseNode->getU32(house_id)) {
-						warning(wxT("Could not read house id."));
+						warning("Could not read house id.");
 						continue;
 					}
 
@@ -727,19 +727,19 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 
 					std::string house_name;
 					if(!houseNode->getString(house_name)) {
-						warning(wxT("Could not read house name."));
+						warning("Could not read house name.");
 						continue;
 					}
 
 					uint32_t town_id;
 					if(!houseNode->getU32(town_id)) {
-						warning(wxT("Could not read house town id."));
+						warning("Could not read house town id.");
 						continue;
 					}
 
 					uint32_t rent;
 					if(!houseNode->getU32(rent)) {
-						warning(wxT("Could not read house rent."));
+						warning("Could not read house rent.");
 						continue;
 					}
 
@@ -754,7 +754,7 @@ bool IOMapOTMM::loadMap(Map& map, NodeFileReadHandle& f, const FileName& identif
 							!houseNode->getU16(y) ||
 							!houseNode->getU8(z))
 					{
-						warning(wxT("Invalid town temple position"));
+						warning("Invalid town temple position");
 						continue;
 					}
 					house->setExit(Position(x, y, z));
@@ -769,11 +769,11 @@ bool IOMapOTMM::saveMap(Map& map, const FileName& identifier, bool showdialog) {
 	DiskNodeFileWriteHandle f(std::string(identifier.GetFullPath().mb_str(wxConvUTF8)));
 
 	if(f.isOk() == false){
-		error(wxT("Can not open file %s for writing"), (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
+		error("Can not open file %s for writing", (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
 		return false;
 	}
 
-	if(showdialog) g_gui.CreateLoadBar(wxT("Saving OTMM map..."));
+	if(showdialog) g_gui.CreateLoadBar("Saving OTMM map...");
 	bool ret = saveMap(map, f, identifier, showdialog);
 	if(showdialog) g_gui.DestroyLoadBar();
 

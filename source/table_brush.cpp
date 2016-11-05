@@ -40,7 +40,7 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 		const std::string& alignString = childNode.attribute("align").as_string();
 		if(alignString.empty()) {
-			warnings.push_back(wxT("Could not read type tag of table node\n"));
+			warnings.push_back("Could not read type tag of table node\n");
 			continue;
 		}
 
@@ -60,7 +60,7 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 		} else if(alignString == "alone") {
 			alignment = TABLE_ALONE;
 		} else {
-			warnings.push_back(wxT("Unknown table alignment '") + wxstr(alignString) + wxT("'\n"));
+			warnings.push_back("Unknown table alignment '" + wxstr(alignString) + "'\n");
 			continue;
 		}
 
@@ -71,16 +71,16 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 			uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
 			if(id == 0) {
-				warnings.push_back(wxT("Could not read id tag of item node\n"));
+				warnings.push_back("Could not read id tag of item node\n");
 				break;
 			}
 
 			ItemType& it = g_items[id];
 			if(it.id == 0) {
-				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+				warnings.push_back("There is no itemtype with id " + std::to_string(id));
 				return false;
 			} else if(it.brush && it.brush != this) {
-				warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+				warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 				return false;
 			}
 

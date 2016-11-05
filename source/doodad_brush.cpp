@@ -67,13 +67,13 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 		const std::string& childName = as_lower_str(childNode.name());
 		if(childName == "item") {
 			if(!(attribute = childNode.attribute("chance"))) {
-				warnings.push_back(wxT("Can't read chance tag of doodad item node."));
+				warnings.push_back("Can't read chance tag of doodad item node.");
 				continue;
 			}
 
 			Item* item = Item::Create(childNode);
 			if(!item) {
-				warnings.push_back(wxT("Can't create item from doodad item node."));
+				warnings.push_back("Can't create item from doodad item node.");
 				continue;
 			}
 
@@ -90,7 +90,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 			alternativeBlock->single_chance += sb.chance;
 		} else if(childName == "composite") {
 			if(!(attribute = childNode.attribute("chance"))) {
-				warnings.push_back(wxT("Can't read chance tag of doodad item node."));
+				warnings.push_back("Can't read chance tag of doodad item node.");
 				continue;
 			}
 
@@ -105,26 +105,26 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 				}
 
 				if(!(attribute = compositeNode.attribute("x"))) {
-					warnings.push_back(wxT("Couldn't read positionX values of composite tile node."));
+					warnings.push_back("Couldn't read positionX values of composite tile node.");
 					continue;
 				}
 
 				int32_t x = pugi::cast<int32_t>(attribute.value());
 				if(!(attribute = compositeNode.attribute("y"))) {
-					warnings.push_back(wxT("Couldn't read positionY values of composite tile node."));
+					warnings.push_back("Couldn't read positionY values of composite tile node.");
 					continue;
 				}
 
 				int32_t y = pugi::cast<int32_t>(attribute.value());
 				int32_t z = pugi::cast<int32_t>(compositeNode.attribute("z").value());
 				if(x < -0x7FFF || x > 0x7FFF) {
-					warnings.push_back(wxT("Invalid range of x value on composite tile node."));
+					warnings.push_back("Invalid range of x value on composite tile node.");
 					continue;
 				} else if(y < -0x7FFF || y > 0x7FFF) {
-					warnings.push_back(wxT("Invalid range of y value on composite tile node."));
+					warnings.push_back("Invalid range of y value on composite tile node.");
 					continue;
 				} else if(z < -0x7 || z > 0x7) {
-					warnings.push_back(wxT("Invalid range of z value on composite tile node."));
+					warnings.push_back("Invalid range of z value on composite tile node.");
 					continue;
 				}
 
@@ -192,7 +192,7 @@ bool DoodadBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 	if(node.attribute("remove_optional_border").as_bool()) {
 		if(!do_new_borders) {
-			warnings.push_back(wxT("remove_optional_border will not work without redo_borders\n"));
+			warnings.push_back("remove_optional_border will not work without redo_borders\n");
 		}
 		clear_statflags |= TILESTATE_OP_BORDER;
 	}

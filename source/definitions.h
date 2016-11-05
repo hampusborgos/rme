@@ -40,10 +40,10 @@
 
 #ifdef __EXPERIMENTAL__
 #   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + + " BETA")
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << wxT(".") << __RME_VERSION_MINOR__ << wxT(" BETA"))
+#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << " BETA")
 #else
 #   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__))
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << wxT(".") << __RME_VERSION_MINOR__)
+#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__)
 #endif
 // OS
 

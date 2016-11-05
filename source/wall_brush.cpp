@@ -39,7 +39,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 		if(childName == "wall") {
 			const std::string& typeString = childNode.attribute("type").as_string();
 			if(typeString.empty()) {
-				warnings.push_back(wxT("Could not read type tag of wall node\n"));
+				warnings.push_back("Could not read type tag of wall node\n");
 				continue;
 			}
 
@@ -81,7 +81,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			} else if(typeString == "untouchable") {
 				alignment = WALL_UNTOUCHABLE;
 			} else {
-				warnings.push_back(wxT("Unknown wall alignment '") + wxstr(typeString) + wxT("'\n"));
+				warnings.push_back("Unknown wall alignment '" + wxstr(typeString) + "'\n");
 				continue;
 			}
 
@@ -90,16 +90,16 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(subChildName == "item") {
 					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
 					if(id == 0) {
-						warnings.push_back(wxT("Could not read id tag of item node\n"));
+						warnings.push_back("Could not read id tag of item node\n");
 						break;
 					}
 
 					ItemType& it = g_items[id];
 					if(it.id == 0) {
-						warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+						warnings.push_back("There is no itemtype with id " + std::to_string(id));
 						return false;
 					} else if(it.brush && it.brush != this) {
-						warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+						warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 						return false;
 					}
 
@@ -117,13 +117,13 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				} else if(subChildName == "door") {
 					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
 					if(id == 0) {
-						warnings.push_back(wxT("Could not read id tag of door node\n"));
+						warnings.push_back("Could not read id tag of door node\n");
 						break;
 					}
 
 					const std::string& type = subChildNode.attribute("type").as_string();
 					if(type.empty()) {
-						warnings.push_back(wxT("Could not read type tag of door node\n"));
+						warnings.push_back("Could not read type tag of door node\n");
 						continue;
 					}
 
@@ -134,17 +134,17 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					} else {
 						isOpen = true;
 						if(type != "window" && type != "any window" && type != "hatch window") {
-							warnings.push_back(wxT("Could not read open tag of door node\n"));
+							warnings.push_back("Could not read open tag of door node\n");
 							break;
 						}
 					}
 
 					ItemType& it = g_items[id];
 					if(it.id == 0) {
-						warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+						warnings.push_back("There is no itemtype with id " + std::to_string(id));
 						return false;
 					} else if(it.brush && it.brush != this) {
-						warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+						warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 						return false;
 					}
 
@@ -180,7 +180,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 						all_windows = true;
 						all_doors = true;
 					} else {
-						warnings.push_back(wxT("Unknown door type '") + wxstr(type) + wxT("'\n"));
+						warnings.push_back("Unknown door type '" + wxstr(type) + "'\n");
 						break;
 					}
 
@@ -216,17 +216,17 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(brush) {
 					friends.push_back(brush->getID());
 				} else {
-					warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
+					warnings.push_back("Brush '" + wxstr(name) + "' is not defined.");
 				}
 
 				if(childNode.attribute("redirect").as_bool()) {
 					WallBrush* rd = dynamic_cast<WallBrush*>(brush);
 					if(!rd) {
-						warnings.push_back(wxT("Wall brush redirect link: '") + wxstr(name) + wxT("' is not a wall brush."));
+						warnings.push_back("Wall brush redirect link: '" + wxstr(name) + "' is not a wall brush.");
 					} else if(!redirect_to) {
 						redirect_to = rd;
 					} else {
-						warnings.push_back( wxT("Wall brush '") + wxstr(getName()) + wxT("' has more than one redirect link."));
+						warnings.push_back( "Wall brush '" + wxstr(getName()) + "' has more than one redirect link.");
 					}
 				}
 			}

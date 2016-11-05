@@ -146,7 +146,7 @@ void Settings::IO(IOMode mode)
 	wxConfigBase* conf = (mode == DEFAULT? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
 
 	using namespace Config;
-#define section(s) if(conf) conf->SetPath(wxT("/") wxT(s))
+#define section(s) if(conf) conf->SetPath("/" wxT(s))
 #define Int(key, dflt) \
 	do { \
 		if(mode == DEFAULT) { \
@@ -327,29 +327,29 @@ void Settings::load()
 {
 	wxConfigBase* conf;
 #ifdef __WINDOWS__
-	FileName filename(wxT("rme.cfg"));
+	FileName filename("rme.cfg");
 	if(filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		use_file_cfg = true;
 		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Use registry
-		conf = newd wxConfig(wxT("Remere's Map Editor"), wxT("Remere"), wxT(""), wxT(""), wxCONFIG_USE_GLOBAL_FILE);
+		conf = newd wxConfig("Remere's Map Editor", "Remere", "", "", wxCONFIG_USE_GLOBAL_FILE);
 		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #else
-	FileName filename(wxT("./rme.cfg"));
+	FileName filename("./rme.cfg");
 	if(filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Else use global (user-specific) conf
-		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg"));
+		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + "/.rme/rme.cfg");
 		if(filename.FileExists()) {
 			wxFileInputStream file(filename.GetFullPath());
 			conf = newd wxFileConfig(file);
 		} else {
-			wxStringInputStream dummy(wxT(""));
+			wxStringInputStream dummy("");
 			conf = newd wxFileConfig(dummy, wxConvAuto());
 		}
 		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
@@ -367,7 +367,7 @@ void Settings::save(bool endoftheworld)
 		wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
 		if(!conf)
 			return;
-		FileName filename(wxT("rme.cfg"));
+		FileName filename("rme.cfg");
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
 	}
@@ -375,12 +375,12 @@ void Settings::save(bool endoftheworld)
 	wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
 	if(!conf)
 		return;
-	FileName filename(wxT("./rme.cfg"));
+	FileName filename("./rme.cfg");
 	if(filename.FileExists()) { // Use local file if it exists
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
 	} else { // Else use global (user-specific) conf
-		wxString path = wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg");
+		wxString path = wxStandardPaths::Get().GetUserConfigDir() + "/.rme/rme.cfg";
 		filename.Assign(path);
 		filename.Mkdir(0755, wxPATH_MKDIR_FULL);
 		wxFileOutputStream file(filename.GetFullPath());

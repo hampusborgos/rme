@@ -137,7 +137,7 @@ public:
 	 * If this returns false, the user has hit the quit button and you should
 	 * abort the loading.
 	 */
-	bool SetLoadDone(int32_t done, const wxString& newMessage = wxT(""));
+	bool SetLoadDone(int32_t done, const wxString& newMessage = "");
 
 	/**
 	 * Sets the scale of the loading bar.
@@ -297,7 +297,7 @@ public:
 	int GetOpenMapCount();
 	bool ShouldSave();
 	void SaveCurrentMap(FileName filename, bool showdialog); // "" means default filename
-	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(wxT("")), showdialog);}
+	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(""), showdialog);}
 	bool NewMap();
 	bool LoadMap(FileName fn);
 
