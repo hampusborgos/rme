@@ -70,7 +70,7 @@ void ContainerItemButton::OnMouseRightRelease(wxMouseEvent& WXUNUSED(event))
 
 void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 {
-	FindItemDialog* itemDialog = newd FindItemDialog(GetParent(), wxT("Choose Item to add"));
+	FindItemDialog* itemDialog = newd FindItemDialog(GetParent(), "Choose Item to add");
 	itemDialog->setCondition([](const ItemType& itemType) -> bool {
 		return itemType.pickupable;
 	});
@@ -128,8 +128,8 @@ void ContainerItemButton::OnRemoveItem(wxCommandEvent& WXUNUSED(event))
 {
 	ASSERT(edit_item);
 	int32_t ret = g_gui.PopupDialog(GetParent(),
-		wxT("Remove Item"),
-		wxT("Are you sure you want to remove this item from the container?"),
+		"Remove Item",
+		"Are you sure you want to remove this item from the container?",
 		wxYES | wxNO
 	);
 
@@ -189,7 +189,7 @@ Container* ContainerItemButton::getParentContainer()
 }
 
 // ContainerItemPopupMenu
-ContainerItemPopupMenu::ContainerItemPopupMenu() : wxMenu(wxT(""))
+ContainerItemPopupMenu::ContainerItemPopupMenu() : wxMenu("")
 {
 	////
 }
@@ -210,11 +210,11 @@ void ContainerItemPopupMenu::Update(ContainerItemButton* btn)
 
 	wxMenuItem* addItem = nullptr;
 	if(btn->edit_item) {
-		Append( CONTAINER_POPUP_MENU_EDIT, wxT("&Edit Item"), wxT("Open the properties menu for this item"));
-		addItem = Append( CONTAINER_POPUP_MENU_ADD, wxT("&Add Item"), wxT("Add a newd item to the container"));
-		Append( CONTAINER_POPUP_MENU_REMOVE, wxT("&Remove Item"), wxT("Remove this item from the container"));
+		Append( CONTAINER_POPUP_MENU_EDIT, "&Edit Item", "Open the properties menu for this item");
+		addItem = Append( CONTAINER_POPUP_MENU_ADD, "&Add Item", "Add a newd item to the container");
+		Append( CONTAINER_POPUP_MENU_REMOVE, "&Remove Item", "Remove this item from the container");
 	} else {
-		addItem = Append( CONTAINER_POPUP_MENU_ADD, wxT("&Add Item"), wxT("Add a newd item to the container"));
+		addItem = Append( CONTAINER_POPUP_MENU_ADD, "&Add Item", "Add a newd item to the container");
 	}
 
 	Container* parentContainer = btn->getParentContainer();

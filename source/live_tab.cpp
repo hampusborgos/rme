@@ -58,13 +58,13 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	//log->EnableGridLines(false);
 	log->EnableEditing(false);
 
-	log->SetColLabelValue(0, wxT("Time"));
+	log->SetColLabelValue(0, "Time");
 	log->SetColMinimalWidth(0, 60);
 	log->SetColSize(0, 60);
-	log->SetColLabelValue(1, wxT("User"));
+	log->SetColLabelValue(1, "User");
 	log->SetColMinimalWidth(1, 100);
 	log->SetColSize(1, 100);
-	log->SetColLabelValue(2, wxT("Message"));
+	log->SetColLabelValue(2, "Message");
 	log->SetColMinimalWidth(2, 100);
 	log->SetColSize(2, 100);
 
@@ -88,11 +88,11 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	user_list->SetSelectionMode(wxGrid::wxGridSelectRows);
 	user_list->SetRowLabelSize(0);
 
-	user_list->SetColLabelValue(0, wxT(""));
+	user_list->SetColLabelValue(0, "");
 	user_list->SetColSize(0, 24);
-	user_list->SetColLabelValue(1, wxT("#"));
+	user_list->SetColLabelValue(1, "#");
 	user_list->SetColSize(1, 36);
-	user_list->SetColLabelValue(2, wxT("Name"));
+	user_list->SetColLabelValue(2, "Name");
 	user_list->SetColSize(2, 200);
 
 	//user_list->GetGridWindow()->
@@ -117,9 +117,9 @@ LiveLogTab::~LiveLogTab()
 wxString LiveLogTab::GetTitle() const
 {
 	if(socket) {
-		return wxT("Live Log - ") + socket->getHostName();
+		return "Live Log - " + socket->getHostName();
 	}
-	return wxT("Live Log - Disconnected");
+	return "Live Log - Disconnected";
 }
 
 void LiveLogTab::Disconnect()
@@ -133,7 +133,7 @@ void LiveLogTab::Disconnect()
 wxString format00(wxDateTime::wxDateTime_t t)
 {
 	wxString str;
-	if(t < 10) str << wxT("0");
+	if(t < 10) str << "0";
 	str << t;
 	return str;
 }
@@ -142,11 +142,11 @@ void LiveLogTab::Message(const wxString& str)
 {
 	wxDateTime t = wxDateTime::Now();
 	wxString time, speaker;
-	time << format00(t.GetHour()) << wxT(":")
-		 << format00(t.GetMinute()) << wxT(":")
+	time << format00(t.GetHour()) << ":"
+		 << format00(t.GetMinute()) << ":"
 		 << format00(t.GetSecond());
 
-	speaker << wxT("Server");
+	speaker << "Server";
 
 	log->AppendRows(1);
 	int n = log->GetNumberRows() - 1;
@@ -159,8 +159,8 @@ void LiveLogTab::Chat(const wxString& speaker, const wxString& str)
 {
 	wxDateTime t = wxDateTime::Now();
 	wxString time;
-	time << format00(t.GetHour()) << wxT(":")
-		 << format00(t.GetMinute()) << wxT(":")
+	time << format00(t.GetHour()) << ":"
+		 << format00(t.GetMinute()) << ":"
 		 << format00(t.GetSecond());
 
 	log->AppendRows(1);

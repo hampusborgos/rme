@@ -12,7 +12,7 @@
 LiveSocket::LiveSocket() :
 	cursors(), mapReader(nullptr, 0), mapWriter(),
 	mapVersion(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(nullptr),
-	name(wxT("User")), password(wxT(""))
+	name("User"), password("")
 {
 	//
 }
@@ -30,10 +30,10 @@ wxString LiveSocket::getName() const
 bool LiveSocket::setName(const wxString& newName)
 {
 	if(newName.empty()) {
-		setLastError(wxT("Must provide a name."));
+		setLastError("Must provide a name.");
 		return false;
 	} else if(newName.length() > 32) {
-		setLastError(wxT("Name is too long."));
+		setLastError("Name is too long.");
 		return false;
 	}
 	name = newName;
@@ -48,7 +48,7 @@ wxString LiveSocket::getPassword() const
 bool LiveSocket::setPassword(const wxString& newPassword)
 {
 	if(newPassword.length() > 32) {
-		setLastError(wxT("Password is too long."));
+		setLastError("Password is too long.");
 		return false;
 	}
 	password = newPassword;
@@ -92,7 +92,7 @@ void LiveSocket::receiveNode(NetworkMessage& message, Editor& editor, Action* ac
 {
 	QTreeNode* node = editor.map.getLeaf(ndx * 4, ndy * 4);
 	if(!node) {
-		log->Message(wxT("Warning: Received update for unknown tile (") + std::to_string(ndx * 4) + wxT("/") + std::to_string(ndy * 4) + wxT("/") + (underground ? "true" : "false") + wxT(")"));
+		log->Message("Warning: Received update for unknown tile (" + std::to_string(ndx * 4) + "/" + std::to_string(ndy * 4) + "/" + (underground ? "true" : "false") + ")");
 		return;
 	}
 
@@ -304,7 +304,7 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 	if(tileType == OTBM_HOUSETILE) {
 		uint32_t houseId;
 		if(!node->getU32(houseId)) {
-			//warning(wxT("House tile without house data, discarding tile"));
+			//warning("House tile without house data, discarding tile");
 			delete tile;
 			return nullptr;
 		}
@@ -315,7 +315,7 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 				tile->setHouse(house);
 			}
 		} else {
-			//warning(wxT("Invalid house id from tile %d:%d:%d"), pos.x, pos.y, pos.z);
+			//warning("Invalid house id from tile %d:%d:%d", pos.x, pos.y, pos.z);
 		}
 	}
 
@@ -325,7 +325,7 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 			case OTBM_ATTR_TILE_FLAGS: {
 				uint32_t flags = 0;
 				if(!node->getU32(flags)) {
-					//warning(wxT("Invalid tile flags of tile on %d:%d:%d"), pos.x, pos.y, pos.z);
+					//warning("Invalid tile flags of tile on %d:%d:%d", pos.x, pos.y, pos.z);
 				}
 				tile->setMapFlags(flags);
 				break;
@@ -333,13 +333,13 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 			case OTBM_ATTR_ITEM: {
 				Item* item = Item::Create_OTBM(mapVersion, node);
 				if(!item) {
-					//warning(wxT("Invalid item at tile %d:%d:%d"), pos.x, pos.y, pos.z);
+					//warning("Invalid item at tile %d:%d:%d", pos.x, pos.y, pos.z);
 				}
 				tile->addItem(item);
 				break;
 			}
 			default:
-				//warning(wxT("Unknown tile attribute at %d:%d:%d"), pos.x, pos.y, pos.z);
+				//warning("Unknown tile attribute at %d:%d:%d", pos.x, pos.y, pos.z);
 				break;
 		}
 	}
@@ -349,7 +349,7 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 	if(itemNode) do {
 		uint8_t itemType;
 		if(!itemNode->getByte(itemType)) {
-			//warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
+			//warning("Unknown item type %d:%d:%d", pos.x, pos.y, pos.z);
 			delete tile;
 			return nullptr;
 		}
@@ -358,12 +358,12 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 			Item* item = Item::Create_OTBM(mapVersion, itemNode);
 			if(item) {
 				if(!item->unserializeItemNode_OTBM(mapVersion, itemNode)) {
-					//warning(wxT("Couldn't unserialize item attributes at %d:%d:%d"), pos.x, pos.y, pos.z);
+					//warning("Couldn't unserialize item attributes at %d:%d:%d", pos.x, pos.y, pos.z);
 				}
 				tile->addItem(item);
 			}
 		} else {
-			//warning(wxT("Unknown type of tile child node"));
+			//warning("Unknown type of tile child node");
 		}
 	//}
 	} while(itemNode->advance());

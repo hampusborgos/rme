@@ -32,11 +32,11 @@ void LivePeer::close()
 bool LivePeer::handleError(const boost::system::error_code& error)
 {
 	if(error == boost::asio::error::eof || error == boost::asio::error::connection_reset) {
-		logMessage(wxString() + getHostName() + wxT(": disconnected."));
+		logMessage(wxString() + getHostName() + ": disconnected.");
 		close();
 		return true;
 	} else if(error == boost::asio::error::connection_aborted) {
-		logMessage(name + wxT(" have left the server."));
+		logMessage(name + " have left the server.");
 		return true;
 	}
 	return false;
@@ -55,10 +55,10 @@ void LivePeer::receiveHeader()
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
 			if(error) {
 				if(!handleError(error)) {
-					logMessage(wxString() + getHostName() + wxT(": ") + error.message());
+					logMessage(wxString() + getHostName() + ": " + error.message());
 				}
 			} else if(bytesReceived < 4) {
-				logMessage(wxString() + getHostName() + wxT(": Could not receive header[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
+				logMessage(wxString() + getHostName() + ": Could not receive header[size: " + std::to_string(bytesReceived) + "], disconnecting client.");
 			} else {
 				receive(readMessage.read<uint32_t>());
 			}
@@ -74,10 +74,10 @@ void LivePeer::receive(uint32_t packetSize)
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
 			if(error) {
 				if(!handleError(error)) {
-					logMessage(wxString() + getHostName() + wxT(": ") + error.message());
+					logMessage(wxString() + getHostName() + ": " + error.message());
 				}
 			} else if(bytesReceived < readMessage.buffer.size() - 4) {
-				logMessage(wxString() + getHostName() + wxT(": Could not receive packet[size: ") + std::to_string(bytesReceived) + wxT("], disconnecting client."));
+				logMessage(wxString() + getHostName() + ": Could not receive packet[size: " + std::to_string(bytesReceived) + "], disconnecting client.");
 			} else {
 				wxTheApp->CallAfter([this]() {
 					if(connected) {
@@ -99,7 +99,7 @@ void LivePeer::send(NetworkMessage& message)
 		boost::asio::buffer(message.buffer, message.size + 4),
 		[this](const boost::system::error_code& error, size_t bytesTransferred) -> void {
 			if(error) {
-				logMessage(wxString() + getHostName() + wxT(": ") + error.message());
+				logMessage(wxString() + getHostName() + ": " + error.message());
 			}
 		}
 	);
@@ -118,7 +118,7 @@ void LivePeer::parseLoginPacket(NetworkMessage message)
 				parseReady(message);
 				break;
 			default: {
-				log->Message(wxT("Invalid login packet receieved, connection severed."));
+				log->Message("Invalid login packet receieved, connection severed.");
 				close();
 				break;
 			}
@@ -154,7 +154,7 @@ void LivePeer::parseEditorPacket(NetworkMessage message)
 				parseChatMessage(message);
 				break;
 			default: {
-				log->Message(wxT("Invalid editor packet receieved, connection severed."));
+				log->Message("Invalid editor packet receieved, connection severed.");
 				close();
 				break;
 			}
@@ -196,13 +196,13 @@ void LivePeer::parseHello(NetworkMessage& message)
 	std::string password = message.read<std::string>();
 
 	if(server->getPassword() != wxString(password.c_str(), wxConvUTF8)) {
-		log->Message(wxT("Client tried to connect, but used the wrong password, connection refused."));
+		log->Message("Client tried to connect, but used the wrong password, connection refused.");
 		close();
 		return;
 	}
 
 	name = wxString(nickname.c_str(), wxConvUTF8);
-	log->Message(name + wxT(" (") + getHostName() + wxT(") connected."));
+	log->Message(name + " (" + getHostName() + ") connected.");
 
 	NetworkMessage outMessage;
 	if(static_cast<ClientVersionID>(clientVersion) != g_gui.GetCurrentVersionID()) {

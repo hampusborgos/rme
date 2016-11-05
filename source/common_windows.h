@@ -144,7 +144,7 @@ protected:
 class KeyForwardingTextCtrl : public wxTextCtrl
 {
 public:
-	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = "", const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
 		: wxTextCtrl(parent, id, value, pos, size, style, validator, name) {}
 	~KeyForwardingTextCtrl() {}
 
@@ -218,7 +218,7 @@ protected:
 class FindBrushDialog : public FindDialog
 {
 public:
-	FindBrushDialog(wxWindow* parent, wxString title = wxT("Jump to Brush"));
+	FindBrushDialog(wxWindow* parent, wxString title = "Jump to Brush");
 	virtual ~FindBrushDialog();
 
 	virtual void RefreshContentsInternal();
@@ -233,7 +233,7 @@ public:
 class FindItemDialog : public FindDialog
 {
 public:
-	FindItemDialog(wxWindow* parent, wxString title = wxT("Jump to Item"));
+	FindItemDialog(wxWindow* parent, wxString title = "Jump to Item");
 	virtual ~FindItemDialog();
 
 	void setCondition(bool condition(const ItemType&));
@@ -253,7 +253,7 @@ protected:
 class ReplaceItemDialog : public wxDialog
 {
 public:
-	ReplaceItemDialog(wxWindow* parent, wxString title = wxT("Replace Item"));
+	ReplaceItemDialog(wxWindow* parent, wxString title = "Replace Item");
 	virtual ~ReplaceItemDialog();
 
 	void OnKeyDown(wxKeyEvent&);

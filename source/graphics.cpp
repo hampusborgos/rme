@@ -173,7 +173,7 @@ uint16_t GraphicManager::getCreatureSpriteMaxID() const
 inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
 {
 	wxMemoryInputStream is(data, length);
-	wxImage img(is, wxT("image/png"));
+	wxImage img(is, "image/png");
 	if(!img.IsOk()) return nullptr;
 	return newd wxBitmap(img, -1);
 }
@@ -341,7 +341,7 @@ bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArray
 		OTMLDocumentPtr doc = OTMLDocument::parse(path);
 
 		if(doc->size() == 0 || !doc->hasChildAt("DatSpr")) {
-			error += wxT("'DatSpr' tag not found");
+			error += "'DatSpr' tag not found";
 			return false;
 		}
 
@@ -365,7 +365,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	FileReadHandle file(nstr(datafile.GetFullPath()));
 
 	if(!file.isOk()) {
-		error += wxT("Failed to open ") + datafile.GetFullPath() + wxT(" for reading\nThe error reported was:") + wxstr(file.getErrorMessage());
+		error += "Failed to open " + datafile.GetFullPath() + " for reading\nThe error reported was:" + wxstr(file.getErrorMessage());
 		return false;
 	}
 
@@ -402,7 +402,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		// Load the sprite flags
 		if(!loadSpriteMetadataFlags(file, sType, error, warnings)) {
 			wxString msg;
-			msg << wxT("Failed to load flags for sprite ") << sType->id;
+			msg << "Failed to load flags for sprite " << sType->id;
 			warnings.push_back(msg);
 		}
 
@@ -636,7 +636,7 @@ bool GraphicManager::loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* s
 
 			default: {
 				wxString err;
-				err << wxT("Metadata: Unknown flag: ") << i2ws(flag) << wxT(". Previous flag: ") << i2ws(prev_flag) << wxT(".");
+				err << "Metadata: Unknown flag: " << i2ws(flag) << ". Previous flag: " << i2ws(prev_flag) << ".";
 				warnings.push_back(err);
 				break;
 			}
@@ -651,7 +651,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 	FileReadHandle fh(nstr(datafile.GetFullPath()));
 
 	if(!fh.isOk()) {
-		error = wxT("Failed to open file for reading");
+		error = "Failed to open file for reading";
 		return false;
 	}
 
@@ -702,7 +702,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 			if(spr && size > 0) {
 				if(spr->size > 0) {
 					wxString ss;
-					ss << wxT("items.spr: Duplicate GameSprite id ") << id;
+					ss << "items.spr: Duplicate GameSprite id " << id;
 					warnings.push_back(ss);
 					fh.seekRelative(size);
 				} else {

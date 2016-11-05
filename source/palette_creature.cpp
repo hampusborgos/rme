@@ -48,7 +48,7 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 {
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
-	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Creatures"));
+	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Creatures");
 	tileset_choice = newd wxChoice(this, PALETTE_CREATURE_TILESET_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)nullptr);
 	sidesizer->Add(tileset_choice, 0, wxEXPAND);
 
@@ -57,23 +57,23 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 	topsizer->Add(sidesizer, 1, wxEXPAND);
 
 	// Brush selection
-	sidesizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, wxT("Brushes"), wxDefaultPosition, wxSize(150, 200)), wxVERTICAL);
+	sidesizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Brushes", wxDefaultPosition, wxSize(150, 200)), wxVERTICAL);
 
 	//sidesizer->Add(180, 1, wxEXPAND);
 
 	wxFlexGridSizer* grid = newd wxFlexGridSizer(3, 10, 10);
 	grid->AddGrowableCol(1);
 
-	grid->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawntime")));
+	grid->Add(newd wxStaticText(this, wxID_ANY, "Spawntime"));
 	creature_spawntime_spin = newd wxSpinCtrl(this, PALETTE_CREATURE_SPAWN_TIME, i2ws(g_settings.getInteger(Config::DEFAULT_SPAWNTIME)), wxDefaultPosition, wxSize(50, 20), wxSP_ARROW_KEYS, 0, 3600, g_settings.getInteger(Config::DEFAULT_SPAWNTIME));
 	grid->Add(creature_spawntime_spin, 0, wxEXPAND);
-	creature_brush_button = newd wxToggleButton(this, PALETTE_CREATURE_BRUSH_BUTTON, wxT("Place Creature"));
+	creature_brush_button = newd wxToggleButton(this, PALETTE_CREATURE_BRUSH_BUTTON, "Place Creature");
 	grid->Add(creature_brush_button, 0, wxEXPAND);
 
-	grid->Add(newd wxStaticText(this, wxID_ANY, wxT("Spawn size")));
+	grid->Add(newd wxStaticText(this, wxID_ANY, "Spawn size"));
 	spawn_size_spin = newd wxSpinCtrl(this, PALETTE_CREATURE_SPAWN_SIZE, i2ws(5), wxDefaultPosition, wxSize(50, 20), wxSP_ARROW_KEYS, 1, g_settings.getInteger(Config::MAX_SPAWN_RADIUS), g_settings.getInteger(Config::CURRENT_SPAWN_RADIUS));
 	grid->Add(spawn_size_spin, 0, wxEXPAND);
-	spawn_brush_button = newd wxToggleButton(this, PALETTE_SPAWN_BRUSH_BUTTON, wxT("Place Spawn"));
+	spawn_brush_button = newd wxToggleButton(this, PALETTE_SPAWN_BRUSH_BUTTON, "Place Spawn");
 	grid->Add(spawn_brush_button, 0, wxEXPAND);
 
 	sidesizer->Add(grid, 0, wxEXPAND);

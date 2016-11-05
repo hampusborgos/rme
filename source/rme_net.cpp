@@ -26,7 +26,7 @@ bool RMENet::Connect()
 {
 	wxIPV4address ipaddr;
 
-	ipaddr.Hostname(wxT("127.0.0.1"));//90.230.54.138"));
+	ipaddr.Hostname("127.0.0.1");//90.230.54.138"));
 	ipaddr.Service(31312);
 
 	socket = newd wxSocketClient(wxSOCKET_NOWAIT);
@@ -98,7 +98,7 @@ void RMENet::HandleEvent(wxSocketEvent& evt)
 			// Generate event
 			wxCommandEvent event(EVT_RMENET_CONNECTION_LOST);
 			event.SetInt(0);
-			event.SetString(wxT("GOOOFU"));
+			event.SetString("GOOOFU");
 			event_dump->AddPendingEvent(event);
 		} break;
 		case wxSOCKET_OUTPUT:

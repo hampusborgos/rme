@@ -411,7 +411,7 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
-	if(filename.GetExt() == wxT("otgz")) {
+	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
 		archive_read_support_filter_all(a.get());
@@ -484,7 +484,7 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 
 bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
-	if(filename.GetExt() == wxT("otgz")) {
+	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
 		archive_read_support_filter_all(a.get());
@@ -502,7 +502,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 		bool otbm_loaded = false;
 
 		// Loop over the archive entries until we find the otbm file
-		g_gui.SetLoadDone(0, wxT("Decompressing archive..."));
+		g_gui.SetLoadDone(0, "Decompressing archive...");
 		struct archive_entry* entry;
 		while(archive_read_next_header(a.get(), &entry) == ARCHIVE_OK) {
 			std::string entryName = archive_entry_pathname(entry);
@@ -520,11 +520,11 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 					return false;
 
 				if(read_bytes < otbm_size) {
-					error(wxT("Could not read file."));
+					error("Could not read file.");
 					return false;
 				}
 
-				g_gui.SetLoadDone(0, wxT("Loading OTBM map..."));
+				g_gui.SetLoadDone(0, "Loading OTBM map...");
 
 				// Create a read handle on it
 				std::shared_ptr<NodeFileReadHandle> f(
@@ -532,7 +532,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 				// Read the version info
 				if(!loadMap(map, *f.get())) {
-					error(wxT("Could not load OTBM file inside archive"));
+					error("Could not load OTBM file inside archive");
 					return false;
 				}
 
@@ -548,7 +548,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 				if(read_bytes < house_buffer_size) {
 					house_buffer.reset();
 					house_buffer_size = 0;
-					warning(wxT("Failed to decompress houses."));
+					warning("Failed to decompress houses.");
 				}
 			} else if(entryName == "world/spawns.xml") {
 				spawn_buffer_size = archive_entry_size(entry);
@@ -561,13 +561,13 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 				if(read_bytes < spawn_buffer_size) {
 					spawn_buffer.reset();
 					spawn_buffer_size = 0;
-					warning(wxT("Failed to decompress spawns."));
+					warning("Failed to decompress spawns.");
 				}
 			}
 		}
 
 		if(!otbm_loaded) {
-			error(wxT("OTBM file not found inside archive."));
+			error("OTBM file not found inside archive.");
 			return false;
 		}
 
@@ -577,10 +577,10 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 			pugi::xml_parse_result result = doc.load_buffer(house_buffer.get(), house_buffer_size);
 			if(result) {
 				if(!loadHouses(map, doc)) {
-					warning(wxT("Failed to load houses."));
+					warning("Failed to load houses.");
 				}
 			} else {
-				warning(wxT("Failed to load houses due to XML parse error."));
+				warning("Failed to load houses due to XML parse error.");
 			}
 		}
 
@@ -590,10 +590,10 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 			pugi::xml_parse_result result = doc.load_buffer(spawn_buffer.get(), spawn_buffer_size);
 			if(result) {
 				if(!loadSpawns(map, doc)) {
-					warning(wxT("Failed to load spawns."));
+					warning("Failed to load spawns.");
 				}
 			} else {
-				warning(wxT("Failed to load spawns due to XML parse error."));
+				warning("Failed to load spawns due to XML parse error.");
 			}
 		}
 
@@ -601,7 +601,7 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 	} else {
 		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
 		if(!f.isOk()) {
-			error((wxT("Couldn't open file for reading\nThe error reported was: ") + wxstr(f.getErrorMessage())).wc_str());
+			error(("Couldn't open file for reading\nThe error reported was: " + wxstr(f.getErrorMessage())).wc_str());
 			return false;
 		}
 
@@ -610,11 +610,11 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 		// Read auxilliary files
 		if(!loadHouses(map, filename)) {
-			warning(wxT("Failed to load houses."));
+			warning("Failed to load houses.");
 			map.housefile = nstr(filename.GetName()) + "-house.xml";
 		}
 		if(!loadSpawns(map, filename)) {
-			warning(wxT("Failed to load spawns."));
+			warning("Failed to load spawns.");
 			map.spawnfile = nstr(filename.GetName())+ "-spawn.xml";
 		}
 		return true;
@@ -625,7 +625,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 {
 	BinaryNode* root = f.getRootNode();
 	if(!root) {
-		error(wxT("Could not read root node."));
+		error("Could not read root node.");
 		return false;
 	}
 	root->skip(1); // Skip the type byte
@@ -641,13 +641,13 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 	if(version.otbm > MAP_OTBM_4) {
 		// Failed to read version
-		if(g_gui.PopupDialog(wxT("Map error"),
-			wxT("The loaded map appears to be a OTBM format that is not supported by the editor.")
-			wxT("Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
+		if(g_gui.PopupDialog("Map error",
+			"The loaded map appears to be a OTBM format that is not supported by the editor."
+			"Do you still want to attempt to load the map?", wxYES | wxNO) == wxID_YES)
 		{
-			warning(wxT("Unsupported or damaged map version"));
+			warning("Unsupported or damaged map version");
 		} else {
-			error(wxT("Unsupported OTBM version, could not load map"));
+			error("Unsupported OTBM version, could not load map");
 			return false;
 		}
 	}
@@ -662,25 +662,25 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	map.height = u16;
 
 	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MajorVersion) { // OTB major version
-		if(g_gui.PopupDialog(wxT("Map error"),
-			wxT("The loaded map appears to be a items.otb format that deviates from the ")
-			wxT("items.otb loaded by the editor. Do you still want to attempt to load the map?"), wxYES | wxNO) == wxID_YES)
+		if(g_gui.PopupDialog("Map error",
+			"The loaded map appears to be a items.otb format that deviates from the "
+			"items.otb loaded by the editor. Do you still want to attempt to load the map?", wxYES | wxNO) == wxID_YES)
 		{
-			warning(wxT("Unsupported or damaged map version"));
+			warning("Unsupported or damaged map version");
 		} else {
-			error(wxT("Outdated items.otb, could not load map"));
+			error("Outdated items.otb, could not load map");
 			return false;
 		}
 	}
 
 	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MinorVersion) { // OTB minor version
-		warning(wxT("This editor needs an updated items.otb version"));
+		warning("This editor needs an updated items.otb version");
 	}
 	version.client = (ClientVersionID)u32;
 
 	BinaryNode* mapHeaderNode = root->getChild();
 	if(mapHeaderNode == nullptr || !mapHeaderNode->getByte(u8) || u8 != OTBM_MAP_DATA) {
-		error(wxT("Could not get root child node. Cannot recover from fatal error!"));
+		error("Could not get root child node. Cannot recover from fatal error!");
 		return false;
 	}
 
@@ -689,25 +689,25 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 		switch(attribute) {
 			case OTBM_ATTR_DESCRIPTION: {
 				if(!mapHeaderNode->getString(map.description)) {
-					warning(wxT("Invalid map description tag"));
+					warning("Invalid map description tag");
 				}
 				//std::cout << "Map description: " << mapDescription << std::endl;
 				break;
 			}
 			case OTBM_ATTR_EXT_SPAWN_FILE: {
 				if(!mapHeaderNode->getString(map.spawnfile)) {
-					warning(wxT("Invalid map spawnfile tag"));
+					warning("Invalid map spawnfile tag");
 				}
 				break;
 			}
 			case OTBM_ATTR_EXT_HOUSE_FILE: {
 				if(!mapHeaderNode->getString(map.housefile)) {
-					warning(wxT("Invalid map housefile tag"));
+					warning("Invalid map housefile tag");
 				}
 				break;
 			}
 			default: {
-				warning(wxT("Unknown header node."));
+				warning("Unknown header node.");
 				break;
 			}
 		}
@@ -723,14 +723,14 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 		uint8_t node_type;
 		if(!mapNode->getByte(node_type)) {
-			warning(wxT("Invalid map node"));
+			warning("Invalid map node");
 			continue;
 		}
 		if(node_type == OTBM_TILE_AREA) {
 			uint16_t base_x, base_y;
 			uint8_t base_z;
 			if(!mapNode->getU16(base_x) || !mapNode->getU16(base_y) || !mapNode->getU8(base_z)) {
-				warning(wxT("Invalid map node, no base coordinate"));
+				warning("Invalid map node, no base coordinate");
 				continue;
 			}
 
@@ -738,20 +738,20 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				Tile* tile = nullptr;
 				uint8_t tile_type;
 				if(!tileNode->getByte(tile_type)) {
-					warning(wxT("Invalid tile type"));
+					warning("Invalid tile type");
 					continue;
 				}
 				if(tile_type == OTBM_TILE || tile_type == OTBM_HOUSETILE) {
 					//printf("Start\n");
 					uint8_t x_offset, y_offset;
 					if(!tileNode->getU8(x_offset) || !tileNode->getU8(y_offset)) {
-						warning(wxT("Could not read position of tile"));
+						warning("Could not read position of tile");
 						continue;
 					}
 					const Position pos(base_x + x_offset, base_y + y_offset, base_z);
 
 					if(map.getTile(pos)) {
-						warning(wxT("Duplicate tile at %d:%d:%d, discarding duplicate"), pos.x, pos.y, pos.z);
+						warning("Duplicate tile at %d:%d:%d, discarding duplicate", pos.x, pos.y, pos.z);
 						continue;
 					}
 
@@ -760,7 +760,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					if(tile_type == OTBM_HOUSETILE) {
 						uint32_t house_id;
 						if(!tileNode->getU32(house_id)) {
-							warning(wxT("House tile without house data, discarding tile"));
+							warning("House tile without house data, discarding tile");
 							continue;
 						}
 						if(house_id) {
@@ -771,7 +771,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 								map.houses.addHouse(house);
 							}
 						} else {
-							warning(wxT("Invalid house id from tile %d:%d:%d"), pos.x, pos.y, pos.z);
+							warning("Invalid house id from tile %d:%d:%d", pos.x, pos.y, pos.z);
 						}
 					}
 
@@ -783,7 +783,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							case OTBM_ATTR_TILE_FLAGS: {
 								uint32_t flags = 0;
 								if(!tileNode->getU32(flags)) {
-									warning(wxT("Invalid tile flags of tile on %d:%d:%d"), pos.x, pos.y, pos.z);
+									warning("Invalid tile flags of tile on %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								tile->setMapFlags(flags);
 								break;
@@ -792,13 +792,13 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 								Item* item = Item::Create_OTBM(*this, tileNode);
 								if(item == nullptr)
 								{
-									warning(wxT("Invalid item at tile %d:%d:%d"), pos.x, pos.y, pos.z);
+									warning("Invalid item at tile %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								tile->addItem(item);
 								break;
 							}
 							default: {
-								warning(wxT("Unknown tile attribute at %d:%d:%d"), pos.x, pos.y, pos.z);
+								warning("Unknown tile attribute at %d:%d:%d", pos.x, pos.y, pos.z);
 								break;
 							}
 						}
@@ -810,20 +810,20 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 						Item* item = nullptr;
 						uint8_t item_type;
 						if(!itemNode->getByte(item_type)) {
-							warning(wxT("Unknown item type %d:%d:%d"), pos.x, pos.y, pos.z);
+							warning("Unknown item type %d:%d:%d", pos.x, pos.y, pos.z);
 							continue;
 						}
 						if(item_type == OTBM_ITEM) {
 							item = Item::Create_OTBM(*this, itemNode);
 							if(item) {
 								if(!item->unserializeItemNode_OTBM(*this, itemNode)) {
-									warning(wxT("Couldn't unserialize item attributes at %d:%d:%d"), pos.x, pos.y, pos.z);
+									warning("Couldn't unserialize item attributes at %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								//reform(&map, tile, item);
 								tile->addItem(item);
 							}
 						} else {
-							warning(wxT("Unknown type of tile child node"));
+							warning("Unknown type of tile child node");
 						}
 					}
 
@@ -833,7 +833,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 					map.setTile(pos.x, pos.y, pos.z, tile);
 				} else {
-					warning(wxT("Unknown type of tile node"));
+					warning("Unknown type of tile node");
 				}
 			}
 		} else if(node_type == OTBM_TOWNS) {
@@ -841,22 +841,22 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				Town* town = nullptr;
 				uint8_t town_type;
 				if(!townNode->getByte(town_type)) {
-					warning(wxT("Invalid town type (1)"));
+					warning("Invalid town type (1)");
 					continue;
 				}
 				if(town_type != OTBM_TOWN) {
-					warning(wxT("Invalid town type (2)"));
+					warning("Invalid town type (2)");
 					continue;
 				}
 				uint32_t town_id;
 				if(!townNode->getU32(town_id)) {
-					warning(wxT("Invalid town id"));
+					warning("Invalid town id");
 					continue;
 				}
 
 				town = map.towns.getTown(town_id);
 				if(town) {
-					warning(wxT("Duplicate town id %d, discarding duplicate"), town_id);
+					warning("Duplicate town id %d, discarding duplicate", town_id);
 					continue;
 				} else {
 					town = newd Town(town_id);
@@ -867,7 +867,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				}
 				std::string town_name;
 				if(!townNode->getString(town_name)) {
-					warning(wxT("Invalid town name"));
+					warning("Invalid town name");
 					continue;
 				}
 				town->setName(town_name);
@@ -876,7 +876,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				uint16_t y;
 				uint8_t z;
 				if(!townNode->getU16(x) || !townNode->getU16(y) || !townNode->getU8(z)) {
-					warning(wxT("Invalid town temple position"));
+					warning("Invalid town temple position");
 					continue;
 				}
 				pos.x = x;
@@ -888,25 +888,25 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 			for(BinaryNode* waypointNode = mapNode->getChild(); waypointNode != nullptr; waypointNode = waypointNode->advance()) {
 				uint8_t waypoint_type;
 				if(!waypointNode->getByte(waypoint_type)) {
-					warning(wxT("Invalid waypoint type (1)"));
+					warning("Invalid waypoint type (1)");
 					continue;
 				}
 				if(waypoint_type != OTBM_WAYPOINT) {
-					warning(wxT("Invalid waypoint type (2)"));
+					warning("Invalid waypoint type (2)");
 					continue;
 				}
 
 				Waypoint wp;
 
 				if(!waypointNode->getString(wp.name)) {
-					warning(wxT("Invalid waypoint name"));
+					warning("Invalid waypoint name");
 					continue;
 				}
 				uint16_t x;
 				uint16_t y;
 				uint8_t z;
 				if(!waypointNode->getU16(x) || !waypointNode->getU16(y) || !waypointNode->getU8(z)) {
-					warning(wxT("Invalid waypoint position"));
+					warning("Invalid waypoint position");
 					continue;
 				}
 				wp.pos.x = x;
@@ -944,7 +944,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 {
 	pugi::xml_node node = doc.child("spawns");
 	if(!node) {
-		warnings.push_back(wxT("IOMapOTBM::loadSpawns: Invalid rootheader."));
+		warnings.push_back("IOMapOTBM::loadSpawns: Invalid rootheader.");
 		return false;
 	}
 
@@ -959,19 +959,19 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 		spawnPosition.z = pugi::cast<int32_t>(spawnNode.attribute("centerz").value());
 
 		if(spawnPosition.x == 0 || spawnPosition.y == 0) {
-			warning(wxT("Bad position data on one spawn, discarding..."));
+			warning("Bad position data on one spawn, discarding...");
 			continue;
 		}
 
 		int32_t radius = pugi::cast<int32_t>(spawnNode.attribute("radius").value());
 		if(radius < 1) {
-			warning(wxT("Couldn't read radius of spawn.. discarding spawn..."));
+			warning("Couldn't read radius of spawn.. discarding spawn...");
 			continue;
 		}
 
 		Tile* tile = map.getTile(spawnPosition);
 		if(tile && tile->spawn) {
-			warning(wxT("Duplicate spawn on position %d:%d:%d\n"), tile->getX(), tile->getY(), tile->getZ());
+			warning("Duplicate spawn on position %d:%d:%d\n", tile->getX(), tile->getY(), tile->getZ());
 			continue;
 		}
 
@@ -1091,7 +1091,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 {
 	pugi::xml_node node = doc.child("houses");
 	if(!node) {
-		warnings.push_back(wxT("IOMapOTBM::loadHouses: Invalid rootheader."));
+		warnings.push_back("IOMapOTBM::loadHouses: Invalid rootheader.");
 		return false;
 	}
 
@@ -1135,7 +1135,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 		if((attribute = houseNode.attribute("townid"))) {
 			house->townid = pugi::cast<int32_t>(attribute.value());
 		} else {
-			warning(wxT("House %d has no town! House was removed."), house->id);
+			warning("House %d has no town! House was removed.", house->id);
 			map.houses.removeHouse(house);
 		}
 	}
@@ -1154,7 +1154,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		archive_write_set_format_pax_restricted(a);
 		archive_write_open_filename(a, nstr(identifier.GetFullPath()).c_str());
 
-		g_gui.SetLoadDone(0, wxT("Saving spawns..."));
+		g_gui.SetLoadDone(0, "Saving spawns...");
 
 		pugi::xml_document spawnDoc;
 		if(saveSpawns(map, spawnDoc)) {
@@ -1178,7 +1178,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			streamData.str("");
 		}
 
-		g_gui.SetLoadDone(0, wxT("Saving houses..."));
+		g_gui.SetLoadDone(0, "Saving houses...");
 
 		pugi::xml_document houseDoc;
 		if(saveHouses(map, houseDoc)) {
@@ -1202,12 +1202,12 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 			streamData.str("");
 		}
 
-		g_gui.SetLoadDone(0, wxT("Saving OTBM map..."));
+		g_gui.SetLoadDone(0, "Saving OTBM map...");
 
 		MemoryNodeFileWriteHandle otbmWriter;
 		saveMap(map, otbmWriter);
 
-		g_gui.SetLoadDone(75, wxT("Compressing..."));
+		g_gui.SetLoadDone(75, "Compressing...");
 
 		// Create an archive entry for the otbm file
 		entry = archive_entry_new();
@@ -1238,17 +1238,17 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 		);
 
 		if(!f.isOk()) {
-			error(wxT("Can not open file %s for writing"), (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
+			error("Can not open file %s for writing", (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
 			return false;
 		}
 
 		if(!saveMap(map, f))
 			return false;
 
-		g_gui.SetLoadDone(99, wxT("Saving spawns..."));
+		g_gui.SetLoadDone(99, "Saving spawns...");
 		saveSpawns(map, identifier);
 
-		g_gui.SetLoadDone(99, wxT("Saving houses..."));
+		g_gui.SetLoadDone(99, "Saving houses...");
 		saveHouses(map, identifier);
 
 		return true;

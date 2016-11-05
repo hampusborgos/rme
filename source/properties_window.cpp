@@ -31,18 +31,18 @@ PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile*
 	ASSERT(edit_item);
 	notebook = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxSize(600, 300));
 
-	notebook->AddPage(createGeneralPanel(notebook), wxT("Simple"), true);
+	notebook->AddPage(createGeneralPanel(notebook), "Simple", true);
 	if(dynamic_cast<Container*>(item)) {
-		notebook->AddPage(createContainerPanel(notebook), wxT("Contents"));
+		notebook->AddPage(createContainerPanel(notebook), "Contents");
 	}
-	notebook->AddPage(createAttributesPanel(notebook), wxT("Advanced"));
+	notebook->AddPage(createAttributesPanel(notebook), "Advanced");
 
 	wxSizer* topSizer = newd wxBoxSizer(wxVERTICAL);
 	topSizer->Add(notebook, wxSizerFlags(1).DoubleBorder());
 
 	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
-	optSizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(0).Center());
-	optSizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(0).Center());
+	optSizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(0).Center());
+	optSizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(0).Center());
 	topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
 
 	SetSizerAndFit(topSizer);
@@ -71,14 +71,14 @@ wxWindow* PropertiesWindow::createGeneralPanel(wxWindow* parent)
 	wxFlexGridSizer* gridsizer = newd wxFlexGridSizer(2, 10, 10);
 	gridsizer->AddGrowableCol(1);
 
-	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, wxT("ID ") + i2ws(edit_item->getID())));
-	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, wxT("\"") + wxstr(edit_item->getName()) + wxT("\"")));
+	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "ID " + i2ws(edit_item->getID())));
+	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "\"" + wxstr(edit_item->getName()) + "\""));
 
-	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, wxT("Action ID")));
+	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "Action ID"));
 	wxSpinCtrl* action_id_field = newd wxSpinCtrl(panel, wxID_ANY, i2ws(edit_item->getActionID()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getActionID());
 	gridsizer->Add(action_id_field, wxSizerFlags(1).Expand());
 
-	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, wxT("Unique ID")));
+	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "Unique ID"));
 	wxSpinCtrl* unique_id_field = newd wxSpinCtrl(panel, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
 	gridsizer->Add(unique_id_field, wxSizerFlags(1).Expand());
 
@@ -108,8 +108,8 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 
 	/*
 	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
-	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_ADD_ATTRIBUTE, wxT("Add Item")), wxSizerFlags(0).Center());
-	// optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, wxT("Remove Attribute")), wxSizerFlags(0).Center());
+	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_ADD_ATTRIBUTE, "Add Item"), wxSizerFlags(0).Center());
+	// optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, "Remove Attribute"), wxSizerFlags(0).Center());
 	topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
 	*/
 
@@ -136,11 +136,11 @@ wxWindow* PropertiesWindow::createAttributesPanel(wxWindow* parent)
 	//log->EnableGridLines(false);
 	attributesGrid->EnableEditing(true);
 
-	attributesGrid->SetColLabelValue(0, wxT("Key"));
+	attributesGrid->SetColLabelValue(0, "Key");
 	attributesGrid->SetColSize(0, 100);
-	attributesGrid->SetColLabelValue(1, wxT("Type"));
+	attributesGrid->SetColLabelValue(1, "Type");
 	attributesGrid->SetColSize(1, 80);
-	attributesGrid->SetColLabelValue(2, wxT("Value"));
+	attributesGrid->SetColLabelValue(2, "Value");
 	attributesGrid->SetColSize(2, 410);
 
 	// contents
@@ -151,8 +151,8 @@ wxWindow* PropertiesWindow::createAttributesPanel(wxWindow* parent)
 		SetGridValue(attributesGrid, i, aiter->first, aiter->second);
 
 	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
-	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_ADD_ATTRIBUTE, wxT("Add Attribute")), wxSizerFlags(0).Center());
-	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, wxT("Remove Attribute")), wxSizerFlags(0).Center());
+	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_ADD_ATTRIBUTE, "Add Attribute"), wxSizerFlags(0).Center());
+	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, "Remove Attribute"), wxSizerFlags(0).Center());
 	topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
 
 	panel->SetSizer(topSizer);
@@ -163,27 +163,27 @@ wxWindow* PropertiesWindow::createAttributesPanel(wxWindow* parent)
 void PropertiesWindow::SetGridValue(wxGrid* grid, int rowIndex, std::string label, const ItemAttribute& attr)
 {
 	wxArrayString types;
-	types.Add(wxT("Number"));
-	types.Add(wxT("Float"));
-	types.Add(wxT("Boolean"));
-	types.Add(wxT("String"));
+	types.Add("Number");
+	types.Add("Float");
+	types.Add("Boolean");
+	types.Add("String");
 
 	grid->SetCellValue(rowIndex, 0, label);
 	switch (attr.type) {
 		case ItemAttribute::STRING: {
-			grid->SetCellValue(rowIndex, 1, wxT("String"));
+			grid->SetCellValue(rowIndex, 1, "String");
 			grid->SetCellValue(rowIndex, 2, wxstr(*attr.getString()));
 			break;
 		}
 		case ItemAttribute::INTEGER: {
-			grid->SetCellValue(rowIndex, 1, wxT("Number"));
+			grid->SetCellValue(rowIndex, 1, "Number");
 			grid->SetCellValue(rowIndex, 2, i2ws(*attr.getInteger()));
 			grid->SetCellEditor(rowIndex, 2, new wxGridCellNumberEditor);
 			break;
 		}
 		case ItemAttribute::DOUBLE:
 		case ItemAttribute::FLOAT: {
-			grid->SetCellValue(rowIndex, 1, wxT("Float"));
+			grid->SetCellValue(rowIndex, 1, "Float");
 			wxString f;
 			f << *attr.getFloat();
 			grid->SetCellValue(rowIndex, 2, f);
@@ -191,14 +191,14 @@ void PropertiesWindow::SetGridValue(wxGrid* grid, int rowIndex, std::string labe
 			break;
 		}
 		case ItemAttribute::BOOLEAN: {
-			grid->SetCellValue(rowIndex, 1, wxT("Boolean"));
-			grid->SetCellValue(rowIndex, 2, *attr.getBoolean() ? wxT("1") : wxT(""));
+			grid->SetCellValue(rowIndex, 1, "Boolean");
+			grid->SetCellValue(rowIndex, 2, *attr.getBoolean() ? "1" : "");
 			grid->SetCellRenderer(rowIndex, 2, new wxGridCellBoolRenderer);
 			grid->SetCellEditor(rowIndex, 2, new wxGridCellBoolEditor);
 			break;
 		}
 		default: {
-			grid->SetCellValue(rowIndex, 1, wxT("Unknown"));
+			grid->SetCellValue(rowIndex, 1, "Unknown");
 			grid->SetCellBackgroundColour(rowIndex, 1, *wxLIGHT_GREY);
 			grid->SetCellBackgroundColour(rowIndex, 2, *wxLIGHT_GREY);
 			grid->SetReadOnly(rowIndex, 1, true);
@@ -212,7 +212,7 @@ void PropertiesWindow::SetGridValue(wxGrid* grid, int rowIndex, std::string labe
 void PropertiesWindow::OnResize(wxSizeEvent& evt)
 {
 	/*
-	if(wxGrid* grid = (wxGrid*)currentPanel->FindWindowByName(wxT("AdvancedGrid"))) {
+	if(wxGrid* grid = (wxGrid*)currentPanel->FindWindowByName("AdvancedGrid")) {
 		int tWidth = 0;
 		for(int i = 0; i < 3; ++i)
 			tWidth += grid->GetColumnWidth(i);

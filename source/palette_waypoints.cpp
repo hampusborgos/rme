@@ -40,17 +40,17 @@ WaypointPalettePanel::WaypointPalettePanel(wxWindow* parent, wxWindowID id) :
 	PalettePanel(parent, id),
 	map(nullptr)
 {
-	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Waypoints"));
+	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Waypoints");
 
 	waypoint_list = newd wxListCtrl(this, PALETTE_WAYPOINT_LISTBOX,
 		wxDefaultPosition, wxDefaultSize,
 		wxLC_REPORT | wxLC_SINGLE_SEL | wxLC_EDIT_LABELS | wxLC_NO_HEADER);
-	waypoint_list->InsertColumn(0, wxT("UNNAMED"), wxLIST_FORMAT_LEFT, 200);
+	waypoint_list->InsertColumn(0, "UNNAMED", wxLIST_FORMAT_LEFT, 200);
 	sidesizer->Add(waypoint_list, 1, wxEXPAND);
 
 	wxSizer* tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(add_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_ADD_WAYPOINT, wxT("Add"), wxDefaultPosition, wxSize(50, -1)), 1, wxEXPAND);
-	tmpsizer->Add(remove_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_REMOVE_WAYPOINT, wxT("Remove"), wxDefaultPosition, wxSize(70, -1)), 1, wxEXPAND);
+	tmpsizer->Add(add_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_ADD_WAYPOINT, "Add", wxDefaultPosition, wxSize(50, -1)), 1, wxEXPAND);
+	tmpsizer->Add(remove_waypoint_button = newd wxButton(this, PALETTE_WAYPOINT_REMOVE_WAYPOINT, "Remove", wxDefaultPosition, wxSize(70, -1)), 1, wxEXPAND);
 	sidesizer->Add(tmpsizer, 0, wxEXPAND);
 
 	SetSizerAndFit(sidesizer);
@@ -112,7 +112,7 @@ PaletteType WaypointPalettePanel::GetType() const
 
 wxString WaypointPalettePanel::GetName() const
 {
-	return wxT("Waypoint Palette");
+	return "Waypoint Palette";
 }
 
 void WaypointPalettePanel::OnUpdate()
@@ -181,7 +181,7 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 		} else {
 			if(map->waypoints.getWaypoint(wpname)) {
 				// Already exists a waypoint with this name!
-				g_gui.SetStatusText(wxT("There already is a waypoint with this name."));
+				g_gui.SetStatusText("There already is a waypoint with this name.");
 				event.Veto();
 				if(oldwpname == "") {
 					map->waypoints.removeWaypoint(oldwpname);
@@ -215,7 +215,7 @@ void WaypointPalettePanel::OnClickAddWaypoint(wxCommandEvent& event)
 {
 	if(map) {
 		map->waypoints.addWaypoint(newd Waypoint());
-		long i = waypoint_list->InsertItem(0, wxT(""));
+		long i = waypoint_list->InsertItem(0, "");
 		waypoint_list->EditLabel(i);
 
 		//g_gui.RefreshPalettes();

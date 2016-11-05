@@ -18,7 +18,7 @@ BEGIN_EVENT_TABLE(ExtensionsDialog, wxDialog)
 END_EVENT_TABLE()
 
 ExtensionsDialog::ExtensionsDialog(wxWindow* parent) :
-	wxDialog(parent, wxID_ANY, wxT("Extensions"), wxDefaultPosition, wxSize(600, 500), wxRESIZE_BORDER | wxCAPTION)
+	wxDialog(parent, wxID_ANY, "Extensions", wxDefaultPosition, wxSize(600, 500), wxRESIZE_BORDER | wxCAPTION)
 {
 	wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -27,8 +27,8 @@ ExtensionsDialog::ExtensionsDialog(wxWindow* parent) :
 	topSizer->Add(htmlWindow, wxSizerFlags(1).DoubleBorder().Expand());
 
 	wxSizer* buttonSizer = newd wxBoxSizer(wxHORIZONTAL);
-	buttonSizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	buttonSizer->Add(newd wxButton(this, EXTENSIONS_OPEN_FOLDER_BUTTON, wxT("Open Extensions Folder")), wxSizerFlags(1).Center());
+	buttonSizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	buttonSizer->Add(newd wxButton(this, EXTENSIONS_OPEN_FOLDER_BUTTON, "Open Extensions Folder"), wxSizerFlags(1).Center());
 	topSizer->Add(buttonSizer, 0, wxCENTER | wxLEFT | wxRIGHT | wxBOTTOM, 20);
 
 	SetSizerAndFit(topSizer);

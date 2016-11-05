@@ -129,7 +129,7 @@ wxString GUI::GetDataDirectory()
 		throw; // Crash application (this should never happend anyways...)
 	}
 
-	exec_directory.AppendDir(wxT("data"));
+	exec_directory.AppendDir("data");
 	return exec_directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 }
 
@@ -143,7 +143,7 @@ wxString GUI::GetExecDirectory()
 	}
 	catch(std::bad_cast)
 	{
-		wxLogError(wxT("Could not fetch executable directory."));
+		wxLogError("Could not fetch executable directory.");
 	}
 	return exec_directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 }
@@ -152,18 +152,18 @@ wxString GUI::GetLocalDataDirectory()
 {
 	if(g_settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
 		FileName dir = GetDataDirectory();
-		dir.AppendDir(wxT("user"));
-		dir.AppendDir(wxT("data"));
+		dir.AppendDir("user");
+		dir.AppendDir("data");
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
 		return dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);;
 	} else {
 		FileName dir = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetUserDataDir();
 #ifdef __WINDOWS__
-		dir.AppendDir(wxT("Remere's Map Editor"));
+		dir.AppendDir("Remere's Map Editor");
 #else
-		dir.AppendDir(wxT(".rme"));
+		dir.AppendDir(".rme");
 #endif
-		dir.AppendDir(wxT("data"));
+		dir.AppendDir("data");
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
 		return dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 	}
@@ -173,15 +173,15 @@ wxString GUI::GetLocalDirectory()
 {
 	if(g_settings.getInteger(Config::INDIRECTORY_INSTALLATION)) {
 		FileName dir = GetDataDirectory();
-		dir.AppendDir(wxT("user"));
+		dir.AppendDir("user");
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
 		return dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);;
 	} else {
 		FileName dir = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetUserDataDir();
 #ifdef __WINDOWS__
-		dir.AppendDir(wxT("Remere's Map Editor"));
+		dir.AppendDir("Remere's Map Editor");
 #else
-		dir.AppendDir(wxT(".rme"));
+		dir.AppendDir(".rme");
 #endif
 		dir.Mkdir(0755, wxPATH_MKDIR_FULL);
 		return dir.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
@@ -203,7 +203,7 @@ wxString GUI::GetExtensionsDirectory()
 
 	// Silently reset directory
 	FileName local_directory = GetLocalDirectory();
-	local_directory.AppendDir(wxT("extensions"));
+	local_directory.AppendDir("extensions");
 	local_directory.Mkdir(0755, wxPATH_MKDIR_FULL);
 	return local_directory.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR);
 }
@@ -229,13 +229,13 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 	}
 
 	if(!found)
-		wxLogError(wxString() + wxT("Could not find data directory.\n"));
+		wxLogError(wxString() + "Could not find data directory.\n");
 }
 
 bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& warnings, bool force)
 {
 	if(ClientVersion::get(version) == nullptr) {
-		error = wxT("Unsupported client version! (8)");
+		error = "Unsupported client version! (8)";
 		return false;
 	}
 
@@ -255,7 +255,7 @@ bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& w
 		loaded_version = version;
 		if(!getLoadedVersion()->hasValidPaths()) {
 			if(!getLoadedVersion()->loadValidPaths()) {
-				error = wxT("Couldn't load relevant data files");
+				error = "Couldn't load relevant data files";
 				loaded_version = CLIENT_VERSION_NONE;
 				return false;
 			}
@@ -319,79 +319,79 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 	catch(std::bad_cast)
 	{
-		error = wxT("Couldn't establish working directory...");
+		error = "Couldn't establish working directory...";
 		return false;
 	}
 
 	g_gui.gfx.client_version = getLoadedVersion();
 
-	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.otfi"));
+	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.otfi");
 	if(!g_gui.gfx.loadOTFI(otfi_path, error, warnings)) {
-		error = wxT("Couldn't load tibia.otfi: ") + error;
+		error = "Couldn't load tibia.otfi: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	g_gui.CreateLoadBar(wxT("Loading data files"));
-	g_gui.SetLoadDone(0, wxT("Loading Tibia.dat ..."));
-	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.dat"));
+	g_gui.CreateLoadBar("Loading data files");
+	g_gui.SetLoadDone(0, "Loading Tibia.dat ...");
+	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.dat");
 
 	if(!g_gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
-		error = wxT("Couldn't load tibia.dat: ") + error;
+		error = "Couldn't load tibia.dat: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("Tibia.spr"));
+	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.spr");
 
-	g_gui.SetLoadDone(10, wxT("Loading Tibia.spr ..."));
+	g_gui.SetLoadDone(10, "Loading Tibia.spr ...");
 	if(!g_gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
-		error = wxT("Couldn't load tibia.spr: ") + error;
+		error = "Couldn't load tibia.spr: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	g_gui.SetLoadDone(20, wxT("Loading items.otb ..."));
-	if(!g_items.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.otb")), error, warnings)) {
-		error = wxT("Couldn't load items.otb: ") + error;
+	g_gui.SetLoadDone(20, "Loading items.otb ...");
+	if(!g_items.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "items.otb"), error, warnings)) {
+		error = "Couldn't load items.otb: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	g_gui.SetLoadDone(30, wxT("Loading items.xml ..."));
-	if(!g_items.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("items.xml")), error, warnings)) {
-		warnings.push_back(wxT("Couldn't load items.xml: ") + error);
+	g_gui.SetLoadDone(30, "Loading items.xml ...");
+	if(!g_items.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "items.xml"), error, warnings)) {
+		warnings.push_back("Couldn't load items.xml: " + error);
 	}
 
-	g_gui.SetLoadDone(45, wxT("Loading creatures.xml ..."));
-	if(!g_creatures.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("creatures.xml")), true, error, warnings)) {
-		warnings.push_back(wxT("Couldn't load creatures.xml: ") + error);
+	g_gui.SetLoadDone(45, "Loading creatures.xml ...");
+	if(!g_creatures.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "creatures.xml"), true, error, warnings)) {
+		warnings.push_back("Couldn't load creatures.xml: " + error);
 	}
 
-	g_gui.SetLoadDone(45, wxT("Loading user creatures.xml ..."));
+	g_gui.SetLoadDone(45, "Loading user creatures.xml ...");
 	{
 		FileName cdb = getLoadedVersion()->getLocalDataPath();
-		cdb.SetFullName(wxT("creatures.xml"));
+		cdb.SetFullName("creatures.xml");
 		wxString nerr;
 		wxArrayString nwarn;
 		g_creatures.loadFromXML(cdb, false, nerr, nwarn);
 	}
 
-	g_gui.SetLoadDone(50, wxT("Loading materials.xml ..."));
-	if(!g_materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxT("materials.xml")), error, warnings)) {
-		warnings.push_back(wxT("Couldn't load materials.xml: ") + error);
+	g_gui.SetLoadDone(50, "Loading materials.xml ...");
+	if(!g_materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials.xml"), error, warnings)) {
+		warnings.push_back("Couldn't load materials.xml: " + error);
 	}
 
-	g_gui.SetLoadDone(70, wxT("Loading extensions..."));
+	g_gui.SetLoadDone(70, "Loading extensions...");
 	if(!g_materials.loadExtensions(extension_path, error, warnings)) {
-		//warnings.push_back(wxT("Couldn't load extensions: ") + error);
+		//warnings.push_back("Couldn't load extensions: " + error);
 	}
 
-	g_gui.SetLoadDone(70, wxT("Finishing..."));
+	g_gui.SetLoadDone(70, "Finishing...");
 	g_brushes.init();
 	g_materials.createOtherTileset();
 
@@ -426,7 +426,7 @@ void GUI::UnloadVersion()
 		gfx.clear();
 
 		FileName cdb = getLoadedVersion()->getLocalDataPath();
-		cdb.SetFullName(wxT("creatures.xml"));
+		cdb.SetFullName("creatures.xml");
 		g_creatures.saveToXML(cdb);
 		g_creatures.clear();
 
@@ -505,14 +505,14 @@ bool GUI::NewMap()
 	}
 	catch(std::runtime_error& e)
 	{
-		PopupDialog(root, wxT("Error!"), wxString(e.what(), wxConvUTF8), wxOK);
+		PopupDialog(root, "Error!", wxString(e.what(), wxConvUTF8), wxOK);
 		return false;
 	}
 
 	MapTab* mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
 
-	SetStatusText(wxT("Created new map"));
+	SetStatusText("Created new map");
 	UpdateTitle();
 	RefreshPalettes();
 	root->UpdateMenubar();
@@ -533,7 +533,7 @@ bool GUI::LoadMap(FileName name)
 	}
 	catch(std::runtime_error& e)
 	{
-		PopupDialog(root, wxT("Error!"), wxString(e.what(), wxConvUTF8), wxOK);
+		PopupDialog(root, "Error!", wxString(e.what(), wxConvUTF8), wxOK);
 		return false;
 	}
 
@@ -544,7 +544,7 @@ bool GUI::LoadMap(FileName name)
 
 	mapTab->GetView()->FitToMap();
 	UpdateTitle();
-	ListDialog(wxT("Map loader errors"), mapTab->GetMap()->getWarnings());
+	ListDialog("Map loader errors", mapTab->GetMap()->getWarnings());
 	root->DoQueryImportCreatures();
 
 	FitViewToMap(mapTab);
@@ -698,7 +698,7 @@ void GUI::NewMapView()
 		MapTab* newMapTab = newd MapTab(mapTab);
 		newMapTab->OnSwitchEditorMode(mode);
 
-		SetStatusText(wxT("Created newd view"));
+		SetStatusText("Created newd view");
 		UpdateTitle();
 		RefreshPalettes();
 		root->UpdateMenubar();
@@ -808,7 +808,7 @@ void GUI::SavePerspective()
 	wxString pinfo;
 	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		if(aui_manager->GetPane(*piter).IsShown())
-			pinfo << aui_manager->SavePaneInfo(aui_manager->GetPane(*piter)) << wxT("|");
+			pinfo << aui_manager->SavePaneInfo(aui_manager->GetPane(*piter)) << "|";
 	}
 	g_settings.setString(Config::PALETTE_LAYOUT, nstr(pinfo));
 
@@ -830,7 +830,7 @@ SearchResultWindow* GUI::ShowSearchWindow()
 {
 	if(search_result_window == nullptr) {
 		search_result_window = newd SearchResultWindow(root);
-		aui_manager->AddPane(search_result_window, wxAuiPaneInfo().Caption(wxT("Search Results")));
+		aui_manager->AddPane(search_result_window, wxAuiPaneInfo().Caption("Search Results"));
 	} else {
 		aui_manager->GetPane(search_result_window).Show();
 	}
@@ -876,7 +876,7 @@ PaletteWindow* GUI::CreatePalette()
 		return nullptr;
 
 	PaletteWindow* palette = newd PaletteWindow(root, g_materials.tilesets);
-	aui_manager->AddPane(palette, wxAuiPaneInfo().Caption(wxT("Palette")).TopDockable(false).BottomDockable(false));
+	aui_manager->AddPane(palette, wxAuiPaneInfo().Caption("Palette").TopDockable(false).BottomDockable(false));
 	aui_manager->Update();
 
 	// Make us the active palette
@@ -957,7 +957,7 @@ void GUI::CreateMinimap()
 	} else {
 		minimap = newd MinimapWindow(root);
 		minimap->Show(true);
-		aui_manager->AddPane(minimap, wxAuiPaneInfo().Caption(wxT("Minimap")));
+		aui_manager->AddPane(minimap, wxAuiPaneInfo().Caption("Minimap"));
 	}
 	aui_manager->Update();
 }
@@ -1037,7 +1037,7 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	progressTo = 100;
 	currentProgress = -1;
 
-	progressBar = newd wxGenericProgressDialog(wxT("Loading"), progressText + wxT(" (0%)"), 100, root,
+	progressBar = newd wxGenericProgressDialog("Loading", progressText + " (0%)", 100, root,
 		wxPD_APP_MODAL | wxPD_SMOOTH | (canCancel ? wxPD_CAN_ABORT : 0)
 	);
 	progressBar->SetSize(280, -1);
@@ -1077,7 +1077,7 @@ bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 	if(progressBar) {
 		progressBar->Update(
 			newProgress,
-			wxString::Format(wxT("%s (%d%%)"), progressText, newProgress),
+			wxString::Format("%s (%d%%)", progressText, newProgress),
 			&skip
 		);
 		currentProgress = newProgress;
@@ -1162,7 +1162,7 @@ bool GUI::DoUndo()
 		editor->actionQueue->undo();
 		if(editor->selection.size() > 0)
 			SetSelectionMode();
-		SetStatusText(wxT("Undo action"));
+		SetStatusText("Undo action");
 		UpdateMinimap();
 		root->UpdateMenubar();
 		root->Refresh();
@@ -1178,7 +1178,7 @@ bool GUI::DoRedo()
 		editor->actionQueue->redo();
 		if(editor->selection.size() > 0)
 			SetSelectionMode();
-		SetStatusText(wxT("Redo action"));
+		SetStatusText("Redo action");
 		UpdateMinimap();
 		root->UpdateMenubar();
 		root->Refresh();
@@ -1219,28 +1219,28 @@ void GUI::SetTitle(wxString title)
 
 #ifdef NIGHTLY_BUILD
 #  ifdef SVN_BUILD
-#     define TITLE_APPEND (wxString(wxT(" (Nightly Build #")) << i2ws(SVN_BUILD) << wxT(")"))
+#     define TITLE_APPEND (wxString(" (Nightly Build #") << i2ws(SVN_BUILD) << ")")
 #  else
-#     define TITLE_APPEND (wxString(wxT(" (Nightly Build)")))
+#     define TITLE_APPEND (wxString(" (Nightly Build)"))
 #  endif
 #else
 #  ifdef SVN_BUILD
-#     define TITLE_APPEND (wxString(wxT(" (Build #")) << i2ws(SVN_BUILD) << wxT(")"))
+#     define TITLE_APPEND (wxString(" (Build #") << i2ws(SVN_BUILD) << ")")
 #  else
-#     define TITLE_APPEND (wxString(wxT("")))
+#     define TITLE_APPEND (wxString(""))
 #  endif
 #endif
 #ifdef __EXPERIMENTAL__
-	if(title != wxT("")) {
-		g_gui.root->SetTitle(title << wxT(" - Remere's Map Editor BETA") << TITLE_APPEND);
+	if(title != "") {
+		g_gui.root->SetTitle(title << " - Remere's Map Editor BETA" << TITLE_APPEND);
 	} else {
-		g_gui.root->SetTitle(wxString(wxT("Remere's Map Editor BETA")) << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString("Remere's Map Editor BETA") << TITLE_APPEND);
 	}
 #else
-	if(title != wxT("")) {
-		g_gui.root->SetTitle(title << wxT(" - Remere's Map Editor") << TITLE_APPEND);
+	if(title != "") {
+		g_gui.root->SetTitle(title << " - Remere's Map Editor" << TITLE_APPEND);
 	} else {
-		g_gui.root->SetTitle(wxString(wxT("Remere's Map Editor")) << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString("Remere's Map Editor") << TITLE_APPEND);
 	}
 #endif
 }
@@ -1254,7 +1254,7 @@ void GUI::UpdateTitle()
 				tabbook->SetTabLabel(idx, tabbook->GetTab(idx)->GetTitle());
 		}
 	} else {
-		SetTitle(wxT(""));
+		SetTitle("");
 	}
 }
 
@@ -1751,7 +1751,7 @@ void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& para
 
 	for(size_t i = 0; i != list_items.GetCount();) {
 		wxString str = list_items[i];
-		size_t pos = str.find(wxT("\n"));
+		size_t pos = str.find("\n");
 		if(pos != wxString::npos) {
 			// Split string!
 			item_list->Append(str.substr(0, pos));
@@ -1764,7 +1764,7 @@ void GUI::ListDialog(wxWindow* parent, wxString title, const wxArrayString& para
 	sizer->Add(item_list, 1, wxEXPAND);
 
 	wxSizer* stdsizer = newd wxBoxSizer(wxHORIZONTAL);
-	stdsizer->Add(newd wxButton(dlg, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
+	stdsizer->Add(newd wxButton(dlg, wxID_OK, "OK"), wxSizerFlags(1).Center());
 	sizer->Add(stdsizer, wxSizerFlags(0).Center());
 
 	dlg->SetSizerAndFit(sizer);
@@ -1783,7 +1783,7 @@ void GUI::ShowTextBox(wxWindow* parent, wxString title, wxString content)
 	topsizer->Add(text_field, wxSizerFlags(5).Expand());
 
 	wxSizer* choicesizer = newd wxBoxSizer(wxHORIZONTAL);
-	choicesizer->Add(newd wxButton(dlg, wxID_CANCEL, wxT("OK")), wxSizerFlags(1).Center());
+	choicesizer->Add(newd wxButton(dlg, wxID_CANCEL, "OK"), wxSizerFlags(1).Center());
 	topsizer->Add(choicesizer, wxSizerFlags(0).Center());
 	dlg->SetSizerAndFit(topsizer);
 
@@ -1794,7 +1794,7 @@ void GUI::SetHotkey(int index, Hotkey& hotkey)
 {
 	ASSERT(index >= 0 && index <= 9);
 	hotkeys[index] = hotkey;
-	SetStatusText(wxT("Set hotkey ") + i2ws(index) + wxT("."));
+	SetStatusText("Set hotkey " + i2ws(index) + ".");
 }
 
 const Hotkey& GUI::GetHotkey(int index) const
