@@ -1290,7 +1290,8 @@ void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 		stream << "text: " << text << "\n";
 }
 
-void MapDrawer::DrawTile(TileLocation* location) {
+void MapDrawer::DrawTile(TileLocation* location)
+{
 	if(!location)
 		return;
 	Tile* tile = location->get();
@@ -1377,7 +1378,7 @@ void MapDrawer::DrawTile(TileLocation* location) {
 			BlitItem(draw_x, draw_y, tile, tile->ground, false, r, g, b);
 		}
 
-		if(options.show_tooltips)
+		if(options.show_tooltips && map_z == floor)
 			WriteTooltip(tile->ground, tooltip);
 	}
 
@@ -1385,7 +1386,7 @@ void MapDrawer::DrawTile(TileLocation* location) {
 		if(zoom < 10.0 || !options.hide_items_when_zoomed) {
 			for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); it++) {
 
-				if(options.show_tooltips)
+				if(options.show_tooltips && map_z == floor)
 					WriteTooltip(*it, tooltip);
 
 				if((*it)->isBorder()) {
