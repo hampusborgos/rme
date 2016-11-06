@@ -1429,8 +1429,6 @@ void MapDrawer::DrawTile(TileLocation* location)
 void MapDrawer::DrawText(int x, int y, const char* text)
 {
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glRasterPos2i(x, y);
 	for(const char* c = text; *c != '\0'; c++) {
 		if(*c == '\n') {
@@ -1446,13 +1444,13 @@ void MapDrawer::DrawTooltips()
 {
 	for(std::vector<MapTooltip>::const_iterator tooltip = tooltips.begin(); tooltip != tooltips.end(); ++tooltip) {
 		const char* text = tooltip->text.c_str();
-		int lines = 1;
 		int line_width = 0;
 		int width = 2;
+		int height = 14;
 
 		for(const char* c = text; *c != '\0'; c++) {
 			if(*c == '\n') {
-				++lines;
+				height += 14;
 				line_width = 0;
 			} else {
 				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
@@ -1461,16 +1459,16 @@ void MapDrawer::DrawTooltips()
 		}
 
 		int start_sx = tooltip->x + 12 - (width / 2);
-		int start_sy = tooltip->y - ((lines * 14) + 4);
+		int start_sy = tooltip->y - height + 4;
 		int end_sx = tooltip->x + 20 + (width / 2);
-		int end_sy = tooltip->y;
+		int end_sy = tooltip->y + 9;
 
 		int vertexes [9][2] = {
 			{tooltip->x,  start_sy},
 			{end_sx,      start_sy},
 			{end_sx,      end_sy},
 			{tooltip->x + 23, end_sy},
-			{tooltip->x + 16, end_sy + 16},
+			{tooltip->x + 16, end_sy + 7},
 			{tooltip->x +  9, end_sy},
 			{start_sx,    end_sy},
 			{start_sx,    start_sy},
