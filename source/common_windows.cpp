@@ -852,6 +852,9 @@ void FindItemDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
+
+		bool found_search_results = false;
+
 		for(int id = 0; id <= g_items.getMaxID(); ++id) {
 			ItemType& it = g_items[id];
 			if(it.id == 0 || (extra_condition && !extra_condition(it)))
@@ -864,14 +867,18 @@ void FindItemDialog::RefreshContentsInternal()
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(raw);
 		}
 
-		if(item_list->GetItemCount() > 0)
+
+		if(found_search_results)
 			item_list->SetSelection(0);
 		else
 			item_list->SetNoMatches();
+
 	}
+	item_list->Refresh();
 }
 
 // ============================================================================
@@ -963,6 +970,9 @@ void FindBrushDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
+
+		bool found_search_results = false;
+
 		const BrushMap& brushes_map = g_brushes.getMap();
 
 		// We store the raws so they display last of all results
@@ -977,6 +987,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(dynamic_cast<const RAWBrush*>(brush))
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(const_cast<Brush*>(brush));
 		}
 
@@ -992,6 +1003,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(raw);
 		}
 
@@ -1000,12 +1012,14 @@ void FindBrushDialog::RefreshContentsInternal()
 			raws.pop_front();
 		}
 
-		if(item_list->GetItemCount() > 0) {
+		if(found_search_results) {
 			item_list->SetSelection(0);
 		} else {
 			item_list->SetNoMatches();
 		}
+
 	}
+	item_list->Refresh();
 }
 
 // ============================================================================
@@ -1176,6 +1190,9 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
+
+		bool found_search_results = false;
+
 		for(int id = 0; id <= g_items.getMaxID(); ++id)
 		{
 			ItemType& it = g_items[id];
@@ -1189,14 +1206,17 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
 				continue;
 
+			found_search_results = true;
 			which_list->AddBrush(raw);
 		}
 
-		if(which_list->GetItemCount() > 0)
+		if(found_search_results)
 			which_list->SetSelection(0);
 		else
 			which_list->SetNoMatches();
+
 	}
+	which_list->Refresh();
 }
 
 uint16_t ReplaceItemDialog::GetResultFindID() const
