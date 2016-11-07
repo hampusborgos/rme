@@ -21,14 +21,18 @@ data/user
 *.sdf
 *.suo
 *.obj
+*.db
+*.opendb
 
 vcproj/ipch/
 vcproj/Beta Release/
 vcproj/Debug/
 vcproj/Release/
+vcproj/x64/
 vcproj/Project/Beta Release/
 vcproj/Project/Debug/
 vcproj/Project/Release/
+vcproj/Project/x64/
 vcproj/Installer/Beta Release/
 vcproj/Installer/Debug/
 vcproj/Installer/Release/
