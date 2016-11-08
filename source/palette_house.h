@@ -77,7 +77,7 @@ public:
 protected:
 	Map* map;
 	wxChoice* town_choice;
-	wxListBox* house_list;
+	SortableListBox* house_list;
 	wxToggleButton* house_brush_button;
 	wxToggleButton* select_position_button;
 	wxButton* add_house_button;

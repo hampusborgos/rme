@@ -1313,6 +1313,59 @@ wxCoord FindDialogListBox::OnMeasureItem(size_t n) const
 }
 
 // ============================================================================
+// wxListBox that can be sorted
+
+SortableListBox::SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
+: wxListBox(parent, id, pos, size, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB)
+{}
+
+SortableListBox::~SortableListBox() {}
+
+//Insertion sort
+void SortableListBox::Sort() {
+  size_t i, j;
+  for (i = 0; i < GetCount(); ++i) {
+    j = i;
+    while (j > 0 && GetString(j).CmpNoCase(GetString(j - 1)) < 0) {
+      Swap(j, j - 1);
+      j--;
+    }
+  }
+}
+
+void SortableListBox::Swap(int pos1, int pos2)
+{
+    //Swap label
+    const wxString tmpLabel = GetString(pos1);
+    SetString(pos1, GetString(pos2));
+    SetString(pos2, tmpLabel);
+
+    //Swap data
+    switch (GetClientDataType()) {
+      case wxClientData_None:
+      break;
+      case wxClientData_Void:
+      {
+        void* const tmpData = GetClientData(pos1);
+        SetClientData(pos1, GetClientData(pos2));
+        SetClientData(pos2, tmpData);
+      }
+      break;
+      case wxClientData_Object:
+      {
+        wxClientData* const tmpData = DetachClientObject(pos1);
+        SetClientObject(pos1, DetachClientObject(pos2));
+        SetClientObject(pos2, tmpData);
+      }
+      break;
+    }
+
+		//Change selection if needed
+		if (GetSelection() == pos1)
+			SetSelection(pos2);
+}
+
+// ============================================================================
 // Object properties base
 
 ObjectPropertiesWindowBase::ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Item* item, wxPoint position /* = wxDefaultPosition */) :

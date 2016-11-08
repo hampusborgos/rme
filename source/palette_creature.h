@@ -64,7 +64,7 @@ protected:
 	void SelectSpawnBrush();
 
 	wxChoice* tileset_choice;
-	wxListBox* creature_list;
+	SortableListBox* creature_list;
 	wxToggleButton* creature_brush_button;
 	wxToggleButton* spawn_brush_button;
 	wxSpinCtrl* creature_spawntime_spin;
