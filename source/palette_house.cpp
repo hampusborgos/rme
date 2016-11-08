@@ -66,7 +66,7 @@ HousePalettePanel::HousePalettePanel(wxWindow* parent, wxWindowID id) :
 	town_choice = newd wxChoice(this, PALETTE_HOUSE_TOWN_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)nullptr);
 	sidesizer->Add(town_choice, 0, wxEXPAND);
 
-	house_list = newd wxListBox(this, PALETTE_HOUSE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB);
+	house_list = newd SortableListBox(this, PALETTE_HOUSE_LISTBOX);
 	#ifdef __APPLE__
 	//Used for detecting a deselect
 	house_list->Bind(wxEVT_LEFT_UP, &HousePalettePanel::OnListBoxClick, this);
@@ -220,6 +220,7 @@ void HousePalettePanel::SelectTown(size_t index)
 				}
 			}
 		}
+		house_list->Sort();
 
 		// Select first house
 		SelectHouse(0);
@@ -389,6 +390,7 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 		if(ret == 1) {
 			// Something changed, change name of house
 			house_list->SetString(selection, wxstr(house->getDescription()));
+			house_list->Sort();
 			refresh_timer.Start(300, true);
 		}
 	}

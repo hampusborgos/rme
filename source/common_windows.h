@@ -177,6 +177,20 @@ protected:
 };
 
 /**
+*	A wxListBox that can be sorted without using style wxLB_SORT.
+* wxLB_SORT does not work properly on Windows and causes errors on macOS.
+*/
+class SortableListBox : public wxListBox
+{
+public:
+  SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+  ~SortableListBox();
+  void Sort();
+private:
+  void Swap(int pos1, int pos2);
+};
+
+/**
  * A generic find dialog
  * ShowModal will return 0 or the item id for item dialogs
  * 0 or 1 for brush dialogs
