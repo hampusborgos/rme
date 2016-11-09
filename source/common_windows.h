@@ -183,11 +183,11 @@ protected:
 class SortableListBox : public wxListBox
 {
 public:
-  SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
-  ~SortableListBox();
-  void Sort();
+	SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+	~SortableListBox();
+	void Sort();
 private:
-  void Swap(int pos1, int pos2);
+	void Swap(int pos1, int pos2);
 };
 
 /**
