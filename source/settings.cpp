@@ -210,6 +210,7 @@ void Settings::IO(IOMode mode)
 	Int(SHOW_BLOCKING, 0);
 	Int(SHOW_ONLY_TILEFLAGS, 0);
 	Int(SHOW_ONLY_MODIFIED_TILES, 0);
+	Int(SHOW_PREVIEW, 1);
 
 	section("Version");
 	Int(VERSION_ID, 0);

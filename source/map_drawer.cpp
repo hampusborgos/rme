@@ -109,6 +109,7 @@ void DrawingOptions::SetDefault()
 	show_blocking = false;
 	show_only_colors = false;
 	show_only_modified = false;
+	show_preview = false;
 	hide_items_when_zoomed = true;
 }
 
@@ -133,6 +134,7 @@ void DrawingOptions::SetIngame()
 	show_blocking = false;
 	show_only_colors = false;
 	show_only_modified = false;
+	show_preview = false;
 	hide_items_when_zoomed = false;
 }
 
@@ -1072,7 +1074,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		alpha /= 2;
 	}
 
-	int tme = 0; //GetTime() % itype->FPA;
+	int frame = item->getFrame();
 	for(int cx = 0; cx != spr->width; cx++) {
 		for(int cy = 0; cy != spr->height; cy++) {
 			for(int cf = 0; cf != spr->layers; cf++) {
@@ -1081,7 +1083,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 					pattern_x,
 					pattern_y,
 					pattern_z,
-					tme
+					frame
 				);
 				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
 			}
@@ -1173,7 +1175,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 		alpha /= 2;
 	}
 
-	int tme = 0; //GetTime() % itype->FPA;
+	int frame = item->getFrame();
 	for(int cx = 0; cx != spr->width; ++cx) {
 		for(int cy = 0; cy != spr->height; ++cy) {
 			for(int cf = 0; cf != spr->layers; ++cf) {
@@ -1182,7 +1184,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 					pattern_x,
 					pattern_y,
 					pattern_z,
-					tme
+					frame
 				);
 				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
 			}
@@ -1190,7 +1192,8 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 	}
 }
 
-void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha) {
+void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha)
+{
 	GameSprite* spr = g_items[spriteid].sprite;
 	if(spr == nullptr) return;
 	screenx -= spr->getDrawOffset().first;
@@ -1208,7 +1211,8 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int 
 	}
 }
 
-void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int red, int green, int blue, int alpha) {
+void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int red, int green, int blue, int alpha)
+{
 	if(spr == nullptr) return;
 	screenx -= spr->getDrawOffset().first;
 	screeny -= spr->getDrawOffset().second;
@@ -1273,7 +1277,8 @@ void MapDrawer::MakeTooltip(Item* item, std::ostringstream& tip)
 		tip << "text: " << item->getText() << "\n";
 }
 
-void MapDrawer::DrawTile(TileLocation* location) {
+void MapDrawer::DrawTile(TileLocation* location)
+{
 	if(!location)
 		return;
 	Tile* tile = location->get();
@@ -1357,6 +1362,9 @@ void MapDrawer::DrawTile(TileLocation* location) {
 				glBlitSquare(draw_x, draw_y, r, g, b, 128);
 			}
 		} else {
+			if(options.show_preview && zoom <= 2.0)
+				tile->ground->animate();
+
 			BlitItem(draw_x, draw_y, tile, tile->ground, false, r, g, b);
 		}
 		//MakeTooltip(tile->ground, tooltip);
@@ -1366,6 +1374,10 @@ void MapDrawer::DrawTile(TileLocation* location) {
 		if(zoom < 10.0 || !options.hide_items_when_zoomed) {
 			for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); it++) {
 				//MakeTooltip(*it, tooltip);
+
+				if(options.show_preview && zoom <= 2.0)
+					(*it)->animate();
+
 				if((*it)->isBorder()) {
 					BlitItem(draw_x, draw_y, tile, *it, false, r, g, b);
 				} else {
