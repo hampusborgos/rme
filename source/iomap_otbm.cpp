@@ -411,6 +411,7 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
+#ifdef OTGZ_SUPPORT
 	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
@@ -446,13 +447,14 @@ bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 
 		// Didn't find OTBM file, lame
 		return false;
-	} else {
-		// Just open a disk-based read handle
-		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
-		if(!f.isOk())
-			return false;
-		return getVersionInfo(&f, out_ver);
 	}
+#endif
+
+	// Just open a disk-based read handle
+	DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
+	if(!f.isOk())
+		return false;
+	return getVersionInfo(&f, out_ver);
 }
 
 bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
@@ -484,6 +486,7 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 
 bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
+#ifdef OTGZ_SUPPORT
 	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
@@ -598,27 +601,28 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 		}
 
 		return true;
-	} else {
-		DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
-		if(!f.isOk()) {
-			error(("Couldn't open file for reading\nThe error reported was: " + wxstr(f.getErrorMessage())).wc_str());
-			return false;
-		}
-
-		if(!loadMap(map, f))
-			return false;
-
-		// Read auxilliary files
-		if(!loadHouses(map, filename)) {
-			warning("Failed to load houses.");
-			map.housefile = nstr(filename.GetName()) + "-house.xml";
-		}
-		if(!loadSpawns(map, filename)) {
-			warning("Failed to load spawns.");
-			map.spawnfile = nstr(filename.GetName())+ "-spawn.xml";
-		}
-		return true;
 	}
+#endif
+
+	DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
+	if(!f.isOk()) {
+		error(("Couldn't open file for reading\nThe error reported was: " + wxstr(f.getErrorMessage())).wc_str());
+		return false;
+	}
+
+	if(!loadMap(map, f))
+		return false;
+
+	// Read auxilliary files
+	if(!loadHouses(map, filename)) {
+		warning("Failed to load houses.");
+		map.housefile = nstr(filename.GetName()) + "-house.xml";
+	}
+	if(!loadSpawns(map, filename)) {
+		warning("Failed to load spawns.");
+		map.spawnfile = nstr(filename.GetName()) + "-spawn.xml";
+	}
+	return true;
 }
 
 bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
@@ -1144,6 +1148,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 
 bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
+#ifdef OTGZ_SUPPORT
 	if(identifier.GetExt() == "otgz") {
 		// Create the archive
 		struct archive* a = archive_write_new();
@@ -1231,31 +1236,28 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 
 		g_gui.DestroyLoadBar();
 		return true;
-	} else {
-		DiskNodeFileWriteHandle f(
-			nstr(identifier.GetFullPath()),
-			(g_settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
+	} 
+#endif
+
+	DiskNodeFileWriteHandle f(
+		nstr(identifier.GetFullPath()),
+		(g_settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
 		);
 
-		if(!f.isOk()) {
-			error("Can not open file %s for writing", (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
-			return false;
-		}
-
-		if(!saveMap(map, f))
-			return false;
-
-		g_gui.SetLoadDone(99, "Saving spawns...");
-		saveSpawns(map, identifier);
-
-		g_gui.SetLoadDone(99, "Saving houses...");
-		saveHouses(map, identifier);
-
-		return true;
+	if(!f.isOk()) {
+		error("Can not open file %s for writing", (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
+		return false;
 	}
 
-	// No way to save with this extension
-	return false;
+	if(!saveMap(map, f))
+		return false;
+
+	g_gui.SetLoadDone(99, "Saving spawns...");
+	saveSpawns(map, identifier);
+
+	g_gui.SetLoadDone(99, "Saving houses...");
+	saveHouses(map, identifier);
+	return true;
 }
 
 bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
