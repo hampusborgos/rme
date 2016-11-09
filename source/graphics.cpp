@@ -1001,15 +1001,11 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 		// Now comes the resizing / antialiasing
 		if(size == SPRITE_SIZE_16x16 || image.GetWidth() > SPRITE_PIXELS || image.GetHeight() > SPRITE_PIXELS) {
 			int wh = SPRITE_SIZE_16x16 ? 16 : 32;
-			wxImage& img = image.Scale(wh, wh);
-			wxBitmap bmp(img);
-			dc[size] = newd wxMemoryDC(bmp);
-			img.Destroy();
-		} else {
-			wxBitmap bmp(image);
-			dc[size] = newd wxMemoryDC(bmp);
+			image.Rescale(wh, wh);
 		}
 
+		wxBitmap bmp(image);
+		dc[size] = newd wxMemoryDC(bmp);
 		g_gui.gfx.addSpriteToCleanup(this);
 		image.Destroy();
 	}
@@ -1128,9 +1124,6 @@ uint8_t* GameSprite::NormalImage::getRGBData()
 	// decompress pixels
 	while(read < size && write < pixels_data_size) {
 		int transparent = dump[read] | dump[read + 1] << 8;
-		if(transparent >= size)
-			break;
-
 		read += 2;
 		for(int i = 0; i < transparent && write < pixels_data_size; i++) {
 			data[write + 0] = 0xFF; // red
@@ -1183,9 +1176,8 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 	// decompress pixels
 	while(read < size && write < pixels_data_size) {
 		int transparent = dump[read] | dump[read + 1] << 8;
-		if(transparent >= size)
+		if(use_alpha && transparent >= size) // Corrupted sprite?
 			break;
-
 		read += 2;
 		for(int i = 0; i < transparent && write < pixels_data_size; i++) {
 			data[write + 0] = 0x00; // red
