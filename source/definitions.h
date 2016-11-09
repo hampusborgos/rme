@@ -116,6 +116,9 @@
 // The size of the tile in pixels
 #define TILE_SIZE 32
 
+// The default size of sprites
+#define SPRITE_PIXELS 32
+
 // The sea layer
 #define GROUND_LAYER 7
 

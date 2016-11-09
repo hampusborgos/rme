@@ -66,6 +66,7 @@ public:
 	GameSprite();
 	~GameSprite();
 
+	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
 	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
 	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
@@ -83,7 +84,7 @@ protected:
 	class NormalImage;
 	class TemplateImage;
 
-	wxMemoryDC* getDC(SpriteSize sz);
+	wxMemoryDC* getDC(SpriteSize size);
 	TemplateImage* getTemplateImage(int sprite_index, const Outfit& outfit);
 
 	class Image {
