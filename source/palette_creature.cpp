@@ -52,7 +52,7 @@ CreaturePalettePanel::CreaturePalettePanel(wxWindow* parent, wxWindowID id) :
 	tileset_choice = newd wxChoice(this, PALETTE_CREATURE_TILESET_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)nullptr);
 	sidesizer->Add(tileset_choice, 0, wxEXPAND);
 
-	creature_list = newd wxListBox(this, PALETTE_CREATURE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB | wxLB_SORT);
+	creature_list = newd SortableListBox(this, PALETTE_CREATURE_LISTBOX);
 	sidesizer->Add(creature_list, 1, wxEXPAND);
 	topsizer->Add(sidesizer, 1, wxEXPAND);
 
@@ -206,6 +206,7 @@ void CreaturePalettePanel::SelectTileset(size_t index)
 		{
 			creature_list->Append(wxstr((*iter)->getName()), *iter);
 		}
+		creature_list->Sort();
 		SelectCreature(0);
 
 		tileset_choice->SetSelection(index);
@@ -297,4 +298,3 @@ void CreaturePalettePanel::OnChangeSpawnSize(wxSpinEvent& event)
 		handling_event = false;
 	}
 }
-

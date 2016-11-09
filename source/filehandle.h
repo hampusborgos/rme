@@ -75,8 +75,10 @@ public:
 
 	FORCEINLINE bool getU8(uint8_t& u8) {return getType(u8);}
 	FORCEINLINE bool getByte(uint8_t& u8) {return getType(u8);}
+	FORCEINLINE bool getSByte(int8_t& i8) { return getType(i8); }
 	FORCEINLINE bool getU16(uint16_t& u16) {return getType(u16);}
 	FORCEINLINE bool getU32(uint32_t& u32) {return getType(u32);}
+	FORCEINLINE bool get32(int32_t& i32) { return getType(i32); }
 	bool getRAW(uint8_t* ptr, size_t sz);
 	bool getRAW(std::string& str, size_t sz);
 	bool getString(std::string& str);

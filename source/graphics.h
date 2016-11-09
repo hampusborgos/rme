@@ -20,8 +20,8 @@
 #ifndef RME_GRAPHICS_H_
 #define RME_GRAPHICS_H_
 
-
 #include "outfit.h"
+#include "common.h"
 #include <deque>
 
 #include "client_version.h"
@@ -33,9 +33,19 @@ enum SpriteSize {
 	SPRITE_SIZE_COUNT
 };
 
+enum AnimationDirection {
+	ANIMATION_FORWARD = 0,
+	ANIMATION_BACKWARD = 1
+};
+
+enum ItemAnimationDuration {
+	ITEM_FRAME_DURATION = 500
+};
+
 class MapCanvas;
 class GraphicManager;
 class FileReadHandle;
+class Animator;
 
 class Sprite {
 public:
@@ -66,6 +76,7 @@ public:
 	GameSprite();
 	~GameSprite();
 
+	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
 	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
 	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
@@ -83,7 +94,7 @@ protected:
 	class NormalImage;
 	class TemplateImage;
 
-	wxMemoryDC* getDC(SpriteSize sz);
+	wxMemoryDC* getDC(SpriteSize size);
 	TemplateImage* getTemplateImage(int sprite_index, const Outfit& outfit);
 
 	class Image {
@@ -164,6 +175,8 @@ public:
 	uint8_t frames;
 	uint32_t numsprites;
 
+	Animator* animator;
+
 	uint16_t draw_height;
 	uint16_t drawoffset_x;
 	uint16_t drawoffset_y;
@@ -176,7 +189,68 @@ public:
 	friend class GraphicManager;
 };
 
-class GraphicManager {
+struct FrameDuration
+{
+	int min;
+	int max;
+
+	FrameDuration(int min, int max) : min(min), max(max)
+	{
+		ASSERT(min <= max);
+	}
+
+	int getDuration() const
+	{
+		if(min == max)
+			return min;
+		return uniform_random(min, max);
+	};
+
+	void setValues(int min, int max)
+	{
+		ASSERT(min <= max);
+		this->min = min;
+		this->max = max;
+	}
+};
+
+class Animator
+{
+public:
+	Animator(int frames, int start_frame, int loop_count, bool async);
+	~Animator();
+
+	int getStartFrame() const;
+
+	FrameDuration* getFrameDuration(int frame);
+
+	int getFrame();
+	void setFrame(int frame);
+
+	void reset();
+
+private:
+	int getDuration(int frame) const;
+	int getPingPongFrame();
+	int getLoopFrame();
+	void calculateSynchronous();
+
+	int frame_count;
+	int start_frame;
+	int loop_count;
+	bool async;
+	std::vector<FrameDuration*> durations;
+	int current_frame;
+	int current_loop;
+	int current_duration;
+	int total_duration;
+	AnimationDirection direction;
+	long last_time;
+	bool is_complete;
+};
+
+class GraphicManager
+{
 public:
 	GraphicManager();
 	~GraphicManager();
@@ -186,6 +260,8 @@ public:
 
 	Sprite* getSprite(int id);
 	GameSprite* getCreatureSprite(int id);
+
+	long getElapsedTime() const { return (animation_timer->TimeInMicro() / 1000).ToLong(); }
 
 	uint16_t getItemSpriteMaxID() const;
 	uint16_t getCreatureSpriteMaxID() const;
@@ -235,11 +311,12 @@ private:
 	int loaded_textures;
 	int lastclean;
 
+	wxStopWatch* animation_timer;
+
 	friend class GameSprite::Image;
 	friend class GameSprite::NormalImage;
 	friend class GameSprite::TemplateImage;
 };
-
 
 struct RGBQuad {
 	uint8_t red;

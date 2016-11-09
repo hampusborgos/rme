@@ -248,11 +248,16 @@ public:
 	void setDescription(const std::string& str);
 	std::string getDescription() const;
 
+	void animate();
+	int getFrame() const {return frame;}
+
 protected:
 	uint16_t id;  // the same id as in ItemType
 	// Subtype is either fluid type, count, subtype or charges
 	uint16_t subtype;
 	bool selected;
+	int frame;
+
 private:
 	Item& operator=(const Item& i);// Can't copy
 	Item(const Item &i); // Can't copy-construct

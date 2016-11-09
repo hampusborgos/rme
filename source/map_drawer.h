@@ -37,6 +37,7 @@ struct DrawingOptions {
 	bool show_tooltips;
 	bool show_only_colors;
 	bool show_only_modified;
+	bool show_preview;
 	bool hide_items_when_zoomed;
 };
 

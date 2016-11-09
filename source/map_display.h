@@ -28,6 +28,7 @@ class Item;
 class Creature;
 class MapWindow;
 class MapPopupMenu;
+class AnimationTimer;
 
 class MapCanvas : public wxGLCanvas {
 public:
@@ -157,6 +158,7 @@ private:
 
 	wxStopWatch refresh_watch;
 	MapPopupMenu* popup_menu;
+	AnimationTimer* animation_timer;
 
 	friend class MapDrawer;
 
@@ -172,6 +174,21 @@ public:
 	void Update();
 protected:
 	Editor& editor;
+};
+
+class AnimationTimer : public wxTimer
+{
+public:
+	AnimationTimer(MapCanvas *canvas);
+	~AnimationTimer();
+
+	void Notify();
+	void Start();
+	void Stop();
+
+private:
+	MapCanvas *map_canvas;
+	bool started;
 };
 
 #endif

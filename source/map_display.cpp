@@ -119,11 +119,13 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	last_mmb_click_y(-1)
 {
 	popup_menu = newd MapPopupMenu(editor);
+	animation_timer = newd AnimationTimer(this);
 }
 
 MapCanvas::~MapCanvas()
 {
 	delete popup_menu;
+	delete animation_timer;
 	free(screenshot_buffer);
 }
 
@@ -189,10 +191,16 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.show_tooltips = g_settings.getBoolean(Config::SHOW_TOOLTIPS);
 			options.show_only_colors = g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
 			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
+			options.show_preview = g_settings.getBoolean(Config::SHOW_PREVIEW);
 			options.hide_items_when_zoomed = g_settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
 		}
 
 		options.dragging = boundbox_selection;
+
+		if(options.show_preview)
+			animation_timer->Start();
+		else
+			animation_timer->Stop();
 
 		MapDrawer drawer(options, this);
 		drawer.Draw();
@@ -2278,3 +2286,40 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 		}
 	}
 }
+
+// ============================================================================
+// AnimationTimer
+
+AnimationTimer::AnimationTimer(MapCanvas *canvas) : wxTimer(),
+	map_canvas(canvas),
+	started(false)
+{
+	////
+};
+
+AnimationTimer::~AnimationTimer()
+{
+	////
+};
+
+void AnimationTimer::Notify()
+{
+	if(map_canvas->GetZoom() <= 2.0)
+		map_canvas->Refresh();
+};
+
+void AnimationTimer::Start()
+{
+	if(!started) {
+		started = true;
+		wxTimer::Start(100);
+	}
+};
+
+void AnimationTimer::Stop()
+{
+	if(started) {
+		started = false;
+		wxTimer::Stop();
+	}
+};

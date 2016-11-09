@@ -113,6 +113,7 @@
         <item name="Show $houses" hotkey="Ctrl+H" action="SHOW_HOUSES" help="Show houses on the map."/>
         <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
         <item name="Show T$ooltips" hotkey="Y" action="SHOW_TOOLTIPS" help="Show tooltips."/>
+        <item name="Show Previe$w" hotkey="L" action="SHOW_PREVIEW" help="Show animations and lights preview."/>
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>

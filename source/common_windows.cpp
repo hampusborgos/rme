@@ -852,6 +852,9 @@ void FindItemDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
+
+		bool found_search_results = false;
+
 		for(int id = 0; id <= g_items.getMaxID(); ++id) {
 			ItemType& it = g_items[id];
 			if(it.id == 0 || (extra_condition && !extra_condition(it)))
@@ -864,14 +867,18 @@ void FindItemDialog::RefreshContentsInternal()
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(raw);
 		}
 
-		if(item_list->GetItemCount() > 0)
+
+		if(found_search_results)
 			item_list->SetSelection(0);
 		else
 			item_list->SetNoMatches();
+
 	}
+	item_list->Refresh();
 }
 
 // ============================================================================
@@ -963,6 +970,9 @@ void FindBrushDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
+
+		bool found_search_results = false;
+
 		const BrushMap& brushes_map = g_brushes.getMap();
 
 		// We store the raws so they display last of all results
@@ -977,6 +987,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(dynamic_cast<const RAWBrush*>(brush))
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(const_cast<Brush*>(brush));
 		}
 
@@ -992,6 +1003,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(raw);
 		}
 
@@ -1000,12 +1012,14 @@ void FindBrushDialog::RefreshContentsInternal()
 			raws.pop_front();
 		}
 
-		if(item_list->GetItemCount() > 0) {
+		if(found_search_results) {
 			item_list->SetSelection(0);
 		} else {
 			item_list->SetNoMatches();
 		}
+
 	}
+	item_list->Refresh();
 }
 
 // ============================================================================
@@ -1176,6 +1190,9 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
+
+		bool found_search_results = false;
+
 		for(int id = 0; id <= g_items.getMaxID(); ++id)
 		{
 			ItemType& it = g_items[id];
@@ -1189,14 +1206,17 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
 				continue;
 
+			found_search_results = true;
 			which_list->AddBrush(raw);
 		}
 
-		if(which_list->GetItemCount() > 0)
+		if(found_search_results)
 			which_list->SetSelection(0);
 		else
 			which_list->SetNoMatches();
+
 	}
+	which_list->Refresh();
 }
 
 uint16_t ReplaceItemDialog::GetResultFindID() const
@@ -1290,6 +1310,59 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 wxCoord FindDialogListBox::OnMeasureItem(size_t n) const
 {
 	return 32;
+}
+
+// ============================================================================
+// wxListBox that can be sorted
+
+SortableListBox::SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
+: wxListBox(parent, id, pos, size, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB)
+{}
+
+SortableListBox::~SortableListBox() {}
+
+//Insertion sort
+void SortableListBox::Sort() {
+	size_t i, j;
+	for (i = 0; i < GetCount(); ++i) {
+		j = i;
+		while (j > 0 && GetString(j).CmpNoCase(GetString(j - 1)) < 0) {
+			Swap(j, j - 1);
+			j--;
+		}
+	}
+}
+
+void SortableListBox::Swap(int pos1, int pos2)
+{
+	//Swap label
+	const wxString tmpLabel = GetString(pos1);
+	SetString(pos1, GetString(pos2));
+	SetString(pos2, tmpLabel);
+
+	//Swap data
+	switch (GetClientDataType()) {
+		case wxClientData_None:
+		break;
+		case wxClientData_Void:
+		{
+			void* const tmpData = GetClientData(pos1);
+			SetClientData(pos1, GetClientData(pos2));
+			SetClientData(pos2, tmpData);
+		}
+		break;
+		case wxClientData_Object:
+		{
+			wxClientData* const tmpData = DetachClientObject(pos1);
+			SetClientObject(pos1, DetachClientObject(pos2));
+			SetClientObject(pos2, tmpData);
+		}
+		break;
+	}
+
+	//Change selection if needed
+	if (GetSelection() == pos1)
+		SetSelection(pos2);
 }
 
 // ============================================================================
