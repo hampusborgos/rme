@@ -1321,48 +1321,66 @@ SortableListBox::SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint&
 
 SortableListBox::~SortableListBox() {}
 
-//Insertion sort
 void SortableListBox::Sort() {
-	size_t i, j;
-	for (i = 0; i < GetCount(); ++i) {
-		j = i;
-		while (j > 0 && GetString(j).CmpNoCase(GetString(j - 1)) < 0) {
-			Swap(j, j - 1);
+
+	if (GetCount() == 0)
+		return;
+
+	wxASSERT_MSG(GetClientDataType() != wxClientData_Object, "Sorting a list with data of type wxClientData_Object is currently not implemented");
+
+	DoSort();
+}
+
+void SortableListBox::DoSort() {
+	size_t count = GetCount();
+	int selection = GetSelection();
+	wxClientDataType dataType = GetClientDataType();
+
+	wxArrayString stringList;
+	wxArrayPtrVoid dataList;
+
+	for (size_t i = 0; i < count; ++i) {
+		stringList.Add(GetString(i));
+		if (dataType == wxClientData_Void)
+			dataList.Add(GetClientData(i));
+	}
+
+	//Insertion sort
+	for (size_t i = 0; i < count; ++i) {
+		size_t j = i;
+		while (j > 0 && stringList[j].CmpNoCase(stringList[j - 1]) < 0) {
+
+			wxString tmpString = stringList[j];
+			stringList[j] = stringList[j - 1];
+			stringList[j - 1] = tmpString;
+
+			if (dataType == wxClientData_Void) {
+				void* tmpData = dataList[j];
+				dataList[j] = dataList[j - 1];
+				dataList[j - 1] = tmpData;
+			}
+
+			if (selection == j - 1)
+				selection++;
+			else if (selection == j) {
+				selection--;
+			}
+
 			j--;
 		}
 	}
-}
 
-void SortableListBox::Swap(int pos1, int pos2)
-{
-	//Swap label
-	const wxString tmpLabel = GetString(pos1);
-	SetString(pos1, GetString(pos2));
-	SetString(pos2, tmpLabel);
-
-	//Swap data
-	switch (GetClientDataType()) {
-		case wxClientData_None:
-		break;
-		case wxClientData_Void:
-		{
-			void* const tmpData = GetClientData(pos1);
-			SetClientData(pos1, GetClientData(pos2));
-			SetClientData(pos2, tmpData);
-		}
-		break;
-		case wxClientData_Object:
-		{
-			wxClientData* const tmpData = DetachClientObject(pos1);
-			SetClientObject(pos1, DetachClientObject(pos2));
-			SetClientObject(pos2, tmpData);
-		}
-		break;
+	Freeze();
+	Clear();
+	for (size_t i = 0; i < count; ++i) {
+		if (dataType == wxClientData_Void)
+			Append(stringList[i], dataList[i]);
+		else
+			Append(stringList[i]);
 	}
+	Thaw();
 
-	//Change selection if needed
-	if (GetSelection() == pos1)
-		SetSelection(pos2);
+	SetSelection(selection);
 }
 
 // ============================================================================

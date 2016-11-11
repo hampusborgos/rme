@@ -177,7 +177,7 @@ protected:
 };
 
 /**
-*	A wxListBox that can be sorted without using style wxLB_SORT.
+* A wxListBox that can be sorted without using style wxLB_SORT.
 * wxLB_SORT does not work properly on Windows and causes errors on macOS.
 */
 class SortableListBox : public wxListBox
@@ -187,7 +187,7 @@ public:
 	~SortableListBox();
 	void Sort();
 private:
-	void Swap(int pos1, int pos2);
+	void DoSort();
 };
 
 /**
