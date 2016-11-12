@@ -13,6 +13,9 @@ public:
 	DoodadBrush();
 	virtual ~DoodadBrush();
 
+	bool isDoodad() const { return true; }
+	DoodadBrush* asDoodad() { return static_cast<DoodadBrush*>(this); }
+
 protected:
 	struct AlternativeBlock;
 public:

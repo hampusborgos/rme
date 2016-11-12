@@ -1278,8 +1278,7 @@ void GUI::SetSelectionMode()
 	if(mode == SELECTION_MODE)
 		return;
 
-	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(dbrush) {
+	if(current_brush && current_brush->isDoodad()) {
 		secondary_map = nullptr;
 	}
 
@@ -1307,8 +1306,7 @@ void GUI::SetDrawingMode()
 		}
 	}
 
-	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(dbrush) {
+	if(current_brush && current_brush->isDoodad()) {
 		secondary_map = doodad_buffer_map;
 	} else {
 		secondary_map = nullptr;
@@ -1320,8 +1318,7 @@ void GUI::SetDrawingMode()
 
 void GUI::SetBrushSizeInternal(int nz)
 {
-	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(nz != brush_size && dbrush && !dbrush->oneSizeFitsAll()) {
+	if(nz != brush_size && current_brush && current_brush->isDoodad() && !current_brush->oneSizeFitsAll()) {
 		brush_size = nz;
 		FillDoodadPreviewBuffer();
 		secondary_map = doodad_buffer_map;
@@ -1341,8 +1338,7 @@ void GUI::SetBrushSize(int nz)
 
 void GUI::SetBrushVariation(int nz)
 {
-	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(nz != brush_variation && dbrush) {
+	if(nz != brush_variation && current_brush && current_brush->isDoodad()) {
 		// Monkey!
 		brush_variation = nz;
 		FillDoodadPreviewBuffer();
@@ -1352,8 +1348,7 @@ void GUI::SetBrushVariation(int nz)
 
 void GUI::SetBrushShape(BrushShape bs)
 {
-	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(bs != brush_shape && dbrush && !dbrush->oneSizeFitsAll()) {
+	if(bs != brush_shape && current_brush && current_brush->isDoodad() && !current_brush->oneSizeFitsAll()) {
 		// Donkey!
 		brush_shape = bs;
 		FillDoodadPreviewBuffer();
@@ -1374,8 +1369,7 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 		custom_thickness_mod = float(max(x, 1)) / float(max(y, 1));
 	}
 
-	DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(dbrush) {
+	if(current_brush && current_brush->isDoodad()) {
 		FillDoodadPreviewBuffer();
 	}
 
@@ -1386,11 +1380,8 @@ void GUI::SetBrushThickness(int low, int ceil)
 {
 	custom_thickness_mod = float(max(low, 1)) / float(max(ceil, 1));
 
-	if(use_custom_thickness) {
-		DoodadBrush* dbrush = dynamic_cast<DoodadBrush*>(current_brush);
-		if(dbrush) {
-			FillDoodadPreviewBuffer();
-		}
+	if(use_custom_thickness && current_brush && current_brush->isDoodad()) {
+		FillDoodadPreviewBuffer();
 	}
 
 	RefreshView();
@@ -1534,16 +1525,16 @@ bool GUI::SelectBrush(const Brush* whatbrush, PaletteType primary)
 void GUI::SelectBrushInternal(Brush* brush)
 {
 	// Fear no evil don't you say no evil
-	if(current_brush != brush && brush != nullptr)
+	if(current_brush != brush && brush)
 		previous_brush = current_brush;
 
 	current_brush = brush;
-	if(current_brush == nullptr)
+	if(!current_brush)
 		return;
 
-	brush_variation = min(brush_variation, (brush? brush->getMaxVariation() : 0));
+	brush_variation = min(brush_variation, brush->getMaxVariation());
 	FillDoodadPreviewBuffer();
-	if(dynamic_cast<DoodadBrush*>(brush))
+	if(brush->isDoodad())
 		secondary_map = doodad_buffer_map;
 
 	SetDrawingMode();
@@ -1558,12 +1549,12 @@ void GUI::SelectPreviousBrush()
 
 void GUI::FillDoodadPreviewBuffer()
 {
-	DoodadBrush* brush = dynamic_cast<DoodadBrush*>(current_brush);
-	if(!brush)
+	if(!current_brush || !current_brush->isDoodad())
 		return;
 
 	doodad_buffer_map->clear();
 
+	DoodadBrush* brush = current_brush->asDoodad();
 	if(brush->isEmpty(GetBrushVariation()))
 		return;
 
@@ -1580,7 +1571,7 @@ void GUI::FillDoodadPreviewBuffer()
 			area = int(0.5 + GetBrushSize() * GetBrushSize() * PI);
 		}
 	}
-	const int object_range = (use_custom_thickness? int(area*custom_thickness_mod) : brush->getThickness() * area / max(1, brush->getThicknessCeiling()));
+	const int object_range = (use_custom_thickness ? int(area*custom_thickness_mod) : brush->getThickness() * area / max(1, brush->getThicknessCeiling()));
 	const int final_object_count = max(1, object_range + random(object_range));
 
 	Position center_pos(0x8000, 0x8000, 0x8);

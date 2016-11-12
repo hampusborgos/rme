@@ -437,8 +437,9 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 			Refresh();
 		}
 	} else { // Drawing mode
-		if(map_update && drawing && g_gui.GetCurrentBrush()) {
-			if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush())) {
+		Brush* brush = g_gui.GetCurrentBrush();
+		if(map_update && drawing && brush) {
+			if(brush->isDoodad()) {
 				if(event.ControlDown()) {
 					PositionVector tilestodraw;
 					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
@@ -446,8 +447,8 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 				} else {
 					editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
 				}
-			} else if(dynamic_cast<DoorBrush*>(g_gui.GetCurrentBrush())) {
-				if(!g_gui.GetCurrentBrush()->canDraw(&editor.map, Position(mouse_map_x, mouse_map_y, floor))) {
+			} else if(brush->isDoor()) {
+				if(!brush->canDraw(&editor.map, Position(mouse_map_x, mouse_map_y, floor))) {
 					// We don't have to waste an action in this case...
 				} else {
 					PositionVector tilestodraw;
@@ -466,7 +467,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
 					}
 				}
-			} else if(g_gui.GetCurrentBrush()->needBorders()) {
+			} else if(brush->needBorders()) {
 				PositionVector tilestodraw, tilestoborder;
 
 				getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, &tilestoborder);
@@ -476,7 +477,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 				} else {
 					editor.draw(tilestodraw, tilestoborder, event.AltDown());
 				}
-			} else if(g_gui.GetCurrentBrush()->oneSizeFitsAll()) {
+			} else if(brush->oneSizeFitsAll()) {
 				drawing = true;
 				PositionVector tilestodraw;
 				tilestodraw.push_back(Position(mouse_map_x,mouse_map_y, floor));
@@ -514,7 +515,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 			g_gui.RefreshView();
 		} else if(dragging_draw) {
 			g_gui.RefreshView();
-		} else if(map_update && g_gui.GetCurrentBrush()) {
+		} else if (map_update && brush) {
 			Refresh();
 		}
 	}
@@ -719,15 +720,16 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 			}
 		} while(false);
 	} else if(g_gui.GetCurrentBrush()) { // Drawing mode
-		if(event.ShiftDown() && g_gui.GetCurrentBrush()->canDrag()) {
+		Brush* brush = g_gui.GetCurrentBrush();
+		if(event.ShiftDown() && brush->canDrag()) {
 			dragging_draw = true;
 		} else {
-			if(g_gui.GetBrushSize() == 0 && !g_gui.GetCurrentBrush()->oneSizeFitsAll()) {
+			if(g_gui.GetBrushSize() == 0 && !brush->oneSizeFitsAll()) {
 				drawing = true;
 			} else {
 				drawing = g_gui.GetCurrentBrush()->canSmear();
 			}
-			if(dynamic_cast<WallBrush*>(g_gui.GetCurrentBrush())) {
+			if(brush->isWall()) {
 				if(event.AltDown() && g_gui.GetBrushSize() == 0) {
 					// z0mg, just clicked a tile, shift variaton.
 					if(event.ControlDown()) {
@@ -761,7 +763,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
 					}
 				}
-			} else if(dynamic_cast<DoorBrush*>(g_gui.GetCurrentBrush())) {
+			} else if(brush->isDoor()) {
 				PositionVector tilestodraw;
 				PositionVector tilestoborder;
 
@@ -777,9 +779,9 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 				} else {
 					editor.draw(tilestodraw, tilestoborder, event.AltDown());
 				}
-			} else if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush()) || dynamic_cast<SpawnBrush*>(g_gui.GetCurrentBrush()) || dynamic_cast<CreatureBrush*>(g_gui.GetCurrentBrush())) {
+			} else if(brush->isDoodad() || brush->isSpawn() || brush->isCreature()) {
 				if(event.ControlDown()) {
-					if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush())) {
+					if(brush->isDoodad()) {
 						PositionVector tilestodraw;
 						getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
 						editor.undraw(tilestodraw, event.AltDown());
@@ -790,9 +792,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
 				}
 			} else {
-				GroundBrush* gbrush = dynamic_cast<GroundBrush*>(g_gui.GetCurrentBrush());
-
-				if(gbrush && event.AltDown()) {
+				if(brush->isGround() && event.AltDown()) {
 					replace_dragging = true;
 					Tile* draw_tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
 					if(draw_tile) {
@@ -802,7 +802,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					}
 				}
 
-				if(g_gui.GetCurrentBrush()->needBorders()) {
+				if(brush->needBorders()) {
 					PositionVector tilestodraw;
 					PositionVector tilestoborder;
 
@@ -813,8 +813,8 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					} else {
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
 					}
-				} else if(g_gui.GetCurrentBrush()->oneSizeFitsAll()) {
-					if(dynamic_cast<HouseExitBrush*>(g_gui.GetCurrentBrush()) || dynamic_cast<WaypointBrush*>(g_gui.GetCurrentBrush())) {
+				} else if(brush->oneSizeFitsAll()) {
+					if(brush->isHouseExit() || brush->isWaypoint()) {
 						editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.AltDown());
 					} else {
 						PositionVector tilestodraw;
@@ -1029,9 +1029,10 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 		editor.actionQueue->resetTimer();
 		dragging = false;
 		boundbox_selection = false;
-	} else { // Drawing mode
+	} else if(g_gui.GetCurrentBrush()){ // Drawing mode
+		Brush* brush = g_gui.GetCurrentBrush();
 		if(dragging_draw) {
-			if(dynamic_cast<SpawnBrush*>(g_gui.GetCurrentBrush())) {
+			if(brush->isSpawn()) {
 				int start_map_x = std::min(last_click_map_x, mouse_map_x);
 				int start_map_y = std::min(last_click_map_y, mouse_map_y);
 				int end_map_x   = std::max(last_click_map_x, mouse_map_x);
@@ -1048,7 +1049,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 			} else {
 				PositionVector tilestodraw;
 				PositionVector tilestoborder;
-				if(dynamic_cast<WallBrush*>(g_gui.GetCurrentBrush())) {
+				if(brush->isWall()) {
 					int start_map_x = std::min(last_click_map_x, mouse_map_x);
 					int start_map_y = std::min(last_click_map_y, mouse_map_y);
 					int end_map_x   = std::max(last_click_map_x, mouse_map_x);
@@ -1059,16 +1060,8 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 							if((x <= start_map_x+1 || x >= end_map_x-1) || (y <= start_map_y+1 || y >= end_map_y-1)) {
 								tilestoborder.push_back(Position(x,y,floor));
 							}
-							if(
-								(
-								(x == start_map_x || x == end_map_x) ||
-								(y == start_map_y || y == end_map_y)
-								) && (
-								(x >= start_map_x && x <= end_map_x) &&
-								(y >= start_map_y && y <= end_map_y)
-								)
-								)
-							{
+							if(((x == start_map_x || x == end_map_x) || (y == start_map_y || y == end_map_y)) &&
+								((x >= start_map_x && x <= end_map_x) && (y >= start_map_y && y <= end_map_y))) {
 								tilestodraw.push_back(Position(x,y,floor));
 							}
 						}

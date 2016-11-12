@@ -793,11 +793,10 @@ void FindItemDialog::setCondition(bool condition(const ItemType&)) {
 
 void FindItemDialog::OnClickListInternal(wxCommandEvent& event)
 {
-	RAWBrush* brush = dynamic_cast<RAWBrush*>(item_list->GetSelectedBrush());
-	if(brush)
-	{
+	Brush* brush = item_list->GetSelectedBrush();
+	if(brush && brush->isRaw()) {
 		result_brush = brush;
-		result_id = brush->getItemID();
+		result_id = brush->asRaw()->getItemID();
 		EndModal(result_id);
 	}
 }
@@ -810,8 +809,11 @@ void FindItemDialog::OnClickOKInternal()
 			item_list->SetSelection(0);
 		}
 
-		RAWBrush* brush = dynamic_cast<RAWBrush*>(item_list->GetSelectedBrush());
-		if(brush == nullptr) {
+		Brush* brush = item_list->GetSelectedBrush();
+		if (brush && brush->isRaw()) {
+			result_brush = brush;
+			result_id = brush->asRaw()->getItemID();
+		} else {
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
@@ -823,22 +825,19 @@ void FindItemDialog::OnClickOKInternal()
 					if(it.id == 0 || (extra_condition && !extra_condition(it)))
 						continue;
 
-					RAWBrush* raw = it.raw_brush;
-					if(raw == nullptr)
+					RAWBrush* raw_brush = it.raw_brush;
+					if(!raw_brush)
 						continue;
 
-					if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+					if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 						continue;
 
 					// Found one!
-					result_brush = raw;
-					result_id = raw->getItemID();
+					result_brush = raw_brush;
+					result_id = raw_brush->getItemID();
 					break;
 				}
 			}
-		} else {
-			result_brush = brush;
-			result_id = brush->getItemID();
 		}
 	}
 	EndModal(result_id);
@@ -860,15 +859,15 @@ void FindItemDialog::RefreshContentsInternal()
 			if(it.id == 0 || (extra_condition && !extra_condition(it)))
 				continue;
 
-			RAWBrush* raw = it.raw_brush;
-			if(raw == nullptr)
+			RAWBrush* raw_brush = it.raw_brush;
+			if(!raw_brush)
 				continue;
 
-			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
 			found_search_results = true;
-			item_list->AddBrush(raw);
+			item_list->AddBrush(raw_brush);
 		}
 
 
@@ -911,7 +910,7 @@ void FindBrushDialog::OnClickOKInternal()
 			item_list->SetSelection(0);
 		}
 		Brush* brush = item_list->GetSelectedBrush();
-		if(brush == nullptr) {
+		if(!brush) {
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
@@ -925,7 +924,7 @@ void FindBrushDialog::OnClickOKInternal()
 						continue;
 
 					// Don't match RAWs now.
-					if(dynamic_cast<const RAWBrush*>(brush))
+					if(brush->isRaw())
 						continue;
 
 					// Found one!
@@ -941,15 +940,15 @@ void FindBrushDialog::OnClickOKInternal()
 						if(it.id == 0)
 							continue;
 
-						RAWBrush* raw = it.raw_brush;
-						if(raw == nullptr)
+						RAWBrush* raw_brush = it.raw_brush;
+						if(!raw_brush)
 							continue;
 
-						if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+						if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 							continue;
 
 						// Found one!
-						result_brush = raw;
+						result_brush = raw_brush;
 						break;
 					}
 				}
@@ -984,7 +983,7 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(as_lower_str(brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
-			if(dynamic_cast<const RAWBrush*>(brush))
+			if(brush->isRaw())
 				continue;
 
 			found_search_results = true;
@@ -996,15 +995,15 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(it.id == 0)
 				continue;
 
-			RAWBrush* raw = it.raw_brush;
-			if(raw == nullptr)
+			RAWBrush* raw_brush = it.raw_brush;
+			if(!raw_brush)
 				continue;
 
-			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
 			found_search_results = true;
-			item_list->AddBrush(raw);
+			item_list->AddBrush(raw_brush);
 		}
 
 		while(raws.size() > 0) {
@@ -1160,14 +1159,17 @@ void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		if(with_item_list->GetSelection() == wxNOT_FOUND)
 			with_item_list->SetSelection(0);
 
-		result_find_brush = dynamic_cast<RAWBrush*>(find_item_list->GetSelectedBrush());
-		result_with_brush = dynamic_cast<RAWBrush*>(with_item_list->GetSelectedBrush());
+		Brush* find_brush = find_item_list->GetSelectedBrush();
+		Brush* with_brush = with_item_list->GetSelectedBrush();
+		if(find_brush && find_brush->isRaw() && with_brush && with_brush->isRaw()) {
+			result_find_brush = find_brush;
+			result_with_brush = with_brush;
+		}
 	}
 
-	if(result_find_brush == nullptr || result_with_brush == nullptr) {
+	if(!result_find_brush || !result_with_brush) {
 		result_find_brush = nullptr;
 		result_with_brush = nullptr;
-
 		g_gui.PopupDialog("Select both items", "You must select two items for the replacement to work.", wxOK);
 		return;
 	}
@@ -1199,15 +1201,15 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 			if(it.id == 0)
 				continue;
 
-			RAWBrush* raw = it.raw_brush;
-			if(raw == nullptr)
+			RAWBrush* raw_brush = it.raw_brush;
+			if(!raw_brush)
 				continue;
 
-			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
 			found_search_results = true;
-			which_list->AddBrush(raw);
+			which_list->AddBrush(raw_brush);
 		}
 
 		if(found_search_results)
@@ -1221,12 +1223,12 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 
 uint16_t ReplaceItemDialog::GetResultFindID() const
 {
-	return result_find_brush ? static_cast<RAWBrush*>(result_find_brush)->getItemID() : 0;
+	return result_find_brush ? result_find_brush->asRaw()->getItemID() : 0;
 }
 
 uint16_t ReplaceItemDialog::GetResultWithID() const
 {
-	return result_with_brush ? static_cast<RAWBrush*>(result_with_brush)->getItemID() : 0;
+	return result_with_brush ? result_with_brush->asRaw()->getItemID() : 0;
 }
 
 // ============================================================================

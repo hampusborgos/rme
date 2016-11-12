@@ -15,6 +15,9 @@ public:
 	TableBrush();
 	virtual ~TableBrush();
 
+	bool isTable() const { return true; }
+	TableBrush* asTable() { return static_cast<TableBrush*>(this); }
+
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 
 	virtual bool canDraw(BaseMap* map, const Position& position) const;

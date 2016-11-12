@@ -15,6 +15,9 @@ class CarpetBrush : public Brush
 		CarpetBrush();
 		virtual ~CarpetBrush();
 
+		bool isCarpet() const { return true; }
+		CarpetBrush* asCarpet() { return static_cast<CarpetBrush*>(this); }
+
 		virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 
 		virtual bool canDraw(BaseMap* map, const Position& position) const;
