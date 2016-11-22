@@ -8,9 +8,9 @@ class BaseMap;
 
 class MapAllocator
 {
-	BaseMap& map;
+
 public:
-	MapAllocator(BaseMap& map) : map(map) {}
+	MapAllocator() {}
 	~MapAllocator() {}
 
 	// shorthands for tiles
