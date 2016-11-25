@@ -40,9 +40,13 @@ public:
 	~Application();
 	virtual bool OnInit();
 	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
+	virtual void MacNewFile();
+	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
+private:
+	void OpenEmptyStartupMap();
 	void FixVersionDiscrapencies();
 	std::pair<bool, FileName> ParseCommandLineMap();
 

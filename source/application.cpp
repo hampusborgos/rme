@@ -274,16 +274,35 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 	if(ClientVersion::getLatestVersion() == nullptr)
 		return;
 
+#ifndef __APPLE__ //macOS does not add a command-line argument when opening an associated file.
 	// Handle any command line argument (open map...)
 	std::pair<bool, FileName> ff = ParseCommandLineMap();
 	if(ff.first) {
 		g_gui.LoadMap(ff.second);
 	} else {
-		if(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
-			if(g_gui.NewMap()) {
-				// You generally don't want to save this map...
-				g_gui.GetCurrentEditor()->map.clearChanges();
-			}
+		OpenEmptyStartupMap();
+	}
+#endif
+}
+
+void Application::MacNewFile()
+{
+	OpenEmptyStartupMap();
+}
+
+void Application::MacOpenFiles(const wxArrayString& fileNames)
+{
+	if (!fileNames.IsEmpty()) {
+		g_gui.LoadMap(FileName(fileNames.Item(0)));
+	}
+}
+
+void Application::OpenEmptyStartupMap()
+{
+	if(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
+		if(g_gui.NewMap()) {
+			// You generally don't want to save this map...
+			g_gui.GetCurrentEditor()->map.clearChanges();
 		}
 	}
 }
