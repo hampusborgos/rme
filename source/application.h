@@ -40,22 +40,23 @@ public:
 	~Application();
 	virtual bool OnInit();
 	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
-	virtual void MacNewFile();
 	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
 private:
-	void OpenEmptyStartupMap();
+	bool m_startup;
+	wxString m_fileToOpen;
+
 	void FixVersionDiscrapencies();
-	std::pair<bool, FileName> ParseCommandLineMap();
+	bool ParseCommandLineMap(wxString& fileName);
 
 	virtual void OnFatalException();
 
 #ifdef _USE_PROCESS_COM
 	RMEProcessServer* proc_server;
 #endif
-	bool startup;
+
 };
 
 class MainMenuBar;

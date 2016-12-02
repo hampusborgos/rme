@@ -441,7 +441,7 @@ void GUI::SaveCurrentMap(FileName filename, bool showdialog)
 		Editor* editor = mapTab->GetEditor();
 		if(editor) {
 			editor->saveMap(filename, showdialog);
-			
+
 			const std::string& filename = editor->map.getFilename();
 			const Position& position = mapTab->GetScreenCenterPosition();
 			std::ostringstream stream;
@@ -521,7 +521,7 @@ bool GUI::NewMap()
 	return true;
 }
 
-bool GUI::LoadMap(FileName name)
+bool GUI::LoadMap(const FileName& fileName)
 {
 	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
 		g_gui.CloseCurrentEditor();
@@ -529,7 +529,7 @@ bool GUI::LoadMap(FileName name)
 	Editor* editor;
 	try
 	{
-		editor = newd Editor(copybuffer, name);
+		editor = newd Editor(copybuffer, fileName);
 	}
 	catch(std::runtime_error& e)
 	{
@@ -540,7 +540,7 @@ bool GUI::LoadMap(FileName name)
 	MapTab* mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
 
-	root->AddRecentFile(name);
+	root->AddRecentFile(fileName);
 
 	mapTab->GetView()->FitToMap();
 	UpdateTitle();
@@ -553,7 +553,7 @@ bool GUI::LoadMap(FileName name)
 	std::string path = g_settings.getString(Config::RECENT_EDITED_MAP_PATH);
 	if(!path.empty()) {
 		FileName file(path);
-		if(file == name) {
+		if(file == fileName) {
 			std::istringstream stream(g_settings.getString(Config::RECENT_EDITED_MAP_POSITION));
 			Position position;
 			stream >> position;
@@ -1899,4 +1899,3 @@ void SetWindowToolTip(wxWindow* a, wxWindow* b, const wxString& tip)
 	a->SetToolTip(tip);
 	b->SetToolTip(tip);
 }
-

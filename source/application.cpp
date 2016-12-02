@@ -125,10 +125,10 @@ bool Application::OnInit()
 			if(n_connection) {
 				RMEProcessConnection* connection = dynamic_cast<RMEProcessConnection*>(n_connection);
 				ASSERT(connection);
-				std::pair<bool, FileName> ff = ParseCommandLineMap();
-				if(ff.first)
+				wxString filePath;
+				if(ParseCommandLineMap(filePath))
 				{
-					connection->AskToLoad(ff.second);
+					connection->AskToLoad(FileName(filePath));
 					connection->Disconnect();
 #if defined __DEBUG_MODE__ && defined __WINDOWS__
 					g_gui.SaveHotkeys();
@@ -259,50 +259,53 @@ bool Application::OnInit()
 	delete icon;
 
 	// Keep track of first event loop entry
-	startup = true;
+	m_startup = true;
 	return true;
 }
 
 void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 {
-	// First startup?
-	if(!startup)
+	//First startup?
+	if(!m_startup)
 		return;
-	startup = false;
+	m_startup = false;
 
-	// Don't try to create a map if we didn't load the client map.
+	//Don't try to create a map if we didn't load the client map.
 	if(ClientVersion::getLatestVersion() == nullptr)
 		return;
 
-#ifndef __APPLE__ //macOS does not add a command-line argument when opening an associated file.
-	// Handle any command line argument (open map...)
-	std::pair<bool, FileName> ff = ParseCommandLineMap();
-	if(ff.first) {
-		g_gui.LoadMap(ff.second);
-	} else {
-		OpenEmptyStartupMap();
+	//Check if we have a command-line argument. (map path)
+	wxString filePath;
+	if (ParseCommandLineMap(filePath)) {
+		m_fileToOpen = filePath;
 	}
-#endif
+
+	//Open a map.
+	if (m_fileToOpen != wxEmptyString) {
+		g_gui.LoadMap(FileName(m_fileToOpen));
+	} else {
+		if(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
+			//Open a new empty map
+			if(g_gui.NewMap()) {
+				// You generally don't want to save this map...
+				g_gui.GetCurrentEditor()->map.clearChanges();
+			}
+		}
+	}
 }
 
-void Application::MacNewFile()
-{
-	OpenEmptyStartupMap();
-}
-
+//This only gets triggered on macOS
 void Application::MacOpenFiles(const wxArrayString& fileNames)
 {
 	if (!fileNames.IsEmpty()) {
-		g_gui.LoadMap(FileName(fileNames.Item(0)));
-	}
-}
-
-void Application::OpenEmptyStartupMap()
-{
-	if(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
-		if(g_gui.NewMap()) {
-			// You generally don't want to save this map...
-			g_gui.GetCurrentEditor()->map.clearChanges();
+		wxString fileName = fileNames.Item(0);
+		if (m_startup) {
+			//The editor was just opened by clicking a file.
+			//It's too early to load the map here. So we open it later in OnEventLoopEnter.
+			m_fileToOpen = fileName;
+		} else {
+			//The editor is already running. Just open the map!
+			g_gui.LoadMap(FileName(fileName));
 		}
 	}
 }
@@ -357,15 +360,13 @@ void Application::OnFatalException()
 	////
 }
 
-std::pair<bool, FileName> Application::ParseCommandLineMap()
+bool Application::ParseCommandLineMap(wxString& fileName)
 {
 	if(argc == 2) {
-		FileName f = wxString(argv[1]);
-		if(f.GetExt() == "otbm" || f.GetExt() == "otgz") {
-			return std::make_pair(true, f);
-		}
+		fileName = wxString(argv[1]);
+		return true;
 	}
-	return std::make_pair(false, FileName());
+	return false;
 }
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) :
