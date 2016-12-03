@@ -21,69 +21,6 @@
 #include "table_brush.h"
 #include "waypoint_brush.h"
 
-MapDrawer::MapDrawer(const DrawingOptions& options, MapCanvas* canvas) : canvas(canvas), editor(canvas->editor), options(options)
-{
-	canvas->MouseToMap(&mouse_map_x, &mouse_map_y);
-	canvas->GetViewBox(&view_scroll_x, &view_scroll_y, &screensize_x, &screensize_y);
-
-	dragging = canvas->dragging;
-	dragging_draw = canvas->dragging_draw;
-
-	zoom = canvas->GetZoom();
-	tile_size = int(TILE_SIZE / zoom); // after zoom
-	floor = canvas->GetFloor();
-
-	SetupVars();
-	SetupGL();
-}
-
-void MapDrawer::SetupVars()
-{
-	if(options.show_all_floors) {
-		if(floor < 8)
-			start_z = GROUND_LAYER;
-		else
-			start_z = std::min(MAP_MAX_LAYER, floor + 2);
-	}
-	else
-		start_z = floor;
-
-	end_z = floor;
-	superend_z = (floor > GROUND_LAYER ? 8 : 0);
-
-	start_x = view_scroll_x / TILE_SIZE;
-	start_y = view_scroll_y / TILE_SIZE;
-
-	if(floor > GROUND_LAYER) {
-		start_x -= 2;
-		start_y -= 2;
-	}
-
-	end_x = start_x + screensize_x / tile_size + 2;
-	end_y = start_y + screensize_y / tile_size + 2;
-}
-
-void MapDrawer::SetupGL()
-{
-	//
-	glViewport(0, 0, screensize_x, screensize_y);
-
-	// Enable 2D mode
-	int vPort[4];
-
-	glGetIntegerv(GL_VIEWPORT, vPort);
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, vPort[2]*zoom, vPort[3]*zoom, 0, -1, 1);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0.375f, 0.375f, 0.0f);
-}
-
 DrawingOptions::DrawingOptions()
 {
 	SetDefault();
@@ -141,8 +78,79 @@ void DrawingOptions::SetIngame()
 	hide_items_when_zoomed = false;
 }
 
+MapDrawer::MapDrawer(MapCanvas* canvas) : canvas(canvas), editor(canvas->editor)
+{
+	////
+}
+
 MapDrawer::~MapDrawer()
 {
+	Release();
+}
+
+void MapDrawer::SetupVars()
+{
+	canvas->MouseToMap(&mouse_map_x, &mouse_map_y);
+	canvas->GetViewBox(&view_scroll_x, &view_scroll_y, &screensize_x, &screensize_y);
+
+	dragging = canvas->dragging;
+	dragging_draw = canvas->dragging_draw;
+
+	zoom = (float)canvas->GetZoom();
+	tile_size = int(TILE_SIZE / zoom); // after zoom
+	floor = canvas->GetFloor();
+
+	if(options.show_all_floors) {
+		if(floor < 8)
+			start_z = GROUND_LAYER;
+		else
+			start_z = std::min(MAP_MAX_LAYER, floor + 2);
+	}
+	else
+		start_z = floor;
+
+	end_z = floor;
+	superend_z = (floor > GROUND_LAYER ? 8 : 0);
+
+	start_x = view_scroll_x / TILE_SIZE;
+	start_y = view_scroll_y / TILE_SIZE;
+
+	if(floor > GROUND_LAYER) {
+		start_x -= 2;
+		start_y -= 2;
+	}
+
+	end_x = start_x + screensize_x / tile_size + 2;
+	end_y = start_y + screensize_y / tile_size + 2;
+}
+
+void MapDrawer::SetupGL()
+{
+	glViewport(0, 0, screensize_x, screensize_y);
+
+	// Enable 2D mode
+	int vPort[4];
+
+	glGetIntegerv(GL_VIEWPORT, vPort);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0, vPort[2]*zoom, vPort[3]*zoom, 0, -1, 1);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glTranslatef(0.375f, 0.375f, 0.0f);
+}
+
+void MapDrawer::Release()
+{
+	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
+		delete *it;
+	}
+	tooltips.clear();
+
 	// Disable 2D mode
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -162,7 +170,8 @@ void MapDrawer::Draw()
 	DrawBrush();
 	if(options.show_grid)
 		DrawGrid();
-	DrawIngameBox();
+	if(options.show_ingame_box)
+		DrawIngameBox();
 	if(options.show_tooltips)
 		DrawTooltips();
 }
@@ -368,9 +377,6 @@ void MapDrawer::DrawMap()
 
 void MapDrawer::DrawIngameBox()
 {
-	if(!options.show_ingame_box)
-		return;
-
 	int center_x = start_x + int(screensize_x * zoom / 64);
 	int center_y = start_y + int(screensize_y * zoom / 64);
 
@@ -905,7 +911,7 @@ void MapDrawer::DrawBrush()
 					glVertex2f(start_sx, end_sy);
 				}
 			glEnd();
-		} else if (brush->isDoor()) {
+		} else if(brush->isDoor()) {
 			int cx = (mouse_map_x) * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
 			int cy = (mouse_map_y) * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
 
@@ -916,7 +922,7 @@ void MapDrawer::DrawBrush()
 				glVertex2f(cx + TILE_SIZE, cy);
 				glVertex2f(cx, cy);
 			glEnd();
-		} else if (brush->isCreature()) {
+		} else if(brush->isCreature()) {
 			glEnable(GL_TEXTURE_2D);
 			int cy = (mouse_map_y) * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
 			int cx = (mouse_map_x) * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
@@ -926,7 +932,7 @@ void MapDrawer::DrawBrush()
 			else
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 64, 64, 160);
 			glDisable(GL_TEXTURE_2D);
-		} else if (!brush->isDoodad()) {
+		} else if(!brush->isDoodad()) {
 			RAWBrush* raw_brush = nullptr;
 			if(brush->isRaw()) { // Textured brush
 				glEnable(GL_TEXTURE_2D);
@@ -977,11 +983,11 @@ void MapDrawer::DrawBrush()
 					}
 				}
 			}
-		}
-	}
 
-	if(brush->isRaw()) { // Textured brush
-		glDisable(GL_TEXTURE_2D);
+			if(brush->isRaw()) { // Textured brush
+				glDisable(GL_TEXTURE_2D);
+			}
+		}
 	}
 }
 
@@ -1432,72 +1438,79 @@ void MapDrawer::DrawTile(TileLocation* location)
 		MakeTooltip(draw_x, draw_y, tooltip.str());
 }
 
-void MapDrawer::DrawText(int x, int y, const char* text)
-{
-	glEnable(GL_TEXTURE_2D);
-	glRasterPos2i(x, y);
-	for(const char* c = text; *c != '\0'; c++) {
-		if(*c == '\n') {
-			y += 14;
-			glRasterPos2i(x, y);
-		}
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
-	}
-	glDisable(GL_TEXTURE_2D);
-}
-
 void MapDrawer::DrawTooltips()
 {
-	for(std::vector<MapTooltip>::const_iterator tooltip = tooltips.begin(); tooltip != tooltips.end(); ++tooltip) {
-		const char* text = tooltip->text.c_str();
-		int line_width = 0;
-		int width = 2;
-		int height = 14;
+	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
+		const char* text = (*it)->text.c_str();
+		float line_width = 0.0f;
+		float width = 2.0f;
+		float height = 14.0f;
 
 		for(const char* c = text; *c != '\0'; c++) {
 			if(*c == '\n') {
-				height += 14;
-				line_width = 0;
+				height += 14.0f;
+				line_width = 0.0f;
 			} else {
 				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
 			}
-			width = std::max<int>(width, line_width);
+			width = std::max<float>(width, line_width);
 		}
 
-		int start_sx = tooltip->x + 12 - (width / 2);
-		int start_sy = tooltip->y - height + 4;
-		int end_sx = tooltip->x + 20 + (width / 2);
-		int end_sy = tooltip->y + 9;
+		float scale = zoom < 1.0f ? zoom : 1.0f;
+		
+		width = (width + 8.0f) * scale;
+		height = (height + 4.0f) * scale;
 
-		int vertexes [9][2] = {
-			{tooltip->x,  start_sy},
-			{end_sx,      start_sy},
-			{end_sx,      end_sy},
-			{tooltip->x + 23, end_sy},
-			{tooltip->x + 16, end_sy + 7},
-			{tooltip->x +  9, end_sy},
-			{start_sx,    end_sy},
-			{start_sx,    start_sy},
-			{tooltip->x,  start_sy}
+		float x = (*it)->x + (TILE_SIZE / 2);
+		float y = (*it)->y + 8.0f;
+		float middle = width / 2.0f;
+		float padding = (7.0f * scale);
+		float startx = x - middle;
+		float endx = x + middle;
+		float starty = y - (height + padding);
+		float endy = y - padding;
+		float vertexes[8][2] = {
+			{startx,      starty},
+			{endx,        starty},
+			{endx,        endy},
+			{x + padding, endy},
+			{x,           y},
+			{x - padding, endy},
+			{startx,      endy},
+			{startx,      starty}
 		};
 
-		glColor4ub(255, 255, 225, 255);
+		// background
+		glColor4ub(255, 255, 255, 255);
 		glBegin(GL_POLYGON);
-		for(int i = 0; i < 8; ++i)
-			glVertex2i(vertexes[i][0], vertexes[i][1]);
+		for (int i = 0; i < 8; ++i)
+			glVertex2f(vertexes[i][0], vertexes[i][1]);
 		glEnd();
 
+		// borders
 		glColor4ub(0, 0, 0, 255);
 		glLineWidth(1.0);
 		glBegin(GL_LINES);
-		for(int i = 0; i < 8; ++i) {
-			glVertex2i(vertexes[i  ][0], vertexes[i  ][1]);
-			glVertex2i(vertexes[i+1][0], vertexes[i+1][1]);
+		for (int i = 0; i < 7; ++i) {
+			glVertex2f(vertexes[i][0], vertexes[i][1]);
+			glVertex2f(vertexes[i + 1][0], vertexes[i + 1][1]);
 		}
 		glEnd();
 
-		if(zoom <= 1.0)
-			DrawText(start_sx + 3, start_sy + 14, text);
+		// text
+		if(zoom <= 1.0) {
+			startx += (3.0f * scale);
+			starty += (14.0f * scale);
+			glColor4ub(0, 0, 0, 255);
+			glRasterPos2f(startx, starty);
+			for(const char* c = text; *c != '\0'; c++) {
+				if (*c == '\n') {
+					starty += (14.0f * scale);
+					glRasterPos2f(startx, starty);
+				}
+				glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+			}
+		}
 	}
 }
 
@@ -1506,13 +1519,8 @@ void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text)
 	if(text.empty())
 		return;
 
-	MapTooltip tooltip;
-	tooltip.x = screenx;
-	tooltip.y = screeny;
-	tooltip.text = text;
-
-	if(tooltip.text.at(tooltip.text.size() - 1) == '\n')
-		tooltip.text.resize(tooltip.text.size() - 1);
+	MapTooltip *tooltip = newd MapTooltip(screenx, screeny, text);
+	tooltip->checkLineEnding();
 	tooltips.push_back(tooltip);
 }
 
@@ -1526,8 +1534,8 @@ void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
 		glReadPixels(0, screensize_y - i, screensize_x, 1, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*)(screenshot_buffer) + 3*screensize_x*i);
 }
 
-
-void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha) {
+void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha)
+{
 	if(texture_number != 0) {
 		glBindTexture(GL_TEXTURE_2D, texture_number);
 		glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));

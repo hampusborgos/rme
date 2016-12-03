@@ -120,12 +120,14 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 {
 	popup_menu = newd MapPopupMenu(editor);
 	animation_timer = newd AnimationTimer(this);
+	drawer = new MapDrawer(this);
 }
 
 MapCanvas::~MapCanvas()
 {
 	delete popup_menu;
 	delete animation_timer;
+	delete drawer;
 	free(screenshot_buffer);
 }
 
@@ -170,8 +172,8 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 	SetCurrent(*g_gui.GetGLContext(this));
 
 	if(g_gui.IsRenderingEnabled()) {
-		DrawingOptions options;
-		if(screenshot_buffer != nullptr) {
+		DrawingOptions& options = drawer->getOptions();
+		if(screenshot_buffer) {
 			options.SetIngame();
 		} else {
 			options.transparent_floors = g_settings.getBoolean(Config::TRANSPARENT_FLOORS);
@@ -202,11 +204,14 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 		else
 			animation_timer->Stop();
 
-		MapDrawer drawer(options, this);
-		drawer.Draw();
+		drawer->SetupVars();
+		drawer->SetupGL();
+		drawer->Draw();
 
-		if(screenshot_buffer != nullptr)
-			drawer.TakeScreenshot(screenshot_buffer);
+		if(screenshot_buffer)
+			drawer->TakeScreenshot(screenshot_buffer);
+
+		drawer->Release();
 	}
 
 	// Clean unused textures
