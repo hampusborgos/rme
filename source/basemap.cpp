@@ -23,7 +23,7 @@
 #include "basemap.h"
 
 BaseMap::BaseMap() :
-	allocator(*this),
+	allocator(),
 	tilecount(0),
 	root(*this)
 {

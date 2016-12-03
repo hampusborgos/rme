@@ -156,10 +156,11 @@ Brush* HousePalettePanel::GetSelectedBrush() const
 
 bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
 {
-	const HouseBrush* house_brush = dynamic_cast<const HouseBrush*>(whatbrush);
-	const SpawnBrush* spawn_brush = dynamic_cast<const SpawnBrush*>(whatbrush);
+	if(!whatbrush)
+		return false;
 
-	if(house_brush && map != nullptr) {
+	if(whatbrush->isHouse() && map) {
+		const HouseBrush* house_brush = static_cast<const HouseBrush*>(whatbrush);
 		for(HouseMap::iterator house_iter = map->houses.begin(); house_iter != map->houses.end(); ++house_iter) {
 			if(house_iter->second->id == house_brush->getHouseID()) {
 				for(uint32_t i = 0; i < town_choice->GetCount(); ++i) {
@@ -178,7 +179,7 @@ bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
 				}
 			}
 		}
-	} else if(spawn_brush) {
+	} else if (whatbrush->isSpawn()) {
 		SelectExitBrush();
 	}
 	return false;

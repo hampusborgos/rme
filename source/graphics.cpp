@@ -1014,8 +1014,8 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 
 void GameSprite::DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width, int height)
 {
-	if(width == -1)  width = sz == SPRITE_SIZE_32x32? 32 : 16;
-	if(height == -1) height= sz == SPRITE_SIZE_32x32? 32 : 16;
+	if(width == -1)  width = sz == SPRITE_SIZE_32x32 ? 32 : 16;
+	if(height == -1) height= sz == SPRITE_SIZE_32x32 ? 32 : 16;
 	wxDC* sdc = getDC(sz);
 	if(sdc) {
 		dc->Blit(start_x, start_y, width, height, sdc, 0, 0, wxCOPY, true);
@@ -1056,7 +1056,7 @@ void GameSprite::Image::createGLTexture(GLuint whatid)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPRITE_PIXELS, SPRITE_PIXELS, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
 
 	delete[] rgba;
 	#undef SPRITE_SIZE
@@ -1283,15 +1283,15 @@ uint8_t* GameSprite::TemplateImage::getRGBData()
 		lookFeet = 0;
 	}
 
-	for(int y = 0; y < 32; ++y) {
-		for(int x = 0; x < 32; ++x) {
-			uint8_t& red    = rgbdata[y*32*3 + x*3 + 0];
-			uint8_t& green  = rgbdata[y*32*3 + x*3 + 1];
-			uint8_t& blue   = rgbdata[y*32*3 + x*3 + 2];
+	for(int y = 0; y < SPRITE_PIXELS; ++y) {
+		for(int x = 0; x < SPRITE_PIXELS; ++x) {
+			uint8_t& red   = rgbdata[y*SPRITE_PIXELS*3 + x*3 + 0];
+			uint8_t& green = rgbdata[y*SPRITE_PIXELS*3 + x*3 + 1];
+			uint8_t& blue  = rgbdata[y*SPRITE_PIXELS*3 + x*3 + 2];
 
-			uint8_t& tred   = template_rgbdata[y*32*3 + x*3 + 0];
-			uint8_t& tgreen = template_rgbdata[y*32*3 + x*3 + 1];
-			uint8_t& tblue  = template_rgbdata[y*32*3 + x*3 + 2];
+			uint8_t& tred   = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 0];
+			uint8_t& tgreen = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 1];
+			uint8_t& tblue  = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 2];
 
 			if(tred && tgreen && !tblue) { // yellow => head
 				colorizePixel(lookHead, red, green, blue);
@@ -1335,15 +1335,15 @@ uint8_t* GameSprite::TemplateImage::getRGBAData()
 		lookFeet = 0;
 	}
 
-	for(int y = 0; y < 32; ++y) {
-		for(int x = 0; x < 32; ++x) {
-			uint8_t& red    = rgbadata[y*32*4 + x*4 + 0];
-			uint8_t& green  = rgbadata[y*32*4 + x*4 + 1];
-			uint8_t& blue   = rgbadata[y*32*4 + x*4 + 2];
+	for(int y = 0; y < SPRITE_PIXELS; ++y) {
+		for(int x = 0; x < SPRITE_PIXELS; ++x) {
+			uint8_t& red   = rgbadata[y*SPRITE_PIXELS*4 + x*4 + 0];
+			uint8_t& green = rgbadata[y*SPRITE_PIXELS*4 + x*4 + 1];
+			uint8_t& blue  = rgbadata[y*SPRITE_PIXELS*4 + x*4 + 2];
 
-			uint8_t& tred   = template_rgbdata[y*32*3 + x*3 + 0];
-			uint8_t& tgreen = template_rgbdata[y*32*3 + x*3 + 1];
-			uint8_t& tblue  = template_rgbdata[y*32*3 + x*3 + 2];
+			uint8_t& tred   = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 0];
+			uint8_t& tgreen = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 1];
+			uint8_t& tblue  = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 2];
 
 			if(tred && tgreen && !tblue) { // yellow => head
 				colorizePixel(lookHead, red, green, blue);

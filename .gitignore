@@ -10,6 +10,7 @@ build-release
 CMakeLists.txt.user*
 
 # RME
+rme
 rme.cfg
 data/user
 

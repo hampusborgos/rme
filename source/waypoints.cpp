@@ -43,6 +43,19 @@ Waypoint* Waypoints::getWaypoint(std::string name)
 	return iter->second;
 }
 
+Waypoint* Waypoints::getWaypoint(TileLocation* location)
+{
+	if(!location)
+		return nullptr;
+	// TODO find waypoint by position hash.
+	for(WaypointMap::iterator it = waypoints.begin(); it != waypoints.end(); it++) {
+		Waypoint* waypoint = it->second;
+		if(waypoint && waypoint->pos == location->position)
+			return waypoint;
+	}
+	return nullptr;
+}
+
 void Waypoints::removeWaypoint(std::string name)
 {
 	to_lower_str(name);

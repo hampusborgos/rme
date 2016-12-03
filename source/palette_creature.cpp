@@ -104,10 +104,10 @@ Brush* CreaturePalettePanel::GetSelectedBrush() const
 		if(creature_list->GetCount() == 0) {
 			return nullptr;
 		}
-		Brush* creature_brush = reinterpret_cast<Brush*>(creature_list->GetClientData(creature_list->GetSelection()));
-		if(dynamic_cast<CreatureBrush*>(creature_brush)) {
+		Brush* brush = reinterpret_cast<Brush*>(creature_list->GetClientData(creature_list->GetSelection()));
+		if(brush && brush->isCreature()) {
 			g_gui.SetSpawnTime(creature_spawntime_spin->GetValue());
-			return creature_brush;
+			return brush;
 		}
 	} else if(spawn_brush_button->GetValue()) {
 		g_settings.setInteger(Config::CURRENT_SPAWN_RADIUS, spawn_size_spin->GetValue());
@@ -119,8 +119,10 @@ Brush* CreaturePalettePanel::GetSelectedBrush() const
 
 bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush)
 {
-	bool isCreatureBrush = dynamic_cast<const CreatureBrush*>(whatbrush)? true : false;
-	if(isCreatureBrush) {
+	if(!whatbrush)
+		return false;
+
+	if(whatbrush->isCreature()) {
 		int current_index = tileset_choice->GetSelection();
 		if(current_index != wxNOT_FOUND) {
 			const TilesetCategory* tsc = reinterpret_cast<const TilesetCategory*>(tileset_choice->GetClientData(current_index));
@@ -148,7 +150,7 @@ bool CreaturePalettePanel::SelectBrush(const Brush* whatbrush)
 				}
 			}
 		}
-	} else if(dynamic_cast<const SpawnBrush*>(whatbrush)) {
+	} else if(whatbrush->isSpawn()) {
 		SelectSpawnBrush();
 		return true;
 	}

@@ -26,69 +26,6 @@
 #include "table_brush.h"
 #include "waypoint_brush.h"
 
-MapDrawer::MapDrawer(const DrawingOptions& options, MapCanvas* canvas) : canvas(canvas), editor(canvas->editor), options(options)
-{
-	canvas->MouseToMap(&mouse_map_x, &mouse_map_y);
-	canvas->GetViewBox(&view_scroll_x, &view_scroll_y, &screensize_x, &screensize_y);
-
-	dragging = canvas->dragging;
-	dragging_draw = canvas->dragging_draw;
-
-	zoom = canvas->GetZoom();
-	tile_size = int(TILE_SIZE / zoom); // after zoom
-	floor = canvas->GetFloor();
-
-	SetupVars();
-	SetupGL();
-}
-
-void MapDrawer::SetupVars()
-{
-	if(options.show_all_floors) {
-		if(floor < 8)
-			start_z = GROUND_LAYER;
-		else
-			start_z = std::min(MAP_MAX_LAYER, floor + 2);
-	}
-	else
-		start_z = floor;
-
-	end_z = floor;
-	superend_z = (floor > GROUND_LAYER ? 8 : 0);
-
-	start_x = view_scroll_x / TILE_SIZE;
-	start_y = view_scroll_y / TILE_SIZE;
-
-	if(floor > GROUND_LAYER) {
-		start_x -= 2;
-		start_y -= 2;
-	}
-
-	end_x = start_x + screensize_x / tile_size + 2;
-	end_y = start_y + screensize_y / tile_size + 2;
-}
-
-void MapDrawer::SetupGL()
-{
-	//
-	glViewport(0, 0, screensize_x, screensize_y);
-
-	// Enable 2D mode
-	int vPort[4];
-
-	glGetIntegerv(GL_VIEWPORT, vPort);
-
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0, vPort[2]*zoom, vPort[3]*zoom, 0, -1, 1);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	glTranslatef(0.375f, 0.375f, 0.0f);
-}
-
 DrawingOptions::DrawingOptions()
 {
 	SetDefault();
@@ -146,8 +83,79 @@ void DrawingOptions::SetIngame()
 	hide_items_when_zoomed = false;
 }
 
+MapDrawer::MapDrawer(MapCanvas* canvas) : canvas(canvas), editor(canvas->editor)
+{
+	////
+}
+
 MapDrawer::~MapDrawer()
 {
+	Release();
+}
+
+void MapDrawer::SetupVars()
+{
+	canvas->MouseToMap(&mouse_map_x, &mouse_map_y);
+	canvas->GetViewBox(&view_scroll_x, &view_scroll_y, &screensize_x, &screensize_y);
+
+	dragging = canvas->dragging;
+	dragging_draw = canvas->dragging_draw;
+
+	zoom = (float)canvas->GetZoom();
+	tile_size = int(TILE_SIZE / zoom); // after zoom
+	floor = canvas->GetFloor();
+
+	if(options.show_all_floors) {
+		if(floor < 8)
+			start_z = GROUND_LAYER;
+		else
+			start_z = std::min(MAP_MAX_LAYER, floor + 2);
+	}
+	else
+		start_z = floor;
+
+	end_z = floor;
+	superend_z = (floor > GROUND_LAYER ? 8 : 0);
+
+	start_x = view_scroll_x / TILE_SIZE;
+	start_y = view_scroll_y / TILE_SIZE;
+
+	if(floor > GROUND_LAYER) {
+		start_x -= 2;
+		start_y -= 2;
+	}
+
+	end_x = start_x + screensize_x / tile_size + 2;
+	end_y = start_y + screensize_y / tile_size + 2;
+}
+
+void MapDrawer::SetupGL()
+{
+	glViewport(0, 0, screensize_x, screensize_y);
+
+	// Enable 2D mode
+	int vPort[4];
+
+	glGetIntegerv(GL_VIEWPORT, vPort);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0, vPort[2]*zoom, vPort[3]*zoom, 0, -1, 1);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glTranslatef(0.375f, 0.375f, 0.0f);
+}
+
+void MapDrawer::Release()
+{
+	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
+		delete *it;
+	}
+	tooltips.clear();
+
 	// Disable 2D mode
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
@@ -167,7 +175,8 @@ void MapDrawer::Draw()
 	DrawBrush();
 	if(options.show_grid)
 		DrawGrid();
-	DrawIngameBox();
+	if(options.show_ingame_box)
+		DrawIngameBox();
 	if(options.show_tooltips)
 		DrawTooltips();
 }
@@ -199,12 +208,15 @@ void MapDrawer::DrawMap()
 {
 	bool live_client = editor.IsLiveClient();
 
+	Brush* brush = g_gui.GetCurrentBrush();
+
 	// The current house we're drawing
 	current_house_id = 0;
-	if(HouseBrush* hb = dynamic_cast<HouseBrush*>(g_gui.GetCurrentBrush())) {
-		current_house_id = hb->getHouseID();
-	} else if(HouseExitBrush* heb = dynamic_cast<HouseExitBrush*>(g_gui.GetCurrentBrush())) {
-		current_house_id = heb->getHouseID();
+	if(brush) {
+		if(brush->isHouse())
+			current_house_id = brush->asHouse()->getHouseID();
+		else if(brush->isHouseExit())
+			current_house_id = brush->asHouseExit()->getHouseID();
 	}
 
 	// Enable texture mode
@@ -284,7 +296,7 @@ void MapDrawer::DrawMap()
 
 			if(canvas->isPasting()) {
 				normalPos = editor.copybuffer.getPosition();
-			} else if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush())) {
+			} else if(brush && brush->isDoodad()) {
 				normalPos = Position(0x8000, 0x8000, 0x8);
 			}
 
@@ -370,9 +382,6 @@ void MapDrawer::DrawMap()
 
 void MapDrawer::DrawIngameBox()
 {
-	if(!options.show_ingame_box)
-		return;
-
 	int center_x = start_x + int(screensize_x * zoom / 64);
 	int center_y = start_y + int(screensize_y * zoom / 64);
 
@@ -682,40 +691,24 @@ void MapDrawer::DrawBrush()
 	if(options.ingame)
 		return;
 
-	// This is SO NOT A GOOD WAY TO DO THINGS
 	Brush* brush = g_gui.GetCurrentBrush();
-	RAWBrush* rawbrush = dynamic_cast<RAWBrush*>(brush);
-	TerrainBrush* terrainbrush = dynamic_cast<TerrainBrush*>(brush);
-	WallBrush* wall_brush = dynamic_cast<WallBrush*>(brush);
-	TableBrush* table_brush = dynamic_cast<TableBrush*>(brush);
-	CarpetBrush* carpet_brush = dynamic_cast<CarpetBrush*>(brush);
-	DoorBrush* door_brush = dynamic_cast<DoorBrush*>(brush);
-	OptionalBorderBrush* optional_brush = dynamic_cast<OptionalBorderBrush*>(brush);
-	CreatureBrush* creature_brush = dynamic_cast<CreatureBrush*>(brush);
-	SpawnBrush* spawn_brush = dynamic_cast<SpawnBrush*>(brush);
-	HouseBrush* house_brush = dynamic_cast<HouseBrush*>(brush);
-	HouseExitBrush* house_exit_brush = dynamic_cast<HouseExitBrush*>(brush);
-	WaypointBrush* waypoint_brush = dynamic_cast<WaypointBrush*>(brush);
-	FlagBrush* flag_brush = dynamic_cast<FlagBrush*>(brush);
-	EraserBrush* eraser = dynamic_cast<EraserBrush*>(brush);
 
 	BrushColor brushColor = COLOR_BLANK;
-
-	if(terrainbrush || table_brush || carpet_brush)
+	if(brush->isTerrain() || brush->isTable() || brush->isCarpet())
 		brushColor = COLOR_BRUSH;
-	else if(house_brush)
+	else if(brush->isHouse())
 		brushColor = COLOR_HOUSE_BRUSH;
-	else if(flag_brush)
+	else if(brush->isFlag())
 		brushColor = COLOR_FLAG_BRUSH;
-	else if(spawn_brush)
+	else if(brush->isSpawn())
 		brushColor = COLOR_SPAWN_BRUSH;
-	else if(eraser)
+	else if(brush->isEraser())
 		brushColor = COLOR_ERASER;
 
 	if(dragging_draw) {
 		ASSERT(brush->canDrag());
 
-		if(wall_brush) {
+		if(brush->isWall()) {
 			int last_click_start_map_x = std::min(canvas->last_click_map_x, mouse_map_x);
 			int last_click_start_map_y = std::min(canvas->last_click_map_y, mouse_map_y);
 			int last_click_end_map_x   = std::max(canvas->last_click_map_x, mouse_map_x)+1;
@@ -760,11 +753,11 @@ void MapDrawer::DrawBrush()
 				}
 			glEnd();
 		} else {
-			if(rawbrush)
+			if(brush->isRaw())
 				glEnable(GL_TEXTURE_2D);
 
-			if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE || spawn_brush /* Spawn brush is always square */) {
-				if(rawbrush || optional_brush) {
+			if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE || brush->isSpawn() /* Spawn brush is always square */) {
+				if(brush->isRaw() || brush->isOptionalBorder()) {
 					int start_x, end_x;
 					int start_y, end_y;
 
@@ -783,14 +776,18 @@ void MapDrawer::DrawBrush()
 						end_y = mouse_map_y;
 					}
 
+					RAWBrush* raw_brush = nullptr;
+					if(brush->isRaw())
+						raw_brush = brush->asRaw();
+
 					for(int y = start_y; y <= end_y; y++) {
 						int cy = y * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
 						for(int x = start_x; x <= end_x; x++) {
 							int cx = x * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
-							if(optional_brush)
+							if(brush->isOptionalBorder())
 								glColorCheck(brush, Position(x, y, floor));
 							else
-								BlitSpriteType(cx, cy, rawbrush->getItemType()->sprite, 160, 160, 160, 160);
+								BlitSpriteType(cx, cy, raw_brush->getItemType()->sprite, 160, 160, 160, 160);
 						}
 					}
 				} else {
@@ -840,6 +837,10 @@ void MapDrawer::DrawBrush()
 				int center_x = start_x + (end_x - start_x) / 2;
 				int center_y = start_y + (end_y - start_y) / 2;
 				float radii = width / 2.0f + 0.005f;
+				
+				RAWBrush* raw_brush = nullptr;
+				if(brush->isRaw())
+					raw_brush = brush->asRaw();
 
 				for(int y = start_y-1; y <= end_y+1; y++) {
 					int cy = y * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
@@ -851,9 +852,9 @@ void MapDrawer::DrawBrush()
 						//printf("%f;%f\n", dx, dy);
 						float distance = sqrt(dx*dx + dy*dy);
 						if(distance < radii) {
-							if(rawbrush)
-								BlitSpriteType(cx, cy, rawbrush->getItemType()->sprite, 160, 160, 160, 160);
-							else {
+							if(brush->isRaw()) {
+								BlitSpriteType(cx, cy, raw_brush->getItemType()->sprite, 160, 160, 160, 160);
+							} else {
 								glColor(brushColor);
 								glBegin(GL_QUADS);
 									glVertex2f(cx, cy + TILE_SIZE);
@@ -867,11 +868,11 @@ void MapDrawer::DrawBrush()
 				}
 			}
 
-			if(rawbrush)
+			if(brush->isRaw())
 				glDisable(GL_TEXTURE_2D);
 		}
 	} else {
-		if(wall_brush) {
+		if(brush->isWall()) {
 			int start_map_x = mouse_map_x - g_gui.GetBrushSize();
 			int start_map_y = mouse_map_y - g_gui.GetBrushSize();
 			int end_map_x   = mouse_map_x + g_gui.GetBrushSize() + 1;
@@ -915,7 +916,7 @@ void MapDrawer::DrawBrush()
 					glVertex2f(start_sx, end_sy);
 				}
 			glEnd();
-		} else if(door_brush) {
+		} else if(brush->isDoor()) {
 			int cx = (mouse_map_x) * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
 			int cy = (mouse_map_y) * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
 
@@ -926,30 +927,33 @@ void MapDrawer::DrawBrush()
 				glVertex2f(cx + TILE_SIZE, cy);
 				glVertex2f(cx, cy);
 			glEnd();
-		} else if(creature_brush) {
+		} else if(brush->isCreature()) {
 			glEnable(GL_TEXTURE_2D);
 			int cy = (mouse_map_y) * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
 			int cx = (mouse_map_x) * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
+			CreatureBrush* creature_brush = brush->asCreature();
 			if(creature_brush->canDraw(&editor.map, Position(mouse_map_x, mouse_map_y, floor)))
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 255, 255, 160);
 			else
 				BlitCreature(cx, cy, creature_brush->getType()->outfit, SOUTH, 255, 64, 64, 160);
-
 			glDisable(GL_TEXTURE_2D);
-		} else if(!dynamic_cast<DoodadBrush*>(brush)) {
-			if(rawbrush) { // Textured brush
+		} else if(!brush->isDoodad()) {
+			RAWBrush* raw_brush = nullptr;
+			if(brush->isRaw()) { // Textured brush
 				glEnable(GL_TEXTURE_2D);
+				raw_brush = brush->asRaw();
 			}
+
 			for(int y = -g_gui.GetBrushSize()-1; y <= g_gui.GetBrushSize()+1; y++) {
 				int cy = (mouse_map_y + y) * TILE_SIZE - view_scroll_y - getFloorAdjustment(floor);
 				for(int x = -g_gui.GetBrushSize()-1; x <= g_gui.GetBrushSize()+1; x++) {
 					int cx = (mouse_map_x + x) * TILE_SIZE - view_scroll_x - getFloorAdjustment(floor);
 					if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE) {
 						if(x >= -g_gui.GetBrushSize() && x <= g_gui.GetBrushSize() && y >= -g_gui.GetBrushSize() && y <= g_gui.GetBrushSize()) {
-							if(rawbrush) {
-								BlitSpriteType(cx, cy, rawbrush->getItemType()->sprite, 160, 160, 160, 160);
+							if(brush->isRaw()) {
+								BlitSpriteType(cx, cy, raw_brush->getItemType()->sprite, 160, 160, 160, 160);
 							} else {
-								if(waypoint_brush || house_exit_brush || optional_brush)
+								if(brush->isWaypoint() || brush->isHouseExit() || brush->isOptionalBorder())
 									glColorCheck(brush, Position(mouse_map_x + x, mouse_map_y + y, floor));
 								else
 									glColor(brushColor);
@@ -965,11 +969,10 @@ void MapDrawer::DrawBrush()
 					} else if(g_gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
 						double distance = sqrt(double(x*x) + double(y*y));
 						if(distance < g_gui.GetBrushSize()+0.005) {
-							if(rawbrush) {
-								BlitSpriteType(cx, cy, rawbrush->getItemType()->sprite, 160, 160, 160, 160);
-							} else
-							{
-								if(waypoint_brush || house_exit_brush || optional_brush)
+							if(brush->isRaw()) {
+								BlitSpriteType(cx, cy, raw_brush->getItemType()->sprite, 160, 160, 160, 160);
+							} else {
+								if(brush->isWaypoint() || brush->isHouseExit() || brush->isOptionalBorder())
 									glColorCheck(brush, Position(mouse_map_x + x, mouse_map_y + y, floor));
 								else
 									glColor(brushColor);
@@ -985,11 +988,11 @@ void MapDrawer::DrawBrush()
 					}
 				}
 			}
-		}
-	}
 
-	if(rawbrush) { // Textured brush
-		glDisable(GL_TEXTURE_2D);
+			if(brush->isRaw()) { // Textured brush
+				glDisable(GL_TEXTURE_2D);
+			}
+		}
 	}
 }
 
@@ -1299,6 +1302,14 @@ void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 		stream << "text: " << text << "\n";
 }
 
+void MapDrawer::WriteTooltip(Waypoint* waypoint, std::ostringstream& stream)
+{
+	if (stream.tellp() > 0)
+		stream << "\n";
+
+	stream << "wp: " << waypoint->name << "\n";
+}
+
 void MapDrawer::DrawTile(TileLocation* location)
 {
 	if(!location)
@@ -1316,6 +1327,12 @@ void MapDrawer::DrawTile(TileLocation* location)
 	int map_z = location->getZ();
 
 	std::ostringstream tooltip;
+
+	if(options.show_tooltips && location->getWaypointCount() > 0) {
+		Waypoint* waypoint = canvas->editor.map.waypoints.getWaypoint(location);
+		if(waypoint)
+			WriteTooltip(waypoint, tooltip);
+	}
 
 	bool only_colors = options.show_only_colors;
 
@@ -1413,9 +1430,9 @@ void MapDrawer::DrawTile(TileLocation* location)
 				BlitCreature(draw_x, draw_y, tile->creature);
 			}
 		}
-		if(location->getWaypointCount() > 0 && options.show_houses) {
-			BlitSpriteType(draw_x, draw_y, SPRITE_FLAME_BLUE, 64, 64, 255);
-		}
+		//if(location->getWaypointCount() > 0 && options.show_houses) {
+			//BlitSpriteType(draw_x, draw_y, SPRITE_FLAME_BLUE, 64, 64, 255);
+		//}
 
 		if(tile->isHouseExit() && options.show_houses) {
 			if(tile->hasHouseExit(current_house_id)) {
@@ -1436,91 +1453,98 @@ void MapDrawer::DrawTile(TileLocation* location)
 		}
 	}
 
-	if(options.show_tooltips)
-		MakeTooltip(draw_x, draw_y, tooltip.str());
-}
-
-void MapDrawer::DrawText(int x, int y, const char* text)
-{
-	glEnable(GL_TEXTURE_2D);
-	glRasterPos2i(x, y);
-	for(const char* c = text; *c != '\0'; c++) {
-		if(*c == '\n') {
-			y += 14;
-			glRasterPos2i(x, y);
-		}
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+	if(options.show_tooltips) {
+		if(location->getWaypointCount() > 0)
+			MakeTooltip(draw_x, draw_y, tooltip.str(), 0, 255, 0);
+		else
+			MakeTooltip(draw_x, draw_y, tooltip.str());
 	}
-	glDisable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawTooltips()
 {
-	for(std::vector<MapTooltip>::const_iterator tooltip = tooltips.begin(); tooltip != tooltips.end(); ++tooltip) {
+	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
+		MapTooltip* tooltip = (*it);
 		const char* text = tooltip->text.c_str();
-		int line_width = 0;
-		int width = 2;
-		int height = 14;
+		float line_width = 0.0f;
+		float width = 2.0f;
+		float height = 14.0f;
 
 		for(const char* c = text; *c != '\0'; c++) {
 			if(*c == '\n') {
-				height += 14;
-				line_width = 0;
+				height += 14.0f;
+				line_width = 0.0f;
 			} else {
 				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
 			}
-			width = std::max<int>(width, line_width);
+			width = std::max<float>(width, line_width);
 		}
 
-		int start_sx = tooltip->x + 12 - (width / 2);
-		int start_sy = tooltip->y - height + 4;
-		int end_sx = tooltip->x + 20 + (width / 2);
-		int end_sy = tooltip->y + 9;
+		float scale = zoom < 1.0f ? zoom : 1.0f;
+		
+		width = (width + 8.0f) * scale;
+		height = (height + 4.0f) * scale;
 
-		int vertexes [9][2] = {
-			{tooltip->x,  start_sy},
-			{end_sx,      start_sy},
-			{end_sx,      end_sy},
-			{tooltip->x + 23, end_sy},
-			{tooltip->x + 16, end_sy + 7},
-			{tooltip->x +  9, end_sy},
-			{start_sx,    end_sy},
-			{start_sx,    start_sy},
-			{tooltip->x,  start_sy}
+		float x = tooltip->x + (TILE_SIZE / 2);
+		float y = tooltip->y + 8.0f;
+		float middle = width / 2.0f;
+		float padding = (7.0f * scale);
+		float startx = x - middle;
+		float endx = x + middle;
+		float starty = y - (height + padding);
+		float endy = y - padding;
+		float vertexes[8][2] = {
+			{startx,      starty},
+			{endx,        starty},
+			{endx,        endy},
+			{x + padding, endy},
+			{x,           y},
+			{x - padding, endy},
+			{startx,      endy},
+			{startx,      starty}
 		};
 
-		glColor4ub(255, 255, 225, 255);
+		// background
+		glColor4ub(tooltip->r, tooltip->g, tooltip->b, 255);
 		glBegin(GL_POLYGON);
-		for(int i = 0; i < 8; ++i)
-			glVertex2i(vertexes[i][0], vertexes[i][1]);
+		for (int i = 0; i < 8; ++i)
+			glVertex2f(vertexes[i][0], vertexes[i][1]);
 		glEnd();
 
+		// borders
 		glColor4ub(0, 0, 0, 255);
 		glLineWidth(1.0);
 		glBegin(GL_LINES);
-		for(int i = 0; i < 8; ++i) {
-			glVertex2i(vertexes[i  ][0], vertexes[i  ][1]);
-			glVertex2i(vertexes[i+1][0], vertexes[i+1][1]);
+		for (int i = 0; i < 7; ++i) {
+			glVertex2f(vertexes[i][0], vertexes[i][1]);
+			glVertex2f(vertexes[i + 1][0], vertexes[i + 1][1]);
 		}
 		glEnd();
 
-		if(zoom <= 1.0)
-			DrawText(start_sx + 3, start_sy + 14, text);
+		// text
+		if(zoom <= 1.0) {
+			startx += (3.0f * scale);
+			starty += (14.0f * scale);
+			glColor4ub(0, 0, 0, 255);
+			glRasterPos2f(startx, starty);
+			for(const char* c = text; *c != '\0'; c++) {
+				if (*c == '\n') {
+					starty += (14.0f * scale);
+					glRasterPos2f(startx, starty);
+				}
+				glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+			}
+		}
 	}
 }
 
-void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text)
+void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r, uint8_t g, uint8_t b)
 {
 	if(text.empty())
 		return;
 
-	MapTooltip tooltip;
-	tooltip.x = screenx;
-	tooltip.y = screeny;
-	tooltip.text = text;
-
-	if(tooltip.text.at(tooltip.text.size() - 1) == '\n')
-		tooltip.text.resize(tooltip.text.size() - 1);
+	MapTooltip *tooltip = newd MapTooltip(screenx, screeny, text, r, g, b);
+	tooltip->checkLineEnding();
 	tooltips.push_back(tooltip);
 }
 
@@ -1534,8 +1558,8 @@ void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
 		glReadPixels(0, screensize_y - i, screensize_x, 1, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*)(screenshot_buffer) + 3*screensize_x*i);
 }
 
-
-void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha) {
+void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha)
+{
 	if(texture_number != 0) {
 		glBindTexture(GL_TEXTURE_2D, texture_number);
 		glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));

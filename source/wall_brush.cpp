@@ -220,11 +220,10 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				if(childNode.attribute("redirect").as_bool()) {
-					WallBrush* rd = dynamic_cast<WallBrush*>(brush);
-					if(!rd) {
+					if (!brush->isWall()) {
 						warnings.push_back("Wall brush redirect link: '" + wxstr(name) + "' is not a wall brush.");
 					} else if(!redirect_to) {
-						redirect_to = rd;
+						redirect_to = brush->asWall();
 					} else {
 						warnings.push_back( "Wall brush '" + wxstr(getName()) + "' has more than one redirect link.");
 					}
@@ -376,7 +375,7 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile)
 			continue;
 		}
 		// or if it's a decoration brush.
-		if(dynamic_cast<WallDecorationBrush*>(wall_brush)) {
+		if(wall_brush->isWallDecoration()) {
 			items_to_add.push_back(wall);
 			it = tile->items.erase(it);
 			continue;
@@ -443,7 +442,8 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile)
 
 					Item* wall_decoration = *it;
 					ASSERT(wall_decoration);
-					if(WallDecorationBrush* wdb = dynamic_cast<WallDecorationBrush*>(wall_decoration->getWallBrush())) {
+					WallBrush* brush = wall_decoration->getWallBrush();
+					if (brush && brush->isWallDecoration()) {
 						// We don't know if we have changed alignment
 						if(wall_decoration->getWallAlignment() == bt) {
 							// Same, no need to change...
@@ -453,7 +453,7 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile)
 						}
 						// Not the same alignment, create newd item with correct alignment
 						uint16_t id = 0;
-						WallNode& wn = wdb->wall_items[int(bt)];
+						WallNode& wn = brush->wall_items[int(bt)];
 						if(wn.total_chance <= 0) {
 							if(wn.items.size() == 0) {
 								++it;
@@ -538,10 +538,11 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile)
 				while(it != tile->items.end()) {
 					// If we have a decoration ontop of us, we need to change it's alignment aswell!
 					Item* wall_decoration = *it;
-					if(WallDecorationBrush* wdb = dynamic_cast<WallDecorationBrush*>(wall_decoration->getWallBrush())) {
+					WallBrush* brush = wall_decoration->getWallBrush();
+					if(brush && brush->isWallDecoration()) {
 						// We know we have changed alignment, so no need to check for it again.
 						uint16_t id = 0;
-						WallNode& wn = wdb->wall_items[int(bt)];
+						WallNode& wn = brush->wall_items[int(bt)];
 						if(wn.total_chance <= 0) {
 							if(wn.items.size() == 0) {
 								++it;
@@ -651,8 +652,8 @@ void WallDecorationBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 			// Now we found something interesting.
 
 			// Is it just a decoration, like what we're trying to add?
-			WallBrush* wb = item->getWallBrush();
-			if(dynamic_cast<WallDecorationBrush*>(wb)) {
+			WallBrush* brush = item->getWallBrush();
+			if(brush && brush->isWallDecoration()) {
 				// It is, discard and advance!
 				++iter;
 				continue;
@@ -666,7 +667,7 @@ void WallDecorationBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 			int id = 0;
 			if(item->isBrushDoor()) {
 				// If it's a door
-				::DoorType doortype = wb->getDoorTypeFromID(item->getID());
+				::DoorType doortype = brush->getDoorTypeFromID(item->getID());
 				uint16_t discarded_id = 0;
 				bool close_match = false;
 				bool open = item->isOpen();
@@ -708,12 +709,9 @@ void WallDecorationBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 					continue;
 				}
 				int chance = random(1, wall_items[wall_alignment].total_chance);
-				for(std::vector<WallBrush::WallType>::const_iterator witer = wall_items[wall_alignment].items.begin();
-					witer != wall_items[wall_alignment].items.end();
-					++witer)
-				{
-					if(chance <= witer->chance) {
-						id = witer->id;
+				for(auto it = wall_items[wall_alignment].items.begin(); it != wall_items[wall_alignment].items.end(); ++it) {
+					if(chance <= it->chance) {
+						id = it->id;
 						break;
 					}
 				}
