@@ -41,6 +41,7 @@ public:
 
 	void addWaypoint(Waypoint* wp);
 	Waypoint* getWaypoint(std::string name);
+	Waypoint* getWaypoint(TileLocation* location);
 	void removeWaypoint(std::string name);
 
 	WaypointMap waypoints;

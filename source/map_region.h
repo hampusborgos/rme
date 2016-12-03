@@ -39,7 +39,8 @@ public:
 	int size() const;
 	bool empty() const;
 
-	Position getPosition() const {return position;}
+	Position getPosition() const { return position; }
+
 	int getX() const {return position.x;}
 	int getY() const {return position.y;}
 	int getZ() const {return position.z;}
@@ -55,6 +56,7 @@ public:
 
 	friend class Floor;
 	friend class QTreeNode;
+	friend class Waypoints;
 };
 
 class Floor {

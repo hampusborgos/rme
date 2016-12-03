@@ -1297,6 +1297,14 @@ void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 		stream << "text: " << text << "\n";
 }
 
+void MapDrawer::WriteTooltip(Waypoint* waypoint, std::ostringstream& stream)
+{
+	if (stream.tellp() > 0)
+		stream << "\n";
+
+	stream << "wp: " << waypoint->name << "\n";
+}
+
 void MapDrawer::DrawTile(TileLocation* location)
 {
 	if(!location)
@@ -1314,6 +1322,12 @@ void MapDrawer::DrawTile(TileLocation* location)
 	int map_z = location->getZ();
 
 	std::ostringstream tooltip;
+
+	if(options.show_tooltips && location->getWaypointCount() > 0) {
+		Waypoint* waypoint = canvas->editor.map.waypoints.getWaypoint(location);
+		if(waypoint)
+			WriteTooltip(waypoint, tooltip);
+	}
 
 	bool only_colors = options.show_only_colors;
 
@@ -1411,9 +1425,9 @@ void MapDrawer::DrawTile(TileLocation* location)
 				BlitCreature(draw_x, draw_y, tile->creature);
 			}
 		}
-		if(location->getWaypointCount() > 0 && options.show_houses) {
-			BlitSpriteType(draw_x, draw_y, SPRITE_FLAME_BLUE, 64, 64, 255);
-		}
+		//if(location->getWaypointCount() > 0 && options.show_houses) {
+			//BlitSpriteType(draw_x, draw_y, SPRITE_FLAME_BLUE, 64, 64, 255);
+		//}
 
 		if(tile->isHouseExit() && options.show_houses) {
 			if(tile->hasHouseExit(current_house_id)) {
@@ -1434,14 +1448,19 @@ void MapDrawer::DrawTile(TileLocation* location)
 		}
 	}
 
-	if(options.show_tooltips)
-		MakeTooltip(draw_x, draw_y, tooltip.str());
+	if(options.show_tooltips) {
+		if(location->getWaypointCount() > 0)
+			MakeTooltip(draw_x, draw_y, tooltip.str(), 0, 255, 0);
+		else
+			MakeTooltip(draw_x, draw_y, tooltip.str());
+	}
 }
 
 void MapDrawer::DrawTooltips()
 {
 	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
-		const char* text = (*it)->text.c_str();
+		MapTooltip* tooltip = (*it);
+		const char* text = tooltip->text.c_str();
 		float line_width = 0.0f;
 		float width = 2.0f;
 		float height = 14.0f;
@@ -1461,8 +1480,8 @@ void MapDrawer::DrawTooltips()
 		width = (width + 8.0f) * scale;
 		height = (height + 4.0f) * scale;
 
-		float x = (*it)->x + (TILE_SIZE / 2);
-		float y = (*it)->y + 8.0f;
+		float x = tooltip->x + (TILE_SIZE / 2);
+		float y = tooltip->y + 8.0f;
 		float middle = width / 2.0f;
 		float padding = (7.0f * scale);
 		float startx = x - middle;
@@ -1481,7 +1500,7 @@ void MapDrawer::DrawTooltips()
 		};
 
 		// background
-		glColor4ub(255, 255, 255, 255);
+		glColor4ub(tooltip->r, tooltip->g, tooltip->b, 255);
 		glBegin(GL_POLYGON);
 		for (int i = 0; i < 8; ++i)
 			glVertex2f(vertexes[i][0], vertexes[i][1]);
@@ -1514,12 +1533,12 @@ void MapDrawer::DrawTooltips()
 	}
 }
 
-void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text)
+void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r, uint8_t g, uint8_t b)
 {
 	if(text.empty())
 		return;
 
-	MapTooltip *tooltip = newd MapTooltip(screenx, screeny, text);
+	MapTooltip *tooltip = newd MapTooltip(screenx, screeny, text, r, g, b);
 	tooltip->checkLineEnding();
 	tooltips.push_back(tooltip);
 }
