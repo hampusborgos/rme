@@ -327,7 +327,7 @@ CarpetBrush* Item::getCarpetBrush() const
 DoorBrush* Item::getDoorBrush() const
 {
 	ItemType& item_type = g_items.getItemType(id);
-	if(!item_type.isWall || !item_type.isBrushDoor || !item_type.brush || !item_type.brush->isDoor()) {
+	if(!item_type.isWall || !item_type.isBrushDoor || !item_type.brush || !item_type.brush->isWall()) {
 		return nullptr;
 	}
 

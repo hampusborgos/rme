@@ -1725,7 +1725,8 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 			if(tile) {
 				Tile* new_tile = tile->deepCopy(map);
 				// Wall cleaning is exempt from automagic
-				new_tile->cleanWalls(brush->isWall());
+				if(brush->isWall())
+					new_tile->cleanWalls(brush->asWall());
 				if(dodraw)
 					door_brush->draw(&map, new_tile, &alt);
 				else
