@@ -299,7 +299,7 @@ public:
 	void SaveCurrentMap(FileName filename, bool showdialog); // "" means default filename
 	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(""), showdialog);}
 	bool NewMap();
-	bool LoadMap(FileName fn);
+	bool LoadMap(const FileName& fileName);
 
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);

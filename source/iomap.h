@@ -39,8 +39,8 @@ protected:
 	wxString errorstr;
 
 	bool queryUser(const wxString& title, const wxString& format);
-	void warning(const wxString& format, ...);
-	void error(const wxString& format, ...);
+	void warning(const wxString format, ...);
+	void error(const wxString format, ...);
 public:
 	IOMap() {
 		version.otbm = MAP_OTBM_1;

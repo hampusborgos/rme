@@ -50,8 +50,6 @@ public:
 private:
 	Position copyPos;
 	BaseMap* tiles;
-	unsigned char* serialized;
-	size_t serialized_size;
 };
 
 #endif

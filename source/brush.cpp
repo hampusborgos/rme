@@ -549,13 +549,11 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 
 			item = *item_iter;
 			if(item->isWall()) {
-				if(WallDecorationBrush* wdb = dynamic_cast<WallDecorationBrush*>(item->getWallBrush())) {
+				WallBrush* brush = item->getWallBrush();
+				if(brush && brush->isWallDecoration()) {
 					// We got a decoration!
-					for(std::vector<WallBrush::DoorType>::iterator iter = wdb->door_items[wall_alignment].begin();
-							iter != wdb->door_items[wall_alignment].end();
-							++iter)
-					{
-						WallBrush::DoorType& dt = *iter;
+					for (std::vector<WallBrush::DoorType>::iterator it = brush->door_items[wall_alignment].begin(); it != brush->door_items[wall_alignment].end(); ++it) {
+						WallBrush::DoorType& dt = (*it);
 						if(dt.type == doortype) {
 							ASSERT(dt.id);
 							ItemType& it = g_items[dt.id];
