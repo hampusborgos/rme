@@ -1463,21 +1463,26 @@ void MapDrawer::DrawTile(TileLocation* location)
 
 void MapDrawer::DrawTooltips()
 {
+	const int MAX_LINE_CHARS = 40;
+
 	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
 		MapTooltip* tooltip = (*it);
 		const char* text = tooltip->text.c_str();
 		float line_width = 0.0f;
 		float width = 2.0f;
 		float height = 14.0f;
+		int char_count = 0;
 
 		for(const char* c = text; *c != '\0'; c++) {
-			if(*c == '\n') {
+			if(*c == '\n' || (char_count >= MAX_LINE_CHARS && *c == ' ')) {
 				height += 14.0f;
 				line_width = 0.0f;
+				char_count = 0;
 			} else {
 				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
 			}
 			width = std::max<float>(width, line_width);
+			char_count++;
 		}
 
 		float scale = zoom < 1.0f ? zoom : 1.0f;
@@ -1485,29 +1490,35 @@ void MapDrawer::DrawTooltips()
 		width = (width + 8.0f) * scale;
 		height = (height + 4.0f) * scale;
 
-		float x = tooltip->x + (TILE_SIZE / 2);
-		float y = tooltip->y + 8.0f;
+		float x = tooltip->x + (TILE_SIZE / 2.0f);
+		float y = tooltip->y + ((TILE_SIZE / 2.0f) * scale);
 		float middle = width / 2.0f;
 		float padding = (7.0f * scale);
 		float startx = x - middle;
 		float endx = x + middle;
 		float starty = y - (height + padding);
 		float endy = y - padding;
+
+		// 0--------1
+		// |        |
+		// 6--5  3--2
+		//     \/
+		//     4
 		float vertexes[8][2] = {
-			{startx,      starty},
-			{endx,        starty},
-			{endx,        endy},
-			{x + padding, endy},
-			{x,           y},
-			{x - padding, endy},
-			{startx,      endy},
-			{startx,      starty}
+			{startx,      starty}, // 0
+			{endx,        starty}, // 1
+			{endx,        endy},   // 2
+			{x + padding, endy},   // 3
+			{x,           y},      // 4
+			{x - padding, endy},   // 5
+			{startx,      endy},   // 6
+			{startx,      starty}  // 0
 		};
 
 		// background
 		glColor4ub(tooltip->r, tooltip->g, tooltip->b, 255);
 		glBegin(GL_POLYGON);
-		for (int i = 0; i < 8; ++i)
+		for(int i = 0; i < 7; ++i)
 			glVertex2f(vertexes[i][0], vertexes[i][1]);
 		glEnd();
 
@@ -1515,7 +1526,7 @@ void MapDrawer::DrawTooltips()
 		glColor4ub(0, 0, 0, 255);
 		glLineWidth(1.0);
 		glBegin(GL_LINES);
-		for (int i = 0; i < 7; ++i) {
+		for(int i = 0; i < 7; ++i) {
 			glVertex2f(vertexes[i][0], vertexes[i][1]);
 			glVertex2f(vertexes[i + 1][0], vertexes[i + 1][1]);
 		}
@@ -1527,12 +1538,15 @@ void MapDrawer::DrawTooltips()
 			starty += (14.0f * scale);
 			glColor4ub(0, 0, 0, 255);
 			glRasterPos2f(startx, starty);
+			char_count = 0;
 			for(const char* c = text; *c != '\0'; c++) {
-				if (*c == '\n') {
+				if(*c == '\n' || (char_count >= MAX_LINE_CHARS && *c == ' ')) {
 					starty += (14.0f * scale);
 					glRasterPos2f(startx, starty);
+					char_count = 0;
 				}
 				glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+				char_count++;
 			}
 		}
 	}
