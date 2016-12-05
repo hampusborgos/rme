@@ -29,6 +29,7 @@ class Creature;
 class MapWindow;
 class MapPopupMenu;
 class AnimationTimer;
+class MapDrawer;
 
 class MapCanvas : public wxGLCanvas {
 public:
@@ -116,6 +117,8 @@ protected:
 
 private:
 	Editor& editor;
+	MapDrawer *drawer;
+
 // View related
 	int floor;
 	double zoom;

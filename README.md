@@ -37,7 +37,7 @@ Compiling
 First make sure that you have the necessary compiling, if any library is missing then you need to find it and install in your linux by yourself, required libraries are:
 
 * wxWidgets >= 3.1
-* Boost >= 1.34.0
+* Boost >= 1.55.0
 
 ### Windows
 ==============
@@ -52,7 +52,7 @@ For more details you can follow [this tutorial](http://otland.net/threads/compil
 ```bash
 
 # Installing dependencies
-sudo apt-get install git libboost-system-dev libboost-thread-dev libglu1-mesa-dev libwxgtk3.0-dev libarchive-dev cmake
+sudo apt-get install git libboost-system-dev libboost-thread-dev libglu1-mesa-dev libwxgtk3.0-dev libarchive-dev freeglut3 cmake
 
 # Clone the project
 git clone https://github.com/hjnilsson/rme.git

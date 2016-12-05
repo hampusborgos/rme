@@ -120,12 +120,14 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 {
 	popup_menu = newd MapPopupMenu(editor);
 	animation_timer = newd AnimationTimer(this);
+	drawer = new MapDrawer(this);
 }
 
 MapCanvas::~MapCanvas()
 {
 	delete popup_menu;
 	delete animation_timer;
+	delete drawer;
 	free(screenshot_buffer);
 }
 
@@ -167,13 +169,11 @@ void MapCanvas::GetViewBox(int* view_scroll_x, int* view_scroll_y, int* screensi
 
 void MapCanvas::OnPaint(wxPaintEvent& event)
 {
-	wxPaintDC pdc(this);
-
 	SetCurrent(*g_gui.GetGLContext(this));
 
 	if(g_gui.IsRenderingEnabled()) {
-		DrawingOptions options;
-		if(screenshot_buffer != nullptr) {
+		DrawingOptions& options = drawer->getOptions();
+		if(screenshot_buffer) {
 			options.SetIngame();
 		} else {
 			options.transparent_floors = g_settings.getBoolean(Config::TRANSPARENT_FLOORS);
@@ -190,6 +190,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.show_items = g_settings.getBoolean(Config::SHOW_ITEMS);
 			options.highlight_items = g_settings.getBoolean(Config::HIGHLIGHT_ITEMS);
 			options.show_blocking = g_settings.getBoolean(Config::SHOW_BLOCKING);
+			options.show_tooltips = g_settings.getBoolean(Config::SHOW_TOOLTIPS);
 			options.show_only_colors = g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
 			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
 			options.show_preview = g_settings.getBoolean(Config::SHOW_PREVIEW);
@@ -203,11 +204,14 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 		else
 			animation_timer->Stop();
 
-		MapDrawer drawer(options, this, pdc);
-		drawer.Draw();
+		drawer->SetupVars();
+		drawer->SetupGL();
+		drawer->Draw();
 
-		if(screenshot_buffer != nullptr)
-			drawer.TakeScreenshot(screenshot_buffer);
+		if(screenshot_buffer)
+			drawer->TakeScreenshot(screenshot_buffer);
+
+		drawer->Release();
 	}
 
 	// Clean unused textures
