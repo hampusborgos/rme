@@ -1,11 +1,7 @@
 
 #include "main.h"
 
-#ifdef __APPLE__
 #include <GLUT/glut.h>
-#else
-#include <glut.h>
-#endif
 
 #include "editor.h"
 #include "gui.h"
