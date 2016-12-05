@@ -949,17 +949,23 @@ void MapDrawer::DrawBrush()
 							if(brush->isRaw()) {
 								BlitSpriteType(cx, cy, raw_brush->getItemType()->sprite, 160, 160, 160, 160);
 							} else {
-								if(brush->isWaypoint() || brush->isHouseExit() || brush->isOptionalBorder())
-									glColorCheck(brush, Position(mouse_map_x + x, mouse_map_y + y, floor));
-								else
-									glColor(brushColor);
+								if(brush->isWaypoint()) {
+									uint8_t r, g, b;
+									getColor(brush, Position(mouse_map_x + x, mouse_map_y + y, floor), r, g, b);
+									DrawBrushIndicator(cx, cy, brush, r, g, b);
+								} else {
+									if(brush->isHouseExit() || brush->isOptionalBorder())
+										glColorCheck(brush, Position(mouse_map_x + x, mouse_map_y + y, floor));
+									else
+										glColor(brushColor);
 
-								glBegin(GL_QUADS);
-									glVertex2f(cx, cy + TILE_SIZE);
-									glVertex2f(cx + TILE_SIZE, cy + TILE_SIZE);
-									glVertex2f(cx + TILE_SIZE, cy);
-									glVertex2f(cx, cy);
-								glEnd();
+									glBegin(GL_QUADS);
+										glVertex2f(cx, cy + TILE_SIZE);
+										glVertex2f(cx + TILE_SIZE, cy + TILE_SIZE);
+										glVertex2f(cx + TILE_SIZE, cy);
+										glVertex2f(cx, cy);
+									glEnd();
+								}
 							}
 						}
 					} else if(g_gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
@@ -968,17 +974,23 @@ void MapDrawer::DrawBrush()
 							if(brush->isRaw()) {
 								BlitSpriteType(cx, cy, raw_brush->getItemType()->sprite, 160, 160, 160, 160);
 							} else {
-								if(brush->isWaypoint() || brush->isHouseExit() || brush->isOptionalBorder())
-									glColorCheck(brush, Position(mouse_map_x + x, mouse_map_y + y, floor));
-								else
-									glColor(brushColor);
+								if(brush->isWaypoint()) {
+									uint8_t r, g, b;
+									getColor(brush, Position(mouse_map_x + x, mouse_map_y + y, floor), r, g, b);
+									DrawBrushIndicator(cx, cy, brush, r, g, b);
+								} else {
+									if(brush->isHouseExit() || brush->isOptionalBorder())
+										glColorCheck(brush, Position(mouse_map_x + x, mouse_map_y + y, floor));
+									else
+										glColor(brushColor);
 
-								glBegin(GL_QUADS);
-									glVertex2f(cx, cy + TILE_SIZE);
-									glVertex2f(cx + TILE_SIZE, cy + TILE_SIZE);
-									glVertex2f(cx + TILE_SIZE, cy);
-									glVertex2f(cx, cy);
-								glEnd();
+									glBegin(GL_QUADS);
+										glVertex2f(cx, cy + TILE_SIZE);
+										glVertex2f(cx + TILE_SIZE, cy + TILE_SIZE);
+										glVertex2f(cx + TILE_SIZE, cy);
+										glVertex2f(cx, cy);
+									glEnd();
+								}
 							}
 						}
 					}
@@ -1302,7 +1314,6 @@ void MapDrawer::WriteTooltip(Waypoint* waypoint, std::ostringstream& stream)
 {
 	if (stream.tellp() > 0)
 		stream << "\n";
-
 	stream << "wp: " << waypoint->name << "\n";
 }
 
@@ -1457,6 +1468,56 @@ void MapDrawer::DrawTile(TileLocation* location)
 	}
 }
 
+void MapDrawer::DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b)
+{
+	x += (TILE_SIZE / 2);
+	y += (TILE_SIZE / 2);
+
+	// 7----0----1
+	// |         |
+	// 6--5  3--2
+	//     \/
+	//     4
+	static int vertexes[9][2] = {
+		{-15, -20},  // 0
+		{ 15, -20},  // 1
+		{ 15, -5},   // 2
+		{ 5,  -5},   // 3
+		{ 0,   0},   // 4
+		{-5,  -5},   // 5
+		{-15, -5},   // 6
+		{-15, -20},  // 7
+		{-15, -20},  // 0
+	};
+
+	// circle
+	glBegin(GL_TRIANGLE_FAN);
+	glColor4ub(0x00, 0x00, 0x00, 0x50);
+	glVertex2i(x, y);
+	for(int i = 0; i <= 30; i++) {
+		float angle = i * 2.0f * PI / 30;
+		glVertex2f(cos(angle) * (TILE_SIZE / 2) + x, sin(angle) * (TILE_SIZE / 2) + y);
+	}
+	glEnd();
+
+	// background
+	glColor4ub(r, g, b, 0xB4);
+	glBegin(GL_POLYGON);
+	for(int i = 0; i < 8; ++i)
+		glVertex2i(vertexes[i][0] + x, vertexes[i][1] + y);
+	glEnd();
+
+	// borders
+	glColor4ub(0x00, 0x00, 0x00, 0xB4);
+	glLineWidth(1.0);
+	glBegin(GL_LINES);
+	for(int i = 0; i < 8; ++i) {
+		glVertex2i(vertexes[i][0] + x, vertexes[i][1] + y);
+		glVertex2i(vertexes[i + 1][0] + x, vertexes[i + 1][1] + y);
+	}
+	glEnd();
+}
+
 void MapDrawer::DrawTooltips()
 {
 	const int MAX_LINE_CHARS = 40;
@@ -1557,6 +1618,19 @@ void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text, u
 	MapTooltip *tooltip = newd MapTooltip(screenx, screeny, text, r, g, b);
 	tooltip->checkLineEnding();
 	tooltips.push_back(tooltip);
+}
+
+void MapDrawer::getColor(Brush* brush, const Position& position, uint8_t &r, uint8_t &g, uint8_t &b)
+{
+	if(brush->canDraw(&editor.map, position)) {
+		if(brush->isWaypoint()) {
+			r = 0x00; g = 0xff, b = 0x00;
+		} else {
+			r = 0x00; g = 0x00, b = 0xff;
+		}
+	} else {
+		r = 0xff; g = 0x00, b = 0x00;
+	}
 }
 
 void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
