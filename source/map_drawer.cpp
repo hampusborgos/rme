@@ -1492,33 +1492,34 @@ void MapDrawer::DrawTooltips()
 
 		float x = tooltip->x + (TILE_SIZE / 2.0f);
 		float y = tooltip->y + ((TILE_SIZE / 2.0f) * scale);
-		float middle = width / 2.0f;
-		float padding = (7.0f * scale);
-		float startx = x - middle;
-		float endx = x + middle;
-		float starty = y - (height + padding);
-		float endy = y - padding;
+		float center = width / 2.0f;
+		float space = (7.0f * scale);
+		float startx = x - center;
+		float endx = x + center;
+		float starty = y - (height + space);
+		float endy = y - space;
 
-		// 0--------1
-		// |        |
+		// 7----0----1
+		// |         |
 		// 6--5  3--2
 		//     \/
 		//     4
-		float vertexes[8][2] = {
-			{startx,      starty}, // 0
-			{endx,        starty}, // 1
-			{endx,        endy},   // 2
-			{x + padding, endy},   // 3
-			{x,           y},      // 4
-			{x - padding, endy},   // 5
-			{startx,      endy},   // 6
-			{startx,      starty}  // 0
+		float vertexes[9][2] = {
+			{x,         starty}, // 0
+			{endx,      starty}, // 1
+			{endx,      endy},   // 2
+			{x + space, endy},   // 3
+			{x,         y},      // 4
+			{x - space, endy},   // 5
+			{startx,    endy},   // 6
+			{startx,    starty}, // 7
+			{x,         starty}, // 0
 		};
 
 		// background
 		glColor4ub(tooltip->r, tooltip->g, tooltip->b, 255);
 		glBegin(GL_POLYGON);
-		for(int i = 0; i < 7; ++i)
+		for(int i = 0; i < 8; ++i)
 			glVertex2f(vertexes[i][0], vertexes[i][1]);
 		glEnd();
 
@@ -1526,7 +1527,7 @@ void MapDrawer::DrawTooltips()
 		glColor4ub(0, 0, 0, 255);
 		glLineWidth(1.0);
 		glBegin(GL_LINES);
-		for(int i = 0; i < 7; ++i) {
+		for(int i = 0; i < 8; ++i) {
 			glVertex2f(vertexes[i][0], vertexes[i][1]);
 			glVertex2f(vertexes[i + 1][0], vertexes[i + 1][1]);
 		}
