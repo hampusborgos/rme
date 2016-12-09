@@ -1,7 +1,11 @@
 
 #include "main.h"
 
-#include <GLUT/glut.h>
+#ifdef __LINUX__
+	#include <GL/glut.h>
+#else
+	#include <GLUT/glut.h>
+#endif
 
 #include "editor.h"
 #include "gui.h"
@@ -833,7 +837,7 @@ void MapDrawer::DrawBrush()
 				int center_x = start_x + (end_x - start_x) / 2;
 				int center_y = start_y + (end_y - start_y) / 2;
 				float radii = width / 2.0f + 0.005f;
-				
+
 				RAWBrush* raw_brush = nullptr;
 				if(brush->isRaw())
 					raw_brush = brush->asRaw();
@@ -1543,7 +1547,7 @@ void MapDrawer::DrawTooltips()
 		}
 
 		float scale = zoom < 1.0f ? zoom : 1.0f;
-		
+
 		width = (width + 8.0f) * scale;
 		height = (height + 4.0f) * scale;
 
