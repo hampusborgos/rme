@@ -36,7 +36,7 @@ Compiling
 
 First make sure that you have the necessary compiling, if any library is missing then you need to find it and install in your linux by yourself, required libraries are:
 
-* wxWidgets >= 3.1
+* wxWidgets >= 3.0
 * Boost >= 1.55.0
 
 ### Windows

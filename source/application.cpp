@@ -375,8 +375,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	// Receive idle events
 	SetExtraStyle(wxWS_EX_PROCESS_IDLE);
 
-	// Make sure ShowFullScreen() uses the full screen API on macOS
-	EnableFullScreenView(true);
+	#if wxCHECK_VERSION(3, 1, 0) //3.1.0 or higher
+		// Make sure ShowFullScreen() uses the full screen API on macOS
+		EnableFullScreenView(true);
+	#endif
 
 	// Creates the file-dropdown menu
 	menu_bar = newd MainMenuBar(this);
