@@ -210,13 +210,17 @@ wxString GUI::GetExtensionsDirectory()
 
 void GUI::discoverDataDirectory(const wxString& existentFile)
 {
+	wxString currentDir = wxGetCwd();
+	wxString execDir = GetExecDirectory();
+
 	wxString possiblePaths[] = {
-		GetExecDirectory(),
-		wxGetCwd() + "/",
+		execDir,
+		currentDir + "/",
 
 		// these are used usually when running from build directories
-		GetExecDirectory() + "/../",
-		wxGetCwd() + "/../",
+		execDir + "/../",
+		execDir + "/../../",
+		currentDir + "/../",
 	};
 
 	bool found = false;
