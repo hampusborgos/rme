@@ -33,6 +33,7 @@ class Creature;
 class MainFrame;
 class MapWindow;
 class wxEventLoopBase;
+class wxSingleInstanceChecker;
 
 class Application : public wxApp
 {
@@ -54,7 +55,8 @@ private:
 	virtual void OnFatalException();
 
 #ifdef _USE_PROCESS_COM
-	RMEProcessServer* proc_server;
+	RMEProcessServer* m_proc_server;
+	wxSingleInstanceChecker* m_single_instance_checker;
 #endif
 
 };

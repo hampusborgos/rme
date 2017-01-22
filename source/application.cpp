@@ -36,6 +36,8 @@
 #include "complexitem.h"
 #include "creature.h"
 
+#include <wx/snglinst.h>
+
 #ifdef __LINUX__
 #include <GL/glut.h>
 #endif
@@ -123,39 +125,26 @@ bool Application::OnInit()
 	ClientVersion::loadVersions();
 
 #ifdef _USE_PROCESS_COM
-	proc_server = nullptr;
-	// Setup inter-process communice!
-	if(g_settings.getInteger(Config::ONLY_ONE_INSTANCE)) {
-		{
-			// Prevents WX from complaining 'bout there being no server.
-			wxLogNull nolog;
-
-			RMEProcessClient client;
-			wxConnectionBase* n_connection = client.MakeConnection("localhost", "rme_host", "rme_talk");
-			if(n_connection) {
-				RMEProcessConnection* connection = dynamic_cast<RMEProcessConnection*>(n_connection);
-				ASSERT(connection);
-				wxString filePath;
-				if(ParseCommandLineMap(filePath))
-				{
-					connection->AskToLoad(FileName(filePath));
-					connection->Disconnect();
-#if defined __DEBUG_MODE__ && defined __WINDOWS__
-					g_gui.SaveHotkeys();
-					g_settings.save(true);
-#endif
-					return false;
-				}
-				connection->Disconnect();
+	m_single_instance_checker = newd wxSingleInstanceChecker;
+	if (g_settings.getInteger(Config::ONLY_ONE_INSTANCE) && m_single_instance_checker->IsAnotherRunning()) {
+		RMEProcessClient client;
+		wxConnectionBase* connection = client.MakeConnection("localhost", "rme_host", "rme_talk");
+		if (connection) {
+			wxString fileName;
+			if (ParseCommandLineMap(fileName)) {
+				wxLogNull nolog; //We might get a timeout message if the file fails to open on the running instance. Let's not show that message.
+				connection->Execute(fileName);
 			}
+			connection->Disconnect();
+			wxDELETE(connection);
 		}
-		// We act as server then
-		proc_server = newd RMEProcessServer();
-		if(!proc_server->Create("rme_host")) {
-			// Another instance running!
-			delete proc_server;
-			proc_server = nullptr;
-		}
+		wxDELETE(m_single_instance_checker);
+		return false;
+	}
+	// We act as server then
+	m_proc_server = newd RMEProcessServer();
+	if(!m_proc_server->Create("rme_host")) {
+		wxLogWarning("Could not register IPC service!");
 	}
 #endif
 
@@ -360,7 +349,8 @@ void Application::Unload()
 int Application::OnExit()
 {
 #ifdef _USE_PROCESS_COM
-	delete proc_server;
+	wxDELETE(m_proc_server);
+	wxDELETE(m_single_instance_checker);
 #endif
 	return 1;
 }

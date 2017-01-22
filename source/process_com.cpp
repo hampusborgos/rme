@@ -24,7 +24,8 @@
 #include "gui.h"
 #include "process_com.h"
 
-// Server!
+
+//Server
 
 RMEProcessServer::RMEProcessServer()
 {
@@ -38,13 +39,16 @@ RMEProcessServer::~RMEProcessServer()
 
 wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic)
 {
-	if(topic == "rme_talk") {
+	if(topic.Lower() == "rme_talk") {
+		g_gui.root->Iconize(false);
+		g_gui.root->Raise();
 		return newd RMEProcessConnection();
 	}
 	return nullptr;
 }
 
-// Client!
+
+//Client
 
 RMEProcessClient::RMEProcessClient() : proc(nullptr)
 {
@@ -61,7 +65,8 @@ wxConnectionBase* RMEProcessClient::OnMakeConnection()
 	return proc = newd RMEProcessConnection();
 }
 
-// Connection
+
+//Connection
 
 RMEProcessConnection::RMEProcessConnection() : wxConnection()
 {
@@ -73,23 +78,13 @@ RMEProcessConnection::~RMEProcessConnection()
 	////
 }
 
-bool RMEProcessConnection::OnPoke(const wxString& topic, const wxString& item, wxChar* data, int size, wxIPCFormat format)
+bool RMEProcessConnection::OnExec(const wxString& topic, const wxString& fileName)
 {
-	if(topic == "rme_talk" && item == "map_open") {
-		std::string s(reinterpret_cast<char*>(data), size);
-		g_gui.LoadMap(FileName(wxString(s.c_str(), wxConvUTF8)));
+	if(topic.Lower() == "rme_talk" && fileName != wxEmptyString) {
+		g_gui.LoadMap(FileName(fileName));
 		return true;
 	}
 	return false;
-}
-
-void RMEProcessConnection::AskToLoad(FileName map)
-{
-	std::string maps = (const char*)map.GetFullPath().mb_str(wxConvUTF8);
-	char* c = newd char[maps.length()];
-	memcpy(c, maps.c_str(), maps.length());
-	Poke("map_open", reinterpret_cast<wxChar*>(c), maps.length());
-	delete[] c;
 }
 
 #endif
