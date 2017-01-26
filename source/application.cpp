@@ -125,7 +125,7 @@ bool Application::OnInit()
 	ClientVersion::loadVersions();
 
 #ifdef _USE_PROCESS_COM
-	m_single_instance_checker = newd wxSingleInstanceChecker;
+	m_single_instance_checker = newd wxSingleInstanceChecker; //Instance checker has to stay alive throughout the applications lifetime
 	if (g_settings.getInteger(Config::ONLY_ONE_INSTANCE) && m_single_instance_checker->IsAnotherRunning()) {
 		RMEProcessClient client;
 		wxConnectionBase* connection = client.MakeConnection("localhost", "rme_host", "rme_talk");
@@ -139,7 +139,7 @@ bool Application::OnInit()
 			wxDELETE(connection);
 		}
 		wxDELETE(m_single_instance_checker);
-		return false;
+		return false; //Since we return false - OnExit is never called
 	}
 	// We act as server then
 	m_proc_server = newd RMEProcessServer();
