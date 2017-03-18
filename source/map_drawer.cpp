@@ -4,7 +4,7 @@
 #ifdef __LINUX__
 	#include <GL/glut.h>
 #else
-	#include <glut.h>
+	#include <GLUT/glut.h>
 #endif
 
 #include "editor.h"

@@ -18,7 +18,7 @@
 #ifndef RME_LUA_SCRIPT_H_
 #define RME_LUA_SCRIPT_H_
 
-#include <lua.hpp>
+#include <luajit/lua.hpp>
 #include "gui.h"
 #include "map.h"
 

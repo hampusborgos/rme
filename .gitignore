@@ -5,9 +5,12 @@ cmake_install.cmake
 Makefile
 build/
 build.*/
+build-debug
+build-release
 CMakeLists.txt.user*
 
 # RME
+rme
 rme.cfg
 data/user
 
@@ -26,9 +29,11 @@ vcproj/ipch/
 vcproj/Beta Release/
 vcproj/Debug/
 vcproj/Release/
+vcproj/x64/
 vcproj/Project/Beta Release/
 vcproj/Project/Debug/
 vcproj/Project/Release/
+vcproj/Project/x64/
 vcproj/Installer/Beta Release/
 vcproj/Installer/Debug/
 vcproj/Installer/Release/

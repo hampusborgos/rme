@@ -94,8 +94,8 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <archive.h>
 #include <archive_entry.h>
 #else
-#include <archive.h>
-#include <archive_entry.h>
+#include <libarchive/archive.h>
+#include <libarchive/archive_entry.h>
 #endif
 #endif
 
