@@ -20,8 +20,6 @@
 #ifndef RME_HOUSE_H_
 #define RME_HOUSE_H_
 
-
-
 #include "position.h"
 
 class Map;

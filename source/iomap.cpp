@@ -20,7 +20,7 @@
 #include "main.h"
 #include "gui.h"
 
-void IOMap::error(const wxChar* format, ...)
+void IOMap::error(const wxString format, ...)
 {
 	va_list argp;
 	va_start(argp, format);
@@ -28,7 +28,7 @@ void IOMap::error(const wxChar* format, ...)
 	va_end(argp);
 };
 
-void IOMap::warning(const wxChar* format, ...)
+void IOMap::warning(const wxString format, ...)
 {
 	wxString s;
 	va_list argp;
@@ -38,7 +38,7 @@ void IOMap::warning(const wxChar* format, ...)
 	warnings.push_back(s);
 };
 
-bool IOMap::queryUser(const wxChar* title, const wxChar* text)
+bool IOMap::queryUser(const wxString& title, const wxString& text)
 {
 	return g_gui.PopupDialog(title, text, wxYES | wxNO) == wxID_YES;
 }

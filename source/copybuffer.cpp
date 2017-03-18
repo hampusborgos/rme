@@ -61,7 +61,7 @@ void CopyBuffer::clear()
 void CopyBuffer::copy(Editor& editor, int floor)
 {
 	if(editor.selection.size() == 0) {
-		g_gui.SetStatusText(wxT("No tiles to copy."));
+		g_gui.SetStatusText("No tiles to copy.");
 		return;
 	}
 
@@ -115,7 +115,7 @@ void CopyBuffer::copy(Editor& editor, int floor)
 void CopyBuffer::cut(Editor& editor, int floor)
 {
 	if(editor.selection.size() == 0) {
-		g_gui.SetStatusText(wxT("No tiles to cut."));
+		g_gui.SetStatusText("No tiles to cut.");
 		return;
 	}
 

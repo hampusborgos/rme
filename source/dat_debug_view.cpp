@@ -76,7 +76,7 @@ DatDebugView::DatDebugView(wxWindow* parent) : wxPanel(parent)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	search_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize);
+	search_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	search_field->SetFocus();
 	sizer->Add(search_field, 0, wxEXPAND, 2);
 

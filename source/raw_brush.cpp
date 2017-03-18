@@ -15,7 +15,7 @@
 RAWBrush::RAWBrush(uint16_t itemid) :
 	Brush()
 {
-	ItemType& it = item_db[itemid];
+	ItemType& it = g_items[itemid];
 	if(it.id == 0)
 		itemtype = nullptr;
 	else

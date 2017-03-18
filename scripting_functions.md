@@ -36,6 +36,7 @@ editor:getTile(position)
 editor:createSelection(start, end)
 editor:selectTiles(tiles)
 editor:getSelection()
+editor:getItemCount(itemid)
 
 Tile(x, y, z)
 Tile(position)

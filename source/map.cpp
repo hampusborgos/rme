@@ -148,7 +148,7 @@ bool Map::convert(MapVersion to, bool showdialog)
 bool Map::convert(const ConversionMap& rm, bool showdialog)
 {
 	if(showdialog)
-		g_gui.CreateLoadBar(wxT("Converting map ..."));
+		g_gui.CreateLoadBar("Converting map ...");
 
 	uint64_t tiles_done = 0;
 	std::vector<uint16_t> id_list;
@@ -275,7 +275,7 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 void Map::cleanInvalidTiles(bool showdialog)
 {
 	if(showdialog)
-		g_gui.CreateLoadBar(wxT("Removing invalid tiles..."));
+		g_gui.CreateLoadBar("Removing invalid tiles...");
 
 	uint64_t tiles_done = 0;
 
@@ -287,7 +287,7 @@ void Map::cleanInvalidTiles(bool showdialog)
 			continue;
 
 		for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();) {
-			if(item_db.typeExists((*item_iter)->getID()))
+			if(g_items.typeExists((*item_iter)->getID()))
 				++item_iter;
 			else {
 				delete *item_iter;

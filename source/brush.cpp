@@ -46,7 +46,7 @@
 #include "gui.h"
 #include "pugicast.h"
 
-Brushes brushes;
+Brushes g_brushes;
 
 Brushes::Brushes()
 {
@@ -101,20 +101,20 @@ bool Brushes::unserializeBrush(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if(!(attribute = node.attribute("name"))) {
-		warnings.push_back(wxT("Brush node without name."));
+		warnings.push_back("Brush node without name.");
 		return false;
 	}
 
 	const std::string& brushName = attribute.as_string();
 	if(brushName == "all" || brushName == "none") {
-		warnings.push_back(wxString(wxT("Using reserved brushname \"")) << wxstr(brushName) << wxT("\"."));
+		warnings.push_back(wxString("Using reserved brushname \"") << wxstr(brushName) << "\".");
 		return false;
 	}
 
 	Brush* brush = getBrush(brushName);
 	if(!brush) {
 		if(!(attribute = node.attribute("type"))) {
-			warnings.push_back(wxT("Couldn't read brush type"));
+			warnings.push_back("Couldn't read brush type");
 			return false;
 		}
 
@@ -132,7 +132,7 @@ bool Brushes::unserializeBrush(pugi::xml_node node, wxArrayString& warnings)
 		} else if(brushType == "doodad") {
 			brush = newd DoodadBrush();
 		} else {
-			warnings.push_back(wxString(wxT("Unknown brush type ")) << wxstr(brushType));
+			warnings.push_back(wxString("Unknown brush type ") << wxstr(brushType));
 			return false;
 		}
 
@@ -149,12 +149,12 @@ bool Brushes::unserializeBrush(pugi::xml_node node, wxArrayString& warnings)
 	brush->load(node, subWarnings);
 
 	if(!subWarnings.empty()) {
-		warnings.push_back(wxString(wxT("Errors while loading brush \"")) << wxstr(brush->getName()) << wxT("\""));
+		warnings.push_back(wxString("Errors while loading brush \"") << wxstr(brush->getName()) << "\"");
 		warnings.insert(warnings.end(), subWarnings.begin(), subWarnings.end());
 	}
 
 	if(brush->getName() == "all" || brush->getName() == "none") {
-		warnings.push_back(wxString(wxT("Using reserved brushname '")) << wxstr(brush->getName()) << wxT("'."));
+		warnings.push_back(wxString("Using reserved brushname '") << wxstr(brush->getName()) << "'.");
 		delete brush;
 		return false;
 	}
@@ -162,7 +162,7 @@ bool Brushes::unserializeBrush(pugi::xml_node node, wxArrayString& warnings)
 	Brush* otherBrush = getBrush(brush->getName());
 	if(otherBrush) {
 		if(otherBrush != brush) {
-			warnings.push_back(wxString(wxT("Duplicate brush name ")) << wxstr(brush->getName()) << wxT(". Undefined behaviour may ensue."));
+			warnings.push_back(wxString("Duplicate brush name ") << wxstr(brush->getName()) << ". Undefined behaviour may ensue.");
 		} else {
 			// Don't insert
 			return true;
@@ -177,13 +177,13 @@ bool Brushes::unserializeBorder(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute = node.attribute("id");
 	if(!attribute) {
-		warnings.push_back(wxT("Couldn't read border id node"));
+		warnings.push_back("Couldn't read border id node");
 		return false;
 	}
 
 	int32_t id = pugi::cast<int32_t>(attribute.value());
 	if(borders[id]) {
-		warnings.push_back(wxT("Border ID ") + std::to_string(id) + wxT(" already exists"));
+		warnings.push_back("Border ID " + std::to_string(id) + " already exists");
 		return false;
 	}
 
@@ -366,7 +366,7 @@ void DoorBrush::switchDoor(Item* item)
 		WallBrush::DoorType& dt = *iter;
 		if(dt.type == doortype) {
 			ASSERT(dt.id);
-			ItemType& it = item_db[dt.id];
+			ItemType& it = g_items[dt.id];
 			ASSERT(it.id != 0);
 
 			if(it.isOpen == new_open) {
@@ -412,7 +412,7 @@ bool DoorBrush::canDraw(BaseMap* map, const Position& position) const
 			WallBrush::DoorType& dt = *iter;
 			if(dt.type == doortype) {
 				ASSERT(dt.id);
-				ItemType& it = item_db[dt.id];
+				ItemType& it = g_items[dt.id];
 				ASSERT(it.id != 0);
 
 				if(it.isOpen == open) {
@@ -488,7 +488,7 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 				WallBrush::DoorType& dt = *iter;
 				if(dt.type == doortype) {
 					ASSERT(dt.id);
-					ItemType& it = item_db[dt.id];
+					ItemType& it = g_items[dt.id];
 					ASSERT(it.id != 0);
 
 					if(it.isOpen == open) {
@@ -549,16 +549,14 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 
 			item = *item_iter;
 			if(item->isWall()) {
-				if(WallDecorationBrush* wdb = dynamic_cast<WallDecorationBrush*>(item->getWallBrush())) {
+				WallBrush* brush = item->getWallBrush();
+				if(brush && brush->isWallDecoration()) {
 					// We got a decoration!
-					for(std::vector<WallBrush::DoorType>::iterator iter = wdb->door_items[wall_alignment].begin();
-							iter != wdb->door_items[wall_alignment].end();
-							++iter)
-					{
-						WallBrush::DoorType& dt = *iter;
+					for (std::vector<WallBrush::DoorType>::iterator it = brush->door_items[wall_alignment].begin(); it != brush->door_items[wall_alignment].end(); ++it) {
+						WallBrush::DoorType& dt = (*it);
 						if(dt.type == doortype) {
 							ASSERT(dt.id);
-							ItemType& it = item_db[dt.id];
+							ItemType& it = g_items[dt.id];
 							ASSERT(it.id != 0);
 
 							if(it.isOpen == open) {

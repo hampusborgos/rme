@@ -18,7 +18,7 @@
 #include "creature_brush.h"
 #include "raw_brush.h"
 
-Materials materials;
+Materials g_materials;
 
 Materials::Materials()
 {
@@ -65,13 +65,13 @@ bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArr
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(identifier.GetFullPath().mb_str());
 	if(!result) {
-		warnings.push_back(wxT("Could not open ") + identifier.GetFullName() + wxT(" (file not found or syntax error)"));
+		warnings.push_back("Could not open " + identifier.GetFullName() + " (file not found or syntax error)");
 		return false;
 	}
 
 	pugi::xml_node node = doc.child("materials");
 	if(!node) {
-		warnings.push_back(identifier.GetFullName() + wxT(": Invalid rootheader."));
+		warnings.push_back(identifier.GetFullName() + ": Invalid rootheader.");
 		return false;
 	}
 
@@ -85,7 +85,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 
 	wxDir ext_dir(directoryName.GetPath());
 	if(!ext_dir.IsOpened()) {
-		error = wxT("Could not open extensions directory.");
+		error = "Could not open extensions directory.";
 		return false;
 	}
 
@@ -100,44 +100,44 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 		FileName fn;
 		fn.SetPath(directoryName.GetPath());
 		fn.SetFullName(filename);
-		if(fn.GetExt() != wxT("xml")) {
+		if(fn.GetExt() != "xml") {
 			continue;
 		}
 
 		pugi::xml_document doc;
 		pugi::xml_parse_result result = doc.load_file(fn.GetFullPath().mb_str());
 		if(!result) {
-			warnings.push_back(wxT("Could not open ") + filename + wxT(" (file not found or syntax error)"));
+			warnings.push_back("Could not open " + filename + " (file not found or syntax error)");
 			continue;
 		}
 
 		pugi::xml_node extensionNode = doc.child("materialsextension");
 		if(!extensionNode) {
-			warnings.push_back(filename + wxT(": Invalid rootheader."));
+			warnings.push_back(filename + ": Invalid rootheader.");
 			continue;
 		}
 
 		pugi::xml_attribute attribute;
 		if(!(attribute = extensionNode.attribute("name"))) {
-			warnings.push_back(filename + wxT(": Couldn't read extension name."));
+			warnings.push_back(filename + ": Couldn't read extension name.");
 			continue;
 		}
 
 		const std::string& extensionName = attribute.as_string();
 		if(!(attribute = extensionNode.attribute("author"))) {
-			warnings.push_back(filename + wxT(": Couldn't read extension name."));
+			warnings.push_back(filename + ": Couldn't read extension name.");
 			continue;
 		}
 
 		const std::string& extensionAuthor = attribute.as_string();
 		if(!(attribute = extensionNode.attribute("description"))) {
-			warnings.push_back(filename + wxT(": Couldn't read extension name."));
+			warnings.push_back(filename + ": Couldn't read extension name.");
 			continue;
 		}
 
 		const std::string& extensionDescription = attribute.as_string();
 		if(extensionName.empty() || extensionAuthor.empty() || extensionDescription.empty()) {
-			warnings.push_back(filename + wxT(": Couldn't read extension attributes (name, author, description)."));
+			warnings.push_back(filename + ": Couldn't read extension attributes (name, author, description).");
 			continue;
 		}
 
@@ -176,7 +176,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				duplicate = std::unique(materialExtension->version_list.begin(), materialExtension->version_list.end());
 			}
 		} else {
-			warnings.push_back(filename + wxT(": Extension is not available for any version."));
+			warnings.push_back(filename + ": Extension is not available for any version.");
 		}
 
 		extensions.push_back(materialExtension);
@@ -205,19 +205,19 @@ bool Materials::unserializeMaterials(const FileName& filename, pugi::xml_node no
 
 			wxString subError;
 			if(!loadMaterials(includeName, subError, warnings)) {
-				warnings.push_back(wxT("Error while loading file \"") + includeName.GetFullName() + wxT("\": ") + subError);
+				warnings.push_back("Error while loading file \"" + includeName.GetFullName() + "\": " + subError);
 			}
 		} else if(childName == "metaitem") {
-			item_db.loadMetaItem(childNode);
+			g_items.loadMetaItem(childNode);
 		} else if(childName == "border") {
-			brushes.unserializeBorder(childNode, warnings);
+			g_brushes.unserializeBorder(childNode, warnings);
 			if(warning.size()) {
-				warnings.push_back(wxT("materials.xml: ") + warning);
+				warnings.push_back("materials.xml: " + warning);
 			}
 		} else if(childName == "brush") {
-			brushes.unserializeBrush(childNode, warnings);
+			g_brushes.unserializeBrush(childNode, warnings);
 			if(warning.size()) {
-				warnings.push_back(wxT("materials.xml: ") + warning);
+				warnings.push_back("materials.xml: " + warning);
 			}
 		} else if(childName == "tileset") {
 			unserializeTileset(childNode, warnings);
@@ -235,7 +235,7 @@ void Materials::createOtherTileset()
 		others = tilesets["Others"];
 		others->clear();
 	} else {
-		others = newd Tileset(brushes, "Others");
+		others = newd Tileset(g_brushes, "Others");
 		tilesets["Others"] = others;
 	}
 
@@ -243,13 +243,13 @@ void Materials::createOtherTileset()
 		npc_tileset = tilesets["NPCs"];
 		npc_tileset->clear();
 	} else {
-		npc_tileset = newd Tileset(brushes, "NPCs");
+		npc_tileset = newd Tileset(g_brushes, "NPCs");
 		tilesets["NPCs"] = npc_tileset;
 	}
 
 	// There should really be an iterator to do this
-	for(int32_t id = 0; id <= item_db.getMaxID(); ++id) {
-		ItemType& it = item_db[id];
+	for(int32_t id = 0; id <= g_items.getMaxID(); ++id) {
+		ItemType& it = g_items[id];
 		if(it.id == 0) {
 			continue;
 		}
@@ -262,7 +262,7 @@ void Materials::createOtherTileset()
 			} else if(it.raw_brush == nullptr) {
 				brush = it.raw_brush = newd RAWBrush(it.id);
 				it.has_raw = true;
-				brushes.addBrush(it.raw_brush);
+				g_brushes.addBrush(it.raw_brush);
 			} else if(!it.has_raw) {
 				brush = it.raw_brush;
 			} else
@@ -274,7 +274,7 @@ void Materials::createOtherTileset()
 		}
 	}
 
-	for(CreatureMap::iterator iter = creature_db.begin(); iter != creature_db.end(); ++iter) {
+	for(CreatureMap::iterator iter = g_creatures.begin(); iter != g_creatures.end(); ++iter) {
 		CreatureType* type = iter->second;
 		if(type->in_other_tileset) {
 			if(type->isNpc) {
@@ -284,7 +284,7 @@ void Materials::createOtherTileset()
 			}
 		} else if(type->brush == nullptr) {
 			type->brush = newd CreatureBrush(type);
-			brushes.addBrush(type->brush);
+			g_brushes.addBrush(type->brush);
 			type->brush->flagAsVisible();
 			type->in_other_tileset = true;
 			if(type->isNpc) {
@@ -300,7 +300,7 @@ bool Materials::unserializeTileset(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if(!(attribute = node.attribute("name"))) {
-		warnings.push_back(wxT("Couldn't read tileset name"));
+		warnings.push_back("Couldn't read tileset name");
 		return false;
 	}
 
@@ -311,7 +311,7 @@ bool Materials::unserializeTileset(pugi::xml_node node, wxArrayString& warnings)
 	if(it != tilesets.end()) {
 		tileset = it->second;
 	} else {
-		tileset = newd Tileset(brushes, name);
+		tileset = newd Tileset(g_brushes, name);
 		tilesets.insert(std::make_pair(name, tileset));
 	}
 
@@ -323,7 +323,7 @@ bool Materials::unserializeTileset(pugi::xml_node node, wxArrayString& warnings)
 
 bool Materials::isInTileset(Item* item, std::string tilesetName) const
 {
-	const ItemType& it = item_db[item->getID()];
+	const ItemType& it = g_items[item->getID()];
 
 	return it.id != 0 && (
 		isInTileset(it.brush, tilesetName) ||

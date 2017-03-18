@@ -305,9 +305,9 @@ void SelectionArea::updateSelectionCount()
 	if(size() > 0) {
 		wxString ss;
 		if(size() == 1) {
-			ss << wxT("One tile selected.");
+			ss << "One tile selected.";
 		} else {
-			ss << size() << wxT(" tiles selected.");
+			ss << size() << " tiles selected.";
 		}
 		g_gui.SetStatusText(ss);
 	}
@@ -395,4 +395,3 @@ wxThread::ExitCode SelectionThread::Entry()
 	selection.finish(SelectionArea::SUBTHREAD);
 	return nullptr;
 }
-

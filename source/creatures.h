@@ -77,6 +77,6 @@ public:
 	static CreatureType* loadFromOTXML(const FileName& filename, pugi::xml_document& node, wxArrayString& warnings);
 };
 
-extern CreatureDatabase creature_db;
+extern CreatureDatabase g_creatures;
 
 #endif

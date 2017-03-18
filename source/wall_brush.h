@@ -13,6 +13,9 @@ public:
 	WallBrush();
 	virtual ~WallBrush();
 
+	bool isWall() const { return true; }
+	WallBrush* asWall() { return static_cast<WallBrush*>(this); }
+
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 
 	virtual bool canDraw(BaseMap* map, const Position& position) const {return true;}
@@ -63,6 +66,9 @@ class WallDecorationBrush : public WallBrush {
 public:
 	WallDecorationBrush();
 	virtual ~WallDecorationBrush();
+
+	bool isWallDecoration() const { return true; }
+	WallDecorationBrush* asWallDecoration() { return static_cast<WallDecorationBrush*>(this); }
 
 	// We use the exact same loading algorithm as normal walls
 

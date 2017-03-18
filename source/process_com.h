@@ -30,9 +30,7 @@ public:
 	RMEProcessConnection();
 	~RMEProcessConnection();
 
-	bool OnPoke(const wxString& topic, const wxString& item, wxChar* data, int size, wxIPCFormat format);
-
-	void AskToLoad(FileName map);
+	bool OnExec(const wxString& topic, const wxString& fileName);
 };
 
 class RMEProcessServer : public wxServer {

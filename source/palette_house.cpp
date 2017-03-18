@@ -62,33 +62,38 @@ HousePalettePanel::HousePalettePanel(wxWindow* parent, wxWindowID id) :
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* tmpsizer;
 
-	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, wxT("Houses"));
+	wxSizer* sidesizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Houses");
 	town_choice = newd wxChoice(this, PALETTE_HOUSE_TOWN_CHOICE, wxDefaultPosition, wxDefaultSize, (int)0, (const wxString*)nullptr);
 	sidesizer->Add(town_choice, 0, wxEXPAND);
 
-	house_list = newd wxListBox(this, PALETTE_HOUSE_LISTBOX, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB | wxLB_SORT);
+	house_list = newd SortableListBox(this, PALETTE_HOUSE_LISTBOX);
+	#ifdef __APPLE__
+	//Used for detecting a deselect
+	house_list->Bind(wxEVT_LEFT_UP, &HousePalettePanel::OnListBoxClick, this);
+	#endif
 	sidesizer->Add(house_list, 1, wxEXPAND);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(add_house_button = newd wxButton(this, PALETTE_HOUSE_ADD_HOUSE, wxT("Add"), wxDefaultPosition, wxSize(50, -1)), wxSizerFlags(1).Right());
-	tmpsizer->Add(edit_house_button = newd wxButton(this, PALETTE_HOUSE_EDIT_HOUSE, wxT("Edit"), wxDefaultPosition, wxSize(50, -1)), wxSizerFlags(1).Right());
-	tmpsizer->Add(remove_house_button = newd wxButton(this, PALETTE_HOUSE_REMOVE_HOUSE, wxT("Remove"), wxDefaultPosition, wxSize(70, -1)), wxSizerFlags(1).Right());
+	wxSizerFlags sizerFlags(1);
+	tmpsizer->Add(add_house_button = newd wxButton(this, PALETTE_HOUSE_ADD_HOUSE, "Add", wxDefaultPosition, wxSize(50, -1)), sizerFlags);
+	tmpsizer->Add(edit_house_button = newd wxButton(this, PALETTE_HOUSE_EDIT_HOUSE, "Edit", wxDefaultPosition, wxSize(50, -1)), sizerFlags);
+	tmpsizer->Add(remove_house_button = newd wxButton(this, PALETTE_HOUSE_REMOVE_HOUSE, "Remove", wxDefaultPosition, wxSize(70, -1)), sizerFlags);
 	sidesizer->Add(tmpsizer, wxSizerFlags(0).Right());
 
 	topsizer->Add(sidesizer, 1, wxEXPAND);
 
 	// Temple position
-	sidesizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, wxT("Brushes"), wxDefaultPosition, wxSize(150, 200)), wxVERTICAL);
+	sidesizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Brushes", wxDefaultPosition, wxSize(150, 200)), wxVERTICAL);
 
 	//sidesizer->Add(180, 1, wxEXPAND);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	house_brush_button = newd wxToggleButton(this, PALETTE_HOUSE_BRUSH_BUTTON, wxT("House tiles"));
+	house_brush_button = newd wxToggleButton(this, PALETTE_HOUSE_BRUSH_BUTTON, "House tiles");
 	tmpsizer->Add(house_brush_button);
 	sidesizer->Add(tmpsizer, wxSizerFlags(1).Center());
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	select_position_button = newd wxToggleButton(this, PALETTE_HOUSE_SELECT_EXIT_BUTTON, wxT("Select Exit"));
+	select_position_button = newd wxToggleButton(this, PALETTE_HOUSE_SELECT_EXIT_BUTTON, "Select Exit");
 	tmpsizer->Add(select_position_button);
 	sidesizer->Add(tmpsizer, wxSizerFlags(1).Center());
 
@@ -151,10 +156,11 @@ Brush* HousePalettePanel::GetSelectedBrush() const
 
 bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
 {
-	const HouseBrush* house_brush = dynamic_cast<const HouseBrush*>(whatbrush);
-	const SpawnBrush* spawn_brush = dynamic_cast<const SpawnBrush*>(whatbrush);
+	if(!whatbrush)
+		return false;
 
-	if(house_brush && map != nullptr) {
+	if(whatbrush->isHouse() && map) {
+		const HouseBrush* house_brush = static_cast<const HouseBrush*>(whatbrush);
 		for(HouseMap::iterator house_iter = map->houses.begin(); house_iter != map->houses.end(); ++house_iter) {
 			if(house_iter->second->id == house_brush->getHouseID()) {
 				for(uint32_t i = 0; i < town_choice->GetCount(); ++i) {
@@ -173,7 +179,7 @@ bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
 				}
 			}
 		}
-	} else if(spawn_brush) {
+	} else if (whatbrush->isSpawn()) {
 		SelectExitBrush();
 	}
 	return false;
@@ -215,6 +221,7 @@ void HousePalettePanel::SelectTown(size_t index)
 				}
 			}
 		}
+		house_list->Sort();
 
 		// Select first house
 		SelectHouse(0);
@@ -250,8 +257,9 @@ void HousePalettePanel::SelectHouse(size_t index)
 
 House* HousePalettePanel::GetCurrentlySelectedHouse() const
 {
-	if(house_list->GetCount() > 0) {
-		return reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
+	int selection = house_list->GetSelection();
+	if(house_list->GetCount() > 0 && selection != wxNOT_FOUND) {
+		return reinterpret_cast<House*>(house_list->GetClientData(selection));
 	}
 	return nullptr;
 }
@@ -277,20 +285,20 @@ void HousePalettePanel::SelectExitBrush()
 
 void HousePalettePanel::OnUpdate()
 {
-	if(map == nullptr)
-		return;
-
 	int old_town_selection = town_choice->GetSelection();
 
 	town_choice->Clear();
 	house_list->Clear();
+
+	if(map == nullptr)
+		return;
 
 	if(map->towns.count() != 0) {
 		// Create choice control
 		for(TownMap::iterator town_iter = map->towns.begin(); town_iter != map->towns.end(); ++town_iter) {
 			town_choice->Append(wxstr(town_iter->second->getName()), town_iter->second);
 		}
-		town_choice->Append(wxT("No Town"), (void*)(nullptr));
+		town_choice->Append("No Town", (void*)(nullptr));
 		if(old_town_selection <= 0)
 			SelectTown(0);
 		else if((size_t)old_town_selection <= town_choice->GetCount())
@@ -300,7 +308,7 @@ void HousePalettePanel::OnUpdate()
 
 		house_list->Enable(true);
 	} else {
-		town_choice->Append(wxT("No Town"), (void*)(nullptr));
+		town_choice->Append("No Town", (void*)(nullptr));
 		select_position_button->Enable(false);
 		select_position_button->SetValue(false);
 		house_brush_button->Enable(false);
@@ -375,14 +383,15 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 		return;
 	if(map == nullptr)
 		return;
-
-	House* house = reinterpret_cast<House*>(house_list->GetClientData(house_list->GetSelection()));
+	int selection = house_list->GetSelection();
+	House* house = reinterpret_cast<House*>(house_list->GetClientData(selection));
 	if(house) {
 		wxDialog* d = newd EditHouseDialog(g_gui.root, map, house);
 		int ret = d->ShowModal();
 		if(ret == 1) {
 			// Something changed, change name of house
-			house_list->SetString(house_list->GetSelection(), wxstr(house->getDescription()));
+			house_list->SetString(selection, wxstr(house->getDescription()));
+			house_list->Sort();
 			refresh_timer.Start(300, true);
 		}
 	}
@@ -390,24 +399,48 @@ void HousePalettePanel::OnClickEditHouse(wxCommandEvent& event)
 
 void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 {
-	int selection_index = house_list->GetSelection();
-	if(selection_index != wxNOT_FOUND) {
-		House* house = reinterpret_cast<House*>(house_list->GetClientData(selection_index));
+	int selection = house_list->GetSelection();
+	if(selection != wxNOT_FOUND) {
+		House* house = reinterpret_cast<House*>(house_list->GetClientData(selection));
 		map->houses.removeHouse(house);
-		house_list->Delete(selection_index);
+		house_list->Delete(selection);
 		refresh_timer.Start(300, true);
 
-		if(int(house_list->GetCount()) <= selection_index) {
-			selection_index -= 1;
+		if(int(house_list->GetCount()) <= selection) {
+			selection -= 1;
 		}
 
-		if(selection_index >= 0 && house_list->GetCount()) {
-			house_list->SetSelection(selection_index);
+		if(selection >= 0 && house_list->GetCount()) {
+			house_list->SetSelection(selection);
+		} else {
+			select_position_button->Enable(false);
+			select_position_button->SetValue(false);
+			house_brush_button->Enable(false);
+			house_brush_button->SetValue(false);
+			edit_house_button->Enable(false);
+			remove_house_button->Enable(false);
 		}
 		g_gui.SelectBrush();
 	}
 	g_gui.RefreshView();
 }
+
+#ifdef __APPLE__
+//On wxMac it is possible to deselect a wxListBox. (Unlike on the other platforms)
+//EVT_LISTBOX is not triggered when the deselection is happening. http://trac.wxwidgets.org/ticket/15603
+//Here we find out if the listbox was deselected using a normal mouse up event so we know when to disable the buttons and brushes.
+void HousePalettePanel::OnListBoxClick(wxMouseEvent& event) {
+	if (house_list->GetSelection() == wxNOT_FOUND) {
+		select_position_button->Enable(false);
+		select_position_button->SetValue(false);
+		house_brush_button->Enable(false);
+		house_brush_button->SetValue(false);
+		edit_house_button->Enable(false);
+		remove_house_button->Enable(false);
+		g_gui.SelectBrush();
+	}
+}
+#endif
 
 // ============================================================================
 // House Edit Dialog
@@ -418,7 +451,7 @@ BEGIN_EVENT_TABLE(EditHouseDialog, wxDialog)
 END_EVENT_TABLE()
 
 EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
-	wxDialog(parent, wxID_ANY, wxT("House"), wxDefaultPosition, wxSize(250,160)),
+	wxDialog(parent, wxID_ANY, "House", wxDefaultPosition, wxSize(250,160)),
 	map(map),
 	what_house(house)
 {
@@ -434,30 +467,30 @@ EditHouseDialog::EditHouseDialog(wxWindow* parent, Map* map, House* house) :
 	house_rent = i2ws(house->rent);
 
 	// House options
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Name"));
-	name_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(230,20), 0, wxTextValidator(wxFILTER_ASCII, &house_name));
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Name");
+	name_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(230,20), 0, wxTextValidator(wxFILTER_ASCII, &house_name));
 	tmpsizer->Add(name_field);
 
 	sizer->Add(tmpsizer, wxSizerFlags().Border(wxALL, 20));
 
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Rent / ID"));
-	rent_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(160,20), 0, wxTextValidator(wxFILTER_NUMERIC, &house_rent));
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Rent / ID");
+	rent_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(160,20), 0, wxTextValidator(wxFILTER_NUMERIC, &house_rent));
 	tmpsizer->Add(rent_field);
-	id_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(70,20), 0, wxTextValidator(wxFILTER_NUMERIC, &house_id));
+	id_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(70,20), 0, wxTextValidator(wxFILTER_NUMERIC, &house_id));
 	id_field->Enable(false);
 	tmpsizer->Add(id_field);
 	sizer->Add(tmpsizer, wxSizerFlags().Border(wxALL, 20));
 
 	// House options
-	guildhall_field = newd wxCheckBox(this, wxID_ANY, wxT("Guildhall"), wxDefaultPosition);
+	guildhall_field = newd wxCheckBox(this, wxID_ANY, "Guildhall", wxDefaultPosition);
 
 	sizer->Add(guildhall_field, wxSizerFlags().Border(wxRIGHT | wxLEFT | wxBOTTOM, 20));
 	guildhall_field->SetValue(house->guildhall);
 
 	// OK/Cancel buttons
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
 	sizer->Add(tmpsizer, wxSizerFlags(1).Center().Border(wxRIGHT | wxLEFT | wxBOTTOM, 20));
 
 	SetSizerAndFit(sizer);
@@ -476,12 +509,12 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		house_rent.ToLong(&new_house_rent);
 
 		if(new_house_rent < 0) {
-			g_gui.PopupDialog(this, wxT("Error"), wxT("House rent cannot be less than 0."), wxOK);
+			g_gui.PopupDialog(this, "Error", "House rent cannot be less than 0.", wxOK);
 			return;
 		}
 
 		if(house_name.length() == 0) {
-			g_gui.PopupDialog(this, wxT("Error"), wxT("House name cannot be nil."), wxOK);
+			g_gui.PopupDialog(this, "Error", "House name cannot be nil.", wxOK);
 			return;
 		}
 
@@ -491,7 +524,7 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				House* house = house_iter->second;
 				ASSERT(house);
 				if(wxstr(house->name) == house_name && house->id != what_house->id) {
-					int ret = g_gui.PopupDialog(this, wxT("Warning"), wxT("This house name is already in use, are you sure you want to continue?"), wxYES | wxNO);
+					int ret = g_gui.PopupDialog(this, "Warning", "This house name is already in use, are you sure you want to continue?", wxYES | wxNO);
 					if(ret == wxID_NO) {
 						return;
 					}

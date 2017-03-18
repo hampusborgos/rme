@@ -33,6 +33,7 @@ class Creature;
 class MainFrame;
 class MapWindow;
 class wxEventLoopBase;
+class wxSingleInstanceChecker;
 class LuaInterface;
 
 class Application : public wxApp
@@ -41,18 +42,24 @@ public:
 	~Application();
 	virtual bool OnInit();
 	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
+	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
+private:
+	bool m_startup;
+	wxString m_fileToOpen;
+
 	void FixVersionDiscrapencies();
-	std::pair<bool, FileName> ParseCommandLineMap();
+	bool ParseCommandLineMap(wxString& fileName);
 
 	virtual void OnFatalException();
 
 #ifdef _USE_PROCESS_COM
-	RMEProcessServer* proc_server;
+	RMEProcessServer* m_proc_server;
+	wxSingleInstanceChecker* m_single_instance_checker;
 #endif
-	bool startup;
+
 };
 
 class MainMenuBar;

@@ -6,6 +6,7 @@
 
 #include "waypoint_brush.h"
 #include "waypoints.h"
+#include "basemap.h"
 
 //=============================================================================
 // Waypoint Brush
@@ -37,10 +38,7 @@ std::string WaypointBrush::getWaypoint() const
 
 bool WaypointBrush::canDraw(BaseMap* map, const Position& position) const
 {
-	//if(tile == nullptr) {
-	//	return false;
-	//}
-	return true;
+	return map->getTile(position) != nullptr;
 }
 
 void WaypointBrush::undraw(BaseMap* map, Tile* tile)

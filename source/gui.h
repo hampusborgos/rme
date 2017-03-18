@@ -139,7 +139,7 @@ public:
 	 * If this returns false, the user has hit the quit button and you should
 	 * abort the loading.
 	 */
-	bool SetLoadDone(int32_t done, const wxString& newMessage = wxT(""));
+	bool SetLoadDone(int32_t done, const wxString& newMessage = "");
 
 	/**
 	 * Sets the scale of the loading bar.
@@ -178,8 +178,8 @@ public:
 	void ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec);
 	void ListDialog(const wxString& title, const wxArrayString& vec) { ListDialog(nullptr, title, vec); }
 
-	void ShowTextBox(wxWindow* parent, const wxString& title, const wxString& text);
-	void ShowTextBox(const wxString& title, const wxString& text) { ShowTextBox(nullptr, title, text); }
+	void ShowTextBox(wxWindow* parent, wxString title, wxString contents);
+	void ShowTextBox(const wxString& title, const wxString& contents) {ShowTextBox(nullptr, title, contents);}
 
 	// Get the current GL context
 	// Param is required if the context is to be created.
@@ -246,6 +246,7 @@ public:
 	void DecreaseBrushSize(bool wrap = false);
 	void IncreaseBrushSize(bool wrap = false);
 
+
 	// Fetch different useful directories
 	static wxString GetExecDirectory();
 	static wxString GetDataDirectory();
@@ -266,7 +267,7 @@ public:
 	bool IsVersionLoaded() const {return loaded_version != CLIENT_VERSION_NONE;}
 
 	// Centers current view on position
-	bool SetScreenCenterPosition(Position position);
+	bool SetScreenCenterPosition(Position pos);
 	// Refresh the view canvas
 	void RefreshView();
 	// Fit all/specified current map view to map dimensions
@@ -286,15 +287,16 @@ public:
 	EditorTab* GetCurrentTab();
 	EditorTab* GetTab(int idx);
 	int GetTabCount() const;
+	bool IsAnyEditorOpen() const;
 	bool IsEditorOpen() const;
 	void CloseCurrentEditor();
-	Editor* GetCurrentEditor();
 	int GetEditorIndex(Editor* editor) const;
-	void SetCurrentEditor(Editor* editor);
-	void SetCurrentEditor(int index);
+	Editor* GetCurrentEditor();
 	Editor* GetEditorAt(int index);
 	MapTab* GetCurrentMapTab() const;
 	MapTab* GetMapTab(Editor* editor) const;
+	void SetCurrentEditor(Editor* editor);
+	void SetCurrentEditor(int index);
 	void CycleTab(bool forward = true);
 	bool CloseLiveEditors(LiveSocket* sock);
 	bool CloseAllEditors();
@@ -305,9 +307,9 @@ public:
 	int GetOpenMapCount();
 	bool ShouldSave();
 	void SaveCurrentMap(FileName filename, bool showdialog); // "" means default filename
-	void SaveCurrentMap(bool showdialog = true) { SaveCurrentMap(wxString(wxT("")), showdialog); }
+	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(""), showdialog);}
 	bool NewMap();
-	bool LoadMap(FileName fn);
+	bool LoadMap(const FileName& fileName);
 
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);

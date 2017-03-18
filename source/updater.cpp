@@ -41,18 +41,18 @@ UpdateChecker::~UpdateChecker()
 
 void UpdateChecker::connect(wxEvtHandler* receiver)
 {
-	wxString address = wxT("http://www.remeresmapeditor.com/update.php");
-	address << wxT("?os=") <<
+	wxString address = "http://www.remeresmapeditor.com/update.php";
+	address << "?os=" <<
 #ifdef __WINDOWS__
-	wxT("windows");
+	"windows";
 #elif __LINUX__
-	wxT("linux");
+	"linux";
 #else
-	wxT("unknown");
+	"unknown";
 #endif
-	address << wxT("&verid=") << __RME_VERSION_ID__;
+	address << "&verid=" << __RME_VERSION_ID__;
 #ifdef __EXPERIMENTAL__
-	address << wxT("&beta");
+	address << "&beta";
 #endif
 	wxURL* url = newd wxURL(address);
 	UpdateConnectionThread* connection = newd UpdateConnectionThread(receiver, url);

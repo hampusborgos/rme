@@ -38,7 +38,7 @@ Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 	if(_type == 0) return nullptr;
 	Item* newItem = nullptr;
 
-	const ItemType& it = item_db[_type];
+	const ItemType& it = g_items[_type];
 
 	if(it.id != 0){
 		if(it.isDepot()) {
@@ -72,7 +72,8 @@ Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 Item::Item(unsigned short _type, unsigned short _count) :
 	id(_type),
 	subtype(1),
-	selected(false)
+	selected(false),
+	frame(0)
 {
 	if(hasSubtype()) {
 		subtype = _count;
@@ -167,7 +168,7 @@ void Item::setSubtype(uint16_t n)
 
 bool Item::hasSubtype() const
 {
-	const ItemType& it = item_db[id];
+	const ItemType& it = g_items[id];
 	return (it.isFluidContainer() || it.isSplash() || isCharged() || it.stackable || it.charges != 0);
 }
 
@@ -181,7 +182,7 @@ uint16_t Item::getSubtype() const
 
 bool Item::hasProperty(enum ITEMPROPERTY prop) const
 {
-	const ItemType& it = item_db[id];
+	const ItemType& it = g_items[id];
 	switch(prop){
 		case BLOCKSOLID:
 			if(it.blockSolid)
@@ -231,7 +232,7 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 
 std::pair<int, int> Item::getDrawOffset() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(it.sprite != nullptr) {
 		return it.sprite->getDrawOffset();
 	}
@@ -240,7 +241,7 @@ std::pair<int, int> Item::getDrawOffset() const
 
 double Item::getWeight() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(it.stackable) {
 		return it.weight * std::max(1, (int)subtype);
 	}
@@ -270,7 +271,7 @@ void Item::setDescription(const std::string& str)
 
 double Item::getWeight()
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(it.isStackable()) {
 		return it.weight * subtype;
 	}
@@ -284,12 +285,12 @@ bool Item::canHoldText() const
 
 bool Item::canHoldDescription() const
 {
-	return item_db[id].allowDistRead;
+	return g_items[id].allowDistRead;
 }
 
 uint8_t Item::getMiniMapColor() const
 {
-	GameSprite* spr = item_db[id].sprite;
+	GameSprite* spr = g_items[id].sprite;
 	if(spr) {
 		return spr->getMiniMapColor();
 	}
@@ -298,84 +299,84 @@ uint8_t Item::getMiniMapColor() const
 
 GroundBrush* Item::getGroundBrush() const
 {
-	ItemType& it = item_db[id];
-	if(!it.isGroundTile()) {
-		return nullptr;
+	ItemType& item_type = g_items.getItemType(id);
+	if(item_type.isGroundTile() && item_type.brush && item_type.brush->isGround()) {
+		return item_type.brush->asGround();
 	}
-	return dynamic_cast<GroundBrush*>(it.brush);
+	return nullptr;
 }
 
 TableBrush* Item::getTableBrush() const
 {
-	ItemType& it = item_db[id];
-	if(!it.isTable) {
-		return nullptr;
+	ItemType& item_type = g_items.getItemType(id);
+	if(item_type.isTable && item_type.brush && item_type.brush->isTable()) {
+		return item_type.brush->asTable();
 	}
-	return dynamic_cast<TableBrush*>(it.brush);
+	return nullptr;
 }
 
 CarpetBrush* Item::getCarpetBrush() const
 {
-	ItemType& it = item_db[id];
-	if(!it.isCarpet) {
-		return nullptr;
+	ItemType& item_type = g_items.getItemType(id);
+	if(item_type.isCarpet && item_type.brush && item_type.brush->isCarpet()) {
+		return item_type.brush->asCarpet();
 	}
-	return dynamic_cast<CarpetBrush*>(it.brush);
+	return nullptr;
 }
 
 DoorBrush* Item::getDoorBrush() const
 {
-	ItemType& it = item_db[id];
-	if(!it.isWall || !it.isBrushDoor) {
+	ItemType& item_type = g_items.getItemType(id);
+	if(!item_type.isWall || !item_type.isBrushDoor || !item_type.brush || !item_type.brush->isWall()) {
 		return nullptr;
 	}
-	WallBrush* wb = dynamic_cast<WallBrush*>(it.brush);
-	DoorBrush* db = nullptr;
+
+	DoorType door_type = item_type.brush->asWall()->getDoorTypeFromID(id);
+	DoorBrush* door_brush = nullptr;
 	// Quite a horrible dependency on a global here, meh.
-	switch(wb->getDoorTypeFromID(id)) {
+	switch(door_type) {
 		case WALL_DOOR_NORMAL: {
-			db = g_gui.normal_door_brush;
+			door_brush = g_gui.normal_door_brush;
 			break;
 		}
 		case WALL_DOOR_LOCKED: {
-			db = g_gui.locked_door_brush;
+			door_brush = g_gui.locked_door_brush;
 			break;
 		}
 		case WALL_DOOR_QUEST: {
-			db = g_gui.quest_door_brush;
+			door_brush = g_gui.quest_door_brush;
 			break;
 		}
 		case WALL_DOOR_MAGIC: {
-			db = g_gui.magic_door_brush;
+			door_brush = g_gui.magic_door_brush;
 			break;
 		}
 		case WALL_WINDOW: {
-			db = g_gui.window_door_brush;
+			door_brush = g_gui.window_door_brush;
 			break;
 		}
 		case WALL_HATCH_WINDOW: {
-			db = g_gui.hatch_door_brush;
+			door_brush = g_gui.hatch_door_brush;
 			break;
 		}
 		default: {
 			break;
 		}
 	}
-	return db;
+	return door_brush;
 }
 
 WallBrush* Item::getWallBrush() const
 {
-	ItemType& it = item_db[id];
-	if(!it.isWall) {
-		return nullptr;
-	}
-	return dynamic_cast<WallBrush*>(it.brush);
+	ItemType& item_type = g_items.getItemType(id);
+	if(item_type.isWall && item_type.brush && item_type.brush->isWall())
+		return item_type.brush->asWall();
+	return nullptr;
 }
 
 BorderType Item::getWallAlignment() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	if(!it.isWall) {
 		return BORDER_NONE;
 	}
@@ -384,8 +385,18 @@ BorderType Item::getWallAlignment() const
 
 BorderType Item::getBorderAlignment() const
 {
-	ItemType& it = item_db[id];
+	ItemType& it = g_items[id];
 	return it.border_alignment;
+}
+
+void Item::animate()
+{
+	ItemType& type = g_items[id];
+	GameSprite* sprite = type.sprite;
+	if(!sprite || !sprite->animator)
+		return;
+
+	frame = sprite->animator->getFrame();
 }
 
 // ============================================================================

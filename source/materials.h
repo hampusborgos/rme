@@ -37,6 +37,6 @@ private:
 	Materials& operator=(const Materials&);
 };
 
-extern Materials materials;
+extern Materials g_materials;
 
 #endif

@@ -73,7 +73,7 @@ MapWindow* MapTab::GetView() const
 wxString MapTab::GetTitle() const
 {
 	wxString ss;
-	ss << wxstr(iref->editor->map.getName()) << (iref->editor->map.hasChanged()? wxT("*"): wxT(""));
+	ss << wxstr(iref->editor->map.getName()) << (iref->editor->map.hasChanged()? "*": "");
 	return ss;
 }
 

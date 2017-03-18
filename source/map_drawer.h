@@ -6,8 +6,17 @@ class GameSprite;
 
 struct MapTooltip
 {
+	MapTooltip(int x, int y, std::string text, uint8_t r, uint8_t g, uint8_t b) : 
+		x(x), y(y), text(text), r(r), g(g), b(b) {}
+
+	void checkLineEnding() {
+		if(text.at(text.size() - 1) == '\n')
+			text.resize(text.size() - 1);
+	}
+
 	int x, y;
-	std::string tip;
+	std::string text;
+	uint8_t r, g, b;
 };
 
 // Storage during drawing, for option caching
@@ -34,8 +43,10 @@ struct DrawingOptions {
 
 	bool highlight_items;
 	bool show_blocking;
+	bool show_tooltips;
 	bool show_only_colors;
 	bool show_only_modified;
+	bool show_preview;
 	bool hide_items_when_zoomed;
 };
 
@@ -45,10 +56,9 @@ class MapDrawer
 {
 	MapCanvas* canvas;
 	Editor& editor;
-	wxPaintDC& pdc;
 	DrawingOptions options;
 
-	double zoom;
+	float zoom;
 
 	uint32_t current_house_id;
 
@@ -61,10 +71,10 @@ class MapDrawer
 	int floor;
 
 protected:
-	std::vector<MapTooltip> tooltips;
+	std::vector<MapTooltip*> tooltips;
 
 public:
-	MapDrawer(const DrawingOptions& options, MapCanvas* canvas, wxPaintDC& pdc);
+	MapDrawer(MapCanvas* canvas);
 	~MapDrawer();
 
 	bool dragging;
@@ -72,6 +82,7 @@ public:
 
 	void SetupVars();
 	void SetupGL();
+	void Release();
 
 	void Draw();
 	void DrawBackground();
@@ -87,6 +98,8 @@ public:
 
 	void TakeScreenshot(uint8_t* screenshot_buffer);
 
+	DrawingOptions& getOptions() { return options; }
+
 protected:
 	void BlitItem(int& screenx, int& screeny, const Tile* tile, const Item* item, bool ephemeral = false, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void BlitItem(int& screenx, int& screeny, const Position& pos, const Item* item, bool ephemeral = false, int red = 255, int green = 255, int blue = 255, int alpha = 255);
@@ -95,8 +108,10 @@ protected:
 	void BlitCreature(int screenx, int screeny, const Creature* c, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void DrawTile(TileLocation* tile);
-	void DrawTooltip(int screenx, int screeny, const std::string& s);
-	void MakeTooltip(Item* item, std::ostringstream& tip);
+	void DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b);
+	void WriteTooltip(Item* item, std::ostringstream& stream);
+	void WriteTooltip(Waypoint* item, std::ostringstream& stream);
+	void MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);
 
 	enum BrushColor {
 		COLOR_BRUSH,
@@ -109,6 +124,7 @@ protected:
 		COLOR_BLANK,
 	};
 
+	void getColor(Brush* brush, const Position& position, uint8_t &r, uint8_t &g, uint8_t &b);
 	void glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha);
 	void glBlitSquare(int sx, int sy, int red, int green, int blue, int alpha);
 	void glColor(wxColor color);

@@ -615,6 +615,22 @@ int LuaInterface::luaEditorGetSelection(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorGetItemCount(lua_State* L)
+{
+	// editor:getItemCount(itemid)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		lua_pushnumber(L, 0);
+		return 1;
+	}
+
+	uint16_t itemid = getNumber<uint16_t>(L, 2);
+	ItemCounter counter(itemid);
+	foreach_ItemOnMap(editor->map, counter, false);
+	lua_pushnumber(L, counter.result);
+	return 1;
+}
+
 // Tile
 int LuaInterface::luaTileCreate(lua_State* L)
 {
@@ -1263,6 +1279,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Editor", "createSelection", LuaInterface::luaEditorCreateSelection);
 	registerMethod("Editor", "selectTiles", LuaInterface::luaEditorSelectTiles);
 	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
+	registerMethod("Editor", "getItemCount", LuaInterface::luaEditorGetItemCount);
 
 	// Tile
 	registerClass("Tile", "", LuaInterface::luaTileCreate);

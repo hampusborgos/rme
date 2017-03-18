@@ -271,9 +271,10 @@ PaletteType PaletteWindow::GetSelectedPage() const
 
 bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary)
 {
-	if(!choicebook) return false;
+	if(!choicebook || !whatbrush)
+		return false;
 
-	if(dynamic_cast<const HouseBrush*>(whatbrush) && house_palette) {
+	if(whatbrush->isHouse() && house_palette) {
 		house_palette->SelectBrush(whatbrush);
 		SelectPage(TILESET_HOUSE);
 		return true;

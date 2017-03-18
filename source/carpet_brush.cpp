@@ -34,7 +34,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -50,12 +50,12 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(alignString == "center") {
 					alignment = CARPET_CENTER;
 				} else {
-					warnings.push_back(wxT("Invalid alignment of carpet node\n"));
+					warnings.push_back("Invalid alignment of carpet node\n");
 					continue;
 				}
 			}
 		} else {
-			warnings.push_back(wxT("Could not read alignment tag of carpet node\n"));
+			warnings.push_back("Could not read alignment tag of carpet node\n");
 			continue;
 		}
 
@@ -67,24 +67,24 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 			use_local_id = false;
 			if(!(attribute = subChildNode.attribute("id"))) {
-				warnings.push_back(wxT("Could not read id tag of item node\n"));
+				warnings.push_back("Could not read id tag of item node\n");
 				continue;
 			}
 
 			int32_t id = pugi::cast<int32_t>(attribute.value());
 			if(!(attribute = subChildNode.attribute("chance"))) {
-				warnings.push_back(wxT("Could not read chance tag of item node\n"));
+				warnings.push_back("Could not read chance tag of item node\n");
 				continue;
 			}
 
 			int32_t chance = pugi::cast<int32_t>(attribute.value());
 
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0) {
-				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+				warnings.push_back("There is no itemtype with id " + std::to_string(id));
 				continue;
 			} else if(it.brush && it.brush != this) {
-				warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+				warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 				continue;
 			}
 
@@ -103,18 +103,18 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 		if(use_local_id) {
 			if(!(attribute = childNode.attribute("id"))) {
-				warnings.push_back(wxT("Could not read id tag of carpet node\n"));
+				warnings.push_back("Could not read id tag of carpet node\n");
 				continue;
 			}
 
 			int32_t id = pugi::cast<int32_t>(attribute.value());
 
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0) {
-				warnings.push_back(wxT("There is no itemtype with id ") + std::to_string(id));
+				warnings.push_back("There is no itemtype with id " + std::to_string(id));
 				return false;
 			} else if(it.brush && it.brush != this) {
-				warnings.push_back(wxT("Itemtype id ") + std::to_string(id) + wxT(" already has a brush"));
+				warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 				return false;
 			}
 

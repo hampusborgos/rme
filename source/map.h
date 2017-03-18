@@ -134,7 +134,8 @@ public:
 };
 
 template <typename ForeachType>
-inline void foreach_ItemOnMap(Map& map, ForeachType& foreach) {
+inline void foreach_ItemOnMap(Map& map, ForeachType& foreach, bool selectedTiles)
+{
 	MapIterator tileiter = map.begin();
 	MapIterator end = map.end();
 	long long done = 0;
@@ -142,14 +143,17 @@ inline void foreach_ItemOnMap(Map& map, ForeachType& foreach) {
 	while(tileiter != end) {
 		++done;
 		Tile* tile = (*tileiter)->get();
+		if(selectedTiles && !tile->isSelected()) {
+			++tileiter;
+			continue;
+		}
+
 		if(tile->ground) {
 			foreach(map, tile, tile->ground, done);
 		}
+
 		std::queue<Container*> containers;
-		for(ItemVector::iterator itemiter = tile->items.begin();
-				itemiter != tile->items.end();
-				++itemiter)
-		{
+		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ++itemiter) {
 			Item* item = *itemiter;
 			Container* container = dynamic_cast<Container*>(item);
 			foreach(map, tile, item, done);

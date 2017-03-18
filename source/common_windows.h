@@ -117,15 +117,23 @@ public:
 	virtual ~ExportMiniMapWindow();
 
 	void OnClickBrowse(wxCommandEvent&);
+	void OnDirectoryChanged(wxKeyEvent&);
+	void OnFileNameChanged(wxKeyEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 	void OnExportTypeChange(wxCommandEvent&);
+
 protected:
+	void CheckValues();
+
 	Editor& editor;
 
-	wxTextCtrl* file_text_field;
+	wxStaticText* error_field;
+	wxTextCtrl* directory_text_field;
+	wxTextCtrl* file_name_text_field;
 	wxChoice* floor_options;
 	wxSpinCtrl* floor_number;
+	wxButton* ok_button;
 
 	DECLARE_EVENT_TABLE();
 };
@@ -136,7 +144,7 @@ protected:
 class KeyForwardingTextCtrl : public wxTextCtrl
 {
 public:
-	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = "", const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
 		: wxTextCtrl(parent, id, value, pos, size, style, validator, name) {}
 	~KeyForwardingTextCtrl() {}
 
@@ -166,6 +174,20 @@ protected:
 	bool cleared;
 	bool no_matches;
 	std::vector<Brush*> brushlist;
+};
+
+/**
+* A wxListBox that can be sorted without using style wxLB_SORT.
+* wxLB_SORT does not work properly on Windows and causes errors on macOS.
+*/
+class SortableListBox : public wxListBox
+{
+public:
+	SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+	~SortableListBox();
+	void Sort();
+private:
+	void DoSort();
 };
 
 /**
@@ -210,7 +232,7 @@ protected:
 class FindBrushDialog : public FindDialog
 {
 public:
-	FindBrushDialog(wxWindow* parent, wxString title = wxT("Jump to Brush"));
+	FindBrushDialog(wxWindow* parent, wxString title = "Jump to Brush");
 	virtual ~FindBrushDialog();
 
 	virtual void RefreshContentsInternal();
@@ -225,7 +247,7 @@ public:
 class FindItemDialog : public FindDialog
 {
 public:
-	FindItemDialog(wxWindow* parent, wxString title = wxT("Jump to Item"));
+	FindItemDialog(wxWindow* parent, wxString title = "Jump to Item");
 	virtual ~FindItemDialog();
 
 	void setCondition(bool condition(const ItemType&));
@@ -245,7 +267,7 @@ protected:
 class ReplaceItemDialog : public wxDialog
 {
 public:
-	ReplaceItemDialog(wxWindow* parent, wxString title = wxT("Replace Item"));
+	ReplaceItemDialog(wxWindow* parent, wxString title = "Replace Item");
 	virtual ~ReplaceItemDialog();
 
 	void OnKeyDown(wxKeyEvent&);

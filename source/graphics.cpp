@@ -28,6 +28,7 @@
 #include "otml.h"
 
 #include <wx/mstream.h>
+#include <wx/stopwatch.h>
 #include "pngfiles.h"
 
 // All 133 template colors
@@ -69,7 +70,8 @@ GraphicManager::GraphicManager() :
 	loaded_textures(0),
 	lastclean(0)
 {
-	////
+	animation_timer = newd wxStopWatch();
+	animation_timer->Start();
 }
 
 GraphicManager::~GraphicManager()
@@ -81,6 +83,8 @@ GraphicManager::~GraphicManager()
 	for(ImageMap::iterator iter = image_space.begin(); iter != image_space.end(); ++iter) {
 		delete iter->second;
 	}
+
+	delete animation_timer;
 }
 
 bool GraphicManager::hasTransparency() const
@@ -173,7 +177,7 @@ uint16_t GraphicManager::getCreatureSpriteMaxID() const
 inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
 {
 	wxMemoryInputStream is(data, length);
-	wxImage img(is, wxT("image/png"));
+	wxImage img(is, "image/png");
 	if(!img.IsOk()) return nullptr;
 	return newd wxBitmap(img, -1);
 }
@@ -341,7 +345,7 @@ bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArray
 		OTMLDocumentPtr doc = OTMLDocument::parse(path);
 
 		if(doc->size() == 0 || !doc->hasChildAt("DatSpr")) {
-			error += wxT("'DatSpr' tag not found");
+			error += "'DatSpr' tag not found";
 			return false;
 		}
 
@@ -365,7 +369,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	FileReadHandle file(nstr(datafile.GetFullPath()));
 
 	if(!file.isOk()) {
-		error += wxT("Failed to open ") + datafile.GetFullPath() + wxT(" for reading\nThe error reported was:") + wxstr(file.getErrorMessage());
+		error += "Failed to open " + datafile.GetFullPath() + " for reading\nThe error reported was:" + wxstr(file.getErrorMessage());
 		return false;
 	}
 
@@ -402,7 +406,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		// Load the sprite flags
 		if(!loadSpriteMetadataFlags(file, sType, error, warnings)) {
 			wxString msg;
-			msg << wxT("Failed to load flags for sprite ") << sType->id;
+			msg << "Failed to load flags for sprite " << sType->id;
 			warnings.push_back(msg);
 		}
 
@@ -435,10 +439,28 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 			else
 				file.getU8(sType->pattern_z);
 			file.getU8(sType->frames); // Length of animation
-
-			// Skipping the frame duration
-			if(has_frame_durations && sType->frames > 1) {
-				file.skip(6 + 8 * sType->frames);
+			
+			if(sType->frames > 1) {
+				uint8_t async = 0;
+				int loop_count = 0;
+				int8_t start_frame = 0;
+				if(has_frame_durations) {
+					file.getByte(async);
+					file.get32(loop_count);
+					file.getSByte(start_frame);
+				}
+				sType->animator = newd Animator(sType->frames, start_frame, loop_count, async == 1);
+				if(has_frame_durations) {
+					for(int i = 0; i < sType->frames; i++) {
+						uint32_t min;
+						uint32_t max;
+						file.getU32(min);
+						file.getU32(max);
+						FrameDuration* frame_duration = sType->animator->getFrameDuration(i);
+						frame_duration->setValues(int(min), int(max));
+					}
+					sType->animator->reset();
+				}
 			}
 
 			sType->numsprites =
@@ -636,7 +658,7 @@ bool GraphicManager::loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* s
 
 			default: {
 				wxString err;
-				err << wxT("Metadata: Unknown flag: ") << i2ws(flag) << wxT(". Previous flag: ") << i2ws(prev_flag) << wxT(".");
+				err << "Metadata: Unknown flag: " << i2ws(flag) << ". Previous flag: " << i2ws(prev_flag) << ".";
 				warnings.push_back(err);
 				break;
 			}
@@ -651,7 +673,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 	FileReadHandle fh(nstr(datafile.GetFullPath()));
 
 	if(!fh.isOk()) {
-		error = wxT("Failed to open file for reading");
+		error = "Failed to open file for reading";
 		return false;
 	}
 
@@ -702,7 +724,7 @@ bool GraphicManager::loadSpriteData(const FileName& datafile, wxString& error, w
 			if(spr && size > 0) {
 				if(spr->size > 0) {
 					wxString ss;
-					ss << wxT("items.spr: Duplicate GameSprite id ") << id;
+					ss << "items.spr: Duplicate GameSprite id " << id;
 					warnings.push_back(ss);
 					fh.seekRelative(size);
 				} else {
@@ -831,6 +853,7 @@ GameSprite::GameSprite() :
 	pattern_z(0),
 	frames(0),
 	numsprites(0),
+	animator(nullptr),
 	draw_height(0),
 	drawoffset_x(0),
 	drawoffset_y(0),
@@ -846,6 +869,8 @@ GameSprite::~GameSprite()
 	for(std::list<TemplateImage*>::iterator iter = instanced_templates.begin(); iter != instanced_templates.end(); ++iter) {
 		delete *iter;
 	}
+
+	delete animator;
 }
 
 void GameSprite::clean(int time) {
@@ -878,6 +903,17 @@ std::pair<int, int> GameSprite::getDrawOffset() const
 uint8_t GameSprite::getMiniMapColor() const
 {
 	return minimap_color;
+}
+
+int GameSprite::getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const
+{
+	return ((((((frame % this->frames) *
+		this->pattern_z + pattern_z) *
+		this->pattern_y + pattern_y) *
+		this->pattern_x + pattern_x) *
+		this->layers + layer) *
+		this->height + height) *
+		this->width + width;
 }
 
 GLuint GameSprite::getHardwareID(int _x, int _y, int _layer, int _count, int _pattern_x, int _pattern_y, int _pattern_z, int _frame)
@@ -938,229 +974,48 @@ GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit
 	return spriteList[v]->getHardwareID();
 }
 
-wxMemoryDC* GameSprite::getDC(SpriteSize sz)
+wxMemoryDC* GameSprite::getDC(SpriteSize size)
 {
-	if(!dc[sz]) {
-		const int bgshade = g_settings.getInteger(Config::ICON_BACKGROUND);
+	ASSERT(size == SPRITE_SIZE_16x16 || size == SPRITE_SIZE_32x32);
 
-		uint8_t* rgb = nullptr;
-		uint32_t ht, wt;
+	if(!dc[size]) {
+		ASSERT(width >= 1 && height >= 1);
 
-		if(width == 2 && height == 2) {
-			wt = 2, ht = 2;
-			rgb = newd uint8_t[2*2*32*32*3];
-			memset(rgb, bgshade, 2*2*32*32*3);
+		wxImage image(width * SPRITE_PIXELS, height * SPRITE_PIXELS);
 
-			for(int cf = 0; cf != layers; ++cf) {
-				uint8_t* rgb32x32[2][2] = {
-					{spriteList[(cf*2+1)*2+1]->getRGBData(),spriteList[(cf*2+1)*2]->getRGBData()},
-					{spriteList[cf*4+1]->getRGBData(),spriteList[cf*4]->getRGBData()}
-				};
-				for(int cy = 0; cy < 64; ++cy) {
-					for(int cx = 0; cx < 64; ++cx) {
-						int cw = cx/32;
-						int ch = cy/32;
-						if(!rgb32x32[ch][cw]) continue;
-
-						int rx = cx%32;
-						int ry = cy%32;
-
-						uint8_t r = rgb32x32[ch][cw][32*3*ry + 3*rx + 0];
-						uint8_t g = rgb32x32[ch][cw][32*3*ry + 3*rx + 1];
-						uint8_t b = rgb32x32[ch][cw][32*3*ry + 3*rx + 2];
-
-						if(r == 0xFF && g == 0x00 && b == 0xFF) {
-							// Transparent.. let it pass
-						} else {
-							rgb[64*3*cy + 3*cx + 0] = r;
-							rgb[64*3*cy + 3*cx + 1] = g;
-							rgb[64*3*cy + 3*cx + 2] = b;
-						}
+		for(uint8_t l = 0; l < layers; l++) {
+			for(uint8_t w = 0; w < width; w++) {
+				for(uint8_t h = 0; h < height; h++) {
+					const int i = getIndex(w, h, l, 0, 0, 0, 0);
+					uint8_t* data = spriteList[i]->getRGBData();
+					if(data) {
+						wxImage img(SPRITE_PIXELS, SPRITE_PIXELS, data);
+						img.SetMaskColour(0xFF, 0x00, 0xFF);
+						image.Paste(img, (width - w - 1) * SPRITE_PIXELS, (height - h - 1) * SPRITE_PIXELS);
+						img.Destroy();
 					}
 				}
-				delete[] rgb32x32[0][0];
-				delete[] rgb32x32[0][1];
-				delete[] rgb32x32[1][0];
-				delete[] rgb32x32[1][1];
 			}
-			// (cf*2+ch)*2+cw
-		} else if(width == 2 && height == 1) {
-			wt = 2, ht = 2;
-			rgb = newd uint8_t[2*2*32*32*3];
-			memset(rgb, bgshade, 2*2*32*32*3);
-
-			for(int cf = 0; cf != layers; ++cf) {
-				uint8_t* rgb32x32[2] = {
-					spriteList[cf*2+1]->getRGBData(),
-					spriteList[cf*2+0]->getRGBData()
-				};
-				for(int cy = 16; cy < 48; ++cy) {
-					for(int cx = 0; cx < 64; ++cx) {
-						int cw = cx/32;
-						int rx = cx%32;
-						int ry = cy-16;
-						if(!rgb32x32[cw]) continue;
-
-						uint8_t r = rgb32x32[cw][32*3*ry + 3*rx + 0];
-						uint8_t g = rgb32x32[cw][32*3*ry + 3*rx + 1];
-						uint8_t b = rgb32x32[cw][32*3*ry + 3*rx + 2];
-
-						if(r == 0xFF && g == 0x00 && b == 0xFF) {
-							// Transparent.. let it pass
-						} else {
-							rgb[64*3*cy + 3*cx + 0] = r;
-							rgb[64*3*cy + 3*cx + 1] = g;
-							rgb[64*3*cy + 3*cx + 2] = b;
-						}
-					}
-				}
-				delete[] rgb32x32[0];
-				delete[] rgb32x32[1];
-			}
-		} else if(width == 1 && height == 2) {
-			wt = 2, ht = 2;
-			rgb = newd uint8_t[2*2*32*32*3];
-			memset(rgb, bgshade, 2*2*32*32*3);
-
-			for(int cf = 0; cf != layers; ++cf) {
-				uint8_t* rgb32x32[2] = {
-					spriteList[cf*2+1]->getRGBData(),
-					spriteList[cf*2+0]->getRGBData()
-				};
-				for(int cy = 0; cy < 64; ++cy) {
-					for(int cx = 16; cx < 48; ++cx) {
-						int ch = cy/32;
-						int rx = cx-16;
-						int ry = cy%32;
-						if(!rgb32x32[ch]) continue;
-
-						uint8_t r = rgb32x32[ch][32*3*ry + 3*rx + 0];
-						uint8_t g = rgb32x32[ch][32*3*ry + 3*rx + 1];
-						uint8_t b = rgb32x32[ch][32*3*ry + 3*rx + 2];
-
-						if(r == 0xFF && g == 0x00 && b == 0xFF) {
-							// Transparent.. let it pass
-						} else {
-							rgb[64*3*cy + 3*cx + 0] = r;
-							rgb[64*3*cy + 3*cx + 1] = g;
-							rgb[64*3*cy + 3*cx + 2] = b;
-						}
-					}
-				}
-				delete[] rgb32x32[0];
-				delete[] rgb32x32[1];
-			}
-		} else if(width == 1 && height == 1) {
-			wt = 1, ht = 1;
-			rgb = newd uint8_t[32*32*3];
-			memset(rgb, bgshade, 32*32*3);
-
-			for(int cf = 0; cf != layers; ++cf) {
-				uint8_t* rgb32x32 = spriteList[cf]->getRGBData();
-				if(!rgb32x32) continue;
-
-				for(int cy = 0; cy < 32; ++cy) {
-					for(int cx = 0; cx < 32; ++cx) {
-						uint8_t r = rgb32x32[32*3*cy + 3*cx + 0];
-						uint8_t g = rgb32x32[32*3*cy + 3*cx + 1];
-						uint8_t b = rgb32x32[32*3*cy + 3*cx + 2];
-
-						if(r == 0xFF && g == 0x00 && b == 0xFF) {
-							// Transparent.. let it pass
-						} else {
-							rgb[32*3*cy + 3*cx + 0] = r;
-							rgb[32*3*cy + 3*cx + 1] = g;
-							rgb[32*3*cy + 3*cx + 2] = b;
-						}
-					}
-				}
-				delete[] rgb32x32;
-			}
-		} else {
-			return nullptr;
 		}
 
 		// Now comes the resizing / antialiasing
-		if(sz == SPRITE_SIZE_16x16) {
-			uint8_t* rgb16x16 = reinterpret_cast<uint8_t*>(malloc(16*16*3));
-
-			uint32_t pixels_per_line = 32*wt;
-			uint32_t pixels_per_pixel = 2*wt;
-			uint32_t bytes_per_line = 3*pixels_per_line;
-			uint32_t bytes_per_pixel = 3*pixels_per_pixel;
-
-
-			for(uint32_t y = 0; y < 16; ++y) {
-				for(uint32_t x = 0; x < 16; ++x) {
-					uint32_t r = 0, g = 0, b = 0, c = 0;
-					for(uint32_t u = 0; u < 2; ++u) {
-						for(uint32_t v = 0; v < 2; ++v) {
-							r += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 0];
-							g += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 1];
-							b += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 2];
-							//r += rgb[96 * (2*y + u) + (6*x + v*3) + 0];
-							//g += rgb[96 * (2*y + u) + (6*x + v*3) + 1];
-							//b += rgb[96 * (2*y + u) + (6*x + v*3) + 2];
-							++c;
-						}
-					}
-					ASSERT(c);
-
-					rgb16x16[48*y+x*3+0] = r/c;
-					rgb16x16[48*y+x*3+1] = g/c;
-					rgb16x16[48*y+x*3+2] = b/c;
-				}
-			}
-
-			wxImage img(16,16, rgb16x16);
-			wxBitmap bmp(img);
-			dc[sz] = newd wxMemoryDC(bmp);
-			delete[] rgb;
-			g_gui.gfx.addSpriteToCleanup(this);
-		} else if(sz == SPRITE_SIZE_32x32) {
-			uint8_t* rgb32x32 = reinterpret_cast<uint8_t*>(malloc(32*32*3));
-
-			uint32_t pixels_per_line = 32*wt;
-			uint32_t pixels_per_pixel = wt;
-			uint32_t bytes_per_line = 3*pixels_per_line;
-			uint32_t bytes_per_pixel = 3*pixels_per_pixel;
-
-
-			for(uint32_t y = 0; y < 32; ++y) {
-				for(uint32_t x = 0; x < 32; ++x) {
-					uint32_t r = 0, g = 0, b = 0, c = 0;
-					for(uint32_t u = 0; u < ht; ++u) {
-						for(uint32_t v = 0; v < wt; ++v) {
-							r += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 0];
-							g += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 1];
-							b += rgb[bytes_per_line * (pixels_per_pixel*y + u) + (bytes_per_pixel*x + 3*v) + 2];
-							++c;
-						}
-					}
-					ASSERT(c);
-
-					rgb32x32[96*y+x*3+0] = r/c;
-					rgb32x32[96*y+x*3+1] = g/c;
-					rgb32x32[96*y+x*3+2] = b/c;
-				}
-			}
-
-			wxImage img(32,32, rgb32x32);
-			wxBitmap bmp(img);
-			dc[sz] = newd wxMemoryDC(bmp);
-			delete[] rgb;
-			g_gui.gfx.addSpriteToCleanup(this);
-		} else {
-			ASSERT(sz == 0);
+		if(size == SPRITE_SIZE_16x16 || image.GetWidth() > SPRITE_PIXELS || image.GetHeight() > SPRITE_PIXELS) {
+			int wh = SPRITE_SIZE_16x16 ? 16 : 32;
+			image.Rescale(wh, wh);
 		}
+
+		wxBitmap bmp(image);
+		dc[size] = newd wxMemoryDC(bmp);
+		g_gui.gfx.addSpriteToCleanup(this);
+		image.Destroy();
 	}
-	return dc[sz];
+	return dc[size];
 }
 
 void GameSprite::DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width, int height)
 {
-	if(width == -1)  width = sz == SPRITE_SIZE_32x32? 32 : 16;
-	if(height == -1) height= sz == SPRITE_SIZE_32x32? 32 : 16;
+	if(width == -1)  width = sz == SPRITE_SIZE_32x32 ? 32 : 16;
+	if(height == -1) height= sz == SPRITE_SIZE_32x32 ? 32 : 16;
 	wxDC* sdc = getDC(sz);
 	if(sdc) {
 		dc->Blit(start_x, start_y, width, height, sdc, 0, 0, wxCOPY, true);
@@ -1171,7 +1026,6 @@ void GameSprite::DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int w
 		dc->SetBrush(b);
 	}
 }
-
 
 GameSprite::Image::Image() :
 	isGLLoaded(false),
@@ -1202,7 +1056,7 @@ void GameSprite::Image::createGLTexture(GLuint whatid)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPRITE_PIXELS, SPRITE_PIXELS, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
 
 	delete[] rgba;
 	#undef SPRITE_SIZE
@@ -1251,186 +1105,109 @@ void GameSprite::NormalImage::clean(int time)
 
 uint8_t* GameSprite::NormalImage::getRGBData()
 {
-	if(dump == nullptr) {
+	if(!dump) {
 		if(g_settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 			return nullptr;
-		} else {
-			if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
-				return nullptr;
-			}
-		}
-	}
-	uint8_t* rgb32x32 = newd uint8_t[32*32*3];
-	/* SPR dump format
-	 *  The spr format contains chunks, a chunk can either be transparent or contain pixel data.
-	 *  First 2 bytes (unsigned short) are read, which tells us how long the chunk is. One
-	 * chunk can stretch several rows in the outputted image, for example, if the chunk is 400
-	 * pixels long. We will have to wrap it over 14 rows in the image.
-	 *  If the chunk is transparent. Set that many pixels to be transparent.
-	 *  If the chunk is pixel data, read from the cursor that many pixels. One pixel is 3 bytes in
-	 * in RGB aligned data (eg. char R, char B, char G) so if the unsigned short says 20, we
-	 * read 20*3 = 60 bytes.
-	 *  Once we read one chunk, we switch to the other type of chunk (if we've just read a transparent
-	 * chunk, we read a pixel chunk and vice versa). And then start over again.
-	 *  All sprites start with a transparent chunk.
-	 */
-
-	int bytes = 0;
-	int x = 0;
-	int y = 0;
-	uint16_t chunk_size;
-	uint8_t bits_per_pixel = g_gui.gfx.hasTransparency() ? 4 : 3;
-
-	while(bytes < size && y < 32) {
-		chunk_size = dump[bytes] | dump[bytes+1] << 8;
-		bytes += 2;
-
-		for(int i = 0; i < chunk_size; ++i) {
-			// Transparent pixel
-			rgb32x32[96*y+x*3+0] = 0xFF;
-			rgb32x32[96*y+x*3+1] = 0x00;
-			rgb32x32[96*y+x*3+2] = 0xFF;
-			x++;
-			if(x >= 32) {
-				x = 0;
-				++y;
-				if(y >= 32)
-					break;
-			}
 		}
 
-		if(bytes >= size || y >= 32)
-			break; // We're done
-		// Now comes a pixel chunk, read it!
-		chunk_size = dump[bytes] | dump[bytes+1] << 8;
-		bytes += 2;
-		//printf("Reading pixel chunk size %d\n", int(chunk_size));
-		for(int i = 0; i < chunk_size; ++i) {
-			uint8_t red  = dump[bytes+0];
-			uint8_t green= dump[bytes+1];
-			uint8_t blue = dump[bytes+2];
-			rgb32x32[96*y+x*3+0] = red;
-			rgb32x32[96*y+x*3+1] = green;
-			rgb32x32[96*y+x*3+2] = blue;
-
-			bytes += bits_per_pixel;
-
-			x++;
-			if(x >= 32) {
-				x = 0;
-				++y;
-				if(y >= 32)
-					break;
-			}
+		if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
+			return nullptr;
 		}
 	}
 
-	// Fill up any trailing pixels
-	while(y<32 && x<32) {
-		rgb32x32[96*y+x*3+0] = 0xFF; // Transparent
-		rgb32x32[96*y+x*3+1] = 0x00; // Transparent
-		rgb32x32[96*y+x*3+2] = 0xFF; // Transparent
-		x++;
-		if(x >= 32) {
-			x = 0;
-			++y;
+	const int pixels_data_size = SPRITE_PIXELS * SPRITE_PIXELS * 3;
+	uint8_t* data = newd uint8_t[pixels_data_size];
+	uint8_t bpp = g_gui.gfx.hasTransparency() ? 4 : 3;
+	int write = 0;
+	int read = 0;
+
+	// decompress pixels
+	while(read < size && write < pixels_data_size) {
+		int transparent = dump[read] | dump[read + 1] << 8;
+		read += 2;
+		for(int i = 0; i < transparent && write < pixels_data_size; i++) {
+			data[write + 0] = 0xFF; // red
+			data[write + 1] = 0x00; // green
+			data[write + 2] = 0xFF; // blue
+			write += 3;
+		}
+
+		int colored = dump[read] | dump[read + 1] << 8;
+		read += 2;
+		for(int i = 0; i < colored && write < pixels_data_size; i++) {
+			data[write + 0] = dump[read + 0]; // red
+			data[write + 1] = dump[read + 1]; // green
+			data[write + 2] = dump[read + 2]; // blue
+			write += 3;
+			read += bpp;
 		}
 	}
 
-	return rgb32x32;
+	// fill remaining pixels
+	while(write < pixels_data_size) {
+		data[write + 0] = 0xFF; // red
+		data[write + 1] = 0x00; // green
+		data[write + 2] = 0xFF; // blue
+		write += 3;
+	}
+	return data;
 }
+
 
 uint8_t* GameSprite::NormalImage::getRGBAData()
 {
-	if(dump == nullptr) {
+	if(!dump) {
 		if(g_settings.getInteger(Config::USE_MEMCACHED_SPRITES)) {
 			return nullptr;
-		} else {
-			if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
-				return nullptr;
-			}
-		}
-	}
-	uint8_t* rgba32x32 = newd uint8_t[32*32*4];
-	memset(rgba32x32, 0, 32*32*4);
-	/* SPR dump format
-	 *  The spr format contains chunks, a chunk can either be transparent or contain pixel data.
-	 *  First 2 bytes (unsigned short) are read, which tells us how long the chunk is. One
-	 * chunk can stretch several rows in the outputted image, for example, if the chunk is 400
-	 * pixels long. We will have to wrap it over 14 rows in the image.
-	 *  If the chunk is transparent. Set that many pixels to be transparent.
-	 *  If the chunk is pixel data, read from the cursor that many pixels. One pixel is 3 bytes in
-	 * in RGB aligned data (eg. char R, char B, char G) so if the unsigned short says 20, we
-	 * read 20*3 = 60 bytes.
-	 *  Once we read one chunk, we switch to the other type of chunk (if we've just read a transparent
-	 * chunk, we read a pixel chunk and vice versa). And then start over again.
-	 *  All sprites start with a transparent chunk.
-	 */
-
-	int bytes = 0;
-	int x = 0;
-	int y = 0;
-	uint16_t chunk_size;
-	bool transparency = g_gui.gfx.hasTransparency();
-	uint8_t bits_per_pixel = transparency ? 4 : 3;
-
-	while(bytes < size && y < 32) {
-		chunk_size = dump[bytes] | dump[bytes+1] << 8;
-		//printf("pos:%d\n", bytes);
-		//printf("Reading transparent chunk size %d\n", int(chunk_size));
-		bytes += 2;
-
-		for(int i = 0; i < chunk_size; ++i) {
-			//printf("128*%d+%d*4+3\t= %d\n", y, x, 128*y+x*4+3);
-			rgba32x32[128*y+x*4+3] = 0x00; // Transparent pixel
-			x++;
-			if(x >= 32) {
-				x = 0;
-				y++;
-				if(y >= 32)
-					break;
-			}
 		}
 
-		if(bytes >= size || y >= 32)
-			break; // We're done
-		// Now comes a pixel chunk, read it!
-		chunk_size = dump[bytes] | dump[bytes+1] << 8;
-		bytes += 2;
-		//printf("Reading pixel chunk size %d\n", int(chunk_size));
-		for(int i = 0; i < chunk_size; ++i) {
-			uint8_t red   = dump[bytes+0];
-			uint8_t green = dump[bytes+1];
-			uint8_t blue  = dump[bytes+2];
-			uint8_t alpha = transparency ? dump[bytes + 3] : 0xFF;
-			rgba32x32[128*y+x*4+0] = red;
-			rgba32x32[128*y+x*4+1] = green;
-			rgba32x32[128*y+x*4+2] = blue;
-			rgba32x32[128*y+x*4+3] = alpha; //Opaque pixel
-
-			bytes += bits_per_pixel;
-
-			x++;
-			if(x >= 32) {
-				x = 0;
-				y++;
-				if(y >= 32)
-					break;
-			}
+		if(!g_gui.gfx.loadSpriteDump(dump, size, id)) {
+			return nullptr;
 		}
 	}
 
-	// Fill up any trailing pixels
-	while(y<32 && x<32) {
-		rgba32x32[128*y+x*4+3] = 0x00; // Transparent pixel
-		x++;
-		if(x >= 32) {
-			x = 0;
-			y++;
+	const int pixels_data_size = SPRITE_PIXELS * SPRITE_PIXELS * 4;
+	uint8_t* data = newd uint8_t[pixels_data_size];
+	bool use_alpha = g_gui.gfx.hasTransparency();
+	uint8_t bpp = use_alpha ? 4 : 3;
+	int write = 0;
+	int read = 0;
+
+	// decompress pixels
+	while(read < size && write < pixels_data_size) {
+		int transparent = dump[read] | dump[read + 1] << 8;
+		if(use_alpha && transparent >= size) // Corrupted sprite?
+			break;
+		read += 2;
+		for(int i = 0; i < transparent && write < pixels_data_size; i++) {
+			data[write + 0] = 0x00; // red
+			data[write + 1] = 0x00; // green
+			data[write + 2] = 0x00; // blue
+			data[write + 3] = 0x00; // alpha
+			write += 4;
+		}
+
+		int colored = dump[read] | dump[read + 1] << 8;
+		read += 2;
+		for(int i = 0; i < colored && write < pixels_data_size; i++) {
+			data[write + 0] = dump[read + 0]; // red
+			data[write + 1] = dump[read + 1]; // green
+			data[write + 2] = dump[read + 2]; // blue
+			data[write + 3] = use_alpha ? dump[read + 3] : 0xFF; // alpha
+			write += 4;
+			read += bpp;
 		}
 	}
 
-	return rgba32x32;
+	// fill remaining pixels
+	while(write < pixels_data_size) {
+		data[write + 0] = 0x00; // red
+		data[write + 1] = 0x00; // green
+		data[write + 2] = 0x00; // blue
+		data[write + 3] = 0x00; // alpha
+		write += 4;
+	}
+	return data;
 }
 
 GLuint GameSprite::NormalImage::getHardwareID()
@@ -1506,15 +1283,15 @@ uint8_t* GameSprite::TemplateImage::getRGBData()
 		lookFeet = 0;
 	}
 
-	for(int y = 0; y < 32; ++y) {
-		for(int x = 0; x < 32; ++x) {
-			uint8_t& red    = rgbdata[y*32*3 + x*3 + 0];
-			uint8_t& green  = rgbdata[y*32*3 + x*3 + 1];
-			uint8_t& blue   = rgbdata[y*32*3 + x*3 + 2];
+	for(int y = 0; y < SPRITE_PIXELS; ++y) {
+		for(int x = 0; x < SPRITE_PIXELS; ++x) {
+			uint8_t& red   = rgbdata[y*SPRITE_PIXELS*3 + x*3 + 0];
+			uint8_t& green = rgbdata[y*SPRITE_PIXELS*3 + x*3 + 1];
+			uint8_t& blue  = rgbdata[y*SPRITE_PIXELS*3 + x*3 + 2];
 
-			uint8_t& tred   = template_rgbdata[y*32*3 + x*3 + 0];
-			uint8_t& tgreen = template_rgbdata[y*32*3 + x*3 + 1];
-			uint8_t& tblue  = template_rgbdata[y*32*3 + x*3 + 2];
+			uint8_t& tred   = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 0];
+			uint8_t& tgreen = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 1];
+			uint8_t& tblue  = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 2];
 
 			if(tred && tgreen && !tblue) { // yellow => head
 				colorizePixel(lookHead, red, green, blue);
@@ -1558,15 +1335,15 @@ uint8_t* GameSprite::TemplateImage::getRGBAData()
 		lookFeet = 0;
 	}
 
-	for(int y = 0; y < 32; ++y) {
-		for(int x = 0; x < 32; ++x) {
-			uint8_t& red    = rgbadata[y*32*4 + x*4 + 0];
-			uint8_t& green  = rgbadata[y*32*4 + x*4 + 1];
-			uint8_t& blue   = rgbadata[y*32*4 + x*4 + 2];
+	for(int y = 0; y < SPRITE_PIXELS; ++y) {
+		for(int x = 0; x < SPRITE_PIXELS; ++x) {
+			uint8_t& red   = rgbadata[y*SPRITE_PIXELS*4 + x*4 + 0];
+			uint8_t& green = rgbadata[y*SPRITE_PIXELS*4 + x*4 + 1];
+			uint8_t& blue  = rgbadata[y*SPRITE_PIXELS*4 + x*4 + 2];
 
-			uint8_t& tred   = template_rgbdata[y*32*3 + x*3 + 0];
-			uint8_t& tgreen = template_rgbdata[y*32*3 + x*3 + 1];
-			uint8_t& tblue  = template_rgbdata[y*32*3 + x*3 + 2];
+			uint8_t& tred   = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 0];
+			uint8_t& tgreen = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 1];
+			uint8_t& tblue  = template_rgbdata[y*SPRITE_PIXELS*3 + x*3 + 2];
 
 			if(tred && tgreen && !tblue) { // yellow => head
 				colorizePixel(lookHead, red, green, blue);
@@ -1606,4 +1383,172 @@ void GameSprite::TemplateImage::createGLTexture(GLuint unused)
 void GameSprite::TemplateImage::unloadGLTexture(GLuint unused)
 {
 	Image::unloadGLTexture(gl_tid);
+}
+
+// ============================================================================
+// Animator
+
+Animator::Animator(int frame_count, int start_frame, int loop_count, bool async) :
+	frame_count(frame_count),
+	start_frame(start_frame),
+	loop_count(loop_count),
+	async(async),
+	current_frame(0),
+	current_loop(0),
+	current_duration(0),
+	total_duration(0),
+	direction(ANIMATION_FORWARD),
+	last_time(0),
+	is_complete(false)
+{
+	ASSERT(start_frame >= -1 && start_frame < frame_count);
+
+	for(int i = 0; i < frame_count; i++) {
+		durations.push_back(newd FrameDuration(ITEM_FRAME_DURATION, ITEM_FRAME_DURATION));
+	}
+
+	reset();
+}
+
+Animator::~Animator()
+{
+	for(int i = 0; i < frame_count; i++) {
+		delete durations[i];
+	}
+	durations.clear();
+}
+
+int Animator::getStartFrame() const
+{
+	if(start_frame > -1)
+		return start_frame;
+	return uniform_random(0, frame_count - 1);
+}
+
+FrameDuration* Animator::getFrameDuration(int frame)
+{
+	ASSERT(frame >= 0 && frame < frame_count);
+	return durations[frame];
+}
+
+int Animator::getFrame()
+{
+	long time = g_gui.gfx.getElapsedTime();
+	if(time != last_time && !is_complete) {
+		long elapsed = time - last_time;
+		if(elapsed >= current_duration) {
+			int frame = 0;
+			if(loop_count < 0)
+				frame = getPingPongFrame();
+			else
+				frame = getLoopFrame();
+
+			if(current_frame != frame) {
+				int duration = getDuration(frame) - (elapsed - current_duration);
+				if(duration < 0 && !async) {
+					calculateSynchronous();
+				} else {
+					current_frame = frame;
+					current_duration = std::max<int>(0, duration);
+				}
+			} else {
+				is_complete = true;
+			}
+		} else {
+			current_duration -= elapsed;
+		}
+
+		last_time = time;
+	}
+	return current_frame;
+}
+
+void Animator::setFrame(int frame)
+{
+	ASSERT(frame == -1 || frame == 255 || frame == 254 || (frame >= 0 && frame < frame_count));
+
+	if(current_frame == frame)
+		return;
+
+	if(async) {
+		if(frame == 255) // Async mode
+			current_frame = 0;
+		else if(frame == 254) // Random mode
+			current_frame = uniform_random(0, frame_count - 1);
+		else if(frame >= 0 && frame < frame_count)
+			current_frame = frame;
+		else
+			current_frame = getStartFrame();
+
+		is_complete = false;
+		last_time = g_gui.gfx.getElapsedTime();
+		current_duration = getDuration(current_frame);
+		current_loop = 0;
+	} else {
+		calculateSynchronous();
+	}
+}
+
+void Animator::reset()
+{
+	total_duration = 0;
+	for(int i = 0; i < frame_count; i++)
+		total_duration += durations[i]->max;
+
+	is_complete = false;
+	direction = ANIMATION_FORWARD;
+	current_loop = 0;
+	setFrame(-1);
+}
+
+int Animator::getDuration(int frame) const
+{
+	ASSERT(frame >= 0 && frame < frame_count);
+	return durations[frame]->getDuration();
+}
+
+int Animator::getPingPongFrame()
+{
+	int count = direction == ANIMATION_FORWARD ? 1 : -1;
+	int next_frame = current_frame + count;
+	if(next_frame < 0 || next_frame >= frame_count) {
+		direction = direction == ANIMATION_FORWARD ? ANIMATION_BACKWARD : ANIMATION_FORWARD;
+		count *= -1;
+	}
+	return current_frame + count;
+}
+
+int Animator::getLoopFrame()
+{
+	int next_phase = current_frame + 1;
+	if(next_phase < frame_count)
+		return next_phase;
+
+	if(loop_count == 0)
+		return 0;
+
+	if(current_loop < (loop_count - 1)) {
+		current_loop++;
+		return 0;
+	}
+	return current_frame;
+}
+
+void Animator::calculateSynchronous()
+{
+	long time = g_gui.gfx.getElapsedTime();
+	if(time > 0 && total_duration > 0) {
+		long elapsed = time % total_duration;
+		int total_time = 0;
+		for(int i = 0; i < frame_count; i++) {
+			int duration = getDuration(i);
+			if(elapsed >= total_time && elapsed < total_time + duration) {
+				current_frame = i;
+				current_duration = duration - (elapsed - total_time);
+				break;
+			}
+			total_time += duration;
+		}
+		last_time = time;
+	}
 }

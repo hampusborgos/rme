@@ -80,7 +80,7 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	}
 
 	wxString label;
-	label << item->getID() << wxT(" - ") << item->getName();
+	label << item->getID() << " - " << item->getName();
 	dc.DrawText(label, rect.GetX() + 40, rect.GetY() + 6);
 }
 
@@ -149,29 +149,29 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	sizer->Add(item_list, wxSizerFlags(1).Expand());
 
 	wxString pos;
-	pos << wxT("x=") << tile->getX() << wxT(",  y=") << tile->getY() << wxT(",  z=") << tile->getZ();
+	pos << "x=" << tile->getX() << ",  y=" << tile->getY() << ",  z=" << tile->getZ();
 
 	wxSizer* infoSizer = newd wxBoxSizer(wxVERTICAL);
     wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
-	buttons->Add(newd wxButton(this, wxID_REMOVE, wxT("Delete")));
+	buttons->Add(newd wxButton(this, wxID_REMOVE, "Delete"));
 	buttons->AddSpacer(5);
-	buttons->Add(newd wxButton(this, wxID_FIND, wxT("Select RAW")));
+	buttons->Add(newd wxButton(this, wxID_FIND, "Select RAW"));
 	infoSizer->Add(buttons);
 	infoSizer->AddSpacer(5);
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Position:  ") + pos), wxSizerFlags(0).Left());
-	infoSizer->Add(item_count_txt = newd wxStaticText(this, wxID_ANY, wxT("Item count:  ") + i2ws(item_list->GetItemCount())), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Protection zone:  ") + b2yn(tile->isPZ())), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("No PvP:  ") + b2yn(tile->getMapFlags() & TILESTATE_NOPVP)), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("No logout:  ") + b2yn(tile->getMapFlags() & TILESTATE_NOLOGOUT)), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("PvP zone:  ") + b2yn(tile->getMapFlags() & TILESTATE_PVPZONE)), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, wxT("House:  ") + b2yn(tile->isHouseTile())), wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "Position:  " + pos), wxSizerFlags(0).Left());
+	infoSizer->Add(item_count_txt = newd wxStaticText(this, wxID_ANY, "Item count:  " + i2ws(item_list->GetItemCount())), wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "Protection zone:  " + b2yn(tile->isPZ())), wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "No PvP:  " + b2yn(tile->getMapFlags() & TILESTATE_NOPVP)), wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "No logout:  " + b2yn(tile->getMapFlags() & TILESTATE_NOLOGOUT)), wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "PvP zone:  " + b2yn(tile->getMapFlags() & TILESTATE_PVPZONE)), wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "House:  " + b2yn(tile->isHouseTile())), wxSizerFlags(0).Left());
 
 	sizer->Add(infoSizer, wxSizerFlags(0).Left().DoubleBorder());
 
 	// OK/Cancel buttons
 	wxSizer* btnSizer = newd wxBoxSizer(wxHORIZONTAL);
-	btnSizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(0).Center());
-	btnSizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(0).Center());
+	btnSizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(0).Center());
+	btnSizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(0).Center());
 	sizer->Add(btnSizer, wxSizerFlags(0).Center().DoubleBorder());
 
 	SetSizerAndFit(sizer);
@@ -185,7 +185,7 @@ BrowseTileWindow::~BrowseTileWindow()
 void BrowseTileWindow::OnClickDelete(wxCommandEvent& WXUNUSED(event))
 {
 	item_list->RemoveSelected();
-	item_count_txt->SetLabelText(wxT("Item count: ") + i2ws(item_list->GetItemCount()));
+	item_count_txt->SetLabelText("Item count: " + i2ws(item_list->GetItemCount()));
 }
 
 void BrowseTileWindow::OnClickSelectRaw(wxCommandEvent& WXUNUSED(event))

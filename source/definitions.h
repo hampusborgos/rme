@@ -23,7 +23,7 @@
 // Version info
 // xxyyzzt (major, minor, subversion)
 #define __RME_VERSION_MAJOR__      3
-#define __RME_VERSION_MINOR__      2
+#define __RME_VERSION_MINOR__      3
 #define __RME_SUBVERSION__         0
 
 #define __LIVE_NET_VERSION__       5
@@ -40,10 +40,10 @@
 
 #ifdef __EXPERIMENTAL__
 #   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + + " BETA")
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << wxT(".") << __RME_VERSION_MINOR__ << wxT(" BETA"))
+#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << " BETA")
 #else
 #   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__))
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << wxT(".") << __RME_VERSION_MINOR__)
+#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__)
 #endif
 // OS
 
@@ -117,6 +117,9 @@
 
 // The size of the tile in pixels
 #define TILE_SIZE 32
+
+// The default size of sprites
+#define SPRITE_PIXELS 32
 
 // The sea layer
 #define GROUND_LAYER 7

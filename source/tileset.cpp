@@ -122,12 +122,12 @@ void Tileset::loadCategory(pugi::xml_node node, wxArrayString &warnings)
 
 			pugi::xml_attribute attribute;
 			if(!(attribute = brushNode.attribute("name"))) {
-				warnings.push_back(wxT("Couldn't read creature name tag of creature tileset"));
+				warnings.push_back("Couldn't read creature name tag of creature tileset");
 				continue;
 			}
 
 			const std::string& creatureName = attribute.as_string();
-			CreatureType* ctype = creature_db[creatureName];
+			CreatureType* ctype = g_creatures[creatureName];
 			if(ctype) {
 				CreatureBrush* brush;
 				if(ctype->brush) {
@@ -139,7 +139,7 @@ void Tileset::loadCategory(pugi::xml_node node, wxArrayString &warnings)
 				brush->flagAsVisible();
 				category->brushlist.push_back(brush);
 			} else {
-				warnings.push_back(wxString(wxT("Unknown creature type \"")) << wxstr(creatureName) << wxT("\""));
+				warnings.push_back(wxString("Unknown creature type \"") << wxstr(creatureName) << "\"");
 			}
 		}
 	}
@@ -179,7 +179,7 @@ void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 
 	std::string brushName = node.attribute("after").as_string();
 	if((attribute = node.attribute("afteritem"))) {
-		ItemType& it = item_db[pugi::cast<int32_t>(attribute.value())];
+		ItemType& it = g_items[pugi::cast<int32_t>(attribute.value())];
 		if(it.id != 0) {
 			brushName = it.raw_brush ? it.raw_brush->getName() : std::string();
 		}
@@ -205,13 +205,13 @@ void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 			brush->flagAsVisible();
 			brushlist.insert(insertPosition, brush);
 		} else {
-			warnings.push_back(wxT("Brush \"") + wxString(attribute.as_string(), wxConvUTF8) + wxT("\" doesn't exist."));
+			warnings.push_back("Brush \"" + wxString(attribute.as_string(), wxConvUTF8) + "\" doesn't exist.");
 		}
 	} else if(nodeName == "item") {
 		int32_t fromId = 0, toId = 0;
 		if(!(attribute = node.attribute("id"))) {
 			if(!(attribute = node.attribute("fromid"))) {
-				warnings.push_back(wxT("Couldn't read raw ids."));
+				warnings.push_back("Couldn't read raw ids.");
 			}
 			toId = pugi::cast<int32_t>(node.attribute("toid").value());
 		}
@@ -221,10 +221,10 @@ void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 
 		std::vector<Brush*> tempBrushVector;
 		for(int32_t id = fromId; id <= toId; ++id) {
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0) {
-				warnings.push_back(wxString::Format(wxT("Brush: %s, From: %d, To: %d"), wxstr(brushName), fromId, toId));
-				warnings.push_back(wxT("Unknown item id #") + std::to_string(id) + wxT("."));
+				warnings.push_back(wxString::Format("Brush: %s, From: %d, To: %d", wxstr(brushName), fromId, toId));
+				warnings.push_back("Unknown item id #" + std::to_string(id) + ".");
 				continue;
 			}
 

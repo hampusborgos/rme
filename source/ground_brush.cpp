@@ -66,9 +66,9 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 
 		const std::string& orientation = attribute.as_string();
 
-		ItemType& it = item_db[itemid];
+		ItemType& it = g_items[itemid];
 		if(it.id == 0) {
-			warnings.push_back(wxT("Invalid item ID ") + std::to_string(itemid) + wxT(" for border ") + std::to_string(id));
+			warnings.push_back("Invalid item ID " + std::to_string(itemid) + " for border " + std::to_string(id));
 			continue;
 		}
 
@@ -77,7 +77,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 			it.ground_equivalent = ground_equivalent;
 			it.brush = owner;
 
-			ItemType& it2 = item_db[ground_equivalent];
+			ItemType& it2 = g_items[ground_equivalent];
 			it2.has_equivalent = it2.id != 0;
 		}
 
@@ -138,7 +138,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = item_db[pugi::cast<uint16_t>(attribute.value())].clientID;
+		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].clientID;
 	}
 
 	if((attribute = node.attribute("z-order"))) {
@@ -159,19 +159,19 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			uint16_t itemId = pugi::cast<uint16_t>(childNode.attribute("id").value());
 			int32_t chance = pugi::cast<int32_t>(childNode.attribute("chance").value());
 
-			ItemType& it = item_db[itemId];
+			ItemType& it = g_items[itemId];
 			if(it.id == 0) {
-				warnings.push_back(wxT("\nInvalid item id ") + std::to_string(itemId));
+				warnings.push_back("\nInvalid item id " + std::to_string(itemId));
 				return false;
 			}
 
 			if(!it.isGroundTile()) {
-				warnings.push_back(wxT("\nItem ") + std::to_string(itemId) + wxT(" is not ground item."));
+				warnings.push_back("\nItem " + std::to_string(itemId) + " is not ground item.");
 				return false;
 			}
 
 			if(it.brush && it.brush != this) {
-				warnings.push_back(wxT("\nItem ") + std::to_string(itemId) + wxT(" can not be member of two brushes"));
+				warnings.push_back("\nItem " + std::to_string(itemId) + " can not be member of two brushes");
 				return false;
 			}
 
@@ -185,7 +185,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 		} else if(childName == "optional") {
 			// Mountain border!
 			if(optional_border) {
-				warnings.push_back(wxT("\nDuplicate optional borders!"));
+				warnings.push_back("\nDuplicate optional borders!");
 				continue;
 			}
 
@@ -193,15 +193,15 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
 
 				// Load from inline definition
-				ItemType& it = item_db[ground_equivalent];
+				ItemType& it = g_items[ground_equivalent];
 				if(it.id == 0) {
-					warnings.push_back(wxT("Invalid id of ground dependency equivalent item.\n"));
+					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
 					continue;
 				} else if(!it.isGroundTile()) {
-					warnings.push_back(wxT("Ground dependency equivalent is not a ground item.\n"));
+					warnings.push_back("Ground dependency equivalent is not a ground item.\n");
 					continue;
 				} else if(it.brush && it.brush != this) {
-					warnings.push_back(wxT("Ground dependency equivalent does not use the same brush as ground border.\n"));
+					warnings.push_back("Ground dependency equivalent does not use the same brush as ground border.\n");
 					continue;
 				}
 
@@ -211,14 +211,14 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			} else {
 				// Load from ID
 				if(!(attribute = childNode.attribute("id"))) {
-					warnings.push_back(wxT("\nMissing tag id for border node"));
+					warnings.push_back("\nMissing tag id for border node");
 					continue;
 				}
 
 				uint16_t id = pugi::cast<uint16_t>(attribute.value());
-				auto it = brushes.borders.find(id);
-				if(it == brushes.borders.end() || !it->second) {
-					warnings.push_back(wxT("\nCould not find border id ") + std::to_string(id));
+				auto it = g_brushes.borders.find(id);
+				if(it == g_brushes.borders.end() || !it->second) {
+					warnings.push_back("\nCould not find border id " + std::to_string(id));
 					continue;
 				}
 
@@ -232,17 +232,17 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
-				ItemType& it = item_db[ground_equivalent];
+				ItemType& it = g_items[ground_equivalent];
 				if(it.id == 0) {
-					warnings.push_back(wxT("Invalid id of ground dependency equivalent item.\n"));
+					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
 				}
 
 				if(!it.isGroundTile()) {
-					warnings.push_back(wxT("Ground dependency equivalent is not a ground item.\n"));
+					warnings.push_back("Ground dependency equivalent is not a ground item.\n");
 				}
 
 				if(it.brush && it.brush != this) {
-					warnings.push_back(wxT("Ground dependency equivalent does not use the same brush as ground border.\n"));
+					warnings.push_back("Ground dependency equivalent does not use the same brush as ground border.\n");
 				}
 
 				autoBorder = newd AutoBorder(0); // Empty id basically
@@ -252,9 +252,9 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(id == 0) {
 					autoBorder = nullptr;
 				} else {
-					auto it = brushes.borders.find(id);
-					if(it == brushes.borders.end() || !it->second) {
-						warnings.push_back(wxT("\nCould not find border id ") + std::to_string(id));
+					auto it = g_brushes.borders.find(id);
+					if(it == g_brushes.borders.end() || !it->second) {
+						warnings.push_back("\nCould not find border id " + std::to_string(id));
 						continue;
 					}
 					autoBorder = it->second;
@@ -272,9 +272,9 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				} else if(value == "none") {
 					borderBlock->to = 0;
 				} else {
-					Brush* tobrush = brushes.getBrush(value);
+					Brush* tobrush = g_brushes.getBrush(value);
 					if(!tobrush) {
-						warnings.push_back(wxT("To brush ") + wxstr(value) + wxT(" doesn't exist."));
+						warnings.push_back("To brush " + wxstr(value) + " doesn't exist.");
 						continue;
 					}
 					borderBlock->to = tobrush->getID();
@@ -334,9 +334,9 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t edge_id = AutoBorder::edgeNameToID(attribute.as_string());
-								auto it = brushes.borders.find(border_id);
-								if(it == brushes.borders.end()) {
-									warnings.push_back(wxT("Unknown border id in specific case match block ") + std::to_string(border_id));
+								auto it = g_brushes.borders.find(border_id);
+								if(it == g_brushes.borders.end()) {
+									warnings.push_back("Unknown border id in specific case match block " + std::to_string(border_id));
 									continue;
 								}
 
@@ -399,16 +399,16 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t with_id = pugi::cast<int32_t>(attribute.value());
-								auto itt = brushes.borders.find(border_id);
-								if(itt == brushes.borders.end()) {
-									warnings.push_back(wxT("Unknown border id in specific case match block ") + std::to_string(border_id));
+								auto itt = g_brushes.borders.find(border_id);
+								if(itt == g_brushes.borders.end()) {
+									warnings.push_back("Unknown border id in specific case match block " + std::to_string(border_id));
 									continue;
 								}
 
 								AutoBorder* autoBorder = itt->second;
 								ASSERT(autoBorder != nullptr);
 
-								ItemType& it = item_db[with_id];
+								ItemType& it = g_items[with_id];
 								if(it.id == 0) {
 									return false;
 								}
@@ -431,7 +431,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t with_id = pugi::cast<int32_t>(attribute.value());
-								ItemType& it = item_db[with_id];
+								ItemType& it = g_items[with_id];
 								if(it.id == 0) {
 									return false;
 								}
@@ -460,11 +460,11 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(name == "all") {
 					friends.push_back(0xFFFFFFFF);
 				} else {
-					Brush* brush = brushes.getBrush(name);
+					Brush* brush = g_brushes.getBrush(name);
 					if(brush) {
 						friends.push_back(brush->getID());
 					} else {
-						warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
+						warnings.push_back("Brush '" + wxstr(name) + "' is not defined.");
 					}
 				}
 			}
@@ -475,11 +475,11 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				if(name == "all") {
 					friends.push_back(0xFFFFFFFF);
 				} else {
-					Brush* brush = brushes.getBrush(name);
+					Brush* brush = g_brushes.getBrush(name);
 					if(brush) {
 						friends.push_back(brush->getID());
 					} else {
-						warnings.push_back(wxT("Brush '") + wxstr(name) + wxT("' is not defined."));
+						warnings.push_back("Brush '" + wxstr(name) + "' is not defined.");
 					}
 				}
 			}

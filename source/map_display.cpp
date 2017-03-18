@@ -119,11 +119,15 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	last_mmb_click_y(-1)
 {
 	popup_menu = newd MapPopupMenu(editor);
+	animation_timer = newd AnimationTimer(this);
+	drawer = new MapDrawer(this);
 }
 
 MapCanvas::~MapCanvas()
 {
 	delete popup_menu;
+	delete animation_timer;
+	delete drawer;
 	free(screenshot_buffer);
 }
 
@@ -165,13 +169,11 @@ void MapCanvas::GetViewBox(int* view_scroll_x, int* view_scroll_y, int* screensi
 
 void MapCanvas::OnPaint(wxPaintEvent& event)
 {
-	wxPaintDC pdc(this);
-
 	SetCurrent(*g_gui.GetGLContext(this));
 
 	if(g_gui.IsRenderingEnabled()) {
-		DrawingOptions options;
-		if(screenshot_buffer != nullptr) {
+		DrawingOptions& options = drawer->getOptions();
+		if(screenshot_buffer) {
 			options.SetIngame();
 		} else {
 			options.transparent_floors = g_settings.getBoolean(Config::TRANSPARENT_FLOORS);
@@ -188,19 +190,28 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.show_items = g_settings.getBoolean(Config::SHOW_ITEMS);
 			options.highlight_items = g_settings.getBoolean(Config::HIGHLIGHT_ITEMS);
 			options.show_blocking = g_settings.getBoolean(Config::SHOW_BLOCKING);
+			options.show_tooltips = g_settings.getBoolean(Config::SHOW_TOOLTIPS);
 			options.show_only_colors = g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
 			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
+			options.show_preview = g_settings.getBoolean(Config::SHOW_PREVIEW);
 			options.hide_items_when_zoomed = g_settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
 		}
 
 		options.dragging = boundbox_selection;
 
-		MapDrawer drawer(options, this, pdc);
+		if(options.show_preview)
+			animation_timer->Start();
+		else
+			animation_timer->Stop();
 
-		drawer.Draw();
+		drawer->SetupVars();
+		drawer->SetupGL();
+		drawer->Draw();
 
-		if(screenshot_buffer != nullptr)
-			drawer.TakeScreenshot(screenshot_buffer);
+		if(screenshot_buffer)
+			drawer->TakeScreenshot(screenshot_buffer);
+
+		drawer->Release();
 	}
 
 	// Clean unused textures
@@ -227,7 +238,7 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 
 	// screenshot_buffer should now contain the screenbuffer
 	if(screenshot_buffer == nullptr) {
-		g_gui.PopupDialog(wxT("Capture failed"), wxT("Image capture failed. Old Video Driver?"), wxOK);
+		g_gui.PopupDialog("Capture failed", "Image capture failed. Old Video Driver?", wxOK);
 	} else {
 		// We got the shit
 		int screensize_x, screensize_y;
@@ -239,33 +250,33 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		ASSERT(current_time);
 
 		wxString date;
-		date << wxT("screenshot_") << (1900 + current_time->tm_year);
+		date << "screenshot_" << (1900 + current_time->tm_year);
 		if(current_time->tm_mon < 9)
-			date << wxT("-") << wxT("0") << current_time->tm_mon+1;
+			date << "-" << "0" << current_time->tm_mon+1;
 		else
-			date << wxT("-") << current_time->tm_mon+1;
-		date << wxT("-") << current_time->tm_mday;
-		date << wxT("-") << current_time->tm_hour;
-		date << wxT("-") << current_time->tm_min;
-		date << wxT("-") << current_time->tm_sec;
+			date << "-" << current_time->tm_mon+1;
+		date << "-" << current_time->tm_mday;
+		date << "-" << current_time->tm_hour;
+		date << "-" << current_time->tm_min;
+		date << "-" << current_time->tm_sec;
 
 		int type = 0;
 		path.SetName(date);
-		if(format == wxT("bmp")) {
+		if(format == "bmp") {
 			path.SetExt(format);
 			type = wxBITMAP_TYPE_BMP;
-		} else if(format == wxT("png")) {
+		} else if(format == "png") {
 			path.SetExt(format);
 			type = wxBITMAP_TYPE_PNG;
-		} else if(format == wxT("jpg") || format == wxT("jpeg")) {
+		} else if(format == "jpg" || format == "jpeg") {
 			path.SetExt(format);
 			type = wxBITMAP_TYPE_JPEG;
-		} else if(format == wxT("tga")) {
+		} else if(format == "tga") {
 			path.SetExt(format);
 			type = wxBITMAP_TYPE_TGA;
 		} else {
-			g_gui.SetStatusText(wxT("Unknown screenshot format \'") + format + wxT("\", switching to default (png)"));
-			path.SetExt(wxT("png"));;
+			g_gui.SetStatusText("Unknown screenshot format \'" + format + "\", switching to default (png)");
+			path.SetExt("png");;
 			type = wxBITMAP_TYPE_PNG;
 		}
 
@@ -273,11 +284,11 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		wxFileOutputStream of(path.GetFullPath());
 		if(of.IsOk()) {
 			if(screenshot.SaveFile(of, static_cast<wxBitmapType>(type)))
-				g_gui.SetStatusText(wxT("Took screenshot and saved as ") + path.GetFullName());
+				g_gui.SetStatusText("Took screenshot and saved as " + path.GetFullName());
 			else
-				g_gui.PopupDialog(wxT("File error"), wxT("Couldn't save image file correctly."), wxOK);
+				g_gui.PopupDialog("File error", "Couldn't save image file correctly.", wxOK);
 		} else {
-			g_gui.PopupDialog(wxT("File error"), wxT("Couldn't open file ") + path.GetFullPath() + wxT(" for writing."), wxOK);
+			g_gui.PopupDialog("File error", "Couldn't open file " + path.GetFullPath() + " for writing.", wxOK);
 		}
 
 	}
@@ -334,33 +345,33 @@ void MapCanvas::UpdatePositionStatus(int x, int y)
 	ScreenToMap(x, y, &map_x, &map_y);
 
 	wxString ss;
-	ss << wxT("x: ") << map_x << wxT(" y:") << map_y << wxT(" z:") << floor;
+	ss << "x: " << map_x << " y:" << map_y << " z:" << floor;
 	g_gui.root->SetStatusText(ss,2);
 
-	ss = wxT("");
+	ss = "";
 	Tile* tile = editor.map.getTile(map_x, map_y, floor);
 	if(tile) {
 		if(tile->spawn && g_settings.getInteger(Config::SHOW_SPAWNS)) {
-			ss << wxT("Spawn radius: ") << tile->spawn->getSize();
+			ss << "Spawn radius: " << tile->spawn->getSize();
 		} else if(tile->creature && g_settings.getInteger(Config::SHOW_CREATURES)) {
-			ss << (tile->creature->isNpc()? wxT("NPC") : wxT("Monster"));
-			ss << wxT(" \"") << wxstr(tile->creature->getName()) << wxT("\" spawntime: ") << tile->creature->getSpawnTime();
+			ss << (tile->creature->isNpc()? "NPC" : "Monster");
+			ss << " \"" << wxstr(tile->creature->getName()) << "\" spawntime: " << tile->creature->getSpawnTime();
 		} else if(Item* item = tile->getTopItem()) {
-			ss << wxT("Item \"") << wxstr(item->getName()) << wxT("\"");
-			ss << wxT(" id:") << item->getID();
-			ss << wxT(" cid:") << item->getClientID();
-			if(item->getUniqueID()) ss << wxT(" uid:") << item->getUniqueID();
-			if(item->getActionID()) ss << wxT(" aid:") << item->getActionID();
+			ss << "Item \"" << wxstr(item->getName()) << "\"";
+			ss << " id:" << item->getID();
+			ss << " cid:" << item->getClientID();
+			if(item->getUniqueID()) ss << " uid:" << item->getUniqueID();
+			if(item->getActionID()) ss << " aid:" << item->getActionID();
 			if(item->hasWeight()) {
 				wxString s;
-				s.Printf(wxT("%.2f"), item->getWeight());
-				ss << wxT(" weight: ") << s;
+				s.Printf("%.2f", item->getWeight());
+				ss << " weight: " << s;
 			}
 		} else {
-			ss << wxT("Nothing");
+			ss << "Nothing";
 		}
 	} else {
-		ss << wxT("Nothing");
+		ss << "Nothing";
 	}
 
 	if(editor.IsLive()) {
@@ -374,7 +385,7 @@ void MapCanvas::UpdateZoomStatus()
 {
 	int percentage = (int)((1.0 / zoom) * 100);
 	wxString ss;
-	ss << wxT("zoom: ") << percentage << wxT("%");
+	ss << "zoom: " << percentage << "%";
 	g_gui.root->SetStatusText(ss, 3);
 }
 
@@ -413,7 +424,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 			int move_x = drag_start_x - mouse_map_x;
 			int move_y = drag_start_y - mouse_map_y;
 			int move_z = drag_start_z - floor;
-			ss << wxT("Dragging ") << -move_x << wxT(",") << -move_y << wxT(",") << -move_z;
+			ss << "Dragging " << -move_x << "," << -move_y << "," << -move_z;
 			g_gui.SetStatusText(ss);
 
 			Refresh();
@@ -423,15 +434,16 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 
 				int move_x = std::abs(last_click_map_x - mouse_map_x);
 				int move_y = std::abs(last_click_map_y - mouse_map_y);
-				ss << wxT("Selection ") << move_x+1 << wxT(":") << move_y+1;
+				ss << "Selection " << move_x+1 << ":" << move_y+1;
 				g_gui.SetStatusText(ss);
 			}
 
 			Refresh();
 		}
 	} else { // Drawing mode
-		if(map_update && drawing && g_gui.GetCurrentBrush()) {
-			if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush())) {
+		Brush* brush = g_gui.GetCurrentBrush();
+		if(map_update && drawing && brush) {
+			if(brush->isDoodad()) {
 				if(event.ControlDown()) {
 					PositionVector tilestodraw;
 					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
@@ -439,8 +451,8 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 				} else {
 					editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
 				}
-			} else if(dynamic_cast<DoorBrush*>(g_gui.GetCurrentBrush())) {
-				if(!g_gui.GetCurrentBrush()->canDraw(&editor.map, Position(mouse_map_x, mouse_map_y, floor))) {
+			} else if(brush->isDoor()) {
+				if(!brush->canDraw(&editor.map, Position(mouse_map_x, mouse_map_y, floor))) {
 					// We don't have to waste an action in this case...
 				} else {
 					PositionVector tilestodraw;
@@ -459,7 +471,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
 					}
 				}
-			} else if(g_gui.GetCurrentBrush()->needBorders()) {
+			} else if(brush->needBorders()) {
 				PositionVector tilestodraw, tilestoborder;
 
 				getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, &tilestoborder);
@@ -469,7 +481,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 				} else {
 					editor.draw(tilestodraw, tilestoborder, event.AltDown());
 				}
-			} else if(g_gui.GetCurrentBrush()->oneSizeFitsAll()) {
+			} else if(brush->oneSizeFitsAll()) {
 				drawing = true;
 				PositionVector tilestodraw;
 				tilestodraw.push_back(Position(mouse_map_x,mouse_map_y, floor));
@@ -507,7 +519,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 			g_gui.RefreshView();
 		} else if(dragging_draw) {
 			g_gui.RefreshView();
-		} else if(map_update && g_gui.GetCurrentBrush()) {
+		} else if (map_update && brush) {
 			Refresh();
 		}
 	}
@@ -712,15 +724,16 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 			}
 		} while(false);
 	} else if(g_gui.GetCurrentBrush()) { // Drawing mode
-		if(event.ShiftDown() && g_gui.GetCurrentBrush()->canDrag()) {
+		Brush* brush = g_gui.GetCurrentBrush();
+		if(event.ShiftDown() && brush->canDrag()) {
 			dragging_draw = true;
 		} else {
-			if(g_gui.GetBrushSize() == 0 && !g_gui.GetCurrentBrush()->oneSizeFitsAll()) {
+			if(g_gui.GetBrushSize() == 0 && !brush->oneSizeFitsAll()) {
 				drawing = true;
 			} else {
 				drawing = g_gui.GetCurrentBrush()->canSmear();
 			}
-			if(dynamic_cast<WallBrush*>(g_gui.GetCurrentBrush())) {
+			if(brush->isWall()) {
 				if(event.AltDown() && g_gui.GetBrushSize() == 0) {
 					// z0mg, just clicked a tile, shift variaton.
 					if(event.ControlDown()) {
@@ -754,7 +767,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
 					}
 				}
-			} else if(dynamic_cast<DoorBrush*>(g_gui.GetCurrentBrush())) {
+			} else if(brush->isDoor()) {
 				PositionVector tilestodraw;
 				PositionVector tilestoborder;
 
@@ -770,9 +783,9 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 				} else {
 					editor.draw(tilestodraw, tilestoborder, event.AltDown());
 				}
-			} else if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush()) || dynamic_cast<SpawnBrush*>(g_gui.GetCurrentBrush()) || dynamic_cast<CreatureBrush*>(g_gui.GetCurrentBrush())) {
+			} else if(brush->isDoodad() || brush->isSpawn() || brush->isCreature()) {
 				if(event.ControlDown()) {
-					if(dynamic_cast<DoodadBrush*>(g_gui.GetCurrentBrush())) {
+					if(brush->isDoodad()) {
 						PositionVector tilestodraw;
 						getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, nullptr);
 						editor.undraw(tilestodraw, event.AltDown());
@@ -783,9 +796,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
 				}
 			} else {
-				GroundBrush* gbrush = dynamic_cast<GroundBrush*>(g_gui.GetCurrentBrush());
-
-				if(gbrush && event.AltDown()) {
+				if(brush->isGround() && event.AltDown()) {
 					replace_dragging = true;
 					Tile* draw_tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
 					if(draw_tile) {
@@ -795,7 +806,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					}
 				}
 
-				if(g_gui.GetCurrentBrush()->needBorders()) {
+				if(brush->needBorders()) {
 					PositionVector tilestodraw;
 					PositionVector tilestoborder;
 
@@ -806,8 +817,8 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					} else {
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
 					}
-				} else if(g_gui.GetCurrentBrush()->oneSizeFitsAll()) {
-					if(dynamic_cast<HouseExitBrush*>(g_gui.GetCurrentBrush()) || dynamic_cast<WaypointBrush*>(g_gui.GetCurrentBrush())) {
+				} else if(brush->oneSizeFitsAll()) {
+					if(brush->isHouseExit() || brush->isWaypoint()) {
 						editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.AltDown());
 					} else {
 						PositionVector tilestodraw;
@@ -1022,9 +1033,10 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 		editor.actionQueue->resetTimer();
 		dragging = false;
 		boundbox_selection = false;
-	} else { // Drawing mode
+	} else if(g_gui.GetCurrentBrush()){ // Drawing mode
+		Brush* brush = g_gui.GetCurrentBrush();
 		if(dragging_draw) {
-			if(dynamic_cast<SpawnBrush*>(g_gui.GetCurrentBrush())) {
+			if(brush->isSpawn()) {
 				int start_map_x = std::min(last_click_map_x, mouse_map_x);
 				int start_map_y = std::min(last_click_map_y, mouse_map_y);
 				int end_map_x   = std::max(last_click_map_x, mouse_map_x);
@@ -1041,7 +1053,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 			} else {
 				PositionVector tilestodraw;
 				PositionVector tilestoborder;
-				if(dynamic_cast<WallBrush*>(g_gui.GetCurrentBrush())) {
+				if(brush->isWall()) {
 					int start_map_x = std::min(last_click_map_x, mouse_map_x);
 					int start_map_y = std::min(last_click_map_y, mouse_map_y);
 					int end_map_x   = std::max(last_click_map_x, mouse_map_x);
@@ -1052,16 +1064,8 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 							if((x <= start_map_x+1 || x >= end_map_x-1) || (y <= start_map_y+1 || y >= end_map_y-1)) {
 								tilestoborder.push_back(Position(x,y,floor));
 							}
-							if(
-								(
-								(x == start_map_x || x == end_map_x) ||
-								(y == start_map_y || y == end_map_y)
-								) && (
-								(x >= start_map_x && x <= end_map_x) &&
-								(y >= start_map_y && y <= end_map_y)
-								)
-								)
-							{
+							if(((x == start_map_x || x == end_map_x) || (y == start_map_y || y == end_map_y)) &&
+								((x >= start_map_x && x <= end_map_x) && (y >= start_map_y && y <= end_map_y))) {
 								tilestodraw.push_back(Position(x,y,floor));
 							}
 						}
@@ -1689,27 +1693,27 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 					static_cast<MapWindow*>(GetParent())->Scroll(TILE_SIZE * map_x, TILE_SIZE * map_y, true);
 					floor = map_z;
 
-					g_gui.SetStatusText(wxT("Used hotkey ") + i2ws(index));
+					g_gui.SetStatusText("Used hotkey " + i2ws(index));
 					g_gui.RefreshView();
 				} else if(hk.IsBrush()) {
 					g_gui.SetDrawingMode();
 
 					std::string name = hk.GetBrushname();
-					Brush* brush = brushes.getBrush(name);
+					Brush* brush = g_brushes.getBrush(name);
 					if(brush == nullptr) {
-						g_gui.SetStatusText(wxT("Brush \"") + wxstr(name) + wxT("\" not found"));
+						g_gui.SetStatusText("Brush \"" + wxstr(name) + "\" not found");
 						return;
 					}
 
 					if(!g_gui.SelectBrush(brush)) {
-						g_gui.SetStatusText(wxT("Brush \"") + wxstr(name) + wxT("\" is not in any palette"));
+						g_gui.SetStatusText("Brush \"" + wxstr(name) + "\" is not in any palette");
 						return;
 					}
 
-					g_gui.SetStatusText(wxT("Used hotkey ") + i2ws(index));
+					g_gui.SetStatusText("Used hotkey " + i2ws(index));
 					g_gui.RefreshView();
 				} else {
-					g_gui.SetStatusText(wxT("Unassigned hotkey ") + i2ws(index));
+					g_gui.SetStatusText("Unassigned hotkey " + i2ws(index));
 				}
 			}
 			break;
@@ -2097,7 +2101,7 @@ void MapCanvas::Reset()
 	editor.actionQueue->clear();
 }
 
-MapPopupMenu::MapPopupMenu(Editor& editor) : wxMenu(wxT("")), editor(editor)
+MapPopupMenu::MapPopupMenu(Editor& editor) : wxMenu(""), editor(editor)
 {
 	////
 }
@@ -2118,24 +2122,24 @@ void MapPopupMenu::Update()
 
 	bool anything_selected = editor.selection.size() != 0;
 
-	wxMenuItem* cutItem = Append( MAP_POPUP_MENU_CUT, wxT("&Cut\tCTRL+X"), wxT("Cut out all selected items"));
+	wxMenuItem* cutItem = Append( MAP_POPUP_MENU_CUT, "&Cut\tCTRL+X", "Cut out all selected items");
 	cutItem->Enable(anything_selected);
 
-	wxMenuItem* copyItem = Append( MAP_POPUP_MENU_COPY, wxT("&Copy\tCTRL+C"), wxT("Copy all selected items"));
+	wxMenuItem* copyItem = Append( MAP_POPUP_MENU_COPY, "&Copy\tCTRL+C", "Copy all selected items");
 	copyItem->Enable(anything_selected);
 
-	wxMenuItem* copyPositionItem = Append( MAP_POPUP_MENU_COPY_POSITION, wxT("&Copy Position"), wxT("Copy the position as a lua table"));
+	wxMenuItem* copyPositionItem = Append( MAP_POPUP_MENU_COPY_POSITION, "&Copy Position", "Copy the position as a lua table");
 	copyPositionItem->Enable(anything_selected);
 
-	wxMenuItem* pasteItem = Append( MAP_POPUP_MENU_PASTE, wxT("&Paste\tCTRL+V"), wxT("Paste items in the copybuffer here"));
+	wxMenuItem* pasteItem = Append( MAP_POPUP_MENU_PASTE, "&Paste\tCTRL+V", "Paste items in the copybuffer here");
 	pasteItem->Enable(editor.copybuffer.canPaste());
 
-	wxMenuItem* deleteItem = Append( MAP_POPUP_MENU_DELETE, wxT("&Delete\tDEL"), wxT("Removes all seleceted items"));
+	wxMenuItem* deleteItem = Append( MAP_POPUP_MENU_DELETE, "&Delete\tDEL", "Removes all seleceted items");
 	deleteItem->Enable(anything_selected);
 
 	AppendSeparator();
 
-	wxMenuItem* browseTile = Append(MAP_POPUP_MENU_BROWSE_TILE, wxT("Browse Field"), wxT("Navigate from tile items"));
+	wxMenuItem* browseTile = Append(MAP_POPUP_MENU_BROWSE_TILE, "Browse Field", "Navigate from tile items");
 	browseTile->Enable(anything_selected);
 
 	if(anything_selected) {
@@ -2179,74 +2183,74 @@ void MapPopupMenu::Update()
 				Teleport* teleport = dynamic_cast<Teleport*>(topSelectedItem);
 				if(topSelectedItem && (topSelectedItem->isBrushDoor() || topSelectedItem->isRoteable() || teleport)) {
 					if(topSelectedItem->isRoteable()) {
-						Append( MAP_POPUP_MENU_ROTATE, wxT("&Rotate item"), wxT("Rotate this item"));
+						Append( MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 					}
 
 					if(teleport && teleport->noDestination()) {
-						Append( MAP_POPUP_MENU_GOTO, wxT("&Go To Destination"), wxT("Go to the destination of this teleport"));
+						Append( MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 					}
 					if(topSelectedItem->isOpen()) {
-						Append( MAP_POPUP_MENU_SWITCH_DOOR, wxT("&Close door"), wxT("Close this door"));
+						Append( MAP_POPUP_MENU_SWITCH_DOOR, "&Close door", "Close this door");
 					} else {
-						Append( MAP_POPUP_MENU_SWITCH_DOOR, wxT("&Open door"), wxT("Open this door"));
+						Append( MAP_POPUP_MENU_SWITCH_DOOR, "&Open door", "Open this door");
 					}
 					AppendSeparator();
 				}
 
 				if(topCreature)
-					Append( MAP_POPUP_MENU_SELECT_CREATURE_BRUSH, wxT("Select Creature"), wxT("Uses the current creature as a creature brush"));
+					Append( MAP_POPUP_MENU_SELECT_CREATURE_BRUSH, "Select Creature", "Uses the current creature as a creature brush");
 
 				if(topSpawn)
-					Append( MAP_POPUP_MENU_SELECT_SPAWN_BRUSH, wxT("Select Spawn"), wxT("Select the spawn brush"));
+					Append( MAP_POPUP_MENU_SELECT_SPAWN_BRUSH, "Select Spawn", "Select the spawn brush");
 
-				Append( MAP_POPUP_MENU_SELECT_RAW_BRUSH, wxT("Select RAW"), wxT("Uses the top item as a RAW brush"));
+				Append( MAP_POPUP_MENU_SELECT_RAW_BRUSH, "Select RAW", "Uses the top item as a RAW brush");
 
 				if(hasWall)
-					Append( MAP_POPUP_MENU_SELECT_WALL_BRUSH, wxT("Select Wallbrush"), wxT("Uses the current item as a wallbrush"));
+					Append( MAP_POPUP_MENU_SELECT_WALL_BRUSH, "Select Wallbrush", "Uses the current item as a wallbrush");
 
 				if(hasCarpet)
-					Append( MAP_POPUP_MENU_SELECT_CARPET_BRUSH, wxT("Select Carpetbrush"), wxT("Uses the current item as a carpetbrush"));
+					Append( MAP_POPUP_MENU_SELECT_CARPET_BRUSH, "Select Carpetbrush", "Uses the current item as a carpetbrush");
 
 				if(hasTable)
-					Append( MAP_POPUP_MENU_SELECT_TABLE_BRUSH, wxT("Select Tablebrush"), wxT("Uses the current item as a tablebrush"));
+					Append( MAP_POPUP_MENU_SELECT_TABLE_BRUSH, "Select Tablebrush", "Uses the current item as a tablebrush");
 
 				if(topSelectedItem && topSelectedItem->getDoodadBrush() && topSelectedItem->getDoodadBrush()->visibleInPalette())
-					Append( MAP_POPUP_MENU_SELECT_DOODAD_BRUSH, wxT("Select Doodadbrush"), wxT("Use this doodad brush"));
+					Append( MAP_POPUP_MENU_SELECT_DOODAD_BRUSH, "Select Doodadbrush", "Use this doodad brush");
 
 				if(topSelectedItem && topSelectedItem->isBrushDoor() && topSelectedItem->getDoorBrush())
-					Append( MAP_POPUP_MENU_SELECT_DOOR_BRUSH, wxT("Select Doorbrush"), wxT("Use this door brush"));
+					Append( MAP_POPUP_MENU_SELECT_DOOR_BRUSH, "Select Doorbrush", "Use this door brush");
 
 				if(tile->hasGround() && tile->getGroundBrush() && tile->getGroundBrush()->visibleInPalette())
-					Append( MAP_POPUP_MENU_SELECT_GROUND_BRUSH, wxT("Select Groundbrush"), wxT("Uses the current item as a groundbrush"));
+					Append( MAP_POPUP_MENU_SELECT_GROUND_BRUSH, "Select Groundbrush", "Uses the current item as a groundbrush");
 
 				if(tile->isHouseTile())
-					Append(MAP_POPUP_MENU_SELECT_HOUSE_BRUSH, wxT("Select House"), wxT("Draw with the house on this tile."));
+					Append(MAP_POPUP_MENU_SELECT_HOUSE_BRUSH, "Select House", "Draw with the house on this tile.");
 
 				AppendSeparator();
-				Append( MAP_POPUP_MENU_PROPERTIES, wxT("&Properties"), wxT("Properties for the current object"));
+				Append( MAP_POPUP_MENU_PROPERTIES, "&Properties", "Properties for the current object");
 			} else {
 
 				if(topCreature)
-					Append( MAP_POPUP_MENU_SELECT_CREATURE_BRUSH, wxT("Select Creature"), wxT("Uses the current creature as a creature brush"));
+					Append( MAP_POPUP_MENU_SELECT_CREATURE_BRUSH, "Select Creature", "Uses the current creature as a creature brush");
 
 				if(topSpawn)
-					Append( MAP_POPUP_MENU_SELECT_SPAWN_BRUSH, wxT("Select Spawn"), wxT("Select the spawn brush"));
+					Append( MAP_POPUP_MENU_SELECT_SPAWN_BRUSH, "Select Spawn", "Select the spawn brush");
 
-				Append( MAP_POPUP_MENU_SELECT_RAW_BRUSH, wxT("Select RAW"), wxT("Uses the top item as a RAW brush"));
+				Append( MAP_POPUP_MENU_SELECT_RAW_BRUSH, "Select RAW", "Uses the top item as a RAW brush");
 				if(hasWall) {
-					Append( MAP_POPUP_MENU_SELECT_WALL_BRUSH, wxT("Select Wallbrush"), wxT("Uses the current item as a wallbrush"));
+					Append( MAP_POPUP_MENU_SELECT_WALL_BRUSH, "Select Wallbrush", "Uses the current item as a wallbrush");
 				}
 				if(tile->hasGround() && tile->getGroundBrush() && tile->getGroundBrush()->visibleInPalette()) {
-					Append( MAP_POPUP_MENU_SELECT_GROUND_BRUSH, wxT("Select Groundbrush"), wxT("Uses the current tile as a groundbrush"));
+					Append( MAP_POPUP_MENU_SELECT_GROUND_BRUSH, "Select Groundbrush", "Uses the current tile as a groundbrush");
 				}
 
 				if(tile->isHouseTile()) {
-					Append(MAP_POPUP_MENU_SELECT_HOUSE_BRUSH, wxT("Select House"), wxT("Draw with the house on this tile."));
+					Append(MAP_POPUP_MENU_SELECT_HOUSE_BRUSH, "Select House", "Draw with the house on this tile.");
 				}
 
 				if(tile->hasGround() || topCreature || topSpawn) {
 					AppendSeparator();
-					Append( MAP_POPUP_MENU_PROPERTIES, wxT("&Properties"), wxT("Properties for the current object"));
+					Append( MAP_POPUP_MENU_PROPERTIES, "&Properties", "Properties for the current object");
 				}
 			}
 		}
@@ -2280,3 +2284,40 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 		}
 	}
 }
+
+// ============================================================================
+// AnimationTimer
+
+AnimationTimer::AnimationTimer(MapCanvas *canvas) : wxTimer(),
+	map_canvas(canvas),
+	started(false)
+{
+	////
+};
+
+AnimationTimer::~AnimationTimer()
+{
+	////
+};
+
+void AnimationTimer::Notify()
+{
+	if(map_canvas->GetZoom() <= 2.0)
+		map_canvas->Refresh();
+};
+
+void AnimationTimer::Start()
+{
+	if(!started) {
+		started = true;
+		wxTimer::Start(100);
+	}
+};
+
+void AnimationTimer::Stop()
+{
+	if(started) {
+		started = false;
+		wxTimer::Stop();
+	}
+};

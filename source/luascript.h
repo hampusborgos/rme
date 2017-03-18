@@ -19,11 +19,26 @@
 #define RME_LUA_SCRIPT_H_
 
 #include <lua.hpp>
+#include "gui.h"
+#include "map.h"
 
 class GUI;
 class Editor;
 class Brush;
 class FlagBrush;
+
+struct ItemCounter
+{
+	ItemCounter(uint16_t itemid) : itemid(itemid), result(0) {}
+
+	void operator()(Map& map, Tile* tile, Item* item, long long done) {
+		if(item->getID() == itemid)
+			result++;
+	}
+
+	uint16_t itemid;
+	uint32_t result;
+};
 
 enum LuaDataType {
 	LuaData_Unknown,
@@ -88,6 +103,7 @@ public:
 	static int luaEditorCreateSelection(lua_State* L);
 	static int luaEditorSelectTiles(lua_State* L);
 	static int luaEditorGetSelection(lua_State* L);
+	static int luaEditorGetItemCount(lua_State* L);
 
 	// Tile
 	static int luaTileCreate(lua_State* L);

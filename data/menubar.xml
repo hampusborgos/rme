@@ -30,13 +30,21 @@
         <separator/>
         <item name="Find $Item..." hotkey="Ctrl+F" action="FIND_ITEM" help="Find all instances of an item type the map."/>
         <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurances of one item with another."/>
-        <menu name="$Find">
-            <item name="Find $Everything" action="SEARCH_EVERYTHING" help="Find all unique/action/text/container items."/>
+        <menu name="$Find on Map">
+            <item name="Find $Everything" action="SEARCH_ON_MAP_EVERYTHING" help="Find all unique/action/text/container items."/>
             <separator/>
-            <item name="Find $Unique" action="SEARCH_UNIQUE" help="Find all items with an unique ID."/>
-            <item name="Find $Action" action="SEARCH_ACTION" help="Find all items with an action ID."/>
-            <item name="Find $Container" action="SEARCH_CONTAINER" help="Find all containers."/>
-            <item name="Find $Writeable" action="SEARCH_WRITEABLE" help="Find all writeable items."/>
+            <item name="Find $Unique" action="SEARCH_ON_MAP_UNIQUE" help="Find all items with an unique ID on map."/>
+            <item name="Find $Action" action="SEARCH_ON_MAP_ACTION" help="Find all items with an action ID on map."/>
+            <item name="Find $Container" action="SEARCH_ON_MAP_CONTAINER" help="Find all containers on map."/>
+            <item name="Find $Writeable" action="SEARCH_ON_MAP_WRITEABLE" help="Find all writeable items on map."/>
+        </menu>
+        <menu name="Find on Se$lected Area">
+            <item name="Find $Everything" action="SEARCH_ON_SELECTION_EVERYTHING" help="Find all unique/action/text/container items."/>
+            <separator/>
+            <item name="Find $Unique" action="SEARCH_ON_SELECTION_UNIQUE" help="Find all items with an unique ID on selected area."/>
+            <item name="Find $Action" action="SEARCH_ON_SELECTION_ACTION" help="Find all items with an action ID on selected area."/>
+            <item name="Find $Container" action="SEARCH_ON_SELECTION_CONTAINER" help="Find all containers on selected area."/>
+            <item name="Find $Writeable" action="SEARCH_ON_SELECTION_WRITEABLE" help="Find all writeable items on selected area."/>
         </menu>
         <separator/>
         <menu name="$Selection">
@@ -62,7 +70,7 @@
             <item name="Clear $Modified State" action="CLEAR_MODIFIED_STATE" help="Clears the modified state from all tiles."/>
         </menu>
         <separator/>
-        <item name="$Go To Previous Position" hotkey="P" action="GOTO_PREVIOUS_POSITION" help="Go to the previous screen center position."/>
+        <item name="Go To P$revious Position" hotkey="P" action="GOTO_PREVIOUS_POSITION" help="Go to the previous screen center position."/>
         <item name="$Go To Position..." hotkey="Ctrl+G" action="GOTO_POSITION" help="Go to a specific XYZ position."/>
         <item name="$Jump to Brush..." hotkey="J" action="JUMP_TO_BRUSH" help="Jump to a brush."/>
         <item name="Jump to $Item..." hotkey="Ctrl+J" action="JUMP_TO_ITEM_BRUSH" help="Jump to an item brush (RAW palette)."/>
@@ -104,6 +112,8 @@
         <item name="Only show $modified" hotkey="Ctrl+M" action="SHOW_ONLY_MODIFIED" help="Show only the tiles that have been modified since the map was opened."/>
         <item name="Show $houses" hotkey="Ctrl+H" action="SHOW_HOUSES" help="Show houses on the map."/>
         <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
+        <item name="Show T$ooltips" hotkey="Y" action="SHOW_TOOLTIPS" help="Show tooltips."/>
+        <item name="Show Previe$w" hotkey="L" action="SHOW_PREVIEW" help="Show animations and lights preview."/>
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>
@@ -122,6 +132,11 @@
         <item name="$Host Server" action="LIVE_START" help="Start a live mapping session (as the host)."/>
         <item name="$Join Server" action="LIVE_JOIN" help="Join a live mapping session."/>
         <item name="$Leave Server" action="LIVE_CLOSE" help="Leave this live mapping session."/>
+    </menu>
+    -->
+    <!--
+    <menu name="$Debug">
+        <item name="$Debug .dat" action="DEBUG_VIEW_DAT" help="View all item sprites available."/>
     </menu>
     -->
     <menu name="F$loor">
@@ -144,7 +159,6 @@
     </menu>
     <menu name="$Tools">
         <item name="$Scripting..." action="TOOLS_SCRIPTING" help=""/>
-        <!--<item name="$Debug .dat" action="TOOLS_VIEW_DAT" help="View all item sprites available."/>-->
     </menu>
     <menu name="$About">
         <item name="$Extensions..." hotkey="F2" action="EXTENSIONS" help=""/>

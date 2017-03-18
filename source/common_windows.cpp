@@ -34,7 +34,7 @@ BEGIN_EVENT_TABLE(MapPropertiesWindow, wxDialog)
 END_EVENT_TABLE()
 
 MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Map Properties"), wxDefaultPosition, wxSize(300, 200), wxRESIZE_BORDER | wxCAPTION),
+	wxDialog(parent, wxID_ANY, "Map Properties", wxDefaultPosition, wxSize(300, 200), wxRESIZE_BORDER | wxCAPTION),
 	view(view),
 	editor(editor)
 {
@@ -47,17 +47,17 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	grid_sizer->AddGrowableCol(1);
 
 	// Description
-	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Map Description")));
+	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, "Map Description"));
 	description_ctrl = newd wxTextCtrl(this, wxID_ANY, wxstr(map.getMapDescription()), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 	grid_sizer->Add(description_ctrl, wxSizerFlags(1).Expand());
 
 	// Map version
-	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Map Version")));
+	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, "Map Version"));
 	version_choice = newd wxChoice(this, MAP_PROPERTIES_VERSION);
-	version_choice->Append(wxT("OTServ 0.5.0"));
-	version_choice->Append(wxT("OTServ 0.6.0"));
-	version_choice->Append(wxT("OTServ 0.6.1"));
-	version_choice->Append(wxT("OTServ 0.7.0 (revscriptsys)"));
+	version_choice->Append("OTServ 0.5.0");
+	version_choice->Append("OTServ 0.6.0");
+	version_choice->Append("OTServ 0.6.1");
+	version_choice->Append("OTServ 0.7.0 (revscriptsys)");
 
 	switch(map.getVersion().otbm) {
 		case MAP_OTBM_1:
@@ -79,7 +79,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	grid_sizer->Add(version_choice, wxSizerFlags(1).Expand());
 
 	// Version
-	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Client Version")));
+	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, "Client Version"));
 	protocol_choice = newd wxChoice(this, wxID_ANY);
 
 	protocol_choice->SetStringSelection(wxstr(g_gui.GetCurrentVersion().getName()));
@@ -87,25 +87,25 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	grid_sizer->Add(protocol_choice, wxSizerFlags(1).Expand());
 
 	// Dimensions
-	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Map Dimensions")));
+	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, "Map Dimensions"));
 	{
 		wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
 		subsizer->Add(
 			width_spin =
 				newd wxSpinCtrl(this, wxID_ANY, wxstr(i2s(map.getWidth())),
-				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, MAP_MIN_WIDTH, MAP_MAX_WIDTH), wxSizerFlags(1).Expand()
+				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, MAP_MAX_WIDTH), wxSizerFlags(1).Expand()
 			);
 		subsizer->Add(
 			height_spin =
 				newd wxSpinCtrl(this, wxID_ANY, wxstr(i2s(map.getHeight())),
-				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, MAP_MIN_HEIGHT, MAP_MAX_HEIGHT), wxSizerFlags(1).Expand()
+				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, MAP_MAX_HEIGHT), wxSizerFlags(1).Expand()
 			);
 		grid_sizer->Add(subsizer, 1, wxEXPAND);
 	}
 
 	// External files
 	grid_sizer->Add(
-		newd wxStaticText(this, wxID_ANY, wxT("External Housefile"))
+		newd wxStaticText(this, wxID_ANY, "External Housefile")
 		);
 
 	grid_sizer->Add(
@@ -114,7 +114,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 		);
 
 	grid_sizer->Add(
-		newd wxStaticText(this, wxID_ANY, wxT("External Spawnfile"))
+		newd wxStaticText(this, wxID_ANY, "External Spawnfile")
 		);
 
 	grid_sizer->Add(
@@ -125,8 +125,8 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	topsizer->Add(grid_sizer, wxSizerFlags(1).Expand().Border(wxALL, 20));
 
 	wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
-	subsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	subsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
 	topsizer->Add(subsizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
 
 	SetSizerAndFit(topsizer);
@@ -149,13 +149,13 @@ void MapPropertiesWindow::UpdateProtocolList()
 		versions = ClientVersion::getAllVisible();
 	} else {
 		MapVersionID map_version = MAP_OTBM_1;
-		if(ver.Contains(wxT("0.5.0")))
+		if(ver.Contains("0.5.0"))
 			map_version = MAP_OTBM_1;
-		else if(ver.Contains(wxT("0.6.0")))
+		else if(ver.Contains("0.6.0"))
 			map_version = MAP_OTBM_2;
-		else if(ver.Contains(wxT("0.6.1")))
+		else if(ver.Contains("0.6.1"))
 			map_version = MAP_OTBM_3;
-		else if(ver.Contains(wxT("0.7.0")))
+		else if(ver.Contains("0.7.0"))
 			map_version = MAP_OTBM_4;
 
 		ClientVersionList protocols = ClientVersion::getAllForOTBMVersion(map_version);
@@ -208,20 +208,20 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	wxString ver = version_choice->GetStringSelection();
 
 	new_ver.client = ClientVersion::get(nstr(protocol_choice->GetStringSelection()))->getID();
-	if(ver.Contains(wxT("0.5.0"))) {
+	if(ver.Contains("0.5.0")) {
 		new_ver.otbm = MAP_OTBM_1;
-	} else if(ver.Contains(wxT("0.6.0"))) {
+	} else if(ver.Contains("0.6.0")) {
 		new_ver.otbm = MAP_OTBM_2;
-	} else if(ver.Contains(wxT("0.6.1"))) {
+	} else if(ver.Contains("0.6.1")) {
 		new_ver.otbm = MAP_OTBM_3;
-	} else if(ver.Contains(wxT("0.7.0"))) {
+	} else if(ver.Contains("0.7.0")) {
 		new_ver.otbm = MAP_OTBM_4;
 	}
 
 	if(new_ver.client != old_ver.client) {
 		if(g_gui.GetOpenMapCount() > 1) {
-			g_gui.PopupDialog(this, wxT("Error"),
-				wxT("You can not change editor version with multiple maps open"), wxOK);
+			g_gui.PopupDialog(this, "Error",
+				"You can not change editor version with multiple maps open", wxOK);
 			return;
 		}
 		wxString error;
@@ -232,8 +232,8 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 
 		if(new_ver.client < old_ver.client) {
-			int ret = g_gui.PopupDialog(this, wxT("Notice"),
-				wxT("Converting to a previous version may have serious side-effects, are you sure you want to do this?"), wxYES | wxNO);
+			int ret = g_gui.PopupDialog(this, "Notice",
+				"Converting to a previous version may have serious side-effects, are you sure you want to do this?", wxYES | wxNO);
 			if(ret != wxID_YES) {
 				return;
 			}
@@ -248,9 +248,9 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			// Load the new version
 			if(!g_gui.LoadVersion(new_ver.client, error, warnings)) {
-				g_gui.ListDialog(this, wxT("Warnings"), warnings);
-				g_gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
-				g_gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
+				g_gui.ListDialog(this, "Warnings", warnings);
+				g_gui.PopupDialog(this, "Map Loader Error", error, wxOK);
+				g_gui.PopupDialog(this, "Conversion Error", "Could not convert map. The map will now be closed.", wxOK);
 
 				EndModal(0);
 				return;
@@ -258,18 +258,18 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			// Remove all creatures that were present are present in the new version
 			for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end();) {
-				if(creature_db[cs->first])
+				if(g_creatures[cs->first])
 					cs = conversion_context.creature_types.erase(cs);
 				else
 					++cs;
 			}
 
 			if(conversion_context.creature_types.size() > 0) {
-				int add = g_gui.PopupDialog(this, wxT("Unrecognized creatures"), wxT("There were creatures on the old version that are not present in this and were on the map, do you want to add them to this version as well?"), wxYES | wxNO);
+				int add = g_gui.PopupDialog(this, "Unrecognized creatures", "There were creatures on the old version that are not present in this and were on the map, do you want to add them to this version as well?", wxYES | wxNO);
 				if(add == wxID_YES) {
 					for(MapConversionContext::CreatureMap::iterator cs = conversion_context.creature_types.begin(); cs != conversion_context.creature_types.end(); ++cs) {
 						MapConversionContext::CreatureInfo info = cs->second;
-						creature_db.addCreatureType(info.name, info.is_npc, info.outfit);
+						g_creatures.addCreatureType(info.name, info.is_npc, info.outfit);
 					}
 				}
 			}
@@ -278,9 +278,9 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		} else  {
 			UnnamedRenderingLock();
 			if(!g_gui.LoadVersion(new_ver.client, error, warnings)) {
-				g_gui.ListDialog(this, wxT("Warnings"), warnings);
-				g_gui.PopupDialog(this, wxT("Map Loader Error"), error, wxOK);
-				g_gui.PopupDialog(this, wxT("Conversion Error"), wxT("Could not convert map. The map will now be closed."), wxOK);
+				g_gui.ListDialog(this, "Warnings", warnings);
+				g_gui.PopupDialog(this, "Map Loader Error", error, wxOK);
+				g_gui.PopupDialog(this, "Conversion Error", "Could not convert map. The map will now be closed.", wxOK);
 
 				EndModal(0);
 				return;
@@ -329,39 +329,39 @@ BEGIN_EVENT_TABLE(ImportMapWindow, wxDialog)
 END_EVENT_TABLE()
 
 ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Import Map"), wxDefaultPosition, wxSize(350, 315)),
+	wxDialog(parent, wxID_ANY, "Import Map", wxDefaultPosition, wxSize(350, 315)),
 	editor(editor)
 {
 	wxBoxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxStaticBoxSizer* tmpsizer;
 
 	// File
-	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Map File")), wxHORIZONTAL);
-	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxT(""), wxDefaultPosition, wxSize(230, 23));
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "Map File"), wxHORIZONTAL);
+	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, "", wxDefaultPosition, wxSize(230, 23));
 	tmpsizer->Add(file_text_field, 0, wxALL, 5);
-	wxButton* browse_button = newd wxButton(tmpsizer->GetStaticBox(), MAP_WINDOW_FILE_BUTTON, wxT("Browse..."), wxDefaultPosition, wxSize(80, 23));
+	wxButton* browse_button = newd wxButton(tmpsizer->GetStaticBox(), MAP_WINDOW_FILE_BUTTON, "Browse...", wxDefaultPosition, wxSize(80, 23));
 	tmpsizer->Add(browse_button, 0, wxALL, 5);
 	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 5);
 
 	// Import offset
-	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Import Offset")), wxHORIZONTAL);
-	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, wxT("Offset X:")), 0, wxALL | wxEXPAND, 5);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "Import Offset"), wxHORIZONTAL);
+	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset X:"), 0, wxALL | wxEXPAND, 5);
 	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
 	tmpsizer->Add(x_offset_ctrl, 0, wxALL, 5);
-	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, wxT("Offset Y:")), 0, wxALL, 5);
+	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset Y:"), 0, wxALL, 5);
 	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
 	tmpsizer->Add(y_offset_ctrl, 0, wxALL, 5);
 	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 	// Import options
 	wxArrayString house_choices;
-	house_choices.Add(wxT("Smart Merge"));
-	house_choices.Add(wxT("Insert"));
-	house_choices.Add(wxT("Merge"));
-	house_choices.Add(wxT("Don't Import"));
+	house_choices.Add("Smart Merge");
+	house_choices.Add("Insert");
+	house_choices.Add("Merge");
+	house_choices.Add("Don't Import");
 
 	// House options
-	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("House Import Behaviour")), wxVERTICAL);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "House Import Behaviour"), wxVERTICAL);
 	house_options = newd wxChoice(tmpsizer->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, house_choices);
 	house_options->SetSelection(0);
 	tmpsizer->Add(house_options, 0, wxALL | wxEXPAND, 5);
@@ -369,11 +369,11 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 
 	// Import options
 	wxArrayString spawn_choices;
-	spawn_choices.Add(wxT("Merge"));
-	spawn_choices.Add(wxT("Don't Import"));
+	spawn_choices.Add("Merge");
+	spawn_choices.Add("Don't Import");
 
 	// Spawn options
-	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Spawn Import Behaviour")), wxVERTICAL);
+	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "Spawn Import Behaviour"), wxVERTICAL);
 	spawn_options = newd wxChoice(tmpsizer->GetStaticBox(), wxID_ANY, wxDefaultPosition, wxDefaultSize, spawn_choices);
 	spawn_options->SetSelection(0);
 	tmpsizer->Add(spawn_options, 0, wxALL | wxEXPAND, 5);
@@ -381,8 +381,8 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 
 	// OK/Cancel buttons
 	wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
-	buttons->Add(newd wxButton(this, wxID_OK, wxT("Ok")), 0, wxALL, 5);
-	buttons->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), 0, wxALL, 5);
+	buttons->Add(newd wxButton(this, wxID_OK, "Ok"), 0, wxALL, 5);
+	buttons->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), 0, wxALL, 5);
 	sizer->Add(buttons, wxSizerFlags(1).Center());
 
 	SetSizer(sizer);
@@ -397,7 +397,7 @@ ImportMapWindow::~ImportMapWindow()
 
 void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog dialog(this, wxT("Import..."), wxT(""), wxT(""), wxT("*.otbm"), wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+	wxFileDialog dialog(this, "Import...", "", "", "*.otbm", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	int ok = dialog.ShowModal();
 
 	if (ok == wxID_OK)
@@ -409,7 +409,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	if(Validate() && TransferDataFromWindow()) {
 		wxFileName fn = file_text_field->GetValue();
 		if(!fn.FileExists()) {
-			g_gui.PopupDialog(this, wxT("Error"), wxT("The specified map file doesn't exist"), wxOK);
+			g_gui.PopupDialog(this, "Error", "The specified map file doesn't exist", wxOK);
 			return;
 		}
 
@@ -452,42 +452,64 @@ BEGIN_EVENT_TABLE(ExportMiniMapWindow, wxDialog)
 END_EVENT_TABLE()
 
 ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Export minimap"), wxDefaultPosition, wxSize(260,150)),
+	wxDialog(parent, wxID_ANY, "Export Minimap", wxDefaultPosition, wxSize(400, 300)),
 	editor(editor)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxSizer* tmpsizer;
 
-	// File
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Map file"));
-	tmpsizer->Add(file_text_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize), 5, wxEXPAND);
-	tmpsizer->Add(newd wxButton(this, MAP_WINDOW_FILE_BUTTON, wxT("Browse")), 2);
-	sizer->Add(tmpsizer, 1, wxEXPAND);
+	// Error field
+	error_field = newd wxStaticText(this, wxID_VIEW_DETAILS, "", wxDefaultPosition, wxDefaultSize);
+	error_field->SetForegroundColour(*wxRED);
+	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
+	tmpsizer->Add(error_field, 0, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
 
-	// Import options
+	// Output folder
+	directory_text_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
+	directory_text_field->Bind(wxEVT_KEY_UP, &ExportMiniMapWindow::OnDirectoryChanged, this);
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Output Folder");
+	tmpsizer->Add(directory_text_field, 1, wxALL, 5);
+	tmpsizer->Add(newd wxButton(this, MAP_WINDOW_FILE_BUTTON, "Browse"), 0, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxALL | wxEXPAND, 5);
+
+	// File name
+	wxString mapName(editor.map.getName().c_str(), wxConvUTF8);
+	file_name_text_field = newd wxTextCtrl(this, wxID_ANY, mapName.BeforeLast('.'), wxDefaultPosition, wxDefaultSize);
+	file_name_text_field->Bind(wxEVT_KEY_UP, &ExportMiniMapWindow::OnFileNameChanged, this);
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "File Name");
+	tmpsizer->Add(file_name_text_field, 1, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
+
+	// Export options
 	wxArrayString choices;
-	choices.Add(wxT("All floors"));
-	choices.Add(wxT("Ground floor"));
-	choices.Add(wxT("Specific floor"));
+	choices.Add("All Floors");
+	choices.Add("Ground Floor");
+	choices.Add("Specific Floor");
 
-	// House options
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Floor options"));
+	if (editor.hasSelection())
+		choices.Add("Selected Area");
+
+	// Area options
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Area Options");
 	floor_options = newd wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
 	floor_number = newd wxSpinCtrl(this, wxID_ANY, i2ws(GROUND_LAYER), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, MAP_MAX_LAYER, GROUND_LAYER);
 	floor_number->Enable(false);
 	floor_options->SetSelection(0);
-	tmpsizer->Add(floor_options, 5, wxEXPAND);
-	tmpsizer->Add(floor_number, 2);
-	sizer->Add(tmpsizer, 1, wxEXPAND);
+	tmpsizer->Add(floor_options, 1, wxALL, 5);
+	tmpsizer->Add(floor_number, 0, wxALL, 5);
+	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
 
 	// OK/Cancel buttons
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
-	sizer->Add(tmpsizer, 0, wxCENTER);
+	tmpsizer->Add(ok_button = newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
+	sizer->Add(tmpsizer, 0, wxCENTER, 10);
 
-	SetSizerAndFit(sizer);
+	SetSizer(sizer);
+	Layout();
 	Centre(wxBOTH);
+	CheckValues();
 }
 
 ExportMiniMapWindow::~ExportMiniMapWindow()
@@ -497,90 +519,78 @@ ExportMiniMapWindow::~ExportMiniMapWindow()
 
 void ExportMiniMapWindow::OnExportTypeChange(wxCommandEvent& event)
 {
-	if(event.GetSelection() == 2) {
-		floor_number->Enable(true);
-	} else {
-		floor_number->Enable(false);
-	}
+	floor_number->Enable(event.GetSelection() == 2);
 }
 
 void ExportMiniMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog file(this, wxT("Export..."), wxT(""), wxT(""), wxT("*.bmp"), wxFD_SAVE);
-	int ok = file.ShowModal();
-
-	if(ok == wxID_OK) {
-		FileName fn(file.GetPath());
-		fn.SetName(fn.GetName() + wxT("_%d"));
-		file_text_field->ChangeValue(fn.GetFullPath());
-	} else {
-		return;
+	wxDirDialog dialog(NULL, "Select the output folder", "", wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+	if(dialog.ShowModal() == wxID_OK) {
+		const wxString& directory = dialog.GetPath();
+		directory_text_field->ChangeValue(directory);
 	}
+	dialog.Destroy();
+	CheckValues();
+}
+
+void ExportMiniMapWindow::OnDirectoryChanged(wxKeyEvent& event)
+{
+	CheckValues();
+	event.Skip();
+}
+
+void ExportMiniMapWindow::OnFileNameChanged(wxKeyEvent& event)
+{
+	CheckValues();
+	event.Skip();
 }
 
 void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
-	std::string filename = nstr(file_text_field->GetValue());
-	size_t d_pos = filename.find("%d");
-	if(d_pos == std::string::npos) {
-		g_gui.PopupDialog(this, wxT("Error"), wxT("You need to put a %d in the filename (this will be replaced by the floor number)"), wxYES | wxNO);
-		return;
-	}
-	size_t i_pos = filename.find_first_of("*?:/\"<>|");
-	if(i_pos != std::string::npos) {
-#ifdef __WINDOWS__
-		if(!(filename[i_pos] == ':' && i_pos == 1))
-#else
-		if(filename[i_pos] != '/')
-#endif
-		{
-			g_gui.PopupDialog(this, wxT("Error"), wxT("File name contains invalid characters."), wxOK);
-			return;
-		}
-	}
-#ifdef __WINDOWS__
-	if(filename.size() <= 3 || filename[1] != ':' || filename[2] != '\\')
-#else
-	if(filename[0] != '/')
-#endif
-	{
-		g_gui.PopupDialog(this, wxT("Error"), wxT("Output filename must be absolute."), wxOK);
-		return;
-	}
+	g_gui.CreateLoadBar("Exporting minimap");
 
-	std::string pre_sep = filename.substr(0, d_pos);
-	std::string post_sep= filename.substr(d_pos+2);
-
-	g_gui.CreateLoadBar(wxT("Exporting minimap"));
 	try
 	{
-		switch(floor_options->GetSelection()) {
+		FileName directory(directory_text_field->GetValue());
+
+		switch(floor_options->GetSelection())
+		{
 			case 0: { // All floors
 				for(int floor = 0; floor < MAP_LAYERS; ++floor) {
 					g_gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
-					FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-					editor.exportMiniMap(fn, floor, true);
+					FileName file(file_name_text_field->GetValue() + "_" + i2ws(floor) + ".bmp");
+					file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
+					editor.exportMiniMap(file, floor, true);
 				}
 				break;
 			}
+
 			case 1: { // Ground floor
-				FileName fn = wxstr(pre_sep + "ground" + post_sep);
-				editor.exportMiniMap(fn, GROUND_LAYER, true);
-				g_gui.DestroyLoadBar();
+				FileName file(file_name_text_field->GetValue() + "_" + i2ws(GROUND_LAYER) + ".bmp");
+				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
+				editor.exportMiniMap(file, GROUND_LAYER, true);
 				break;
 			}
+
 			case 2: { // Specific floors
 				int floor = floor_number->GetValue();
-				FileName fn = wxstr(pre_sep + i2s(floor) + post_sep);
-				editor.exportMiniMap(fn, floor, true);
+				FileName file(file_name_text_field->GetValue() + "_" + i2ws(floor) + ".bmp");
+				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
+				editor.exportMiniMap(file, floor, true);
+				break;
+			}
+
+			case 3: { // Selected area
+				editor.exportSelectionAsMiniMap(directory, file_name_text_field->GetValue());
 				break;
 			}
 		}
 	}
 	catch(std::bad_alloc&)
 	{
-		g_gui.PopupDialog(wxT("Error"), wxT("There is not enough memory available to complete the operation."), wxOK);
+		g_gui.PopupDialog("Error", "There is not enough memory available to complete the operation.", wxOK);
 	}
+
 	g_gui.DestroyLoadBar();
 	EndModal(1);
 }
@@ -589,6 +599,38 @@ void ExportMiniMapWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// Just close this window
 	EndModal(0);
+}
+
+void ExportMiniMapWindow::CheckValues()
+{
+	if(directory_text_field->IsEmpty()) {
+		error_field->SetLabel("Type or select an output folder.");
+		ok_button->Enable(false);
+		return;
+	}
+
+	if (file_name_text_field->IsEmpty()) {
+		error_field->SetLabel("Type a name for the file.");
+		ok_button->Enable(false);
+		return;
+	}
+
+	FileName directory(directory_text_field->GetValue());
+
+	if (!directory.Exists()) {
+		error_field->SetLabel("Output folder not found.");
+		ok_button->Enable(false);
+		return;
+	}
+
+	if (!directory.IsDirWritable()) {
+		error_field->SetLabel("Output folder is not writable.");
+		ok_button->Enable(false);
+		return;
+	}
+
+	error_field->SetLabel(wxEmptyString);
+	ok_button->Enable(true);
 }
 
 // ============================================================================
@@ -629,7 +671,7 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	search_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	search_field = newd KeyForwardingTextCtrl(this, JUMP_DIALOG_TEXT, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	search_field->SetFocus();
 	sizer->Add(search_field, 0, wxEXPAND);
 
@@ -638,8 +680,8 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 	sizer->Add(item_list, wxSizerFlags(1).Expand().Border());
 
 	wxSizer* stdsizer = newd wxBoxSizer(wxHORIZONTAL);
-	stdsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	stdsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	stdsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	stdsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
 	sizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
 
 	SetSizerAndFit(sizer);
@@ -751,11 +793,10 @@ void FindItemDialog::setCondition(bool condition(const ItemType&)) {
 
 void FindItemDialog::OnClickListInternal(wxCommandEvent& event)
 {
-	RAWBrush* brush = dynamic_cast<RAWBrush*>(item_list->GetSelectedBrush());
-	if(brush)
-	{
+	Brush* brush = item_list->GetSelectedBrush();
+	if(brush && brush->isRaw()) {
 		result_brush = brush;
-		result_id = brush->getItemID();
+		result_id = brush->asRaw()->getItemID();
 		EndModal(result_id);
 	}
 }
@@ -768,35 +809,35 @@ void FindItemDialog::OnClickOKInternal()
 			item_list->SetSelection(0);
 		}
 
-		RAWBrush* brush = dynamic_cast<RAWBrush*>(item_list->GetSelectedBrush());
-		if(brush == nullptr) {
+		Brush* brush = item_list->GetSelectedBrush();
+		if (brush && brush->isRaw()) {
+			result_brush = brush;
+			result_id = brush->asRaw()->getItemID();
+		} else {
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 			bool do_search = (search_string.size() >= 2);
 
 			if(do_search) {
-				for(int id = 0; id <= item_db.getMaxID(); ++id) {
-					ItemType& it = item_db[id];
+				for(int id = 0; id <= g_items.getMaxID(); ++id) {
+					ItemType& it = g_items[id];
 					if(it.id == 0 || (extra_condition && !extra_condition(it)))
 						continue;
 
-					RAWBrush* raw = it.raw_brush;
-					if(raw == nullptr)
+					RAWBrush* raw_brush = it.raw_brush;
+					if(!raw_brush)
 						continue;
 
-					if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+					if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 						continue;
 
 					// Found one!
-					result_brush = raw;
-					result_id = raw->getItemID();
+					result_brush = raw_brush;
+					result_id = raw_brush->getItemID();
 					break;
 				}
 			}
-		} else {
-			result_brush = brush;
-			result_id = brush->getItemID();
 		}
 	}
 	EndModal(result_id);
@@ -810,26 +851,33 @@ void FindItemDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
-		for(int id = 0; id <= item_db.getMaxID(); ++id) {
-			ItemType& it = item_db[id];
+
+		bool found_search_results = false;
+
+		for(int id = 0; id <= g_items.getMaxID(); ++id) {
+			ItemType& it = g_items[id];
 			if(it.id == 0 || (extra_condition && !extra_condition(it)))
 				continue;
 
-			RAWBrush* raw = it.raw_brush;
-			if(raw == nullptr)
+			RAWBrush* raw_brush = it.raw_brush;
+			if(!raw_brush)
 				continue;
 
-			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
-			item_list->AddBrush(raw);
+			found_search_results = true;
+			item_list->AddBrush(raw_brush);
 		}
 
-		if(item_list->GetItemCount() > 0)
+
+		if(found_search_results)
 			item_list->SetSelection(0);
 		else
 			item_list->SetNoMatches();
+
 	}
+	item_list->Refresh();
 }
 
 // ============================================================================
@@ -862,21 +910,21 @@ void FindBrushDialog::OnClickOKInternal()
 			item_list->SetSelection(0);
 		}
 		Brush* brush = item_list->GetSelectedBrush();
-		if(brush == nullptr) {
+		if(!brush) {
 			// It's either "Please enter a search string" or "No matches"
 			// Perhaps we can refresh now?
 			std::string search_string = as_lower_str(nstr(search_field->GetValue()));
 			bool do_search = (search_string.size() >= 2);
 
 			if(do_search) {
-				const BrushMap& map = brushes.getMap();
+				const BrushMap& map = g_brushes.getMap();
 				for(BrushMap::const_iterator iter = map.begin(); iter != map.end(); ++iter) {
 					const Brush* brush = iter->second;
 					if(as_lower_str(brush->getName()).find(search_string) == std::string::npos)
 						continue;
 
 					// Don't match RAWs now.
-					if(dynamic_cast<const RAWBrush*>(brush))
+					if(brush->isRaw())
 						continue;
 
 					// Found one!
@@ -887,20 +935,20 @@ void FindBrushDialog::OnClickOKInternal()
 				// Did we not find a matching brush?
 				if(!result_brush) {
 					// Then let's search the RAWs
-					for(int id = 0; id <= item_db.getMaxID(); ++id) {
-						ItemType& it = item_db[id];
+					for(int id = 0; id <= g_items.getMaxID(); ++id) {
+						ItemType& it = g_items[id];
 						if(it.id == 0)
 							continue;
 
-						RAWBrush* raw = it.raw_brush;
-						if(raw == nullptr)
+						RAWBrush* raw_brush = it.raw_brush;
+						if(!raw_brush)
 							continue;
 
-						if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+						if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 							continue;
 
 						// Found one!
-						result_brush = raw;
+						result_brush = raw_brush;
 						break;
 					}
 				}
@@ -921,7 +969,10 @@ void FindBrushDialog::RefreshContentsInternal()
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
-		const BrushMap& brushes_map = brushes.getMap();
+
+		bool found_search_results = false;
+
+		const BrushMap& brushes_map = g_brushes.getMap();
 
 		// We store the raws so they display last of all results
 		std::deque<const RAWBrush*> raws;
@@ -932,25 +983,27 @@ void FindBrushDialog::RefreshContentsInternal()
 			if(as_lower_str(brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
-			if(dynamic_cast<const RAWBrush*>(brush))
+			if(brush->isRaw())
 				continue;
 
+			found_search_results = true;
 			item_list->AddBrush(const_cast<Brush*>(brush));
 		}
 
-		for(int id = 0; id <= item_db.getMaxID(); ++id) {
-			ItemType& it = item_db[id];
+		for(int id = 0; id <= g_items.getMaxID(); ++id) {
+			ItemType& it = g_items[id];
 			if(it.id == 0)
 				continue;
 
-			RAWBrush* raw = it.raw_brush;
-			if(raw == nullptr)
+			RAWBrush* raw_brush = it.raw_brush;
+			if(!raw_brush)
 				continue;
 
-			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
-			item_list->AddBrush(raw);
+			found_search_results = true;
+			item_list->AddBrush(raw_brush);
 		}
 
 		while(raws.size() > 0) {
@@ -958,12 +1011,14 @@ void FindBrushDialog::RefreshContentsInternal()
 			raws.pop_front();
 		}
 
-		if(item_list->GetItemCount() > 0) {
+		if(found_search_results) {
 			item_list->SetSelection(0);
 		} else {
 			item_list->SetNoMatches();
 		}
+
 	}
+	item_list->Refresh();
 }
 
 // ============================================================================
@@ -992,15 +1047,15 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 	wxFlexGridSizer *gridsizer = newd wxFlexGridSizer(2, 10, 10);
 
 	// Labels
-	gridsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("Replace this item:")), 0);
-	gridsizer->Add(newd wxStaticText(this, wxID_ANY, wxT("With this item:")), 0);
+	gridsizer->Add(newd wxStaticText(this, wxID_ANY, "Replace this item:"), 0);
+	gridsizer->Add(newd wxStaticText(this, wxID_ANY, "With this item:"), 0);
 
 	// The text fields
-	find_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_FIND_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	find_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_FIND_TEXT, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	find_item_field->SetFocus();
 	gridsizer->Add(find_item_field, wxSizerFlags(0).Expand());
 
-	with_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_WITH_TEXT, wxT(""), wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
+	with_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_WITH_TEXT, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	gridsizer->Add(with_item_field, wxSizerFlags(0).Expand());
 
 	// The lists
@@ -1016,8 +1071,8 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 
 	// Buttons
 	wxSizer* stdsizer = newd wxBoxSizer(wxHORIZONTAL);
-	stdsizer->Add(newd wxButton(this, wxID_OK, wxT("Replace")), wxSizerFlags(1).Center());
-	stdsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	stdsizer->Add(newd wxButton(this, wxID_OK, "Replace"), wxSizerFlags(1).Center());
+	stdsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
 	topsizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
 
 	SetSizerAndFit(topsizer);
@@ -1104,15 +1159,18 @@ void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		if(with_item_list->GetSelection() == wxNOT_FOUND)
 			with_item_list->SetSelection(0);
 
-		result_find_brush = dynamic_cast<RAWBrush*>(find_item_list->GetSelectedBrush());
-		result_with_brush = dynamic_cast<RAWBrush*>(with_item_list->GetSelectedBrush());
+		Brush* find_brush = find_item_list->GetSelectedBrush();
+		Brush* with_brush = with_item_list->GetSelectedBrush();
+		if(find_brush && find_brush->isRaw() && with_brush && with_brush->isRaw()) {
+			result_find_brush = find_brush;
+			result_with_brush = with_brush;
+		}
 	}
 
-	if(result_find_brush == nullptr || result_with_brush == nullptr) {
+	if(!result_find_brush || !result_with_brush) {
 		result_find_brush = nullptr;
 		result_with_brush = nullptr;
-
-		g_gui.PopupDialog(wxT("Select both items"), wxT("You must select two items for the replacement to work."), wxOK);
+		g_gui.PopupDialog("Select both items", "You must select two items for the replacement to work.", wxOK);
 		return;
 	}
 
@@ -1134,37 +1192,43 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 	bool do_search = (search_string.size() >= 2);
 
 	if(do_search) {
-		for(int id = 0; id <= item_db.getMaxID(); ++id)
+
+		bool found_search_results = false;
+
+		for(int id = 0; id <= g_items.getMaxID(); ++id)
 		{
-			ItemType& it = item_db[id];
+			ItemType& it = g_items[id];
 			if(it.id == 0)
 				continue;
 
-			RAWBrush* raw = it.raw_brush;
-			if(raw == nullptr)
+			RAWBrush* raw_brush = it.raw_brush;
+			if(!raw_brush)
 				continue;
 
-			if(as_lower_str(raw->getName()).find(search_string) == std::string::npos)
+			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 				continue;
 
-			which_list->AddBrush(raw);
+			found_search_results = true;
+			which_list->AddBrush(raw_brush);
 		}
 
-		if(which_list->GetItemCount() > 0)
+		if(found_search_results)
 			which_list->SetSelection(0);
 		else
 			which_list->SetNoMatches();
+
 	}
+	which_list->Refresh();
 }
 
 uint16_t ReplaceItemDialog::GetResultFindID() const
 {
-	return result_find_brush ? static_cast<RAWBrush*>(result_find_brush)->getItemID() : 0;
+	return result_find_brush ? result_find_brush->asRaw()->getItemID() : 0;
 }
 
 uint16_t ReplaceItemDialog::GetResultWithID() const
 {
-	return result_with_brush ? static_cast<RAWBrush*>(result_with_brush)->getItemID() : 0;
+	return result_with_brush ? result_with_brush->asRaw()->getItemID() : 0;
 }
 
 // ============================================================================
@@ -1222,9 +1286,9 @@ Brush* FindDialogListBox::GetSelectedBrush()
 void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 {
 	if(no_matches) {
-		dc.DrawText(wxT("No matches for your search."), rect.GetX() + 40, rect.GetY() + 6);
+		dc.DrawText("No matches for your search.", rect.GetX() + 40, rect.GetY() + 6);
 	} else if(cleared) {
-		dc.DrawText(wxT("Please enter your search string."), rect.GetX() + 40, rect.GetY() + 6);
+		dc.DrawText("Please enter your search string.", rect.GetX() + 40, rect.GetY() + 6);
 	} else {
 		ASSERT(n < brushlist.size());
 		Sprite* spr = g_gui.gfx.getSprite(brushlist[n]->getLookID());
@@ -1248,6 +1312,77 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 wxCoord FindDialogListBox::OnMeasureItem(size_t n) const
 {
 	return 32;
+}
+
+// ============================================================================
+// wxListBox that can be sorted
+
+SortableListBox::SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size)
+: wxListBox(parent, id, pos, size, 0, nullptr, wxLB_SINGLE | wxLB_NEEDED_SB)
+{}
+
+SortableListBox::~SortableListBox() {}
+
+void SortableListBox::Sort() {
+
+	if (GetCount() == 0)
+		return;
+
+	wxASSERT_MSG(GetClientDataType() != wxClientData_Object, "Sorting a list with data of type wxClientData_Object is currently not implemented");
+
+	DoSort();
+}
+
+void SortableListBox::DoSort() {
+	size_t count = GetCount();
+	int selection = GetSelection();
+	wxClientDataType dataType = GetClientDataType();
+
+	wxArrayString stringList;
+	wxArrayPtrVoid dataList;
+
+	for (size_t i = 0; i < count; ++i) {
+		stringList.Add(GetString(i));
+		if (dataType == wxClientData_Void)
+			dataList.Add(GetClientData(i));
+	}
+
+	//Insertion sort
+	for (size_t i = 0; i < count; ++i) {
+		size_t j = i;
+		while (j > 0 && stringList[j].CmpNoCase(stringList[j - 1]) < 0) {
+
+			wxString tmpString = stringList[j];
+			stringList[j] = stringList[j - 1];
+			stringList[j - 1] = tmpString;
+
+			if (dataType == wxClientData_Void) {
+				void* tmpData = dataList[j];
+				dataList[j] = dataList[j - 1];
+				dataList[j - 1] = tmpData;
+			}
+
+			if (selection == j - 1)
+				selection++;
+			else if (selection == j) {
+				selection--;
+			}
+
+			j--;
+		}
+	}
+
+	Freeze();
+	Clear();
+	for (size_t i = 0; i < count; ++i) {
+		if (dataType == wxClientData_Void)
+			Append(stringList[i], dataList[i]);
+		else
+			Append(stringList[i]);
+	}
+	Thaw();
+
+	SetSelection(selection);
 }
 
 // ============================================================================
@@ -1308,7 +1443,7 @@ BEGIN_EVENT_TABLE(EditTownsDialog, wxDialog)
 END_EVENT_TABLE()
 
 EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Towns"), wxDefaultPosition, wxSize(280,330)),
+	wxDialog(parent, wxID_ANY, "Towns", wxDefaultPosition, wxSize(280,330)),
 	editor(editor)
 {
 	Map& map = editor.map;
@@ -1330,30 +1465,30 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	sizer->Add(town_listbox, 1, wxEXPAND | wxTOP | wxLEFT | wxRIGHT, 10);
 
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, EDIT_TOWNS_ADD, wxT("Add")), 0, wxTOP, 5);
-	tmpsizer->Add(remove_button = newd wxButton(this, EDIT_TOWNS_REMOVE, wxT("Remove")), 0, wxRIGHT | wxTOP, 5);
+	tmpsizer->Add(newd wxButton(this, EDIT_TOWNS_ADD, "Add"), 0, wxTOP, 5);
+	tmpsizer->Add(remove_button = newd wxButton(this, EDIT_TOWNS_REMOVE, "Remove"), 0, wxRIGHT | wxTOP, 5);
 	sizer->Add(tmpsizer, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 	// House options
-	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, wxT("Name / ID"));
-	name_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(190,20), 0, wxTextValidator(wxFILTER_ASCII, &town_name));
+	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Name / ID");
+	name_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(190,20), 0, wxTextValidator(wxFILTER_ASCII, &town_name));
 	tmpsizer->Add(name_field, 2, wxEXPAND | wxLEFT | wxBOTTOM, 5);
 
-	id_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxSize(40,20), 0, wxTextValidator(wxFILTER_NUMERIC, &town_id));
+	id_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxSize(40,20), 0, wxTextValidator(wxFILTER_NUMERIC, &town_id));
 	id_field->Enable(false);
 	tmpsizer->Add(id_field, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
 	sizer->Add(tmpsizer, 0, wxEXPAND | wxALL, 10);
 
 	// Temple position
-	temple_position = newd PositionCtrl(this, wxT("Temple Position"), 0, 0, 0, map.getWidth(), map.getHeight());
-	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, wxT("Go To"));
+	temple_position = newd PositionCtrl(this, "Temple Position", 0, 0, 0, map.getWidth(), map.getHeight());
+	select_position_button = newd wxButton(this, EDIT_TOWNS_SELECT_TEMPLE, "Go To");
 	temple_position->Add(select_position_button, 0, wxLEFT | wxRIGHT | wxBOTTOM, 5);
 	sizer->Add(temple_position, 0, wxEXPAND | wxLEFT | wxRIGHT, 10);
 
 	// OK/Cancel buttons
 	tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
 	sizer->Add(tmpsizer, 0, wxCENTER | wxALL, 10);
 
 	SetSizerAndFit(sizer);
@@ -1526,7 +1661,7 @@ void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 		for(HouseMap::iterator house_iter = map.houses.begin(); house_iter != map.houses.end(); ++house_iter) {
 			House* house = house_iter->second;
 			if(house->townid == town->getID()) {
-				g_gui.PopupDialog(this, wxT("Error"), wxT("You cannot delete a town which still has houses associated with it."), wxOK);
+				g_gui.PopupDialog(this, "Error", "You cannot delete a town which still has houses associated with it.", wxOK);
 				return;
 			}
 		}
@@ -1580,15 +1715,15 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
 			Town* town = *town_iter;
 			if(town->getName() == "") {
-				g_gui.PopupDialog(this, wxT("Error"), wxT("You can't have a town with an empty name."), wxOK);
+				g_gui.PopupDialog(this, "Error", "You can't have a town with an empty name.", wxOK);
 				return;
 			}
 			if(!town->getTemplePosition().isValid() ||
 				town->getTemplePosition().x > editor.map.getWidth() ||
 				town->getTemplePosition().y > editor.map.getHeight()) {
 				wxString msg;
-				msg << wxT("The town ") << wxstr(town->getName()) << wxT(" has an invalid temple position.");
-				g_gui.PopupDialog(this, wxT("Error"), msg, wxOK);
+				msg << "The town " << wxstr(town->getName()) << " has an invalid temple position.";
+				g_gui.PopupDialog(this, "Error", msg, wxOK);
 				return;
 			}
 		}
@@ -1624,7 +1759,7 @@ BEGIN_EVENT_TABLE(GotoPositionDialog, wxDialog)
 END_EVENT_TABLE()
 
 GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, wxT("Go To Position"), wxDefaultPosition, wxDefaultSize),
+	wxDialog(parent, wxID_ANY, "Go To Position", wxDefaultPosition, wxDefaultSize),
 	editor(editor)
 {
 	Map& map = editor.map;
@@ -1632,13 +1767,13 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 	// create topsizer
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	posctrl = newd PositionCtrl(this, wxT("Destination"), map.getWidth() / 2, map.getHeight() / 2, GROUND_LAYER, map.getWidth(), map.getHeight());
+	posctrl = newd PositionCtrl(this, "Destination", map.getWidth() / 2, map.getHeight() / 2, GROUND_LAYER, map.getWidth(), map.getHeight());
 	sizer->Add(posctrl, 0, wxTOP | wxLEFT | wxRIGHT, 20);
 
 	// OK/Cancel buttons
 	wxSizer* tmpsizer = newd wxBoxSizer(wxHORIZONTAL);
-	tmpsizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
-	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, wxT("Cancel")), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+	tmpsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
 	sizer->Add(tmpsizer, 0, wxALL | wxCENTER, 20); // Border to top too
 
 	SetSizerAndFit(sizer);
