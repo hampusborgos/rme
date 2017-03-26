@@ -631,6 +631,43 @@ int LuaInterface::luaEditorGetItemCount(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorReplaceItems(lua_State* L)
+{
+	// editor:replaceItems(items)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	lua_pushnil(L);
+
+	std::map<uint32_t, uint32_t> items;
+	while(lua_next(L, -2) != 0) {
+		uint32_t key = (uint32_t)lua_tonumber(L, -2);
+		uint32_t value = (uint32_t)lua_tonumber(L, -1);
+		if(g_items.hasItemId(key) && g_items.hasItemId(value))
+			items.insert(std::pair<uint32_t, uint32_t>(key, value));
+		lua_pop(L, 1);
+	}
+
+	if(items.empty()) {
+		g_lua.print("No items were found on the map.");
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	if(!replaceItems(editor, items)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	g_gui.RefreshView();
+
+	pushBoolean(L, true);
+	return 1;
+}
+
 // Tile
 int LuaInterface::luaTileCreate(lua_State* L)
 {
@@ -1116,6 +1153,43 @@ int LuaInterface::luaSelectionSaveAsMinimap(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaSelectionReplaceItems(lua_State* L)
+{
+	// selection:replaceItems(items)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor || !editor->hasSelection()) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	lua_pushnil(L);
+
+	std::map<uint32_t, uint32_t> items;
+	while(lua_next(L, -2) != 0) {
+		uint32_t key = (uint32_t)lua_tonumber(L, -2);
+		uint32_t value = (uint32_t)lua_tonumber(L, -1);
+		if(g_items.hasItemId(key) && g_items.hasItemId(value))
+			items.insert(std::pair<uint32_t, uint32_t>(key, value));
+		lua_pop(L, 1);
+	}
+
+	if(items.empty()) {
+		g_lua.print("No items were found on the map.");
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	if(!replaceItems(editor, items, true)) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	g_gui.RefreshView();
+
+	pushBoolean(L, true);
+	return 1;
+}
+
 int LuaInterface::luaSelectionDestroy(lua_State* L)
 {
 	// selection:destroy()
@@ -1280,6 +1354,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Editor", "selectTiles", LuaInterface::luaEditorSelectTiles);
 	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
 	registerMethod("Editor", "getItemCount", LuaInterface::luaEditorGetItemCount);
+	registerMethod("Editor", "replaceItems", LuaInterface::luaEditorReplaceItems);
 
 	// Tile
 	registerClass("Tile", "", LuaInterface::luaTileCreate);
@@ -1311,6 +1386,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Selection", "borderize", LuaInterface::luaSelectionBorderize);
 	registerMethod("Selection", "randomize", LuaInterface::luaSelectionRandomize);
 	registerMethod("Selection", "saveAsMinimap", LuaInterface::luaSelectionSaveAsMinimap);
+	registerMethod("Selection", "replaceItems", LuaInterface::luaSelectionReplaceItems);
 	registerMethod("Selection", "destroy", LuaInterface::luaSelectionDestroy);
 }
 
@@ -1378,3 +1454,39 @@ bool LuaInterface::setTileFlag(Tile* tile, uint16_t flag, bool enable)
 	}
 	return false;
 }
+
+bool LuaInterface::replaceItems(Editor *editor, std::map<uint32_t, uint32_t>& items, bool selectedTiles/*= false*/)
+{
+	if(!editor || items.empty())
+		return false;
+
+	g_lua.print("Starting search & replace on map...");
+
+	for(std::map<uint32_t, uint32_t>::iterator it = items.begin(); it != items.end(); it++) {
+		uint16_t find_id = it->first;
+		uint16_t with_id = it->second;
+		ItemFinder finder(find_id);
+
+		g_gui.GetCurrentEditor()->actionQueue->clear();
+
+		g_lua.print("\nSearching item id " + i2ws(find_id) + "...");
+
+		// Search the map
+		foreach_ItemOnMap(editor->map, finder, selectedTiles);
+
+		g_lua.print("Replacing item id " + i2ws(find_id) + " with item id " + i2ws(with_id) + "...");
+
+		// Replace the items in a second step (can't replace while iterating)
+		std::vector<std::pair<Tile*, Item*>> result = finder.result;
+		for(std::vector<std::pair<Tile*, Item*>>::const_iterator rit = result.begin(); rit != result.end(); ++rit) {
+			transformItem(rit->second, with_id, rit->first);
+		}
+
+		wxString msg;
+		msg << "Replaced " << result.size() << " items id " << find_id << " with id " << with_id << ".";
+		g_lua.print(msg);
+	}
+
+	return true;
+}
+

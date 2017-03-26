@@ -346,6 +346,7 @@ public:
 	bool typeExists(int id) const;
 	ItemType& getItemType(int id);
 	ItemType& getItemIdByClientID(int spriteId);
+	bool hasItemId(int32_t id) const { return id >= 100 && id <= max_item_id; }
 
 	bool loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings);
 	bool loadFromGameXml(const FileName& datafile, wxString& error, wxArrayString& warnings);

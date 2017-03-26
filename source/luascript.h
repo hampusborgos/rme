@@ -27,19 +27,6 @@ class Editor;
 class Brush;
 class FlagBrush;
 
-struct ItemCounter
-{
-	ItemCounter(uint16_t itemid) : itemid(itemid), result(0) {}
-
-	void operator()(Map& map, Tile* tile, Item* item, long long done) {
-		if(item->getID() == itemid)
-			result++;
-	}
-
-	uint16_t itemid;
-	uint32_t result;
-};
-
 enum LuaDataType {
 	LuaData_Unknown,
 
@@ -104,6 +91,7 @@ public:
 	static int luaEditorSelectTiles(lua_State* L);
 	static int luaEditorGetSelection(lua_State* L);
 	static int luaEditorGetItemCount(lua_State* L);
+	static int luaEditorReplaceItems(lua_State* L);
 
 	// Tile
 	static int luaTileCreate(lua_State* L);
@@ -133,6 +121,7 @@ public:
 	static int luaSelectionBorderize(lua_State* L);
 	static int luaSelectionRandomize(lua_State* L);
 	static int luaSelectionSaveAsMinimap(lua_State* L);
+	static int luaSelectionReplaceItems(lua_State* L);
 	static int luaSelectionDestroy(lua_State* L);
 
 	int getTop();
@@ -265,9 +254,50 @@ private:
 	void registerGlobalMethod(const std::string& functionName, lua_CFunction func);
 	void registerFunctions();
 
+	static bool replaceItems(Editor *editor, std::map<uint32_t, uint32_t>& items, bool selectedTiles = false);
 	static bool setTileFlag(Tile* tile, uint16_t flag, bool enable);
 };
 
 extern LuaInterface g_lua;
+
+
+
+struct ItemFinder
+{
+	ItemFinder(uint16_t itemid, int32_t limit = -1) : itemid(itemid), limit(limit), exceeded(false) {}
+
+	void operator()(Map& map, Tile* tile, Item* item, long long done) {
+		if(exceeded)
+			return;
+
+		if(item->getID() == itemid) {
+			result.push_back(std::make_pair(tile, item));
+			if(limit > 0 && result.size() >= size_t(limit))
+				exceeded = true;
+		}
+	}
+
+	std::vector<std::pair<Tile*, Item*>> result;
+
+private:
+	uint16_t itemid;
+	int32_t limit;
+	bool exceeded;
+};
+
+
+
+struct ItemCounter
+{
+	ItemCounter(uint16_t itemid) : itemid(itemid), result(0) {}
+
+	void operator()(Map& map, Tile* tile, Item* item, long long done) {
+		if(item->getID() == itemid)
+			result++;
+	}
+
+	uint16_t itemid;
+	uint32_t result;
+};
 
 #endif
