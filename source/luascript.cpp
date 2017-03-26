@@ -1474,10 +1474,16 @@ bool LuaInterface::replaceItems(Editor *editor, std::map<uint32_t, uint32_t>& it
 		// Search the map
 		foreach_ItemOnMap(editor->map, finder, selectedTiles);
 
+		std::vector<std::pair<Tile*, Item*>>& result = finder.result;
+		if(result.empty()) {
+			g_lua.print("No item id " + i2ws(find_id) + " was found.");
+			continue;
+		}
+
 		g_lua.print("Replacing item id " + i2ws(find_id) + " with item id " + i2ws(with_id) + "...");
 
 		// Replace the items in a second step (can't replace while iterating)
-		std::vector<std::pair<Tile*, Item*>> result = finder.result;
+		
 		for(std::vector<std::pair<Tile*, Item*>>::const_iterator rit = result.begin(); rit != result.end(); ++rit) {
 			transformItem(rit->second, with_id, rit->first);
 		}
