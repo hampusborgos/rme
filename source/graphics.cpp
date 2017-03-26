@@ -981,7 +981,8 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 	if(!dc[size]) {
 		ASSERT(width >= 1 && height >= 1);
 
-		wxImage image(width * SPRITE_PIXELS, height * SPRITE_PIXELS);
+		uint8_t image_size = std::max<uint8_t>(width, height) * SPRITE_PIXELS;
+		wxImage image(image_size, image_size);
 
 		for(uint8_t l = 0; l < layers; l++) {
 			for(uint8_t w = 0; w < width; w++) {
@@ -1000,8 +1001,8 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 
 		// Now comes the resizing / antialiasing
 		if(size == SPRITE_SIZE_16x16 || image.GetWidth() > SPRITE_PIXELS || image.GetHeight() > SPRITE_PIXELS) {
-			int wh = SPRITE_SIZE_16x16 ? 16 : 32;
-			image.Rescale(wh, wh);
+			int new_size = SPRITE_SIZE_16x16 ? 16 : 32;
+			image.Rescale(new_size, new_size);
 		}
 
 		wxBitmap bmp(image);
