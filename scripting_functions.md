@@ -28,7 +28,7 @@
 ## <a name='editor'>Editor</a>
 [Editor(index)](#editor)  
 [editor:createSelection(start, end)](#editor)  
-[editor:getItemCount(itemid)](#editor)  
+[editor:getItemCount(itemid)](#editor_getItemCount)  
 [editor:getMapDescription()](#editor)  
 [editor:getMapHeight()](#editor)  
 [editor:getMapWidth()](#editor)  
@@ -72,6 +72,18 @@
 [selection:randomize()](#selection)  
 [selection:replaceItems(items)](#selection_replaceItems)  
 [selection:saveAsMinimap(directory, fileName)](#selection)  
+
+## <a name='editor_getItemCount'>editor:getItemCount(itemid)</a>
+#### Example:
+```Lua
+local editor = Editor(0) -- gets the editor at first tab.
+if editor then
+  local items = {546, 321, 875} -- list of items to find.
+  for _, id in pairs(items) do
+    print('found ' .. editor:getItemCount(id) .. ' items id ' .. tostring(id))
+  end
+end
+```
 
 ## <a name='editor_replaceItems'>editor:replaceItems(items)</a>
 #### Example:
