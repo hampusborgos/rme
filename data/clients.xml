@@ -9,7 +9,7 @@
 
 	<otbs>
 		<!--
-			Just list all OTB versions here 
+			Just list all OTB versions here
 			This is only used as a mapping for parsing the versions later on
 		-->
 		<otb client="7.40" version="1" id="1"/>
@@ -72,6 +72,7 @@
 		<otb client="10.31" version="3" id="54"/>
 		<otb client="10.41" version="3" id="55"/>
 		<otb client="10.77" version="3" id="56"/>
+		<otb client="10.98" version="3" id="57"/>
 	</otbs>
 
 	<clients>
@@ -228,31 +229,31 @@
 			<extensions from="8.20 - 8.31" to="9.86"/>
 			<data format="9.6" dat="0x5170E904" spr="0x5170E96F"/>
 		</client>
-		
+
 		<client name="10.10" otb="10.10" visible="true" data_directory="1010">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.10"/>
 			<data format="10.10" dat="0x51E3F8C3" spr="0x51E3F8E9"/>
 		</client>
-		
+
 		<client name="10.20" otb="10.20" visible="true" data_directory="1020">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.20"/>
 			<data format="10.10" dat="0x5236F129" spr="0x5236F14F"/>
 		</client>
-		
+
 		<client name="10.21" otb="10.21" visible="true" data_directory="1021">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.21"/>
 			<data format="10.10" dat="0x526A5068" spr="0x526A5090"/>
 		</client>
-		
+
 		<client name="10.30" otb="10.30" visible="true" data_directory="1030">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.30"/>
 			<data format="10.10" dat="0x52A59036" spr="0x52A5905F"/>
 		</client>
-		
+
 		<client name="10.31" otb="10.31" visible="true" data_directory="1031">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.31"/>
@@ -265,10 +266,16 @@
 			<data format="10.10" dat="0x5383504E" spr="0x53835077"/>
 		</client>
 
-		<client name="10.77" otb="10.77" default="true" visible="true" data_directory="1077">
+		<client name="10.77" otb="10.77" visible="true" data_directory="1077">
 			<otbm version="3"/>
 			<extensions from="8.20 - 8.31" to="10.77"/>
 			<data format="10.57" dat="0x38DE" spr="0x5525213D"/>
+		</client>
+
+		<client name="10.98" otb="10.98" default="true" visible="true" data_directory="1098">
+			<otbm version="3"/>
+			<extensions from="8.20 - 8.31" to="10.98"/>
+			<data format="10.57" dat="0x42A3" spr="0x57BBD603"/>
 		</client>
 	</clients>
 

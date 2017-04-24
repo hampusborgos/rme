@@ -120,13 +120,13 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Users\crille\Documents\GitHub\rme\dependencies\vs\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\GitHub\rme\dependencies\vs\include;C:\wxWidgets-3.0.2\include\msvc;C:\wxWidgets-3.0.2\include;C:\boost_1_55_0\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\crille\Documents\GitHub\rme\dependencies\vs\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\DevFolder\C++ Libraries\boost_1_55_0\lib;C:\Users\crille\Documents\GitHub\rme\dependencies\vs\lib;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\GitHub\rme\dependencies\vs\lib;C:\wxWidgets-3.0.2\lib;C:\boost_1_55_0\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\DevFolder\C++ Libraries\boost_1_55_0\lib;C:\Users\crille\Documents\GitHub\rme\dependencies\vs\lib;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\rme\dependencies\vs\include;D:\boost_1_55_0_32;D:\wx\include;D:\wx\include\msvc;$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\GitHub\rme\dependencies\vs\include;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc;C:\boost_1_57_0;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\DevFolder\C++ Libraries\libarchive-3.1.2\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\x64\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\x64\include;$(IncludePath)</IncludePath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">D:\wx\lib\vc_lib;D:\boost_1_55_0_32\lib32-msvc-12.0;D:\rme\dependencies\vs\lib;D:\wx\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\GitHub\rme\dependencies\vs\lib;C:\wxWidgets-3.1.0\lib\vc_lib;C:\wxWidgets-3.1.0\lib;C:\boost_1_57_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\DevFolder\C++ Libraries\boost_1_55_0\lib64;E:\DevFolder\C++ Libraries\libarchive-3.1.2\lib64;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\x64\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">C:\Users\crille\Documents\GitHub\rme\dependencies\vs\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|x64'">C:\Users\crille\Documents\GitHub\rme\dependencies\vs\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include;$(IncludePath)</IncludePath>
@@ -151,7 +151,7 @@
       <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;archive_static.lib;Rpcrt4.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;archive_static.lib;glut32.lib;Rpcrt4.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
@@ -204,7 +204,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;archive.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;archive.lib;glut32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -296,6 +296,8 @@
     <ClInclude Include="..\..\source\otml.h" />
     <ClInclude Include="..\..\source\browse_tile_window.h" />
     <ClCompile Include="..\..\source\browse_tile_window.cpp" />
+    <ClInclude Include="..\..\source\positionctrl.h" />
+    <ClCompile Include="..\..\source\positionctrl.cpp" />
     <ClInclude Include="..\..\source\carpet_brush.h" />
     <ClCompile Include="..\..\source\carpet_brush.cpp" />
     <ClInclude Include="..\..\source\common.h" />

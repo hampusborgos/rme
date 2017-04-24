@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -21,18 +21,20 @@
 
 #include "creature.h"
 
-Creature::Creature(CreatureType* ctype) : direction(SOUTH), spawntime(0), saved(false), selected(false)
+Creature::Creature(CreatureType* ctype) : direction(NORTH), spawntime(0), saved(false), selected(false)
 {
 	if(ctype)
 		type_name = ctype->name;
 }
 
-Creature::Creature(std::string ctype_name) : type_name(ctype_name), direction(SOUTH), spawntime(0), saved(false), selected(false)
+Creature::Creature(std::string ctype_name) : type_name(ctype_name), direction(NORTH), spawntime(0), saved(false), selected(false)
 {
+	////
 }
 
 Creature::~Creature()
 {
+	////
 }
 
 std::string Creature::DirID2Name(uint16_t id) {
@@ -45,12 +47,13 @@ std::string Creature::DirID2Name(uint16_t id) {
 	}
 }
 
-uint16_t Creature::DirName2ID(std::string dir) {
+uint16_t Creature::DirName2ID(std::string dir)
+{
 	to_lower_str(dir);
-	if (dir == "north") return NORTH;
-	if (dir == "east") return EAST;
-	if (dir == "south") return SOUTH;
-	if (dir == "west") return WEST;
+	if(dir == "north") return NORTH;
+	if(dir == "east") return EAST;
+	if(dir == "south") return SOUTH;
+	if(dir == "west") return WEST;
 	return SOUTH;
 }
 
@@ -66,7 +69,7 @@ Creature* Creature::deepCopy() const
 
 const Outfit& Creature::getLookType() const
 {
-	CreatureType* type = creature_db[type_name];
+	CreatureType* type = g_creatures[type_name];
 	if(type)
 		return type->outfit;
 	static const Outfit otfi; // Empty outfit

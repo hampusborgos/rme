@@ -26,7 +26,7 @@ bool RMENet::Connect()
 {
 	wxIPV4address ipaddr;
 
-	ipaddr.Hostname(wxT("127.0.0.1"));//90.230.54.138"));
+	ipaddr.Hostname("127.0.0.1");//90.230.54.138"));
 	ipaddr.Service(31312);
 
 	socket = newd wxSocketClient(wxSOCKET_NOWAIT);
@@ -37,9 +37,9 @@ bool RMENet::Connect()
 	socket->SetEventHandler(*this, wxID_ANY);
 	socket->SetNotify(wxSOCKET_INPUT_FLAG | wxSOCKET_OUTPUT_FLAG | wxSOCKET_LOST_FLAG);
 	socket->Notify(true);
-	
+
 	wxEvtHandler::Connect(wxID_ANY, wxEVT_SOCKET, wxSocketEventHandler(RMENet::HandleEvent));
-	
+
 	socket->Connect(ipaddr, false);
 	if(!socket || !socket->WaitOnConnect(5, 0) ||
 		!socket || !socket->IsConnected())
@@ -51,12 +51,12 @@ bool RMENet::Connect()
 		connection = nullptr;
 		return false;
 	}
- 
+
 	NetworkMessage* nmsg = AllocMessage();
 	nmsg->AddByte(0x00); // Hello!
 	nmsg->AddU32(__LIVE_NET_VERSION__);
-	nmsg->AddString(settings.getString(Config::LIVE_USERNAME));
-	nmsg->AddString(settings.getString(Config::LIVE_PASSWORD));
+	nmsg->AddString(g_settings.getString(Config::LIVE_USERNAME));
+	nmsg->AddString(g_settings.getString(Config::LIVE_PASSWORD));
 	connection->Send(nmsg);
 
 	return true;
@@ -66,8 +66,7 @@ void RMENet::Close()
 {
 	delete connection;
 	connection = nullptr;
-	if(socket)
-	{
+	if(socket) {
 		socket->Destroy();
 		socket = nullptr;
 	}
@@ -79,13 +78,10 @@ void RMENet::Close()
 
 	// schedule this object for deletion
 	wxAppTraits *traits = wxTheApp ? wxTheApp->GetTraits() : nullptr;
-	if ( traits )
-	{
+	if( traits ) {
 		// let the traits object decide what to do with us
 		traits->ScheduleForDestroy(this);
-	}
-	else // no app or no traits
-	{
+	} else { // no app or no traits
 		// in wxBase we might have no app object at all, don't leak memory
 		delete this;
 	}
@@ -94,7 +90,7 @@ void RMENet::Close()
 void RMENet::HandleEvent(wxSocketEvent& evt)
 {
 	NetworkConnection* connection = reinterpret_cast<NetworkConnection*>(evt.GetClientData());
-	switch(evt.GetSocketEvent()) 
+	switch(evt.GetSocketEvent())
 	{
 		case wxSOCKET_LOST:
 		// Connection was lost, either client disconnecting, or our socket breaking
@@ -102,7 +98,7 @@ void RMENet::HandleEvent(wxSocketEvent& evt)
 			// Generate event
 			wxCommandEvent event(EVT_RMENET_CONNECTION_LOST);
 			event.SetInt(0);
-			event.SetString(wxT("GOOOFU"));
+			event.SetString("GOOOFU");
 			event_dump->AddPendingEvent(event);
 		} break;
 		case wxSOCKET_OUTPUT:
@@ -115,7 +111,7 @@ void RMENet::HandleEvent(wxSocketEvent& evt)
 		// We got some data to be read.
 		{
 			NetworkMessage* nmsg = connection->Receive();
-			if(nmsg) 
+			if(nmsg)
 			{
 				try
 				{
@@ -156,7 +152,7 @@ void RMENet::OnParsePacket(NetworkMessage* nmsg)
 void RMENet::OnReceiveWelcome(NetworkMessage* nmsg)
 {
 	can_host = nmsg->ReadU8() == 1;
-	
+
 	wxCommandEvent event(EVT_RMENET_CONNECTION_ESTABLISHED);
 	event_dump->AddPendingEvent(event);
 }

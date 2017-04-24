@@ -23,7 +23,7 @@ class LivePeer : public LiveSocket
 		uint32_t getClientId() const { return clientId; }
 
 		std::string getHostName() const;
-		
+
 		wxColor getUsedColor() const { return color; }
 		void setUsedColor(const wxColor& newColor) { color = newColor; }
 

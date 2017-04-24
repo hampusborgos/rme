@@ -22,7 +22,8 @@
 #include "numbertextctrl.h"
 
 BEGIN_EVENT_TABLE(NumberTextCtrl, wxSpinCtrl)
-	EVT_TEXT(wxID_ANY, NumberTextCtrl::OnEnterText)
+	EVT_KILL_FOCUS(NumberTextCtrl::OnKillFocus)
+	EVT_TEXT_ENTER(wxID_ANY, NumberTextCtrl::OnTextEnter)
 END_EVENT_TABLE()
 
 NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
@@ -32,6 +33,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 	wxSpinCtrl(parent, id, (wxString() << value), pos, sz, style, minvalue, maxvalue, value, name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
+	////
 }
 
 NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
@@ -41,62 +43,23 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 	wxSpinCtrl(parent, id, (wxString() << value), pos, sz, style, minvalue, maxvalue, value, name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
+	////
 }
 
 NumberTextCtrl::~NumberTextCtrl()
 {
+	////
 }
 
-wxTextPos NumberTextCtrl::GetLastPosition() const {
-	return wxstr(i2s(GetValue())).size();
-}
-
-void NumberTextCtrl::OnEnterText(wxCommandEvent& evt)
+void NumberTextCtrl::OnKillFocus(wxFocusEvent& evt)
 {
-	//printf("%d\n", (int)GetInsertionPoint());
-/*	wxString text = GetValue();
-	wxString ntext;
+	CheckRange();
+	evt.Skip();
+}
 
-	int p = GetInsertionPoint();
-	if(text.size() && text[0] == wxT('-'))
-		ntext.Append(wxT('-'));
-
-	for(size_t s = 0; s < text.size(); ++s)
-	{
-		if(text[s] >= '0' && text[s] <= '9')
-			ntext.Append(text[s]);
-		else
-			--p;
-	}
-
-	// Check that value is in range
-	long v;
-	if(ntext.ToLong(&v))
-	{
-		if(v < minval)
-			v = minval;
-		else if(v > maxval)
-			v = maxval;
-
-		ntext.clear();
-		ntext << v;
-		lastval = v;
-	}
-	else
-	{
-		ntext.clear();
-		ntext << lastval;
-	}
-
-	// Check if there was any change
-	if(ntext != text)
-	{
-		// User input was invalid, change the text to the cleaned one.
-
-		// ChangeValue doesn't generate events
-		ChangeValue(ntext);
-		SetInsertionPoint(p);
-	}*/
+void NumberTextCtrl::OnTextEnter(wxCommandEvent& evt)
+{
+	CheckRange();
 }
 
 void NumberTextCtrl::SetIntValue(long v)
@@ -110,5 +73,40 @@ void NumberTextCtrl::SetIntValue(long v)
 long NumberTextCtrl::GetIntValue()
 {
 	return GetValue();
+}
+
+void NumberTextCtrl::CheckRange()
+{
+/*
+	wxString text = GetValue();
+	wxString ntext;
+
+	for(size_t s = 0; s < text.size(); ++s) {
+		if(text[s] >= '0' && text[s] <= '9')
+			ntext.Append(text[s]);
+	}
+
+	// Check that value is in range
+	long v;
+	if(ntext.size() != 0 && ntext.ToLong(&v)) {
+		if(v < minval)
+			v = minval;
+		else if(v > maxval)
+			v = maxval;
+
+		ntext.clear();
+		ntext << v;
+		lastval = v;
+	} else {
+		ntext.clear();
+		ntext << lastval;
+	}
+
+	// Check if there was any change
+	if(ntext != text) {
+		// ChangeValue doesn't generate events
+		ChangeValue(ntext);
+	}
+*/
 }
 

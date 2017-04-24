@@ -38,10 +38,11 @@ MapTab::MapTab(const MapTab* other) :
 	FitToMap();
 	int x, y;
 	other->GetCanvas()->GetScreenCenter(&x, &y);
-	CenterOnPosition(Position(x, y, other->GetCanvas()->GetFloor()));
+	SetScreenCenterPosition(Position(x, y, other->GetCanvas()->GetFloor()));
 }
 
-MapTab::~MapTab() {
+MapTab::~MapTab()
+{
 	iref->owner_count--;
 	if(iref->owner_count <= 0) {
 		delete iref->editor;
@@ -49,37 +50,45 @@ MapTab::~MapTab() {
 	}
 }
 
-bool MapTab::IsUniqueReference() const {
+bool MapTab::IsUniqueReference() const
+{
 	return iref->owner_count == 1;
 }
 
-wxWindow* MapTab::GetWindow() const {
+wxWindow* MapTab::GetWindow() const
+{
 	return const_cast<MapTab*>(this);
 }
 
-MapCanvas* MapTab::GetCanvas() const {
+MapCanvas* MapTab::GetCanvas() const
+{
 	return canvas;
 }
 
-MapWindow* MapTab::GetView() const {
+MapWindow* MapTab::GetView() const
+{
 	return const_cast<MapWindow*>((const MapWindow*)this);
 }
 
-wxString MapTab::GetTitle() const {
+wxString MapTab::GetTitle() const
+{
 	wxString ss;
-	ss << wxstr(iref->editor->map.getName()) << (iref->editor->map.hasChanged()? wxT("*"): wxT(""));
+	ss << wxstr(iref->editor->map.getName()) << (iref->editor->map.hasChanged()? "*": "");
 	return ss;
 }
 
-Editor* MapTab::GetEditor() const {
+Editor* MapTab::GetEditor() const
+{
 	return &editor;
 }
 
-Map* MapTab::GetMap() const {
+Map* MapTab::GetMap() const
+{
 	return &editor.map;
 }
 
-void MapTab::OnSwitchEditorMode(EditorMode mode) {
+void MapTab::OnSwitchEditorMode(EditorMode mode)
+{
 	gem->SetSprite(mode == DRAWING_MODE? EDITOR_SPRITE_DRAWING_GEM : EDITOR_SPRITE_SELECTION_GEM);
 	if(mode == SELECTION_MODE)
 		canvas->EnterSelectionMode();

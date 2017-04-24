@@ -26,8 +26,8 @@ LiveServer::~LiveServer()
 bool LiveServer::bind()
 {
 	NetworkConnection& connection = NetworkConnection::getInstance();
-	if (!connection.start()) {
-		setLastError(wxT("The previous connection has not been terminated yet."));
+	if(!connection.start()) {
+		setLastError("The previous connection has not been terminated yet.");
 		return false;
 	}
 
@@ -39,8 +39,8 @@ bool LiveServer::bind()
 
 	boost::system::error_code error;
 	acceptor->set_option(boost::asio::ip::tcp::no_delay(true), error);
-	if (error) {
-		setLastError(wxT("Error: ") + error.message());
+	if(error) {
+		setLastError("Error: " + error.message());
 		return false;
 	}
 
@@ -53,35 +53,35 @@ bool LiveServer::bind()
 
 void LiveServer::close()
 {
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		delete clientEntry.second;
 	}
 	clients.clear();
 
-	if (log) {
-		log->Message(wxT("Server was shutdown."));
+	if(log) {
+		log->Message("Server was shutdown.");
 		log->Disconnect();
 		log = nullptr;
 	}
 
 	stopped = true;
-	if (acceptor) {
+	if(acceptor) {
 		acceptor->close();
 	}
 
-	if (socket) {
+	if(socket) {
 		socket->close();
 	}
 }
- 
+
 void LiveServer::acceptClient()
 {
 	static uint32_t id = 0;
-	if (stopped) {
+	if(stopped) {
 		return;
 	}
 
-	if (!socket) {
+	if(!socket) {
 		socket = std::make_shared<boost::asio::ip::tcp::socket>(
 			NetworkConnection::getInstance().get_service()
 		);
@@ -89,7 +89,7 @@ void LiveServer::acceptClient()
 
 	acceptor->async_accept(*socket, [this](const boost::system::error_code& error) -> void
 	{
-		if (error) {
+		if(error) {
 			//
 		} else {
 			LivePeer* peer = new LivePeer(this, std::move(*socket));
@@ -105,12 +105,12 @@ void LiveServer::acceptClient()
 void LiveServer::removeClient(uint32_t id)
 {
 	auto it = clients.find(id);
-	if (it == clients.end()) {
+	if(it == clients.end()) {
 		return;
 	}
 
 	const uint32_t clientId = it->second->getClientId();
-	if (clientId != 0) {
+	if(clientId != 0) {
 		clientIds &= ~clientId;
 		editor->map.clearVisible(clientIds);
 	}
@@ -125,10 +125,10 @@ void LiveServer::updateCursor(const Position& position)
 	cursor.id = 0;
 	cursor.pos = position;
 	cursor.color = wxColor(
-		settings.getInteger(Config::CURSOR_RED),
-		settings.getInteger(Config::CURSOR_GREEN),
-		settings.getInteger(Config::CURSOR_BLUE),
-		settings.getInteger(Config::CURSOR_ALPHA)
+		g_settings.getInteger(Config::CURSOR_RED),
+		g_settings.getInteger(Config::CURSOR_GREEN),
+		g_settings.getInteger(Config::CURSOR_BLUE),
+		g_settings.getInteger(Config::CURSOR_ALPHA)
 	);
 	broadcastCursor(cursor);
 }
@@ -145,8 +145,8 @@ uint16_t LiveServer::getPort() const
 
 bool LiveServer::setPort(int32_t newPort)
 {
-	if (newPort < 1 || newPort > 65535) {
-		setLastError(wxT("Port must be a number in the range 1-65535."));
+	if(newPort < 1 || newPort > 65535) {
+		setLastError("Port must be a number in the range 1-65535.");
 		return false;
 	}
 	port = newPort;
@@ -155,8 +155,8 @@ bool LiveServer::setPort(int32_t newPort)
 
 uint32_t LiveServer::getFreeClientId()
 {
-	for (int32_t bit = 1; bit < (1 << 16); bit <<= 1) {
-		if (!testFlags(clientIds, bit)) {
+	for(int32_t bit = 1; bit < (1 << 16); bit <<= 1) {
+		if(!testFlags(clientIds, bit)) {
 			clientIds |= bit;
 			return bit;
 		}
@@ -166,7 +166,7 @@ uint32_t LiveServer::getFreeClientId()
 
 std::string LiveServer::getHostName() const
 {
-	if (acceptor) {
+	if(acceptor) {
 		auto endpoint = acceptor->local_endpoint();
 		return endpoint.address().to_string() + ":" + std::to_string(endpoint.port());
 	}
@@ -175,33 +175,33 @@ std::string LiveServer::getHostName() const
 
 void LiveServer::broadcastNodes(DirtyList& dirtyList)
 {
-	if (dirtyList.Empty()) {
+	if(dirtyList.Empty()) {
 		return;
 	}
 
-	for (const auto& ind : dirtyList.GetPosList()) {
+	for(const auto& ind : dirtyList.GetPosList()) {
 		int32_t ndx = ind.pos >> 18;
 		int32_t ndy = (ind.pos >> 4) & 0x3FFF;
 		uint32_t floors = ind.floors;
 
 		QTreeNode* node = editor->map.getLeaf(ndx * 4, ndy * 4);
-		if (!node) {
+		if(!node) {
 			continue;
 		}
 
-		for (auto& clientEntry : clients) {
+		for(auto& clientEntry : clients) {
 			LivePeer* peer = clientEntry.second;
 
 			const uint32_t clientId = peer->getClientId();
-			if (dirtyList.owner != 0 && dirtyList.owner == clientId) {
+			if(dirtyList.owner != 0 && dirtyList.owner == clientId) {
 				continue;
 			}
 
-			if (node->isVisible(clientId, true)) {
+			if(node->isVisible(clientId, true)) {
 				peer->sendNode(clientId, node, ndx, ndy, floors & 0xFF00);
 			}
 
-			if (node->isVisible(clientId, false)) {
+			if(node->isVisible(clientId, false)) {
 				peer->sendNode(clientId, node, ndx, ndy, floors & 0x00FF);
 			}
 		}
@@ -210,11 +210,11 @@ void LiveServer::broadcastNodes(DirtyList& dirtyList)
 
 void LiveServer::broadcastCursor(const LiveCursor& cursor)
 {
-	if (clients.empty()) {
+	if(clients.empty()) {
 		return;
 	}
 
-	if (cursor.id != 0) {
+	if(cursor.id != 0) {
 		cursors[cursor.id] = cursor;
 	}
 
@@ -222,9 +222,9 @@ void LiveServer::broadcastCursor(const LiveCursor& cursor)
 	message.write<uint8_t>(PACKET_CURSOR_UPDATE);
 	writeCursor(message, cursor);
 
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		LivePeer* peer = clientEntry.second;
-		if (peer->getClientId() != cursor.id) {
+		if(peer->getClientId() != cursor.id) {
 			peer->send(message);
 		}
 	}
@@ -232,7 +232,7 @@ void LiveServer::broadcastCursor(const LiveCursor& cursor)
 
 void LiveServer::broadcastChat(const wxString& speaker, const wxString& chatMessage)
 {
-	if (clients.empty()) {
+	if(clients.empty()) {
 		return;
 	}
 
@@ -241,7 +241,7 @@ void LiveServer::broadcastChat(const wxString& speaker, const wxString& chatMess
 	message.write<std::string>(nstr(speaker));
 	message.write<std::string>(nstr(chatMessage));
 
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		clientEntry.second->send(message);
 	}
 
@@ -250,7 +250,7 @@ void LiveServer::broadcastChat(const wxString& speaker, const wxString& chatMess
 
 void LiveServer::startOperation(const wxString& operationMessage)
 {
-	if (clients.empty()) {
+	if(clients.empty()) {
 		return;
 	}
 
@@ -258,14 +258,14 @@ void LiveServer::startOperation(const wxString& operationMessage)
 	message.write<uint8_t>(PACKET_START_OPERATION);
 	message.write<std::string>(nstr(operationMessage));
 
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		clientEntry.second->send(message);
 	}
 }
 
 void LiveServer::updateOperation(int32_t percent)
 {
-	if (clients.empty()) {
+	if(clients.empty()) {
 		return;
 	}
 
@@ -273,7 +273,7 @@ void LiveServer::updateOperation(int32_t percent)
 	message.write<uint8_t>(PACKET_UPDATE_OPERATION);
 	message.write<uint32_t>(percent);
 
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		clientEntry.second->send(message);
 	}
 }
@@ -284,8 +284,8 @@ LiveLogTab* LiveServer::createLogWindow(wxWindow* parent)
 	ASSERT(mapTabBook);
 
 	log = newd LiveLogTab(mapTabBook, this);
-	log->Message(wxT("New Live mapping session started."));
-	log->Message(wxT("Hosted on server ") + getHostName() + wxT("."));
+	log->Message("New Live mapping session started.");
+	log->Message("Hosted on server " + getHostName() + ".");
 
 	updateClientList();
 	return log;

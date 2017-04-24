@@ -14,37 +14,43 @@
 SpawnBrush::SpawnBrush() :
 	Brush()
 {
+	////
 }
 
-SpawnBrush::~SpawnBrush() {
-
+SpawnBrush::~SpawnBrush()
+{
+	////
 }
 
-int SpawnBrush::getLookID() const {
+int SpawnBrush::getLookID() const
+{
 	return 0;
 }
 
-std::string SpawnBrush::getName() const {
+std::string SpawnBrush::getName() const
+{
 	return "Spawn Brush";
 }
 
 bool SpawnBrush::canDraw(BaseMap* map, const Position& position) const
 {
 	Tile* tile = map->getTile(position);
-	if (tile) {
-		if (tile->spawn) {
+	if(tile) {
+		if(tile->spawn) {
 			return false;
 		}
 	}
 	return true;
 }
 
-void SpawnBrush::undraw(BaseMap* map, Tile* tile) {
+void SpawnBrush::undraw(BaseMap* map, Tile* tile)
+{
 	delete tile->spawn;
 	tile->spawn = nullptr;
 }
 
-void SpawnBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void SpawnBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	ASSERT(tile);
 	ASSERT(parameter); // Should contain an int which is the size of the newd spawn
 	if(tile->spawn == nullptr) {

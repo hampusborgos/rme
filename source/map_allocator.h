@@ -8,9 +8,9 @@ class BaseMap;
 
 class MapAllocator
 {
-	BaseMap& map;
+
 public:
-	MapAllocator(BaseMap& map) : map(map) {}
+	MapAllocator() {}
 	~MapAllocator() {}
 
 	// shorthands for tiles
@@ -30,7 +30,7 @@ public:
 		delete t;
 	}
 
-	// 
+	//
 	Floor* allocateFloor(int x, int y, int z) {
 		return newd Floor(x, y, z);
 	}

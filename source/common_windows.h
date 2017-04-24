@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@
 #include "main.h"
 
 #include "dcbutton.h"
-#include "numbertextctrl.h"
+#include "positionctrl.h"
 
 class GameSprite;
 class MapTab;
@@ -31,7 +31,7 @@ class MapTab;
 /**
  * A toggle button with an item on it.
  */
-class ItemToggleButton : public DCButton 
+class ItemToggleButton : public DCButton
 {
 public:
 	ItemToggleButton(wxWindow* parent, RenderSize size, int lookid, wxWindowID id = wxID_ANY) :
@@ -42,7 +42,7 @@ public:
 /**
  * A button with an item on it.
  */
-class ItemButton : public DCButton 
+class ItemButton : public DCButton
 {
 public:
 	ItemButton(wxWindow* parent, RenderSize size, uint16_t lookid, wxWindowID id = wxID_ANY) :
@@ -54,7 +54,7 @@ public:
  * The map properties window
  * Change map size, protocol etc.
  */
-class MapPropertiesWindow : public wxDialog 
+class MapPropertiesWindow : public wxDialog
 {
 public:
 	MapPropertiesWindow(wxWindow* parent, MapTab* tab, Editor& editor);
@@ -98,9 +98,8 @@ protected:
 	Editor& editor;
 
 	wxTextCtrl* file_text_field;
-
-	wxString x_offset, y_offset;
-	wxString file_to_import;
+	wxSpinCtrl* x_offset_ctrl;
+	wxSpinCtrl* y_offset_ctrl;
 
 	wxChoice* house_options;
 	wxChoice* spawn_options;
@@ -118,15 +117,23 @@ public:
 	virtual ~ExportMiniMapWindow();
 
 	void OnClickBrowse(wxCommandEvent&);
+	void OnDirectoryChanged(wxKeyEvent&);
+	void OnFileNameChanged(wxKeyEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 	void OnExportTypeChange(wxCommandEvent&);
+
 protected:
+	void CheckValues();
+
 	Editor& editor;
 
-	wxTextCtrl* file_text_field;
+	wxStaticText* error_field;
+	wxTextCtrl* directory_text_field;
+	wxTextCtrl* file_name_text_field;
 	wxChoice* floor_options;
 	wxSpinCtrl* floor_number;
+	wxButton* ok_button;
 
 	DECLARE_EVENT_TABLE();
 };
@@ -134,10 +141,10 @@ protected:
 /**
  * Text control that will forward up/down pgup / pgdown keys to parent window
  */
-class KeyForwardingTextCtrl : public wxTextCtrl 
+class KeyForwardingTextCtrl : public wxTextCtrl
 {
 public:
-	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = wxT(""), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
+	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = "", const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
 		: wxTextCtrl(parent, id, value, pos, size, style, validator, name) {}
 	~KeyForwardingTextCtrl() {}
 
@@ -150,12 +157,12 @@ public:
  * The list inside a find dialog
  * Presents a list of brushes
  */
-class FindDialogListBox : public wxVListBox 
+class FindDialogListBox : public wxVListBox
 {
 public:
 	FindDialogListBox(wxWindow* parent, wxWindowID id);
 	~FindDialogListBox();
-	
+
 	void Clear();
 	void SetNoMatches();
 	void AddBrush(Brush*);
@@ -170,11 +177,25 @@ protected:
 };
 
 /**
+* A wxListBox that can be sorted without using style wxLB_SORT.
+* wxLB_SORT does not work properly on Windows and causes errors on macOS.
+*/
+class SortableListBox : public wxListBox
+{
+public:
+	SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+	~SortableListBox();
+	void Sort();
+private:
+	void DoSort();
+};
+
+/**
  * A generic find dialog
  * ShowModal will return 0 or the item id for item dialogs
  * 0 or 1 for brush dialogs
  */
-class FindDialog : public wxDialog 
+class FindDialog : public wxDialog
 {
 public:
 	FindDialog(wxWindow* parent, wxString title);
@@ -208,10 +229,10 @@ protected:
  * Find a brush dialog
  * Find out what brush was returned through GetResult
  */
-class FindBrushDialog : public FindDialog 
+class FindBrushDialog : public FindDialog
 {
 public:
-	FindBrushDialog(wxWindow* parent, wxString title = wxT("Jump to Brush"));
+	FindBrushDialog(wxWindow* parent, wxString title = "Jump to Brush");
 	virtual ~FindBrushDialog();
 
 	virtual void RefreshContentsInternal();
@@ -223,10 +244,10 @@ public:
  * Select an item dialog
  * Find out what item was selected through return value of ShowModal() or getResultID
  */
-class FindItemDialog : public FindDialog 
+class FindItemDialog : public FindDialog
 {
 public:
-	FindItemDialog(wxWindow* parent, wxString title = wxT("Jump to Item"));
+	FindItemDialog(wxWindow* parent, wxString title = "Jump to Item");
 	virtual ~FindItemDialog();
 
 	void setCondition(bool condition(const ItemType&));
@@ -246,9 +267,9 @@ protected:
 class ReplaceItemDialog : public wxDialog
 {
 public:
-	ReplaceItemDialog(wxWindow* parent, wxString title = wxT("Replace Item"));
+	ReplaceItemDialog(wxWindow* parent, wxString title = "Replace Item");
 	virtual ~ReplaceItemDialog();
-	
+
 	void OnKeyDown(wxKeyEvent&);
 	void OnTextChange(wxCommandEvent&);
 	void OnTextIdle(wxTimerEvent&);
@@ -269,30 +290,29 @@ protected:
 
 	wxTimer find_idle_input_timer;
 	wxTimer with_idle_input_timer;
-	
+
 	Brush* result_find_brush;
 	Brush* result_with_brush;
-	
+
 	DECLARE_EVENT_TABLE();
 };
 
 /**
- * Jump to position dialog
+ * Go to position dialog
  * Allows entry of 3 coordinates and goes there instantly
  */
-class GotoPositionDialog : public wxDialog 
+class GotoPositionDialog : public wxDialog
 {
 public:
 	GotoPositionDialog(wxWindow* parent, Editor& editor);
 	~GotoPositionDialog() {}
 
-	void OnTypeText(wxKeyEvent&);
-	void OnClipboardText(wxClipboardTextEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 
 protected:
 	Editor& editor;
+	PositionCtrl* posctrl;
 
 	DECLARE_EVENT_TABLE();
 };
@@ -333,21 +353,20 @@ protected:
 /**
  * The edit towns dialog, ugly as sin.
  */
-class EditTownsDialog : public wxDialog 
+class EditTownsDialog : public wxDialog
 {
 public:
 	EditTownsDialog(wxWindow* parent, Editor& editor);
 	virtual ~EditTownsDialog();
 
 	void OnListBoxChange(wxCommandEvent&);
-	void OnClipboardText(wxClipboardTextEvent&);
 	void OnClickSelectTemplePosition(wxCommandEvent&);
 	void OnClickAdd(wxCommandEvent&);
 	void OnClickRemove(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 protected:
-	
+
 	void BuildListBox(bool doselect);
 	void UpdateSelection(int new_selection);
 
@@ -362,9 +381,7 @@ protected:
 	wxTextCtrl* name_field;
 	wxTextCtrl* id_field;
 
-	NumberTextCtrl* x_templepos_field;
-	NumberTextCtrl* y_templepos_field;
-	NumberTextCtrl* z_templepos_field;
+	PositionCtrl* temple_position;
 	wxButton* remove_button;
 	wxButton* select_position_button;
 

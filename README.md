@@ -1,7 +1,7 @@
 What is this?
 =============
 
-This is a map editor for OpenTibia, which is an open source implementation of the MMORPG Tibia (which can be found at [tibia.net](http://tibia.net)), the official website is [remeresmapeditor.com](http://remeresmapeditor.com).
+This is a map editor for OpenTibia, which is an open source implementation of the MMORPG Tibia (which can be found at [tibia.com](http://tibia.com)), the official website is [remeresmapeditor.com](http://remeresmapeditor.com).
 You can find the project for hosting your own server at [the otserv project](https://github.com/opentibia/server).
 The main fansite for help, discussion and servers is [otland.net](http://otland.net).
 
@@ -29,13 +29,15 @@ Download
 
 You can find official releases at [remeres mapeditor website](http://remeresmapeditor.com/marklar.php).
 
+If you looking for the 3.0 version, download it [here](https://github.com/hjnilsson/rme/releases/) until It is added to the official website.
+
 Compiling
 ==========
 
 First make sure that you have the necessary compiling, if any library is missing then you need to find it and install in your linux by yourself, required libraries are:
 
 * wxWidgets >= 3.0
-* Boost >= 1.34.0
+* Boost >= 1.55.0
 
 ### Windows
 ==============
@@ -47,11 +49,43 @@ For more details you can follow [this tutorial](http://otland.net/threads/compil
 ### Linux
 ===============
 
-Assuming that you have all required tools to compile (gcc, cmake, boost, mesa, wxWidgets, libarchive) clone the project, open you terminal and do the following commands:
+```bash
 
-```
+# Installing dependencies
+sudo apt-get install git cmake libboost-system-dev libboost-thread-dev libglu1-mesa-dev libwxgtk3.0-dev libarchive-dev freeglut3-dev libxmu-dev libxi-dev
+
+# Clone the project
+git clone https://github.com/hjnilsson/rme.git
+
+# Go to RME Folder
+cd rme
+
+# Preparing to build
 mkdir build && cd build
 cmake ..
+
+# Building
 make -j `nproc`
+
+# Running and enjoy
 ./rme
+```
+
+### macOS
+===============
+Install the package manager Homebrew: http://brew.sh
+```bash
+
+# Install dependencies
+brew install git cmake wxmac boost libarchive
+
+# Clone the project
+git clone https://github.com/hjnilsson/rme.git
+
+# Create a build directory and build
+mkdir rme/build && cd rme/build && cmake .. && make
+
+# Run
+./rme
+
 ```

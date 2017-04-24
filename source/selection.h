@@ -33,7 +33,7 @@ public:
 	// The tile will be added to the list of selected tiles, however, the items on the tile won't be selected
 	void addInternal(Tile* tile);
 	void removeInternal(Tile* tile);
-	
+
 	// Clears the selection completely
 	void clear();
 
@@ -64,9 +64,11 @@ public:
 	void join(SelectionThread* thread);
 
 	size_t size() {return tiles.size();}
+	size_t size() const {return tiles.size();}
 	void updateSelectionCount();
 	TileVector::iterator begin() {return tiles.begin();}
 	TileVector::iterator end() {return tiles.end();}
+	TileVector& getTiles() {return tiles; }
 	Tile* getSelectedTile() {ASSERT(size() == 1); return tiles.front();}
 
 private:

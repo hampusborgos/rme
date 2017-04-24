@@ -425,6 +425,7 @@
 		<attribute key="attack" value="5" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="smallstone" />
+		<attribute key="maxHitChance" value="76" />
 		<attribute key="range" value="4" />
 	</item>
 	<item id="1295" article="a" name="stone">
@@ -840,11 +841,20 @@
 	<item fromid="1578" toid="1581" article="a" name="ramp" />
 	<item fromid="1582" toid="1593" article="a" name="white stone railing" />
 	<item fromid="1594" toid="1601" article="a" name="wooden railing" />
-	<item fromid="1602" toid="1614" article="a" name="big table" />
-	<item id="1615" article="a" name="square table" />
-	<item id="1616" article="a" name="small round table" />
+	<item fromid="1602" toid="1613" article="a" name="big table" />
+	<item id="1614" article="a" name="big table">
+		<attribute key="destroyTo" value="2253" />
+	</item>
+	<item id="1615" article="a" name="square table">
+		<attribute key="destroyTo" value="2253" />
+	</item>
+	<item id="1616" article="a" name="small round table">
+		<attribute key="destroyTo" value="2253" />
+	</item>
 	<item fromid="1617" toid="1618" article="a" name="counter" />
-	<item id="1619" article="a" name="small table" />
+	<item id="1619" article="a" name="small table">
+		<attribute key="destroyTo" value="2255" />
+	</item>
 	<item fromid="1620" toid="1621" article="a" name="counter" />
 	<item fromid="1622" toid="1633" article="a" name="table" />
 	<item fromid="1634" toid="1638" article="a" name="table">
@@ -861,15 +871,19 @@
 	<item fromid="1646" toid="1649" article="a" name="throne" />
 	<item id="1650" article="a" name="wooden chair">
 		<attribute key="rotateTo" value="1651" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1651" article="a" name="wooden chair">
 		<attribute key="rotateTo" value="1652" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1652" article="a" name="wooden chair">
 		<attribute key="rotateTo" value="1653" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1653" article="a" name="wooden chair">
 		<attribute key="rotateTo" value="1650" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item fromid="1654" toid="1657" article="a" name="throne" />
 	<item id="1658" article="a" name="sofa chair">
@@ -887,39 +901,51 @@
 	<item fromid="1662" toid="1665" article="a" name="bench" />
 	<item id="1666" article="a" name="red cushioned chair">
 		<attribute key="rotateTo" value="1669" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1667" article="a" name="red cushioned chair">
 		<attribute key="rotateTo" value="1668" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1668" article="a" name="red cushioned chair">
 		<attribute key="rotateTo" value="1666" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1669" article="a" name="red cushioned chair">
 		<attribute key="rotateTo" value="1667" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1670" article="a" name="green cushioned chair">
 		<attribute key="rotateTo" value="1673" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1671" article="a" name="green cushioned chair">
 		<attribute key="rotateTo" value="1672" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1672" article="a" name="green cushioned chair">
 		<attribute key="rotateTo" value="1670" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1673" article="a" name="green cushioned chair">
 		<attribute key="rotateTo" value="1671" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1674" article="a" name="rocking chair">
 		<attribute key="rotateTo" value="1677" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1675" article="a" name="rocking chair">
 		<attribute key="rotateTo" value="1676" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1676" article="a" name="rocking chair">
 		<attribute key="rotateTo" value="1674" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1677" article="a" name="rocking chair">
 		<attribute key="rotateTo" value="1675" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="1678" article="a" name="small purple pillow">
 		<attribute key="weight" value="1500" />
@@ -977,18 +1003,22 @@
 	<item id="1714" name="drawers">
 		<attribute key="rotateTo" value="1717" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2252" />
 	</item>
 	<item id="1715" name="drawers">
 		<attribute key="rotateTo" value="1714" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2252" />
 	</item>
 	<item id="1716" name="drawers">
 		<attribute key="rotateTo" value="1715" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2252" />
 	</item>
 	<item id="1717" name="drawers">
 		<attribute key="rotateTo" value="1716" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2252" />
 	</item>
 	<item fromid="1718" toid="1723" article="a" name="bookcase">
 		<attribute key="containerSize" value="6" />
@@ -996,69 +1026,87 @@
 	<item id="1724" article="a" name="dresser">
 		<attribute key="rotateTo" value="1727" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1725" article="a" name="dresser">
 		<attribute key="rotateTo" value="1724" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1726" article="a" name="dresser">
 		<attribute key="rotateTo" value="1725" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1727" article="a" name="dresser">
 		<attribute key="rotateTo" value="1726" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1728" article="a" name="pendulum clock">
 		<attribute key="rotateTo" value="1731" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1729" article="a" name="pendulum clock">
 		<attribute key="rotateTo" value="1728" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1730" article="a" name="pendulum clock">
 		<attribute key="rotateTo" value="1729" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1731" article="a" name="pendulum clock">
 		<attribute key="rotateTo" value="1730" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1732" article="a" name="locker">
 		<attribute key="rotateTo" value="1735" />
 		<attribute key="containerSize" value="6" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1733" article="a" name="locker">
 		<attribute key="rotateTo" value="1734" />
 		<attribute key="containerSize" value="6" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1734" article="a" name="locker">
 		<attribute key="rotateTo" value="1732" />
 		<attribute key="containerSize" value="6" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1735" article="a" name="locker">
 		<attribute key="rotateTo" value="1733" />
 		<attribute key="containerSize" value="6" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1736" article="a" name="standing mirror">
 		<attribute key="rotateTo" value="1737" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1737" article="a" name="standing mirror">
 		<attribute key="rotateTo" value="1736" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="1738" article="a" name="box">
 		<attribute key="weight" value="3500" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="1739" article="a" name="crate">
 		<attribute key="weight" value="8000" />
 		<attribute key="containerSize" value="15" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="1740" article="a" name="chest">
 		<attribute key="weight" value="12000" />
 		<attribute key="rotateTo" value="1748" />
 		<attribute key="containerSize" value="15" />
+		<attribute key="destroyTo" value="2251" />
 	</item>
 	<item id="1741" article="a" name="box">
 		<attribute key="weight" value="3500" />
 		<attribute key="containerSize" value="10" />
+		<attribute key="destroyTo" value="2255" />
 	</item>
 	<item id="1742" article="a" name="wooden coffin">
 		<attribute key="containerSize" value="6" />
@@ -1076,32 +1124,39 @@
 		<attribute key="weight" value="12000" />
 		<attribute key="rotateTo" value="1749" />
 		<attribute key="containerSize" value="15" />
+		<attribute key="destroyTo" value="2251" />
 	</item>
 	<item id="1748" article="a" name="chest">
 		<attribute key="weight" value="12000" />
 		<attribute key="rotateTo" value="1747" />
 		<attribute key="containerSize" value="15" />
+		<attribute key="destroyTo" value="2251" />
 	</item>
 	<item id="1749" article="a" name="chest">
 		<attribute key="weight" value="12000" />
 		<attribute key="rotateTo" value="1740" />
 		<attribute key="containerSize" value="15" />
+		<attribute key="destroyTo" value="2251" />
 	</item>
 	<item id="1750" article="a" name="large trunk">
 		<attribute key="rotateTo" value="1753" />
 		<attribute key="containerSize" value="18" />
+		<attribute key="destroyTo" value="2255" />
 	</item>
 	<item id="1751" article="a" name="large trunk">
 		<attribute key="rotateTo" value="1752" />
 		<attribute key="containerSize" value="18" />
+		<attribute key="destroyTo" value="2255" />
 	</item>
 	<item id="1752" article="a" name="large trunk">
 		<attribute key="rotateTo" value="1750" />
 		<attribute key="containerSize" value="18" />
+		<attribute key="destroyTo" value="2255" />
 	</item>
 	<item id="1753" article="a" name="large trunk">
 		<attribute key="rotateTo" value="1751" />
 		<attribute key="containerSize" value="18" />
+		<attribute key="destroyTo" value="2255" />
 	</item>
 	<item id="1754" article="a" name="bed">
 		<attribute key="type" value="bed" />
@@ -1193,6 +1248,7 @@
 	</item>
 	<item id="1770" article="a" name="barrel">
 		<attribute key="containerSize" value="25" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="1771" article="a" name="water cask">
 		<attribute key="fluidSource" value="water" />
@@ -1205,8 +1261,11 @@
 	</item>
 	<item id="1774" article="a" name="barrel">
 		<attribute key="containerSize" value="25" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
-	<item id="1775" article="a" name="trough" />
+	<item id="1775" article="a" name="trough">
+		<attribute key="destroyTo" value="2250" />
+	</item>
 	<item id="1776" article="a" name="lemonade cask">
 		<attribute key="fluidSource" value="lemonade" />
 	</item>
@@ -1780,7 +1839,9 @@
 	<item id="2063" article="a" name="small oil lamp">
 		<attribute key="weight" value="900" />
 	</item>
-	<item id="2064" article="a" name="table lamp" />
+	<item id="2064" article="a" name="table lamp">
+		<attribute key="destroyTo" value="2250" />
+	</item>
 	<item id="2065" article="a" name="lit table lamp" />
 	<item id="2066" article="a" name="wall lamp" />
 	<item id="2067" article="a" name="lit wall lamp" />
@@ -1819,21 +1880,27 @@
 	</item>
 	<item id="2080" article="a" name="piano">
 		<attribute key="rotateTo" value="2083" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2081" article="a" name="piano">
 		<attribute key="rotateTo" value="2082" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2082" article="a" name="piano">
 		<attribute key="rotateTo" value="2080" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2083" article="a" name="piano">
 		<attribute key="rotateTo" value="2081" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2084" article="a" name="harp">
 		<attribute key="rotateTo" value="2085" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2085" article="a" name="harp">
 		<attribute key="rotateTo" value="2084" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2086" article="a" name="magical cage key">
 		<attribute key="description" value="It fits into the lock of the demon cage in Eclesius' cellar." />
@@ -1870,10 +1937,12 @@
 	<item id="2094" article="a" name="birdcage">
 		<attribute key="description" value="The poor bird seems to have died from a heart attack." />
 		<attribute key="weight" value="9200" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2095" article="a" name="birdcage">
 		<attribute key="description" value="You see a little bird inside." />
 		<attribute key="weight" value="9200" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2096" article="a" name="pumpkinhead">
 		<attribute key="slotType" value="ammo" />
@@ -1883,7 +1952,9 @@
 		<attribute key="slotType" value="ammo" />
 		<attribute key="weight" value="1250" />
 	</item>
-	<item id="2098" article="a" name="globe" />
+	<item id="2098" article="a" name="globe">
+		<attribute key="destroyTo" value="2250" />
+	</item>
 	<item id="2099" article="a" name="water pipe">
 		<attribute key="weight" value="5600" />
 	</item>
@@ -1932,15 +2003,19 @@
 	</item>
 	<item id="2116" article="a" name="rocking horse">
 		<attribute key="rotateTo" value="2117" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2117" article="a" name="rocking horse">
 		<attribute key="rotateTo" value="2118" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2118" article="a" name="rocking horse">
 		<attribute key="rotateTo" value="2119" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2119" article="a" name="rocking horse">
 		<attribute key="rotateTo" value="2116" />
+		<attribute key="destroyTo" value="2254" />
 	</item>
 	<item id="2120" article="a" name="rope">
 		<attribute key="weight" value="1800" />
@@ -3146,6 +3221,7 @@
 		<attribute key="attack" value="25" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="spear" />
+		<attribute key="maxHitChance" value="76" />
 		<attribute key="range" value="3" />
 	</item>
 	<item id="2390" article="a" name="magic longsword">
@@ -3219,6 +3295,7 @@
 		<attribute key="attack" value="30" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="throwingstar" />
+		<attribute key="maxHitChance" value="76" />
 		<attribute key="range" value="4" />
 	</item>
 	<item id="2400" article="a" name="magic sword">
@@ -4075,7 +4152,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="bolt" />
 		<attribute key="shootType" value="bolt" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="87" />
 	</item>
 	<item id="2544" article="an" name="arrow">
 		<attribute key="weight" value="70" />
@@ -4084,7 +4161,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
 		<attribute key="shootType" value="arrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="2545" article="a" name="poison arrow">
 		<attribute key="weight" value="80" />
@@ -4093,7 +4170,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
 		<attribute key="shootType" value="poisonarrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="2546" article="a" name="burst arrow">
 		<attribute key="weight" value="90" />
@@ -4111,7 +4188,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="bolt" />
 		<attribute key="shootType" value="powerbolt" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="2548" article="a" name="pitchfork">
 		<attribute key="weight" value="2500" />
@@ -4215,15 +4292,19 @@
 	</item>
 	<item id="2581" article="a" name="telescope">
 		<attribute key="rotateTo" value="2584" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="2582" article="a" name="telescope">
 		<attribute key="rotateTo" value="2583" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="2583" article="a" name="telescope">
 		<attribute key="rotateTo" value="2581" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="2584" article="a" name="telescope">
 		<attribute key="rotateTo" value="2582" />
+		<attribute key="destroyTo" value="2250" />
 	</item>
 	<item id="2585" article="a" name="ship's telescope">
 		<attribute key="rotateTo" value="2588" />
@@ -4274,8 +4355,12 @@
 	<item id="2600" article="an" name="inkwell">
 		<attribute key="weight" value="200" />
 	</item>
-	<item fromid="2601" toid="2604" article="a" name="coal basin" />
-	<item id="2605" article="an" name="empty coal basin" />
+	<item fromid="2601" toid="2604" article="a" name="coal basin">
+		<attribute key="destroyTo" value="2257" />
+	</item>
+	<item id="2605" article="an" name="empty coal basin">
+		<attribute key="destroyTo" value="2257" />
+	</item>
 	<item fromid="2606" toid="2609" article="an" name="altar" />
 	<item fromid="2610" toid="2613" article="a" name="sacrificial stone" />
 	<item fromid="2614" toid="2615" article="an" name="altar" />
@@ -6851,8 +6936,13 @@
 	<item id="3792" article="a" name="stone pillar" />
 	<item id="3793" article="a" name="broken stone pillar" />
 	<item fromid="3794" toid="3797" name="wooden bars" />
-	<item fromid="3798" toid="3799" name="wooden bars">
+	<item id="3798" name="wooden bars">
 		<attribute key="description" value="They already have some cracks and look rather fragile." />
+		<attribute key="destroyTo" value="3959" />
+	</item>
+	<item id="3799" name="wooden bars">
+		<attribute key="description" value="They already have some cracks and look rather fragile." />
+		<attribute key="destroyTo" value="3958" />
 	</item>
 	<item fromid="3800" toid="3801" name="wooden bars" />
 	<item id="3802" article="a" name="small totem pole" />
@@ -6860,47 +6950,61 @@
 	<item id="3804" article="a" name="totem pole" />
 	<item id="3805" article="a" name="carved stone table">
 		<attribute key="rotateTo" value="3806" />
+		<attribute key="destroyTo" value="2259" />
 	</item>
 	<item id="3806" article="a" name="stone table">
 		<attribute key="rotateTo" value="3805" />
+		<attribute key="destroyTo" value="2259" />
 	</item>
 	<item id="3807" article="a" name="tusk table">
 		<attribute key="rotateTo" value="3808" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3808" article="a" name="tusk table">
 		<attribute key="rotateTo" value="3807" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3809" article="a" name="bamboo table">
 		<attribute key="rotateTo" value="3810" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3810" article="a" name="bamboo table">
 		<attribute key="rotateTo" value="3809" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3811" article="a" name="thick trunk" />
 	<item id="3812" article="an" name="ornamented stone table" />
 	<item id="3813" article="a" name="tusk chair">
 		<attribute key="rotateTo" value="3816" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3814" article="a" name="tusk chair">
 		<attribute key="rotateTo" value="3815" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3815" article="a" name="tusk chair">
 		<attribute key="rotateTo" value="3813" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3816" article="a" name="tusk chair">
 		<attribute key="rotateTo" value="3814" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3817" article="an" name="ivory chair">
 		<attribute key="rotateTo" value="3820" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3818" article="an" name="ivory chair">
 		<attribute key="rotateTo" value="3819" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3819" article="an" name="ivory chair">
 		<attribute key="rotateTo" value="3817" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3820" article="an" name="ivory chair">
 		<attribute key="rotateTo" value="3818" />
+		<attribute key="destroyTo" value="2253" />
 	</item>
 	<item id="3821" article="a" name="small trunk" />
 	<item fromid="3822" toid="3825" article="a" name="bamboo wardrobe">
@@ -7198,8 +7302,8 @@
 		<attribute key="description" value="A scent of death and decay sticks to this weapon." />
 		<attribute key="weight" value="4100" />
 		<attribute key="defense" value="30" />
-		<attribute key="attack" value="40" />
 		<attribute key="extradef" value="2" />
+		<attribute key="attack" value="40" />
 		<attribute key="weaponType" value="club" />
 	</item>
 	<item id="3962" article="a" name="beastslayer axe">
@@ -7228,6 +7332,7 @@
 		<attribute key="attack" value="32" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="huntingspear" />
+		<attribute key="maxHitChance" value="80" />
 		<attribute key="range" value="3" />
 	</item>
 	<item id="3966" article="a" name="banana staff">
@@ -8002,8 +8107,8 @@
 		<attribute key="fluidSource" value="blood" />
 	</item>
 	<item id="4860" name="wooden trash" />
-	<item id="4861" article="a" name="cobra statue"/>
-	<item id="4862" name="destroyed cobra statue" >
+	<item id="4861" article="a" name="cobra statue" />
+	<item id="4862" name="destroyed cobra statue">
 		<attribute key="decayTo" value="4861" />
 		<attribute key="duration" value="30" />
 	</item>
@@ -8115,6 +8220,7 @@
 	<item id="4995" name="sharp icicles" article="some" />
 	<item id="4996" name="large amphora">
 		<attribute key="description" value="You feel an eerie presence." />
+		<attribute key="destroyTo" value="4997" />
 	</item>
 	<item id="4997" name="destroyed amphora">
 		<attribute key="decayTo" value="4996" />
@@ -11295,7 +11401,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="bolt" />
 		<attribute key="shootType" value="infernalbolt" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="6530" article="a" name="worn soft boots">
 		<attribute key="description" value="Someone specialised in shoes might be able to repair them for you." />
@@ -11897,7 +12003,7 @@
 	<item id="7185" article="a" name="small crack in the ice">
 		<attribute key="description" value="This would be a good place to destroy the ice." />
 	</item>
-	<item id="7186" article="a" name="big crack in the ice"/>
+	<item id="7186" article="a" name="big crack in the ice" />
 	<item fromid="7187" toid="7188" article="a" name="raft" />
 	<item id="7189" article="a" name="stone shelf">
 		<attribute key="containerSize" value="6" />
@@ -12291,7 +12397,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="bolt" />
 		<attribute key="shootType" value="piercingbolt" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="87" />
 	</item>
 	<item id="7364" article="a" name="sniper arrow">
 		<attribute key="weight" value="70" />
@@ -12309,7 +12415,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
 		<attribute key="shootType" value="onyxarrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="94" />
 	</item>
 	<item id="7366" article="a" name="viper star">
 		<attribute key="weight" value="200" />
@@ -12317,6 +12423,7 @@
 		<attribute key="hitChance" value="80" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="greenstar" />
+		<attribute key="maxHitChance" value="76" />
 		<attribute key="range" value="5" />
 	</item>
 	<item id="7367" article="an" name="enchanted spear">
@@ -12324,6 +12431,7 @@
 		<attribute key="attack" value="38" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="enchantedspear" />
+		<attribute key="maxHitChance" value="80" />
 		<attribute key="range" value="4" />
 	</item>
 	<item id="7368" article="an" name="assassin star">
@@ -12372,6 +12480,7 @@
 		<attribute key="attack" value="35" />
 		<attribute key="weaponType" value="distance" />
 		<attribute key="shootType" value="royalspear" />
+		<attribute key="maxHitChance" value="80" />
 		<attribute key="range" value="3" />
 	</item>
 	<item id="7379" name="brutetamer's staff">
@@ -13055,7 +13164,13 @@
 	</item>
 	<item id="7536" name="the remains of a spider egg" />
 	<item id="7537" article="a" name="spider egg" />
-	<item fromid="7538" toid="7543" article="a" name="spider web" />
+	<item id="7538" article="a" name="spider web">
+		<attribute key="destroyTo" value="7544" />
+	</item>
+	<item id="7539" article="a" name="spider web">
+		<attribute key="destroyTo" value="7545" />
+	</item>
+	<item fromid="7540" toid="7543" article="a" name="spider web" />
 	<item id="7544" name="the remains of a spider web">
 		<attribute key="decayTo" value="7538" />
 		<attribute key="duration" value="60" />
@@ -14034,7 +14149,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
 		<attribute key="shootType" value="flasharrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="7839" article="a" name="shiver arrow">
 		<attribute key="weight" value="70" />
@@ -14044,7 +14159,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
 		<attribute key="shootType" value="shiverarrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="7840" article="a" name="flaming arrow">
 		<attribute key="weight" value="70" />
@@ -14054,7 +14169,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="ammoType" value="arrow" />
 		<attribute key="shootType" value="flammingarrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item id="7841" article="a" name="straw mat">
 		<attribute key="type" value="bed" />
@@ -14103,7 +14218,7 @@
 		<attribute key="weaponType" value="ammunition" />
 		<attribute key="shootType" value="eartharrow" />
 		<attribute key="ammoType" value="arrow" />
-		<attribute key="maxHitChance" value="90" />
+		<attribute key="maxHitChance" value="91" />
 	</item>
 	<item fromid="7851" toid="7853" article="an" name="archway" />
 	<item id="7854" article="an" name="earth spike sword">
@@ -15899,7 +16014,7 @@
 		<attribute key="weight" value="6900" />
 		<attribute key="defense" value="36" />
 		<attribute key="weaponType" value="shield" />
-		<attribute key="duration" value="1200" />
+		<attribute key="duration" value="900" />
 		<attribute key="decayTo" value="8905" />
 		<attribute key="skillShield" value="3" />
 	</item>
@@ -15908,7 +16023,7 @@
 		<attribute key="weight" value="6900" />
 		<attribute key="defense" value="39" />
 		<attribute key="weaponType" value="shield" />
-		<attribute key="duration" value="1200" />
+		<attribute key="duration" value="900" />
 		<attribute key="decayTo" value="8905" />
 	</item>
 	<item id="8908" article="a" name="sparking rainbow shield">
@@ -15916,7 +16031,7 @@
 		<attribute key="weight" value="6900" />
 		<attribute key="defense" value="36" />
 		<attribute key="weaponType" value="shield" />
-		<attribute key="duration" value="1200" />
+		<attribute key="duration" value="900" />
 		<attribute key="decayTo" value="8905" />
 		<attribute key="speed" value="20" />
 	</item>
@@ -15925,7 +16040,7 @@
 		<attribute key="weight" value="6900" />
 		<attribute key="defense" value="37" />
 		<attribute key="weaponType" value="shield" />
-		<attribute key="duration" value="1200" />
+		<attribute key="duration" value="900" />
 		<attribute key="decayTo" value="8905" />
 		<attribute key="healthGain" value="1" />
 		<attribute key="healthTicks" value="3000" />
@@ -25530,7 +25645,7 @@
 		<attribute key="weight" value="105" />
 		<attribute key="slotType" value="ring" />
 		<attribute key="absorbPercentPhysical" value="10" />
-		<attribute key="absorbPercentEarth" value="8" />
+		<attribute key="absorbPercentEnergy" value="8" />
 		<attribute key="transformDeEquipTo" value="18408" />
 		<attribute key="decayTo" value="0" />
 		<attribute key="duration" value="3600" />
@@ -25549,6 +25664,10 @@
 		<attribute key="description" value="This sword was forged with the enthusiasm and dreams of the Rookgaardians." />
 	</item>
 	<item id="18554" name="crystal rubbish" />
+	<item id="18559" article="an" name="adventurer's stone">
+		<attribute key="weight" value="30" />
+		<attribute key="description" value="Use it in major temples to travel to the adventurers guild. A replacement is available at temples." />
+	</item>
 	<item fromid="18560" toid="18579" name="muddy floor" />
 	<item fromid="18580" toid="18590" name="swamp">
 		<attribute key="type" value="trashholder" />
@@ -29231,9 +29350,31 @@
 		<attribute key="weight" value="300" />
 	</item>
 	<item id="21558" article="a" name="ghost pacifier" />
+	<item id="21559" article="a" name="monster nest" />
+	<item id="21560" article="a" name="destroyed monster nest">
+		<attribute key="decayTo" value="21559" />
+		<attribute key="duration" value="120" />
+	</item>
+	<item id="21561" article="an" name="ominous mound" />
+	<item id="21562" article="an" name="opened ominous mound">
+		<attribute key="decayTo" value="21561" />
+		<attribute key="duration" value="120" />
+	</item>
 	<item id="21563" article="a" name="charged ghost pacifier">
 		<attribute key="decayTo" value="21558" />
 		<attribute key="duration" value="120" />
+	</item>
+	<item id="21564" article="a" name="flask mushroom fertilizer">
+		<attribute key="weight" value="180" />
+		<attribute key="description" value="It holds a liquid concentrate developed by the gnomes to fertilise mushrooms." />
+	</item>
+	<item id="21565" article="a" name="gardener mushroom"/>
+	<item id="21566" article="a" name="partially charged lodestone">
+		<attribute key="weight" value="300" />
+	</item>
+	<item id="21567" article="a" name="magnetic monolith"/>
+	<item id="21568" article="a" name="highly charged lodestone">
+		<attribute key="weight" value="300" />
 	</item>
 	<item id="21569" name="gnomish supplies">
 		<attribute key="description" value="It contains the clothes of a dwarf." />
@@ -29314,6 +29455,10 @@
 	</item>
 	<item id="21708" name="vampire silk slippers">
 		<attribute key="weight" value="1150" />
+	</item>
+	<item id="21713" article="a" name="chargeless monolith">
+		<attribute key="decayTo" value="21567" />
+		<attribute key="duration" value="120" />
 	</item>
 	<item id="21725" article="a" name="furious frock">
 		<attribute key="weight" value="3400" />

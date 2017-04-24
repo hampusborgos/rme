@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -43,7 +43,7 @@ protected:
 	virtual void Render(wxDC& pdc) = 0;
 	virtual void GameLoop(int time) = 0;
 	virtual void OnKey(wxKeyEvent& event, bool down) = 0;
-	
+
 	virtual int getFPS() const = 0;
 protected:
 	wxStopWatch game_timer;
@@ -68,7 +68,7 @@ protected:
 	virtual void Render(wxDC& pdc);
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
-	
+
 	virtual int getFPS() const {return lines / 10 + 3;}
 
 	enum Color {
@@ -126,7 +126,7 @@ protected:
 	virtual void Render(wxDC& pdc);
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
-	
+
 	virtual int getFPS() const {return 7;}
 
 	enum {
@@ -160,42 +160,42 @@ BEGIN_EVENT_TABLE(AboutWindow, wxDialog)
 END_EVENT_TABLE()
 
 AboutWindow::AboutWindow(wxWindow* parent) :
-	wxDialog(parent, wxID_ANY, wxT("About"), wxDefaultPosition, wxSize(300, 320), wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
+	wxDialog(parent, wxID_ANY, "About", wxDefaultPosition, wxSize(300, 320), wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
 	game_panel(nullptr)
 {
 	wxString about;
-	
-	about << wxT("This is an OpenTibia Map Editor created by Remere.\n");
-	about << wxT("Version ") << __W_RME_VERSION__ << wxT(" for ");
+
+	about << "This is an OpenTibia Map Editor created by Remere.\n";
+	about << "Version " << __W_RME_VERSION__ << " for ";
 	about <<
 #ifdef __WINDOWS__
-		wxT("Windows");
+		"Windows";
 #elif __LINUX__
-		wxT("Linux");
+		"Linux";
 #elif __APPLE__
-		wxT("Mac OSX");
+		"Mac OSX";
 #else
-	wxT("Unsupported OS");
+	"Unsupported OS";
 #endif
-	about << wxT("\n\n");
-	
-	about << wxT("Using ") wxVERSION_STRING wxT(" interface\n");
-	about << wxT("OpenGL version ") + wxString((char*)glGetString(GL_VERSION), wxConvUTF8) + wxT("\n");
-	about << wxT("\n");
-	about << wxT("This program comes with ABSOLUTELY NO WARRANTY;\n");
-	about << wxT("for details see the LICENSE file.\n");
-	about << wxT("This is free software, and you are welcome to redistribute it\n");
-	about << wxT("under certain conditions.\n");
-	about << wxT("\n");
-	about << wxT("Compiled on: ") << __TDATE__ << wxT(" : ") << __TTIME__ << wxT("\n");
-	about << wxT("Compiled with: ") << BOOST_COMPILER << wxT("\n");
+	about << "\n\n";
+
+	about << "Using " << wxVERSION_STRING << " interface\n";
+	about << "OpenGL version " << wxString((char*)glGetString(GL_VERSION), wxConvUTF8) << "\n";
+	about << "\n";
+	about << "This program comes with ABSOLUTELY NO WARRANTY;\n";
+	about << "for details see the LICENSE file.\n";
+	about << "This is free software, and you are welcome to redistribute it\n";
+	about << "under certain conditions.\n";
+	about << "\n";
+	about << "Compiled on: " << __TDATE__ << " : " << __TTIME__ << "\n";
+	about << "Compiled with: " << BOOST_COMPILER << "\n";
 
 	topsizer = newd wxBoxSizer(wxVERTICAL);
 
 	topsizer->Add(newd wxStaticText(this, wxID_ANY, about), 1, wxALL, 20);
 
 	wxSizer* choicesizer = newd wxBoxSizer(wxHORIZONTAL);
-	choicesizer->Add(newd wxButton(this, wxID_OK, wxT("OK")), wxSizerFlags(1).Center());
+	choicesizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
 	topsizer->Add(choicesizer, 0, wxALIGN_CENTER | wxLEFT | wxRIGHT | wxBOTTOM, 20);
 
 	wxAcceleratorEntry entries[3];
@@ -206,23 +206,28 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	SetAcceleratorTable(accel);
 
 	SetSizerAndFit(topsizer);
+	Centre(wxBOTH);
 }
 
-AboutWindow::~AboutWindow() {
+AboutWindow::~AboutWindow()
+{
+	////
 }
 
-void AboutWindow::OnClickOK(wxCommandEvent& WXUNUSED(event)) {
+void AboutWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
+{
 	EndModal(0);
 }
 
-void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event)) {
+void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event))
+{
 	FileName path;
 	try {
 		path = wxStandardPaths::Get().GetExecutablePath();
 	} catch(std::bad_cast&) {
 		return;
 	}
-	path.SetFullName(wxT("COPYING.txt"));
+	path.SetFullName("COPYING.txt");
 	std::ifstream gpl(path.GetFullPath().mb_str());
 
 	std::string gpl_str;
@@ -230,11 +235,12 @@ void AboutWindow::OnClickLicense(wxCommandEvent& WXUNUSED(event)) {
 	while(gpl.get(ch)) {
 		gpl_str += ch;
 	}
-	
-	gui.ShowTextBox(this, wxT("License"), wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
+
+	g_gui.ShowTextBox(this, "License", wxstr(gpl_str.size()? gpl_str : "The COPYING.txt file is not available."));
 }
 
-void AboutWindow::OnTetris(wxCommandEvent&) {
+void AboutWindow::OnTetris(wxCommandEvent&)
+{
 	if(!game_panel) {
 		DestroyChildren();
 		game_panel = newd TetrisPanel(this);
@@ -246,7 +252,8 @@ void AboutWindow::OnTetris(wxCommandEvent&) {
 	}
 }
 
-void AboutWindow::OnSnake(wxCommandEvent&) {
+void AboutWindow::OnSnake(wxCommandEvent&)
+{
 	if(!game_panel) {
 		DestroyChildren();
 		game_panel = newd SnakePanel(this);
@@ -279,32 +286,40 @@ GamePanel::GamePanel(wxWindow *parent, int width, int height) :
 	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 }
 
-GamePanel::~GamePanel() {
+GamePanel::~GamePanel()
+{
+	////
 }
 
-void GamePanel::OnPaint(wxPaintEvent&) {
+void GamePanel::OnPaint(wxPaintEvent&)
+{
 	wxBufferedPaintDC pdc(this);
 	Render(pdc);
 }
 
-void GamePanel::OnKeyDown(wxKeyEvent& event) {
+void GamePanel::OnKeyDown(wxKeyEvent& event)
+{
 	switch(event.GetKeyCode()) {
 		case WXK_ESCAPE: {
 			if(dead) return;
 			wxDialog* dlg = (wxDialog*)GetParent();
 			dlg->EndModal(0);
-		} break;
+			break;
+		}
 		default: {
 			OnKey(event, true);
-		} break;
+			break;
+		}
 	}
 }
 
-void GamePanel::OnKeyUp(wxKeyEvent& event) {
+void GamePanel::OnKeyUp(wxKeyEvent& event)
+{
 	OnKey(event, false);
 }
 
-void GamePanel::OnIdle(wxIdleEvent& event) {
+void GamePanel::OnIdle(wxIdleEvent& event)
+{
 	int time = game_timer.Time();
 	if(time > 1000 / getFPS()) {
 		game_timer.Start();
@@ -318,15 +333,18 @@ void GamePanel::OnIdle(wxIdleEvent& event) {
 //=============================================================================
 // TetrisPanel - A window with a Tetris game!
 
-TetrisPanel::TetrisPanel(wxWindow* parent) : GamePanel(parent, 16*TETRIS_MAPWIDTH, 16*TETRIS_MAPHEIGHT) {
+TetrisPanel::TetrisPanel(wxWindow* parent) : GamePanel(parent, 16*TETRIS_MAPWIDTH, 16*TETRIS_MAPHEIGHT)
+{
 	NewGame();
 }
 
-TetrisPanel::~TetrisPanel() {
+TetrisPanel::~TetrisPanel()
+{
+	////
 }
 
-
-const wxBrush& TetrisPanel::GetBrush(Color color) const {
+const wxBrush& TetrisPanel::GetBrush(Color color) const
+{
 	static std::unique_ptr<wxBrush> yellow_brush;
 	static std::unique_ptr<wxBrush> purple_brush;
 
@@ -347,63 +365,72 @@ const wxBrush& TetrisPanel::GetBrush(Color color) const {
 	return *brush;
 }
 
-void TetrisPanel::Render(wxDC& pdc) {
+void TetrisPanel::Render(wxDC& pdc)
+{
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
 	for(int y = 0; y < TETRIS_MAPHEIGHT; ++y) {
 		for(int x = 0; x < TETRIS_MAPWIDTH; ++x) {
 			pdc.SetBrush(GetBrush(map[x][y]));
-			pdc.DrawRectangle(x*16, y*16, 16, 16);
+			pdc.DrawRectangle(x * 16, y * 16, 16, 16);
 		}
-	} 
+	}
 
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			if(block.structure[x][y] != NO_COLOR) {
 				pdc.SetBrush(GetBrush(block.structure[x][y]));
-				pdc.DrawRectangle(
-					(block.x + x)*16,
-					(block.y + y)*16,
-					16, 16);
+				pdc.DrawRectangle((block.x + x) * 16, (block.y + y) * 16, 16, 16);
 			}
 		}
 	}
 }
 
-void TetrisPanel::OnKey(wxKeyEvent& event, bool down) {
-	if(!down) return;
-	if(dead) return;
+void TetrisPanel::OnKey(wxKeyEvent& event, bool down)
+{
+	if(!down || dead) return;
+
 	switch(event.GetKeyCode()) {
 		case WXK_SPACE: {
 			if(paused())
 				unpause();
 			else pause();
-		} break;
-		case WXK_NUMPAD_UP: case WXK_UP: {
+			break;
+		}
+		case WXK_NUMPAD_UP:
+		case WXK_UP: {
 			if(dead) return;
 			unpause();
 			RotateBlock();
-		} break;
-		case WXK_NUMPAD_DOWN: case WXK_DOWN: {
+			break;
+		}
+		case WXK_NUMPAD_DOWN:
+		case WXK_DOWN: {
 			if(dead) return;
 			unpause();
 			MoveBlock(0, 1);
-		} break;
-		case WXK_NUMPAD_LEFT: case WXK_LEFT: {
+			break;
+		}
+		case WXK_NUMPAD_LEFT:
+		case WXK_LEFT: {
 			if(dead) return;
 			unpause();
 			MoveBlock(-1, 0);
-		} break;
-		case WXK_NUMPAD_RIGHT: case WXK_RIGHT: {
+			break;
+		}
+		case WXK_NUMPAD_RIGHT:
+		case WXK_RIGHT: {
 			if(dead) return;
 			unpause();
 			MoveBlock(1, 0);
-		} break;
+			break;
+		}
 	}
 }
 
-void TetrisPanel::NewGame() {
+void TetrisPanel::NewGame()
+{
 	NewBlock();
 	score = 0;
 	lines = 0;
@@ -420,29 +447,30 @@ void TetrisPanel::NewGame() {
 	AddScore(0); // Update title
 }
 
-void TetrisPanel::AddScore(int lines_added) {
+void TetrisPanel::AddScore(int lines_added)
+{
 	lines += lines_added;
-	score += lines_added*lines_added*10;
-	wxString title = wxT("Remere's Tetris : ");
-	title << score << wxT(" points  ");
-	title << lines << wxT(" lines");
+	score += lines_added*lines_added * 10;
+	wxString title = "Remere's Tetris : ";
+	title << score << " points  ";
+	title << lines << " lines";
 	((wxTopLevelWindow*)GetParent())->SetTitle(title);
 }
 
-void TetrisPanel::GameLoop(int time) {
+void TetrisPanel::GameLoop(int time)
+{
 	MoveBlock(0, 1);
 }
 
-bool TetrisPanel::BlockCollisionTest(int mx, int my) const {
+bool TetrisPanel::BlockCollisionTest(int mx, int my) const
+{
 	int nx = block.x + mx;
 	int ny = block.y + my;
 
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			if(block.structure[x][y] != NO_COLOR) {
-				if(nx + x < 0 || nx + x > TETRIS_MAPWIDTH - 1 ||
-					ny + y < 0 || ny + y > TETRIS_MAPHEIGHT - 1)
-				{
+				if(nx + x < 0 || nx + x > TETRIS_MAPWIDTH - 1 || ny + y < 0 || ny + y > TETRIS_MAPHEIGHT - 1) {
 					return true;
 				}
 			}
@@ -461,7 +489,8 @@ bool TetrisPanel::BlockCollisionTest(int mx, int my) const {
 	return false;
 }
 
-void TetrisPanel::RemoveRow(int row) {
+void TetrisPanel::RemoveRow(int row)
+{
 	for(int x = 0; x < TETRIS_MAPWIDTH; ++x) {
 		for(int y = row; y > 0; --y) { //Move all above one step down
 			map[x][y] = map[x][y-1];
@@ -469,7 +498,8 @@ void TetrisPanel::RemoveRow(int row) {
 	}
 }
 
-void TetrisPanel::NewBlock() {
+void TetrisPanel::NewBlock()
+{
 	block.x = TETRIS_MAPWIDTH / 2;
 	block.y = -1;
 
@@ -478,6 +508,7 @@ void TetrisPanel::NewBlock() {
 			block.structure[x][y] = NO_COLOR;
 		}
 	}
+
 	switch(random(FIRST_BLOCK, LAST_BLOCK)) {
 		case BLOCK_TOWER: {
 			block.structure[1][0] = RED;
@@ -485,52 +516,60 @@ void TetrisPanel::NewBlock() {
 			block.structure[1][2] = RED;
 			block.structure[1][3] = RED;
 			block.y = 0;
-		} break;
+			break;
+		}
 		default: case BLOCK_SQUARE: {
 			block.structure[1][1] = BLUE;
 			block.structure[1][2] = BLUE;
 			block.structure[2][1] = BLUE;
 			block.structure[2][2] = BLUE;
-		} break;
+			break;
+		}
 		case BLOCK_TRIANGLE: {
 			block.structure[1][1] = STEEL;
 			block.structure[0][2] = STEEL;
 			block.structure[1][2] = STEEL;
 			block.structure[2][2] = STEEL;
-		} break;
+			break;
+		}
 		case BLOCK_Z: {
 			block.structure[0][1] = YELLOW;
 			block.structure[1][1] = YELLOW;
 			block.structure[1][2] = YELLOW;
 			block.structure[2][2] = YELLOW;
-		} break;
+			break;
+		}
 		case BLOCK_S: {
 			block.structure[2][1] = GREEN;
 			block.structure[1][1] = GREEN;
 			block.structure[1][2] = GREEN;
 			block.structure[0][2] = GREEN;
-		} break;
+			break;
+		}
 		case BLOCK_J: {
 			block.structure[1][1] = WHITE;
 			block.structure[2][1] = WHITE;
 			block.structure[2][2] = WHITE;
 			block.structure[2][3] = WHITE;
-		} break;
+			break;
+		}
 		case BLOCK_L: {
 			block.structure[2][1] = PURPLE;
 			block.structure[1][1] = PURPLE;
 			block.structure[1][2] = PURPLE;
 			block.structure[1][3] = PURPLE;
+			// break; missing add it?
 		}
 	}
 }
 
-void TetrisPanel::MoveBlock(int x, int y) {
+void TetrisPanel::MoveBlock(int x, int y)
+{
 	if(BlockCollisionTest(x, y)) {
 		if(y == 1) { // moving down...
 			if(block.y < 1) { // Out of bounds!
 				dead = true;
-				gui.PopupDialog(wxT("Game Over"), wxT("You reached a score of ") + i2ws(score) + wxT("!"), wxOK);
+				g_gui.PopupDialog("Game Over", "You reached a score of " + i2ws(score) + "!", wxOK);
 				NewGame();
 				SetFocus();
 			} else {
@@ -570,7 +609,8 @@ void TetrisPanel::MoveBlock(int x, int y) {
 	Refresh();
 }
 
-void TetrisPanel::RotateBlock() {
+void TetrisPanel::RotateBlock()
+{
 	Block temp;
 
 	for(int y = 0; y < 4; ++y) {
@@ -582,9 +622,7 @@ void TetrisPanel::RotateBlock() {
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			if(temp.structure[x][y] != NO_COLOR) {
-				if(block.x + x < 0 || block.x + x > TETRIS_MAPWIDTH - 1 ||
-					block.y + y < 0 || block.y + y > TETRIS_MAPHEIGHT - 1)
-				{
+				if(block.x + x < 0 || block.x + x > TETRIS_MAPWIDTH - 1 || block.y + y < 0 || block.y + y > TETRIS_MAPHEIGHT - 1) {
 					return;
 				}
 			}
@@ -600,33 +638,37 @@ void TetrisPanel::RotateBlock() {
 			}
 		}
 	}
-		
+
 	for(int y = 0; y < 4; ++y) {
 		for(int x = 0; x < 4; ++x) {
 			block.structure[x][y] = temp.structure[x][y];
 		}
 	}
-	
+
 	Refresh();
 }
 
 //=============================================================================
 // SnakePanel - A window with a Snake game!
 
-SnakePanel::SnakePanel(wxWindow* parent) : GamePanel(parent, 16*SNAKE_MAPWIDTH, 16*SNAKE_MAPHEIGHT) {
+SnakePanel::SnakePanel(wxWindow* parent) : GamePanel(parent, 16*SNAKE_MAPWIDTH, 16*SNAKE_MAPHEIGHT)
+{
 	NewGame();
 }
 
-SnakePanel::~SnakePanel() {
+SnakePanel::~SnakePanel()
+{
+	////
 }
 
-void SnakePanel::Render(wxDC& pdc) {
+void SnakePanel::Render(wxDC& pdc)
+{
 	pdc.SetBackground(*wxBLACK_BRUSH);
 	pdc.Clear();
 
 	wxBrush snakebrush(wxColor(0, 0, 255));
 	wxBrush applebrush(wxColor(255, 0, 0));
-	
+
 	double lblue  = 1.0;
 	double lred   = 0.5;
 	double lgreen = 0.0;
@@ -648,41 +690,51 @@ void SnakePanel::Render(wxDC& pdc) {
 				pdc.DrawRectangle(x*16, y*16, 16, 16);
 			}
 		}
-	} 
-}
-
-void SnakePanel::OnKey(wxKeyEvent& event, bool down) {
-	if(!down) return;
-	switch(event.GetKeyCode()) {
-		case WXK_SPACE: {
-			if(paused())
-				unpause();
-			else pause();
-		} break;
-		case WXK_NUMPAD_UP: case WXK_UP: {
-			if(dead) return;
-			unpause();
-			Move(NORTH);
-		} break;
-		case WXK_NUMPAD_DOWN: case WXK_DOWN: {
-			if(dead) return;
-			unpause();
-			Move(SOUTH);
-		} break;
-		case WXK_NUMPAD_LEFT: case WXK_LEFT: {
-			if(dead) return;
-			unpause();
-			Move(WEST);
-		} break;
-		case WXK_NUMPAD_RIGHT: case WXK_RIGHT: {
-			if(dead) return;
-			unpause();
-			Move(EAST);
-		} break;
 	}
 }
 
-void SnakePanel::NewGame() {
+void SnakePanel::OnKey(wxKeyEvent& event, bool down)
+{
+	if(!down) return;
+
+	int keyCode = event.GetKeyCode();
+	if (keyCode == WXK_SPACE) {
+		if (paused())
+			unpause();
+		else
+			pause();
+	} else if (!dead) {
+		switch (keyCode) {
+			case WXK_NUMPAD_UP:
+			case WXK_UP: {
+				unpause();
+				Move(NORTH);
+				break;
+			}
+			case WXK_NUMPAD_DOWN:
+			case WXK_DOWN: {
+				unpause();
+				Move(SOUTH);
+				break;
+			}
+			case WXK_NUMPAD_LEFT:
+			case WXK_LEFT: {
+				unpause();
+				Move(WEST);
+				break;
+			}
+			case WXK_NUMPAD_RIGHT:
+			case WXK_RIGHT: {
+				unpause();
+				Move(EAST);
+				break;
+			}
+		}
+	}
+}
+
+void SnakePanel::NewGame()
+{
 	length = 3;
 	game_timer.Start();
 	last_dir = NORTH;
@@ -700,17 +752,20 @@ void SnakePanel::NewGame() {
 	UpdateTitle(); // Update title
 }
 
-void SnakePanel::UpdateTitle() {
-	wxString title = wxT("Remere's Snake : ");
-	title << length << wxT(" segments");
+void SnakePanel::UpdateTitle()
+{
+	wxString title = "Remere's Snake : ";
+	title << length << " segments";
 	((wxTopLevelWindow*)GetParent())->SetTitle(title);
 }
 
-void SnakePanel::GameLoop(int time) {
+void SnakePanel::GameLoop(int time)
+{
 	Move(last_dir);
 }
 
-void SnakePanel::NewApple() {
+void SnakePanel::NewApple()
+{
 	bool possible = false;
 	for(int y = 0; y < SNAKE_MAPHEIGHT; ++y) {
 		for(int x = 0; x < SNAKE_MAPWIDTH; ++x) {
@@ -734,14 +789,15 @@ void SnakePanel::NewApple() {
 	}
 }
 
-void SnakePanel::Move(int dir) {
-	if(
-			(last_dir == NORTH && dir == SOUTH) ||
-			(last_dir == WEST && dir == EAST) ||
-			(last_dir == EAST && dir == WEST) ||
-			(last_dir == SOUTH && dir == NORTH)) {
+void SnakePanel::Move(int dir)
+{
+	if((last_dir == NORTH && dir == SOUTH) ||
+		(last_dir == WEST && dir == EAST) ||
+		(last_dir == EAST && dir == WEST) ||
+		(last_dir == SOUTH && dir == NORTH)) {
 		return;
 	}
+
 	int nx = 0, ny = 0;
 	int head_x = 0, head_y = 0;
 	for(int y = 0; y < SNAKE_MAPHEIGHT; ++y) {
@@ -756,26 +812,31 @@ void SnakePanel::Move(int dir) {
 		case NORTH: {
 			nx = head_x;
 			ny = head_y - 1;
-		} break;
+			break;
+		}
 		case SOUTH: {
 			nx = head_x;
 			ny = head_y + 1;
-		} break;
+			break;
+		}
 		case WEST: {
 			nx = head_x - 1;
 			ny = head_y;
-		} break;
+			break;
+		}
 		case EAST: {
 			nx = head_x + 1;
 			ny = head_y;
-		} break;
-		default: return;
+			break;
+		}
+		default:
+			return;
 	}
-	
+
 	if(map[nx][ny] > 0 || nx < 0 || ny < 0 || nx >= SNAKE_MAPWIDTH || ny >= SNAKE_MAPHEIGHT) {
 		// Crash
 		dead = true;
-		gui.PopupDialog(wxT("Game Over"), wxT("You reached a length of ") + i2ws(length) + wxT("!"), wxOK);
+		g_gui.PopupDialog("Game Over", "You reached a length of " + i2ws(length) + "!", wxOK);
 		NewGame();
 		SetFocus();
 	} else {

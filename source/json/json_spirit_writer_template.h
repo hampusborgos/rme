@@ -122,7 +122,7 @@ namespace json_spirit
                 case str_type:   output( value.get_str() );   break;
                 case bool_type:  output( value.get_bool() );  break;
                 case int_type:   output_int( value );         break;
-                case real_type:  os_ << std::showpoint << std::setprecision( 16 ) 
+                case real_type:  os_ << std::showpoint << std::setprecision( 16 )
                                      << value.get_real();     break;
                 case null_type:  os_ << "null";               break;
                 default: assert( false );
@@ -141,8 +141,8 @@ namespace json_spirit
 
         void output( const Obj_member_type& member )
         {
-            output( Config_type::get_name( member ) ); space(); 
-            os_ << ':'; space(); 
+            output( Config_type::get_name( member ) ); space();
+            os_ << ':'; space();
             output( Config_type::get_value( member ) );
         }
 
@@ -174,7 +174,7 @@ namespace json_spirit
             os_ << start_char; new_line();
 
             ++indentation_level_;
-            
+
             for( typename T::const_iterator i = t.begin(); i != t.end(); ++i )
             {
                 indent(); output( *i );
@@ -193,13 +193,13 @@ namespace json_spirit
 
             indent(); os_ << end_char;
         }
-        
+
         void indent()
         {
             if( !pretty_ ) return;
 
             for( int i = 0; i < indentation_level_; ++i )
-            { 
+            {
                 os_ << "    ";
             }
         }

@@ -37,7 +37,7 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	socket(server)
 {
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
-	
+
 	wxPanel* splitter = newd wxPanel(this);
 	topsizer->Add(splitter, 1, wxEXPAND);
 
@@ -57,24 +57,24 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	//log->SetColLabelSize(0);
 	//log->EnableGridLines(false);
 	log->EnableEditing(false);
-	
-	log->SetColLabelValue(0, wxT("Time"));
+
+	log->SetColLabelValue(0, "Time");
 	log->SetColMinimalWidth(0, 60);
 	log->SetColSize(0, 60);
-	log->SetColLabelValue(1, wxT("User"));
+	log->SetColLabelValue(1, "User");
 	log->SetColMinimalWidth(1, 100);
 	log->SetColSize(1, 100);
-	log->SetColLabelValue(2, wxT("Message"));
+	log->SetColLabelValue(2, "Message");
 	log->SetColMinimalWidth(2, 100);
 	log->SetColSize(2, 100);
 
 	log->Connect(wxEVT_SIZE, wxSizeEventHandler(LiveLogTab::OnResizeChat), nullptr, this);
-	
+
 	left_sizer->Add(log, 1, wxEXPAND);
 
 	input = newd wxTextCtrl(left_pane, LIVE_CHAT_TEXTBOX, wxEmptyString, wxDefaultPosition, wxDefaultSize);
 	left_sizer->Add(input, 0, wxEXPAND);
-	
+
 	input->Connect(wxEVT_SET_FOCUS, wxFocusEventHandler(LiveLogTab::OnSelectChatbox), nullptr, this);
 	input->Connect(wxEVT_KILL_FOCUS, wxFocusEventHandler(LiveLogTab::OnDeselectChatbox), nullptr, this);
 
@@ -88,18 +88,18 @@ LiveLogTab::LiveLogTab(MapTabbook* aui, LiveSocket* server) :
 	user_list->SetSelectionMode(wxGrid::wxGridSelectRows);
 	user_list->SetRowLabelSize(0);
 
-	user_list->SetColLabelValue(0, wxT(""));
+	user_list->SetColLabelValue(0, "");
 	user_list->SetColSize(0, 24);
-	user_list->SetColLabelValue(1, wxT("#"));
+	user_list->SetColLabelValue(1, "#");
 	user_list->SetColSize(1, 36);
-	user_list->SetColLabelValue(2, wxT("Name"));
+	user_list->SetColLabelValue(2, "Name");
 	user_list->SetColSize(2, 200);
 
 	//user_list->GetGridWindow()->
 
 	// Finalize
 	SetSizerAndFit(topsizer);
-	
+
 	wxSizer* split_sizer = newd wxBoxSizer(wxHORIZONTAL);
 	split_sizer->Add(left_pane, wxSizerFlags(1).Expand());
 	split_sizer->Add(user_list, wxSizerFlags(0).Expand());
@@ -116,10 +116,10 @@ LiveLogTab::~LiveLogTab()
 
 wxString LiveLogTab::GetTitle() const
 {
-	if (socket) {
-		return wxT("Live Log - ") + socket->getHostName();
+	if(socket) {
+		return "Live Log - " + socket->getHostName();
 	}
-	return wxT("Live Log - Disconnected");
+	return "Live Log - Disconnected";
 }
 
 void LiveLogTab::Disconnect()
@@ -133,7 +133,7 @@ void LiveLogTab::Disconnect()
 wxString format00(wxDateTime::wxDateTime_t t)
 {
 	wxString str;
-	if(t < 10) str << wxT("0");
+	if(t < 10) str << "0";
 	str << t;
 	return str;
 }
@@ -142,32 +142,32 @@ void LiveLogTab::Message(const wxString& str)
 {
 	wxDateTime t = wxDateTime::Now();
 	wxString time, speaker;
-	time << format00(t.GetHour()) << wxT(":")
-		 << format00(t.GetMinute()) << wxT(":") 
+	time << format00(t.GetHour()) << ":"
+		 << format00(t.GetMinute()) << ":"
 		 << format00(t.GetSecond());
 
-	speaker << wxT("Server");
+	speaker << "Server";
 
 	log->AppendRows(1);
 	int n = log->GetNumberRows() - 1;
-	log->SetCellValue(time, n, 0);
-	log->SetCellValue(speaker, n, 1);
-	log->SetCellValue(str, n, 2);
+	log->SetCellValue(n, 0, time);
+	log->SetCellValue(n, 1, speaker);
+	log->SetCellValue(n, 2, str);
 }
 
 void LiveLogTab::Chat(const wxString& speaker, const wxString& str)
 {
 	wxDateTime t = wxDateTime::Now();
 	wxString time;
-	time << format00(t.GetHour()) << wxT(":")
-		 << format00(t.GetMinute()) << wxT(":")
+	time << format00(t.GetHour()) << ":"
+		 << format00(t.GetMinute()) << ":"
 		 << format00(t.GetSecond());
 
 	log->AppendRows(1);
 	int n = log->GetNumberRows() - 1;
-	log->SetCellValue(time, n, 0);
-	log->SetCellValue(speaker, n, 1);
-	log->SetCellValue(str, n, 2);
+	log->SetCellValue(n, 0, time);
+	log->SetCellValue(n, 1, speaker);
+	log->SetCellValue(n, 2, str);
 }
 
 void LiveLogTab::OnChat(wxCommandEvent& evt)
@@ -186,18 +186,18 @@ void LiveLogTab::OnResizeClientList(wxSizeEvent& evt)
 
 void LiveLogTab::OnSelectChatbox(wxFocusEvent& evt)
 {
-	gui.DisableHotkeys();
+	g_gui.DisableHotkeys();
 }
 
 void LiveLogTab::OnDeselectChatbox(wxFocusEvent& evt)
 {
-	gui.EnableHotkeys();
+	g_gui.EnableHotkeys();
 }
 
 void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>& updatedClients)
 {
 	// Delete old rows
-	if (user_list->GetNumberRows() > 0) {
+	if(user_list->GetNumberRows() > 0) {
 		user_list->DeleteRows(0, user_list->GetNumberRows());
 	}
 
@@ -205,11 +205,11 @@ void LiveLogTab::UpdateClientList(const std::unordered_map<uint32_t, LivePeer*>&
 	user_list->AppendRows(clients.size());
 
 	int32_t i = 0;
-	for (auto& clientEntry : clients) {
+	for(auto& clientEntry : clients) {
 		LivePeer* peer = clientEntry.second;
-		user_list->SetCellBackgroundColour(peer->getUsedColor(), i, 0);
-		user_list->SetCellValue(i2ws((peer->getClientId() >> 1) + 1), i, 1);
-		user_list->SetCellValue(peer->getName(), i, 2);
+		user_list->SetCellBackgroundColour(i, 0, peer->getUsedColor());
+		user_list->SetCellValue(i, 1, i2ws((peer->getClientId() >> 1) + 1));
+		user_list->SetCellValue(i, 2, peer->getName());
 		++i;
 	}
 }

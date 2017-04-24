@@ -16,29 +16,33 @@ HouseBrush::HouseBrush() :
 	Brush(),
 	draw_house(nullptr)
 {
-	// ...
+	////
 }
 
-HouseBrush::~HouseBrush() {
-	// ...
+HouseBrush::~HouseBrush()
+{
+	////
 }
 
-void HouseBrush::setHouse(House* house) {
+void HouseBrush::setHouse(House* house)
+{
 	draw_house = house;
 }
 
-uint32_t HouseBrush::getHouseID() const {
+uint32_t HouseBrush::getHouseID() const
+{
 	if(draw_house)
 		return draw_house->id;
 	return 0;
 }
 
-void HouseBrush::undraw(BaseMap* map, Tile* tile) {
+void HouseBrush::undraw(BaseMap* map, Tile* tile)
+{
 	if(tile->isHouseTile()) {
 		tile->setPZ(false);
 	}
 	tile->setHouse(nullptr);
-	if(settings.getInteger(Config::AUTO_ASSIGN_DOORID)) {
+	if(g_settings.getInteger(Config::AUTO_ASSIGN_DOORID)) {
 		// Is there a door? If so, remove any door id it has
 		for(ItemVector::iterator it = tile->items.begin();
 			it != tile->items.end();
@@ -51,12 +55,13 @@ void HouseBrush::undraw(BaseMap* map, Tile* tile) {
 	}
 }
 
-void HouseBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void HouseBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	ASSERT(draw_house);
 	uint32_t old_house_id = tile->getHouseID();
 	tile->setHouse(draw_house);
 	tile->setPZ(true);
-	if(settings.getInteger(Config::HOUSE_BRUSH_REMOVE_ITEMS)) {
+	if(g_settings.getInteger(Config::HOUSE_BRUSH_REMOVE_ITEMS)) {
 		// Remove loose items
 		for(ItemVector::iterator it = tile->items.begin();
 			it != tile->items.end();
@@ -71,7 +76,7 @@ void HouseBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
 			}
 		}
 	}
-	if(settings.getInteger(Config::AUTO_ASSIGN_DOORID)) {
+	if(g_settings.getInteger(Config::AUTO_ASSIGN_DOORID)) {
 		// Is there a door? If so, find an empty ID and assign it (if the door doesn't already have an id.
 		for(ItemVector::iterator it = tile->items.begin();
 			it != tile->items.end();

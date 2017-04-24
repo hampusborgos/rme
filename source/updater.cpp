@@ -31,26 +31,28 @@ const wxEventType EVT_UPDATE_CHECK_FINISHED = wxNewEventType();
 
 UpdateChecker::UpdateChecker()
 {
+	////
 }
 
 UpdateChecker::~UpdateChecker()
 {
+	////
 }
 
 void UpdateChecker::connect(wxEvtHandler* receiver)
 {
-	wxString address = wxT("http://www.remeresmapeditor.com/update.php");
-	address << wxT("?os=") << 
+	wxString address = "http://www.remeresmapeditor.com/update.php";
+	address << "?os=" <<
 #ifdef __WINDOWS__
-	wxT("windows");
+	"windows";
 #elif __LINUX__
-	wxT("linux");
+	"linux";
 #else
-	wxT("unknown");
+	"unknown";
 #endif
-	address << wxT("&verid=") << __RME_VERSION_ID__;
+	address << "&verid=" << __RME_VERSION_ID__;
 #ifdef __EXPERIMENTAL__
-	address << wxT("&beta");
+	address << "&beta";
 #endif
 	wxURL* url = newd wxURL(address);
 	UpdateConnectionThread* connection = newd UpdateConnectionThread(receiver, url);
@@ -61,25 +63,25 @@ UpdateConnectionThread::UpdateConnectionThread(wxEvtHandler* receiver, wxURL* ur
 	receiver(receiver),
 	url(url)
 {
+	////
 }
 
 UpdateConnectionThread::~UpdateConnectionThread()
 {
+	////
 }
 
 wxThread::ExitCode UpdateConnectionThread::Entry()
 {
 	wxInputStream* input = url->GetInputStream();
-	if(!input)
-	{
+	if(!input) {
 		delete input;
 		delete url;
 		return 0;
 	}
 
 	std::string data;
-	while(input->Eof() == false)
-	{
+	while(!input->Eof()) {
 		data += input->GetC();
 	}
 
@@ -90,6 +92,5 @@ wxThread::ExitCode UpdateConnectionThread::Entry()
 	if(receiver) receiver->AddPendingEvent(event);
 	return 0;
 }
-
 
 #endif

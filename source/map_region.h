@@ -28,7 +28,7 @@ protected:
 	size_t spawn_count;
 	size_t waypoint_count;
 	HouseExitList* house_exits; // Any house exits pointing here
-	
+
 public:
 
 	// Access tile
@@ -39,7 +39,8 @@ public:
 	int size() const;
 	bool empty() const;
 
-	Position getPosition() const {return position;}
+	Position getPosition() const { return position; }
+
 	int getX() const {return position.x;}
 	int getY() const {return position.y;}
 	int getZ() const {return position.z;}
@@ -55,12 +56,13 @@ public:
 
 	friend class Floor;
 	friend class QTreeNode;
+	friend class Waypoints;
 };
 
 class Floor {
 public:
 	Floor(int x, int y, int z);
-	TileLocation locs[16];
+	TileLocation locs[MAP_LAYERS];
 };
 
 // This is not a QuadTree, but a HexTree (16 child nodes to every node), so the name is abit misleading
@@ -75,7 +77,7 @@ public:
 
 	QTreeNode* getLeaf(int x, int y); // Might return nullptr
 	QTreeNode* getLeafForce(int x, int y); // Will never return nullptr, it will create the node if it's not there
-	
+
 	// Coordinates are NOT relative
 	TileLocation* createTile(int x, int y, int z);
 	TileLocation* getTile(int x, int y, int z);
@@ -105,9 +107,9 @@ protected:
 
 	bool isLeaf;
 	union {
-		QTreeNode* child[16];
-		Floor* array[MAP_HEIGHT];
-#if 16 != MAP_HEIGHT
+		QTreeNode* child[MAP_LAYERS];
+		Floor* array[MAP_LAYERS];
+#if 16 != MAP_LAYERS
 #    error "You need to rewrite the QuadTree in order to handle more or less than 16 floors"
 #endif
 	};

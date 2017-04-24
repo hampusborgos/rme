@@ -12,7 +12,7 @@ public:
 
 	void OnTextChange(wxCommandEvent&);
 	void OnClickList(wxCommandEvent&);
-	
+
 protected:
 
 	DatDebugViewListBox* item_list;

@@ -19,7 +19,7 @@ void NetworkMessage::clear()
 
 void NetworkMessage::expand(const size_t length)
 {
-	if (position + length >= buffer.size()) {
+	if(position + length >= buffer.size()) {
 		buffer.resize(position + length + 1);
 	}
 	size += length;
@@ -79,22 +79,22 @@ NetworkConnection& NetworkConnection::getInstance()
 
 bool NetworkConnection::start()
 {
-	if (thread.joinable()) {
-		if (stopped) {
+	if(thread.joinable()) {
+		if(stopped) {
 			return false;
 		}
 		return true;
 	}
 
 	stopped = false;
-	if (!service) {
+	if(!service) {
 		service = new boost::asio::io_service;
 	}
 
 	thread = std::thread([this]() -> void {
 		boost::asio::io_service& serviceRef = *service;
 		try {
-			while (!stopped) {
+			while(!stopped) {
 				serviceRef.run_one();
 				serviceRef.reset();
 			}
@@ -107,7 +107,7 @@ bool NetworkConnection::start()
 
 void NetworkConnection::stop()
 {
-	if (!service) {
+	if(!service) {
 		return;
 	}
 

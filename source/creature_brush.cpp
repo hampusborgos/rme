@@ -22,15 +22,18 @@ CreatureBrush::CreatureBrush(CreatureType* type) :
 	type->brush = this;
 }
 
-CreatureBrush::~CreatureBrush() {
-
+CreatureBrush::~CreatureBrush()
+{
+	////
 }
 
-int CreatureBrush::getLookID() const {
+int CreatureBrush::getLookID() const
+{
 	return 0;
 }
 
-std::string CreatureBrush::getName() const {
+std::string CreatureBrush::getName() const
+{
 	if(creature_type)
 		return creature_type->name;
 	return "Creature Brush";
@@ -39,10 +42,10 @@ std::string CreatureBrush::getName() const {
 bool CreatureBrush::canDraw(BaseMap* map, const Position& position) const
 {
 	Tile* tile = map->getTile(position);
-	if (creature_type && tile && !tile->isBlocking()) {
-		if (tile->getLocation()->getSpawnCount() != 0 || settings.getInteger(Config::AUTO_CREATE_SPAWN)) {
- 		   if (tile->isPZ()) {
-				if (creature_type->isNpc) {
+	if(creature_type && tile && !tile->isBlocking()) {
+		if(tile->getLocation()->getSpawnCount() != 0 || g_settings.getInteger(Config::AUTO_CREATE_SPAWN)) {
+ 		   if(tile->isPZ()) {
+				if(creature_type->isNpc) {
 					return true;
 				}
 			} else {
@@ -53,18 +56,20 @@ bool CreatureBrush::canDraw(BaseMap* map, const Position& position) const
 	return false;
 }
 
-void CreatureBrush::undraw(BaseMap* map, Tile* tile) {
+void CreatureBrush::undraw(BaseMap* map, Tile* tile)
+{
 	delete tile->creature;
 	tile->creature = nullptr;
 }
 
-void CreatureBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void CreatureBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	ASSERT(tile);
 	ASSERT(parameter);
 	if(canDraw(map, tile->getPosition())) {
 		undraw(map, tile);
 		if(creature_type) {
-			if (tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
+			if(tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
 				// manually place spawn on location
 				tile->spawn = newd Spawn(1);
 			}

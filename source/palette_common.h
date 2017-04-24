@@ -28,7 +28,7 @@ public:
 	virtual ~BrushButton();
 
 	Brush* brush;
-	
+
 	void OnKey(wxKeyEvent& event);
 
 	DECLARE_EVENT_TABLE()
@@ -38,7 +38,7 @@ class PalettePanel : public wxPanel {
 public:
 	PalettePanel(wxWindow* parent, wxWindowID id = wxID_ANY, long style = wxTAB_TRAVERSAL);
 	~PalettePanel();
-	
+
 	// Interface
 	// Flushes this panel and consequent views will feature reloaded data
 	virtual void InvalidateContents();
@@ -90,7 +90,7 @@ class BrushSizePanel : public PalettePanel {
 public:
 	BrushSizePanel(wxWindow* parent);
 	~BrushSizePanel() {}
-	
+
 
 	// Interface
 	// Flushes this panel and consequent views will feature reloaded data

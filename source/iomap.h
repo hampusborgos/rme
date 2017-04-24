@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -38,9 +38,9 @@ protected:
 	wxArrayString warnings;
 	wxString errorstr;
 
-	bool queryUser(const wxChar* title, const wxChar* format);
-	void warning(const wxChar* format, ...);
-	void error(const wxChar* format, ...);
+	bool queryUser(const wxString& title, const wxString& format);
+	void warning(const wxString format, ...);
+	void error(const wxString format, ...);
 public:
 	IOMap() {
 		version.otbm = MAP_OTBM_1;

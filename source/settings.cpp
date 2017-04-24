@@ -5,17 +5,17 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/settings.hpp $
-// $Id: settings.hpp 323 2010-04-12 20:59:41Z admin $
+// $URL: http://svn.rebarp.se/svn/RME/trunk/source/g_settings.hpp $
+// $Id: g_settings.hpp 323 2010-04-12 20:59:41Z admin $
 
 #include "main.h"
 
@@ -32,17 +32,19 @@
 #include <iostream>
 #include <string>
 
-Settings settings;
+Settings g_settings;
 
 Settings::Settings() : store(Config::LAST)
 #ifdef __WINDOWS__
-			   , use_file_cfg(false) 
+			   , use_file_cfg(false)
 #endif
 {
 	setDefaults();
 }
 
-Settings::~Settings() {
+Settings::~Settings()
+{
+	////
 }
 
 wxConfigBase& Settings::getConfigObject()
@@ -52,18 +54,19 @@ wxConfigBase& Settings::getConfigObject()
 
 bool Settings::getBoolean(uint32_t key) const
 {
-	if (key > Config::LAST) {
+	if(key > Config::LAST) {
 		return false;
 	}
 
 	const DynamicValue& dv = store[key];
-	if (dv.type == TYPE_INT) {
+	if(dv.type == TYPE_INT) {
 		return dv.intval != 0;
 	}
 	return false;
 }
 
-int Settings::getInteger(uint32_t key) const {
+int Settings::getInteger(uint32_t key) const
+{
 	if(key > Config::LAST) return 0;
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_INT)
@@ -71,7 +74,8 @@ int Settings::getInteger(uint32_t key) const {
 	return 0;
 }
 
-float Settings::getFloat(uint32_t key) const {
+float Settings::getFloat(uint32_t key) const
+{
 	if(key > Config::LAST) return 0.0;
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_FLOAT) {
@@ -80,7 +84,8 @@ float Settings::getFloat(uint32_t key) const {
 	return 0.0;
 }
 
-std::string Settings::getString(uint32_t key) const {
+std::string Settings::getString(uint32_t key) const
+{
 	if(key > Config::LAST) return "";
 	const DynamicValue& dv = store[key];
 	if(dv.type == TYPE_STR && dv.strval != nullptr)
@@ -88,8 +93,8 @@ std::string Settings::getString(uint32_t key) const {
 	return "";
 }
 
-
-void Settings::setInteger(uint32_t key, int newval) {
+void Settings::setInteger(uint32_t key, int newval)
+{
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_INT) {
@@ -100,7 +105,8 @@ void Settings::setInteger(uint32_t key, int newval) {
 	}
 }
 
-void Settings::setFloat(uint32_t key, float newval) {
+void Settings::setFloat(uint32_t key, float newval)
+{
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_FLOAT) {
@@ -111,7 +117,8 @@ void Settings::setFloat(uint32_t key, float newval) {
 	}
 }
 
-void Settings::setString(uint32_t key, std::string newval) {
+void Settings::setString(uint32_t key, std::string newval)
+{
 	if(key > Config::LAST) return;
 	DynamicValue& dv = store[key];
 	if(dv.type == TYPE_STR) {
@@ -123,7 +130,8 @@ void Settings::setString(uint32_t key, std::string newval) {
 	}
 }
 
-std::string Settings::DynamicValue::str() {
+std::string Settings::DynamicValue::str()
+{
 	switch(type) {
 		case TYPE_FLOAT:return f2s(floatval);
 		case TYPE_STR:  return std::string(*strval);
@@ -133,19 +141,20 @@ std::string Settings::DynamicValue::str() {
 	}
 }
 
-void Settings::IO(IOMode mode) {
+void Settings::IO(IOMode mode)
+{
 	wxConfigBase* conf = (mode == DEFAULT? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
 
 	using namespace Config;
-#define section(s) if(conf) conf->SetPath(wxT("/") wxT(s))
+#define section(s) if(conf) conf->SetPath("/" s)
 #define Int(key, dflt) \
 	do { \
 		if(mode == DEFAULT) { \
 			setInteger(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), getInteger(key)); \
+			conf->Write(#key, getInteger(key)); \
 		} else if(mode == LOAD) { \
-			setInteger(key, conf->Read(wxT(#key), long(dflt))); \
+			setInteger(key, conf->Read(#key, long(dflt))); \
 		} \
 	} while(false)
 #define IntToSave(key, dflt) \
@@ -153,9 +162,9 @@ void Settings::IO(IOMode mode) {
 		if(mode == DEFAULT) { \
 			setInteger(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), getInteger(key##_TO_SAVE)); \
+			conf->Write(#key, getInteger(key##_TO_SAVE)); \
 		} else if(mode == LOAD) { \
-			setInteger(key, conf->Read(wxT(#key), (long)dflt)); \
+			setInteger(key, conf->Read(#key, (long)dflt)); \
 			setInteger(key##_TO_SAVE , getInteger(key)); \
 		} \
 	} while(false)
@@ -164,10 +173,10 @@ void Settings::IO(IOMode mode) {
 		if(mode == DEFAULT) { \
 			setFloat(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), getFloat(key)); \
+			conf->Write(#key, getFloat(key)); \
 		} else if(mode == LOAD) { \
 			double tmp_float;\
-			conf->Read(wxT(#key), &tmp_float, dflt); \
+			conf->Read(#key, &tmp_float, dflt); \
 			setFloat(key, tmp_float); \
 		} \
 	} while(false)
@@ -176,10 +185,10 @@ void Settings::IO(IOMode mode) {
 		if(mode == DEFAULT) { \
 			setString(key, dflt); \
 		} else if(mode == SAVE) { \
-			conf->Write(wxT(#key), wxstr(getString(key))); \
+			conf->Write(#key, wxstr(getString(key))); \
 		} else if(mode == LOAD) { \
 			wxString str; \
-			conf->Read(wxT(#key), &str, wxT(dflt)); \
+			conf->Read(#key, &str, dflt); \
 			setString(key, nstr(str)); \
 		} \
 	} while(false)
@@ -199,8 +208,10 @@ void Settings::IO(IOMode mode) {
 	Int(SHOW_CREATURES, 1);
 	Int(SHOW_HOUSES, 1);
 	Int(SHOW_BLOCKING, 0);
+	Int(SHOW_TOOLTIPS, 1);
 	Int(SHOW_ONLY_TILEFLAGS, 0);
 	Int(SHOW_ONLY_MODIFIED_TILES, 0);
+	Int(SHOW_PREVIEW, 1);
 
 	section("Version");
 	Int(VERSION_ID, 0);
@@ -265,7 +276,7 @@ void Settings::IO(IOMode mode) {
 	IntToSave(USE_MEMCACHED_SPRITES, 0);
 	Int(MINIMAP_UPDATE_DELAY, 333);
 	Int(MINIMAP_VIEW_BOX, 1);
-	
+
 	Int(CURSOR_RED, 0);
 	Int(CURSOR_GREEN, 166);
 	Int(CURSOR_BLUE, 0);
@@ -304,6 +315,9 @@ void Settings::IO(IOMode mode) {
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);
 	Int(USE_UPDATER, 1);
+	String(RECENT_EDITED_MAP_PATH, "");
+	String(RECENT_EDITED_MAP_POSITION, "");
+
 #undef section
 #undef Int
 #undef IntToSave
@@ -311,42 +325,36 @@ void Settings::IO(IOMode mode) {
 #undef String
 }
 
-
-void Settings::load() {
+void Settings::load()
+{
 	wxConfigBase* conf;
 #ifdef __WINDOWS__
-	FileName filename(wxT("rme.cfg"));
+	FileName filename("rme.cfg");
 	if(filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		use_file_cfg = true;
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Use registry
-		conf = newd wxConfig(wxT("Remere's Map Editor"), wxT("Remere"), wxT(""), wxT(""), wxCONFIG_USE_GLOBAL_FILE);
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
+		conf = newd wxConfig("Remere's Map Editor", "Remere", "", "", wxCONFIG_USE_GLOBAL_FILE);
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #else
-	FileName filename(wxT("./rme.cfg"));
-	if(filename.FileExists())
-	{ // Use local file if it exists
+	FileName filename("./rme.cfg");
+	if(filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
-	}
-	else
-	{ // Else use global (user-specific) conf
-		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg"));
-		if(filename.FileExists())
-		{
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
+	} else { // Else use global (user-specific) conf
+		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + "/.rme/rme.cfg");
+		if(filename.FileExists()) {
 			wxFileInputStream file(filename.GetFullPath());
 			conf = newd wxFileConfig(file);
-		}
-		else
-		{
-			wxStringInputStream dummy(wxT(""));
+		} else {
+			wxStringInputStream dummy("");
 			conf = newd wxFileConfig(dummy, wxConvAuto());
-		}		
-		settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
+		}
+		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 0);
 	}
 #endif
 	wxConfig::Set(conf);
@@ -357,12 +365,11 @@ void Settings::save(bool endoftheworld)
 {
 	IO(SAVE);
 #ifdef __WINDOWS__
-	if(use_file_cfg)
-	{
+	if(use_file_cfg) {
 		wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
 		if(!conf)
 			return;
-		FileName filename(wxT("rme.cfg"));
+		FileName filename("rme.cfg");
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
 	}
@@ -370,28 +377,22 @@ void Settings::save(bool endoftheworld)
 	wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
 	if(!conf)
 		return;
-	FileName filename(wxT("./rme.cfg"));
-	if(filename.FileExists())
-	{ // Use local file if it exists
+	FileName filename("./rme.cfg");
+	if(filename.FileExists()) { // Use local file if it exists
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
-	}
-	else
-	{ // Else use global (user-specific) conf
-		wxString path = wxStandardPaths::Get().GetUserConfigDir() + wxT("/.rme/rme.cfg");
+	} else { // Else use global (user-specific) conf
+		wxString path = wxStandardPaths::Get().GetUserConfigDir() + "/.rme/rme.cfg";
 		filename.Assign(path);
 		filename.Mkdir(0755, wxPATH_MKDIR_FULL);
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
 	}
 #endif
-	if(endoftheworld)
-	{
+	if(endoftheworld) {
 		wxConfigBase* conf = dynamic_cast<wxConfigBase*>(wxConfig::Get());
 		wxConfig::Set(nullptr);
 		delete conf;
 	}
 }
-
-
 

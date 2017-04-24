@@ -15,16 +15,21 @@ HouseExitBrush::HouseExitBrush() :
 	Brush(),
 	draw_house(0)
 {
+	////
 }
 
-HouseExitBrush::~HouseExitBrush() {
+HouseExitBrush::~HouseExitBrush()
+{
+	////
 }
 
-void HouseExitBrush::setHouse(House* house) {
+void HouseExitBrush::setHouse(House* house)
+{
 	draw_house = house->id;
 }
 
-uint32_t HouseExitBrush::getHouseID() const {
+uint32_t HouseExitBrush::getHouseID() const
+{
 	return draw_house;
 }
 
@@ -41,12 +46,14 @@ bool HouseExitBrush::canDraw(BaseMap* map, const Position& position) const
 	return true;
 }
 
-void HouseExitBrush::undraw(BaseMap* map, Tile* tile) {
+void HouseExitBrush::undraw(BaseMap* map, Tile* tile)
+{
 	// Never called
 	ASSERT(false);
 }
 
-void HouseExitBrush::draw(BaseMap* map, Tile* tile, void* parameter) {
+void HouseExitBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
 	// Never called
 	ASSERT(false);
 }

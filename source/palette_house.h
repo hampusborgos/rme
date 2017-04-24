@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ class HousePalettePanel : public PalettePanel {
 public:
 	HousePalettePanel(wxWindow* parent, wxWindowID id = wxID_ANY);
 	~HousePalettePanel();
-	
+
 	PaletteType GetType() const;
 
 	// Select the first brush
@@ -69,10 +69,15 @@ public:
 	void OnClickEditHouse(wxCommandEvent& event);
 	void OnClickRemoveHouse(wxCommandEvent& event);
 
+	#ifdef __APPLE__
+	//Used for detecting a deselect
+	void OnListBoxClick(wxMouseEvent& event);
+	#endif
+
 protected:
 	Map* map;
 	wxChoice* town_choice;
-	wxListBox* house_list;
+	SortableListBox* house_list;
 	wxToggleButton* house_brush_button;
 	wxToggleButton* select_position_button;
 	wxButton* add_house_button;
@@ -99,7 +104,7 @@ protected:
 	House* what_house;
 
 	wxString house_name, house_id, house_rent;
-	
+
 	wxTextCtrl* name_field;
 	wxTextCtrl* id_field;
 	wxTextCtrl* rent_field;

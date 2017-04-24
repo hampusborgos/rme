@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -54,32 +54,36 @@ DCButton::DCButton(wxWindow* parent, wxWindowID id, wxPoint pos, int type, Rende
 	SetSprite(sprite_id);
 }
 
-DCButton::~DCButton() {
-	// ...
+DCButton::~DCButton()
+{
+	////
 }
 
-void DCButton::SetSprite(int _sprid) {
+void DCButton::SetSprite(int _sprid)
+{
 	if(_sprid != 0) {
-		sprite = gui.gfx.getSprite(_sprid);
+		sprite = g_gui.gfx.getSprite(_sprid);
 	} else {
 		sprite = nullptr;
 	}
 	Refresh();
 }
 
-void DCButton::SetOverlay(Sprite* espr) {
+void DCButton::SetOverlay(Sprite* espr)
+{
 	overlay = espr;
 	Refresh();
 }
 
-void DCButton::SetValue(bool val) {
+void DCButton::SetValue(bool val)
+{
 	ASSERT(type == DC_BTN_TOGGLE);
 	bool oldval = val;
 	state = val;
 	if(state == oldval) {
 		// Cheap to change value to the old one (which is done ALOT)
-		if(GetValue() && settings.getInteger(Config::USE_GUI_SELECTION_SHADOW)) {
-			SetOverlay(gui.gfx.getSprite(EDITOR_SPRITE_SELECTION_MARKER));
+		if(GetValue() && g_settings.getInteger(Config::USE_GUI_SELECTION_SHADOW)) {
+			SetOverlay(g_gui.gfx.getSprite(EDITOR_SPRITE_SELECTION_MARKER));
 		} else {
 			SetOverlay(nullptr);
 		}
@@ -87,15 +91,17 @@ void DCButton::SetValue(bool val) {
 	}
 }
 
-bool DCButton::GetValue() const {
+bool DCButton::GetValue() const
+{
 	ASSERT(type == DC_BTN_TOGGLE);
 	return state;
 }
 
-void DCButton::OnPaint(wxPaintEvent& event) {
+void DCButton::OnPaint(wxPaintEvent& event)
+{
 	wxBufferedPaintDC pdc(this);
 
-	if(gui.gfx.isUnloaded()) {
+	if(g_gui.gfx.isUnloaded()) {
 		return;
 	}
 
@@ -118,7 +124,6 @@ void DCButton::OnPaint(wxPaintEvent& event) {
 		size_x = 36;
 		size_y = 36;
 	}
-
 
 	pdc.SetBrush(*wxBLACK);
 	pdc.DrawRectangle(0,0,size_x,size_y);
@@ -166,11 +171,13 @@ void DCButton::OnPaint(wxPaintEvent& event) {
 				overlay->DrawTo(&pdc, SPRITE_SIZE_32x32, 2, 2);
 			}
 		} else if(size == RENDER_SIZE_64x64) {
+			////
 		}
 	}
 }
 
-void DCButton::OnClick(wxMouseEvent& WXUNUSED(evt)) {
+void DCButton::OnClick(wxMouseEvent& WXUNUSED(evt))
+{
 	wxCommandEvent event(type == DC_BTN_TOGGLE? wxEVT_COMMAND_TOGGLEBUTTON_CLICKED : wxEVT_COMMAND_BUTTON_CLICKED, GetId());
 	event.SetEventObject(this);
 
@@ -181,5 +188,4 @@ void DCButton::OnClick(wxMouseEvent& WXUNUSED(evt)) {
 
 	GetEventHandler()->ProcessEvent(event);
 }
-
 

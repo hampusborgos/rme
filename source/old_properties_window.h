@@ -19,7 +19,7 @@ public:
 	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Creature* creature, wxPoint = wxDefaultPosition);
 	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Spawn* spawn, wxPoint = wxDefaultPosition);
 	virtual ~OldPropertiesWindow();
-	
+
 	void OnFocusChange(wxFocusEvent&);
 
 	void OnClickOK(wxCommandEvent&);

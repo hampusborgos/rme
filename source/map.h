@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -39,8 +39,8 @@ public:
 	// Operations on the entire map
 	void cleanInvalidTiles(bool showdialog = false);
 	// Save a bmp image of the minimap
-	bool exportMinimap(FileName filename, int floor = 7, bool showdialog = false);
-	// 
+	bool exportMinimap(FileName filename, int floor = GROUND_LAYER, bool showdialog = false);
+	//
 	bool convert(MapVersion to, bool showdialog = false);
 	bool convert(const ConversionMap& cm, bool showdialog = false);
 
@@ -77,7 +77,7 @@ public:
 	std::string getFilename() const {return filename;}
 	std::string getName() const {return name;}
 	void setName(const std::string& n) {name = n;}
-	
+
 	// Get map data
 	int getWidth() const {return width;}
 	int getHeight() const {return height;}
@@ -134,7 +134,8 @@ public:
 };
 
 template <typename ForeachType>
-inline void foreach_ItemOnMap(Map& map, ForeachType& foreach) {
+inline void foreach_ItemOnMap(Map& map, ForeachType& foreach, bool selectedTiles)
+{
 	MapIterator tileiter = map.begin();
 	MapIterator end = map.end();
 	long long done = 0;
@@ -142,14 +143,17 @@ inline void foreach_ItemOnMap(Map& map, ForeachType& foreach) {
 	while(tileiter != end) {
 		++done;
 		Tile* tile = (*tileiter)->get();
+		if(selectedTiles && !tile->isSelected()) {
+			++tileiter;
+			continue;
+		}
+
 		if(tile->ground) {
 			foreach(map, tile, tile->ground, done);
 		}
+
 		std::queue<Container*> containers;
-		for(ItemVector::iterator itemiter = tile->items.begin();
-				itemiter != tile->items.end();
-				++itemiter)
-		{
+		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ++itemiter) {
 			Item* item = *itemiter;
 			Container* container = dynamic_cast<Container*>(item);
 			foreach(map, tile, item, done);
@@ -159,10 +163,7 @@ inline void foreach_ItemOnMap(Map& map, ForeachType& foreach) {
 				do {
 					container = containers.front();
 					ItemVector& v = container->getVector();
-					for(ItemVector::iterator containeriter = v.begin();
-							containeriter != v.end();
-							++containeriter)
-					{
+					for(ItemVector::iterator containeriter = v.begin(); containeriter != v.end(); ++containeriter) {
 						Item* i = *containeriter;
 						Container* c = dynamic_cast<Container*>(i);
 						foreach(map, tile, i, done);
@@ -198,11 +199,9 @@ inline long long remove_if_TileOnMap(Map& map, RemoveIfType& remove_if)
 	long long removed = 0;
 	long long total = map.getTileCount();
 
-	while(tileiter != end)
-	{
+	while(tileiter != end) {
 		Tile* tile = (*tileiter)->get();
-		if(remove_if(map, tile, removed, done, total))
-		{
+		if(remove_if(map, tile, removed, done, total)) {
 			map.setTile(tile->getPosition(), nullptr, true);
 			++removed;
 		}
@@ -217,30 +216,25 @@ template <typename RemoveIfType>
 inline long long remove_if_ItemOnMap(Map& map, RemoveIfType& remove_if) {
 	long long done = 0;
 	long long removed = 0;
-	
+
 	MapIterator tileiter = map.begin();
 	MapIterator end = map.end();
 
-	while(tileiter != end)
-	{
+	while(tileiter != end) {
 		Tile* tile = (*tileiter)->get();
 
-		if(tile->ground)
-		{
-			if(remove_if(map, tile->ground, removed, done))
-			{
+		if(tile->ground) {
+			if(remove_if(map, tile->ground, removed, done)) {
 				delete tile->ground;
 				tile->ground = nullptr;
 				++removed;
 			}
 		}
 
-		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); )
-		{
+		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ) {
 			Item* item = *itemiter;
 
-			if(remove_if(map, item, removed, done))
-			{
+			if(remove_if(map, item, removed, done)) {
 				itemiter = tile->items.erase(itemiter);
 				delete item;
 				++removed;

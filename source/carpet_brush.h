@@ -11,9 +11,12 @@ class CarpetBrush : public Brush
 {
 	public:
 		static void init();
-	
+
 		CarpetBrush();
 		virtual ~CarpetBrush();
+
+		bool isCarpet() const { return true; }
+		CarpetBrush* asCarpet() { return static_cast<CarpetBrush*>(this); }
 
 		virtual bool load(pugi::xml_node node, wxArrayString& warnings);
 

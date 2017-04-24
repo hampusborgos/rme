@@ -13,7 +13,7 @@ public:
 	~Materials();
 
 	void clear();
-	
+
 	const MaterialsExtensionList& getExtensions();
 	MaterialsExtensionList getExtensionsByVersion(uint16_t version_id);
 
@@ -29,7 +29,7 @@ public:
 protected:
 	bool unserializeMaterials(const FileName& filename, pugi::xml_node node, wxString& error, wxArrayString& warnings);
 	bool unserializeTileset(pugi::xml_node node, wxArrayString& warnings);
-	
+
 	MaterialsExtensionList extensions;
 
 private:
@@ -37,6 +37,6 @@ private:
 	Materials& operator=(const Materials&);
 };
 
-extern Materials materials;
+extern Materials g_materials;
 
 #endif

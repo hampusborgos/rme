@@ -52,7 +52,7 @@ public:
 	virtual wxCoord OnMeasureItem(size_t n) const;
 
 	void OnKey(wxKeyEvent& event);
-	
+
 	DECLARE_EVENT_TABLE();
 };
 
@@ -108,7 +108,7 @@ public:
 	void SetListType(wxString ltype);
 	// Assigns a tileset to this list
 	void AssignTileset(const TilesetCategory* tileset);
-	
+
 	// Select the first brush
 	void SelectFirstBrush();
 	// Returns the currently selected brush (First brush if panel is not loaded)
@@ -130,7 +130,7 @@ protected:
 	BrushBoxInterface* brushbox;
 	bool loaded;
 	BrushListType list_type;
-	
+
 	DECLARE_EVENT_TABLE();
 };
 
@@ -146,7 +146,7 @@ public:
 	void LoadCurrentContents();
 	// Loads all content in this panel
 	void LoadAllContents();
-	
+
 	PaletteType GetType() const;
 
 	// Sets the display type (list or icons)
@@ -171,7 +171,7 @@ protected:
 	wxChoicebook* choicebook;
 	BrushSizePanel* size_panel;
 	std::map<wxWindow*, Brush*> remembered_brushes;
-	
+
 	DECLARE_EVENT_TABLE();
 };
 

@@ -19,7 +19,7 @@ class LiveServer : public LiveSocket
 	public:
 		LiveServer(Editor& editor);
 		~LiveServer();
-		
+
 		//
 		bool bind();
 		void close();
@@ -60,7 +60,7 @@ class LiveServer : public LiveSocket
 
 	protected:
 		std::unordered_map<uint32_t, LivePeer*> clients;
-		
+
 		std::shared_ptr<boost::asio::ip::tcp::acceptor> acceptor;
 		std::shared_ptr<boost::asio::ip::tcp::socket> socket;
 

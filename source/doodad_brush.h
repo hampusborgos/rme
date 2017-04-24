@@ -13,6 +13,9 @@ public:
 	DoodadBrush();
 	virtual ~DoodadBrush();
 
+	bool isDoodad() const { return true; }
+	DoodadBrush* asDoodad() { return static_cast<DoodadBrush*>(this); }
+
 protected:
 	struct AlternativeBlock;
 public:
@@ -29,7 +32,7 @@ public:
 
 	int getThickness() const {return thickness;}
 	int getThicknessCeiling() const {return thickness_ceiling;}
-	
+
 	int getCompositeChance(int variation) const;
 	int getSingleChance(int variation) const;
 	int getTotalChance(int variation) const;
@@ -41,7 +44,7 @@ public:
 	bool placeOnDuplicate() const {return on_duplicate;}
 	bool doNewBorders() const {return do_new_borders;}
 	bool ownsItem(Item* item) const;
-	
+
 	virtual bool canSmear() const {return draggable;}
 	virtual bool canDrag() const {return false;}
 	virtual bool oneSizeFitsAll() const {return one_size;}
@@ -64,7 +67,7 @@ protected:
 	bool on_duplicate;
 	uint16_t clear_mapflags;
 	uint16_t clear_statflags;
-	
+
 	struct SingleBlock {
 		int chance;
 		Item* item;
@@ -81,7 +84,7 @@ protected:
 		bool ownsItem(uint16_t id) const;
 		std::vector<SingleBlock> single_items;
 		std::vector<CompositeBlock> composite_items;
-		
+
 		int composite_chance; // Total chance of a composite
 		int single_chance; // Total chance of a single object
 	};

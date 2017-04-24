@@ -12,6 +12,10 @@ class HouseExitBrush : public Brush {
 public:
 	HouseExitBrush();
 	virtual ~HouseExitBrush();
+
+	bool isHouseExit() const { return true; }
+	HouseExitBrush* asHouseExit() { return static_cast<HouseExitBrush*>(this); }
+
 	// Not used
 	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {return true;}
 
@@ -25,7 +29,7 @@ public:
 	virtual bool oneSizeFitsAll() const {return true;}
 
 	void setHouse(House* house);
-	
+
 	uint32_t getHouseID() const;
 	virtual int getLookID() const {return 0;} // We don't have a graphic
 	virtual std::string getName() const {return "House Exit Brush";} // We don't have a name

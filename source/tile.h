@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -24,7 +24,6 @@
 #include "item.h"
 #include "map_region.h"
 
-
 enum {
 	TILESTATE_NONE           = 0x0000,
 	TILESTATE_PROTECTIONZONE = 0x0001,
@@ -33,7 +32,7 @@ enum {
 	TILESTATE_NOLOGOUT       = 0x0008,
 	TILESTATE_PVPZONE        = 0x0010,
 	TILESTATE_REFRESH        = 0x0020,
-	// Internal 
+	// Internal
 	TILESTATE_SELECTED  = 0x0001,
 	TILESTATE_UNIQUE    = 0x0002,
 	TILESTATE_BLOCKING  = 0x0004,
@@ -98,7 +97,7 @@ public: //Functions
 	// PZ
 	bool isPZ() const { return testFlags(mapflags, TILESTATE_PROTECTIONZONE); }
 	void setPZ(bool pz) {
-		if (pz) {
+		if(pz) {
 			mapflags |= TILESTATE_PROTECTIONZONE;
 		} else {
 			mapflags &= ~TILESTATE_PROTECTIONZONE;
@@ -154,13 +153,13 @@ public: //Functions
 
 	bool hasOptionalBorder() const { return testFlags(statflags, TILESTATE_OP_BORDER); }
 	void setOptionalBorder(bool b) {
-		if (b) {
+		if(b) {
 			statflags |= TILESTATE_OP_BORDER;
 		} else {
 			statflags &= ~TILESTATE_OP_BORDER;
 		}
 	}
-	
+
 	// Get the (first) wall of this tile
 	Item* getWall() const;
 	bool hasWall() const;
@@ -251,10 +250,7 @@ inline bool Tile::isHouseExit() const {
 inline bool Tile::hasHouseExit(uint32_t exit) const {
 	const HouseExitList* house_exits = getHouseExits();
 	if(house_exits) {
-		for(HouseExitList::const_iterator iter = house_exits->begin();
-				iter != house_exits->end();
-				++iter)
-		{
+		for(HouseExitList::const_iterator iter = house_exits->begin(); iter != house_exits->end(); ++iter) {
 			if(*iter == exit) {
 				return true;
 			}
@@ -286,6 +282,5 @@ inline void Tile::unsetStatFlags(uint16_t _flags) {
 inline uint16_t Tile::getStatFlags() const {
 	return statflags;
 }
-
 
 #endif

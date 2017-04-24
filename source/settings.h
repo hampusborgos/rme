@@ -42,6 +42,8 @@ namespace Config {
 		HIGHLIGHT_ITEMS,
 		SHOW_ITEMS,
 		SHOW_BLOCKING,
+		SHOW_TOOLTIPS,
+		SHOW_PREVIEW,
 		SHOW_ONLY_TILEFLAGS,
 		SHOW_ONLY_MODIFIED_TILES,
 		HIDE_ITEMS_WHEN_ZOOMED,
@@ -71,7 +73,7 @@ namespace Config {
 		USE_OTGZ,
 		SAVE_WITH_OTB_MAGIC_NUMBER,
 		REPLACE_SIZE,
-		
+
 		USE_LARGE_CONTAINER_ICONS,
 		USE_LARGE_CHOOSE_ITEM_ICONS,
 		USE_LARGE_TERRAIN_TOOLBAR,
@@ -85,11 +87,11 @@ namespace Config {
 		PALETTE_DOODAD_STYLE,
 		PALETTE_ITEM_STYLE,
 		PALETTE_RAW_STYLE,
-		
+
 		TIBIA_DATA_DIRS,
 		DEFAULT_CLIENT_VERSION,
 		CHECK_SIGNATURES,
-		
+
 		CURSOR_RED,
 		CURSOR_GREEN,
 		CURSOR_BLUE,
@@ -130,6 +132,9 @@ namespace Config {
 		NUMERICAL_HOTKEYS,
 		RECENT_FILES,
 
+		RECENT_EDITED_MAP_PATH,
+		RECENT_EDITED_MAP_POSITION,
+
 		LAST,
 	};
 }
@@ -145,11 +150,11 @@ public:
 	int getInteger(uint32_t key) const;
 	float getFloat(uint32_t key) const;
 	std::string getString(uint32_t key) const;
-	
+
 	void setInteger(uint32_t key, int newval);
 	void setFloat(uint32_t key, float newval);
 	void setString(uint32_t key, std::string newval);
-	
+
 	wxConfigBase& getConfigObject();
 	void setDefaults() {IO(DEFAULT);}
 	void load();
@@ -182,7 +187,7 @@ public:
 			else if(dv.type == TYPE_FLOAT) floatval = dv.floatval;
 			else intval = 0;
 		};
-		
+
 		std::string str();
 	private:
 		DynamicType type;
@@ -191,7 +196,7 @@ public:
 			std::string* strval;
 			float floatval;
 		};
-		
+
 		friend class Settings;
 	};
 private:
@@ -207,6 +212,6 @@ private:
 #endif
 };
 
-extern Settings settings;
+extern Settings g_settings;
 
 #endif

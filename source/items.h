@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ class GameSprite;
 class GameSprite;
 class ItemDatabase;
 
-extern ItemDatabase item_db;
+extern ItemDatabase g_items;
 
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
@@ -118,9 +118,9 @@ enum itemattrib_t {
 	ITEM_ATTR_ARMOR2,
 	ITEM_ATTR_WRITEABLE2,
 	ITEM_ATTR_LIGHT2,
-	
+
 	ITEM_ATTR_TOPORDER,
-	
+
 	ITEM_ATTR_WRITEABLE3,
 
 	ITEM_ATTR_LAST
@@ -128,8 +128,8 @@ enum itemattrib_t {
 
 enum itemflags_t {
 	FLAG_BLOCK_SOLID = 1,
-	FLAG_BLOCK_PROJECTILE = 2, 
-	FLAG_BLOCK_PATHFIND = 4, 
+	FLAG_BLOCK_PROJECTILE = 2,
+	FLAG_BLOCK_PATHFIND = 4,
 	FLAG_HAS_HEIGHT = 8,
 	FLAG_USEABLE = 16,
 	FLAG_PICKUPABLE = 32,
@@ -266,7 +266,7 @@ public:
 	RAWBrush* raw_brush;
 	bool is_metaitem;
 	// This is needed as a consequence of the item palette & the raw palette
-	// using the same brushes ("others" category consists of items with this 
+	// using the same brushes ("others" category consists of items with this
 	// flag set to false)
 	bool has_raw;
 	bool in_other_tileset;
@@ -294,7 +294,7 @@ public:
 	uint32_t       charges;
 	bool           client_chargeable;
 	bool           extra_chargeable;
-	
+
 	bool           isVertical;
 	bool           isHorizontal;
 	bool           isHangable;
@@ -337,7 +337,7 @@ class ItemDatabase {
 public:
 	ItemDatabase();
 	~ItemDatabase();
-	
+
 	void clear();
 
 	ItemType& operator[](size_t id) {return getItemType(id);}

@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -32,6 +32,7 @@ Selection::Selection(Editor& editor) :
 	session(nullptr),
 	subsession(nullptr)
 {
+	////
 }
 
 Selection::~Selection()
@@ -43,14 +44,13 @@ Selection::~Selection()
 Position Selection::minPosition() const
 {
 	Position minPos(0x10000, 0x10000, 0x10);
-	for (TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile)
-	{
+	for(TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
 		Position pos((*tile)->getPosition());
-		if (minPos.x > pos.x)
+		if(minPos.x > pos.x)
 			minPos.x = pos.x;
-		if (minPos.y > pos.y)
+		if(minPos.y > pos.y)
 			minPos.y = pos.y;
-		if (minPos.z > pos.z)
+		if(minPos.z > pos.z)
 			minPos.z = pos.z;
 	}
 	return minPos;
@@ -59,14 +59,13 @@ Position Selection::minPosition() const
 Position Selection::maxPosition() const
 {
 	Position maxPos(0, 0, 0);
-	for (TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile)
-	{
+	for(TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
 		Position pos((*tile)->getPosition());
-		if (maxPos.x < pos.x)
+		if(maxPos.x < pos.x)
 			maxPos.x = pos.x;
-		if (maxPos.y < pos.y)
+		if(maxPos.y < pos.y)
 			maxPos.y = pos.y;
-		if (maxPos.z < pos.z)
+		if(maxPos.z < pos.z)
 			maxPos.z = pos.z;
 	}
 	return maxPos;
@@ -85,7 +84,7 @@ void Selection::add(Tile* tile, Item* item)
 	Tile* new_tile = tile->deepCopy(editor.map);
 	item->deselect();
 
-	if(settings.getInteger(Config::BORDER_IS_GROUND))
+	if(g_settings.getInteger(Config::BORDER_IS_GROUND))
 		if(item->isBorder())
 			new_tile->selectGround();
 
@@ -145,7 +144,7 @@ void Selection::remove(Tile* tile, Item* item)
 	item->deselect();
 	Tile* new_tile = tile->deepCopy(editor.map);
 	if(tmp) item->select();
-	if(item->isBorder() && settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
+	if(item->isBorder() && g_settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -207,20 +206,15 @@ void Selection::removeInternal(Tile* tile)
 
 	TileVector::iterator end_iter = tiles.end();
 	do {
-		if(erase_iterator == end_iter)
-		{
+		if(erase_iterator == end_iter) {
 			erase_iterator = tiles.begin();
 		}
-		if(*erase_iterator == tile)
-		{
+		if(*erase_iterator == tile) {
 			// Swap & pop trick
-			if(*erase_iterator == tiles.back())
-			{
+			if(*erase_iterator == tiles.back()) {
 				tiles.pop_back();
 				erase_iterator = tiles.begin();
-			}
-			else
-			{
+			} else {
 				std::swap(*erase_iterator, tiles.back());
 				tiles.pop_back();
 				erase_iterator = tiles.begin() + (erase_iterator - tiles.begin());
@@ -236,19 +230,14 @@ void Selection::removeInternal(Tile* tile)
 
 void Selection::clear()
 {
-	if(session)
-	{
-		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++)
-		{
+	if(session) {
+		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++) {
 			Tile* new_tile = (*it)->deepCopy(editor.map);
 			new_tile->deselect();
 			subsession->addChange(newd Change(new_tile));
 		}
-	}
-	else
-	{
-		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++)
-		{
+	} else {
+		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++) {
 			(*it)->deselect();
 		}
 		tiles.clear();
@@ -257,14 +246,10 @@ void Selection::clear()
 
 void Selection::start(SessionFlags flags)
 {
-	if(!(flags & INTERNAL))
-	{
-		if(flags & SUBTHREAD)
-		{
+	if(!(flags & INTERNAL)) {
+		if(flags & SUBTHREAD) {
 			;
-		}
-		else
-		{
+		} else {
 			session = editor.actionQueue->createBatch(ACTION_SELECT);
 		}
 		subsession = editor.actionQueue->createAction(ACTION_SELECT);
@@ -276,8 +261,7 @@ void Selection::start(SessionFlags flags)
 void Selection::commit()
 {
 	erase_iterator = tiles.begin();
-	if(session)
-	{
+	if(session) {
 		ASSERT(subsession);
 		// We need to step out of the session before we do the action, else peril awaits us!
 		BatchAction* tmp = session;
@@ -295,15 +279,11 @@ void Selection::commit()
 void Selection::finish(SessionFlags flags)
 {
 	erase_iterator = tiles.begin();
-	if(!(flags & INTERNAL))
-	{
-		if(flags & SUBTHREAD)
-		{
+	if(!(flags & INTERNAL)) {
+		if(flags & SUBTHREAD) {
 			ASSERT(subsession);
 			subsession = nullptr;
-		}
-		else
-		{
+		} else {
 			ASSERT(session);
 			ASSERT(subsession);
 			// We need to exit the session before we do the action, else peril awaits us!
@@ -322,18 +302,14 @@ void Selection::finish(SessionFlags flags)
 
 void Selection::updateSelectionCount()
 {
-	if(size() > 0)
-	{
+	if(size() > 0) {
 		wxString ss;
-		if(size() == 1)
-		{
-			ss << wxT("One tile selected.");
+		if(size() == 1) {
+			ss << "One tile selected.";
+		} else {
+			ss << size() << " tiles selected.";
 		}
-		else
-		{
-			ss << size() << wxT(" tiles selected.");
-		}
-		gui.SetStatusText(ss);
+		g_gui.SetStatusText(ss);
 	}
 }
 
@@ -356,11 +332,12 @@ SelectionThread::SelectionThread(Editor& editor, Position start, Position end) :
 	selection(editor),
 	result(nullptr)
 {
-	
+	////
 }
 
 SelectionThread::~SelectionThread()
 {
+	////
 }
 
 void SelectionThread::Execute()
@@ -372,12 +349,9 @@ void SelectionThread::Execute()
 wxThread::ExitCode SelectionThread::Entry()
 {
 	selection.start(Selection::SUBTHREAD);
-	for(int z = start.z; z >= end.z; --z)
-	{
-		for(int x = start.x; x <= end.x; ++x)
-		{
-			for(int y = start.y; y <= end.y; ++y)
-			{
+	for(int z = start.z; z >= end.z; --z) {
+		for(int x = start.x; x <= end.x; ++x) {
+			for(int y = start.y; y <= end.y; ++y) {
 				Tile* tile = editor.map.getTile(x, y, z);
 				if(!tile)
 					continue;
@@ -385,8 +359,7 @@ wxThread::ExitCode SelectionThread::Entry()
 				selection.add(tile);
 			}
 		}
-		if(z <= 7 && settings.getInteger(Config::COMPENSATED_SELECT))
-		{
+		if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 			++start.x; ++start.y;
 			++end.x; ++end.y;
 		}

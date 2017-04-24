@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -33,6 +33,7 @@ class Creature;
 class MainFrame;
 class MapWindow;
 class wxEventLoopBase;
+class wxSingleInstanceChecker;
 
 class Application : public wxApp
 {
@@ -40,18 +41,24 @@ public:
 	~Application();
 	virtual bool OnInit();
 	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
+	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
+private:
+	bool m_startup;
+	wxString m_fileToOpen;
+
 	void FixVersionDiscrapencies();
-	std::pair<bool, FileName> ParseCommandLineMap();
+	bool ParseCommandLineMap(wxString& fileName);
 
 	virtual void OnFatalException();
 
 #ifdef _USE_PROCESS_COM
-	RMEProcessServer* proc_server;
+	RMEProcessServer* m_proc_server;
+	wxSingleInstanceChecker* m_single_instance_checker;
 #endif
-	bool startup;
+
 };
 
 class MainMenuBar;

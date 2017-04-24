@@ -18,7 +18,7 @@ public:
 	~PaletteWindow();
 
 	// Interface
-	// Reloads layout settings from settings (and using map)
+	// Reloads layout g_settings from g_settings (and using map)
 	void ReloadSettings(Map* from);
 	// Flushes all pages and forces them to be reloaded from the palette data again
 	void InvalidateContents();
@@ -41,7 +41,7 @@ public:
 	virtual void OnUpdateBrushSize(BrushShape shape, int size);
 	// Updates the content of the palette (eg. houses, creatures)
 	virtual void OnUpdate(Map* map);
-	
+
 	// wxWidgets Event Handlers
 	void OnSwitchingPage(wxChoicebookEvent& event);
 	void OnPageChanged(wxChoicebookEvent& event);
@@ -56,7 +56,7 @@ protected:
 	static PalettePanel* CreateHousePalette(wxWindow* parent, const TilesetContainer& tilesets);
 	static PalettePanel* CreateWaypointPalette(wxWindow* parent, const TilesetContainer& tilesets);
 	static PalettePanel* CreateRAWPalette(wxWindow* parent, const TilesetContainer& tilesets);
-	
+
 	wxChoicebook* choicebook;
 
 	BrushPalettePanel* terrain_palette;

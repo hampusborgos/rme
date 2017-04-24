@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ public:
 	void OnClickApply(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
-	
+
 	void OnCollapsiblePane(wxCollapsiblePaneEvent&);
 
 protected:
@@ -53,7 +53,7 @@ protected:
 	wxSpinCtrl* undo_mem_size_spin;
 	wxSpinCtrl* worker_threads_spin;
 	wxSpinCtrl* replace_size_spin;
-	
+
 	// Editor
 	wxCheckBox* group_actions_chkbox;
 	wxCheckBox* duplicate_id_warn_chkbox;
@@ -97,7 +97,7 @@ protected:
 	wxCheckBox* large_raw_sizebar_chkbox;
 	wxCheckBox* large_container_icons_chkbox;
 	wxCheckBox* large_pick_item_icons_chkbox;
-	
+
 	wxCheckBox* switch_mousebtn_chkbox;
 	wxCheckBox* doubleclick_properties_chkbox;
 	wxCheckBox* inversed_scroll_chkbox;
@@ -108,7 +108,7 @@ protected:
 	wxChoice* default_version_choice;
 	std::vector<wxDirPickerCtrl*> version_dir_pickers;
 	wxCheckBox* check_sigs_chkbox;
-	
+
 	// Create controls
 	wxChoice* AddPaletteStyleChoice(wxWindow* parent, wxSizer* sizer, const wxString& short_description, const wxString& description, const std::string& setting);
 	void SetPaletteStyleChoice(wxChoice* ctrl, int key);

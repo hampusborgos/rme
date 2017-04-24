@@ -14,10 +14,10 @@ static void mt_set (void *state, unsigned long int s);
 #define M 397
 
 /* most significant w-r bits */
-static const unsigned long UPPER_MASK = 0x80000000UL;   
+static const unsigned long UPPER_MASK = 0x80000000UL;
 
 /* least significant r bits */
-static const unsigned long LOWER_MASK = 0x7fffffffUL;   
+static const unsigned long LOWER_MASK = 0x7fffffffUL;
 
 typedef struct
   {
@@ -36,16 +36,16 @@ mt_get (void *vstate)
 
 #define MAGIC(y) (((y)&0x1) ? 0x9908b0dfUL : 0)
 
-  if (state->mti >= N)
+  if(state->mti >= N)
     {   /* generate N words at one time */
       int kk;
 
-      for (kk = 0; kk < N - M; kk++)
+      for(kk = 0; kk < N - M; kk++)
         {
           unsigned long y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
           mt[kk] = mt[kk + M] ^ (y >> 1) ^ MAGIC(y);
         }
-      for (; kk < N - 1; kk++)
+      for(; kk < N - 1; kk++)
         {
           unsigned long y = (mt[kk] & UPPER_MASK) | (mt[kk + 1] & LOWER_MASK);
           mt[kk] = mt[kk + (M - N)] ^ (y >> 1) ^ MAGIC(y);
@@ -60,7 +60,7 @@ mt_get (void *vstate)
     }
 
   /* Tempering */
-  
+
   k = mt[state->mti];
   k ^= (k >> 11);
   k ^= (k << 7) & 0x9d2c5680UL;
@@ -84,19 +84,19 @@ mt_set (void *vstate, unsigned long int s)
   mt_state_t *state = (mt_state_t *) vstate;
   int i;
 
-  if (s == 0)
+  if(s == 0)
     s = 4357;   /* the default seed is 4357 */
 
   state->mt[0]= s & 0xffffffffUL;
 
-  for (i = 1; i < N; i++)
+  for(i = 1; i < N; i++)
     {
       /* See Knuth's "Art of Computer Programming" Vol. 2, 3rd
          Ed. p.106 for multiplier. */
 
       state->mt[i] =
         (1812433253UL * (state->mt[i-1] ^ (state->mt[i-1] >> 30)) + i);
-      
+
       state->mt[i] &= 0xffffffffUL;
     }
 

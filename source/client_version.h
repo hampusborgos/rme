@@ -157,6 +157,9 @@ enum DatFlags : uint8_t
 	DatFlagCloth = 32,
 	DatFlagMarket = 33,
 	DatFlagUsable = 34,
+	DatFlagWrappable = 35,
+	DatFlagUnwrappable = 36,
+	DatFlagTopEffect = 37,
 
 	DatFlagFloorChange = 252,
 	DatFlagNoMoveAnimation = 253, // 10.10: real value is 16, but we need to do this for backwards compatibility
@@ -182,7 +185,7 @@ class ClientVersion : boost::noncopyable
 public:
 	ClientVersion(OtbVersion otb, std::string versionName, wxString path);
 	~ClientVersion() {}
-	
+
 	static void loadVersions();
 	static void unloadVersions();
 	static void saveVersions();
@@ -197,11 +200,11 @@ public:
 	static ClientVersion* getLatestVersion();
 
 	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}
-	
+
 	bool hasValidPaths() const;
 	bool loadValidPaths();
 	void setClientPath(const FileName& dir);
-	
+
 	bool isVisible() const;
 	std::string getName() const;
 
@@ -218,7 +221,7 @@ public:
 
 private:
 	OtbVersion otb;
-	
+
 	std::string name;
 	bool visible;
 	bool usesFuckedUpCharges;
@@ -248,7 +251,7 @@ private:
 
 inline int VersionComparisonPredicate(ClientVersion* a, ClientVersion* b)
 {
-	if (a->getID() < b->getID()) {
+	if(a->getID() < b->getID()) {
 		return 1;
 	}
 	return 0;

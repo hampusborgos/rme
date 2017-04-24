@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -59,7 +59,7 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 
 	// Create choicebook
 	choicebook = newd wxChoicebook(this, PALETTE_CHOICEBOOK, wxDefaultPosition, wxSize(230, 250));
-	
+
 	terrain_palette = static_cast<BrushPalettePanel*>(CreateTerrainPalette(choicebook, tilesets));
 	choicebook->AddPage(terrain_palette, terrain_palette->GetName());
 
@@ -74,13 +74,13 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 
 	waypoint_palette = static_cast<WaypointPalettePanel*>(CreateWaypointPalette(choicebook, tilesets));
 	choicebook->AddPage(waypoint_palette, waypoint_palette->GetName());
-	
+
 	creature_palette = static_cast<CreaturePalettePanel*>(CreateCreaturePalette(choicebook, tilesets));
 	choicebook->AddPage(creature_palette, creature_palette->GetName());
 
 	raw_palette = static_cast<BrushPalettePanel*>(CreateRAWPalette(choicebook, tilesets));
 	choicebook->AddPage(raw_palette, raw_palette->GetName());
-	
+
 	// Setup sizers
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	choicebook->SetMinSize(wxSize(225, 300));
@@ -93,109 +93,116 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 	Fit();
 }
 
-PaletteWindow::~PaletteWindow() {
-	// ...
+PaletteWindow::~PaletteWindow()
+{
+	////
 }
 
-PalettePanel* PaletteWindow::CreateTerrainPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateTerrainPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_TERRAIN);
-	panel->SetListType(wxstr(settings.getString(Config::PALETTE_TERRAIN_STYLE)));
+	panel->SetListType(wxstr(g_settings.getString(Config::PALETTE_TERRAIN_STYLE)));
 
 	BrushToolPanel* tool_panel = newd BrushToolPanel(panel);
-	tool_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
+	tool_panel->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 	panel->AddToolPanel(tool_panel);
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
+	size_panel->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateDoodadPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateDoodadPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_DOODAD);
-	panel->SetListType(wxstr(settings.getString(Config::PALETTE_DOODAD_STYLE)));
+	panel->SetListType(wxstr(g_settings.getString(Config::PALETTE_DOODAD_STYLE)));
 
 	panel->AddToolPanel(newd BrushThicknessPanel(panel));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
+	size_panel->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateItemPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateItemPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_ITEM);
-	panel->SetListType(wxstr(settings.getString(Config::PALETTE_ITEM_STYLE)));
+	panel->SetListType(wxstr(g_settings.getString(Config::PALETTE_ITEM_STYLE)));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
+	size_panel->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
 	panel->AddToolPanel(size_panel);
-
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateHousePalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateHousePalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	HousePalettePanel* panel = newd HousePalettePanel(parent);
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
+	size_panel->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
 	panel->AddToolPanel(size_panel);
-
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateWaypointPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateWaypointPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	WaypointPalettePanel* panel = newd WaypointPalettePanel(parent);
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateCreaturePalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateCreaturePalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	CreaturePalettePanel* panel = newd CreaturePalettePanel(parent);
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetContainer& tilesets) {
+PalettePanel* PaletteWindow::CreateRAWPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
 	BrushPalettePanel* panel = newd BrushPalettePanel(parent, tilesets, TILESET_RAW);
-	panel->SetListType(wxstr(settings.getString(Config::PALETTE_RAW_STYLE)));
+	panel->SetListType(wxstr(g_settings.getString(Config::PALETTE_RAW_STYLE)));
 
 	BrushSizePanel* size_panel = newd BrushSizePanel(panel);
-	size_panel->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
+	size_panel->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
 	panel->AddToolPanel(size_panel);
 
 	return panel;
 }
 
-void PaletteWindow::ReloadSettings(Map* map) {
+void PaletteWindow::ReloadSettings(Map* map)
+{
 	if(terrain_palette) {
-		terrain_palette->SetListType(wxstr(settings.getString(Config::PALETTE_TERRAIN_STYLE)));
-		terrain_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
+		terrain_palette->SetListType(wxstr(g_settings.getString(Config::PALETTE_TERRAIN_STYLE)));
+		terrain_palette->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_TERRAIN_TOOLBAR));
 	}
 	if(doodad_palette) {
-		doodad_palette->SetListType(wxstr(settings.getString(Config::PALETTE_DOODAD_STYLE)));
-		doodad_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
+		doodad_palette->SetListType(wxstr(g_settings.getString(Config::PALETTE_DOODAD_STYLE)));
+		doodad_palette->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_DOODAD_SIZEBAR));
 	}
 	if(house_palette) {
 		house_palette->SetMap(map);
-		house_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
+		house_palette->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_HOUSE_SIZEBAR));
 	}
 	if(waypoint_palette) {
 		waypoint_palette->SetMap(map);
 	}
 	if(item_palette) {
-		item_palette->SetListType(wxstr(settings.getString(Config::PALETTE_ITEM_STYLE)));
-		item_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
+		item_palette->SetListType(wxstr(g_settings.getString(Config::PALETTE_ITEM_STYLE)));
+		item_palette->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_ITEM_SIZEBAR));
 	}
 	if(raw_palette) {
-		raw_palette->SetListType(wxstr(settings.getString(Config::PALETTE_RAW_STYLE)));
-		raw_palette->SetToolbarIconSize(settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
+		raw_palette->SetListType(wxstr(g_settings.getString(Config::PALETTE_RAW_STYLE)));
+		raw_palette->SetToolbarIconSize(g_settings.getBoolean(Config::USE_LARGE_RAW_SIZEBAR));
 	}
 	InvalidateContents();
 }
 
-
-void PaletteWindow::LoadCurrentContents() {
+void PaletteWindow::LoadCurrentContents()
+{
 	if(!choicebook) return;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	panel->LoadCurrentContents();
@@ -204,7 +211,8 @@ void PaletteWindow::LoadCurrentContents() {
 	Update();
 }
 
-void PaletteWindow::InvalidateContents() {
+void PaletteWindow::InvalidateContents()
+{
 	if(!choicebook) return;
 	for(size_t iz = 0; iz < choicebook->GetPageCount(); ++iz) {
 		PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetPage(iz));
@@ -222,7 +230,8 @@ void PaletteWindow::InvalidateContents() {
 	}
 }
 
-void PaletteWindow::SelectPage(PaletteType id) {
+void PaletteWindow::SelectPage(PaletteType id)
+{
 	if(!choicebook) return;
 	if(id == GetSelectedPage()) {
 		return;
@@ -238,29 +247,34 @@ void PaletteWindow::SelectPage(PaletteType id) {
 	}
 }
 
-Brush* PaletteWindow::GetSelectedBrush() const {
+Brush* PaletteWindow::GetSelectedBrush() const
+{
 	if(!choicebook) return nullptr;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	return panel->GetSelectedBrush();
 }
 
-int PaletteWindow::GetSelectedBrushSize() const {
+int PaletteWindow::GetSelectedBrushSize() const
+{
 	if(!choicebook) return 0;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	return panel->GetSelectedBrushSize();
 }
 
-PaletteType PaletteWindow::GetSelectedPage() const {
+PaletteType PaletteWindow::GetSelectedPage() const
+{
 	if(!choicebook) return TILESET_UNKNOWN;
 	PalettePanel* panel = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	ASSERT(panel);
 	return panel->GetType();
 }
 
-bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary) {
-	if(!choicebook) return false;
+bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary)
+{
+	if(!choicebook || !whatbrush)
+		return false;
 
-	if(dynamic_cast<const HouseBrush*>(whatbrush) && house_palette) {
+	if(whatbrush->isHouse() && house_palette) {
 		house_palette->SelectBrush(whatbrush);
 		SelectPage(TILESET_HOUSE);
 		return true;
@@ -269,34 +283,39 @@ bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary) {
 	switch(primary) {
 		case TILESET_TERRAIN: {
 			// This is already searched first
-		} break;
+			break;
+		}
 		case TILESET_DOODAD: {
 			// Ok, search doodad before terrain
 			if(doodad_palette && doodad_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_DOODAD);
 				return true;
 			}
-		} break;
+			break;
+		}
 		case TILESET_ITEM: {
 			if(item_palette && item_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_ITEM);
 				return true;
 			}
-		} break;
+			break;
+		}
 		case TILESET_CREATURE: {
 			if(creature_palette && creature_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_CREATURE);
 				return true;
 			}
-		} break;
+			break;
+		}
 		case TILESET_RAW: {
 			if(raw_palette && raw_palette->SelectBrush(whatbrush)) {
 				SelectPage(TILESET_RAW);
 				return true;
 			}
-		} break;
-		default: {
-		} break;
+			break;
+		}
+		default:
+			break;
 	}
 
 	// Test if it's a terrain brush
@@ -340,10 +359,11 @@ bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary) {
 	return false;
 }
 
-void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event) {
+void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event)
+{
 	event.Skip();
 	if(!choicebook) return;
-	
+
 	wxWindow* old_page = choicebook->GetPage(choicebook->GetSelection());
 	PalettePanel* old_panel = dynamic_cast<PalettePanel*>(old_page);
 	if(old_panel) {
@@ -357,19 +377,22 @@ void PaletteWindow::OnSwitchingPage(wxChoicebookEvent& event) {
 	}
 }
 
-void PaletteWindow::OnPageChanged(wxChoicebookEvent& event) {
+void PaletteWindow::OnPageChanged(wxChoicebookEvent& event)
+{
 	if(!choicebook) return;
-	gui.SelectBrush();
+	g_gui.SelectBrush();
 }
 
-void PaletteWindow::OnUpdateBrushSize(BrushShape shape, int size) {
+void PaletteWindow::OnUpdateBrushSize(BrushShape shape, int size)
+{
 	if(!choicebook) return;
 	PalettePanel* page = dynamic_cast<PalettePanel*>(choicebook->GetCurrentPage());
 	ASSERT(page);
 	page->OnUpdateBrushSize(shape, size);
 }
 
-void PaletteWindow::OnUpdate(Map* map) {
+void PaletteWindow::OnUpdate(Map* map)
+{
 	if(creature_palette) {
 		creature_palette->OnUpdate();
 	}
@@ -382,14 +405,16 @@ void PaletteWindow::OnUpdate(Map* map) {
 	}
 }
 
-void PaletteWindow::OnKey(wxKeyEvent& event) {
-	if(gui.GetCurrentTab() != nullptr) {
-		gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
+void PaletteWindow::OnKey(wxKeyEvent& event)
+{
+	if(g_gui.GetCurrentTab() != nullptr) {
+		g_gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
 	}
 }
 
-void PaletteWindow::OnClose(wxCloseEvent& event) {
-	if(event.CanVeto() == false) {
+void PaletteWindow::OnClose(wxCloseEvent& event)
+{
+	if(!event.CanVeto()) {
 		// We can't do anything! This sucks!
 		// (application is closed, we have to destroy ourselves)
 		Destroy();

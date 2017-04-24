@@ -5,12 +5,12 @@
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
@@ -26,12 +26,12 @@
 // Container
 Container::Container(const uint16_t type) : Item(type, 0)
 {
-	//
+	////
 }
 
 Container::~Container()
 {
-	for (Item* item : contents) {
+	for(Item* item : contents) {
 		delete item;
 	}
 }
@@ -39,20 +39,18 @@ Container::~Container()
 Item* Container::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
-	
 	Container* copyContainer = dynamic_cast<Container*>(copy);
-	if (copyContainer) {
-		for (Item* item : contents) {
+	if(copyContainer) {
+		for(Item* item : contents) {
 			copyContainer->contents.push_back(item->deepCopy());
 		}
 	}
-	
 	return copy;
 }
 
 Item* Container::getItem(size_t index) const
 {
-	if (index < contents.size()) {
+	if(index < contents.size()) {
 		return contents[index];
 	}
 	return nullptr;
@@ -60,14 +58,14 @@ Item* Container::getItem(size_t index) const
 
 double Container::getWeight()
 {
-	return item_db[id].weight;
+	return g_items[id].weight;
 }
 
 // Teleport
 Teleport::Teleport(const uint16_t type) : Item(type, 0),
 	destination(0, 0, 0)
 {
-	//
+	////
 }
 
 Item* Teleport::deepCopy() const
@@ -81,7 +79,7 @@ Item* Teleport::deepCopy() const
 Door::Door(const uint16_t type) : Item(type, 0),
 	doorId(0)
 {
-	//
+	////
 }
 
 Item* Door::deepCopy() const
@@ -95,14 +93,14 @@ Item* Door::deepCopy() const
 Depot::Depot(const uint16_t type) : Item(type, 0),
 	depotId(0)
 {
-	//
+	////
 }
 
 Item* Depot::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
 	Depot* copy_depot = dynamic_cast<Depot*>(copy);
-	if (copy_depot) {
+	if(copy_depot) {
 		copy_depot->depotId = depotId;
 	}
 	return copy;

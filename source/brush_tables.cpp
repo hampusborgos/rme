@@ -12,7 +12,8 @@
 //=============================================================================
 // Border lookup tables
 
-void GroundBrush::init() {
+void GroundBrush::init()
+{
 	GroundBrush::border_types[0] // 0
 		= BORDER_NONE;
 	GroundBrush::border_types[TILE_NORTHWEST] // 1

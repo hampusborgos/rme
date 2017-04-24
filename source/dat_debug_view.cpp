@@ -6,14 +6,14 @@
 #include "gui.h"
 
 // ============================================================================
-// 
+//
 
-class DatDebugViewListBox : public wxVListBox 
+class DatDebugViewListBox : public wxVListBox
 {
 public:
 	DatDebugViewListBox(wxWindow* parent, wxWindowID id);
 	~DatDebugViewListBox();
-	
+
 	void OnDrawItem(wxDC& dc, const wxRect& rect, size_t index) const;
 	wxCoord OnMeasureItem(size_t index) const;
 
@@ -26,11 +26,9 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 	wxVListBox(parent, id, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE)
 {
 	int n = 0;
-	for(int id = 0; id < gui.gfx.getItemSpriteMaxID(); ++id)
-	{
-		Sprite* spr = gui.gfx.getSprite(id);
-		if(spr)
-		{
+	for(int id = 0; id < g_gui.gfx.getItemSpriteMaxID(); ++id) {
+		Sprite* spr = g_gui.gfx.getSprite(id);
+		if(spr) {
 			sprites[n] = spr;
 			++n;
 		}
@@ -38,8 +36,9 @@ DatDebugViewListBox::DatDebugViewListBox(wxWindow* parent, wxWindowID id) :
 	SetItemCount(n);
 }
 
-DatDebugViewListBox::~DatDebugViewListBox() 
+DatDebugViewListBox::~DatDebugViewListBox()
 {
+	////
 }
 
 void DatDebugViewListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
@@ -48,12 +47,12 @@ void DatDebugViewListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) con
 	if(spr_iter != sprites.end())
 		spr_iter->second->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
-	if(int(n) == GetSelection()) 
-	{
-		dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
-	}
-	else 
-	{
+	if(IsSelected(n)) {
+		if(HasFocus())
+			dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
+		else
+			dc.SetTextForeground(wxColor(0x00, 0x00, 0xFF));
+	} else {
 		dc.SetTextForeground(wxColor(0x00, 0x00, 0x00));
 	}
 
@@ -66,7 +65,7 @@ wxCoord DatDebugViewListBox::OnMeasureItem(size_t n) const
 }
 
 // ============================================================================
-// 
+//
 
 BEGIN_EVENT_TABLE(DatDebugView, wxPanel)
 	EVT_TEXT(wxID_ANY, DatDebugView::OnTextChange)
@@ -77,7 +76,7 @@ DatDebugView::DatDebugView(wxWindow* parent) : wxPanel(parent)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	search_field = newd wxTextCtrl(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize);
+	search_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	search_field->SetFocus();
 	sizer->Add(search_field, 0, wxEXPAND, 2);
 
@@ -86,17 +85,21 @@ DatDebugView::DatDebugView(wxWindow* parent) : wxPanel(parent)
 	sizer->Add(item_list, 1, wxEXPAND | wxALL, 2);
 
 	SetSizerAndFit(sizer);
+	Centre(wxBOTH);
 }
 
 DatDebugView::~DatDebugView()
 {
+	////
 }
 
 void DatDebugView::OnTextChange(wxCommandEvent& evt)
 {
+	////
 }
 
 void DatDebugView::OnClickList(wxCommandEvent& evt)
 {
+	////
 }
 

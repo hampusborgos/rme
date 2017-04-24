@@ -41,7 +41,7 @@ Map::Map() : BaseMap(),
 
 Map::~Map()
 {
-	// ...
+	////
 }
 
 bool Map::open(const std::string file)
@@ -54,17 +54,16 @@ bool Map::open(const std::string file)
 	IOMapOTBM maploader(getVersion());
 
 	bool success = maploader.loadMap(*this, wxstr(file));
-	
+
 	mapVersion = maploader.version;
 
 	warnings = maploader.getWarnings();
-	
-	if(!success)
-	{
+
+	if(!success) {
 		error = maploader.getError();
 		return false;
 	}
-	
+
 	has_changed = false;
 
 	wxFileName fn = wxstr(file);
@@ -79,18 +78,14 @@ bool Map::open(const std::string file)
 	int count = 0;
 	out << "\tstd::vector<uint16_t> veckey, vecval;\n\n";
 
-	for(int x = 20; ; x += 2)
-	{
+	for(int x = 20; ; x += 2) {
 		int y = 22;
-		Tile* old = getTile(x, y, 7);
-		if(old)
-		{
+		Tile* old = getTile(x, y, GROUND_LAYER);
+		if(old) {
 			y -= 2;
-			Tile* new_ = getTile(x, y, 7);
-			if(new_)
-			{
-				if(old->ground || old->items.size())
-				{
+			Tile* new_ = getTile(x, y, GROUND_LAYER);
+			if(new_) {
+				if(old->ground || old->items.size()) {
 					out << "\tvecval.clear();\n";
 					if(new_->ground)
 						out << "\tvecval.push_back(" << new_->ground->getID() << ");\n";
@@ -101,8 +96,7 @@ bool Map::open(const std::string file)
 						out << "\treplacement_map.stm[" << old->ground->getID() << "] = vecval;\n\n";
 					else if(old->ground == nullptr && old->items.size() == 1) // Single item
 						out << "\treplacement_map.stm[" << old->items.front()->getID() << "] = vecval;\n\n";
-					else
-					{
+					else {
 						// Many items
 						out << "\tveckey.clear();\n";
 						if(old->ground)
@@ -125,8 +119,7 @@ bool Map::open(const std::string file)
 
 bool Map::convert(MapVersion to, bool showdialog)
 {
-	if(mapVersion.client == to.client)
-	{
+	if(mapVersion.client == to.client) {
 		// Only OTBM version differs
 		// No changes necessary
 		mapVersion = to;
@@ -138,13 +131,13 @@ bool Map::convert(MapVersion to, bool showdialog)
 	if(to.otbm == MAP_OTBM_4 && to.client < CLIENT_VERSION_850)
 		return false;
 
-	if(mapVersion.client >= CLIENT_VERSION_760 && to.client < CLIENT_VERSION_760) 
+	if(mapVersion.client >= CLIENT_VERSION_760 && to.client < CLIENT_VERSION_760)
 		convert(getReplacementMapFrom760To740(), showdialog);
 
-	if(mapVersion.client < CLIENT_VERSION_810 && to.client >= CLIENT_VERSION_810) 
+	if(mapVersion.client < CLIENT_VERSION_810 && to.client >= CLIENT_VERSION_810)
 		convert(getReplacementMapFrom800To810(), showdialog);
 
-	if(mapVersion.client == CLIENT_VERSION_854_BAD && to.client >= CLIENT_VERSION_854) 
+	if(mapVersion.client == CLIENT_VERSION_854_BAD && to.client >= CLIENT_VERSION_854)
 		convert(getReplacementMapFrom854To854(), showdialog);
 	*/
 	mapVersion = to;
@@ -155,21 +148,20 @@ bool Map::convert(MapVersion to, bool showdialog)
 bool Map::convert(const ConversionMap& rm, bool showdialog)
 {
 	if(showdialog)
-		gui.CreateLoadBar(wxT("Converting map ..."));
+		g_gui.CreateLoadBar("Converting map ...");
 
 	uint64_t tiles_done = 0;
 	std::vector<uint16_t> id_list;
 
 	//std::ofstream conversions("converted_items.txt");
 
-	for(MapIterator miter = begin(); miter != end(); ++miter)
-	{
+	for(MapIterator miter = begin(); miter != end(); ++miter) {
 		Tile* tile = (*miter)->get();
 		ASSERT(tile);
 
 		if(tile->size() == 0)
 			continue;
-		
+
 		// id_list try MTM conversion
 		id_list.clear();
 
@@ -180,11 +172,10 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 				id_list.push_back((*item_iter)->getID());
 
 		std::sort(id_list.begin(), id_list.end());
-		
+
 		ConversionMap::MTM::const_iterator cfmtm = rm.mtm.end();
 
-		while(id_list.size())
-		{
+		while(id_list.size()) {
 			cfmtm = rm.mtm.find(id_list);
 			if(cfmtm != rm.mtm.end())
 				break;
@@ -194,46 +185,38 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 		// Keep track of how many items have been inserted at the bottom
 		size_t inserted_items = 0;
 
-		if(cfmtm != rm.mtm.end())
-		{
+		if(cfmtm != rm.mtm.end()) {
 			const std::vector<uint16_t>& v = cfmtm->first;
 
-			if(tile->ground && std::find(v.begin(), v.end(), tile->ground->getID()) != v.end())
-			{
+			if(tile->ground && std::find(v.begin(), v.end(), tile->ground->getID()) != v.end()) {
 				delete tile->ground;
 				tile->ground = nullptr;
 			}
 
-			for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end(); )
-			{
-				if(std::find(v.begin(), v.end(), (*item_iter)->getID()) != v.end())
-				{
+			for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end(); ) {
+				if(std::find(v.begin(), v.end(), (*item_iter)->getID()) != v.end()) {
 					delete *item_iter;
 					item_iter = tile->items.erase(item_iter);
 				}
 				else
 					++item_iter;
 			}
-		
+
 			const std::vector<uint16_t>& new_items = cfmtm->second;
-			for(std::vector<uint16_t>::const_iterator iit = new_items.begin(); iit != new_items.end(); ++iit)
-			{
+			for(std::vector<uint16_t>::const_iterator iit = new_items.begin(); iit != new_items.end(); ++iit) {
 				Item* item = Item::Create(*iit);
 				if(item->isGroundTile())
 					tile->ground = item;
-				else
-				{
+				else {
 					tile->items.insert(tile->items.begin(), item);
 					++inserted_items;
 				}
 			}
 		}
 
-		if(tile->ground)
-		{
+		if(tile->ground) {
 			ConversionMap::STM::const_iterator cfstm = rm.stm.find(tile->ground->getID());
-			if(cfstm != rm.stm.end())
-			{
+			if(cfstm != rm.stm.end()) {
 				uint16_t aid = tile->ground->getActionID();
 				uint16_t uid = tile->ground->getUniqueID();
 				delete tile->ground;
@@ -241,18 +224,14 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 
 				const std::vector<uint16_t>& v = cfstm->second;
 				//conversions << "Converted " << tile->getX() << ":" << tile->getY() << ":" << tile->getZ() << " " << id << " -> ";
-				for(std::vector<uint16_t>::const_iterator iit = v.begin(); iit != v.end(); ++iit)
-				{
+				for(std::vector<uint16_t>::const_iterator iit = v.begin(); iit != v.end(); ++iit) {
 					Item* item = Item::Create(*iit);
 					//conversions << *iit << " ";
-					if(item->isGroundTile())
-					{
+					if(item->isGroundTile()) {
 						item->setActionID(aid);
 						item->setUniqueID(uid);
 						tile->addItem(item);
-					}
-					else
-					{
+					} else {
 						tile->items.insert(tile->items.begin(), item);
 						++inserted_items;
 					}
@@ -261,20 +240,17 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 			}
 		}
 
-		for(ItemVector::iterator replace_item_iter = tile->items.begin() + inserted_items; replace_item_iter != tile->items.end(); )
-		{
+		for(ItemVector::iterator replace_item_iter = tile->items.begin() + inserted_items; replace_item_iter != tile->items.end(); ) {
 			uint16_t id = (*replace_item_iter)->getID();
 			ConversionMap::STM::const_iterator cf = rm.stm.find(id);
-			if(cf != rm.stm.end())
-			{
+			if(cf != rm.stm.end()) {
 				//uint16_t aid = (*replace_item_iter)->getActionID();
 				//uint16_t uid = (*replace_item_iter)->getUniqueID();
 				delete *replace_item_iter;
 
 				replace_item_iter = tile->items.erase(replace_item_iter);
 				const std::vector<uint16_t>& v = cf->second;
-				for(std::vector<uint16_t>::const_iterator iit = v.begin(); iit != v.end(); ++iit)
-				{
+				for(std::vector<uint16_t>::const_iterator iit = v.begin(); iit != v.end(); ++iit) {
 					replace_item_iter = tile->items.insert(replace_item_iter, Item::Create(*iit));
 					//conversions << "Converted " << tile->getX() << ":" << tile->getY() << ":" << tile->getZ() << " " << id << " -> " << *iit << std::endl;
 					++replace_item_iter;
@@ -286,12 +262,12 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 
 		++tiles_done;
 		if(showdialog && tiles_done % 0x10000 == 0) {
-			gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
+			g_gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
 		}
 	}
 
 	if(showdialog)
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 
 	return true;
 }
@@ -299,24 +275,21 @@ bool Map::convert(const ConversionMap& rm, bool showdialog)
 void Map::cleanInvalidTiles(bool showdialog)
 {
 	if(showdialog)
-		gui.CreateLoadBar(wxT("Removing invalid tiles..."));
+		g_gui.CreateLoadBar("Removing invalid tiles...");
 
 	uint64_t tiles_done = 0;
 
-	for(MapIterator miter = begin(); miter != end(); ++miter)
-	{
+	for(MapIterator miter = begin(); miter != end(); ++miter) {
 		Tile* tile = (*miter)->get();
 		ASSERT(tile);
 
 		if(tile->size() == 0)
 			continue;
 
-		for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();)
-		{
-			if(item_db.typeExists((*item_iter)->getID()))
+		for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();) {
+			if(g_items.typeExists((*item_iter)->getID()))
 				++item_iter;
-			else
-			{
+			else {
 				delete *item_iter;
 				item_iter = tile->items.erase(item_iter);
 			}
@@ -324,12 +297,12 @@ void Map::cleanInvalidTiles(bool showdialog)
 
 		++tiles_done;
 		if(showdialog && tiles_done % 0x10000 == 0) {
-			gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
+			g_gui.SetLoadDone(int(tiles_done / double(getTileCount()) * 100.0));
 		}
 	}
 
 	if(showdialog)
-		gui.DestroyLoadBar();
+		g_gui.DestroyLoadBar();
 }
 
 MapVersion Map::getVersion() const
@@ -400,18 +373,15 @@ void Map::setSpawnFilename(const std::string&  new_spawnfile)
 bool Map::addSpawn(Tile* tile)
 {
 	Spawn* spawn = tile->spawn;
-	if(spawn)
-	{
+	if(spawn) {
 		int z = tile->getZ();
 		int start_x = tile->getX() - spawn->getSize();
 		int start_y = tile->getY() - spawn->getSize();
 		int end_x = tile->getX() + spawn->getSize();
 		int end_y = tile->getY() + spawn->getSize();
 
-		for(int y = start_y; y <= end_y; ++y)
-		{
-			for(int x = start_x; x <= end_x; ++x)
-			{
+		for(int y = start_y; y <= end_y; ++y) {
+			for(int x = start_x; x <= end_x; ++x) {
 				TileLocation* ctile_loc = createTileL(x, y, z);
 				ctile_loc->increaseSpawnCount();
 			}
@@ -433,10 +403,8 @@ void Map::removeSpawnInternal(Tile* tile)
 	int end_x = tile->getX() + spawn->getSize();
 	int end_y = tile->getY() + spawn->getSize();
 
-	for(int y = start_y; y <= end_y; ++y)
-	{
-		for(int x = start_x; x <= end_x; ++x)
-		{
+	for(int y = start_y; y <= end_y; ++y) {
+		for(int x = start_x; x <= end_x; ++x) {
 			TileLocation* ctile_loc = getTileL(x, y, z);
 			if(ctile_loc != nullptr && ctile_loc->getSpawnCount() > 0)
 				ctile_loc->decreaseSpawnCount();
@@ -446,8 +414,7 @@ void Map::removeSpawnInternal(Tile* tile)
 
 void Map::removeSpawn(Tile* tile)
 {
-	if(tile->spawn)
-	{
+	if(tile->spawn) {
 		removeSpawnInternal(tile);
 		spawns.removeSpawn(tile);
 	}
@@ -457,13 +424,10 @@ SpawnList Map::getSpawnList(Tile* where)
 {
 	SpawnList list;
 	TileLocation* tile_loc = where->getLocation();
-	if(tile_loc)
-	{
-		if(tile_loc->getSpawnCount() > 0)
-		{
+	if(tile_loc) {
+		if(tile_loc->getSpawnCount() > 0) {
 			uint32_t found = 0;
-			if(where->spawn)
-			{
+			if(where->spawn) {
 				++found;
 				list.push_back(where->spawn);
 			}
@@ -472,35 +436,28 @@ SpawnList Map::getSpawnList(Tile* where)
 			int z = where->getZ();
 			int start_x = where->getX() - 1, end_x = where->getX() + 1;
 			int start_y = where->getY() - 1, end_y = where->getY() + 1;
-			while(found != tile_loc->getSpawnCount())
-			{
-				for(int x = start_x; x <= end_x; ++x)
-				{
+			while(found != tile_loc->getSpawnCount()) {
+				for(int x = start_x; x <= end_x; ++x) {
 					Tile* tile = getTile(x, start_y, z);
-					if(tile && tile->spawn)
-					{
+					if(tile && tile->spawn) {
 						list.push_back(tile->spawn);
 						++found;
 					}
 					tile = getTile(x, end_y, z);
-					if(tile && tile->spawn)
-					{
+					if(tile && tile->spawn) {
 						list.push_back(tile->spawn);
 						++found;
 					}
 				}
 
-				for(int y = start_y + 1; y < end_y; ++y)
-				{
+				for(int y = start_y + 1; y < end_y; ++y) {
 					Tile* tile = getTile(start_x, y, z);
-					if(tile && tile->spawn)
-					{
+					if(tile && tile->spawn) {
 						list.push_back(tile->spawn);
 						++found;
 					}
 					tile = getTile(end_x, y, z);
-					if(tile && tile->spawn)
-					{
+					if(tile && tile->spawn) {
 						list.push_back(tile->spawn);
 						++found;
 					}
@@ -513,7 +470,7 @@ SpawnList Map::getSpawnList(Tile* where)
 	return list;
 }
 
-bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog)
+bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
 	uint8_t* pic = nullptr;
 
@@ -525,13 +482,10 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 		if(size() == 0)
 			return true;
 
-		for(MapIterator mit = begin();
-				mit != end();
-				++mit)
-		{
+		for(MapIterator mit = begin(); mit != end(); ++mit) {
 			if((*mit)->get() == nullptr || (*mit)->empty())
 				continue;
-			
+
 			Position pos = (*mit)->getPosition();
 
 			if(pos.x < min_x)
@@ -552,34 +506,25 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 		int minimap_height = max_y - min_y+1;
 
 		pic = newd uint8_t[minimap_width*minimap_height]; // 1 byte per pixel
-			
+
 		memset(pic, 0, minimap_width*minimap_height);
 
 		int tiles_iterated = 0;
-		for(MapIterator mit = begin();
-				mit != end();
-				++mit)
-		{
+		for(MapIterator mit = begin(); mit != end(); ++mit) {
 			Tile* tile = (*mit)->get();
 			++tiles_iterated;
 			if(tiles_iterated % 8192 == 0 && displaydialog)
-				gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
-				
-			if(tile->empty())
-				continue;
-			if(tile->getZ() != floor)
+				g_gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
+
+			if(tile->empty() || tile->getZ() != floor)
 				continue;
 
 			//std::cout << "Pixel : " << (tile->getY() - min_y) * width + (tile->getX() - min_x) << std::endl;
 			uint32_t pixelpos = (tile->getY() - min_y) * minimap_width + (tile->getX() - min_x);
 			uint8_t& pixel = pic[pixelpos];
 
-			for(ItemVector::const_reverse_iterator item_iter = tile->items.rbegin();
-					item_iter != tile->items.rend();
-					++item_iter)
-			{
-				if((*item_iter)->getMiniMapColor())
-				{
+			for(ItemVector::const_reverse_iterator item_iter = tile->items.rbegin(); item_iter != tile->items.rend(); ++item_iter) {
+				if((*item_iter)->getMiniMapColor()) {
 					pixel = (*item_iter)->getMiniMapColor();
 					break;
 				}
@@ -593,8 +538,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 		// Create a file for writing
 		FileWriteHandle fh(nstr(filename.GetFullPath()));
 
-		if(fh.isOpen() == false)
-		{
+		if(!fh.isOpen()) {
 			delete[] pic;
 			return false;
 		}
@@ -652,16 +596,13 @@ bool Map::exportMinimap(FileName filename, int floor /*= 7*/, bool displaydialog
 		// Bitmap width must be divisible by four, calculate how much padding we need
 		int padding = ((minimap_width & 3) != 0? 4-(minimap_width & 3) : 0);
 		// Bitmap rows are saved in reverse order
-		for(int y = minimap_height-1; y >= 0; --y)
-		{
+		for(int y = minimap_height-1; y >= 0; --y) {
 			fh.addRAW(pic + y*minimap_width, minimap_width);
-			for(int i = 0; i < padding; ++i)
-			{
+			for(int i = 0; i < padding; ++i) {
 				fh.addU8(0);
 			}
-			if(y % 100 == 0 && displaydialog)
-			{
-				gui.SetLoadDone(90 + int((minimap_height-y) / double(minimap_height) * 10.0));
+			if(y % 100 == 0 && displaydialog) {
+				g_gui.SetLoadDone(90 + int((minimap_height-y) / double(minimap_height) * 10.0));
 			}
 		}
 
