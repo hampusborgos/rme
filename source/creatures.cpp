@@ -326,6 +326,7 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 
 			CreatureType* creatureType = CreatureType::loadFromOTXML(monsterFile, monsterDoc, warnings);
 			if(creatureType) {
+				creatureType->name = creatureName;
 				CreatureType* current = (*this)[creatureType->name];
 				if(current) {
 					*current = *creatureType;
