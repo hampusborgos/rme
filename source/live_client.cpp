@@ -191,7 +191,7 @@ void LiveClient::receive(uint32_t packetSize)
 				logMessage(wxString() + getHostName() + ": Could not receive packet[size: " + std::to_string(bytesReceived) + "], disconnecting client.");
 			} else {
 				wxTheApp->CallAfter([this]() {
-					parsePacket(readMessage);
+					parsePacket(std::move(readMessage));
 					receiveHeader();
 				});
 			}
@@ -338,7 +338,7 @@ void LiveClient::queryNode(int32_t ndx, int32_t ndy, bool underground)
 	queryNodeList.insert(nd);
 }
 
-void LiveClient::parsePacket(NetworkMessage& message)
+void LiveClient::parsePacket(NetworkMessage message)
 {
 	uint8_t packetType;
 	while(message.position < message.buffer.size()) {

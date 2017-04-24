@@ -51,7 +51,7 @@ class LiveClient : public LiveSocket
 		void queryNode(int32_t ndx, int32_t ndy, bool underground);
 
 	protected:
-		void parsePacket(NetworkMessage& message);
+		void parsePacket(NetworkMessage message);
 
 		// parse packets
 		void parseHello(NetworkMessage& message);
