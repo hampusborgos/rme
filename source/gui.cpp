@@ -906,7 +906,7 @@ ScriptingWindow* GUI::ShowScriptingWindow()
 {
 	if(!scripting_window) {
 		scripting_window = newd ScriptingWindow(root);
-		scripting_window->ShowModal();
+		scripting_window->Show(true);
 	} else {
 		scripting_window->Show(true);
 	}
@@ -915,7 +915,7 @@ ScriptingWindow* GUI::ShowScriptingWindow()
 
 void GUI::HideScriptingWindow()
 {
-	if(!scripting_window) {
+	if(scripting_window && scripting_window->IsVisible()) {
 		scripting_window->Show(false);
 	}
 }
