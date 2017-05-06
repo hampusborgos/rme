@@ -1167,7 +1167,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 		}
 	}
 
-	const int pixels_data_size = SPRITE_PIXELS * SPRITE_PIXELS * 4;
+	const int pixels_data_size = SPRITE_PIXELS_SIZE * 4;
 	uint8_t* data = newd uint8_t[pixels_data_size];
 	bool use_alpha = g_gui.gfx.hasTransparency();
 	uint8_t bpp = use_alpha ? 4 : 3;
@@ -1177,7 +1177,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 	// decompress pixels
 	while(read < size && write < pixels_data_size) {
 		int transparent = dump[read] | dump[read + 1] << 8;
-		if(use_alpha && transparent >= size) // Corrupted sprite?
+		if(use_alpha && transparent >= SPRITE_PIXELS_SIZE) // Corrupted sprite?
 			break;
 		read += 2;
 		for(int i = 0; i < transparent && write < pixels_data_size; i++) {
@@ -1499,6 +1499,7 @@ void Animator::reset()
 	is_complete = false;
 	direction = ANIMATION_FORWARD;
 	current_loop = 0;
+	async = false;
 	setFrame(-1);
 }
 

@@ -118,6 +118,7 @@
 
 // The default size of sprites
 #define SPRITE_PIXELS 32
+#define SPRITE_PIXELS_SIZE SPRITE_PIXELS * SPRITE_PIXELS
 
 // The sea layer
 #define GROUND_LAYER 7
