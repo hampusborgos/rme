@@ -27,6 +27,8 @@
 #include "dat_debug_view.h"
 #include "result_window.h"
 #include "extension_window.h"
+#include "find_item_window.h"
+#include "settings.h"
 
 #include "gui.h"
 
@@ -836,17 +838,18 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 	if(!g_gui.IsEditorOpen())
 		return;
 
-	FindItemDialog finder(frame, "Search for Item");
-	if(finder.ShowModal() != 0) {
-		OnSearchForItem::Finder func(finder.getResultID());
+	FindItemDialog dialog(frame, "Search for Item");
+	dialog.setSearchMode((FindItemDialog::SearchMode)g_settings.getInteger(Config::FIND_ITEM_MODE));
+	if(dialog.ShowModal() == wxID_OK) {
+		OnSearchForItem::Finder finder(dialog.getResultID());
 		g_gui.CreateLoadBar("Searching map...");
 
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), func, false);
-		std::vector<std::pair<Tile*, Item*> >& found = func.found;
+		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
+		std::vector<std::pair<Tile*, Item*> >& found = finder.found;
 
 		g_gui.DestroyLoadBar();
 
-		if(func.more_than_value) {
+		if(finder.more_than_value) {
 			wxString msg;
 			msg << "Only the first " << size_t(g_settings.getInteger(Config::REPLACE_SIZE)) << " results will be displayed.";
 			g_gui.PopupDialog("Notice", msg, wxOK);
@@ -859,7 +862,10 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 			Item* item = iter->second;
 			result->AddPosition(wxstr(item->getName()), tile->getPosition());
 		}
+
+		g_settings.setInteger(Config::FIND_ITEM_MODE, (int)dialog.getSearchMode());
 	}
+	dialog.Destroy();
 }
 void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 {
@@ -868,7 +874,7 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 
 	ReplaceItemDialog dlg(frame, "Replace Item");
 
-	if(dlg.ShowModal() != 0) {
+	if(dlg.ShowModal() == wxID_OK) {
 		uint16_t find_id = dlg.GetResultFindID();
 		uint16_t with_id = dlg.GetResultWithID();
 
@@ -1144,17 +1150,16 @@ void MainMenuBar::OnJumpToItemBrush(wxCommandEvent& WXUNUSED(event))
 		return;
 
 	// Create the jump to dialog
-	FindDialog* dlg = newd FindItemDialog(frame);
-
-	// Display dialog to user
-	dlg->ShowModal();
-
-	// Retrieve result, if null user canceled
-	const Brush* brush = dlg->getResult();
-	if(brush) {
-		g_gui.SelectBrush(brush, TILESET_RAW);
+	FindItemDialog dialog(frame, "Jump to Item");
+	dialog.setSearchMode((FindItemDialog::SearchMode)g_settings.getInteger(Config::JUMP_TO_ITEM_MODE));
+	if(dialog.ShowModal() == wxID_OK) {
+		// Retrieve result, if null user canceled
+		const Brush* brush = dialog.getResult();
+		if(brush)
+			g_gui.SelectBrush(brush, TILESET_RAW);
+		g_settings.setInteger(Config::JUMP_TO_ITEM_MODE, (int)dialog.getSearchMode());
 	}
-	delete dlg;
+	dialog.Destroy();
 }
 
 void MainMenuBar::OnGotoPreviousPosition(wxCommandEvent& WXUNUSED(event))
@@ -1195,18 +1200,17 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 	if(!g_gui.IsEditorOpen())
 		return;
 
-	FindItemDialog finder(frame, "Item Type to Remove");
-	finder.ShowModal();
-	uint16_t itemid = finder.getResultID();
+	FindItemDialog dialog(frame, "Item Type to Remove");
+	if(dialog.ShowModal() == wxID_OK) {
+		uint16_t itemid = dialog.getResultID();
 
-	if(itemid != 0) {
 		g_gui.GetCurrentEditor()->selection.clear();
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 
-		OnMapRemoveItems::condition func(itemid);
+		OnMapRemoveItems::condition finder(itemid);
 		g_gui.CreateLoadBar("Searching map for items to remove...");
 
-		long long removed = remove_if_ItemOnMap(g_gui.GetCurrentMap(), func);
+		long long removed = remove_if_ItemOnMap(g_gui.GetCurrentMap(), finder);
 
 		g_gui.DestroyLoadBar();
 
@@ -1217,6 +1221,7 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 
 		g_gui.GetCurrentMap().doChange();
 	}
+	dialog.Destroy();
 }
 
 namespace OnMapRemoveCorpses

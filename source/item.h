@@ -35,8 +35,8 @@ enum ITEMPROPERTY {
 	BLOCKPROJECTILE,
 	BLOCKPATHFIND,
 	PROTECTIONZONE,
-	ISVERTICAL,
-	ISHORIZONTAL,
+	HOOK_SOUTH,
+	HOOK_EAST,
 	MOVEABLE,
 	BLOCKINGANDNOTMOVEABLE
 };
@@ -178,7 +178,7 @@ public:
 
 	// Item types
 	bool hasProperty(enum ITEMPROPERTY prop) const;
-	bool isBlocking() const {return g_items[id].blockSolid;}
+	bool isBlocking() const {return g_items[id].unpassable;}
 	bool isStackable() const {return g_items[id].stackable;}
 	bool isClientCharged() const {return g_items[id].isClientCharged();}
 	bool isExtraCharged() const {return g_items[id].isExtraCharged();}

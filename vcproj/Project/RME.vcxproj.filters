@@ -76,7 +76,7 @@
     <ClInclude Include="..\..\source\common.h">
       <Filter>common</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\source\otml.h">
+    <ClInclude Include="..\..\source\otml.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\common_windows.h">
@@ -356,8 +356,11 @@
     <ClInclude Include="..\..\source\browse_tile_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\source\positionctrl.h">
+    <ClInclude Include="..\..\source\positionctrl.h">
       <Filter>gui\controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\find_item_window.h">
+      <Filter>gui\dialogs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -624,8 +627,11 @@
     <ClCompile Include="..\..\source\browse_tile_window.cpp">
       <Filter>gui\dialogs</Filter>
     </ClCompile>
-	<ClCompile Include="..\..\source\positionctrl.cpp">
+    <ClCompile Include="..\..\source\positionctrl.cpp">
       <Filter>gui\controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\find_item_window.cpp">
+      <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

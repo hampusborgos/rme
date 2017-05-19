@@ -383,9 +383,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	file.getU16(effect_count);
 	file.getU16(distance_count);
 
-	uint32_t minclientID = 100; // tibia.dat start with id 100
+	uint32_t minID = 100; // tibia.dat start with id 100
 	// We don't load distance/effects, if we would, just add effect_count & distance_count here
-	uint32_t maxclientID = item_count + creature_count;
+	uint32_t maxID = item_count + creature_count;
 
 	dat_format = client_version->getDatFormatForSignature(datSignature);
 
@@ -395,9 +395,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		has_frame_groups = dat_format >= DAT_FORMAT_1057;
 	}
 
-	uint16_t id = minclientID;
+	uint16_t id = minID;
 	// loop through all ItemDatabase until we reach the end of file
-	while(id <= maxclientID) {
+	while(id <= maxID) {
 		GameSprite* sType = newd GameSprite();
 		sprite_space[id] = sType;
 

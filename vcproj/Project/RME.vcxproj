@@ -293,6 +293,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\source\brush_tables.cpp" />
     <ClCompile Include="..\..\source\container_properties_window.cpp" />
+    <ClCompile Include="..\..\source\find_item_window.cpp" />
     <ClInclude Include="..\..\source\otml.h" />
     <ClInclude Include="..\..\source\browse_tile_window.h" />
     <ClCompile Include="..\..\source\browse_tile_window.cpp" />
@@ -481,6 +482,7 @@
     <ClInclude Include="..\..\source\main.h" />
     <ClInclude Include="..\..\source\waypoint_brush.h" />
     <ClCompile Include="..\..\source\waypoint_brush.cpp" />
+    <ClInclude Include="..\..\source\find_item_window.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\mkpch.cpp">

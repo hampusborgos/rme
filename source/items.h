@@ -127,29 +127,30 @@ enum itemattrib_t {
 };
 
 enum itemflags_t {
-	FLAG_BLOCK_SOLID = 1,
-	FLAG_BLOCK_PROJECTILE = 2,
-	FLAG_BLOCK_PATHFIND = 4,
-	FLAG_HAS_HEIGHT = 8,
-	FLAG_USEABLE = 16,
-	FLAG_PICKUPABLE = 32,
-	FLAG_MOVEABLE = 64,
-	FLAG_STACKABLE = 128,
-	FLAG_FLOORCHANGEDOWN = 256,
-	FLAG_FLOORCHANGENORTH = 512,
-	FLAG_FLOORCHANGEEAST = 1024,
-	FLAG_FLOORCHANGESOUTH = 2048,
-	FLAG_FLOORCHANGEWEST = 4096,
-	FLAG_ALWAYSONTOP = 8192,
-	FLAG_READABLE = 16384,
-	FLAG_ROTABLE = 32768,
-	FLAG_HANGABLE = 65536,
-	FLAG_VERTICAL = 131072,
-	FLAG_HORIZONTAL = 262144,
-	FLAG_CANNOTDECAY = 524288,
-	FLAG_ALLOWDISTREAD = 1048576,
-	FLAG_UNUSED = 2097152,
-	FLAG_CLIENTCHARGES = 4194304,
+	FLAG_UNPASSABLE = 1 << 0,
+	FLAG_BLOCK_MISSILES = 1 << 1,
+	FLAG_BLOCK_PATHFINDER = 1 << 2,
+	FLAG_HAS_ELEVATION = 1 << 3,
+	FLAG_USEABLE = 1 << 4,
+	FLAG_PICKUPABLE = 1 << 5,
+	FLAG_MOVEABLE = 1 << 6,
+	FLAG_STACKABLE = 1 << 7,
+	FLAG_FLOORCHANGEDOWN = 1 << 8,
+	FLAG_FLOORCHANGENORTH = 1 << 9,
+	FLAG_FLOORCHANGEEAST = 1 << 10,
+	FLAG_FLOORCHANGESOUTH = 1 << 11,
+	FLAG_FLOORCHANGEWEST = 1 << 12,
+	FLAG_ALWAYSONTOP = 1 << 13,
+	FLAG_READABLE = 1 << 14,
+	FLAG_ROTABLE = 1 << 15,
+	FLAG_HANGABLE = 1 << 16,
+	FLAG_HOOK_SOUTH = 1 << 17,
+	FLAG_HOOK_EAST = 1 << 18,
+	FLAG_CANNOTDECAY = 1 << 19,
+	FLAG_ALLOWDISTREAD = 1 << 20,
+	FLAG_UNUSED = 1 << 21,
+	FLAG_CLIENTCHARGES = 1 << 22,
+	FLAG_IGNORE_LOOK = 1 << 23
 };
 
 enum slotsOTB_t{
@@ -245,18 +246,25 @@ public:
 	ItemType();
 	~ItemType();
 
-	bool isGroundTile() const {return (group == ITEM_GROUP_GROUND);}
-	bool isSplash() const {return (group == ITEM_GROUP_SPLASH);}
-	bool isFluidContainer() const {return (group == ITEM_GROUP_FLUID);}
-	bool isContainer() const {return (type == ITEM_TYPE_CONTAINER);}
-	bool isDoor() const {return (type == ITEM_TYPE_DOOR);}
-	bool isClientCharged() const {return client_chargeable;}
-	bool isExtraCharged() const {return !client_chargeable && extra_chargeable;}
-	bool isTeleport() const {return (type == ITEM_TYPE_TELEPORT);}
-	bool isMagicField() const {return (type == ITEM_TYPE_MAGICFIELD);}
-	bool isStackable() const {return stackable;}
-	bool isDepot() const {return (type == ITEM_TYPE_DEPOT);}
-	bool isMetaItem() const {return is_metaitem;}
+	bool isGroundTile() const { return (group == ITEM_GROUP_GROUND); }
+	bool isSplash() const { return (group == ITEM_GROUP_SPLASH); }
+	bool isFluidContainer() const { return (group == ITEM_GROUP_FLUID); }
+	
+	bool isClientCharged() const { return client_chargeable; }
+	bool isExtraCharged() const { return !client_chargeable && extra_chargeable; }
+
+	bool isDepot() const { return (type == ITEM_TYPE_DEPOT); }
+	bool isMailbox() const { return (type == ITEM_TYPE_MAILBOX); }
+	bool isTrashHolder() const { return (type == ITEM_TYPE_TRASHHOLDER); }
+	bool isContainer() const { return (type == ITEM_TYPE_CONTAINER); }
+	bool isDoor() const { return (type == ITEM_TYPE_DOOR); }
+	bool isMagicField() const { return (type == ITEM_TYPE_MAGICFIELD); }
+	bool isTeleport() const { return (type == ITEM_TYPE_TELEPORT); }
+	bool isBed() const { return (type == ITEM_TYPE_BED); }
+	bool isKey() const { return (type == ITEM_TYPE_KEY); }
+
+	bool isStackable() const { return stackable; }
+	bool isMetaItem() const { return is_metaitem; }
 
 	GameSprite* sprite;
 	uint16_t id;
@@ -274,66 +282,69 @@ public:
 	ItemGroup_t group;
 	ItemTypes_t type;
 
-	uint16_t       volume;
-	uint16_t       maxTextLen;
-	//uint16_t       writeOnceItemId;
-	uint16_t       ground_equivalent;
-	uint32_t       border_group;
-	bool           has_equivalent; // True if any item has this as ground_equivalent
-	bool           wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
+	uint16_t volume;
+	uint16_t maxTextLen;
+	//uint16_t writeOnceItemId;
+	uint16_t ground_equivalent;
+	uint32_t border_group;
+	bool has_equivalent; // True if any item has this as ground_equivalent
+	bool wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
 
-	std::string    name;
-	std::string    editorsuffix;
-	std::string    description;
+	std::string name;
+	std::string editorsuffix;
+	std::string description;
 
-	float          weight;
+	float weight;
 	// It might be useful to be able to extrapolate this information in the future
-	int            attack;
-	int            defense;
-	int            armor;
-	uint32_t       charges;
-	bool           client_chargeable;
-	bool           extra_chargeable;
+	int attack;
+	int defense;
+	int armor;
+	uint32_t charges;
+	bool client_chargeable;
+	bool extra_chargeable;
+	bool ignoreLook;
 
-	bool           isVertical;
-	bool           isHorizontal;
-	bool           isHangable;
-	bool           canReadText;
-	bool           canWriteText;
-	bool           allowDistRead;
-	bool           replaceable;
-	bool           decays;
+	bool isHangable;
+	bool hookEast;
+	bool hookSouth;
+	bool canReadText;
+	bool canWriteText;
+	bool allowDistRead;
+	bool replaceable;
+	bool decays;
 
-	bool           stackable;
-	bool           moveable;
-	bool           alwaysOnBottom;
-	bool           pickupable;
-	bool           rotable;
-	bool           isBorder;
-	bool           isOptionalBorder;
-	bool           isWall;
-	bool           isBrushDoor;
-	bool           isOpen;
-	bool           isTable;
-	bool           isCarpet;
+	bool stackable;
+	bool moveable;
+	bool alwaysOnBottom;
+	bool pickupable;
+	bool rotable;
+	bool isBorder;
+	bool isOptionalBorder;
+	bool isWall;
+	bool isBrushDoor;
+	bool isOpen;
+	bool isTable;
+	bool isCarpet;
 
-	bool           floorChangeDown;
-	bool           floorChangeNorth;
-	bool           floorChangeSouth;
-	bool           floorChangeEast;
-	bool           floorChangeWest;
+	bool floorChangeDown;
+	bool floorChangeNorth;
+	bool floorChangeSouth;
+	bool floorChangeEast;
+	bool floorChangeWest;
 
-	bool           blockSolid;
-	bool           blockPickupable;
-	bool           blockProjectile;
-	bool           blockPathFind;
+	bool unpassable;
+	bool blockPickupable;
+	bool blockMissiles;
+	bool blockPathfinder;
+	bool hasElevation;
 
-	int            alwaysOnTopOrder;
-	int            rotateTo;
-	BorderType     border_alignment;
+	int alwaysOnTopOrder;
+	int rotateTo;
+	BorderType border_alignment;
 };
 
-class ItemDatabase {
+class ItemDatabase
+{
 public:
 	ItemDatabase();
 	~ItemDatabase();
@@ -369,13 +380,13 @@ protected:
 
 protected:
 	// Count of GameSprite types
-	int32_t item_count;
-	int32_t effect_count;
-	int32_t monster_count;
-	int32_t distance_count;
+	uint16_t item_count;
+	uint16_t effect_count;
+	uint16_t monster_count;
+	uint16_t distance_count;
 
-	int32_t minclientID;
-	int32_t maxclientID;
+	uint16_t minclientID;
+	uint16_t maxclientID;
 	uint16_t max_item_id;
 
 	friend class GameSprite;

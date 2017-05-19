@@ -25,6 +25,7 @@ ${CMAKE_CURRENT_LIST_DIR}/editor.h
 ${CMAKE_CURRENT_LIST_DIR}/editor_tabs.h
 ${CMAKE_CURRENT_LIST_DIR}/extension.h
 ${CMAKE_CURRENT_LIST_DIR}/extension_window.h
+${CMAKE_CURRENT_LIST_DIR}/find_item_window.h
 ${CMAKE_CURRENT_LIST_DIR}/filehandle.h
 ${CMAKE_CURRENT_LIST_DIR}/graphics.h
 ${CMAKE_CURRENT_LIST_DIR}/ground_brush.h
@@ -125,6 +126,7 @@ ${CMAKE_CURRENT_LIST_DIR}/editor_tabs.cpp
 ${CMAKE_CURRENT_LIST_DIR}/eraser_brush.cpp
 ${CMAKE_CURRENT_LIST_DIR}/extension.cpp
 ${CMAKE_CURRENT_LIST_DIR}/extension_window.cpp
+${CMAKE_CURRENT_LIST_DIR}/find_item_window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/filehandle.cpp
 ${CMAKE_CURRENT_LIST_DIR}/graphics.cpp
 ${CMAKE_CURRENT_LIST_DIR}/ground_brush.cpp

@@ -57,10 +57,11 @@ ItemType::ItemType() :
 	charges(0),
 	client_chargeable(false),
 	extra_chargeable(false),
+	ignoreLook(false),
 
-	isVertical(false),
-	isHorizontal(false),
 	isHangable(false),
+	hookSouth(false),
+	hookEast(false),
 	canReadText(false),
 	canWriteText(false),
 	replaceable(true),
@@ -84,10 +85,11 @@ ItemType::ItemType() :
 	floorChangeEast(false),
 	floorChangeWest(false),
 
-	blockSolid(false),
+	unpassable(false),
 	blockPickupable(false),
-	blockProjectile(false),
-	blockPathFind(false),
+	blockMissiles(false),
+	blockPathfinder(false),
+	hasElevation(false),
 
 	alwaysOnTopOrder(0),
 	rotateTo(0),
@@ -152,7 +154,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 		t->group = ItemGroup_t(u8);
 
 		switch(t->group) {
-			case  ITEM_GROUP_NONE:
+			case ITEM_GROUP_NONE:
 			case ITEM_GROUP_GROUND:
 			case ITEM_GROUP_SPLASH:
 			case ITEM_GROUP_FLUID:
@@ -173,11 +175,10 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 
 		uint32_t flags;
 		if(itemNode->getU32(flags)) {
-			t->blockSolid = ((flags & FLAG_BLOCK_SOLID) == FLAG_BLOCK_SOLID);
-			t->blockProjectile = ((flags & FLAG_BLOCK_PROJECTILE) == FLAG_BLOCK_PROJECTILE);
-			t->blockPathFind = ((flags & FLAG_BLOCK_PATHFIND) == FLAG_BLOCK_PATHFIND);
-			// These are irrelevant
-			//t->hasHeight = ((flags & FLAG_HAS_HEIGHT) == FLAG_HAS_HEIGHT);
+			t->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
+			t->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
+			t->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
+			t->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
 			//t->useable = ((flags & FLAG_USEABLE) == FLAG_USEABLE);
 			t->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
 			t->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
@@ -189,9 +190,9 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
-			t->isVertical = ((flags & FLAG_VERTICAL) == FLAG_VERTICAL);
-			t->isHorizontal = ((flags & FLAG_HORIZONTAL) == FLAG_HORIZONTAL);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
+			t->hookSouth = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			t->hookEast = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
 			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
@@ -411,25 +412,26 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 		t->group = ItemGroup_t(u8);
 
 		switch(t->group) {
-			case  ITEM_GROUP_NONE:
+			case ITEM_GROUP_NONE:
 			case ITEM_GROUP_GROUND:
 			case ITEM_GROUP_SPLASH:
 			case ITEM_GROUP_FLUID:
 				break;
-			case   ITEM_GROUP_DOOR: t->type = ITEM_TYPE_DOOR; break;
-			case   ITEM_GROUP_CONTAINER: t->type = ITEM_TYPE_CONTAINER; break;
-			case   ITEM_GROUP_RUNE: t->client_chargeable = true; break;
-			case   ITEM_GROUP_TELEPORT: t->type = ITEM_TYPE_TELEPORT; break;
-			case   ITEM_GROUP_MAGICFIELD: t->type = ITEM_TYPE_MAGICFIELD; break;
+			case ITEM_GROUP_DOOR: t->type = ITEM_TYPE_DOOR; break;
+			case ITEM_GROUP_CONTAINER: t->type = ITEM_TYPE_CONTAINER; break;
+			case ITEM_GROUP_RUNE: t->client_chargeable = true; break;
+			case ITEM_GROUP_TELEPORT: t->type = ITEM_TYPE_TELEPORT; break;
+			case ITEM_GROUP_MAGICFIELD: t->type = ITEM_TYPE_MAGICFIELD; break;
 			default:
 				warnings.push_back("Unknown item group declaration");
 		}
 
 		uint32_t flags;
 		if(itemNode->getU32(flags)) {
-			t->blockSolid = ((flags & FLAG_BLOCK_SOLID) == FLAG_BLOCK_SOLID);
-			t->blockProjectile = ((flags & FLAG_BLOCK_PROJECTILE) == FLAG_BLOCK_PROJECTILE);
-			t->blockPathFind = ((flags & FLAG_BLOCK_PATHFIND) == FLAG_BLOCK_PATHFIND);
+			t->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
+			t->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
+			t->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
+			t->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
 			t->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
 			t->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
 			t->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
@@ -440,9 +442,9 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
-			t->isVertical = ((flags & FLAG_VERTICAL) == FLAG_VERTICAL);
-			t->isHorizontal = ((flags & FLAG_HORIZONTAL) == FLAG_HORIZONTAL);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
+			t->hookSouth = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			t->hookEast = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
 			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
@@ -573,9 +575,10 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 
 		uint32_t flags;
 		if(itemNode->getU32(flags)) {
-			t->blockSolid = ((flags & FLAG_BLOCK_SOLID) == FLAG_BLOCK_SOLID);
-			t->blockProjectile = ((flags & FLAG_BLOCK_PROJECTILE) == FLAG_BLOCK_PROJECTILE);
-			t->blockPathFind = ((flags & FLAG_BLOCK_PATHFIND) == FLAG_BLOCK_PATHFIND);
+			t->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
+			t->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
+			t->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
+			t->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
 			t->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
 			t->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
 			t->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
@@ -586,9 +589,9 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
-			t->isVertical = ((flags & FLAG_VERTICAL) == FLAG_VERTICAL);
-			t->isHorizontal = ((flags & FLAG_HORIZONTAL) == FLAG_HORIZONTAL);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
+			t->hookSouth = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			t->hookEast = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
 			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
@@ -784,22 +787,25 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 
 			std::string typeValue = attribute.as_string();
 			to_lower_str(key);
-			if(typeValue == "magicfield") {
+			if(typeValue == "depot") {
+				it.type = ITEM_TYPE_DEPOT;
+			} else if(typeValue == "mailbox") {
+				it.type = ITEM_TYPE_MAILBOX;
+			} else if(typeValue == "trashholder") {
+				it.type = ITEM_TYPE_TRASHHOLDER;
+			} else if (typeValue == "container") {
+				it.type = ITEM_TYPE_CONTAINER;
+			} else if (typeValue == "door") {
+				it.type = ITEM_TYPE_DOOR;
+			} else if (typeValue == "magicfield") {
 				it.group = ITEM_GROUP_MAGICFIELD;
 				it.type = ITEM_TYPE_MAGICFIELD;
-			} else if(typeValue == "key") {
-				it.type = ITEM_TYPE_KEY;
-			} else if(typeValue == "depot") {
-				it.type = ITEM_TYPE_DEPOT;
-			} else if(typeValue == "teleport") {
+			} else if (typeValue == "teleport") {
 				it.type = ITEM_TYPE_TELEPORT;
-			} else if(typeValue == "bed") {
+			} else if (typeValue == "bed") {
 				it.type = ITEM_TYPE_BED;
-			} else if(typeValue == "door") {
-				it.type = ITEM_TYPE_DOOR;
-			} else {
-				// We ignore many types, no need to complain
-				//warnings.push_back("items.xml: Unknown type " + typeValue);
+			} else if (typeValue == "key") {
+				it.type = ITEM_TYPE_KEY;
 			}
 		} else if(key == "name") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
