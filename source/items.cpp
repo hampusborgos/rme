@@ -756,7 +756,7 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 	return true;
 }
 
-bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
+bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 {
 	ClientVersionID clientVersion = g_gui.GetCurrentVersionID();
 	if(clientVersion < CLIENT_VERSION_980 && id > 20000 && id < 20100) {
@@ -767,10 +767,10 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 		return true;
 	}
 
-	ItemType& it = getItemType(id);
+	ItemType& item = getItemType(id);
 
-	it.name = itemNode.attribute("name").as_string();
-	it.editorsuffix = itemNode.attribute("editorsuffix").as_string();
+	item.name = itemNode.attribute("name").as_string();
+	item.editorsuffix = itemNode.attribute("editorsuffix").as_string();
 
 	pugi::xml_attribute attribute;
 	for(pugi::xml_node itemAttributesNode = itemNode.first_child(); itemAttributesNode; itemAttributesNode = itemAttributesNode.next_sibling()) {
@@ -788,84 +788,84 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			std::string typeValue = attribute.as_string();
 			to_lower_str(key);
 			if(typeValue == "depot") {
-				it.type = ITEM_TYPE_DEPOT;
+				item.type = ITEM_TYPE_DEPOT;
 			} else if(typeValue == "mailbox") {
-				it.type = ITEM_TYPE_MAILBOX;
+				item.type = ITEM_TYPE_MAILBOX;
 			} else if(typeValue == "trashholder") {
-				it.type = ITEM_TYPE_TRASHHOLDER;
+				item.type = ITEM_TYPE_TRASHHOLDER;
 			} else if (typeValue == "container") {
-				it.type = ITEM_TYPE_CONTAINER;
+				item.type = ITEM_TYPE_CONTAINER;
 			} else if (typeValue == "door") {
-				it.type = ITEM_TYPE_DOOR;
+				item.type = ITEM_TYPE_DOOR;
 			} else if (typeValue == "magicfield") {
-				it.group = ITEM_GROUP_MAGICFIELD;
-				it.type = ITEM_TYPE_MAGICFIELD;
+				item.group = ITEM_GROUP_MAGICFIELD;
+				item.type = ITEM_TYPE_MAGICFIELD;
 			} else if (typeValue == "teleport") {
-				it.type = ITEM_TYPE_TELEPORT;
+				item.type = ITEM_TYPE_TELEPORT;
 			} else if (typeValue == "bed") {
-				it.type = ITEM_TYPE_BED;
+				item.type = ITEM_TYPE_BED;
 			} else if (typeValue == "key") {
-				it.type = ITEM_TYPE_KEY;
+				item.type = ITEM_TYPE_KEY;
 			}
 		} else if(key == "name") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.name = attribute.as_string();
+				item.name = attribute.as_string();
 			}
 		} else if(key == "description") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.description = attribute.as_string();
+				item.description = attribute.as_string();
 			}
 		}else if(key == "runespellName") {
 			/*if((attribute = itemAttributesNode.attribute("value"))) {
-				it.runeSpellName = attribute.as_string();
+				item.runeSpellName = attribute.as_string();
 			}*/
 		} else if(key == "weight") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.weight = pugi::cast<int32_t>(attribute.value()) / 100.f;
+				item.weight = pugi::cast<int32_t>(attribute.value()) / 100.f;
 			}
 		} else if(key == "armor") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.armor = pugi::cast<int32_t>(attribute.value());
+				item.armor = pugi::cast<int32_t>(attribute.value());
 			}
 		} else if(key == "defense") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.defense = pugi::cast<int32_t>(attribute.value());
+				item.defense = pugi::cast<int32_t>(attribute.value());
 			}
 		} else if(key == "rotateto") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.rotateTo = pugi::cast<int32_t>(attribute.value());
+				item.rotateTo = pugi::cast<uint16_t>(attribute.value());
 			}
 		} else if(key == "containersize") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.volume = pugi::cast<int32_t>(attribute.value());
+				item.volume = pugi::cast<uint16_t>(attribute.value());
 			}
 		} else if(key == "readable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.canReadText = attribute.as_bool();
+				item.canReadText = attribute.as_bool();
 			}
 		} else if(key == "writeable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.canWriteText = it.canReadText = attribute.as_bool();
+				item.canWriteText = item.canReadText = attribute.as_bool();
 			}
 		} else if(key == "decayto") {
-			it.decays = true;
+			item.decays = true;
 		} else if(key == "maxtextlen" || key == "maxtextlength") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.maxTextLen = pugi::cast<int32_t>(attribute.value());
-				it.canReadText = it.maxTextLen > 0;
+				item.maxTextLen = pugi::cast<uint16_t>(attribute.value());
+				item.canReadText = item.maxTextLen > 0;
 			}
 		} else if(key == "writeonceitemid") {
 			/*if((attribute = itemAttributesNode.attribute("value"))) {
-				it.writeOnceItemId = pugi::cast<int32_t>(attribute.value());
+				item.writeOnceItemId = pugi::cast<int32_t>(attribute.value());
 			}*/
 		} else if(key == "allowdistread") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.allowDistRead = attribute.as_bool();
+				item.allowDistRead = attribute.as_bool();
 			}
 		} else if(key == "charges") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.charges = pugi::cast<int32_t>(attribute.value());
-				it.extra_chargeable = true;
+				item.charges = pugi::cast<uint16_t>(attribute.value());
+				item.extra_chargeable = true;
 			}
 		}
 	}
@@ -915,7 +915,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 {
 	if(pugi::xml_attribute attribute = node.attribute("id")) {
-		int32_t id = pugi::cast<int32_t>(attribute.value());
+		uint16_t id = pugi::cast<uint16_t>(attribute.value());
 		if(items[id]) {
 			//std::cout << "Occupied ID " << id << " : " << items[id]->id << ":" << items[id]->name << std::endl;
 			return false;
@@ -923,25 +923,24 @@ bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 		items.set(id, newd ItemType());
 		items[id]->is_metaitem = true;
 		items[id]->id = id;
-	} else {
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
-ItemType& ItemDatabase::getItemType(int id)
+ItemType& ItemDatabase::getItemType(uint16_t id)
 {
-	ItemType* it = items[id];
-	if(it)
-		return *it;
+	ItemType* item = items[id];
+	if(item)
+		return *item;
 	else {
 		static ItemType dummyItemType; // use this for invalid ids
 		return dummyItemType;
 	}
 }
 
-bool ItemDatabase::typeExists(int id) const
+bool ItemDatabase::typeExists(uint16_t id) const
 {
-	ItemType* it = items[id];
-	return it != nullptr;
+	ItemType* item = items[id];
+	return item != nullptr;
 }

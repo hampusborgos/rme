@@ -28,6 +28,7 @@
 ## <a name='editor'>Editor</a>
 [Editor(index)](#editor)  
 [editor:createSelection(start, end)](#editor)  
+[editor:getHouses()](#editor)  
 [editor:getItemCount(itemid)](#editor_getItemCount)  
 [editor:getMapDescription()](#editor)  
 [editor:getMapHeight()](#editor)  
@@ -45,6 +46,7 @@
 [Tile(position)](#tile)  
 [Tile(x, y, z)](#tile)  
 [tile:getPosition()](#tile)  
+[tile:hasWall()](#tile)  
 [tile:isBlocking()](#tile)  
 [tile:isHouse()](#tile)  
 [tile:isHouseExit()](#tile)  
@@ -77,8 +79,9 @@
 [House(editor, houseId)](#house)  
 [house:getId()](#house_getId)  
 [house:getName()](#house_getName)  
-[house:getTownId()](#house_getTownId)  
 [house:getSize()](#house_getSize)  
+[house:getTiles()](#house)  
+[house:getTownId()](#house_getTownId)  
 
 ## <a name='editor_getItemCount'>editor:getItemCount(itemid)</a>
 #### Example:
@@ -153,20 +156,6 @@ if editor then
 end
 ```
 
-## <a name='house_getTownId'>house:getTownId()</a>
-#### Example:
-```Lua
-local houseId = 1
-
-local editor = Editor(0) -- gets the editor at first tab.
-if editor then
-  local house = House(editor, houseId)
-  if house then
-    print(house:getTownId())
-  end
-end
-```
-
 ## <a name='house_getSize'>house:getSize()</a>
 #### Example:
 ```Lua
@@ -177,6 +166,20 @@ if editor then
   local house = House(editor, houseId)
   if house then
     print(house:getSize())
+  end
+end
+```
+
+## <a name='house_getTownId'>house:getTownId()</a>
+#### Example:
+```Lua
+local houseId = 1
+
+local editor = Editor(0) -- gets the editor at first tab.
+if editor then
+  local house = House(editor, houseId)
+  if house then
+    print(house:getTownId())
   end
 end
 ```

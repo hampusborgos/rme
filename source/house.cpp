@@ -212,3 +212,14 @@ void House::setExit(const Position& pos)
 {
 	setExit(map, pos);
 }
+
+TileVector House::getTiles()
+{
+	TileVector list;
+	for(PositionList::iterator it = tiles.begin(); it != tiles.end(); ++it) {
+		Tile* tile = map->getTile((*it));
+		if(tile)
+			list.push_back(tile);
+	}
+	return list;
+}

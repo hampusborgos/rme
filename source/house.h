@@ -36,13 +36,14 @@ public:
 
 	uint32_t getId() const { return id; }
 	std::string getName() const { return name; }
+	std::string getDescription();
 	uint32_t getTownId() const { return townid; }
+	TileVector getTiles();
 
 	void clean();
 	void addTile(Tile* tile);
 	void removeTile(Tile* tile);
 	size_t size() const;
-	std::string getDescription();
 
 	uint32_t id;
 	int rent;

@@ -93,6 +93,7 @@ public:
 	static int luaEditorGetSelection(lua_State* L);
 	static int luaEditorGetItemCount(lua_State* L);
 	static int luaEditorReplaceItems(lua_State* L);
+	static int luaEditorGetHouses(lua_State* L);
 
 	// Tile
 	static int luaTileCreate(lua_State* L);
@@ -110,6 +111,7 @@ public:
 	static int luaTileSetNoPvP(lua_State* L);
 	static int luaTileSetNoLogout(lua_State* L);
 	static int luaTileSetPZ(lua_State* L);
+	static int luaTileHasWall(lua_State* L);
 
 	// Selection
 	static int luaSelectionCreate(lua_State* L);
@@ -131,6 +133,7 @@ public:
 	static int luaHouseGetName(lua_State* L);
 	static int luaHouseGetTownId(lua_State* L);
 	static int luaHouseGetSize(lua_State* L);
+	static int luaHouseGetTiles(lua_State* L);
 
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }

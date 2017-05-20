@@ -669,6 +669,30 @@ int LuaInterface::luaEditorReplaceItems(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorGetHouses(lua_State* L)
+{
+	// editor:getHouses()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Houses& houses = editor->map.houses;
+	lua_createtable(L, houses.count(), 0);
+
+	int index = 0;
+	for(HouseMap::iterator it = houses.begin(); it != houses.end(); ++it) {
+		House* house = it->second;
+		if(house) {
+			pushUserdata<House>(L, house);
+			setMetatable(L, -1, "House");
+			lua_rawseti(L, -2, ++index);
+		}
+	}
+	return 1;
+}
+
 // Tile
 int LuaInterface::luaTileCreate(lua_State* L)
 {
@@ -884,6 +908,18 @@ int LuaInterface::luaTileSetPZ(lua_State* L)
 	}
 
 	pushBoolean(L, false);
+	return 1;
+}
+
+int LuaInterface::luaTileHasWall(lua_State* L)
+{
+	// tile:hasWall()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->hasWall());
+	} else {
+		pushBoolean(L, false);
+	}
 	return 1;
 }
 
@@ -1273,6 +1309,27 @@ int LuaInterface::luaHouseGetSize(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaHouseGetTiles(lua_State* L)
+{
+	// house:getTiles()
+	House* house = getUserdata<House>(L, 1);
+	if(!house) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	TileVector& tiles = house->getTiles();
+	lua_createtable(L, tiles.size(), 0);
+
+	int index = 0;
+	for(Tile* tile : tiles) {
+		pushUserdata<Tile>(L, tile);
+		setMetatable(L, -1, "Tile");
+		lua_rawseti(L, -2, ++index);
+	}
+	return 1;
+}
+
 void LuaInterface::registerClass(const std::string& className, const std::string& baseClass, lua_CFunction newFunction/* = nullptr*/)
 {
 	// className = {}
@@ -1424,6 +1481,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
 	registerMethod("Editor", "getItemCount", LuaInterface::luaEditorGetItemCount);
 	registerMethod("Editor", "replaceItems", LuaInterface::luaEditorReplaceItems);
+	registerMethod("Editor", "getHouses", LuaInterface::luaEditorGetHouses);
 
 	// Tile
 	registerClass("Tile", "", LuaInterface::luaTileCreate);
@@ -1442,6 +1500,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Tile", "setNoPvP", LuaInterface::luaTileSetNoPvP);
 	registerMethod("Tile", "setNoLogout", LuaInterface::luaTileSetNoLogout);
 	registerMethod("Tile", "setPZ", LuaInterface::luaTileSetPZ);
+	registerMethod("Tile", "hasWall", LuaInterface::luaTileHasWall);
 
 	// Selection
 	registerClass("Selection", "", LuaInterface::luaSelectionCreate);
@@ -1465,6 +1524,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("House", "getName", LuaInterface::luaHouseGetName);
 	registerMethod("House", "getTownId", LuaInterface::luaHouseGetTownId);
 	registerMethod("House", "getSize", LuaInterface::luaHouseGetSize);
+	registerMethod("House", "getTiles", LuaInterface::luaHouseGetTiles);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)

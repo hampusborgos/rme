@@ -299,7 +299,7 @@ public:
 	int attack;
 	int defense;
 	int armor;
-	uint32_t charges;
+	uint16_t charges;
 	bool client_chargeable;
 	bool extra_chargeable;
 	bool ignoreLook;
@@ -339,7 +339,7 @@ public:
 	bool hasElevation;
 
 	int alwaysOnTopOrder;
-	int rotateTo;
+	uint16_t rotateTo;
 	BorderType border_alignment;
 };
 
@@ -351,17 +351,17 @@ public:
 
 	void clear();
 
-	ItemType& operator[](size_t id) {return getItemType(id);}
-	uint16_t getMaxID() const {return max_item_id;}
+	ItemType& operator[](uint16_t id) { return getItemType(id); }
+	uint16_t getMaxID() const { return max_item_id; }
 
-	bool typeExists(int id) const;
-	ItemType& getItemType(int id);
-	ItemType& getItemIdByClientID(int spriteId);
-	bool hasItemId(int32_t id) const { return id >= 100 && id <= max_item_id; }
+	bool typeExists(uint16_t id) const;
+	ItemType& getItemType(uint16_t id);
+	ItemType& getItemIdByClientID(uint16_t spriteId);
+	bool hasItemId(uint16_t id) const { return id >= 100 && id <= max_item_id; }
 
 	bool loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings);
 	bool loadFromGameXml(const FileName& datafile, wxString& error, wxArrayString& warnings);
-	bool loadItemFromGameXml(pugi::xml_node itemNode, int id);
+	bool loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id);
 	bool loadMetaItem(pugi::xml_node node);
 
 	//typedef std::map<int32_t, ItemType*> ItemMap;
