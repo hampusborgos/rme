@@ -32,7 +32,8 @@ enum LuaDataType {
 
 	LuaData_Editor,
 	LuaData_Tile,
-	LuaData_Selection
+	LuaData_Selection,
+	LuaData_House
 };
 
 class LuaInterface
@@ -123,6 +124,13 @@ public:
 	static int luaSelectionSaveAsMinimap(lua_State* L);
 	static int luaSelectionReplaceItems(lua_State* L);
 	static int luaSelectionDestroy(lua_State* L);
+
+	// House
+	static int luaHouseCreate(lua_State* L);
+	static int luaHouseGetId(lua_State* L);
+	static int luaHouseGetName(lua_State* L);
+	static int luaHouseGetTownId(lua_State* L);
+	static int luaHouseGetSize(lua_State* L);
 
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }

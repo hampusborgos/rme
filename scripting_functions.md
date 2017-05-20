@@ -73,6 +73,13 @@
 [selection:replaceItems(items)](#selection_replaceItems)  
 [selection:saveAsMinimap(directory, fileName)](#selection)  
 
+## <a name='house'>House</a>
+[House(editor, houseId)](#house)  
+[house:getId()](#house_getId)  
+[house:getName()](#house_getName)  
+[house:getTownId()](#house_getTownId)  
+[house:getSize()](#house_getSize)  
+
 ## <a name='editor_getItemCount'>editor:getItemCount(itemid)</a>
 #### Example:
 ```Lua
@@ -114,6 +121,62 @@ if editor then
   local selection = editor:getSelection() -- gets the current selected area.
   if selection then
     selection:replaceItems(items)
+  end
+end
+```
+
+## <a name='house_getId'>house:getId()</a>
+#### Example:
+```Lua
+local houseId = 1
+
+local editor = Editor(0) -- gets the editor at first tab.
+if editor then
+  local house = House(editor, houseId)
+  if house then
+    print(house:getId())
+  end
+end
+```
+
+## <a name='house_getName'>house:getName()</a>
+#### Example:
+```Lua
+local houseId = 1
+
+local editor = Editor(0) -- gets the editor at first tab.
+if editor then
+  local house = House(editor, houseId)
+  if house then
+    print(house:getName())
+  end
+end
+```
+
+## <a name='house_getTownId'>house:getTownId()</a>
+#### Example:
+```Lua
+local houseId = 1
+
+local editor = Editor(0) -- gets the editor at first tab.
+if editor then
+  local house = House(editor, houseId)
+  if house then
+    print(house:getTownId())
+  end
+end
+```
+
+## <a name='house_getSize'>house:getSize()</a>
+#### Example:
+```Lua
+local houseId = 1
+
+local editor = Editor(0) -- gets the editor at first tab.
+if editor then
+  local house = House(editor, houseId)
+  if house then
+    print(house:getSize())
   end
 end
 ```

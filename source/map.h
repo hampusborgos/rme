@@ -71,6 +71,8 @@ public:
 	SpawnList getSpawnList(const Position& position) { return getSpawnList(getTile(position)); }
 	SpawnList getSpawnList(int32_t x, int32_t y, int32_t z) { return getSpawnList(getTile(x, y, z)); }
 
+	House* getHouse(uint32_t houseId);
+
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to
 	bool hasFile() const;

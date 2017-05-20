@@ -470,6 +470,14 @@ SpawnList Map::getSpawnList(Tile* where)
 	return list;
 }
 
+House* Map::getHouse(uint32_t houseId)
+{
+	if(houses.count() != 0) {
+		return houses.getHouse(houseId);
+	}
+	return nullptr;
+}
+
 bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
 	uint8_t* pic = nullptr;

@@ -21,6 +21,7 @@
 #include "editor.h"
 #include "selection.h"
 #include "brush.h"
+#include "house.h"
 
 LuaInterface g_lua;
 
@@ -1206,6 +1207,72 @@ int LuaInterface::luaSelectionDestroy(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaHouseCreate(lua_State* L)
+{
+	// House(editor, houseId)
+	Editor* editor = getUserdata<Editor>(L, 2);
+	if(editor) {
+		uint32_t houseId = (uint32_t)lua_tonumber(L, 3);
+		House* house = editor->map.getHouse(houseId);
+		if(house) {
+			pushUserdata<House>(L, house);
+			setMetatable(L, -1, "House");
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaInterface::luaHouseGetId(lua_State* L)
+{
+	// house:getId()
+	House* house = getUserdata<House>(L, 1);
+	if(house) {
+		lua_pushnumber(L, house->getId());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
+int LuaInterface::luaHouseGetName(lua_State* L)
+{
+	// house:getName()
+	House* house = getUserdata<House>(L, 1);
+	if(house) {
+		pushString(L, house->getName());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaHouseGetTownId(lua_State* L)
+{
+	// house:getTownId()
+	House* house = getUserdata<House>(L, 1);
+	if(house) {
+		lua_pushnumber(L, house->getTownId());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
+int LuaInterface::luaHouseGetSize(lua_State* L)
+{
+	// house:getSize()
+	House* house = getUserdata<House>(L, 1);
+	if(house) {
+		lua_pushnumber(L, house->size());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
 void LuaInterface::registerClass(const std::string& className, const std::string& baseClass, lua_CFunction newFunction/* = nullptr*/)
 {
 	// className = {}
@@ -1263,6 +1330,8 @@ void LuaInterface::registerClass(const std::string& className, const std::string
 		lua_pushnumber(luaState, LuaData_Tile);
 	} else if(className == "Selection") {
 		lua_pushnumber(luaState, LuaData_Selection);
+	} else if(className == "House") {
+		lua_pushnumber(luaState, LuaData_House);
 	} else {
 		lua_pushnumber(luaState, LuaData_Unknown);
 	}
@@ -1388,6 +1457,14 @@ void LuaInterface::registerFunctions()
 	registerMethod("Selection", "saveAsMinimap", LuaInterface::luaSelectionSaveAsMinimap);
 	registerMethod("Selection", "replaceItems", LuaInterface::luaSelectionReplaceItems);
 	registerMethod("Selection", "destroy", LuaInterface::luaSelectionDestroy);
+
+	// House
+	registerClass("House", "", LuaInterface::luaHouseCreate);
+	registerMetaMethod("House", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("House", "getId", LuaInterface::luaHouseGetId);
+	registerMethod("House", "getName", LuaInterface::luaHouseGetName);
+	registerMethod("House", "getTownId", LuaInterface::luaHouseGetTownId);
+	registerMethod("House", "getSize", LuaInterface::luaHouseGetSize);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)

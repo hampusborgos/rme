@@ -28,10 +28,15 @@ class Door;
 
 class Houses;
 
-class House {
+class House
+{
 public:
 	House(Map& map);
 	~House();
+
+	uint32_t getId() const { return id; }
+	std::string getName() const { return name; }
+	uint32_t getTownId() const { return townid; }
 
 	void clean();
 	void addTile(Tile* tile);
@@ -51,6 +56,7 @@ public:
 	Position getExit() const {return exit;}
 	uint8_t getEmptyDoorID() const;
 	Position getDoorPositionByID(uint8_t id) const;
+
 protected:
 	Map* map;
 	PositionList tiles;
@@ -61,7 +67,8 @@ protected:
 
 typedef std::map<uint32_t, House*> HouseMap;
 
-class Houses {
+class Houses
+{
 public:
 	Houses(Map& map);
 	~Houses();
@@ -84,6 +91,7 @@ public:
 	House* getHouse(uint32_t houseid);
 	const House* getHouse(uint32_t houseid) const;
 	uint32_t getEmptyID();
+
 protected:
 	Map& map;
 	uint32_t max_house_id;
