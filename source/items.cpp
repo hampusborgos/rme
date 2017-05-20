@@ -596,6 +596,7 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
 			t->client_chargeable = ((flags & FLAG_CLIENTCHARGES) == FLAG_CLIENTCHARGES);
+			t->ignoreLook = ((flags & FLAG_IGNORE_LOOK) == FLAG_IGNORE_LOOK);
 		}
 
 		uint8_t attribute;
