@@ -1063,9 +1063,9 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 	if(it.isSplash() || it.isFluidContainer()) {
 		subtype = item->getSubtype();
 	} else if(it.isHangable) {
-		if(tile->hasProperty(ISVERTICAL)) {
+		if(tile->hasProperty(HOOK_SOUTH)) {
 			pattern_x = 2;
-		} else if(tile->hasProperty(ISHORIZONTAL)) {
+		} else if(tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 1;
 		} else {
 			pattern_x = -0;
@@ -1163,9 +1163,9 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 	} else if(it.isHangable) {
 		pattern_x = 0;
 		/*
-		if(tile->hasProperty(ISVERTICAL)) {
+		if(tile->hasProperty(HOOK_SOUTH)) {
 			pattern_x = 2;
-		} else if(tile->hasProperty(ISHORIZONTAL)) {
+		} else if(tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 1;
 		} else {
 			pattern_x = -0;

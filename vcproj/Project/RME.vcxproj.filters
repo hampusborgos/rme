@@ -368,6 +368,9 @@
     <ClInclude Include="..\..\source\scripting_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
+	<ClInclude Include="..\..\source\find_item_window.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -640,6 +643,9 @@
       <Filter>scripting</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\scripting_window.cpp">
+      <Filter>gui\dialogs</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\source\find_item_window.cpp">
       <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>

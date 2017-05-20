@@ -8,6 +8,7 @@
 
 #include "old_properties_window.h"
 #include "properties_window.h"
+#include "find_item_window.h"
 #include "gui.h"
 #include "complexitem.h"
 #include "map.h"
@@ -70,32 +71,23 @@ void ContainerItemButton::OnMouseRightRelease(wxMouseEvent& WXUNUSED(event))
 
 void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 {
-	FindItemDialog* itemDialog = newd FindItemDialog(GetParent(), "Choose Item to add");
-	itemDialog->setCondition([](const ItemType& itemType) -> bool {
-		return itemType.pickupable;
-	});
+	FindItemDialog dialog(GetParent(), "Choose Item to add", true);
 
-	int32_t id = itemDialog->ShowModal();
-	itemDialog->Destroy();
+	if(dialog.ShowModal() != 0) {
+		Container* container = getParentContainer();
+		ItemVector& itemVector = container->getVector();
 
-	if(id == 0) {
-		return;
+		Item* item = Item::Create(dialog.getResultID());
+		if(index < itemVector.size())
+			itemVector.insert(itemVector.begin() + index, item);
+		else
+			itemVector.push_back(item);
+
+		ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
+		if(propertyWindow)
+			propertyWindow->Update();
 	}
-
-	Container* container = getParentContainer();
-	ItemVector& itemVector = container->getVector();
-
-	Item* item = Item::Create(id);
-	if(index < itemVector.size()) {
-		itemVector.insert(itemVector.begin() + index, item);
-	} else {
-		itemVector.push_back(item);
-	}
-
-	ObjectPropertiesWindowBase* propertyWindow = getParentContainerWindow();
-	if(propertyWindow) {
-		propertyWindow->Update();
-	}
+	dialog.Destroy();
 }
 
 void ContainerItemButton::OnEditItem(wxCommandEvent& WXUNUSED(event))

@@ -23,7 +23,7 @@
 // Version info
 // xxyyzzt (major, minor, subversion)
 #define __RME_VERSION_MAJOR__      3
-#define __RME_VERSION_MINOR__      3
+#define __RME_VERSION_MINOR__      4
 #define __RME_SUBVERSION__         0
 
 #define __LIVE_NET_VERSION__       5
@@ -120,6 +120,7 @@
 
 // The default size of sprites
 #define SPRITE_PIXELS 32
+#define SPRITE_PIXELS_SIZE SPRITE_PIXELS * SPRITE_PIXELS
 
 // The sea layer
 #define GROUND_LAYER 7

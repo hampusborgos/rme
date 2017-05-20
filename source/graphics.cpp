@@ -383,9 +383,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	file.getU16(effect_count);
 	file.getU16(distance_count);
 
-	uint32_t minclientID = 100; // tibia.dat start with id 100
+	uint32_t minID = 100; // tibia.dat start with id 100
 	// We don't load distance/effects, if we would, just add effect_count & distance_count here
-	uint32_t maxclientID = item_count + creature_count;
+	uint32_t maxID = item_count + creature_count;
 
 	dat_format = client_version->getDatFormatForSignature(datSignature);
 
@@ -395,9 +395,9 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 		has_frame_groups = dat_format >= DAT_FORMAT_1057;
 	}
 
-	uint16_t id = minclientID;
+	uint16_t id = minID;
 	// loop through all ItemDatabase until we reach the end of file
-	while(id <= maxclientID) {
+	while(id <= maxID) {
 		GameSprite* sType = newd GameSprite();
 		sprite_space[id] = sType;
 
@@ -1167,7 +1167,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 		}
 	}
 
-	const int pixels_data_size = SPRITE_PIXELS * SPRITE_PIXELS * 4;
+	const int pixels_data_size = SPRITE_PIXELS_SIZE * 4;
 	uint8_t* data = newd uint8_t[pixels_data_size];
 	bool use_alpha = g_gui.gfx.hasTransparency();
 	uint8_t bpp = use_alpha ? 4 : 3;
@@ -1177,7 +1177,7 @@ uint8_t* GameSprite::NormalImage::getRGBAData()
 	// decompress pixels
 	while(read < size && write < pixels_data_size) {
 		int transparent = dump[read] | dump[read + 1] << 8;
-		if(use_alpha && transparent >= size) // Corrupted sprite?
+		if(use_alpha && transparent >= SPRITE_PIXELS_SIZE) // Corrupted sprite?
 			break;
 		read += 2;
 		for(int i = 0; i < transparent && write < pixels_data_size; i++) {
@@ -1499,6 +1499,7 @@ void Animator::reset()
 	is_complete = false;
 	direction = ANIMATION_FORWARD;
 	current_loop = 0;
+	async = false;
 	setFrame(-1);
 }
 

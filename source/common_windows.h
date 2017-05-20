@@ -241,26 +241,6 @@ public:
 };
 
 /**
- * Select an item dialog
- * Find out what item was selected through return value of ShowModal() or getResultID
- */
-class FindItemDialog : public FindDialog
-{
-public:
-	FindItemDialog(wxWindow* parent, wxString title = "Jump to Item");
-	virtual ~FindItemDialog();
-
-	void setCondition(bool condition(const ItemType&));
-
-	virtual void RefreshContentsInternal();
-	virtual void OnClickListInternal(wxCommandEvent&);
-	virtual void OnClickOKInternal();
-
-protected:
-	bool (*extra_condition)(const ItemType&);
-};
-
-/**
  * Select two items
  * Will return the two selected items through GetResultFindID() and GetResultWithID()
  */

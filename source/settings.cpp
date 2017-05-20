@@ -318,6 +318,9 @@ void Settings::IO(IOMode mode)
 	String(RECENT_EDITED_MAP_PATH, "");
 	String(RECENT_EDITED_MAP_POSITION, "");
 
+	Int(FIND_ITEM_MODE, 0);
+	Int(JUMP_TO_ITEM_MODE, 0);
+
 #undef section
 #undef Int
 #undef IntToSave

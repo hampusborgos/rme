@@ -185,7 +185,7 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 	const ItemType& it = g_items[id];
 	switch(prop){
 		case BLOCKSOLID:
-			if(it.blockSolid)
+			if(it.unpassable)
 				return true;
 			break;
 
@@ -200,27 +200,27 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 			break;
 */
 		case BLOCKPROJECTILE:
-			if(it.blockProjectile)
+			if(it.blockMissiles)
 				return true;
 			break;
 
 		case BLOCKPATHFIND:
-			if(it.blockPathFind)
+			if(it.blockPathfinder)
 				return true;
 			break;
 
-		case ISVERTICAL:
-			if(it.isVertical)
+		case HOOK_SOUTH:
+			if(it.hookSouth)
 				return true;
 			break;
 
-		case ISHORIZONTAL:
-			if(it.isHorizontal)
+		case HOOK_EAST:
+			if(it.hookEast)
 				return true;
 			break;
 
 		case BLOCKINGANDNOTMOVEABLE:
-			if(it.blockSolid && (!it.moveable || getUniqueID() != 0))
+			if(it.unpassable && (!it.moveable || getUniqueID() != 0))
 				return true;
 			break;
 
