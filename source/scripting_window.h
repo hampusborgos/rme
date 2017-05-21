@@ -26,9 +26,10 @@ public:
 	ScriptingWindow(wxWindow* parent);
 	~ScriptingWindow();
 
-	void OnRunScript(wxCommandEvent&);
-
 	void AppendLog(const wxString& text);
+
+	void OnRunScript(wxCommandEvent&);
+	void OnMarginClick(wxStyledTextEvent &event);
 
 private:
 	wxStyledTextCtrl* script_text_field;
