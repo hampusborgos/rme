@@ -305,12 +305,18 @@ bool CreatureDatabase::importXMLFromOT(const FileName& filename, wxString& error
 			}
 
 			pugi::xml_attribute attribute;
-			if(!(attribute = monsterNode.attribute("file"))) {
+
+			if (!(attribute = monsterNode.attribute("name"))) {
+				continue;
+			}
+			std::string creatureName = attribute.as_string();
+
+			if (!(attribute = monsterNode.attribute("file"))) {
 				continue;
 			}
 
-			FileName monsterFile(filename);
-			monsterFile.SetFullName(wxString(attribute.as_string(), wxConvUTF8));
+			FileName monsterFile(wxString(attribute.as_string(), wxConvUTF8));
+			monsterFile.Normalize(wxPATH_NORM_ALL, filename.GetPath());
 
 			pugi::xml_document monsterDoc;
 			pugi::xml_parse_result monsterResult = monsterDoc.load_file(monsterFile.GetFullPath().mb_str());

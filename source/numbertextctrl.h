@@ -21,16 +21,16 @@
 #define _RME_NUMBER_TEXT_CTRL_H_
 
 // Text ctrl that only allows number input
-class NumberTextCtrl : public wxTextCtrl
+class NumberTextCtrl : public wxSpinCtrl
 {
 public:
 	NumberTextCtrl(wxWindow* parent, wxWindowID id = wxID_ANY,
 		long value = 0, long minvalue = 0, long maxvalue = 100,
 		const wxPoint& pos = wxDefaultPosition, const wxSize& sz = wxDefaultSize,
-		long style = 0, const wxString& name = wxTextCtrlNameStr);
+		long style = 0, const wxString& name = "spin");
 	NumberTextCtrl(wxWindow* parent, wxWindowID id = wxID_ANY,
 		long value = 0, long minvalue = 0, long maxvalue = 100,
-		long style = 0, const wxString& name = wxTextCtrlNameStr,
+		long style = 0, const wxString& name = "spin",
 		const wxPoint& pos = wxDefaultPosition, const wxSize& sz = wxDefaultSize);
 	~NumberTextCtrl();
 
