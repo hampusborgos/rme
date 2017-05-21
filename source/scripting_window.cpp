@@ -169,6 +169,8 @@ ScriptingWindow::ScriptingWindow(wxWindow* parent) :
 
 	log_text_field = newd wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(600, 250), wxTE_MULTILINE | wxTE_READONLY);
 	log_text_field->SetMinSize(wxSize(500, 200));
+	log_text_field->SetBackgroundColour(defaultBackgroundColor);
+	log_text_field->SetForegroundColour(wxColour(255, 255, 255));
 	sizer->Add(log_text_field, wxSizerFlags(0).Expand());
 
 	SetSizerAndFit(sizer);
