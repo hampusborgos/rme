@@ -28,15 +28,15 @@ public:
 
 	void AppendLog(const wxString& text);
 
-	void OnRunScript(wxCommandEvent&);
+	void OnToolClicked(wxCommandEvent&);
 	void OnMarginClick(wxStyledTextEvent &event);
 
 private:
-	wxStyledTextCtrl* script_text_field;
-	wxTextCtrl* log_text_field;
-	wxButton* run_button;
+	wxToolBar* tool_bar;
+	wxToolBarToolBase* run_button;
 
-	DECLARE_EVENT_TABLE();
+	wxStyledTextCtrl* code_text;
+	wxTextCtrl* output_text;
 };
 
 #endif
