@@ -6,7 +6,8 @@
 //=============================================================================
 // Wallbrush, for drawing walls
 
-class WallBrush : public TerrainBrush {
+class WallBrush : public TerrainBrush
+{
 public:
 	static void init();
 
@@ -32,8 +33,9 @@ public:
 	bool hasWall(Item* item);
 	::DoorType getDoorTypeFromID(uint16_t id);
 
-	virtual bool canSmear() const {return false;}
-	virtual bool canDrag() const {return true;}
+	virtual bool canSmear() const { return false; }
+	virtual bool canDrag() const { return true; }
+
 protected:
 	struct WallType {
 		int chance;
@@ -54,6 +56,7 @@ protected:
 	WallBrush* redirect_to;
 
 	friend class DoorBrush;
+
 public:
 	static uint32_t full_border_types[16];
 	static uint32_t half_border_types[16];
@@ -62,7 +65,8 @@ public:
 //=============================================================================
 // Wall decoration brush, for drawing decoration on walls
 
-class WallDecorationBrush : public WallBrush {
+class WallDecorationBrush : public WallBrush
+{
 public:
 	WallDecorationBrush();
 	virtual ~WallDecorationBrush();
