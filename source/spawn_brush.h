@@ -6,7 +6,8 @@
 //=============================================================================
 // SpawnBrush, place spawns
 
-class SpawnBrush : public Brush {
+class SpawnBrush : public Brush
+{
 public:
 	SpawnBrush(); // Create a RAWBrush of the specified type
 	virtual ~SpawnBrush();
@@ -20,9 +21,9 @@ public:
 
 	virtual int getLookID() const; // We don't have a look, sorry!
 	virtual std::string getName() const;
-	virtual bool canDrag() const {return true;}
-	virtual bool canSmear() const {return false;}
-	virtual bool oneSizeFitsAll() const {return true;}
+	virtual bool canDrag() const { return true; }
+	virtual bool canSmear() const { return false; }
+	virtual bool oneSizeFitsAll() const { return true; }
 };
 
 #endif

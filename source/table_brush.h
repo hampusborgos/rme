@@ -31,7 +31,8 @@ public:
 	virtual std::string getName() const { return name; }
 	virtual void setName(const std::string& newName) { name = newName; }
 
-	virtual bool needBorders() const {return true;}
+	virtual bool needBorders() const { return true; }
+
 protected:
 	struct TableType
 	{
