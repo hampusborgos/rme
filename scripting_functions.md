@@ -28,14 +28,16 @@
 ## <a name='editor'>Editor</a>
 [Editor(index)](#editor)  
 [editor:createSelection(start, end)](#editor)  
+[editor:addItem(position, itemId)](#editor_addItem)  
 [editor:getHouses()](#editor)  
-[editor:getItemCount(itemid)](#editor_getItemCount)  
+[editor:getItemCount(itemId)](#editor_getItemCount)  
 [editor:getMapDescription()](#editor)  
 [editor:getMapHeight()](#editor)  
 [editor:getMapWidth()](#editor)  
 [editor:getSelection()](#editor)  
 [editor:getTile(position)](#editor)  
 [editor:getTile(x, y, z)](#editor)  
+[editor:removeItem(position, itemId)](#editor_removeItem)  
 [editor:replaceItems(items)](#editor_replaceItems)  
 [editor:selectTiles(tiles)](#editor)  
 [editor:setMapDescription(newDescription)](#editor)  
@@ -83,7 +85,16 @@
 [house:getTiles()](#house)  
 [house:getTownId()](#house_getTownId)  
 
-## <a name='editor_getItemCount'>editor:getItemCount(itemid)</a>
+## <a name='editor_addItem'>editor:addItem(position, itemId)</a>
+#### Example:
+```Lua
+local editor = Editor(0)
+if editor  then
+  editor:addItem({x = 1015, y = 1023, z = 7}, 100)
+end
+```
+
+## <a name='editor_getItemCount'>editor:getItemCount(itemId)</a>
 #### Example:
 ```Lua
 local editor = Editor(0) -- gets the editor at first tab.
@@ -107,6 +118,15 @@ local items = {
 local editor = Editor(0) -- gets the editor at first tab.
 if editor then
   editor:replaceItems(items)
+end
+```
+
+## <a name='editor_removeItem'>editor:removeItem(position, itemId)</a>
+#### Example:
+```Lua
+local editor = Editor(0)
+if editor  then
+  editor:removeItem({x = 1015, y = 1023, z = 7}, 100)
 end
 ```
 

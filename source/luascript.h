@@ -81,6 +81,7 @@ public:
 
 	// Editor
 	static int luaEditorCreate(lua_State* L);
+	static int luaEditorAddItem(lua_State* L);
 	static int luaEditorGetMapDescription(lua_State* L);
 	static int luaEditorSetMapDescription(lua_State* L);
 	static int luaEditorGetMapWidth(lua_State* L);
@@ -92,6 +93,7 @@ public:
 	static int luaEditorSelectTiles(lua_State* L);
 	static int luaEditorGetSelection(lua_State* L);
 	static int luaEditorGetItemCount(lua_State* L);
+	static int luaEditorRemoveItem(lua_State* L);
 	static int luaEditorReplaceItems(lua_State* L);
 	static int luaEditorGetHouses(lua_State* L);
 
@@ -265,6 +267,7 @@ private:
 	void registerGlobalMethod(const std::string& functionName, lua_CFunction func);
 	void registerFunctions();
 
+	static bool useRawBrush(Editor *editor, TileLocation* location, uint16_t itemId, bool adding);
 	static bool replaceItems(Editor *editor, std::map<uint32_t, uint32_t>& items, bool selectedTiles = false);
 	static bool setTileFlag(Tile* tile, uint16_t flag, bool enable);
 };

@@ -22,6 +22,8 @@
 #include "selection.h"
 #include "brush.h"
 #include "house.h"
+#include "items.h"
+#include "raw_brush.h"
 
 LuaInterface g_lua;
 
@@ -415,6 +417,27 @@ int LuaInterface::luaEditorCreate(lua_State* L)
 	} else {
 		lua_pushnil(L);
 	}
+	return 1;
+}
+
+int LuaInterface::luaEditorAddItem(lua_State* L)
+{
+	// editor:addItem(position, itemId)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	if(isTable(L, 2)) {
+		uint16_t itemId = getNumber<int32_t>(L, 3);
+		const Position& position = getPosition(L, 2);
+		TileLocation* location = editor->map.createTileL(position);
+		pushBoolean(L, useRawBrush(editor, location, itemId, true));
+		return 1;
+	}
+
+	pushBoolean(L, false);
 	return 1;
 }
 
@@ -1190,6 +1213,27 @@ int LuaInterface::luaSelectionSaveAsMinimap(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorRemoveItem(lua_State* L)
+{
+	// editor:removeItem(position, itemId)
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		pushBoolean(L, false);
+		return 1;
+	}
+
+	if(isTable(L, 2)) {
+		uint16_t itemId = getNumber<int32_t>(L, 3);
+		const Position& position = getPosition(L, 2);
+		TileLocation* location = editor->map.createTileL(position);
+		pushBoolean(L, useRawBrush(editor, location, itemId, false));
+		return 1;
+	}
+
+	pushBoolean(L, false);
+	return 1;
+}
+
 int LuaInterface::luaSelectionReplaceItems(lua_State* L)
 {
 	// selection:replaceItems(items)
@@ -1469,6 +1513,7 @@ void LuaInterface::registerFunctions()
 	// Editor
 	registerClass("Editor", "", LuaInterface::luaEditorCreate);
 	registerMetaMethod("Editor", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Editor", "addItem", LuaInterface::luaEditorAddItem);
 	registerMethod("Editor", "getMapDescription", LuaInterface::luaEditorGetMapDescription);
 	registerMethod("Editor", "setMapDescription", LuaInterface::luaEditorSetMapDescription);
 	registerMethod("Editor", "getMapWidth", LuaInterface::luaEditorGetMapWidth);
@@ -1480,6 +1525,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Editor", "selectTiles", LuaInterface::luaEditorSelectTiles);
 	registerMethod("Editor", "getSelection", LuaInterface::luaEditorGetSelection);
 	registerMethod("Editor", "getItemCount", LuaInterface::luaEditorGetItemCount);
+	registerMethod("Editor", "removeItem", LuaInterface::luaEditorRemoveItem);
 	registerMethod("Editor", "replaceItems", LuaInterface::luaEditorReplaceItems);
 	registerMethod("Editor", "getHouses", LuaInterface::luaEditorGetHouses);
 
@@ -1589,6 +1635,44 @@ bool LuaInterface::setTileFlag(Tile* tile, uint16_t flag, bool enable)
 			return true;
 		}
 	}
+	return false;
+}
+
+bool LuaInterface::useRawBrush(Editor *editor, TileLocation* location, uint16_t itemId, bool adding)
+{
+	if(!editor || !location || itemId == 0)
+		return false;
+
+	if(!g_items.hasItemId(itemId))
+		return false;
+
+	ItemType& item = g_items.getItemType(itemId);
+	RAWBrush* brush = item.raw_brush;
+
+	if(brush) {
+		Map *map = &editor->map;
+		Tile* tile = location->get();
+		Tile* new_tile = nullptr;
+
+		if(tile) {
+			new_tile = tile->deepCopy(*map);
+			if(adding)
+				brush->draw(map, new_tile, false);
+			else
+				brush->undraw(map, new_tile);
+		} else if(adding) {
+			new_tile = map->allocator(location);
+			brush->draw(map, new_tile, false);
+		}
+
+		if(new_tile) {
+			Action* action = editor->actionQueue->createAction(ACTION_DRAW);
+			action->addChange(newd Change(new_tile));
+			editor->addAction(action, 2);
+			return true;
+		}
+	}
+
 	return false;
 }
 
