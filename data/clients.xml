@@ -282,7 +282,7 @@
 		<client name="10.100" otb="10.100" visible="true" data_directory="10100">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31" to="10.100"/>
-            <data format="10.57" dat="0x44BA" spr="0x583D78E9"/>
+            <data format="10.57" dat="0x44BA" spr="0x585138E5"/>
 		</client>
 	</clients>
 
