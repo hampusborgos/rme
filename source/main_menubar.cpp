@@ -709,8 +709,9 @@ void MainMenuBar::OnSaveAs(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnPreferences(wxCommandEvent& WXUNUSED(event))
 {
-	PreferencesWindow win(frame);
-	win.ShowModal();
+	PreferencesWindow dialog(frame);
+	dialog.ShowModal();
+	dialog.Destroy();
 }
 
 void MainMenuBar::OnQuit(wxCommandEvent& WXUNUSED(event))

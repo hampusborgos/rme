@@ -26,7 +26,8 @@
 #include <wx/collpane.h>
 #include <wx/clrpicker.h>
 
-class PreferencesWindow : public wxDialog {
+class PreferencesWindow : public wxDialog
+{
 public:
 	PreferencesWindow(wxWindow* parent);
 	virtual ~PreferencesWindow();
@@ -53,6 +54,7 @@ protected:
 	wxSpinCtrl* undo_mem_size_spin;
 	wxSpinCtrl* worker_threads_spin;
 	wxSpinCtrl* replace_size_spin;
+	wxRadioBox* position_format;
 
 	// Editor
 	wxCheckBox* group_actions_chkbox;

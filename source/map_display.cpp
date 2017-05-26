@@ -1773,11 +1773,23 @@ void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 			clip << "z = " << minPos.z;
 		clip << "}";
 	} else {
-		clip << "{";
-		clip << "x = " << minPos.x << ", ";
-		clip << "y = " << minPos.y << ", ";
-		clip << "z = " << minPos.z;
-		clip << "}";
+		switch (g_settings.getInteger(Config::COPY_POSITION_FORMAT)) {
+			case 0:
+				clip << "{x = " << minPos.x << ", y = " << minPos.y << ", z = " << minPos.z << "}";
+				break;
+			case 1:
+				clip << "{\"x\":" << minPos.x << ",\"y\":" << minPos.y << ",\"z\":" << minPos.z << "}";
+				break;
+			case 2:
+				clip << minPos.x << ", " << minPos.y << ", " << minPos.z;
+				break;
+			case 3:
+				clip << "(" << minPos.x << ", " << minPos.y << ", " << minPos.z << ")";
+				break;
+			case 4:
+				clip << "Position(" << minPos.x << ", " << minPos.y << ", " << minPos.z << ")";
+				break;
+		}
 	}
 
 	if(wxTheClipboard->Open()) {
