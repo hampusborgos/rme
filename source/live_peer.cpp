@@ -50,6 +50,9 @@ std::string LivePeer::getHostName() const
 void LivePeer::receiveHeader()
 {
 	readMessage.position = 0;
+	if (readMessage.buffer.size() < 4) {
+		readMessage.buffer.resize(4);
+	}
 	boost::asio::async_read(socket,
 		boost::asio::buffer(readMessage.buffer, 4),
 		[this](const boost::system::error_code& error, size_t bytesReceived) -> void {
