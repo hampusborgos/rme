@@ -15,7 +15,7 @@ Please, if you would like to contribute anything, documentation, extensions or c
 Bugs
 ======
 
-Have found a bug? Please create an issue in our [bug tracker](https://github.com/hjnilsson/rme/issues)
+Have you found a bug? Please create an issue in our [bug tracker](https://github.com/hjnilsson/rme/issues)
 
 Other Applications
 ==========
@@ -29,63 +29,22 @@ Download
 
 You can find official releases at [remeres mapeditor website](http://remeresmapeditor.com/marklar.php).
 
-If you looking for the 3.0 version, download it [here](https://github.com/hjnilsson/rme/releases/) until It is added to the official website.
+If you are looking for the 3.X version, download it [here](https://github.com/hjnilsson/rme/releases/) until It is added to the official website.
 
 Compiling
-==========
-
-First make sure that you have the necessary compiling, if any library is missing then you need to find it and install in your linux by yourself, required libraries are:
-
+=========
+Required libraries:
 * wxWidgets >= 3.0
 * Boost >= 1.55.0
 
-### Windows
-==============
+#### Windows
 
 Assuming that you have MSVC 2013 or later and the required libraries installed, clone the project, open the project file in `vcproj/Project/RME.vcproj` then hit build.
 
 For more details you can follow [this tutorial](http://otland.net/threads/compiling-remeres-map-editor-from-the-latest-source-with-msvc-2013.216826/) by dominique120.
 
-### Linux
-===============
+#### Linux
+[Guide for Ubuntu](https://github.com/hjnilsson/rme/wiki/Compiling-on-Ubuntu)
 
-```bash
-
-# Installing dependencies
-sudo apt-get install git cmake libboost-system-dev libboost-thread-dev libglu1-mesa-dev libwxgtk3.0-dev libarchive-dev freeglut3-dev libxmu-dev libxi-dev
-
-# Clone the project
-git clone https://github.com/hjnilsson/rme.git
-
-# Go to RME Folder
-cd rme
-
-# Preparing to build
-mkdir build && cd build
-cmake ..
-
-# Building
-make -j `nproc`
-
-# Running and enjoy
-./rme
-```
-
-### macOS
-===============
-Install the package manager Homebrew: http://brew.sh
-```bash
-
-# Install dependencies
-brew install git cmake wxmac boost libarchive
-
-# Clone the project
-git clone https://github.com/hjnilsson/rme.git
-
-# Create a build directory and build
-mkdir rme/build && cd rme/build && cmake .. && make
-
-# Run
-./rme
-
-```
+#### Mac
+[Guide for macOS](https://github.com/hjnilsson/rme/wiki/Compiling-on-macOS)
