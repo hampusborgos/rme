@@ -762,6 +762,30 @@ int LuaInterface::luaTileGetPosition(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaTileIsHookEast(lua_State* L)
+{
+	// tile:isHookEast()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->hasProperty(HOOK_EAST));
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTileIsHookSouth(lua_State* L)
+{
+	// tile:isHookSouth()
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		pushBoolean(L, tile->hasProperty(HOOK_SOUTH));
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
 int LuaInterface::luaTileIsHouse(lua_State* L)
 {
 	// tile:isHouse()
@@ -1533,6 +1557,8 @@ void LuaInterface::registerFunctions()
 	registerClass("Tile", "", LuaInterface::luaTileCreate);
 	registerMetaMethod("Tile", "__eq", LuaInterface::luaUserdataCompare);
 	registerMethod("Tile", "getPosition", LuaInterface::luaTileGetPosition);
+	registerMethod("Tile", "isHookEast", LuaInterface::luaTileIsHookEast);
+	registerMethod("Tile", "isHookSouth", LuaInterface::luaTileIsHookSouth);
 	registerMethod("Tile", "isHouse", LuaInterface::luaTileIsHouse);
 	registerMethod("Tile", "isHouseExit", LuaInterface::luaTileIsHouseExit);
 	registerMethod("Tile", "isPvP", LuaInterface::luaTileIsPvP);

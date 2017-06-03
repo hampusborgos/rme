@@ -100,6 +100,8 @@ public:
 	// Tile
 	static int luaTileCreate(lua_State* L);
 	static int luaTileGetPosition(lua_State* L);
+	static int luaTileIsHookEast(lua_State* L);
+	static int luaTileIsHookSouth(lua_State* L);
 	static int luaTileIsHouse(lua_State* L);
 	static int luaTileIsHouseExit(lua_State* L);
 	static int luaTileIsPvP(lua_State* L);
