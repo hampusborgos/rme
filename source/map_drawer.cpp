@@ -1524,8 +1524,6 @@ void MapDrawer::DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_
 
 void MapDrawer::DrawTooltips()
 {
-	const int MAX_LINE_CHARS = 40;
-
 	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
 		MapTooltip* tooltip = (*it);
 		const char* text = tooltip->text.c_str();
@@ -1533,17 +1531,22 @@ void MapDrawer::DrawTooltips()
 		float width = 2.0f;
 		float height = 14.0f;
 		int char_count = 0;
+		int line_char_count = 0;
 
 		for(const char* c = text; *c != '\0'; c++) {
-			if(*c == '\n' || (char_count >= MAX_LINE_CHARS && *c == ' ')) {
+			if(*c == '\n' || (line_char_count >= MapTooltip::MAX_CHARS_PER_LINE && *c == ' ')) {
 				height += 14.0f;
 				line_width = 0.0f;
-				char_count = 0;
+				line_char_count = 0;
 			} else {
 				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
 			}
 			width = std::max<float>(width, line_width);
 			char_count++;
+			line_char_count++;
+
+			if(tooltip->ellipsis && char_count > (MapTooltip::MAX_CHARS + 3))
+				break;
 		}
 
 		float scale = zoom < 1.0f ? zoom : 1.0f;
@@ -1601,14 +1604,23 @@ void MapDrawer::DrawTooltips()
 			glColor4ub(0, 0, 0, 255);
 			glRasterPos2f(startx, starty);
 			char_count = 0;
+			line_char_count = 0;
 			for(const char* c = text; *c != '\0'; c++) {
-				if(*c == '\n' || (char_count >= MAX_LINE_CHARS && *c == ' ')) {
+				if(*c == '\n' || (line_char_count >= MapTooltip::MAX_CHARS_PER_LINE && *c == ' ')) {
 					starty += (14.0f * scale);
 					glRasterPos2f(startx, starty);
-					char_count = 0;
+					line_char_count = 0;
 				}
-				glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
 				char_count++;
+				line_char_count++;
+
+				if(tooltip->ellipsis && char_count >= MapTooltip::MAX_CHARS) {
+					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '.');
+					if(char_count >= (MapTooltip::MAX_CHARS + 2))
+						break;
+				} else {
+					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+				}
 			}
 		}
 	}

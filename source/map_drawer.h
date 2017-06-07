@@ -6,8 +6,15 @@ class GameSprite;
 
 struct MapTooltip
 {
+	enum TextLength {
+		MAX_CHARS_PER_LINE = 40,
+		MAX_CHARS = 255,
+	};
+
 	MapTooltip(int x, int y, std::string text, uint8_t r, uint8_t g, uint8_t b) : 
-		x(x), y(y), text(text), r(r), g(g), b(b) {}
+		x(x), y(y), text(text), r(r), g(g), b(b) {
+		ellipsis = (text.length() - 3) > MAX_CHARS;
+	}
 
 	void checkLineEnding() {
 		if(text.at(text.size() - 1) == '\n')
@@ -17,6 +24,7 @@ struct MapTooltip
 	int x, y;
 	std::string text;
 	uint8_t r, g, b;
+	bool ellipsis;
 };
 
 // Storage during drawing, for option caching
