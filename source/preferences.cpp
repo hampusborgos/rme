@@ -126,7 +126,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 									"  (x, y, z)",
 									"  Position(x, y, z)" };
 	int radio_choices = sizeof(position_choices) / sizeof(wxString);
-	position_format = newd wxRadioBox(general_page, wxID_ANY, "Position Format", wxDefaultPosition, wxDefaultSize, radio_choices, position_choices, 1, wxRA_SPECIFY_COLS);
+	position_format = newd wxRadioBox(general_page, wxID_ANY, "Copy Position Format", wxDefaultPosition, wxDefaultSize, radio_choices, position_choices, 1, wxRA_SPECIFY_COLS);
 	position_format->SetSelection(g_settings.getInteger(Config::COPY_POSITION_FORMAT));
 	sizer->Add(position_format, 0, wxALL | wxEXPAND, 5);
 	SetWindowToolTip(tmptext, position_format, "The position format when copying from the map.");
