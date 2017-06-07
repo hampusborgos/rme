@@ -115,6 +115,7 @@ public:
 	static int luaTileSetNoPvP(lua_State* L);
 	static int luaTileSetNoLogout(lua_State* L);
 	static int luaTileSetPZ(lua_State* L);
+	static int luaTileHasItemId(lua_State* L);
 	static int luaTileHasWall(lua_State* L);
 
 	// Selection

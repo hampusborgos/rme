@@ -104,6 +104,7 @@ public: //Functions
 		}
 	}
 
+	bool hasItemId(uint16_t itemId) const;
 	bool hasProperty(enum ITEMPROPERTY prop) const;
 
 	Item* getTopItem(); // Returns the topmost item, or nullptr if the tile is empty

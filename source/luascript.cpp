@@ -958,6 +958,19 @@ int LuaInterface::luaTileSetPZ(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaTileHasItemId(lua_State* L)
+{
+	// tile:hasItemId(itemid)
+	Tile* tile = getUserdata<Tile>(L, 1);
+	if(tile) {
+		uint16_t itemId = getNumber<uint16_t>(L, 2);
+		pushBoolean(L, tile->hasItemId(itemId));
+	} else {
+		pushBoolean(L, false);
+	}
+	return 1;
+}
+
 int LuaInterface::luaTileHasWall(lua_State* L)
 {
 	// tile:hasWall()
@@ -1572,6 +1585,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Tile", "setNoPvP", LuaInterface::luaTileSetNoPvP);
 	registerMethod("Tile", "setNoLogout", LuaInterface::luaTileSetNoLogout);
 	registerMethod("Tile", "setPZ", LuaInterface::luaTileSetPZ);
+	registerMethod("Tile", "hasItemId", LuaInterface::luaTileHasItemId);
 	registerMethod("Tile", "hasWall", LuaInterface::luaTileHasWall);
 
 	// Selection

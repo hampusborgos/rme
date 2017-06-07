@@ -161,6 +161,19 @@ void Tile::merge(Tile* other) {
 	other->items.clear();
 }
 
+bool Tile::hasItemId(uint16_t itemId) const
+{
+	if(ground && ground->getID() == itemId)
+		return true;
+
+	for(ItemVector::const_iterator it = items.begin(); it != items.end(); ++it) {
+		if((*it)->getID() == itemId)
+			return true;
+	}
+
+	return false;
+}
+
 bool Tile::hasProperty(enum ITEMPROPERTY prop) const
 {
 	if(prop == PROTECTIONZONE && isPZ())
