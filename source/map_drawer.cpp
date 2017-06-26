@@ -1064,11 +1064,11 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		subtype = item->getSubtype();
 	} else if(it.isHangable) {
 		if(tile->hasProperty(HOOK_SOUTH)) {
-			pattern_x = 2;
-		} else if(tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 1;
+		} else if(tile->hasProperty(HOOK_EAST)) {
+			pattern_x = 2;
 		} else {
-			pattern_x = -0;
+			pattern_x = 0;
 		}
 	} else if(it.stackable) {
 		if(item->getSubtype() <= 1)
