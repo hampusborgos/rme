@@ -983,8 +983,9 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 
 		const int bgshade = g_settings.getInteger(Config::ICON_BACKGROUND);
 
-		uint8_t image_size = std::max<uint8_t>(width, height) * SPRITE_PIXELS;
+		int image_size = std::max<int>(width, height) * SPRITE_PIXELS;
 		wxImage image(image_size, image_size);
+		image.Clear(bgshade);
 
 		for(uint8_t l = 0; l < layers; l++) {
 			for(uint8_t w = 0; w < width; w++) {
@@ -993,7 +994,6 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 					uint8_t* data = spriteList[i]->getRGBData();
 					if(data) {
 						wxImage img(SPRITE_PIXELS, SPRITE_PIXELS, data);
-						img.Clear(bgshade);
 						img.SetMaskColour(0xFF, 0x00, 0xFF);
 						image.Paste(img, (width - w - 1) * SPRITE_PIXELS, (height - h - 1) * SPRITE_PIXELS);
 						img.Destroy();
