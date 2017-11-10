@@ -55,6 +55,7 @@ struct DrawingOptions {
 	bool show_only_colors;
 	bool show_only_modified;
 	bool show_preview;
+	bool show_hooks;
 	bool hide_items_when_zoomed;
 };
 
@@ -117,6 +118,7 @@ protected:
 	void BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void DrawTile(TileLocation* tile);
 	void DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b);
+	void DrawHookIndicator(int x, int y, const ItemType& type);
 	void WriteTooltip(Item* item, std::ostringstream& stream);
 	void WriteTooltip(Waypoint* item, std::ostringstream& stream);
 	void MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);

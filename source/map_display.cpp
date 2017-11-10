@@ -194,6 +194,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.show_only_colors = g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
 			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
 			options.show_preview = g_settings.getBoolean(Config::SHOW_PREVIEW);
+			options.show_hooks = g_settings.getBoolean(Config::SHOW_WALL_HOOKS);
 			options.hide_items_when_zoomed = g_settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
 		}
 

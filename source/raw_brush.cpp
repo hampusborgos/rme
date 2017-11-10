@@ -36,14 +36,20 @@ int RAWBrush::getLookID() const
 
 uint16_t RAWBrush::getItemID() const
 {
-    return itemtype->id;
+	return itemtype->id;
 }
 
 std::string RAWBrush::getName() const
 {
-	if(itemtype)
-		return i2s(itemtype->id) + " - " + itemtype->name + itemtype->editorsuffix;
-	return "RAWBrush";
+	if(!itemtype)
+		return "RAWBrush";
+
+	if(itemtype->hookSouth)
+		return i2s(itemtype->id) + " - " + itemtype->name + " (Hook South)";
+	else if(itemtype->hookEast)
+		return i2s(itemtype->id) + " - " + itemtype->name + " (Hook East)";
+	
+	return i2s(itemtype->id) + " - " + itemtype->name + itemtype->editorsuffix;
 }
 
 void RAWBrush::undraw(BaseMap* map, Tile* tile)
