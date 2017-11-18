@@ -60,8 +60,8 @@ ItemType::ItemType() :
 	ignoreLook(false),
 
 	isHangable(false),
-	hookSouth(false),
 	hookEast(false),
+	hookSouth(false),
 	canReadText(false),
 	canWriteText(false),
 	replaceable(true),
