@@ -114,6 +114,7 @@
         <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
         <item name="Show T$ooltips" hotkey="Y" action="SHOW_TOOLTIPS" help="Show tooltips."/>
         <item name="Show Previe$w" hotkey="L" action="SHOW_PREVIEW" help="Show animations and lights preview."/>
+        <item name="Show Wall Hoo$ks" hotkey="K" action="SHOW_WALL_HOOKS" help="Show indicators for wall hooks."/>
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>

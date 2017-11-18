@@ -54,6 +54,7 @@ void DrawingOptions::SetDefault()
 	show_only_colors = false;
 	show_only_modified = false;
 	show_preview = false;
+	show_hooks = false;
 	hide_items_when_zoomed = true;
 }
 
@@ -80,6 +81,7 @@ void DrawingOptions::SetIngame()
 	show_only_colors = false;
 	show_only_modified = false;
 	show_preview = false;
+	show_hooks = false;
 	hide_items_when_zoomed = false;
 }
 
@@ -1113,6 +1115,9 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 			}
 		}
 	}
+
+	if(options.show_hooks && (it.hookSouth || it.hookEast))
+		DrawHookIndicator(draw_x, draw_y, it);
 }
 
 void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
@@ -1214,6 +1219,9 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 			}
 		}
 	}
+
+	if(options.show_hooks && (it.hookSouth || it.hookEast))
+		DrawHookIndicator(draw_x, draw_y, it);
 }
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha)
@@ -1520,6 +1528,30 @@ void MapDrawer::DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_
 		glVertex2i(vertexes[i + 1][0] + x, vertexes[i + 1][1] + y);
 	}
 	glEnd();
+}
+
+void MapDrawer::DrawHookIndicator(int x, int y, const ItemType& type)
+{
+	glDisable(GL_TEXTURE_2D);
+	glColor4ub(uint8_t(0), uint8_t(0), uint8_t(255), uint8_t(200));
+	glBegin(GL_QUADS);
+	if(type.hookSouth) {
+		x -= 10;
+		y += 10;
+		glVertex2f(x, y);
+		glVertex2f(x + 10, y);
+		glVertex2f(x + 20, y + 10);
+		glVertex2f(x + 10, y + 10);
+	} else if(type.hookEast) {
+		x += 10;
+		y -= 10;
+		glVertex2f(x, y);
+		glVertex2f(x + 10, y + 10);
+		glVertex2f(x + 10, y + 20);
+		glVertex2f(x, y + 10);
+	}
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawTooltips()
