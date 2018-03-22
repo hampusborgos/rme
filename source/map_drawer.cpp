@@ -1220,7 +1220,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 		}
 	}
 
-	if(options.show_hooks && (it.hookSouth || it.hookEast))
+	if(options.show_hooks && (it.hookSouth || it.hookEast) && zoom <= 3.0)
 		DrawHookIndicator(draw_x, draw_y, it);
 }
 
