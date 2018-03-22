@@ -1299,6 +1299,9 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Creature* c, int re
 
 void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 {
+	if(item == nullptr)
+		return;
+
 	const uint16_t id = item->getID();
 	if(id < 100)
 		return;
