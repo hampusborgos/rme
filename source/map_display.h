@@ -118,9 +118,12 @@ protected:
 	void floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions);
 
 private:
+	enum {
+		BLOCK_SIZE = 100
+	};
+
 	inline int getFillIndex(int x, int y) const { return x + BLOCK_SIZE * y; }
 
-	static const int BLOCK_SIZE = 100;
 	static bool processed[BLOCK_SIZE*BLOCK_SIZE];
 
 	Editor& editor;
