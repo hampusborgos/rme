@@ -51,6 +51,7 @@ public:
 	void OnMouseRightRelease(wxMouseEvent& event);
 
 	void OnKeyDown(wxKeyEvent& event);
+	void OnKeyUp(wxKeyEvent& event);
 	void OnWheel(wxMouseEvent& event);
 	void OnGainMouse(wxMouseEvent& event);
 	void OnLoseMouse(wxMouseEvent& event);
@@ -111,13 +112,20 @@ public:
 	Position GetCursorPosition() const;
 
 	void TakeScreenshot(wxFileName path, wxString format);
-protected:
 
-	void getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder);
+protected:
+	void getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder, bool fill = false);
+	void floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions);
 
 private:
+	inline int getFillIndex(int x, int y) const { return x + BLOCK_SIZE * y; }
+
+	static const int BLOCK_SIZE = 100;
+	static bool processed[BLOCK_SIZE*BLOCK_SIZE];
+
 	Editor& editor;
 	MapDrawer *drawer;
+	int keyCode;
 
 // View related
 	int floor;
