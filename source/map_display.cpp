@@ -38,6 +38,7 @@
 
 BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 	EVT_KEY_DOWN(MapCanvas::OnKeyDown)
+	EVT_KEY_DOWN(MapCanvas::OnKeyUp)
 
 	// Mouse events
 	EVT_MOTION(MapCanvas::OnMouseMove)
@@ -83,6 +84,8 @@ BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 	EVT_MENU(MAP_POPUP_MENU_PROPERTIES, MapCanvas::OnProperties)
 END_EVENT_TABLE()
 
+bool MapCanvas::processed[] = {0};
+
 MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	wxGLCanvas(parent, wxID_ANY, nullptr, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
 	editor(editor),
@@ -121,6 +124,7 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	popup_menu = newd MapPopupMenu(editor);
 	animation_timer = newd AnimationTimer(this);
 	drawer = new MapDrawer(this);
+	keyCode = WXK_NONE;
 }
 
 MapCanvas::~MapCanvas()
@@ -811,9 +815,10 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 					PositionVector tilestodraw;
 					PositionVector tilestoborder;
 
-					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, &tilestoborder);
+					bool fill = keyCode == WXK_CONTROL_D && event.ControlDown() && brush->isGround();
+					getTilesToDraw(mouse_map_x, mouse_map_y, floor, &tilestodraw, &tilestoborder, fill);
 
-					if(event.ControlDown()) {
+					if(!fill && event.ControlDown()) {
 						editor.undraw(tilestodraw, tilestoborder, event.AltDown());
 					} else {
 						editor.draw(tilestodraw, tilestoborder, event.AltDown());
@@ -1719,11 +1724,21 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			}
 			break;
 		}
+		case 'd':
+		case 'D': {
+			keyCode = WXK_CONTROL_D;
+			break;
+		}
 		default:{
 			event.Skip();
 			break;
 		}
 	}
+}
+
+void MapCanvas::OnKeyUp(wxKeyEvent& event)
+{
+	keyCode = WXK_NONE;
 }
 
 void MapCanvas::OnCopy(wxCommandEvent& WXUNUSED(event))
@@ -2270,31 +2285,111 @@ void MapPopupMenu::Update()
 	}
 }
 
-void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder)
+void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder, bool fill /*= false*/)
 {
-	for(int y = -g_gui.GetBrushSize()-1; y <= g_gui.GetBrushSize()+1; y++) {
-		for(int x = -g_gui.GetBrushSize()-1; x <= g_gui.GetBrushSize()+1; x++) {
-			if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE) {
-				if(x >= -g_gui.GetBrushSize() && x <= g_gui.GetBrushSize() && y >= -g_gui.GetBrushSize() && y <= g_gui.GetBrushSize()) {
-					if(tilestodraw)
-						tilestodraw->push_back(Position(mouse_map_x+x,mouse_map_y+y, floor));
-				}
-				if(std::abs(x) - g_gui.GetBrushSize() < 2 && std::abs(y) - g_gui.GetBrushSize() < 2) {
-					if(tilestoborder)
-						tilestoborder->push_back(Position(mouse_map_x+x,mouse_map_y+y, floor));
-				}
-			} else if(g_gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
-				double distance = sqrt(double(x*x) + double(y*y));
-				if(distance < g_gui.GetBrushSize()+0.005) {
-					if(tilestodraw)
-						tilestodraw->push_back(Position(mouse_map_x+x,mouse_map_y+y, floor));
-				}
-				if(std::abs(distance - g_gui.GetBrushSize()) < 1.5) {
-					if(tilestoborder)
-						tilestoborder->push_back(Position(mouse_map_x+x,mouse_map_y+y, floor));
+	if(fill) {
+		Brush* brush = g_gui.GetCurrentBrush();
+		if(!brush || !brush->isGround()) {
+			return;
+		}
+
+		GroundBrush* newBrush = brush->asGround();
+		Position position(mouse_map_x, mouse_map_y, floor);
+
+		Tile* tile = editor.map.getTile(position);
+		GroundBrush* oldBrush = nullptr;
+		if(tile) {
+			oldBrush = tile->getGroundBrush();
+		}
+
+		if(oldBrush && oldBrush->getID() == newBrush->getID()) {
+			return;
+		}
+
+		if(tile && tile->ground && !oldBrush || !tile && oldBrush) {
+			return;
+		}
+
+		if(tile && oldBrush) {
+			GroundBrush* groundBrush = tile->getGroundBrush();
+			if(!groundBrush || groundBrush->getID() != oldBrush->getID()) {
+				return;
+			}
+		}
+
+		std::fill(std::begin(processed), std::end(processed), false);
+		floodFill(&editor.map, position, BLOCK_SIZE/2, BLOCK_SIZE/2, oldBrush, tilestodraw);
+
+	} else {
+		for(int y = -g_gui.GetBrushSize() - 1; y <= g_gui.GetBrushSize() + 1; y++) {
+			for(int x = -g_gui.GetBrushSize() - 1; x <= g_gui.GetBrushSize() + 1; x++) {
+				if(g_gui.GetBrushShape() == BRUSHSHAPE_SQUARE) {
+					if(x >= -g_gui.GetBrushSize() && x <= g_gui.GetBrushSize() && y >= -g_gui.GetBrushSize() && y <= g_gui.GetBrushSize()) {
+						if(tilestodraw)
+							tilestodraw->push_back(Position(mouse_map_x + x, mouse_map_y + y, floor));
+					}
+					if(std::abs(x) - g_gui.GetBrushSize() < 2 && std::abs(y) - g_gui.GetBrushSize() < 2) {
+						if(tilestoborder)
+							tilestoborder->push_back(Position(mouse_map_x + x, mouse_map_y + y, floor));
+					}
+				} else if(g_gui.GetBrushShape() == BRUSHSHAPE_CIRCLE) {
+					double distance = sqrt(double(x*x) + double(y*y));
+					if(distance < g_gui.GetBrushSize() + 0.005) {
+						if(tilestodraw)
+							tilestodraw->push_back(Position(mouse_map_x + x, mouse_map_y + y, floor));
+					}
+					if(std::abs(distance - g_gui.GetBrushSize()) < 1.5) {
+						if(tilestoborder)
+							tilestoborder->push_back(Position(mouse_map_x + x, mouse_map_y + y, floor));
+					}
 				}
 			}
 		}
+	}
+}
+
+void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions)
+{
+	if(x <= 0 || y <= 0 || x >= BLOCK_SIZE || y >= BLOCK_SIZE) {
+		return;
+	}
+
+	processed[getFillIndex(x, y)] = true;
+
+	int px = (center.x + x) - (BLOCK_SIZE/2);
+	int py = (center.y + y) - (BLOCK_SIZE/2);
+	if(px <= 0 || py <= 0 || px >= map->getWidth() || py >= map->getHeight()) {
+		return;
+	}
+
+	Tile* tile = map->getTile(px, py, center.z);
+	if(tile && tile->ground && !brush || !tile && brush) {
+		return;
+	}
+
+	if(tile && brush) {
+		GroundBrush* groundBrush = tile->getGroundBrush();
+		if(!groundBrush || groundBrush->getID() != brush->getID()) {
+			return;
+		}
+	}
+
+	positions->push_back(Position(px, py, center.z));
+
+	if(!processed[getFillIndex(x-1, y)]) {
+		floodFill(map, center, x-1, y, brush, positions);
+	}
+
+	if(!processed[getFillIndex(x, y-1)]) {
+		floodFill(map, center, x, y-1, brush, positions);
+	}
+
+	if(!processed[getFillIndex(x+1, y)]) {
+		floodFill(map, center, x+1, y, brush, positions);
+	}
+
+	if(!processed[getFillIndex(x, y+1)]) {
+		floodFill(map, center, x, y+1, brush, positions);
 	}
 }
 
