@@ -51,6 +51,7 @@ void DrawingOptions::SetDefault()
 	highlight_items = false;
 	show_blocking = false;
 	show_tooltips = false;
+	show_as_minimap = false;
 	show_only_colors = false;
 	show_only_modified = false;
 	show_preview = false;
@@ -78,6 +79,7 @@ void DrawingOptions::SetIngame()
 	highlight_items = false;
 	show_blocking = false;
 	show_tooltips = false;
+	show_as_minimap = false;
 	show_only_colors = false;
 	show_only_modified = false;
 	show_preview = false;
@@ -221,14 +223,16 @@ void MapDrawer::DrawMap()
 			current_house_id = brush->asHouseExit()->getHouseID();
 	}
 
+	bool only_colors = options.show_as_minimap || options.show_only_colors;
+
 	// Enable texture mode
-	if(!options.show_only_colors)
+	if(!only_colors)
 		glEnable(GL_TEXTURE_2D);
 
 	for(int map_z = start_z; map_z >= superend_z; map_z--) {
 		if(map_z == end_z && start_z != end_z && options.show_shade) {
 			// Draw shade
-			if(!options.show_only_colors)
+			if(!only_colors)
 				glDisable(GL_TEXTURE_2D);
 
 			glColor4ub(0, 0, 0, 128);
@@ -239,7 +243,7 @@ void MapDrawer::DrawMap()
 				glVertex2f(0,0);
 			glEnd();
 
-			if(!options.show_only_colors)
+			if(!only_colors)
 				glEnable(GL_TEXTURE_2D);
 		}
 
@@ -288,7 +292,7 @@ void MapDrawer::DrawMap()
 			}
 		}
 
-		if(options.show_only_colors)
+		if(only_colors)
 			glEnable(GL_TEXTURE_2D);
 
 		// Draws the doodad preview or the paste preview (or import preview)
@@ -378,7 +382,7 @@ void MapDrawer::DrawMap()
 		++end_y;
 	}
 
-	if(!options.show_only_colors)
+	if(!only_colors)
 		glEnable(GL_TEXTURE_2D);
 }
 
@@ -1356,7 +1360,8 @@ void MapDrawer::DrawTile(TileLocation* location)
 			WriteTooltip(waypoint, tooltip);
 	}
 
-	bool only_colors = options.show_only_colors;
+	bool as_minimap = options.show_as_minimap;
+	bool only_colors = as_minimap || options.show_only_colors;
 
 	int offset;
 	if (map_z <= GROUND_LAYER)
@@ -1369,57 +1374,69 @@ void MapDrawer::DrawTile(TileLocation* location)
 
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
-		bool showspecial = options.show_only_colors || options.show_special_tiles;
 
-		if(tile->isBlocking() && tile->size() > 0 && options.show_blocking) {
-			g = g/3*2;
-			b = b/3*2;
-		}
+		if(!as_minimap) {
+			bool showspecial = options.show_only_colors || options.show_special_tiles;
 
-		int item_count = tile->items.size();
-		if(options.highlight_items && item_count > 0 && !tile->items.back()->isBorder()) {
-			static const float factor[5] = {0.75f, 0.6f, 0.48f, 0.40f, 0.33f};
-			int idx = (item_count < 5 ? item_count : 5) - 1;
-			g = int(g * factor[idx]);
-			r = int(r * factor[idx]);
-		}
-
-		if(location->getSpawnCount() > 0 && options.show_spawns) {
-			float f = 1.0f;
-			for(uint32_t i = 0; i < location->getSpawnCount(); ++i) {
-				f *= 0.7f;
+			if(options.show_blocking && tile->isBlocking() && tile->size() > 0) {
+				g = g / 3 * 2;
+				b = b / 3 * 2;
 			}
-			g = uint8_t(g * f);
-			b = uint8_t(b * f);
-		}
 
-		if(tile->isHouseTile() && options.show_houses) {
-			if((int)tile->getHouseID() == current_house_id) {
+			int item_count = tile->items.size();
+			if(options.highlight_items && item_count > 0 && !tile->items.back()->isBorder()) {
+				static const float factor[5] = { 0.75f, 0.6f, 0.48f, 0.40f, 0.33f };
+				int idx = (item_count < 5 ? item_count : 5) - 1;
+				g = int(g * factor[idx]);
+				r = int(r * factor[idx]);
+			}
+
+			if(options.show_spawns && location->getSpawnCount() > 0) {
+				float f = 1.0f;
+				for(uint32_t i = 0; i < location->getSpawnCount(); ++i) {
+					f *= 0.7f;
+				}
+				g = uint8_t(g * f);
+				b = uint8_t(b * f);
+			}
+
+			if(options.show_houses && tile->isHouseTile()) {
+				if((int)tile->getHouseID() == current_house_id) {
+					r /= 2;
+				}
+				else {
+					r /= 2;
+					g /= 2;
+				}
+			}
+			else if(showspecial && tile->isPZ()) {
 				r /= 2;
-			} else {
-				r /= 2;
+				b /= 2;
+			}
+
+			if(showspecial && tile->getMapFlags() & TILESTATE_PVPZONE) {
+				g = r / 4;
+				b = b / 3 * 2;
+			}
+
+			if(showspecial && tile->getMapFlags() & TILESTATE_NOLOGOUT) {
+				b /= 2;
+			}
+
+			if(showspecial && tile->getMapFlags() & TILESTATE_NOPVP) {
 				g /= 2;
 			}
-		} else if(showspecial && tile->isPZ()) {
-			r /= 2;
-			b /= 2;
-		}
-
-		if(showspecial && tile->getMapFlags() & TILESTATE_PVPZONE) {
-			g = r/4;
-			b = b/3*2;
-		}
-
-		if(showspecial && tile->getMapFlags() & TILESTATE_NOLOGOUT) {
-			b /= 2;
-		}
-
-		if(showspecial && tile->getMapFlags() & TILESTATE_NOPVP) {
-			g /= 2;
 		}
 
 		if(only_colors) {
-			if(r != 255 || g != 255 || b != 255) {
+			if(as_minimap) {
+				uint8_t color = tile->getMiniMapColor();
+				r = (uint8_t)(int(color / 36) % 6 * 51);
+				g = (uint8_t)(int(color / 6) % 6 * 51);
+				b = (uint8_t)(color % 6 * 51);
+				glBlitSquare(draw_x, draw_y, r, g, b, 255);
+			}
+			else if(r != 255 || g != 255 || b != 255) {
 				glBlitSquare(draw_x, draw_y, r, g, b, 128);
 			}
 		} else {

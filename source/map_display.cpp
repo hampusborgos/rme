@@ -195,6 +195,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.highlight_items = g_settings.getBoolean(Config::HIGHLIGHT_ITEMS);
 			options.show_blocking = g_settings.getBoolean(Config::SHOW_BLOCKING);
 			options.show_tooltips = g_settings.getBoolean(Config::SHOW_TOOLTIPS);
+			options.show_as_minimap = g_settings.getBoolean(Config::SHOW_AS_MINIMAP);
 			options.show_only_colors = g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS);
 			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
 			options.show_preview = g_settings.getBoolean(Config::SHOW_PREVIEW);
