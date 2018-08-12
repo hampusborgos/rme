@@ -73,7 +73,7 @@ void ContainerItemButton::OnAddItem(wxCommandEvent& WXUNUSED(event))
 {
 	FindItemDialog dialog(GetParent(), "Choose Item to add", true);
 
-	if(dialog.ShowModal() != 0) {
+	if(dialog.ShowModal() == wxID_OK) {
 		Container* container = getParentContainer();
 		ItemVector& itemVector = container->getVector();
 
