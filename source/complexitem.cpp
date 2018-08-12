@@ -42,7 +42,8 @@ Item* Container::deepCopy() const
 	Container* copyContainer = dynamic_cast<Container*>(copy);
 	if(copyContainer) {
 		for(Item* item : contents) {
-			copyContainer->contents.push_back(item->deepCopy());
+			if(item != NULL)
+				copyContainer->contents.push_back(item->deepCopy());
 		}
 	}
 	return copy;
