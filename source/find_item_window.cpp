@@ -120,6 +120,12 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	block_pathfinder = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Block Pathfinder", wxDefaultPosition, wxDefaultSize, 0);
 	properties_box_sizer->Add(block_pathfinder, 0, wxALL, 5);
 
+	readable = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Readable", wxDefaultPosition, wxDefaultSize, 0);
+	properties_box_sizer->Add(readable, 0, wxALL, 5);
+
+	writeable = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Writeable", wxDefaultPosition, wxDefaultSize, 0);
+	properties_box_sizer->Add(writeable, 0, wxALL, 5);
+
 	pickupable = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Pickupable", wxDefaultPosition, wxDefaultSize, 0);
 	pickupable->SetValue(onlyPickupables);
 	properties_box_sizer->Add(pickupable, 0, wxALL, 5);
@@ -175,6 +181,8 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	unmovable->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	block_missiles->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	block_pathfinder->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	readable->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	writeable->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	pickupable->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	stackable->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	rotatable->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
@@ -201,6 +209,8 @@ FindItemDialog::~FindItemDialog()
 	unmovable->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	block_missiles->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	block_pathfinder->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	readable->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	writeable->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	pickupable->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	stackable->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	rotatable->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
@@ -235,6 +245,8 @@ void FindItemDialog::EnableProperties(bool enable)
 	unmovable->Enable(enable);
 	block_missiles->Enable(enable);
 	block_pathfinder->Enable(enable);
+	readable->Enable(enable);
+	writeable->Enable(enable);
 	pickupable->Enable(enable);
 	stackable->Enable(enable);
 	rotatable->Enable(enable);
@@ -334,6 +346,8 @@ void FindItemDialog::RefreshContentsInternal()
 							unmovable->GetValue() ||
 							block_missiles->GetValue() ||
 							block_pathfinder->GetValue() ||
+							readable->GetValue() ||
+							writeable->GetValue() ||
 							pickupable->GetValue() ||
 							stackable->GetValue() ||
 							rotatable->GetValue() ||
@@ -357,6 +371,8 @@ void FindItemDialog::RefreshContentsInternal()
 					(unmovable->GetValue() && item.moveable) ||
 					(block_missiles->GetValue() && !item.blockMissiles) ||
 					(block_pathfinder->GetValue() && !item.blockPathfinder) ||
+					(readable->GetValue() && !item.canReadText) ||
+					(writeable->GetValue() && !item.canWriteText) ||
 					(pickupable->GetValue() && !item.pickupable) ||
 					(stackable->GetValue() && !item.stackable) ||
 					(rotatable->GetValue() && !item.rotable) ||

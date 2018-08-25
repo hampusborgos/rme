@@ -42,3 +42,7 @@ vcproj/Installer/Release/
 # Xcode
 xcuserdata
 .DS_STORE
+
+# CLion
+.idea/
+cmake-build-debug/

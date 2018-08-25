@@ -108,12 +108,14 @@
         <item name="Show creatures" hotkey="F" action="SHOW_CREATURES" help="Show creatures on the map."/>
         <item name="Show spawns" hotkey="S" action="SHOW_SPAWNS" help="Show spawns on the map."/>
         <item name="Sho$w special" hotkey="E" action="SHOW_SPECIAL" help="Show special tiles on the map, like PZ."/>
+        <item name="Show as minimap" hotkey="Shift+E" action="SHOW_AS_MINIMAP" help="Show only the tile minimap colors."/>
         <item name="Only show $colors" hotkey="Ctrl+E" action="SHOW_ONLY_COLORS" help="Show only the special tiles on the map."/>
         <item name="Only show $modified" hotkey="Ctrl+M" action="SHOW_ONLY_MODIFIED" help="Show only the tiles that have been modified since the map was opened."/>
         <item name="Show $houses" hotkey="Ctrl+H" action="SHOW_HOUSES" help="Show houses on the map."/>
         <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
         <item name="Show T$ooltips" hotkey="Y" action="SHOW_TOOLTIPS" help="Show tooltips."/>
         <item name="Show Previe$w" hotkey="L" action="SHOW_PREVIEW" help="Show animations and lights preview."/>
+        <item name="Show Wall Hoo$ks" hotkey="K" action="SHOW_WALL_HOOKS" help="Show indicators for wall hooks."/>
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>

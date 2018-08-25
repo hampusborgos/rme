@@ -6,8 +6,15 @@ class GameSprite;
 
 struct MapTooltip
 {
+	enum TextLength {
+		MAX_CHARS_PER_LINE = 40,
+		MAX_CHARS = 255,
+	};
+
 	MapTooltip(int x, int y, std::string text, uint8_t r, uint8_t g, uint8_t b) : 
-		x(x), y(y), text(text), r(r), g(g), b(b) {}
+		x(x), y(y), text(text), r(r), g(g), b(b) {
+		ellipsis = (text.length() - 3) > MAX_CHARS;
+	}
 
 	void checkLineEnding() {
 		if(text.at(text.size() - 1) == '\n')
@@ -17,6 +24,7 @@ struct MapTooltip
 	int x, y;
 	std::string text;
 	uint8_t r, g, b;
+	bool ellipsis;
 };
 
 // Storage during drawing, for option caching
@@ -44,9 +52,11 @@ struct DrawingOptions {
 	bool highlight_items;
 	bool show_blocking;
 	bool show_tooltips;
+	bool show_as_minimap;
 	bool show_only_colors;
 	bool show_only_modified;
 	bool show_preview;
+	bool show_hooks;
 	bool hide_items_when_zoomed;
 };
 
@@ -109,6 +119,7 @@ protected:
 	void BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void DrawTile(TileLocation* tile);
 	void DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b);
+	void DrawHookIndicator(int x, int y, const ItemType& type);
 	void WriteTooltip(Item* item, std::ostringstream& stream);
 	void WriteTooltip(Waypoint* item, std::ostringstream& stream);
 	void MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);

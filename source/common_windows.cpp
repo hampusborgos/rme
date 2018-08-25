@@ -1067,12 +1067,12 @@ void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		return;
 	}
 
-	EndModal(1);
+	EndModal(wxID_OK);
 }
 
 void ReplaceItemDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 {
-	EndModal(0);
+	EndModal(wxID_CANCEL);
 }
 
 void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)

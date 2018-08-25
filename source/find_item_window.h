@@ -85,6 +85,8 @@ private:
 	wxCheckBox* unmovable;
 	wxCheckBox* block_missiles;
 	wxCheckBox* block_pathfinder;
+	wxCheckBox* readable;
+	wxCheckBox* writeable;
 	wxCheckBox* pickupable;
 	wxCheckBox* stackable;
 	wxCheckBox* rotatable;

@@ -51,9 +51,11 @@ void DrawingOptions::SetDefault()
 	highlight_items = false;
 	show_blocking = false;
 	show_tooltips = false;
+	show_as_minimap = false;
 	show_only_colors = false;
 	show_only_modified = false;
 	show_preview = false;
+	show_hooks = false;
 	hide_items_when_zoomed = true;
 }
 
@@ -77,9 +79,11 @@ void DrawingOptions::SetIngame()
 	highlight_items = false;
 	show_blocking = false;
 	show_tooltips = false;
+	show_as_minimap = false;
 	show_only_colors = false;
 	show_only_modified = false;
 	show_preview = false;
+	show_hooks = false;
 	hide_items_when_zoomed = false;
 }
 
@@ -219,14 +223,16 @@ void MapDrawer::DrawMap()
 			current_house_id = brush->asHouseExit()->getHouseID();
 	}
 
+	bool only_colors = options.show_as_minimap || options.show_only_colors;
+
 	// Enable texture mode
-	if(!options.show_only_colors)
+	if(!only_colors)
 		glEnable(GL_TEXTURE_2D);
 
 	for(int map_z = start_z; map_z >= superend_z; map_z--) {
 		if(map_z == end_z && start_z != end_z && options.show_shade) {
 			// Draw shade
-			if(!options.show_only_colors)
+			if(!only_colors)
 				glDisable(GL_TEXTURE_2D);
 
 			glColor4ub(0, 0, 0, 128);
@@ -237,7 +243,7 @@ void MapDrawer::DrawMap()
 				glVertex2f(0,0);
 			glEnd();
 
-			if(!options.show_only_colors)
+			if(!only_colors)
 				glEnable(GL_TEXTURE_2D);
 		}
 
@@ -286,7 +292,7 @@ void MapDrawer::DrawMap()
 			}
 		}
 
-		if(options.show_only_colors)
+		if(only_colors)
 			glEnable(GL_TEXTURE_2D);
 
 		// Draws the doodad preview or the paste preview (or import preview)
@@ -376,7 +382,7 @@ void MapDrawer::DrawMap()
 		++end_y;
 	}
 
-	if(!options.show_only_colors)
+	if(!only_colors)
 		glEnable(GL_TEXTURE_2D);
 }
 
@@ -1064,11 +1070,11 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		subtype = item->getSubtype();
 	} else if(it.isHangable) {
 		if(tile->hasProperty(HOOK_SOUTH)) {
-			pattern_x = 2;
-		} else if(tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 1;
+		} else if(tile->hasProperty(HOOK_EAST)) {
+			pattern_x = 2;
 		} else {
-			pattern_x = -0;
+			pattern_x = 0;
 		}
 	} else if(it.stackable) {
 		if(item->getSubtype() <= 1)
@@ -1113,6 +1119,9 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 			}
 		}
 	}
+
+	if(options.show_hooks && (it.hookSouth || it.hookEast))
+		DrawHookIndicator(draw_x, draw_y, it);
 }
 
 void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
@@ -1214,6 +1223,9 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 			}
 		}
 	}
+
+	if(options.show_hooks && (it.hookSouth || it.hookEast) && zoom <= 3.0)
+		DrawHookIndicator(draw_x, draw_y, it);
 }
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha)
@@ -1291,6 +1303,9 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Creature* c, int re
 
 void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 {
+	if(item == nullptr)
+		return;
+
 	const uint16_t id = item->getID();
 	if(id < 100)
 		return;
@@ -1345,7 +1360,8 @@ void MapDrawer::DrawTile(TileLocation* location)
 			WriteTooltip(waypoint, tooltip);
 	}
 
-	bool only_colors = options.show_only_colors;
+	bool as_minimap = options.show_as_minimap;
+	bool only_colors = as_minimap || options.show_only_colors;
 
 	int offset;
 	if (map_z <= GROUND_LAYER)
@@ -1358,57 +1374,69 @@ void MapDrawer::DrawTile(TileLocation* location)
 
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
-		bool showspecial = options.show_only_colors || options.show_special_tiles;
 
-		if(tile->isBlocking() && tile->size() > 0 && options.show_blocking) {
-			g = g/3*2;
-			b = b/3*2;
-		}
+		if(!as_minimap) {
+			bool showspecial = options.show_only_colors || options.show_special_tiles;
 
-		int item_count = tile->items.size();
-		if(options.highlight_items && item_count > 0 && !tile->items.back()->isBorder()) {
-			static const float factor[5] = {0.75f, 0.6f, 0.48f, 0.40f, 0.33f};
-			int idx = (item_count < 5 ? item_count : 5) - 1;
-			g = int(g * factor[idx]);
-			r = int(r * factor[idx]);
-		}
-
-		if(location->getSpawnCount() > 0 && options.show_spawns) {
-			float f = 1.0f;
-			for(uint32_t i = 0; i < location->getSpawnCount(); ++i) {
-				f *= 0.7f;
+			if(options.show_blocking && tile->isBlocking() && tile->size() > 0) {
+				g = g / 3 * 2;
+				b = b / 3 * 2;
 			}
-			g = uint8_t(g * f);
-			b = uint8_t(b * f);
-		}
 
-		if(tile->isHouseTile() && options.show_houses) {
-			if((int)tile->getHouseID() == current_house_id) {
+			int item_count = tile->items.size();
+			if(options.highlight_items && item_count > 0 && !tile->items.back()->isBorder()) {
+				static const float factor[5] = { 0.75f, 0.6f, 0.48f, 0.40f, 0.33f };
+				int idx = (item_count < 5 ? item_count : 5) - 1;
+				g = int(g * factor[idx]);
+				r = int(r * factor[idx]);
+			}
+
+			if(options.show_spawns && location->getSpawnCount() > 0) {
+				float f = 1.0f;
+				for(uint32_t i = 0; i < location->getSpawnCount(); ++i) {
+					f *= 0.7f;
+				}
+				g = uint8_t(g * f);
+				b = uint8_t(b * f);
+			}
+
+			if(options.show_houses && tile->isHouseTile()) {
+				if((int)tile->getHouseID() == current_house_id) {
+					r /= 2;
+				}
+				else {
+					r /= 2;
+					g /= 2;
+				}
+			}
+			else if(showspecial && tile->isPZ()) {
 				r /= 2;
-			} else {
-				r /= 2;
+				b /= 2;
+			}
+
+			if(showspecial && tile->getMapFlags() & TILESTATE_PVPZONE) {
+				g = r / 4;
+				b = b / 3 * 2;
+			}
+
+			if(showspecial && tile->getMapFlags() & TILESTATE_NOLOGOUT) {
+				b /= 2;
+			}
+
+			if(showspecial && tile->getMapFlags() & TILESTATE_NOPVP) {
 				g /= 2;
 			}
-		} else if(showspecial && tile->isPZ()) {
-			r /= 2;
-			b /= 2;
-		}
-
-		if(showspecial && tile->getMapFlags() & TILESTATE_PVPZONE) {
-			g = r/4;
-			b = b/3*2;
-		}
-
-		if(showspecial && tile->getMapFlags() & TILESTATE_NOLOGOUT) {
-			b /= 2;
-		}
-
-		if(showspecial && tile->getMapFlags() & TILESTATE_NOPVP) {
-			g /= 2;
 		}
 
 		if(only_colors) {
-			if(r != 255 || g != 255 || b != 255) {
+			if(as_minimap) {
+				uint8_t color = tile->getMiniMapColor();
+				r = (uint8_t)(int(color / 36) % 6 * 51);
+				g = (uint8_t)(int(color / 6) % 6 * 51);
+				b = (uint8_t)(color % 6 * 51);
+				glBlitSquare(draw_x, draw_y, r, g, b, 255);
+			}
+			else if(r != 255 || g != 255 || b != 255) {
 				glBlitSquare(draw_x, draw_y, r, g, b, 128);
 			}
 		} else {
@@ -1522,10 +1550,32 @@ void MapDrawer::DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_
 	glEnd();
 }
 
+void MapDrawer::DrawHookIndicator(int x, int y, const ItemType& type)
+{
+	glDisable(GL_TEXTURE_2D);
+	glColor4ub(uint8_t(0), uint8_t(0), uint8_t(255), uint8_t(200));
+	glBegin(GL_QUADS);
+	if(type.hookSouth) {
+		x -= 10;
+		y += 10;
+		glVertex2f(x, y);
+		glVertex2f(x + 10, y);
+		glVertex2f(x + 20, y + 10);
+		glVertex2f(x + 10, y + 10);
+	} else if(type.hookEast) {
+		x += 10;
+		y -= 10;
+		glVertex2f(x, y);
+		glVertex2f(x + 10, y + 10);
+		glVertex2f(x + 10, y + 20);
+		glVertex2f(x, y + 10);
+	}
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
+}
+
 void MapDrawer::DrawTooltips()
 {
-	const int MAX_LINE_CHARS = 40;
-
 	for(std::vector<MapTooltip*>::const_iterator it = tooltips.begin(); it != tooltips.end(); ++it) {
 		MapTooltip* tooltip = (*it);
 		const char* text = tooltip->text.c_str();
@@ -1533,17 +1583,22 @@ void MapDrawer::DrawTooltips()
 		float width = 2.0f;
 		float height = 14.0f;
 		int char_count = 0;
+		int line_char_count = 0;
 
 		for(const char* c = text; *c != '\0'; c++) {
-			if(*c == '\n' || (char_count >= MAX_LINE_CHARS && *c == ' ')) {
+			if(*c == '\n' || (line_char_count >= MapTooltip::MAX_CHARS_PER_LINE && *c == ' ')) {
 				height += 14.0f;
 				line_width = 0.0f;
-				char_count = 0;
+				line_char_count = 0;
 			} else {
 				line_width += glutBitmapWidth(GLUT_BITMAP_HELVETICA_12, *c);
 			}
 			width = std::max<float>(width, line_width);
 			char_count++;
+			line_char_count++;
+
+			if(tooltip->ellipsis && char_count > (MapTooltip::MAX_CHARS + 3))
+				break;
 		}
 
 		float scale = zoom < 1.0f ? zoom : 1.0f;
@@ -1601,14 +1656,23 @@ void MapDrawer::DrawTooltips()
 			glColor4ub(0, 0, 0, 255);
 			glRasterPos2f(startx, starty);
 			char_count = 0;
+			line_char_count = 0;
 			for(const char* c = text; *c != '\0'; c++) {
-				if(*c == '\n' || (char_count >= MAX_LINE_CHARS && *c == ' ')) {
+				if(*c == '\n' || (line_char_count >= MapTooltip::MAX_CHARS_PER_LINE && *c == ' ')) {
 					starty += (14.0f * scale);
 					glRasterPos2f(startx, starty);
-					char_count = 0;
+					line_char_count = 0;
 				}
-				glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
 				char_count++;
+				line_char_count++;
+
+				if(tooltip->ellipsis && char_count >= MapTooltip::MAX_CHARS) {
+					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '.');
+					if(char_count >= (MapTooltip::MAX_CHARS + 2))
+						break;
+				} else {
+					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
+				}
 			}
 		}
 	}

@@ -60,8 +60,8 @@ ItemType::ItemType() :
 	ignoreLook(false),
 
 	isHangable(false),
-	hookSouth(false),
 	hookEast(false),
+	hookSouth(false),
 	canReadText(false),
 	canWriteText(false),
 	replaceable(true),
@@ -191,8 +191,8 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
-			t->hookSouth = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
-			t->hookEast = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
+			t->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			t->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
 			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
@@ -443,8 +443,8 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
-			t->hookSouth = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
-			t->hookEast = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
+			t->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			t->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
 			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
@@ -590,8 +590,8 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
-			t->hookSouth = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
-			t->hookEast = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
+			t->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			t->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
 			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
 			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
 			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
@@ -924,9 +924,10 @@ bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 		items.set(id, newd ItemType());
 		items[id]->is_metaitem = true;
 		items[id]->id = id;
-		return true;
+	} else {
+		return false;
 	}
-	return false;
+	return true;
 }
 
 ItemType& ItemDatabase::getItemType(uint16_t id)

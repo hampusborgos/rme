@@ -212,6 +212,7 @@ void Settings::IO(IOMode mode)
 	Int(SHOW_ONLY_TILEFLAGS, 0);
 	Int(SHOW_ONLY_MODIFIED_TILES, 0);
 	Int(SHOW_PREVIEW, 1);
+	Int(SHOW_WALL_HOOKS, 0);
 
 	section("Version");
 	Int(VERSION_ID, 0);
@@ -260,6 +261,7 @@ void Settings::IO(IOMode mode)
 	Int(USE_OTGZ, 1);
 	Int(SAVE_WITH_OTB_MAGIC_NUMBER, 0);
 	Int(REPLACE_SIZE, 500);
+	Int(COPY_POSITION_FORMAT, 0);
 
 	section("Graphics");
 	Int(TEXTURE_MANAGEMENT, 1);

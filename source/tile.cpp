@@ -38,7 +38,8 @@ Tile::Tile(int x, int y, int z) :
 	spawn(nullptr),
 	house_id(0),
 	mapflags(0),
-	statflags(0)
+	statflags(0),
+	minimapColor(INVALID_MINIMAP_COLOR)
 {
 	////
 }
@@ -50,7 +51,8 @@ Tile::Tile(TileLocation& loc) :
 	spawn(nullptr),
 	house_id(0),
 	mapflags(0),
-	statflags(0)
+	statflags(0),
+	minimapColor(INVALID_MINIMAP_COLOR)
 {
 	////
 }
@@ -347,16 +349,21 @@ ItemVector Tile::getSelectedItems()
 
 uint8_t Tile::getMiniMapColor() const
 {
+	if(minimapColor != INVALID_MINIMAP_COLOR)
+		return minimapColor;
+
 	for(ItemVector::const_reverse_iterator item_iter = items.rbegin(); item_iter != items.rend(); ++item_iter) {
 		if((*item_iter)->getMiniMapColor()) {
 			return (*item_iter)->getMiniMapColor();
 			break;
 		}
 	}
+
 	// check ground too
 	if(hasGround()) {
 		return ground->getMiniMapColor();
 	}
+
 	return 0;
 }
 
@@ -407,6 +414,9 @@ void Tile::update()
 		if(ground->getUniqueID() != 0) {
 			statflags |= TILESTATE_UNIQUE;
 		}
+		if(ground->getMiniMapColor() != 0) {
+			minimapColor = ground->getMiniMapColor();
+		}
 	}
 
 	ItemVector::const_iterator iter = items.begin();
@@ -417,6 +427,9 @@ void Tile::update()
 		}
 		if(i->getUniqueID() != 0) {
 			statflags |= TILESTATE_UNIQUE;
+		}
+		if(i->getMiniMapColor() != 0) {
+			minimapColor = i->getMiniMapColor();
 		}
 
 		ItemType& it = g_items[i->getID()];

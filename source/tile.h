@@ -42,6 +42,10 @@ enum {
 	TILESTATE_MODIFIED  = 0x0040,
 };
 
+enum : uint8_t {
+	INVALID_MINIMAP_COLOR = 0xFF
+};
+
 class Tile
 {
 public: // Members
@@ -208,7 +212,10 @@ protected:
 		};
 		uint32_t flags;
 	};
+
 private:
+	uint8_t minimapColor;
+
 	Tile(const Tile& tile); // No copy
 	Tile& operator=(const Tile& i);// Can't copy
 	Tile& operator==(const Tile& i);// Can't compare

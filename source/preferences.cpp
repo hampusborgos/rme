@@ -118,6 +118,18 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 	SetWindowToolTip(tmptext, replace_size_spin, "How many items you can replace on the map using the Replace Item tool.");
 
 	sizer->Add(grid_sizer, 0, wxALL, 5);
+	sizer->AddSpacer(10);
+
+	wxString position_choices[] = { "  {x = 0, y = 0, z = 0}",
+									"  {\"x\":0,\"y\":0,\"z\":0}",
+									"  x, y, z",
+									"  (x, y, z)",
+									"  Position(x, y, z)" };
+	int radio_choices = sizeof(position_choices) / sizeof(wxString);
+	position_format = newd wxRadioBox(general_page, wxID_ANY, "Copy Position Format", wxDefaultPosition, wxDefaultSize, radio_choices, position_choices, 1, wxRA_SPECIFY_COLS);
+	position_format->SetSelection(g_settings.getInteger(Config::COPY_POSITION_FORMAT));
+	sizer->Add(position_format, 0, wxALL | wxEXPAND, 5);
+	SetWindowToolTip(tmptext, position_format, "The position format when copying from the map.");
 
 	general_page->SetSizerAndFit(sizer);
 
@@ -584,6 +596,7 @@ void PreferencesWindow::Apply()
 	g_settings.setInteger(Config::UNDO_MEM_SIZE, undo_mem_size_spin->GetValue());
 	g_settings.setInteger(Config::WORKER_THREADS, worker_threads_spin->GetValue());
 	g_settings.setInteger(Config::REPLACE_SIZE, replace_size_spin->GetValue());
+	g_settings.setInteger(Config::COPY_POSITION_FORMAT, position_format->GetSelection());
 
 	// Editor
 	g_settings.setInteger(Config::GROUP_ACTIONS, group_actions_chkbox->GetValue());
