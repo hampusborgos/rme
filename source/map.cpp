@@ -478,6 +478,14 @@ House* Map::getHouse(uint32_t houseId)
 	return nullptr;
 }
 
+Town* Map::getTown(uint32_t townId)
+{
+	if(towns.count() != 0) {
+		return towns.getTown(townId);
+	}
+	return nullptr;
+}
+
 bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
 {
 	uint8_t* pic = nullptr;

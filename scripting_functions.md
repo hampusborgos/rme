@@ -37,6 +37,7 @@
 [editor:getSelection()](#editor)  
 [editor:getTile(position)](#editor)  
 [editor:getTile(x, y, z)](#editor)  
+[editor:getTowns()](#editor_getTowns)  
 [editor:removeItem(position, itemId)](#editor_removeItem)  
 [editor:replaceItems(items)](#editor_replaceItems)  
 [editor:selectTiles(tiles)](#editor)  
@@ -85,6 +86,12 @@
 [house:getTiles()](#house)  
 [house:getTownId()](#house_getTownId)  
 
+## <a name='town'>Town</a>
+[Town(editor, townId)](#town)  
+[town:getId()](#town)  
+[town:getName()](#town)  
+[town:getTemplePosition()](#town)  
+
 ## <a name='editor_addItem'>editor:addItem(position, itemId)</a>
 #### Example:
 ```Lua
@@ -118,6 +125,23 @@ local items = {
 local editor = Editor(0) -- gets the editor at first tab.
 if editor then
   editor:replaceItems(items)
+end
+```
+
+## <a name='editor_getTowns'>editor:getTowns()</a>
+#### Example:
+```Lua
+local editor = Editor(0)
+if editor then
+  local towns = editor:getTowns()
+  if towns then
+    for _, town in pairs(towns) do
+      local id = town:getId()
+      local name = town:getName()
+      local position = town:getTemplePosition()      
+      print(string.format("id=%d, name=%s, x=%d, y=%d, z=%d", id, name, position.x, position.y, position.z))
+    end
+  end
 end
 ```
 

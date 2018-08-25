@@ -72,6 +72,7 @@ public:
 	SpawnList getSpawnList(int32_t x, int32_t y, int32_t z) { return getSpawnList(getTile(x, y, z)); }
 
 	House* getHouse(uint32_t houseId);
+	Town* getTown(uint32_t townId);
 
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to

@@ -33,7 +33,8 @@ enum LuaDataType {
 	LuaData_Editor,
 	LuaData_Tile,
 	LuaData_Selection,
-	LuaData_House
+	LuaData_House,
+	LuaData_Town
 };
 
 class LuaInterface
@@ -96,6 +97,7 @@ public:
 	static int luaEditorRemoveItem(lua_State* L);
 	static int luaEditorReplaceItems(lua_State* L);
 	static int luaEditorGetHouses(lua_State* L);
+	static int luaEditorGetTowns(lua_State* L);
 
 	// Tile
 	static int luaTileCreate(lua_State* L);
@@ -139,6 +141,12 @@ public:
 	static int luaHouseGetTownId(lua_State* L);
 	static int luaHouseGetSize(lua_State* L);
 	static int luaHouseGetTiles(lua_State* L);
+
+	// Town
+	static int luaTownCreate(lua_State* L);
+	static int luaTownGetId(lua_State* L);
+	static int luaTownGetName(lua_State* L);
+	static int luaTownGetTemplePosition(lua_State* L);
 
 	int getTop();
 	bool hasIndex(int index) { return (getTop() >= (index < 0 ? -index : index) && index != 0); }

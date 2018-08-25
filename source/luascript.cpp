@@ -716,6 +716,30 @@ int LuaInterface::luaEditorGetHouses(lua_State* L)
 	return 1;
 }
 
+int LuaInterface::luaEditorGetTowns(lua_State* L)
+{
+	// editor:getTowns()
+	Editor* editor = getUserdata<Editor>(L, 1);
+	if(!editor) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Towns& towns = editor->map.towns;
+	lua_createtable(L, towns.count(), 0);
+
+	int index = 0;
+	for(TownMap::iterator it = towns.begin(); it != towns.end(); ++it) {
+		Town* town = it->second;
+		if(town) {
+			pushUserdata<Town>(L, town);
+			setMetatable(L, -1, "Town");
+			lua_rawseti(L, -2, ++index);
+		}
+	}
+	return 1;
+}
+
 // Tile
 int LuaInterface::luaTileCreate(lua_State* L)
 {
@@ -1411,6 +1435,61 @@ int LuaInterface::luaHouseGetTiles(lua_State* L)
 	return 1;
 }
 
+// Town
+int LuaInterface::luaTownCreate(lua_State* L)
+{
+	// Town(editor, townId)
+	Editor* editor = getUserdata<Editor>(L, 2);
+	if(editor) {
+		uint32_t townId = (uint32_t)lua_tonumber(L, 3);
+		Town* town = editor->map.getTown(townId);
+		if(town) {
+			pushUserdata<Town>(L, town);
+			setMetatable(L, -1, "Town");
+			return 1;
+		}
+	}
+
+	lua_pushnil(L);
+	return 1;
+}
+
+int LuaInterface::luaTownGetId(lua_State* L)
+{
+	// town:getId()
+	Town* town = getUserdata<Town>(L, 1);
+	if(town) {
+		lua_pushnumber(L, town->getID());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTownGetName(lua_State* L)
+{
+	// town:getName()
+	Town* town = getUserdata<Town>(L, 1);
+	if(town) {
+		pushString(L, town->getName());
+	} else {
+		lua_pushnil(L);
+	}
+	return 1;
+}
+
+int LuaInterface::luaTownGetTemplePosition(lua_State* L)
+{
+	// town:getTemplePosition()
+	Town* town = getUserdata<Town>(L, 1);
+	if(town) {
+		pushPosition(L, town->getTemplePosition());
+	} else {
+		lua_pushnumber(L, 0);
+	}
+	return 1;
+}
+
 void LuaInterface::registerClass(const std::string& className, const std::string& baseClass, lua_CFunction newFunction/* = nullptr*/)
 {
 	// className = {}
@@ -1470,6 +1549,8 @@ void LuaInterface::registerClass(const std::string& className, const std::string
 		lua_pushnumber(luaState, LuaData_Selection);
 	} else if(className == "House") {
 		lua_pushnumber(luaState, LuaData_House);
+	} else if(className == "Town") {
+		lua_pushnumber(luaState, LuaData_Town);
 	} else {
 		lua_pushnumber(luaState, LuaData_Unknown);
 	}
@@ -1565,6 +1646,7 @@ void LuaInterface::registerFunctions()
 	registerMethod("Editor", "removeItem", LuaInterface::luaEditorRemoveItem);
 	registerMethod("Editor", "replaceItems", LuaInterface::luaEditorReplaceItems);
 	registerMethod("Editor", "getHouses", LuaInterface::luaEditorGetHouses);
+	registerMethod("Editor", "getTowns", LuaInterface::luaEditorGetTowns);
 
 	// Tile
 	registerClass("Tile", "", LuaInterface::luaTileCreate);
@@ -1611,6 +1693,13 @@ void LuaInterface::registerFunctions()
 	registerMethod("House", "getTownId", LuaInterface::luaHouseGetTownId);
 	registerMethod("House", "getSize", LuaInterface::luaHouseGetSize);
 	registerMethod("House", "getTiles", LuaInterface::luaHouseGetTiles);
+
+	// Town
+	registerClass("Town", "", LuaInterface::luaTownCreate);
+	registerMetaMethod("Town", "__eq", LuaInterface::luaUserdataCompare);
+	registerMethod("Town", "getId", LuaInterface::luaTownGetId);
+	registerMethod("Town", "getName", LuaInterface::luaTownGetName);
+	registerMethod("Town", "getTemplePosition", LuaInterface::luaTownGetTemplePosition);
 }
 
 int LuaInterface::luaErrorHandler(lua_State* L)
@@ -1744,7 +1833,7 @@ bool LuaInterface::replaceItems(Editor *editor, std::map<uint32_t, uint32_t>& it
 		g_lua.print("Replacing item id " + i2ws(find_id) + " with item id " + i2ws(with_id) + "...");
 
 		// Replace the items in a second step (can't replace while iterating)
-		
+
 		for(std::vector<std::pair<Tile*, Item*>>::const_iterator rit = result.begin(); rit != result.end(); ++rit) {
 			transformItem(rit->second, with_id, rit->first);
 		}
