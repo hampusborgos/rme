@@ -799,7 +799,25 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 						editor.undraw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
 					}
 				} else {
+					bool will_show_spawn = false;
+					if(brush->isSpawn() || brush->isCreature()) {
+						if(!g_settings.getBoolean(Config::SHOW_SPAWNS)) {
+							Tile* tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
+							if(!tile || !tile->spawn) {
+								will_show_spawn = true;
+							}
+						}
+					}
+
 					editor.draw(Position(mouse_map_x, mouse_map_y, floor), event.ShiftDown() || event.AltDown());
+
+					if(will_show_spawn) {
+						Tile* tile = editor.map.getTile(mouse_map_x, mouse_map_y, floor);
+						if(tile && tile->spawn) {
+							g_settings.setInteger(Config::SHOW_SPAWNS, true);
+							g_gui.UpdateMenubar();
+						}
+					}
 				}
 			} else {
 				if(brush->isGround() && event.AltDown()) {
