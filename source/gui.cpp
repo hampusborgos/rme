@@ -1117,6 +1117,11 @@ void GUI::DestroyLoadBar()
 	}
 }
 
+void GUI::UpdateMenubar()
+{
+	root->UpdateMenubar();
+}
+
 void GUI::SetScreenCenterPosition(Position position)
 {
 	MapTab* mapTab = GetCurrentMapTab();

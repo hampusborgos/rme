@@ -344,6 +344,9 @@ void MainMenuBar::Update()
 	EnableItem(ZOOM_OUT, has_map);
 	EnableItem(ZOOM_NORMAL, has_map);
 
+	if(has_map)
+		CheckItem(SHOW_SPAWNS, g_settings.getBoolean(Config::SHOW_SPAWNS));
+
 	EnableItem(WIN_MINIMAP, loaded);
 	EnableItem(NEW_PALETTE, loaded);
 	EnableItem(SELECT_TERRAIN, loaded);
