@@ -48,6 +48,7 @@
 // OS
 
 #define OTGZ_SUPPORT 1
+#define ASSETS_NAME "Tibia"
 
 #ifdef __VISUALC__
 #pragma warning(disable:4996) // Stupid MSVC complaining 'bout "unsafe" functions

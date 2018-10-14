@@ -220,7 +220,7 @@ void Settings::IO(IOMode mode)
 	Int(USE_CUSTOM_DATA_DIRECTORY, 0);
 	String(DATA_DIRECTORY, "");
 	String(EXTENSIONS_DIRECTORY, "");
-	String(TIBIA_DATA_DIRS, "");
+	String(ASSETS_DATA_DIRS, "");
 
 	section("Editor");
 	String(RECENT_FILES, "");

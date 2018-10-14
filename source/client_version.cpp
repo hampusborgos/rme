@@ -109,7 +109,7 @@ void ClientVersion::loadVersions()
 	try
 	{
 		json::mValue read_obj;
-		json::read_or_throw(g_settings.getString(Config::TIBIA_DATA_DIRS), read_obj);
+		json::read_or_throw(g_settings.getString(Config::ASSETS_DATA_DIRS), read_obj);
 		json::mArray& vers_obj = read_obj.get_array();
 		for(json::mArray::iterator ver_iter = vers_obj.begin(); ver_iter != vers_obj.end(); ++ver_iter) {
 			json::mObject& ver_obj = ver_iter->get_obj();
@@ -340,7 +340,7 @@ void ClientVersion::saveVersions()
 	}
 	std::ostringstream out;
 	json::write(vers_obj, out);
-	g_settings.setString(Config::TIBIA_DATA_DIRS, out.str());
+	g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
 }
 
 // Client version class
@@ -428,8 +428,8 @@ bool ClientVersion::hasValidPaths() const
 		return false;
 	}
 
-	FileName dat_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.dat";
-	FileName spr_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.spr";
+	FileName dat_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".dat";
+	FileName spr_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".spr";
 	if(!dat_path.FileExists() || !spr_path.FileExists()) {
 		return false;
 	}
@@ -441,7 +441,7 @@ bool ClientVersion::hasValidPaths() const
 	// Peek the version of the files
 	FileReadHandle dat_file(static_cast<const char*>(dat_path.GetFullPath().mb_str()));
 	if(!dat_file.isOk()) {
-		wxLogError("Could not open Tibia.dat.");
+		wxLogError("Could not open metadata file.");
 		return false;
 	}
 
@@ -451,7 +451,7 @@ bool ClientVersion::hasValidPaths() const
 
 	FileReadHandle spr_file(static_cast<const char*>(spr_path.GetFullPath().mb_str()));
 	if(!spr_file.isOk()) {
-		wxLogError("Could not open Tibia.spr.");
+		wxLogError("Could not open sprites file.");
 		return false;
 	}
 
@@ -466,8 +466,8 @@ bool ClientVersion::hasValidPaths() const
 	}
 
 	wxString message = "Signatures are incorrect.\n";
-	message << "Dat signature: %X\n";
-	message << "Spr signature: %X";
+	message << "Metadata signature: %X\n";
+	message << "Sprites signature: %X";
 	wxLogError(wxString::Format(message, datSignature, sprSignature));
 	return false;
 }
@@ -477,13 +477,10 @@ bool ClientVersion::loadValidPaths()
 	while(!hasValidPaths()) {
 		g_gui.PopupDialog(
 			"Error",
-			"Could not locate Tibia.dat and/or Tibia.spr, please navigate to your Tibia " +
-				name + " installation folder.",
+			"Could not locate metadata and/or sprite files, please navigate to your client assets " + name + " installation folder.",
 			wxOK);
 
-		wxString dirHelpText("Select Tibia ");
-		dirHelpText << name << " directory.";
-
+		wxString dirHelpText("Select assets directory.");
 		wxDirDialog file_dlg(nullptr, dirHelpText, "", wxDD_DIR_MUST_EXIST);
 		int ok = file_dlg.ShowModal();
 		if(ok == wxID_CANCEL)

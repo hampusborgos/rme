@@ -106,7 +106,7 @@ struct OtbVersion
 	ClientVersionID id;
 };
 
-// Formats for the .dat data file for Tibia
+// Formats for the metadata file
 enum DatFormat
 {
 	DAT_FORMAT_UNKNOWN,
