@@ -237,6 +237,16 @@ void FindItemDialog::setSearchMode(FindItemDialog::SearchMode mode)
 	types_radio_box->Enable(mode == SearchMode::Types);
 	EnableProperties(mode == SearchMode::Properties);
 	RefreshContentsInternal();
+
+	if(mode == SearchMode::ServerIDs) {
+		server_id_spin->SetFocus();
+		server_id_spin->SetSelection(-1, -1);
+	} else if(mode == SearchMode::ClientIDs) {
+		client_id_spin->SetFocus();
+		client_id_spin->SetSelection(-1, -1);
+	} else if(mode == SearchMode::Names) {
+		name_text_input->SetFocus();
+	}
 }
 
 void FindItemDialog::EnableProperties(bool enable)

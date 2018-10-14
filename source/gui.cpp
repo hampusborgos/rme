@@ -329,36 +329,36 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.gfx.client_version = getLoadedVersion();
 
-	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.otfi");
+	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".otfi");
 	if(!g_gui.gfx.loadOTFI(otfi_path, error, warnings)) {
-		error = "Couldn't load tibia.otfi: " + error;
+		error = "Couldn't load otfi file: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	g_gui.CreateLoadBar("Loading data files");
-	g_gui.SetLoadDone(0, "Loading Tibia.dat ...");
-	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.dat");
+	g_gui.CreateLoadBar("Loading asset files");
+	g_gui.SetLoadDone(0, "Loading metadata file...");
+	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".dat");
 
 	if(!g_gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
-		error = "Couldn't load tibia.dat: " + error;
+		error = "Couldn't load metadata: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "Tibia.spr");
+	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".spr");
 
-	g_gui.SetLoadDone(10, "Loading Tibia.spr ...");
+	g_gui.SetLoadDone(10, "Loading sprites file...");
 	if(!g_gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
-		error = "Couldn't load tibia.spr: " + error;
+		error = "Couldn't load sprites: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	g_gui.SetLoadDone(20, "Loading items.otb ...");
+	g_gui.SetLoadDone(20, "Loading items.otb file...");
 	if(!g_items.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "items.otb"), error, warnings)) {
 		error = "Couldn't load items.otb: " + error;
 		g_gui.DestroyLoadBar();
@@ -1195,7 +1195,12 @@ void GUI::DestroyLoadBar()
 	}
 }
 
-bool GUI::SetScreenCenterPosition(Position position)
+void GUI::UpdateMenubar()
+{
+	root->UpdateMenubar();
+}
+
+void GUI::SetScreenCenterPosition(Position position)
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab)

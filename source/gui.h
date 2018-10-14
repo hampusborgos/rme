@@ -153,6 +153,8 @@ public:
 	 */
 	void DestroyLoadBar();
 
+	void UpdateMenubar();
+
 	bool IsRenderingEnabled() const {return disabled_counter == 0;}
 
 	void EnableHotkeys();

@@ -383,7 +383,7 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 	file.getU16(effect_count);
 	file.getU16(distance_count);
 
-	uint32_t minID = 100; // tibia.dat start with id 100
+	uint32_t minID = 100; // items start with id 100
 	// We don't load distance/effects, if we would, just add effect_count & distance_count here
 	uint32_t maxID = item_count + creature_count;
 
