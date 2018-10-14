@@ -64,7 +64,9 @@ BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 	EVT_MENU(MAP_POPUP_MENU_PASTE, MapCanvas::OnPaste)
 	EVT_MENU(MAP_POPUP_MENU_DELETE, MapCanvas::OnDelete)
 	//----
-	EVT_MENU(MAP_POPUP_MENU_BROWSE_TILE, MapCanvas::OnBrowseTile)
+	EVT_MENU(MAP_POPUP_MENU_COPY_SERVER_ID, MapCanvas::OnCopyServerId)
+	EVT_MENU(MAP_POPUP_MENU_COPY_CLIENT_ID, MapCanvas::OnCopyClientId)
+	EVT_MENU(MAP_POPUP_MENU_COPY_NAME, MapCanvas::OnCopyName)
 	// ----
 	EVT_MENU(MAP_POPUP_MENU_ROTATE, MapCanvas::OnRotateItem)
 	EVT_MENU(MAP_POPUP_MENU_GOTO, MapCanvas::OnGotoDestination)
@@ -82,6 +84,8 @@ BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 	EVT_MENU(MAP_POPUP_MENU_SELECT_HOUSE_BRUSH, MapCanvas::OnSelectHouseBrush)
 	// ----
 	EVT_MENU(MAP_POPUP_MENU_PROPERTIES, MapCanvas::OnProperties)
+	// ----
+	EVT_MENU(MAP_POPUP_MENU_BROWSE_TILE, MapCanvas::OnBrowseTile)
 END_EVENT_TABLE()
 
 bool MapCanvas::processed[] = {0};
@@ -1836,6 +1840,63 @@ void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 	}
 }
 
+void MapCanvas::OnCopyServerId(wxCommandEvent& WXUNUSED(event))
+{
+	ASSERT(editor.selection.size() == 1)
+
+	if(wxTheClipboard->Open()) {
+		Tile* tile = editor.selection.getSelectedTile();
+		ItemVector selected_items = tile->getSelectedItems();
+		ASSERT(selected_items.size() == 1)
+
+		const Item* item = selected_items.front();
+
+		wxTextDataObject* obj = new wxTextDataObject();
+		obj->SetText(i2ws(item->getID()));
+		wxTheClipboard->SetData(obj);
+
+		wxTheClipboard->Close();
+	}
+}
+
+void MapCanvas::OnCopyClientId(wxCommandEvent& WXUNUSED(event))
+{
+	ASSERT(editor.selection.size() == 1)
+
+	if(wxTheClipboard->Open()) {
+		Tile* tile = editor.selection.getSelectedTile();
+		ItemVector selected_items = tile->getSelectedItems();
+		ASSERT(selected_items.size() == 1)
+
+		const Item* item = selected_items.front();
+
+		wxTextDataObject* obj = new wxTextDataObject();
+		obj->SetText(i2ws(item->getClientID()));
+		wxTheClipboard->SetData(obj);
+
+		wxTheClipboard->Close();
+	}
+}
+
+void MapCanvas::OnCopyName(wxCommandEvent& WXUNUSED(event))
+{
+	ASSERT(editor.selection.size() == 1)
+
+	if(wxTheClipboard->Open()) {
+		Tile* tile = editor.selection.getSelectedTile();
+		ItemVector selected_items = tile->getSelectedItems();
+		ASSERT(selected_items.size() == 1)
+
+		const Item* item = selected_items.front();
+
+		wxTextDataObject* obj = new wxTextDataObject();
+		obj->SetText(wxstr(item->getName()));
+		wxTheClipboard->SetData(obj);
+
+		wxTheClipboard->Close();
+	}
+}
+
 void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 {
 	if(editor.selection.size() != 1)
@@ -2184,23 +2245,16 @@ void MapPopupMenu::Update()
 	wxMenuItem* deleteItem = Append( MAP_POPUP_MENU_DELETE, "&Delete\tDEL", "Removes all seleceted items");
 	deleteItem->Enable(anything_selected);
 
-	AppendSeparator();
-
-	wxMenuItem* browseTile = Append(MAP_POPUP_MENU_BROWSE_TILE, "Browse Field", "Navigate from tile items");
-	browseTile->Enable(anything_selected);
-
 	if(anything_selected) {
 		if(editor.selection.size() == 1) {
 			Tile* tile = editor.selection.getSelectedTile();
-
-			AppendSeparator();
 			ItemVector selected_items = tile->getSelectedItems();
 
 			bool hasWall = false;
 			bool hasCarpet = false;
 			bool hasTable = false;
 			Item* topItem = nullptr;
-			Item* topSelectedItem = (selected_items.size() == 1? selected_items.back() : nullptr);
+			Item* topSelectedItem = (selected_items.size() == 1 ? selected_items.back() : nullptr);
 			Creature* topCreature = tile->creature;
 			Spawn* topSpawn = tile->spawn;
 
@@ -2224,6 +2278,15 @@ void MapPopupMenu::Update()
 			}
 			if(!topItem) {
 				topItem = tile->ground;
+			}
+
+			AppendSeparator();
+
+			if(topSelectedItem) {
+				Append(MAP_POPUP_MENU_COPY_SERVER_ID, "Copy Item Server Id", "Copy the server id of this item");
+				Append(MAP_POPUP_MENU_COPY_CLIENT_ID, "Copy Item Client Id", "Copy the client id of this item");
+				Append(MAP_POPUP_MENU_COPY_NAME, "Copy Item Name", "Copy the name of this item");
+				AppendSeparator();
 			}
 
 			if(topSelectedItem || topCreature || topItem) {
@@ -2300,6 +2363,11 @@ void MapPopupMenu::Update()
 					Append( MAP_POPUP_MENU_PROPERTIES, "&Properties", "Properties for the current object");
 				}
 			}
+
+			AppendSeparator();
+
+			wxMenuItem* browseTile = Append(MAP_POPUP_MENU_BROWSE_TILE, "Browse Field", "Navigate from tile items");
+			browseTile->Enable(anything_selected);
 		}
 	}
 }
