@@ -1,3 +1,51 @@
+#### 3.5
+
+Features:
+
+* Implements flood fill in Terrain Brush.
+* Update wall brushes for 10.98
+* Added Show As Minimap menu.
+* Make spawns visible when placing a new spawn.
+
+Fixed bugs:
+
+* Fix container item crash.
+
+#### 3.4
+
+Features:
+
+* New Find Item / Jump to Item dialog.
+* Configurable copy position format.
+* Add text ellipsis for tooltips.
+* Show hook indicators for walls.
+* Updated data for 10.98
+
+Fixed bugs:
+
+* Icon background colour; white and gray no longer work.
+* Only show colors option breaks RME.
+
+#### 3.3
+
+Features:
+
+* Support for tooltips in the map.
+* Support for animations preview.
+* Restore last position when opening a map.
+* Export search result to a .txt file.
+* Waypoint brush improvements.
+* Better fullscreen support on macOS.
+
+Fixed bugs:
+
+* Items larger than 64x64 are now displayed properly.
+* Fixed potential crash when using waypoint brush.
+* Fixed a bug where you could not open map files by clicking them while the editor is running.
+* You can now open the extensions folder on macOS.
+* Fixed a bug where an item search would not display any result on macOS.
+* Fixed multiple issues related to editing houses on macOS.
+
 #### 3.2
 
 Features:
