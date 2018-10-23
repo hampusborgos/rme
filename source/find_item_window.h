@@ -95,6 +95,7 @@ private:
 	wxCheckBox* hook_south;
 	wxCheckBox* has_elevation;
 	wxCheckBox* ignore_look;
+	wxCheckBox* floor_change;
 
 	FindDialogListBox* items_list;
 	wxStdDialogButtonSizer* buttons_box_sizer;
