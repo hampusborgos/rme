@@ -78,7 +78,6 @@ private:
 	Action* subsession;
 
 	TileSet tiles;
-	TileSet::iterator erase_iterator;
 
 	friend class SelectionThread;
 };

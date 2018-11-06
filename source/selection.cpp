@@ -226,13 +226,11 @@ void Selection::start(SessionFlags flags)
 		}
 		subsession = editor.actionQueue->createAction(ACTION_SELECT);
 	}
-	erase_iterator = tiles.begin();
 	busy = true;
 }
 
 void Selection::commit()
 {
-	erase_iterator = tiles.begin();
 	if(session) {
 		ASSERT(subsession);
 		// We need to step out of the session before we do the action, else peril awaits us!
@@ -250,7 +248,6 @@ void Selection::commit()
 
 void Selection::finish(SessionFlags flags)
 {
-	erase_iterator = tiles.begin();
 	if(!(flags & INTERNAL)) {
 		if(flags & SUBTHREAD) {
 			ASSERT(subsession);
