@@ -23,6 +23,7 @@
 #include "position.h"
 #include "item.h"
 #include "map_region.h"
+#include <unordered_set>
 
 enum {
 	TILESTATE_NONE           = 0x0000,
@@ -225,6 +226,7 @@ bool tilePositionLessThan(const Tile* a, const Tile* b);
 bool tilePositionVisualLessThan(const Tile* a, const Tile* b);
 
 typedef std::vector<Tile*> TileVector;
+typedef std::unordered_set<Tile*> TileSet;
 typedef std::list<Tile*> TileList;
 
 inline bool Tile::hasWall() const {

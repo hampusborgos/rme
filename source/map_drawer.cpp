@@ -508,7 +508,7 @@ void MapDrawer::DrawDraggingShadow()
 
 	// Draw dragging shadow
 	if(!editor.selection.isBusy() && dragging && !options.ingame) {
-		for(TileVector::iterator tit = editor.selection.begin(); tit != editor.selection.end(); tit++) {
+		for(TileSet::iterator tit = editor.selection.begin(); tit != editor.selection.end(); tit++) {
 			Tile* tile = *tit;
 			Position pos = tile->getPosition();
 

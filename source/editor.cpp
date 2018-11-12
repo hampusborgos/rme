@@ -357,7 +357,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 	int min_x = MAP_MAX_WIDTH + 1, min_y = MAP_MAX_HEIGHT + 1, min_z = MAP_MAX_LAYER + 1;
 	int max_x = 0, max_y = 0, max_z = 0;
 
-	const TileVector& tiles = selection.getTiles();
+	const TileSet& tiles = selection.getTiles();
 	for(Tile* tile : tiles) {
 		if(tile->empty())
 			continue;
@@ -963,10 +963,10 @@ void Editor::moveSelection(Position offset)
 	// Remove tiles from the map
 	action = actionQueue->createAction(batchAction); // Our action!
 	bool doborders = false;
-	TileVector tmp_storage;
+	TileSet tmp_storage;
 
 	// Update the tiles with the newd positions
-	for(TileVector::iterator it = selection.begin(); it != selection.end(); ++it) {
+	for(TileSet::iterator it = selection.begin(); it != selection.end(); ++it) {
 		// First we get the old tile and it's position
 		Tile* tile = (*it);
 		//const Position pos = tile->getPosition();
@@ -1007,7 +1007,7 @@ void Editor::moveSelection(Position offset)
 			doborders = true;
 		}
 
-		tmp_storage.push_back(tmp_storage_tile);
+		tmp_storage.insert(tmp_storage_tile);
 		// Add the tile copy to the action
 		action->addChange(newd Change(new_src_tile));
 	}
@@ -1021,7 +1021,7 @@ void Editor::moveSelection(Position offset)
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
-		for(TileVector::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
+		for(TileSet::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
 			Position pos = (*it)->getPosition();
 			// Go through all neighbours
 			Tile* t;
@@ -1055,7 +1055,7 @@ void Editor::moveSelection(Position offset)
 
 	// New action for adding the destination tiles
 	action = actionQueue->createAction(batchAction);
-	for(TileVector::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
+	for(TileSet::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
 		Tile* tile = (*it);
 		const Position old_pos = tile->getPosition();
 		Position new_pos;
@@ -1099,7 +1099,7 @@ void Editor::moveSelection(Position offset)
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
-		for(TileVector::iterator it = selection.begin(); it != selection.end(); it++) {
+		for(TileSet::iterator it = selection.begin(); it != selection.end(); it++) {
 			bool add_me = false; // If this tile is touched
 			Position pos = (*it)->getPosition();
 			// Go through all neighbours
@@ -1159,7 +1159,7 @@ void Editor::destroySelection()
 		BatchAction* batch = actionQueue->createBatch(ACTION_DELETE_TILES);
 		Action* action = actionQueue->createAction(batch);
 
-		for(TileVector::iterator it = selection.begin(); it != selection.end(); ++it) {
+		for(TileSet::iterator it = selection.begin(); it != selection.end(); ++it) {
 			tile_count++;
 
 			Tile* tile = *it;

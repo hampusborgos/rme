@@ -44,7 +44,7 @@ Selection::~Selection()
 Position Selection::minPosition() const
 {
 	Position minPos(0x10000, 0x10000, 0x10);
-	for(TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
+	for(TileSet::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
 		Position pos((*tile)->getPosition());
 		if(minPos.x > pos.x)
 			minPos.x = pos.x;
@@ -59,7 +59,7 @@ Position Selection::minPosition() const
 Position Selection::maxPosition() const
 {
 	Position maxPos(0, 0, 0);
-	for(TileVector::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
+	for(TileSet::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
 		Position pos((*tile)->getPosition());
 		if(maxPos.x < pos.x)
 			maxPos.x = pos.x;
@@ -191,53 +191,25 @@ void Selection::addInternal(Tile* tile)
 {
 	ASSERT(tile);
 
-	tiles.push_back(tile);
-	erase_iterator = tiles.begin();
+	tiles.insert(tile);
 }
 
 void Selection::removeInternal(Tile* tile)
 {
 	ASSERT(tile);
-#ifdef __DEBUG_MODE__
-	TileVector::iterator erase_begin = erase_iterator;
-#endif
-	if(tiles.size() == 0)
-		return;
-
-	TileVector::iterator end_iter = tiles.end();
-	do {
-		if(erase_iterator == end_iter) {
-			erase_iterator = tiles.begin();
-		}
-		if(*erase_iterator == tile) {
-			// Swap & pop trick
-			if(*erase_iterator == tiles.back()) {
-				tiles.pop_back();
-				erase_iterator = tiles.begin();
-			} else {
-				std::swap(*erase_iterator, tiles.back());
-				tiles.pop_back();
-				erase_iterator = tiles.begin() + (erase_iterator - tiles.begin());
-			}
-			return;
-		}
-		++erase_iterator;
-#ifdef __DEBUG_MODE__
-		ASSERT(/* This shouldn't happend*/ erase_iterator != erase_begin);
-#endif
-	} while(true);
+	tiles.erase(tile);
 }
 
 void Selection::clear()
 {
 	if(session) {
-		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		for(TileSet::iterator it = tiles.begin(); it != tiles.end(); it++) {
 			Tile* new_tile = (*it)->deepCopy(editor.map);
 			new_tile->deselect();
 			subsession->addChange(newd Change(new_tile));
 		}
 	} else {
-		for(TileVector::iterator it = tiles.begin(); it != tiles.end(); it++) {
+		for(TileSet::iterator it = tiles.begin(); it != tiles.end(); it++) {
 			(*it)->deselect();
 		}
 		tiles.clear();
@@ -254,13 +226,11 @@ void Selection::start(SessionFlags flags)
 		}
 		subsession = editor.actionQueue->createAction(ACTION_SELECT);
 	}
-	erase_iterator = tiles.begin();
 	busy = true;
 }
 
 void Selection::commit()
 {
-	erase_iterator = tiles.begin();
 	if(session) {
 		ASSERT(subsession);
 		// We need to step out of the session before we do the action, else peril awaits us!
@@ -278,7 +248,6 @@ void Selection::commit()
 
 void Selection::finish(SessionFlags flags)
 {
-	erase_iterator = tiles.begin();
 	if(!(flags & INTERNAL)) {
 		if(flags & SUBTHREAD) {
 			ASSERT(subsession);
