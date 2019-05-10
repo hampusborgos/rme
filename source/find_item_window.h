@@ -103,6 +103,7 @@ private:
 	wxButton* cancel_button;
 	Brush* result_brush;
 	uint16_t result_id;
+	bool only_pickupables;
 
 	DECLARE_EVENT_TABLE()
 };
