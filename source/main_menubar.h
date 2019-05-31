@@ -56,6 +56,7 @@ namespace MenuBar
 		SEARCH_ON_SELECTION_ACTION,
 		SEARCH_ON_SELECTION_CONTAINER,
 		SEARCH_ON_SELECTION_WRITEABLE,
+		SEARCH_ON_SELECTION_ITEM,
 		SELECT_MODE_COMPENSATE,
 		SELECT_MODE_CURRENT,
 		SELECT_MODE_LOWER,
@@ -222,6 +223,7 @@ public:
 	void OnSearchForActionOnSelection(wxCommandEvent& event);
 	void OnSearchForContainerOnSelection(wxCommandEvent& event);
 	void OnSearchForWriteableOnSelection(wxCommandEvent& event);
+	void OnSearchForItemOnSelection(wxCommandEvent& event);
 
 	// Map menu
 	void OnMapEditTowns(wxCommandEvent& event);

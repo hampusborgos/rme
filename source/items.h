@@ -266,6 +266,8 @@ public:
 	bool isStackable() const { return stackable; }
 	bool isMetaItem() const { return is_metaitem; }
 
+	bool isFloorChange() const;
+
 	GameSprite* sprite;
 	uint16_t id;
 	uint16_t clientID;
@@ -331,6 +333,7 @@ public:
 	bool floorChangeSouth;
 	bool floorChangeEast;
 	bool floorChangeWest;
+	bool floorChange;
 
 	bool unpassable;
 	bool blockPickupable;

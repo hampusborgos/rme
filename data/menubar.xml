@@ -45,6 +45,8 @@
             <item name="Find $Action" action="SEARCH_ON_SELECTION_ACTION" help="Find all items with an action ID on selected area."/>
             <item name="Find $Container" action="SEARCH_ON_SELECTION_CONTAINER" help="Find all containers on selected area."/>
             <item name="Find $Writeable" action="SEARCH_ON_SELECTION_WRITEABLE" help="Find all writeable items on selected area."/>
+            <separator/>
+            <item name="Find $Item" action="SEARCH_ON_SELECTION_ITEM" help="Find items on selected area."/>
         </menu>
         <separator/>
         <menu name="$Selection">

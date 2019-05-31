@@ -31,7 +31,8 @@ END_EVENT_TABLE()
 FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onlyPickupables/* = false*/) :
 	wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600), wxDEFAULT_DIALOG_STYLE),
 	result_brush(nullptr),
-	result_id(0)
+	result_id(0),
+	only_pickupables(onlyPickupables)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -47,13 +48,11 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 
 	int radio_boxNChoices = sizeof(radio_boxChoices) / sizeof(wxString);
 	options_radio_box = newd wxRadioBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, radio_boxNChoices, radio_boxChoices, 1, wxRA_SPECIFY_COLS);
-	options_radio_box->SetSelection(onlyPickupables ? SearchMode::Properties : SearchMode::ServerIDs);
-	options_radio_box->Enable(!onlyPickupables);
+	options_radio_box->SetSelection(SearchMode::ServerIDs);
 	options_box_sizer->Add(options_radio_box, 0, wxALL | wxEXPAND, 5);
 
 	wxStaticBoxSizer* server_id_box_sizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Server ID"), wxVERTICAL);
 	server_id_spin = newd wxSpinCtrl(server_id_box_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 100, g_items.getMaxID(), 100);
-	server_id_spin->Enable(!onlyPickupables);
 	server_id_box_sizer->Add(server_id_spin, 0, wxALL | wxEXPAND, 5);
 	options_box_sizer->Add(server_id_box_sizer, 1, wxALL | wxEXPAND, 5);
 
@@ -127,7 +126,8 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	properties_box_sizer->Add(writeable, 0, wxALL, 5);
 
 	pickupable = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Pickupable", wxDefaultPosition, wxDefaultSize, 0);
-	pickupable->SetValue(onlyPickupables);
+	pickupable->SetValue(only_pickupables);
+	pickupable->Enable(!only_pickupables);
 	properties_box_sizer->Add(pickupable, 0, wxALL, 5);
 
 	stackable = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Stackable", wxDefaultPosition, wxDefaultSize, 0);
@@ -150,6 +150,9 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 
 	ignore_look = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Ignore Look", wxDefaultPosition, wxDefaultSize, 0);
 	properties_box_sizer->Add(ignore_look, 0, wxALL, 5);
+
+	floor_change = newd wxCheckBox(properties_box_sizer->GetStaticBox(), wxID_ANY, "Floor Change", wxDefaultPosition, wxDefaultSize, 0);
+	properties_box_sizer->Add(floor_change, 0, wxALL, 5);
 
 	box_sizer->Add(properties_box_sizer, 1, wxALL | wxEXPAND, 5);
 
@@ -191,6 +194,7 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	hook_south->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	has_elevation->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	ignore_look->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	floor_change->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 }
 
 FindItemDialog::~FindItemDialog()
@@ -219,6 +223,7 @@ FindItemDialog::~FindItemDialog()
 	hook_south->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	has_elevation->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	ignore_look->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	floor_change->Disconnect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 }
 
 FindItemDialog::SearchMode FindItemDialog::getSearchMode() const
@@ -257,7 +262,7 @@ void FindItemDialog::EnableProperties(bool enable)
 	block_pathfinder->Enable(enable);
 	readable->Enable(enable);
 	writeable->Enable(enable);
-	pickupable->Enable(enable);
+	pickupable->Enable(!only_pickupables && enable);
 	stackable->Enable(enable);
 	rotatable->Enable(enable);
 	hangable->Enable(enable);
@@ -265,6 +270,7 @@ void FindItemDialog::EnableProperties(bool enable)
 	hook_south->Enable(enable);
 	has_elevation->Enable(enable);
 	ignore_look->Enable(enable);
+	floor_change->Enable(enable);
 }
 
 void FindItemDialog::RefreshContentsInternal()
@@ -285,6 +291,9 @@ void FindItemDialog::RefreshContentsInternal()
 			if (!raw_brush)
 				continue;
 
+			if(only_pickupables && !item.pickupable)
+				continue;
+
 			found_search_results = true;
 			items_list->AddBrush(raw_brush);
 		}
@@ -298,6 +307,9 @@ void FindItemDialog::RefreshContentsInternal()
 
 			RAWBrush* raw_brush = item.raw_brush;
 			if (!raw_brush)
+				continue;
+
+			if(only_pickupables && !item.pickupable)
 				continue;
 
 			found_search_results = true;
@@ -316,6 +328,9 @@ void FindItemDialog::RefreshContentsInternal()
 				if(!raw_brush)
 					continue;
 
+				if(only_pickupables && !item.pickupable)
+					continue;
+
 				if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
 					continue;
 
@@ -332,6 +347,9 @@ void FindItemDialog::RefreshContentsInternal()
 
 			RAWBrush* raw_brush = item.raw_brush;
 			if(!raw_brush)
+				continue;
+
+			if(only_pickupables && !item.pickupable)
 				continue;
 
 			SearchItemType selection = (SearchItemType)types_radio_box->GetSelection();
@@ -353,19 +371,20 @@ void FindItemDialog::RefreshContentsInternal()
 	}
 	else if(selection == SearchMode::Properties) {
 		bool has_selected = (unpassable->GetValue() ||
-							unmovable->GetValue() ||
-							block_missiles->GetValue() ||
-							block_pathfinder->GetValue() ||
-							readable->GetValue() ||
-							writeable->GetValue() ||
-							pickupable->GetValue() ||
-							stackable->GetValue() ||
-							rotatable->GetValue() ||
-							hangable->GetValue() ||
-							hook_east->GetValue() ||
-							hook_south->GetValue() ||
-							has_elevation->GetValue() ||
-							ignore_look->GetValue());
+			unmovable->GetValue() ||
+			block_missiles->GetValue() ||
+			block_pathfinder->GetValue() ||
+			readable->GetValue() ||
+			writeable->GetValue() ||
+			pickupable->GetValue() ||
+			stackable->GetValue() ||
+			rotatable->GetValue() ||
+			hangable->GetValue() ||
+			hook_east->GetValue() ||
+			hook_south->GetValue() ||
+			has_elevation->GetValue() ||
+			ignore_look->GetValue() ||
+			floor_change->GetValue());
 
 		if(has_selected) {
 			for(int id = 100; id <= g_items.getMaxID(); ++id) {
@@ -390,7 +409,8 @@ void FindItemDialog::RefreshContentsInternal()
 					(hook_east->GetValue() && !item.hookEast) ||
 					(hook_south->GetValue() && !item.hookSouth) ||
 					(has_elevation->GetValue() && !item.hasElevation) ||
-					(ignore_look->GetValue() && !item.ignoreLook)) {
+					(ignore_look->GetValue() && !item.ignoreLook) ||
+					(floor_change->GetValue() && !item.isFloorChange())) {
 					continue;
 				}
 

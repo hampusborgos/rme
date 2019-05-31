@@ -95,6 +95,7 @@ private:
 	wxCheckBox* hook_south;
 	wxCheckBox* has_elevation;
 	wxCheckBox* ignore_look;
+	wxCheckBox* floor_change;
 
 	FindDialogListBox* items_list;
 	wxStdDialogButtonSizer* buttons_box_sizer;
@@ -102,6 +103,7 @@ private:
 	wxButton* cancel_button;
 	Brush* result_brush;
 	uint16_t result_id;
+	bool only_pickupables;
 
 	DECLARE_EVENT_TABLE()
 };

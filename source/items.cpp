@@ -79,11 +79,12 @@ ItemType::ItemType() :
 	isTable(false),
 	isCarpet(false),
 
-	floorChangeDown(true),
+	floorChangeDown(false),
 	floorChangeNorth(false),
 	floorChangeSouth(false),
 	floorChangeEast(false),
 	floorChangeWest(false),
+	floorChange(false),
 
 	unpassable(false),
 	blockPickupable(false),
@@ -101,6 +102,11 @@ ItemType::ItemType() :
 ItemType::~ItemType()
 {
 	////
+}
+
+bool ItemType::isFloorChange() const
+{
+	return floorChange || floorChangeDown || floorChangeNorth || floorChangeSouth || floorChangeEast || floorChangeWest;
 }
 
 ItemDatabase::ItemDatabase() :
@@ -188,6 +194,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 			t->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
 			t->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
 			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
+			t->floorChange = t->floorChangeDown || t->floorChangeNorth || t->floorChangeEast || t->floorChangeSouth || t->floorChangeWest;
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
@@ -440,6 +447,7 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 			t->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
 			t->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
 			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
+			t->floorChange = t->floorChangeDown || t->floorChangeNorth || t->floorChangeEast || t->floorChangeSouth || t->floorChangeWest;
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
@@ -587,6 +595,7 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 			t->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
 			t->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
 			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
+			t->floorChange = t->floorChangeDown || t->floorChangeNorth || t->floorChangeEast || t->floorChangeSouth || t->floorChangeWest;
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
 			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
 			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
@@ -867,6 +876,37 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			if((attribute = itemAttributesNode.attribute("value"))) {
 				item.charges = pugi::cast<uint16_t>(attribute.value());
 				item.extra_chargeable = true;
+			}
+		} else if(key == "floorchange") {
+			if ((attribute = itemAttributesNode.attribute("value"))) {
+				std::string value = attribute.as_string();
+				if(value == "down") {
+					it.floorChangeDown = true;
+					it.floorChange = true;
+				} else if (value == "north") {
+					it.floorChangeNorth = true;
+					it.floorChange = true;
+				} else if (value == "south") {
+					it.floorChangeSouth = true;
+					it.floorChange = true;
+				} else if (value == "west") {
+					it.floorChangeWest = true;
+					it.floorChange = true;
+				} else if (value == "east") {
+					it.floorChangeEast = true;
+					it.floorChange = true;
+				} else if(value == "northex")
+					it.floorChange = true;
+				else if(value == "southex")
+					it.floorChange = true;
+				else if(value == "westex")
+					it.floorChange = true;
+				else if(value == "eastex")
+					it.floorChange = true;
+				else if (value == "southalt")
+					it.floorChange = true;
+				else if (value == "eastalt")
+					it.floorChange = true;
 			}
 		}
 	}

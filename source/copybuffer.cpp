@@ -72,7 +72,7 @@ void CopyBuffer::copy(Editor& editor, int floor)
 	int item_count = 0;
 	copyPos = Position(0xFFFF, 0xFFFF, floor);
 
-	for(TileVector::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
+	for(TileSet::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
 		++tile_count;
 
 		Tile* tile = *it;
@@ -131,7 +131,7 @@ void CopyBuffer::cut(Editor& editor, int floor)
 
 	PositionList tilestoborder;
 
-	for(TileVector::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
+	for(TileSet::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
 		tile_count++;
 
 		Tile* tile = *it;

@@ -66,10 +66,10 @@ public:
 	size_t size() { return tiles.size(); }
 	size_t size() const { return tiles.size(); }
 	void updateSelectionCount();
-	TileVector::iterator begin() { return tiles.begin(); }
-	TileVector::iterator end() { return tiles.end(); }
-	TileVector& getTiles() { return tiles; }
-	Tile* getSelectedTile() { ASSERT(size() == 1); return tiles.front(); }
+	TileSet::iterator begin() {return tiles.begin();}
+	TileSet::iterator end() {return tiles.end();}
+	TileSet& getTiles() {return tiles; }
+	Tile* getSelectedTile() {ASSERT(size() == 1); return *tiles.begin();}
 
 private:
 	bool busy;
@@ -77,8 +77,7 @@ private:
 	BatchAction* session;
 	Action* subsession;
 
-	TileVector tiles;
-	TileVector::iterator erase_iterator;
+	TileSet tiles;
 
 	friend class SelectionThread;
 };
