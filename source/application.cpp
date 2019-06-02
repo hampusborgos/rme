@@ -402,11 +402,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	g_gui.aui_manager = newd wxAuiManager(this);
 	g_gui.tabbook = newd MapTabbook(this, wxID_ANY);
 
+	tool_bar = newd MainToolBar(this, g_gui.aui_manager);
+
 	g_gui.aui_manager->AddPane(g_gui.tabbook, wxAuiPaneInfo().CenterPane().Floatable(false).CloseButton(false).PaneBorder(false));
-	//wxAuiNotebook* p = newd wxAuiNotebook(this, wxID_ANY);
-	//g_gui.tabbook->notebook->AddPage(newd wxPanel(g_gui.tabbook->notebook), "OMG IS TAB");
-	//p->AddPage(newd wxPanel(p), "!!!");
-	//g_gui.aui_manager->AddPane(p, wxAuiPaneInfo());
 	g_gui.aui_manager->Update();
 
 	UpdateMenubar();
@@ -414,6 +412,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 MainFrame::~MainFrame()
 {
+	g_gui.aui_manager->UnInit();
 	//wxTopLevelWindows.Erase(wxTopLevelWindows.GetFirst());
 }
 
@@ -476,6 +475,7 @@ bool MainFrame::MSWTranslateMessage(WXMSG *msg)
 void MainFrame::UpdateMenubar()
 {
 	menu_bar->Update();
+	tool_bar->UpdateButtons();
 }
 
 bool MainFrame::DoQueryClose() {

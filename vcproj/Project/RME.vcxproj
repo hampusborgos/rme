@@ -294,10 +294,12 @@
     <ClCompile Include="..\..\source\brush_tables.cpp" />
     <ClCompile Include="..\..\source\container_properties_window.cpp" />
     <ClCompile Include="..\..\source\find_item_window.cpp" />
+    <ClInclude Include="..\..\source\main_toolbar.h" />
     <ClInclude Include="..\..\source\otml.h" />
     <ClInclude Include="..\..\source\browse_tile_window.h" />
     <ClCompile Include="..\..\source\browse_tile_window.cpp" />
     <ClInclude Include="..\..\source\positionctrl.h" />
+    <ClCompile Include="..\..\source\main_toolbar.cpp" />
     <ClCompile Include="..\..\source\positionctrl.cpp" />
     <ClInclude Include="..\..\source\carpet_brush.h" />
     <ClCompile Include="..\..\source\carpet_brush.cpp" />

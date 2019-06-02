@@ -21,6 +21,7 @@
 #define RME_APPLICATION_H_
 
 #include "gui.h"
+#include "main_toolbar.h"
 #include "action.h"
 #include "settings.h"
 
@@ -96,6 +97,7 @@ public:
 	void PrepareDC(wxDC& dc);
 protected:
 	MainMenuBar* menu_bar;
+	MainToolBar* tool_bar;
 
 	friend class Application;
 	friend class GUI;

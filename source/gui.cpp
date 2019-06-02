@@ -7,6 +7,7 @@
 #include <wx/display.h>
 
 #include "gui.h"
+#include "main_menubar.h"
 
 #include "editor.h"
 #include "brush.h"
@@ -523,6 +524,47 @@ bool GUI::NewMap()
 	root->Refresh();
 
 	return true;
+}
+
+void GUI::OpenMap()
+{
+	wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_LOAD_FILE_WILDCARD_OTGZ : MAP_LOAD_FILE_WILDCARD;
+	wxFileDialog dialog(root, "Open map file", wxEmptyString, wxEmptyString, wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+	if (dialog.ShowModal() == wxID_OK)
+		LoadMap(dialog.GetPath());
+}
+
+void GUI::SaveMap()
+{
+	if (!IsEditorOpen())
+		return;
+
+	if (GetCurrentMap().hasFile()) {
+		SaveCurrentMap(true);
+	} else {
+		wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD;
+		wxFileDialog dialog(root, "Save...", wxEmptyString, wxEmptyString, wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+		if (dialog.ShowModal() == wxID_OK)
+			SaveCurrentMap(dialog.GetPath(), true);
+	}
+}
+
+void GUI::SaveMapAs()
+{
+	if (!IsEditorOpen())
+		return;
+
+	wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD;
+	wxFileDialog dialog(root, "Save As...", "", "", wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+	if (dialog.ShowModal() == wxID_OK) {
+		SaveCurrentMap(dialog.GetPath(), true);
+		UpdateTitle();
+		root->menu_bar->AddRecentFile(dialog.GetPath());
+		root->UpdateMenubar();
+	}
 }
 
 bool GUI::LoadMap(const FileName& fileName)
@@ -1129,11 +1171,52 @@ void GUI::SetScreenCenterPosition(Position position)
 		mapTab->SetScreenCenterPosition(position);
 }
 
+void GUI::DoCut()
+{
+	if (!IsSelectionMode())
+		return;
+
+	Editor* editor = GetCurrentEditor();
+	if (!editor)
+		return;
+
+	editor->copybuffer.cut(*editor, GetCurrentFloor());
+	RefreshView();
+	root->UpdateMenubar();
+}
+
+void GUI::DoCopy()
+{
+	if (!IsSelectionMode())
+		return;
+
+	Editor* editor = GetCurrentEditor();
+	if (!editor)
+		return;
+
+	editor->copybuffer.copy(*editor, GetCurrentFloor());
+	RefreshView();
+	root->UpdateMenubar();
+}
+
 void GUI::DoPaste()
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab)
 		copybuffer.paste(*mapTab->GetEditor(), mapTab->GetCanvas()->GetCursorPosition());
+}
+
+void GUI::PreparePaste()
+{
+	Editor* editor = GetCurrentEditor();
+	if (editor) {
+		SetSelectionMode();
+		editor->selection.start();
+		editor->selection.clear();
+		editor->selection.finish();
+		StartPasting();
+		RefreshView();
+	}
 }
 
 void GUI::StartPasting()
