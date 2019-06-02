@@ -81,6 +81,8 @@ public:
 	void LoadRecentFiles();
 	void SaveRecentFiles();
 
+	MainToolBar* GetAuiToolBar() const { return tool_bar; }
+
 	void OnUpdateMenus(wxCommandEvent& event);
 	void UpdateFloorMenu();
 	void OnIdle(wxIdleEvent& event);

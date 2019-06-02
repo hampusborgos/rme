@@ -116,6 +116,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(MAP_PROPERTIES, wxITEM_NORMAL, OnMapProperties);
 	MAKE_ACTION(MAP_STATISTICS, wxITEM_NORMAL, OnMapStatistics);
 
+	MAKE_ACTION(VIEW_TOOLBARS_STANDARD, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
 
@@ -365,6 +366,8 @@ void MainMenuBar::Update()
 void MainMenuBar::LoadValues()
 {
 	using namespace MenuBar;
+
+	CheckItem(VIEW_TOOLBARS_STANDARD, g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD));
 
 	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
 
@@ -1650,6 +1653,19 @@ void MainMenuBar::OnMapProperties(wxCommandEvent& WXUNUSED(event))
 		g_gui.CloseAllEditors();
 	}
 	properties->Destroy();
+}
+
+void MainMenuBar::OnToolbars(wxCommandEvent& event)
+{
+	using namespace MenuBar;
+
+	ActionID id = static_cast<ActionID>(event.GetId() - 6000);
+	switch (id) {
+		case VIEW_TOOLBARS_STANDARD:
+			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_STANDARD, event.IsChecked());
+			break;
+	}
 }
 
 void MainMenuBar::OnNewView(wxCommandEvent& WXUNUSED(event))

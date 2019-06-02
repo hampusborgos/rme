@@ -841,6 +841,8 @@ void GUI::LoadPerspective()
 		aui_manager->Update();
 		root->UpdateMenubar();
 	}
+
+	root->GetAuiToolBar()->LoadPerspective();
 }
 
 void GUI::SavePerspective()
@@ -862,6 +864,8 @@ void GUI::SavePerspective()
 		wxString s = aui_manager->SavePaneInfo(aui_manager->GetPane(minimap));
 		g_settings.setString(Config::MINIMAP_LAYOUT, nstr(s));
 	}
+
+	root->GetAuiToolBar()->SavePerspective();
 }
 
 void GUI::HideSearchWindow()
@@ -1354,6 +1358,12 @@ void GUI::UpdateMenus()
 {
 	wxCommandEvent evt(EVT_UPDATE_MENUS);
 	g_gui.root->AddPendingEvent(evt);
+}
+
+void GUI::ShowToolbar(ToolBarID id, bool show)
+{
+	if (root && root->GetAuiToolBar())
+		root->GetAuiToolBar()->Show(id, show);
 }
 
 void GUI::SwitchMode()

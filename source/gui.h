@@ -170,6 +170,7 @@ public:
 	void SetTitle(wxString newtitle);
 	void UpdateTitle();
 	void UpdateMenus();
+	void ShowToolbar(ToolBarID id, bool show);
 	void SetStatusText(wxString text);
 
 	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
@@ -285,6 +286,7 @@ public:
 	bool DoRedo();
 
 	// Editor interface
+	wxAuiManager* GetAuiManager() const { return aui_manager; }
 	EditorTab* GetCurrentTab();
 	EditorTab* GetTab(int idx);
 	int GetTabCount() const;

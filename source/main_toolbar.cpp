@@ -19,8 +19,11 @@
 #include "main_toolbar.h"
 #include "gui.h"
 #include "editor.h"
+#include "settings.h"
 
 #include <wx/artprov.h>
+
+const wxString MainToolBar::STANDARD_BAR_NAME = "standard_toolbar";
 
 MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 {
@@ -34,53 +37,114 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	wxBitmap copy_bitmap = wxArtProvider::GetBitmap(wxART_COPY, wxART_OTHER, wxSize(16, 16));
 	wxBitmap paste_bitmap = wxArtProvider::GetBitmap(wxART_PASTE, wxART_OTHER, wxSize(16, 16));
 
-	default_toolbar = newd wxAuiToolBar(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
-	default_toolbar->SetToolBitmapSize(wxSize(16, 16));
-	default_toolbar->AddTool(wxID_NEW, wxEmptyString, new_bitmap, wxNullBitmap, wxITEM_NORMAL, "New Map", wxEmptyString, NULL);
-	default_toolbar->AddTool(wxID_OPEN, wxEmptyString, open_bitmap, wxNullBitmap, wxITEM_NORMAL, "Open Map", wxEmptyString, NULL);
-	default_toolbar->AddTool(wxID_SAVE, wxEmptyString, save_bitmap, wxNullBitmap, wxITEM_NORMAL, "Save Map", wxEmptyString, NULL);
-	default_toolbar->AddTool(wxID_SAVEAS, wxEmptyString, saveas_bitmap, wxNullBitmap, wxITEM_NORMAL, "Save Map As...", wxEmptyString, NULL);
-	default_toolbar->AddSeparator();
-	default_toolbar->AddTool(wxID_UNDO, wxEmptyString, undo_bitmap, wxNullBitmap, wxITEM_NORMAL, "Undo", wxEmptyString, NULL);
-	default_toolbar->AddTool(wxID_REDO, wxEmptyString, redo_bitmap, wxNullBitmap, wxITEM_NORMAL, "Redo", wxEmptyString, NULL);
-	default_toolbar->AddSeparator();
-	default_toolbar->AddTool(wxID_CUT, wxEmptyString, cut_bitmap, wxNullBitmap, wxITEM_NORMAL, "Cut", wxEmptyString, NULL);
-	default_toolbar->AddTool(wxID_COPY, wxEmptyString, copy_bitmap, wxNullBitmap, wxITEM_NORMAL, "Copy", wxEmptyString, NULL);
-	default_toolbar->AddTool(wxID_PASTE, wxEmptyString, paste_bitmap, wxNullBitmap, wxITEM_NORMAL, "Paste", wxEmptyString, NULL);
-	default_toolbar->Realize();
+	standard_toolbar = newd wxAuiToolBar(parent, TOOLBAR_STANDARD, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
+	standard_toolbar->SetToolBitmapSize(wxSize(16, 16));
+	standard_toolbar->AddTool(wxID_NEW, wxEmptyString, new_bitmap, wxNullBitmap, wxITEM_NORMAL, "New Map", wxEmptyString, NULL);
+	standard_toolbar->AddTool(wxID_OPEN, wxEmptyString, open_bitmap, wxNullBitmap, wxITEM_NORMAL, "Open Map", wxEmptyString, NULL);
+	standard_toolbar->AddTool(wxID_SAVE, wxEmptyString, save_bitmap, wxNullBitmap, wxITEM_NORMAL, "Save Map", wxEmptyString, NULL);
+	standard_toolbar->AddTool(wxID_SAVEAS, wxEmptyString, saveas_bitmap, wxNullBitmap, wxITEM_NORMAL, "Save Map As...", wxEmptyString, NULL);
+	standard_toolbar->AddSeparator();
+	standard_toolbar->AddTool(wxID_UNDO, wxEmptyString, undo_bitmap, wxNullBitmap, wxITEM_NORMAL, "Undo", wxEmptyString, NULL);
+	standard_toolbar->AddTool(wxID_REDO, wxEmptyString, redo_bitmap, wxNullBitmap, wxITEM_NORMAL, "Redo", wxEmptyString, NULL);
+	standard_toolbar->AddSeparator();
+	standard_toolbar->AddTool(wxID_CUT, wxEmptyString, cut_bitmap, wxNullBitmap, wxITEM_NORMAL, "Cut", wxEmptyString, NULL);
+	standard_toolbar->AddTool(wxID_COPY, wxEmptyString, copy_bitmap, wxNullBitmap, wxITEM_NORMAL, "Copy", wxEmptyString, NULL);
+	standard_toolbar->AddTool(wxID_PASTE, wxEmptyString, paste_bitmap, wxNullBitmap, wxITEM_NORMAL, "Paste", wxEmptyString, NULL);
+	standard_toolbar->Realize();
 
-	manager->AddPane(default_toolbar, wxAuiPaneInfo().Name("default_toolbar").ToolbarPane().Top().Row(1).Position(1).Floatable(false));
+	manager->AddPane(standard_toolbar, wxAuiPaneInfo().Name(STANDARD_BAR_NAME).ToolbarPane().Top().Row(1).Position(1).Floatable(false));
 
 	// Connect Events
-	default_toolbar->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnButtonClick), NULL, this);
+	standard_toolbar->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnButtonClick), NULL, this);
+
+	HideAll();
 }
 
 MainToolBar::~MainToolBar()
 {
 	// Disconnect Events
-	default_toolbar->Disconnect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnButtonClick), NULL, this);
+	standard_toolbar->Disconnect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnButtonClick), NULL, this);
 }
 
 void MainToolBar::UpdateButtons()
 {
 	Editor* editor = g_gui.GetCurrentEditor();
 	if (editor) {
-		default_toolbar->EnableTool(wxID_UNDO, editor->actionQueue->canUndo());
-		default_toolbar->EnableTool(wxID_REDO, editor->actionQueue->canRedo());
-		default_toolbar->EnableTool(wxID_PASTE, editor->copybuffer.canPaste());
+		standard_toolbar->EnableTool(wxID_UNDO, editor->actionQueue->canUndo());
+		standard_toolbar->EnableTool(wxID_REDO, editor->actionQueue->canRedo());
+		standard_toolbar->EnableTool(wxID_PASTE, editor->copybuffer.canPaste());
 	} else {
-		default_toolbar->EnableTool(wxID_UNDO, false);
-		default_toolbar->EnableTool(wxID_REDO, false);
-		default_toolbar->EnableTool(wxID_PASTE, false);
+		standard_toolbar->EnableTool(wxID_UNDO, false);
+		standard_toolbar->EnableTool(wxID_REDO, false);
+		standard_toolbar->EnableTool(wxID_PASTE, false);
 	}
 
 	bool has_map = editor != nullptr;
 	bool is_host = has_map && !editor->IsLiveClient();
 
-	default_toolbar->EnableTool(wxID_SAVE, is_host);
-	default_toolbar->EnableTool(wxID_SAVEAS, is_host);
-	default_toolbar->EnableTool(wxID_CUT, has_map);
-	default_toolbar->EnableTool(wxID_COPY, has_map);
+	standard_toolbar->EnableTool(wxID_SAVE, is_host);
+	standard_toolbar->EnableTool(wxID_SAVEAS, is_host);
+	standard_toolbar->EnableTool(wxID_CUT, has_map);
+	standard_toolbar->EnableTool(wxID_COPY, has_map);
+}
+
+void MainToolBar::Show(ToolBarID id, bool show)
+{
+	wxAuiManager* manager = g_gui.GetAuiManager();
+	if (manager) {
+		wxAuiPaneInfo& pane = GetPane(id);
+		if (pane.IsOk()) {
+			pane.Show(show);
+			manager->Update();
+		}
+	}
+}
+
+void MainToolBar::HideAll(bool update)
+{
+	wxAuiManager* manager = g_gui.GetAuiManager();
+	if (!manager)
+		return;
+
+	wxAuiPaneInfoArray& panes = manager->GetAllPanes();
+	for (int i = 0, count = panes.GetCount(); i < count; ++i) {
+		if (!panes.Item(i).IsToolbar())
+			panes.Item(i).Hide();
+	}
+
+	if (update)
+		manager->Update();
+}
+
+void MainToolBar::LoadPerspective()
+{
+	wxAuiManager* manager = g_gui.GetAuiManager();
+	if (!manager)
+		return;
+
+	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD)) {
+		std::string standard = g_settings.getString(Config::TOOLBAR_STANDARD_LAYOUT);
+		if (!standard.empty())
+			manager->LoadPaneInfo(wxString(standard), GetPane(TOOLBAR_STANDARD));
+		GetPane(TOOLBAR_STANDARD).Show();
+		manager->Update();
+	} else {
+		GetPane(TOOLBAR_STANDARD).Hide();
+		manager->Update();
+	}
+		
+}
+
+void MainToolBar::SavePerspective()
+{
+	wxAuiManager* manager = g_gui.GetAuiManager();
+	if (!manager)
+		return;
+
+	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD)) {
+		wxString standard = manager->SavePaneInfo(GetPane(TOOLBAR_STANDARD));
+		g_settings.setString(Config::TOOLBAR_STANDARD_LAYOUT, standard.ToStdString());
+	}
 }
 
 void MainToolBar::OnButtonClick(wxCommandEvent& event)
@@ -115,5 +179,20 @@ void MainToolBar::OnButtonClick(wxCommandEvent& event)
 			break;
 		default:
 			break;
+	}
+}
+
+wxAuiPaneInfo& MainToolBar::GetPane(ToolBarID id)
+{
+	wxAuiManager* manager = g_gui.GetAuiManager();
+	if (!manager)
+		return wxAuiNullPaneInfo;
+
+	switch (id) {
+		case TOOLBAR_STANDARD:
+			return manager->GetPane(STANDARD_BAR_NAME);
+			break;
+		default:
+			return wxAuiNullPaneInfo;
 	}
 }

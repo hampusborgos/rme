@@ -168,4 +168,8 @@ enum
 	PALETTE_LAYOUT_FIX_TIMER,
 };
 
+enum ToolBarID {
+	TOOLBAR_STANDARD
+};
+
 #endif

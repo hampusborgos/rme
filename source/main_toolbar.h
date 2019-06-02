@@ -22,18 +22,27 @@
 #include <wx/aui/aui.h>
 #include <wx/aui/auibar.h>
 
+#include "gui_ids.h"
+
 class MainToolBar : public wxEvtHandler
 {
 public:
 	MainToolBar(wxWindow* parent, wxAuiManager* manager);
 	~MainToolBar();
 
+	wxAuiPaneInfo& GetPane(ToolBarID id);
 	void UpdateButtons();
+	void Show(ToolBarID id, bool show);
+	void HideAll(bool update = true);
+	void LoadPerspective();
+	void SavePerspective();
 
 	void OnButtonClick(wxCommandEvent& event);
 
 private:
-	wxAuiToolBar* default_toolbar;
+	static const wxString STANDARD_BAR_NAME;
+
+	wxAuiToolBar* standard_toolbar;
 };
 
 #endif // RME_MAINTOOLBAR_H_

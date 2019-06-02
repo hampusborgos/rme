@@ -314,6 +314,9 @@ void Settings::IO(IOMode mode)
 	section("Hotkeys");
 	String(NUMERICAL_HOTKEYS, "none:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\n");
 
+	Int(SHOW_TOOLBAR_STANDARD, 1);
+	String(TOOLBAR_STANDARD_LAYOUT, "");
+
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);
 	Int(USE_UPDATER, 1);
