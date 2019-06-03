@@ -92,6 +92,7 @@
     </menu>
     <menu name="$View">
         <menu name="Toolbars">
+            <item name="Brushes" action="VIEW_TOOLBARS_BRUSHES" help="Show or hide the Brushes tool bar."/>
             <item name="Standard" action="VIEW_TOOLBARS_STANDARD" help="Show or hide the Standard tool bar."/>
         </menu>
         <item name="$New View" hotkey="Ctrl+Shift+N" action="NEW_VIEW" help="Creates a new view of the current map."/>

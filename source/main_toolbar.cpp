@@ -20,10 +20,23 @@
 #include "gui.h"
 #include "editor.h"
 #include "settings.h"
+#include "brush.h"
+#include "pngfiles.h"
 
 #include <wx/artprov.h>
+#include <wx/mstream.h>
 
 const wxString MainToolBar::STANDARD_BAR_NAME = "standard_toolbar";
+const wxString MainToolBar::BRUSHES_BAR_NAME = "brushes_toolbar";
+
+#define loadPNGFile(name) _wxGetBitmapFromMemory(name, sizeof(name))
+inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
+{
+	wxMemoryInputStream is(data, length);
+	wxImage img(is, "image/png");
+	if (!img.IsOk()) return nullptr;
+	return newd wxBitmap(img, -1);
+}
 
 MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 {
@@ -52,10 +65,43 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	standard_toolbar->AddTool(wxID_PASTE, wxEmptyString, paste_bitmap, wxNullBitmap, wxITEM_NORMAL, "Paste", wxEmptyString, NULL);
 	standard_toolbar->Realize();
 
+	wxBitmap* border_bitmap = loadPNGFile(optional_border_small_png);
+	wxBitmap* eraser_bitmap = loadPNGFile(eraser_small_png);
+	wxBitmap* pz_bitmap = loadPNGFile(protection_zone_small_png);
+	wxBitmap* nopvp_bitmap = loadPNGFile(no_pvp_small_png);
+	wxBitmap* nologout_bitmap = loadPNGFile(no_logout_small_png);
+	wxBitmap* pvp_bitmap = loadPNGFile(pvp_zone_small_png);
+	wxBitmap* normal_bitmap = loadPNGFile(door_normal_small_png);
+	wxBitmap* locked_bitmap = loadPNGFile(door_locked_small_png);
+	wxBitmap* magic_bitmap = loadPNGFile(door_magic_small_png);
+	wxBitmap* quest_bitmap = loadPNGFile(door_quest_small_png);
+	wxBitmap* hatch_bitmap = loadPNGFile(window_hatch_small_png);
+	wxBitmap* window_bitmap = loadPNGFile(window_normal_small_png);
+
+	brushes_toolbar = newd wxAuiToolBar(parent, TOOLBAR_BRUSHES, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
+	brushes_toolbar->SetToolBitmapSize(wxSize(16, 16));
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, wxEmptyString, *border_bitmap, wxNullBitmap, wxITEM_CHECK, "Border", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_ERASER, wxEmptyString, *eraser_bitmap, wxNullBitmap, wxITEM_CHECK, "Eraser", wxEmptyString, NULL);
+	brushes_toolbar->AddSeparator();
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_PZ_TOOL, wxEmptyString, *pz_bitmap, wxNullBitmap, wxITEM_CHECK, "Protected Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_NOPVP_TOOL, wxEmptyString, *nopvp_bitmap, wxNullBitmap, wxITEM_CHECK, "No PvP Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_NOLOGOUT_TOOL, wxEmptyString, *nologout_bitmap, wxNullBitmap, wxITEM_CHECK, "No Logout Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_PVPZONE_TOOL, wxEmptyString, *pvp_bitmap, wxNullBitmap, wxITEM_CHECK, "PvP Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddSeparator();
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_NORMAL_DOOR, wxEmptyString, *normal_bitmap, wxNullBitmap, wxITEM_CHECK, "Normal Door", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_LOCKED_DOOR, wxEmptyString, *locked_bitmap, wxNullBitmap, wxITEM_CHECK, "Locked Door", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_MAGIC_DOOR, wxEmptyString, *magic_bitmap, wxNullBitmap, wxITEM_CHECK, "Magic Door", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_QUEST_DOOR, wxEmptyString, *quest_bitmap, wxNullBitmap, wxITEM_CHECK, "Quest Door", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_HATCH_DOOR, wxEmptyString, *hatch_bitmap, wxNullBitmap, wxITEM_CHECK, "Hatch Window", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_WINDOW_DOOR, wxEmptyString, *window_bitmap, wxNullBitmap, wxITEM_CHECK, "Window", wxEmptyString, NULL);
+	brushes_toolbar->Realize();
+
 	manager->AddPane(standard_toolbar, wxAuiPaneInfo().Name(STANDARD_BAR_NAME).ToolbarPane().Top().Row(1).Position(1).Floatable(false));
+	manager->AddPane(brushes_toolbar, wxAuiPaneInfo().Name(BRUSHES_BAR_NAME).ToolbarPane().Top().Row(1).Position(2).Floatable(false));
 
 	// Connect Events
-	standard_toolbar->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnButtonClick), NULL, this);
+	standard_toolbar->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnStandardButtonClick), NULL, this);
+	brushes_toolbar->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnBrushesButtonClick), NULL, this);
 
 	HideAll();
 }
@@ -63,7 +109,8 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 MainToolBar::~MainToolBar()
 {
 	// Disconnect Events
-	standard_toolbar->Disconnect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnButtonClick), NULL, this);
+	standard_toolbar->Disconnect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnStandardButtonClick), NULL, this);
+	brushes_toolbar->Disconnect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainToolBar::OnBrushesButtonClick), NULL, this);
 }
 
 void MainToolBar::UpdateButtons()
@@ -86,6 +133,52 @@ void MainToolBar::UpdateButtons()
 	standard_toolbar->EnableTool(wxID_SAVEAS, is_host);
 	standard_toolbar->EnableTool(wxID_CUT, has_map);
 	standard_toolbar->EnableTool(wxID_COPY, has_map);
+
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_ERASER, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_PZ_TOOL, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_NOPVP_TOOL, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_NOLOGOUT_TOOL, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_PVPZONE_TOOL, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_NORMAL_DOOR, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_LOCKED_DOOR, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_MAGIC_DOOR, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_QUEST_DOOR, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_HATCH_DOOR, has_map);
+	brushes_toolbar->EnableTool(PALETTE_TERRAIN_WINDOW_DOOR, has_map);
+}
+
+void MainToolBar::UpdateBrushButtons()
+{
+	Brush* brush = g_gui.GetCurrentBrush();
+	if (brush) {
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, brush == g_gui.optional_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_ERASER, brush == g_gui.eraser);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_PZ_TOOL, brush == g_gui.pz_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_NOPVP_TOOL, brush == g_gui.rook_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_NOLOGOUT_TOOL, brush == g_gui.nolog_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_PVPZONE_TOOL, brush == g_gui.pvp_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_NORMAL_DOOR, brush == g_gui.normal_door_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_LOCKED_DOOR, brush == g_gui.locked_door_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_MAGIC_DOOR, brush == g_gui.magic_door_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_QUEST_DOOR, brush == g_gui.quest_door_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_HATCH_DOOR, brush == g_gui.hatch_door_brush);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_WINDOW_DOOR, brush == g_gui.window_door_brush);
+	} else {
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_ERASER, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_PZ_TOOL, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_NOPVP_TOOL, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_NOLOGOUT_TOOL, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_PVPZONE_TOOL, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_NORMAL_DOOR, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_LOCKED_DOOR, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_MAGIC_DOOR, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_QUEST_DOOR, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_HATCH_DOOR, false);
+		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_WINDOW_DOOR, false);
+	}
+	g_gui.GetAuiManager()->Update();
 }
 
 void MainToolBar::Show(ToolBarID id, bool show)
@@ -127,12 +220,18 @@ void MainToolBar::LoadPerspective()
 		if (!standard.empty())
 			manager->LoadPaneInfo(wxString(standard), GetPane(TOOLBAR_STANDARD));
 		GetPane(TOOLBAR_STANDARD).Show();
-		manager->Update();
-	} else {
+	} else
 		GetPane(TOOLBAR_STANDARD).Hide();
-		manager->Update();
-	}
 		
+	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES)) {
+		std::string brushes = g_settings.getString(Config::TOOLBAR_BRUSHES_LAYOUT);
+		if (!brushes.empty())
+			manager->LoadPaneInfo(wxString(brushes), GetPane(TOOLBAR_BRUSHES));
+		GetPane(TOOLBAR_BRUSHES).Show();
+	} else
+		GetPane(TOOLBAR_BRUSHES).Hide();
+
+	manager->Update();
 }
 
 void MainToolBar::SavePerspective()
@@ -145,9 +244,14 @@ void MainToolBar::SavePerspective()
 		wxString standard = manager->SavePaneInfo(GetPane(TOOLBAR_STANDARD));
 		g_settings.setString(Config::TOOLBAR_STANDARD_LAYOUT, standard.ToStdString());
 	}
+
+	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES)) {
+		wxString brushes = manager->SavePaneInfo(GetPane(TOOLBAR_BRUSHES));
+		g_settings.setString(Config::TOOLBAR_BRUSHES_LAYOUT, brushes.ToStdString());
+	}
 }
 
-void MainToolBar::OnButtonClick(wxCommandEvent& event)
+void MainToolBar::OnStandardButtonClick(wxCommandEvent& event)
 {
 	switch (event.GetId()) {
 		case wxID_NEW:
@@ -182,6 +286,53 @@ void MainToolBar::OnButtonClick(wxCommandEvent& event)
 	}
 }
 
+void MainToolBar::OnBrushesButtonClick(wxCommandEvent& event)
+{
+	if (!g_gui.IsEditorOpen())
+		return;
+
+	switch (event.GetId()) {
+		case PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL:
+			g_gui.SelectBrush(g_gui.optional_brush);
+			break;
+		case PALETTE_TERRAIN_ERASER:
+			g_gui.SelectBrush(g_gui.eraser);
+			break;
+		case PALETTE_TERRAIN_PZ_TOOL:
+			g_gui.SelectBrush(g_gui.pz_brush);
+			break;
+		case PALETTE_TERRAIN_NOPVP_TOOL:
+			g_gui.SelectBrush(g_gui.rook_brush);
+			break;
+		case PALETTE_TERRAIN_NOLOGOUT_TOOL:
+			g_gui.SelectBrush(g_gui.nolog_brush);
+			break;
+		case PALETTE_TERRAIN_PVPZONE_TOOL:
+			g_gui.SelectBrush(g_gui.pvp_brush);
+			break;
+		case PALETTE_TERRAIN_NORMAL_DOOR:
+			g_gui.SelectBrush(g_gui.normal_door_brush);
+			break;
+		case PALETTE_TERRAIN_LOCKED_DOOR:
+			g_gui.SelectBrush(g_gui.locked_door_brush);
+			break;
+		case PALETTE_TERRAIN_MAGIC_DOOR:
+			g_gui.SelectBrush(g_gui.magic_door_brush);
+			break;
+		case PALETTE_TERRAIN_QUEST_DOOR:
+			g_gui.SelectBrush(g_gui.quest_door_brush);
+			break;
+		case PALETTE_TERRAIN_HATCH_DOOR:
+			g_gui.SelectBrush(g_gui.hatch_door_brush);
+			break;
+		case PALETTE_TERRAIN_WINDOW_DOOR:
+			g_gui.SelectBrush(g_gui.window_door_brush);
+			break;
+		default:
+			break;
+	}
+}
+
 wxAuiPaneInfo& MainToolBar::GetPane(ToolBarID id)
 {
 	wxAuiManager* manager = g_gui.GetAuiManager();
@@ -191,7 +342,8 @@ wxAuiPaneInfo& MainToolBar::GetPane(ToolBarID id)
 	switch (id) {
 		case TOOLBAR_STANDARD:
 			return manager->GetPane(STANDARD_BAR_NAME);
-			break;
+		case TOOLBAR_BRUSHES:
+			return manager->GetPane(BRUSHES_BAR_NAME);
 		default:
 			return wxAuiNullPaneInfo;
 	}

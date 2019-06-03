@@ -1621,6 +1621,7 @@ bool GUI::SelectBrush(const Brush* whatbrush, PaletteType primary)
 		return false;
 
 	SelectBrushInternal(const_cast<Brush*>(whatbrush));
+	root->GetAuiToolBar()->UpdateBrushButtons();
 	return true;
 }
 

@@ -32,17 +32,21 @@ public:
 
 	wxAuiPaneInfo& GetPane(ToolBarID id);
 	void UpdateButtons();
+	void UpdateBrushButtons();
 	void Show(ToolBarID id, bool show);
 	void HideAll(bool update = true);
 	void LoadPerspective();
 	void SavePerspective();
 
-	void OnButtonClick(wxCommandEvent& event);
+	void OnStandardButtonClick(wxCommandEvent& event);
+	void OnBrushesButtonClick(wxCommandEvent& event);
 
 private:
 	static const wxString STANDARD_BAR_NAME;
+	static const wxString BRUSHES_BAR_NAME;
 
 	wxAuiToolBar* standard_toolbar;
+	wxAuiToolBar* brushes_toolbar;
 };
 
 #endif // RME_MAINTOOLBAR_H_
