@@ -39,12 +39,6 @@
 #include "live_client.h"
 #include "live_server.h"
 
-#define MAP_LOAD_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz"
-#define MAP_SAVE_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz"
-
-#define MAP_LOAD_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
-#define MAP_SAVE_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
-
 BEGIN_EVENT_TABLE(MainMenuBar, wxEvtHandler)
 END_EVENT_TABLE()
 
@@ -122,6 +116,8 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(MAP_PROPERTIES, wxITEM_NORMAL, OnMapProperties);
 	MAKE_ACTION(MAP_STATISTICS, wxITEM_NORMAL, OnMapStatistics);
 
+	MAKE_ACTION(VIEW_TOOLBARS_BRUSHES, wxITEM_CHECK, OnToolbars);
+	MAKE_ACTION(VIEW_TOOLBARS_STANDARD, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
 
@@ -371,6 +367,9 @@ void MainMenuBar::Update()
 void MainMenuBar::LoadValues()
 {
 	using namespace MenuBar;
+
+	CheckItem(VIEW_TOOLBARS_BRUSHES, g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES));
+	CheckItem(VIEW_TOOLBARS_STANDARD, g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD));
 
 	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
 
@@ -669,13 +668,7 @@ void MainMenuBar::OnOpenRecent(wxCommandEvent& event)
 
 void MainMenuBar::OnOpen(wxCommandEvent& WXUNUSED(event))
 {
-	wxString wildcard = (g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_LOAD_FILE_WILDCARD_OTGZ : MAP_LOAD_FILE_WILDCARD);
-	wxFileDialog filedlg(frame, "Open map file", "", "", wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-
-	int ok = filedlg.ShowModal();
-
-	if(ok == wxID_OK)
-		frame->LoadMap(filedlg.GetPath());
+	g_gui.OpenMap();
 }
 
 void MainMenuBar::OnClose(wxCommandEvent& WXUNUSED(event))
@@ -685,37 +678,12 @@ void MainMenuBar::OnClose(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnSave(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	if(g_gui.GetCurrentMap().hasFile()) {
-		g_gui.SaveCurrentMap(true);
-	} else {
-		wxString wildcard = (g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
-		wxFileDialog file(frame, "Save...", "", "", wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-		int ok = file.ShowModal();
-
-		if(ok == wxID_OK)
-			g_gui.SaveCurrentMap(file.GetPath(), true);
-	}
+	g_gui.SaveMap();
 }
 
 void MainMenuBar::OnSaveAs(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
-
-	wxString wildcard = (g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD);
-	wxFileDialog file(frame, "Save As...", "", "", wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-	int ok = file.ShowModal();
-
-	if(ok == wxID_OK) {
-		g_gui.SaveCurrentMap(file.GetPath(), true);
-		AddRecentFile(file.GetPath());
-	}
-
-	g_gui.UpdateTitle();
-	Update();
+	g_gui.SaveMapAs();
 }
 
 void MainMenuBar::OnPreferences(wxCommandEvent& WXUNUSED(event))
@@ -1087,38 +1055,17 @@ void MainMenuBar::OnSelectionTypeChange(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnCopy(wxCommandEvent& WXUNUSED(event))
 {
-	if(g_gui.IsSelectionMode()) {
-		if(g_gui.GetCurrentEditor()) {
-			g_gui.GetCurrentEditor()->copybuffer.copy(*g_gui.GetCurrentEditor(), g_gui.GetCurrentFloor());
-			g_gui.RefreshView();
-			Update();
-		}
-	}
+	g_gui.DoCopy();
 }
 
 void MainMenuBar::OnCut(wxCommandEvent& WXUNUSED(event))
 {
-	if(g_gui.IsSelectionMode()) {
-		if(g_gui.GetCurrentEditor()) {
-			g_gui.GetCurrentEditor()->copybuffer.cut(*g_gui.GetCurrentEditor(), g_gui.GetCurrentFloor());
-			g_gui.RefreshView();
-			Update();
-		}
-	}
+	g_gui.DoCut();
 }
 
 void MainMenuBar::OnPaste(wxCommandEvent& WXUNUSED(event))
 {
-	g_gui.SetSelectionMode();
-	// Clear any old selection
-	g_gui.GetCurrentEditor()->selection.start();
-	g_gui.GetCurrentEditor()->selection.clear();
-	g_gui.GetCurrentEditor()->selection.finish();
-
-	// Start a pasting session
-	g_gui.StartPasting();
-
-	g_gui.RefreshView();
+	g_gui.PreparePaste();
 }
 
 void MainMenuBar::OnToggleAutomagic(wxCommandEvent& WXUNUSED(event))
@@ -1708,6 +1655,23 @@ void MainMenuBar::OnMapProperties(wxCommandEvent& WXUNUSED(event))
 		g_gui.CloseAllEditors();
 	}
 	properties->Destroy();
+}
+
+void MainMenuBar::OnToolbars(wxCommandEvent& event)
+{
+	using namespace MenuBar;
+
+	ActionID id = static_cast<ActionID>(event.GetId() - (wxID_HIGHEST + 1));
+	switch (id) {
+		case VIEW_TOOLBARS_BRUSHES:
+			g_gui.ShowToolbar(TOOLBAR_BRUSHES, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_BRUSHES, event.IsChecked());
+			break;
+		case VIEW_TOOLBARS_STANDARD:
+			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_STANDARD, event.IsChecked());
+			break;
+	}
 }
 
 void MainMenuBar::OnNewView(wxCommandEvent& WXUNUSED(event))

@@ -39,9 +39,9 @@ enum EditorMode {
 };
 
 // Window IDs
-enum
+enum EditorActionID
 {
-    MAIN_FRAME_MENU = wxID_HIGHEST + 1,
+	MAIN_FRAME_MENU = wxID_HIGHEST + 1,
 
 	MAP_WINDOW_HSCROLL = MAIN_FRAME_MENU + 1000,
 	MAP_WINDOW_VSCROLL,
@@ -166,6 +166,11 @@ enum
 
 	PALETTE_DELAYED_REFRESH_TIMER,
 	PALETTE_LAYOUT_FIX_TIMER,
+};
+
+enum ToolBarID {
+	TOOLBAR_STANDARD,
+	TOOLBAR_BRUSHES
 };
 
 #endif

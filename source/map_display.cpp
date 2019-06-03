@@ -2164,7 +2164,7 @@ void MapCanvas::EnterSelectionMode()
 
 bool MapCanvas::isPasting() const
 {
-	return g_gui.isPasting();
+	return g_gui.IsPasting();
 }
 
 void MapCanvas::StartPasting()

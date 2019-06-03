@@ -170,6 +170,7 @@ public:
 	void SetTitle(wxString newtitle);
 	void UpdateTitle();
 	void UpdateMenus();
+	void ShowToolbar(ToolBarID id, bool show);
 	void SetStatusText(wxString text);
 
 	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
@@ -270,17 +271,22 @@ public:
 	// Fit all/specified current map view to map dimensions
 	void FitViewToMap();
 	void FitViewToMap(MapTab* mt);
-	// Start a pasting session
-	bool isPasting() {return pasting;}
+
+	void DoCut();
+	void DoCopy();
+	void DoPaste();
+	void PreparePaste();
 	void StartPasting();
 	void EndPasting();
-	void DoPaste();
+	bool IsPasting() const { return pasting; }
+
 	bool CanUndo();
 	bool CanRedo();
 	bool DoUndo();
 	bool DoRedo();
 
 	// Editor interface
+	wxAuiManager* GetAuiManager() const { return aui_manager; }
 	EditorTab* GetCurrentTab();
 	EditorTab* GetTab(int idx);
 	int GetTabCount() const;
@@ -301,6 +307,9 @@ public:
 	void SaveCurrentMap(FileName filename, bool showdialog); // "" means default filename
 	void SaveCurrentMap(bool showdialog = true) {SaveCurrentMap(wxString(""), showdialog);}
 	bool NewMap();
+	void OpenMap();
+	void SaveMap();
+	void SaveMapAs();
 	bool LoadMap(const FileName& fileName);
 
 protected:
