@@ -117,6 +117,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(MAP_STATISTICS, wxITEM_NORMAL, OnMapStatistics);
 
 	MAKE_ACTION(VIEW_TOOLBARS_BRUSHES, wxITEM_CHECK, OnToolbars);
+	MAKE_ACTION(VIEW_TOOLBARS_POSITION, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_STANDARD, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
@@ -369,6 +370,7 @@ void MainMenuBar::LoadValues()
 	using namespace MenuBar;
 
 	CheckItem(VIEW_TOOLBARS_BRUSHES, g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES));
+	CheckItem(VIEW_TOOLBARS_POSITION, g_settings.getBoolean(Config::SHOW_TOOLBAR_POSITION));
 	CheckItem(VIEW_TOOLBARS_STANDARD, g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD));
 
 	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
@@ -1666,6 +1668,10 @@ void MainMenuBar::OnToolbars(wxCommandEvent& event)
 		case VIEW_TOOLBARS_BRUSHES:
 			g_gui.ShowToolbar(TOOLBAR_BRUSHES, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_BRUSHES, event.IsChecked());
+			break;
+		case VIEW_TOOLBARS_POSITION:
+			g_gui.ShowToolbar(TOOLBAR_POSITION, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_POSITION, event.IsChecked());
 			break;
 		case VIEW_TOOLBARS_STANDARD:
 			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());

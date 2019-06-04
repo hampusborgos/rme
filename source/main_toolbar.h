@@ -23,6 +23,7 @@
 #include <wx/aui/auibar.h>
 
 #include "gui_ids.h"
+#include "numbertextctrl.h"
 
 class MainToolBar : public wxEvtHandler
 {
@@ -40,13 +41,20 @@ public:
 
 	void OnStandardButtonClick(wxCommandEvent& event);
 	void OnBrushesButtonClick(wxCommandEvent& event);
+	void OnPositionButtonClick(wxCommandEvent& event);
+	void OnPastePositionText(wxClipboardTextEvent& event);
 
 private:
 	static const wxString STANDARD_BAR_NAME;
 	static const wxString BRUSHES_BAR_NAME;
+	static const wxString POSITION_BAR_NAME;
 
 	wxAuiToolBar* standard_toolbar;
 	wxAuiToolBar* brushes_toolbar;
+	wxAuiToolBar* position_toolbar;
+	NumberTextCtrl* x_control;
+	NumberTextCtrl* y_control;
+	NumberTextCtrl* z_control;
 };
 
 #endif // RME_MAINTOOLBAR_H_

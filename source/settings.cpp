@@ -315,9 +315,11 @@ void Settings::IO(IOMode mode)
 	String(NUMERICAL_HOTKEYS, "none:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\n");
 
 	Int(SHOW_TOOLBAR_STANDARD, 1);
-	Int(SHOW_TOOLBAR_BRUSHES, 1);
+	Int(SHOW_TOOLBAR_BRUSHES, 0);
+	Int(SHOW_TOOLBAR_POSITION, 0);
 	String(TOOLBAR_STANDARD_LAYOUT, "");
 	String(TOOLBAR_BRUSHES_LAYOUT, "");
+	String(TOOLBAR_POSITION_LAYOUT, "");
 
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);
