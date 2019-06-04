@@ -103,8 +103,11 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	position_toolbar = newd wxAuiToolBar(parent, TOOLBAR_POSITION, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORZ_TEXT);
 	position_toolbar->SetToolBitmapSize(icon_size);
 	x_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_WIDTH, wxTE_PROCESS_ENTER, "X", wxDefaultPosition, wxSize(60, 20));
+	x_control->SetToolTip("X Coordinate");
 	y_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_HEIGHT, wxTE_PROCESS_ENTER, "Y", wxDefaultPosition, wxSize(60, 20));
+	y_control->SetToolTip("Y Coordinate");
 	z_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_LAYER, wxTE_PROCESS_ENTER, "Z", wxDefaultPosition, wxSize(35, 20));
+	z_control->SetToolTip("Z Coordinate");
 	position_toolbar->AddControl(x_control);
 	position_toolbar->AddControl(y_control);
 	position_toolbar->AddControl(z_control);
