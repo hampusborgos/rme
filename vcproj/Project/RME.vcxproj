@@ -291,9 +291,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\artprovider.cpp" />
     <ClCompile Include="..\..\source\brush_tables.cpp" />
     <ClCompile Include="..\..\source\container_properties_window.cpp" />
     <ClCompile Include="..\..\source\find_item_window.cpp" />
+    <ClInclude Include="..\..\source\artprovider.h" />
     <ClInclude Include="..\..\source\main_toolbar.h" />
     <ClInclude Include="..\..\source\otml.h" />
     <ClInclude Include="..\..\source\browse_tile_window.h" />

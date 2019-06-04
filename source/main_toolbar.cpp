@@ -22,6 +22,7 @@
 #include "settings.h"
 #include "brush.h"
 #include "pngfiles.h"
+#include "artprovider.h"
 
 #include <wx/artprov.h>
 #include <wx/mstream.h>
@@ -69,10 +70,10 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 
 	wxBitmap* border_bitmap = loadPNGFile(optional_border_small_png);
 	wxBitmap* eraser_bitmap = loadPNGFile(eraser_small_png);
-	wxBitmap* pz_bitmap = loadPNGFile(protection_zone_small_png);
-	wxBitmap* nopvp_bitmap = loadPNGFile(no_pvp_small_png);
-	wxBitmap* nologout_bitmap = loadPNGFile(no_logout_small_png);
-	wxBitmap* pvp_bitmap = loadPNGFile(pvp_zone_small_png);
+	wxBitmap pz_bitmap = wxArtProvider::GetBitmap(ART_PZ_BRUSH, wxART_TOOLBAR, icon_size);
+	wxBitmap nopvp_bitmap = wxArtProvider::GetBitmap(ART_NOPVP_BRUSH, wxART_TOOLBAR, icon_size);
+	wxBitmap nologout_bitmap = wxArtProvider::GetBitmap(ART_NOLOOUT_BRUSH, wxART_TOOLBAR, icon_size);
+	wxBitmap pvp_bitmap = wxArtProvider::GetBitmap(ART_PVP_BRUSH, wxART_TOOLBAR, icon_size);
 	wxBitmap* normal_bitmap = loadPNGFile(door_normal_small_png);
 	wxBitmap* locked_bitmap = loadPNGFile(door_locked_small_png);
 	wxBitmap* magic_bitmap = loadPNGFile(door_magic_small_png);
@@ -85,10 +86,10 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	brushes_toolbar->AddTool(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, wxEmptyString, *border_bitmap, wxNullBitmap, wxITEM_CHECK, "Border", wxEmptyString, NULL);
 	brushes_toolbar->AddTool(PALETTE_TERRAIN_ERASER, wxEmptyString, *eraser_bitmap, wxNullBitmap, wxITEM_CHECK, "Eraser", wxEmptyString, NULL);
 	brushes_toolbar->AddSeparator();
-	brushes_toolbar->AddTool(PALETTE_TERRAIN_PZ_TOOL, wxEmptyString, *pz_bitmap, wxNullBitmap, wxITEM_CHECK, "Protected Zone", wxEmptyString, NULL);
-	brushes_toolbar->AddTool(PALETTE_TERRAIN_NOPVP_TOOL, wxEmptyString, *nopvp_bitmap, wxNullBitmap, wxITEM_CHECK, "No PvP Zone", wxEmptyString, NULL);
-	brushes_toolbar->AddTool(PALETTE_TERRAIN_NOLOGOUT_TOOL, wxEmptyString, *nologout_bitmap, wxNullBitmap, wxITEM_CHECK, "No Logout Zone", wxEmptyString, NULL);
-	brushes_toolbar->AddTool(PALETTE_TERRAIN_PVPZONE_TOOL, wxEmptyString, *pvp_bitmap, wxNullBitmap, wxITEM_CHECK, "PvP Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_PZ_TOOL, wxEmptyString, pz_bitmap, wxNullBitmap, wxITEM_CHECK, "Protected Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_NOPVP_TOOL, wxEmptyString, nopvp_bitmap, wxNullBitmap, wxITEM_CHECK, "No PvP Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_NOLOGOUT_TOOL, wxEmptyString, nologout_bitmap, wxNullBitmap, wxITEM_CHECK, "No Logout Zone", wxEmptyString, NULL);
+	brushes_toolbar->AddTool(PALETTE_TERRAIN_PVPZONE_TOOL, wxEmptyString, pvp_bitmap, wxNullBitmap, wxITEM_CHECK, "PvP Zone", wxEmptyString, NULL);
 	brushes_toolbar->AddSeparator();
 	brushes_toolbar->AddTool(PALETTE_TERRAIN_NORMAL_DOOR, wxEmptyString, *normal_bitmap, wxNullBitmap, wxITEM_CHECK, "Normal Door", wxEmptyString, NULL);
 	brushes_toolbar->AddTool(PALETTE_TERRAIN_LOCKED_DOOR, wxEmptyString, *locked_bitmap, wxNullBitmap, wxITEM_CHECK, "Locked Door", wxEmptyString, NULL);
@@ -98,7 +99,7 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	brushes_toolbar->AddTool(PALETTE_TERRAIN_WINDOW_DOOR, wxEmptyString, *window_bitmap, wxNullBitmap, wxITEM_CHECK, "Window", wxEmptyString, NULL);
 	brushes_toolbar->Realize();
 
-	wxBitmap go_bitmap = wxArtProvider::GetBitmap(wxART_GO_FORWARD, wxART_TOOLBAR, icon_size);
+	wxBitmap go_bitmap = wxArtProvider::GetBitmap(ART_POSITION_GO, wxART_TOOLBAR, icon_size);
 
 	position_toolbar = newd wxAuiToolBar(parent, TOOLBAR_POSITION, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORZ_TEXT);
 	position_toolbar->SetToolBitmapSize(icon_size);

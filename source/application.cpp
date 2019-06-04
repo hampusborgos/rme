@@ -30,6 +30,7 @@
 #include "about_window.h"
 #include "main_menubar.h"
 #include "updater.h"
+#include "artprovider.h"
 
 #include "materials.h"
 #include "map.h"
@@ -111,6 +112,7 @@ bool Application::OnInit()
 
 	// Tell that we are the real thing
 	wxAppConsole::SetInstance(this);
+	wxArtProvider::Push(new ArtProvider());
 
 #ifdef __LINUX__
 	int argc = 1;
