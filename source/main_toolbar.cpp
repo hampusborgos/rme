@@ -349,6 +349,14 @@ void MainToolBar::LoadPerspective()
 	} else
 		GetPane(TOOLBAR_POSITION).Hide();
 
+	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_SIZES)) {
+		std::string info = g_settings.getString(Config::TOOLBAR_SIZES_LAYOUT);
+		if (!info.empty())
+			manager->LoadPaneInfo(wxString(info), GetPane(TOOLBAR_SIZES));
+		GetPane(TOOLBAR_SIZES).Show();
+	} else
+		GetPane(TOOLBAR_SIZES).Hide();
+
 	manager->Update();
 }
 
@@ -371,6 +379,11 @@ void MainToolBar::SavePerspective()
 	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_POSITION)) {
 		wxString info = manager->SavePaneInfo(GetPane(TOOLBAR_POSITION));
 		g_settings.setString(Config::TOOLBAR_POSITION_LAYOUT, info.ToStdString());
+	}
+
+	if (g_settings.getBoolean(Config::SHOW_TOOLBAR_SIZES)) {
+		wxString info = manager->SavePaneInfo(GetPane(TOOLBAR_SIZES));
+		g_settings.setString(Config::TOOLBAR_SIZES_LAYOUT, info.ToStdString());
 	}
 }
 
