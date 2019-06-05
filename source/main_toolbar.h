@@ -34,6 +34,7 @@ public:
 	wxAuiPaneInfo& GetPane(ToolBarID id);
 	void UpdateButtons();
 	void UpdateBrushButtons();
+	void UpdateBrushSize(BrushShape shape, int size);
 	void Show(ToolBarID id, bool show);
 	void HideAll(bool update = true);
 	void LoadPerspective();
@@ -43,11 +44,13 @@ public:
 	void OnBrushesButtonClick(wxCommandEvent& event);
 	void OnPositionButtonClick(wxCommandEvent& event);
 	void OnPastePositionText(wxClipboardTextEvent& event);
+	void OnSizesButtonClick(wxCommandEvent& event);
 
 private:
 	static const wxString STANDARD_BAR_NAME;
 	static const wxString BRUSHES_BAR_NAME;
 	static const wxString POSITION_BAR_NAME;
+	static const wxString SIZES_BAR_NAME;
 
 	wxAuiToolBar* standard_toolbar;
 	wxAuiToolBar* brushes_toolbar;
@@ -55,6 +58,7 @@ private:
 	NumberTextCtrl* x_control;
 	NumberTextCtrl* y_control;
 	NumberTextCtrl* z_control;
+	wxAuiToolBar* sizes_toolbar;
 };
 
 #endif // RME_MAINTOOLBAR_H_

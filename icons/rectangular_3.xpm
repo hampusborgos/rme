@@ -1,0 +1,26 @@
+/* XPM */
+static const char *rectangular_3_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 4 1 ",
+"  c #006699",
+". c #086B9B",
+"X c #14729D",
+"o c None",
+/* pixels */
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"ooooo      ooooo",
+"ooooo      ooooo",
+"ooooo      ooooo",
+"ooooo    . ooooo",
+"ooooo   .X ooooo",
+"ooooo      ooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo",
+"oooooooooooooooo"
+};

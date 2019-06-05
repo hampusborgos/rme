@@ -30,6 +30,7 @@
 const wxString MainToolBar::STANDARD_BAR_NAME = "standard_toolbar";
 const wxString MainToolBar::BRUSHES_BAR_NAME = "brushes_toolbar";
 const wxString MainToolBar::POSITION_BAR_NAME = "position_toolbar";
+const wxString MainToolBar::SIZES_BAR_NAME = "sizes_toolbar";
 
 #define loadPNGFile(name) _wxGetBitmapFromMemory(name, sizeof(name))
 inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
@@ -115,9 +116,36 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	position_toolbar->AddTool(TOOLBAR_POSITION_GO, wxEmptyString, go_bitmap, wxNullBitmap, wxITEM_NORMAL, "Go To Position", wxEmptyString, NULL);
 	position_toolbar->Realize();
 
+	wxBitmap circular_bitmap = wxArtProvider::GetBitmap(ART_CIRCULAR, wxART_TOOLBAR, icon_size);
+	wxBitmap rectangular_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR, wxART_TOOLBAR, icon_size);
+	wxBitmap size1_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_1, wxART_TOOLBAR, icon_size);
+	wxBitmap size2_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_2, wxART_TOOLBAR, icon_size);
+	wxBitmap size3_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_3, wxART_TOOLBAR, icon_size);
+	wxBitmap size4_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_4, wxART_TOOLBAR, icon_size);
+	wxBitmap size5_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_5, wxART_TOOLBAR, icon_size);
+	wxBitmap size6_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_6, wxART_TOOLBAR, icon_size);
+	wxBitmap size7_bitmap = wxArtProvider::GetBitmap(ART_RECTANGULAR_7, wxART_TOOLBAR, icon_size);
+
+	sizes_toolbar = newd wxAuiToolBar(parent, TOOLBAR_SIZES, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE);
+	sizes_toolbar->SetToolBitmapSize(icon_size);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_RECTANGULAR, wxEmptyString, rectangular_bitmap, wxNullBitmap, wxITEM_CHECK, "Rectangular Brush", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_CIRCULAR, wxEmptyString, circular_bitmap, wxNullBitmap, wxITEM_CHECK, "Circular Brush", wxEmptyString, NULL);
+	sizes_toolbar->AddSeparator();
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_1, wxEmptyString, size1_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 1", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_2, wxEmptyString, size2_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 2", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_3, wxEmptyString, size3_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 3", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_4, wxEmptyString, size4_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 4", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_5, wxEmptyString, size5_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 5", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_6, wxEmptyString, size6_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 6", wxEmptyString, NULL);
+	sizes_toolbar->AddTool(TOOLBAR_SIZES_7, wxEmptyString, size7_bitmap, wxNullBitmap, wxITEM_CHECK, "Size 7", wxEmptyString, NULL);
+	sizes_toolbar->Realize();
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_RECTANGULAR, true);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_1, true);
+
 	manager->AddPane(standard_toolbar, wxAuiPaneInfo().Name(STANDARD_BAR_NAME).ToolbarPane().Top().Row(1).Position(1).Floatable(false));
 	manager->AddPane(brushes_toolbar, wxAuiPaneInfo().Name(BRUSHES_BAR_NAME).ToolbarPane().Top().Row(1).Position(2).Floatable(false));
-	manager->AddPane(position_toolbar, wxAuiPaneInfo().Name(POSITION_BAR_NAME).ToolbarPane().Top().Row(1).Position(3).Floatable(false));
+	manager->AddPane(position_toolbar, wxAuiPaneInfo().Name(POSITION_BAR_NAME).ToolbarPane().Top().Row(1).Position(4).Floatable(false));
+	manager->AddPane(sizes_toolbar, wxAuiPaneInfo().Name(SIZES_BAR_NAME).ToolbarPane().Top().Row(1).Position(3).Floatable(false));
 
 	standard_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnStandardButtonClick, this);
 	brushes_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnBrushesButtonClick, this);
@@ -125,6 +153,7 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	x_control->Bind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
 	y_control->Bind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
 	z_control->Bind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	sizes_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnSizesButtonClick, this);
 
 	HideAll();
 }
@@ -137,6 +166,7 @@ MainToolBar::~MainToolBar()
 	x_control->Unbind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
 	y_control->Unbind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
 	z_control->Unbind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	sizes_toolbar->Unbind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnSizesButtonClick, this);
 }
 
 void MainToolBar::UpdateButtons()
@@ -177,6 +207,16 @@ void MainToolBar::UpdateButtons()
 	x_control->Enable(has_map);
 	y_control->Enable(has_map);
 	z_control->Enable(has_map);
+
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_CIRCULAR, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_RECTANGULAR, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_1, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_2, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_3, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_4, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_5, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_6, has_map);
+	sizes_toolbar->EnableTool(TOOLBAR_SIZES_7, has_map);
 }
 
 void MainToolBar::UpdateBrushButtons()
@@ -209,6 +249,45 @@ void MainToolBar::UpdateBrushButtons()
 		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_HATCH_DOOR, false);
 		brushes_toolbar->ToggleTool(PALETTE_TERRAIN_WINDOW_DOOR, false);
 	}
+	g_gui.GetAuiManager()->Update();
+}
+
+void MainToolBar::UpdateBrushSize(BrushShape shape, int size)
+{
+	if (shape == BRUSHSHAPE_CIRCLE) {
+		sizes_toolbar->ToggleTool(TOOLBAR_SIZES_CIRCULAR, true);
+		sizes_toolbar->ToggleTool(TOOLBAR_SIZES_RECTANGULAR, false);
+
+		wxSize icon_size = wxSize(16, 16);
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_1, wxArtProvider::GetBitmap(ART_CIRCULAR_1, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_2, wxArtProvider::GetBitmap(ART_CIRCULAR_2, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_3, wxArtProvider::GetBitmap(ART_CIRCULAR_3, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_4, wxArtProvider::GetBitmap(ART_CIRCULAR_4, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_5, wxArtProvider::GetBitmap(ART_CIRCULAR_5, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_6, wxArtProvider::GetBitmap(ART_CIRCULAR_6, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_7, wxArtProvider::GetBitmap(ART_CIRCULAR_7, wxART_TOOLBAR, icon_size));
+	} else {
+		sizes_toolbar->ToggleTool(TOOLBAR_SIZES_CIRCULAR, false);
+		sizes_toolbar->ToggleTool(TOOLBAR_SIZES_RECTANGULAR, true);
+
+		wxSize icon_size = wxSize(16, 16);
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_1, wxArtProvider::GetBitmap(ART_RECTANGULAR_1, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_2, wxArtProvider::GetBitmap(ART_RECTANGULAR_2, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_3, wxArtProvider::GetBitmap(ART_RECTANGULAR_3, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_4, wxArtProvider::GetBitmap(ART_RECTANGULAR_4, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_5, wxArtProvider::GetBitmap(ART_RECTANGULAR_5, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_6, wxArtProvider::GetBitmap(ART_RECTANGULAR_6, wxART_TOOLBAR, icon_size));
+		sizes_toolbar->SetToolBitmap(TOOLBAR_SIZES_7, wxArtProvider::GetBitmap(ART_RECTANGULAR_7, wxART_TOOLBAR, icon_size));
+	}
+
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_1, size == 0);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_2, size == 1);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_3, size == 2);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_4, size == 4);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_5, size == 6);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_6, size == 8);
+	sizes_toolbar->ToggleTool(TOOLBAR_SIZES_7, size == 11);
+
 	g_gui.GetAuiManager()->Update();
 }
 
@@ -400,6 +479,44 @@ void MainToolBar::OnPastePositionText(wxClipboardTextEvent& event)
 		event.Skip();
 }
 
+void MainToolBar::OnSizesButtonClick(wxCommandEvent& event)
+{
+	if (!g_gui.IsEditorOpen())
+		return;
+
+	switch (event.GetId()) {
+		case TOOLBAR_SIZES_CIRCULAR:
+			g_gui.SetBrushShape(BRUSHSHAPE_CIRCLE);
+			break;
+		case TOOLBAR_SIZES_RECTANGULAR:
+			g_gui.SetBrushShape(BRUSHSHAPE_SQUARE);
+			break;
+		case TOOLBAR_SIZES_1:
+			g_gui.SetBrushSize(0);
+			break;
+		case TOOLBAR_SIZES_2:
+			g_gui.SetBrushSize(1);
+			break;
+		case TOOLBAR_SIZES_3:
+			g_gui.SetBrushSize(2);
+			break;
+		case TOOLBAR_SIZES_4:
+			g_gui.SetBrushSize(4);
+			break;
+		case TOOLBAR_SIZES_5:
+			g_gui.SetBrushSize(6);
+			break;
+		case TOOLBAR_SIZES_6:
+			g_gui.SetBrushSize(8);
+			break;
+		case TOOLBAR_SIZES_7:
+			g_gui.SetBrushSize(11);
+			break;
+		default:
+			break;
+	}
+}
+
 wxAuiPaneInfo& MainToolBar::GetPane(ToolBarID id)
 {
 	wxAuiManager* manager = g_gui.GetAuiManager();
@@ -413,6 +530,8 @@ wxAuiPaneInfo& MainToolBar::GetPane(ToolBarID id)
 			return manager->GetPane(BRUSHES_BAR_NAME);
 		case TOOLBAR_POSITION:
 			return manager->GetPane(POSITION_BAR_NAME);
+		case TOOLBAR_SIZES:
+			return manager->GetPane(SIZES_BAR_NAME);
 		default:
 			return wxAuiNullPaneInfo;
 	}

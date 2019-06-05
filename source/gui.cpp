@@ -1436,6 +1436,8 @@ void GUI::SetBrushSize(int nz)
 	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
 	}
+
+	root->GetAuiToolBar()->UpdateBrushSize(brush_shape, brush_size);
 }
 
 void GUI::SetBrushVariation(int nz)
@@ -1461,6 +1463,8 @@ void GUI::SetBrushShape(BrushShape bs)
 	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
 		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
 	}
+
+	root->GetAuiToolBar()->UpdateBrushSize(brush_shape, brush_size);
 }
 
 void GUI::SetBrushThickness(bool on, int x, int y)
