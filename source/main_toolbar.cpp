@@ -208,6 +208,11 @@ void MainToolBar::UpdateButtons()
 	y_control->Enable(has_map);
 	z_control->Enable(has_map);
 
+	if (has_map) {
+		x_control->SetMaxValue(editor->getMapWidth());
+		y_control->SetMaxValue(editor->getMapHeight());
+	}
+
 	sizes_toolbar->EnableTool(TOOLBAR_SIZES_CIRCULAR, has_map);
 	sizes_toolbar->EnableTool(TOOLBAR_SIZES_RECTANGULAR, has_map);
 	sizes_toolbar->EnableTool(TOOLBAR_SIZES_1, has_map);
@@ -476,7 +481,7 @@ void MainToolBar::OnPositionButtonClick(wxCommandEvent& event)
 
 	if (event.GetId() == TOOLBAR_POSITION_GO) {
 		Position pos(x_control->GetIntValue(), y_control->GetIntValue(), z_control->GetIntValue());
-		if (pos.x != 0 && pos.y != 0 && pos.z != 0)
+		if (pos.isValid())
 			g_gui.SetScreenCenterPosition(pos);
 	}
 }
