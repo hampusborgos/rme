@@ -2296,7 +2296,7 @@ void MapPopupMenu::Update()
 						Append( MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 					}
 
-					if(teleport && teleport->noDestination()) {
+					if(teleport && teleport->hasDestination()) {
 						Append( MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 					}
 					if(topSelectedItem->isOpen()) {

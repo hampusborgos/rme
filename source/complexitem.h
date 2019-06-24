@@ -77,7 +77,7 @@ class Teleport : public Item
 		Position getDestination() const { return destination; }
 		void setDestination(const Position& position) { destination = position; }
 
-		bool noDestination() const { return destination != Position(); }
+		bool hasDestination() const { return destination != Position(); }
 
 	protected:
 		// We could've made this public and skip the functions, but that would
