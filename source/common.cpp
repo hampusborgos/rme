@@ -204,15 +204,27 @@ std::string wstring2string(const std::wstring& widestring)
 
 bool posFromClipboard(Position& position)
 {
-	if (!wxTheClipboard->Open())
+	if(!wxTheClipboard->Open())
 		return false;
 
-	if (!wxTheClipboard->IsSupported(wxDF_TEXT)) {
+	if(!wxTheClipboard->IsSupported(wxDF_TEXT)) {
 		wxTheClipboard->Close();
 		return false;
 	}
 
-	bool done = false;
+	wxTextDataObject data;
+	wxTheClipboard->GetData(data);
+
+	std::string input = data.GetText().ToStdString();
+	if(input.empty()) {
+		wxTheClipboard->Close();
+		return false;
+	}
+
+	input.erase(std::remove_if(input.begin(), input.end(), [](const auto &ch) -> bool {
+		return std::isspace(ch);
+	}), input.end());
+
 	static const std::regex exprs[] = {
 		// {x = 0, y = 0, z = 0}
 		std::regex(R"(\{x=(\d+),y=(\d+),z=(\d+)\})"),
@@ -226,24 +238,15 @@ bool posFromClipboard(Position& position)
 		std::regex(R"(Position\((\d+),(\d+),(\d+)\))"),
 	};
 
-	wxTextDataObject data;
-	wxTheClipboard->GetData(data);
-
-	std::string input = data.GetText().ToStdString();
-	if (!input.empty()) {
-		input.erase(std::remove_if(input.begin(), input.end(), [](const auto &ch) -> bool {
-			return std::isspace(ch);
-		}), input.end());
-	}
-
+	bool done = false;
 	std::smatch matches;
-	for (const auto &expr : exprs) {
-		if (std::regex_match(input, matches, expr)) {
+	for(const auto &expr : exprs) {
+		if(std::regex_match(input, matches, expr)) {
 			const int tmpX = std::stoi(matches.str(1));
 			const int tmpY = std::stoi(matches.str(2));
 			const int tmpZ = std::stoi(matches.str(3));
 
-			if (const Position(tmpX, tmpY, tmpZ).isValid() &&
+			if(const Position(tmpX, tmpY, tmpZ).isValid() &&
 				tmpX <= g_gui.GetCurrentEditor()->map.getWidth() &&
 				tmpY <= g_gui.GetCurrentEditor()->map.getHeight()) {
 				position.x = tmpX;
