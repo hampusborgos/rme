@@ -21,12 +21,12 @@
 
 #include "common.h"
 #include "math.h"
+#include "gui.h"
+#include "editor.h"
 
 #include <sstream>
 #include <random>
 #include <regex>
-#include "gui.h"
-#include "editor.h"
 #include <algorithm>
 
 // random generator
