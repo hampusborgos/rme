@@ -66,7 +66,7 @@ bool PositionCtrl::Enable(bool enable)
 void PositionCtrl::OnClipboardText(wxClipboardTextEvent& evt)
 {
 	Position position;
-	if(posFromClipboard(position.x, position.y, position.z)) {
+	if (posFromClipboard(position)) {
 		x_field->SetIntValue(position.x);
 		y_field->SetIntValue(position.y);
 		z_field->SetIntValue(position.z);

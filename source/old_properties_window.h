@@ -25,6 +25,8 @@ public:
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
 
+	void OnChar(wxKeyEvent &evt);
+
 	void Update();
 
 protected:

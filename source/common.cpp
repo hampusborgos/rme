@@ -24,6 +24,10 @@
 
 #include <sstream>
 #include <random>
+#include <regex>
+#include "gui.h"
+#include "editor.h"
+#include <algorithm>
 
 // random generator
 std::mt19937& getRandomGenerator()
@@ -198,41 +202,52 @@ std::string wstring2string(const std::wstring& widestring)
 	return std::string((const char*)s.mb_str(wxConvUTF8));
 }
 
-bool posFromClipboard(int& x, int& y, int& z)
+bool posFromClipboard(Position& position)
 {
 	bool done = false;
 
-	if(wxTheClipboard->Open()) {
-		if(wxTheClipboard->IsSupported(wxDF_TEXT)) {
-			std::vector<int> values;
+	if (wxTheClipboard->Open()) {
+		if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
+			static const std::regex exprs[] = {
+				// {x = 0, y = 0, z = 0}
+				std::regex(R"(\{x=(\d+),y=(\d+),z=(\d+)\})"),
+				// {"x": 0, "y": 0, "z": 0}
+				std::regex(R"(\{\"x\":(\d+),\"y\":(\d+),\"z\":(\d+)\})"),
+				// x, y, z
+				std::regex(R"((\d+),(\d+),(\d+))"),
+				// (x, y, z)
+				std::regex(R"(\((\d+),(\d+),(\d+)\))"),
+				// Position(x, y, z)
+				std::regex(R"(Position\((\d+),(\d+),(\d+)\))"),
+			};
+
 			wxTextDataObject data;
 			wxTheClipboard->GetData(data);
-			wxString text = data.GetText();
 
-			if(text.size() < 50) {
-				bool r = false;
-				wxString sv;
-
-				for(size_t s = 0; s < text.size(); ++s) {
-					if(text[s] >= '0' && text[s] <= '9') {
-						sv << text[s];
-						r = true;
-					} else if(r) {
-						values.push_back(ws2i(sv));
-						sv.Clear();
-						r = false;
-
-						if(values.size() >= 3)
-							break;
-					}
-				}
+			std::string input = data.GetText().ToStdString();
+			if (!input.empty()) {
+				input.erase(std::remove_if(input.begin(), input.end(), [](const auto &ch) -> bool {
+					return std::isspace(ch);
+				}), input.end());
 			}
 
-			if(values.size() == 3) {
-				x = values[0];
-				y = values[1];
-				z = values[2];
-				done = true;
+			std::smatch matches;
+			for (const auto &expr : exprs) {
+				if (std::regex_match(input, matches, expr)) {
+					const int tmpX = std::stoi(matches.str(1));
+					const int tmpY = std::stoi(matches.str(2));
+					const int tmpZ = std::stoi(matches.str(3));
+
+					if (const Position(tmpX, tmpY, tmpZ).isValid() &&
+						tmpX <= g_gui.GetCurrentEditor()->map.getWidth() &&
+						tmpY <= g_gui.GetCurrentEditor()->map.getHeight()) {
+						position.x = tmpX;
+						position.y = tmpY;
+						position.z = tmpZ;
+						done = true;
+					}
+					break;
+				}
 			}
 		}
 		wxTheClipboard->Close();
