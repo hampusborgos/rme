@@ -202,7 +202,7 @@ std::string wstring2string(const std::wstring& widestring)
 	return std::string((const char*)s.mb_str(wxConvUTF8));
 }
 
-bool posFromClipboard(Position& position)
+bool posFromClipboard(Position& position, const int& mapWidth, const int& mapHeight)
 {
 	if(!wxTheClipboard->Open())
 		return false;
@@ -247,8 +247,8 @@ bool posFromClipboard(Position& position)
 			const int tmpZ = std::stoi(matches.str(3));
 
 			if(const Position(tmpX, tmpY, tmpZ).isValid() &&
-				tmpX <= g_gui.GetCurrentEditor()->map.getWidth() &&
-				tmpY <= g_gui.GetCurrentEditor()->map.getHeight()) {
+				tmpX <= mapWidth &&
+				tmpY <= mapHeight) {
 				position.x = tmpX;
 				position.y = tmpY;
 				position.z = tmpZ;
