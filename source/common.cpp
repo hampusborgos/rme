@@ -200,7 +200,7 @@ std::string wstring2string(const std::wstring& widestring)
 	return std::string((const char*)s.mb_str(wxConvUTF8));
 }
 
-bool posFromClipboard(Position& position, const int& mapWidth, const int& mapHeight)
+bool posFromClipboard(Position& position, const int& mapWidth /* = MAP_MAX_WIDTH */, const int& mapHeight /* = MAP_MAX_HEIGHT */)
 {
 	if(!wxTheClipboard->Open())
 		return false;

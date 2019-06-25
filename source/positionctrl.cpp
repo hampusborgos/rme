@@ -19,8 +19,6 @@
 #include "positionctrl.h"
 #include "numbertextctrl.h"
 #include "position.h"
-#include "gui.h"
-#include "editor.h"
 
 PositionCtrl::PositionCtrl(wxWindow* parent, const wxString& label, int x, int y, int z,
 	int maxx /*= MAP_MAX_WIDTH*/, int maxy /*= MAP_MAX_HEIGHT*/, int maxz /*= MAP_MAX_LAYER*/) :
@@ -37,6 +35,9 @@ wxStaticBoxSizer(wxHORIZONTAL, parent, label)
 	z_field = newd NumberTextCtrl(parent, wxID_ANY, z, 0, maxz, wxTE_PROCESS_ENTER, "Z", wxDefaultPosition, wxSize(35, 20));
 	z_field->Bind(wxEVT_TEXT_PASTE, &PositionCtrl::OnClipboardText, this);
 	Add(z_field, 1, wxEXPAND | wxLEFT | wxRIGHT | wxBOTTOM, 5);
+
+	maxWidth = maxx;
+	maxHeight = maxy;
 }
 
 PositionCtrl::~PositionCtrl()
@@ -68,8 +69,7 @@ bool PositionCtrl::Enable(bool enable)
 void PositionCtrl::OnClipboardText(wxClipboardTextEvent& evt)
 {
 	Position position;
-	Editor* editor = g_gui.GetCurrentEditor();
-	if (posFromClipboard(position, editor->getMapWidth(), editor->getMapHeight())) {
+	if (posFromClipboard(position, maxWidth, maxHeight)) {
 		x_field->SetIntValue(position.x);
 		y_field->SetIntValue(position.y);
 		z_field->SetIntValue(position.z);
