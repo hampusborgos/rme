@@ -52,7 +52,7 @@ private:
 	wxString m_fileToOpen;
 
 	void FixVersionDiscrapencies();
-	void ParseCommandLineMap(wxString& fileName);
+	bool ParseCommandLineMap(wxString& fileName);
 
 	virtual void OnFatalException();
 
