@@ -299,7 +299,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop)
 void Application::MacOpenFiles(const wxArrayString& fileNames)
 {
 	if (!fileNames.IsEmpty()) {
-		wxString fileName = fileNames.Item(0);
+		const wxString& fileName = fileNames.Item(0);
 		if (m_startup) {
 			//The editor was just opened by clicking a file.
 			//It's too early to load the map here. So we open it later in OnEventLoopEnter.

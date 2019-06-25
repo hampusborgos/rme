@@ -1842,12 +1842,12 @@ void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyServerId(wxCommandEvent& WXUNUSED(event))
 {
-	ASSERT(editor.selection.size() == 1)
+	ASSERT(editor.selection.size() == 1);
 
 	if(wxTheClipboard->Open()) {
 		Tile* tile = editor.selection.getSelectedTile();
 		ItemVector selected_items = tile->getSelectedItems();
-		ASSERT(selected_items.size() == 1)
+		ASSERT(selected_items.size() == 1);
 
 		const Item* item = selected_items.front();
 
@@ -1861,12 +1861,12 @@ void MapCanvas::OnCopyServerId(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyClientId(wxCommandEvent& WXUNUSED(event))
 {
-	ASSERT(editor.selection.size() == 1)
+	ASSERT(editor.selection.size() == 1);
 
 	if(wxTheClipboard->Open()) {
 		Tile* tile = editor.selection.getSelectedTile();
 		ItemVector selected_items = tile->getSelectedItems();
-		ASSERT(selected_items.size() == 1)
+		ASSERT(selected_items.size() == 1);
 
 		const Item* item = selected_items.front();
 
@@ -1880,12 +1880,12 @@ void MapCanvas::OnCopyClientId(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyName(wxCommandEvent& WXUNUSED(event))
 {
-	ASSERT(editor.selection.size() == 1)
+	ASSERT(editor.selection.size() == 1);
 
 	if(wxTheClipboard->Open()) {
 		Tile* tile = editor.selection.getSelectedTile();
 		ItemVector selected_items = tile->getSelectedItems();
-		ASSERT(selected_items.size() == 1)
+		ASSERT(selected_items.size() == 1);
 
 		const Item* item = selected_items.front();
 
