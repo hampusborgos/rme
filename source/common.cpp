@@ -228,10 +228,8 @@ bool posFromClipboard(Position& position, const int& mapWidth /* = MAP_MAX_WIDTH
 		std::regex(R"(\{x=(\d+),y=(\d+),z=(\d+)\})"),
 		// {"x": 0, "y": 0, "z": 0}
 		std::regex(R"(\{\"x\":(\d+),\"y\":(\d+),\"z\":(\d+)\})"),
-		// x, y, z
-		std::regex(R"((\d+),(\d+),(\d+))"),
-		// (x, y, z)
-		std::regex(R"(\((\d+),(\d+),(\d+)\))"),
+		// x, y, z & (x, y, z)
+		std::regex(R"(\(?(\d+),(\d+),(\d+)\)?)"),
 		// Position(x, y, z)
 		std::regex(R"(Position\((\d+),(\d+),(\d+)\))"),
 	};
