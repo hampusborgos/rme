@@ -435,6 +435,15 @@ void MainMenuBar::AddRecentFile(FileName file)
 	recentFiles.AddFileToHistory(file.GetFullPath());
 }
 
+std::vector<wxString> MainMenuBar::GetRecentFiles()
+{
+    std::vector<wxString> files(recentFiles.GetCount());
+    for (size_t i = 0; i < recentFiles.GetCount(); ++i) {
+        files[i] = recentFiles.GetHistoryFile(i);
+    }
+    return files;
+}
+
 void MainMenuBar::UpdateFloorMenu()
 {
 	if(g_gui.IsEditorOpen()) {

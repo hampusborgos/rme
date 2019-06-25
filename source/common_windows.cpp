@@ -314,10 +314,7 @@ void MapPropertiesWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 	EndModal(1);
 }
 
-MapPropertiesWindow::~MapPropertiesWindow()
-{
-	////
-}
+MapPropertiesWindow::~MapPropertiesWindow() = default;
 
 // ============================================================================
 // Map Import Window
@@ -390,10 +387,7 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 	Centre(wxBOTH);
 }
 
-ImportMapWindow::~ImportMapWindow()
-{
-	////
-}
+ImportMapWindow::~ImportMapWindow() = default;
 
 void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 {
@@ -512,10 +506,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	CheckValues();
 }
 
-ExportMiniMapWindow::~ExportMiniMapWindow()
-{
-	////
-}
+ExportMiniMapWindow::~ExportMiniMapWindow() = default;
 
 void ExportMiniMapWindow::OnExportTypeChange(wxCommandEvent& event)
 {
@@ -690,10 +681,7 @@ FindDialog::FindDialog(wxWindow* parent, wxString title) :
 	// RefreshContents();
 }
 
-FindDialog::~FindDialog()
-{
-	////
-}
+FindDialog::~FindDialog() = default;
 
 void FindDialog::OnKeyDown(wxKeyEvent& event)
 {
@@ -781,10 +769,7 @@ FindBrushDialog::FindBrushDialog(wxWindow* parent, wxString title) : FindDialog(
 	RefreshContents();
 }
 
-FindBrushDialog::~FindBrushDialog()
-{
-	////
-}
+FindBrushDialog::~FindBrushDialog() = default;
 
 void FindBrushDialog::OnClickListInternal(wxCommandEvent& event)
 {

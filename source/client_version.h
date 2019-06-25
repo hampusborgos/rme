@@ -179,12 +179,11 @@ struct ClientData
 class ClientVersion;
 typedef std::vector<ClientVersion*> ClientVersionList;
 
-//
 class ClientVersion : boost::noncopyable
 {
 public:
 	ClientVersion(OtbVersion otb, std::string versionName, wxString path);
-	~ClientVersion() {}
+	~ClientVersion() = default;
 
 	static void loadVersions();
 	static void unloadVersions();

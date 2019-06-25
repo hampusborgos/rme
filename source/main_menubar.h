@@ -167,6 +167,7 @@ public:
 	void AddRecentFile(FileName file);
 	void LoadRecentFiles();
 	void SaveRecentFiles();
+	std::vector<wxString> GetRecentFiles();
 
 	// Interface
 	void EnableItem(MenuBar::ActionID id, bool enable);
