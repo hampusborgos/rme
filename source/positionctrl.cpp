@@ -68,8 +68,8 @@ bool PositionCtrl::Enable(bool enable)
 void PositionCtrl::OnClipboardText(wxClipboardTextEvent& evt)
 {
 	Position position;
-	Map& map = g_gui.GetCurrentEditor()->map;
-	if (posFromClipboard(position, map.getWidth(), map.getHeight())) {
+	Editor* editor = g_gui.GetCurrentEditor();
+	if (posFromClipboard(position, editor->getMapWidth(), editor->getMapHeight())) {
 		x_field->SetIntValue(position.x);
 		y_field->SetIntValue(position.y);
 		z_field->SetIntValue(position.z);

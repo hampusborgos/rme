@@ -240,18 +240,21 @@ bool posFromClipboard(Position& position, const int& mapWidth, const int& mapHei
 	std::smatch matches;
 	for(const auto &expr : exprs) {
 		if(std::regex_match(input, matches, expr)) {
-			const int tmpX = std::stoi(matches.str(1));
-			const int tmpY = std::stoi(matches.str(2));
-			const int tmpZ = std::stoi(matches.str(3));
+			try {
+				const int tmpX = std::stoi(matches.str(1));
+				const int tmpY = std::stoi(matches.str(2));
+				const int tmpZ = std::stoi(matches.str(3));
 
-			if(const Position(tmpX, tmpY, tmpZ).isValid() &&
-				tmpX <= mapWidth &&
-				tmpY <= mapHeight) {
-				position.x = tmpX;
-				position.y = tmpY;
-				position.z = tmpZ;
-				done = true;
+				if(const Position(tmpX, tmpY, tmpZ).isValid() &&
+					tmpX <= mapWidth &&
+					tmpY <= mapHeight) {
+					position.x = tmpX;
+					position.y = tmpY;
+					position.z = tmpZ;
+					done = true;
+				}
 			}
+			catch(const std::out_of_range&) {}
 			break;
 		}
 	}
