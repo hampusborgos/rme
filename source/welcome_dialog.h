@@ -2,8 +2,6 @@
 #ifndef RME_WELCOME_DIALOG_H
 #define RME_WELCOME_DIALOG_H
 
-#include "main.h"
-
 class WelcomeDialog : public wxDialog
 {
 public:

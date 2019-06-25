@@ -370,11 +370,13 @@ void Application::OnFatalException()
 	////
 }
 
-void Application::ParseCommandLineMap(wxString& fileName)
+bool Application::ParseCommandLineMap(wxString& fileName)
 {
 	if(argc == 2) {
 		fileName = wxString(argv[1]);
+		return true;
 	}
+	return false;
 }
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) :

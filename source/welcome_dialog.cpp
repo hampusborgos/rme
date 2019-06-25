@@ -1,3 +1,4 @@
+#include "main.h"
 #include "welcome_dialog.h"
 #include "settings.h"
 
@@ -61,7 +62,6 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
           m_textColour(baseColour.ChangeLightness(40)) {
 
     SetBackgroundColour(baseColour);
-    m_font.SetFamily(wxFONTFAMILY_DECORATIVE);
 
     newd RecentMapsPanel(this,
                          dialog,
@@ -90,16 +90,16 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
 void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
     wxPaintDC dc(this);
 
-    dc.DrawBitmap(m_rmeLogo, wxPoint(GetSize().x / 4 - m_rmeLogo.GetWidth() / 2, 40), false);
+    dc.DrawBitmap(m_rmeLogo, wxPoint(GetSize().x / 4 - m_rmeLogo.GetWidth() / 2, 40), true);
 
-    m_font.SetPointSize(34);
+    m_font.SetPointSize(24);
     dc.SetFont(m_font);
     wxSize headerSize = dc.GetTextExtent(m_titleText);
     wxSize headerPoint(GetSize().x / 4, GetSize().y / 4);
     dc.SetTextForeground(m_textColour);
     dc.DrawText(m_titleText, wxPoint(headerPoint.x - headerSize.x / 2, headerPoint.y));
 
-    m_font.SetPointSize(18);
+    m_font.SetPointSize(14);
     dc.SetFont(m_font);
     wxSize versionSize = dc.GetTextExtent(m_versionText);
     dc.SetTextForeground(m_textColour.ChangeLightness(110));
@@ -120,8 +120,7 @@ WelcomeDialogButtonButton::WelcomeDialogButtonButton(wxWindow *parent,
           m_backgroundHover(baseColour.ChangeLightness(93)) {
     SetBackgroundColour(m_background);
 
-    m_font.SetFamily(wxFONTFAMILY_DECORATIVE);
-    m_font.SetPointSize(14);
+    m_font.SetPointSize(12);
 
     Bind(wxEVT_PAINT, &WelcomeDialogButtonButton::OnPaint, this);
     Bind(wxEVT_ENTER_WINDOW, &WelcomeDialogButtonButton::OnMouseEnter, this);
@@ -185,8 +184,7 @@ RecentItem::RecentItem(wxWindow *parent,
 
 void RecentItem::OnPaint(wxPaintEvent &event) {
     wxFont font;
-    font.SetFamily(wxFONTFAMILY_DECORATIVE);
-    font.SetPointSize(14);
+    font.SetPointSize(12);
 
     wxPaintDC dc(this);
 
