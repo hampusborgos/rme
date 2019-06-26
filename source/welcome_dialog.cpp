@@ -7,7 +7,7 @@ WelcomeDialog::WelcomeDialog(const wxString &titleText,
                              const wxString &versionText,
                              const wxBitmap &rmeLogo,
                              const std::vector<wxString> &recentFiles)
-        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 500)), m_recentMapPath("") {
+        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 450)), m_recentMapPath("") {
     Centre();
     wxColour baseColour = wxColor(250, 250, 250);
     m_welcomeDialogPanel = newd WelcomeDialogPanel(this,

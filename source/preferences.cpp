@@ -266,7 +266,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
 	// Screenshot dir
 	subsizer->Add(tmp = newd wxStaticText(graphics_page, wxID_ANY, "Screenshot directory: "), 0);
 	screenshot_directory_picker = newd wxDirPickerCtrl(graphics_page, wxID_ANY);
-	subsizer->Add(screenshot_directory_picker);
+	subsizer->Add(screenshot_directory_picker, 1, wxEXPAND);
 	wxString ss = wxstr(g_settings.getString(Config::SCREENSHOT_DIRECTORY));
 	screenshot_directory_picker->SetPath(ss);
 	SetWindowToolTip(screenshot_directory_picker, "Screenshot taken in the editor will be saved to this directory.");
