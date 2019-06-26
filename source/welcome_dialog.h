@@ -30,7 +30,6 @@ public:
     void OnPaint(wxPaintEvent& event);
 private:
     wxBitmap m_rmeLogo;
-    wxFont m_font;
     wxString m_titleText;
     wxString m_versionText;
     wxColour m_textColour;
@@ -47,7 +46,6 @@ public:
     void SetAction(wxStandardID action) { m_action = action; };
 private:
     wxStandardID m_action;
-    wxFont m_font;
     wxString m_text;
     wxColour m_textColour;
     wxColour m_background;

@@ -7,7 +7,8 @@ WelcomeDialog::WelcomeDialog(const wxString &titleText,
                              const wxString &versionText,
                              const wxBitmap &rmeLogo,
                              const std::vector<wxString> &recentFiles)
-        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 450)), m_recentMapPath("") {
+        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 450)),
+          m_recentMapPath("") {
     Centre();
     wxColour baseColour = wxColor(250, 250, 250);
     m_welcomeDialogPanel = newd WelcomeDialogPanel(this,
@@ -115,35 +116,32 @@ void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
 
     dc.DrawBitmap(m_rmeLogo, wxPoint(GetSize().x / 4 - m_rmeLogo.GetWidth() / 2, 40), true);
 
-    m_font.SetPointSize(20);
-    dc.SetFont(m_font);
+    wxFont font = GetFont();
+    font.SetPointSize(24);
+    dc.SetFont(font);
     wxSize headerSize = dc.GetTextExtent(m_titleText);
     wxSize headerPoint(GetSize().x / 4, GetSize().y / 4);
     dc.SetTextForeground(m_textColour);
     dc.DrawText(m_titleText, wxPoint(headerPoint.x - headerSize.x / 2, headerPoint.y));
 
-    m_font.SetPointSize(12);
-    dc.SetFont(m_font);
+    dc.SetFont(GetFont());
     wxSize versionSize = dc.GetTextExtent(m_versionText);
     dc.SetTextForeground(m_textColour.ChangeLightness(110));
     dc.DrawText(m_versionText, wxPoint(headerPoint.x - versionSize.x / 2, headerPoint.y + headerSize.y + 10));
 }
 
 WelcomeDialogButton::WelcomeDialogButton(wxWindow *parent,
-                                                     const wxPoint &pos,
-                                                     const wxSize &size,
-                                                     const wxColour &baseColour,
-                                                     const wxString &text)
+                                         const wxPoint &pos,
+                                         const wxSize &size,
+                                         const wxColour &baseColour,
+                                         const wxString &text)
         : wxPanel(parent, wxID_ANY, pos, size),
           m_action(wxID_CLOSE),
-          m_font(),
           m_text(text),
           m_textColour(baseColour.ChangeLightness(40)),
           m_background(baseColour.ChangeLightness(96)),
           m_backgroundHover(baseColour.ChangeLightness(93)) {
     SetBackgroundColour(m_background);
-
-    m_font.SetPointSize(10);
 
     Bind(wxEVT_PAINT, &WelcomeDialogButton::OnPaint, this);
     Bind(wxEVT_ENTER_WINDOW, &WelcomeDialogButton::OnMouseEnter, this);
@@ -152,7 +150,7 @@ WelcomeDialogButton::WelcomeDialogButton(wxWindow *parent,
 
 void WelcomeDialogButton::OnPaint(wxPaintEvent &event) {
     wxPaintDC dc(this);
-    dc.SetFont(m_font);
+    dc.SetFont(GetFont());
     dc.SetTextForeground(m_textColour);
     wxSize textSize = dc.GetTextExtent(m_text);
 
@@ -206,15 +204,12 @@ RecentItem::RecentItem(wxWindow *parent,
 }
 
 void RecentItem::OnPaint(wxPaintEvent &event) {
-    wxFont font;
-    font.SetPointSize(10);
-
     wxPaintDC dc(this);
 
     dc.SetPen(wxPen(m_baseColour.ChangeLightness(99), 1));
     dc.DrawLine(0, 0, GetSize().x, 0);
 
-    dc.SetFont(font);
+    dc.SetFont(GetFont());
     dc.SetTextForeground(m_textColour);
     wxSize textSize = dc.GetTextExtent(m_itemText);
 
