@@ -36,10 +36,10 @@ private:
     wxColour m_textColour;
 };
 
-class WelcomeDialogButtonButton : public wxPanel
+class WelcomeDialogButton : public wxPanel
 {
 public:
-    WelcomeDialogButtonButton(wxWindow* parent, const wxPoint& pos, const wxSize& size, const wxColour& baseColour, const wxString &text);
+    WelcomeDialogButton(wxWindow* parent, const wxPoint& pos, const wxSize& size, const wxColour& baseColour, const wxString &text);
     void OnPaint(wxPaintEvent& event);
     void OnMouseEnter(wxMouseEvent& event);
     void OnMouseLeave(wxMouseEvent& event);

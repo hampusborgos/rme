@@ -1,6 +1,7 @@
 #include "main.h"
 #include "welcome_dialog.h"
 #include "settings.h"
+#include "preferences.h"
 
 WelcomeDialog::WelcomeDialog(const wxString &titleText,
                              const wxString &versionText,
@@ -19,7 +20,7 @@ WelcomeDialog::WelcomeDialog(const wxString &titleText,
 }
 
 void WelcomeDialog::OnButtonClicked(wxMouseEvent &event) {
-    auto *button = dynamic_cast<WelcomeDialogButtonButton *>(event.GetEventObject());
+    auto *button = dynamic_cast<WelcomeDialogButton *>(event.GetEventObject());
     wxSize buttonSize = button->GetSize();
     wxPoint clickPoint = event.GetPosition();
     if (clickPoint.x > 0 && clickPoint.x < buttonSize.x && clickPoint.y > 0 && clickPoint.y < buttonSize.x) {
@@ -32,6 +33,9 @@ void WelcomeDialog::OnButtonClicked(wxMouseEvent &event) {
                 m_recentMapPath = fileDialog.GetPath();
                 EndModal(wxID_FILE);
             }
+        } else if (button->GetAction() == wxID_PREFERENCES) {
+            PreferencesWindow preferencesWindow(m_welcomeDialogPanel, true);
+            preferencesWindow.ShowModal();
         } else {
             EndModal(button->GetAction());
         }
@@ -73,16 +77,35 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     wxSize buttonSize(150, 40);
     wxColour buttonBaseColour = baseColour.ChangeLightness(90);
 
-    wxPoint newMapButtonPoint(size.x / 4 - buttonSize.x / 2, size.y / 2);
-    auto *newMapButton = newd WelcomeDialogButtonButton(this, newMapButtonPoint, buttonSize, buttonBaseColour, "New");
+    int buttonPosCenterX = size.x / 4 - buttonSize.x / 2;
+    int buttonPosCenterY = size.y / 2;
+
+    wxPoint newMapButtonPoint(buttonPosCenterX, buttonPosCenterY);
+    auto *newMapButton = newd WelcomeDialogButton(this,
+                                                  newMapButtonPoint,
+                                                  buttonSize,
+                                                  buttonBaseColour,
+                                                  "New");
     newMapButton->SetAction(wxID_NEW);
     newMapButton->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnButtonClicked, dialog);
 
-    wxPoint openMapButtonPoint(size.x / 4 - buttonSize.x / 2, size.y / 2 + buttonSize.y + 10);
-    auto *openMapButton = newd WelcomeDialogButtonButton(this, openMapButtonPoint, buttonSize, buttonBaseColour,
-                                                         "Open");
+    wxPoint openMapButtonPoint(buttonPosCenterX, newMapButtonPoint.y + buttonSize.y + 10);
+    auto *openMapButton = newd WelcomeDialogButton(this,
+                                                   openMapButtonPoint,
+                                                   buttonSize,
+                                                   buttonBaseColour,
+                                                   "Open");
     openMapButton->SetAction(wxID_OPEN);
     openMapButton->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnButtonClicked, dialog);
+
+    wxPoint preferencesButtonPoint(buttonPosCenterX, openMapButtonPoint.y + buttonSize.y + 10);
+    auto *preferencesButton = newd WelcomeDialogButton(this,
+                                                       preferencesButtonPoint,
+                                                       buttonSize,
+                                                       buttonBaseColour,
+                                                       "Preferences");
+    preferencesButton->SetAction(wxID_PREFERENCES);
+    preferencesButton->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnButtonClicked, dialog);
 
     Bind(wxEVT_PAINT, &WelcomeDialogPanel::OnPaint, this);
 }
@@ -106,7 +129,7 @@ void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
     dc.DrawText(m_versionText, wxPoint(headerPoint.x - versionSize.x / 2, headerPoint.y + headerSize.y + 10));
 }
 
-WelcomeDialogButtonButton::WelcomeDialogButtonButton(wxWindow *parent,
+WelcomeDialogButton::WelcomeDialogButton(wxWindow *parent,
                                                      const wxPoint &pos,
                                                      const wxSize &size,
                                                      const wxColour &baseColour,
@@ -122,12 +145,12 @@ WelcomeDialogButtonButton::WelcomeDialogButtonButton(wxWindow *parent,
 
     m_font.SetPointSize(12);
 
-    Bind(wxEVT_PAINT, &WelcomeDialogButtonButton::OnPaint, this);
-    Bind(wxEVT_ENTER_WINDOW, &WelcomeDialogButtonButton::OnMouseEnter, this);
-    Bind(wxEVT_LEAVE_WINDOW, &WelcomeDialogButtonButton::OnMouseLeave, this);
+    Bind(wxEVT_PAINT, &WelcomeDialogButton::OnPaint, this);
+    Bind(wxEVT_ENTER_WINDOW, &WelcomeDialogButton::OnMouseEnter, this);
+    Bind(wxEVT_LEAVE_WINDOW, &WelcomeDialogButton::OnMouseLeave, this);
 }
 
-void WelcomeDialogButtonButton::OnPaint(wxPaintEvent &event) {
+void WelcomeDialogButton::OnPaint(wxPaintEvent &event) {
     wxPaintDC dc(this);
     dc.SetFont(m_font);
     dc.SetTextForeground(m_textColour);
@@ -136,12 +159,12 @@ void WelcomeDialogButtonButton::OnPaint(wxPaintEvent &event) {
     dc.DrawText(m_text, wxPoint(GetSize().x / 2 - textSize.x / 2, GetSize().y / 2 - textSize.y / 2));
 }
 
-void WelcomeDialogButtonButton::OnMouseEnter(wxMouseEvent &event) {
+void WelcomeDialogButton::OnMouseEnter(wxMouseEvent &event) {
     SetBackgroundColour(m_backgroundHover);
     Refresh();
 }
 
-void WelcomeDialogButtonButton::OnMouseLeave(wxMouseEvent &event) {
+void WelcomeDialogButton::OnMouseLeave(wxMouseEvent &event) {
     SetBackgroundColour(m_background);
     Refresh();
 }

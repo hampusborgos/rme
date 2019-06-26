@@ -37,30 +37,30 @@ BEGIN_EVENT_TABLE(PreferencesWindow, wxDialog)
 	EVT_COLLAPSIBLEPANE_CHANGED(wxID_ANY, PreferencesWindow::OnCollapsiblePane)
 END_EVENT_TABLE()
 
-PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_ANY, "Preferences", wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX)
-{
-	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
+PreferencesWindow::PreferencesWindow(wxWindow *parent, bool clientVersionSelected = false)
+        : wxDialog(parent, wxID_ANY, "Preferences", wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX) {
+    wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
-	//book->SetPadding(4);
+    book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
+    //book->SetPadding(4);
 
-	book->AddPage(CreateGeneralPage(), "General", true);
-	book->AddPage(CreateEditorPage(), "Editor");
-	book->AddPage(CreateGraphicsPage(), "Graphics");
-	book->AddPage(CreateUIPage(), "Interface");
-	book->AddPage(CreateClientPage(), "Client Version");
+    book->AddPage(CreateGeneralPage(), "General", true);
+    book->AddPage(CreateEditorPage(), "Editor");
+    book->AddPage(CreateGraphicsPage(), "Graphics");
+    book->AddPage(CreateUIPage(), "Interface");
+    book->AddPage(CreateClientPage(), "Client Version", clientVersionSelected);
 
-	sizer->Add(book, 1, wxEXPAND | wxALL, 10);
+    sizer->Add(book, 1, wxEXPAND | wxALL, 10);
 
-	wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
-	subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
-	subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Border(wxALL, 5).Left().Center());
-	subsizer->Add(newd wxButton(this, wxID_APPLY, "Apply"), wxSizerFlags(1).Center());
-	sizer->Add(subsizer, 0, wxCENTER | wxLEFT | wxBOTTOM | wxRIGHT, 10);
+    wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
+    subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+    subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Border(wxALL, 5).Left().Center());
+    subsizer->Add(newd wxButton(this, wxID_APPLY, "Apply"), wxSizerFlags(1).Center());
+    sizer->Add(subsizer, 0, wxCENTER | wxLEFT | wxBOTTOM | wxRIGHT, 10);
 
-	SetSizerAndFit(sizer);
-	Centre(wxBOTH);
-	// FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
+    SetSizerAndFit(sizer);
+    Centre(wxBOTH);
+    // FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
 }
 
 PreferencesWindow::~PreferencesWindow()
