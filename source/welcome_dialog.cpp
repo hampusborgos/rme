@@ -117,14 +117,14 @@ void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
     dc.DrawBitmap(m_rmeLogo, wxPoint(GetSize().x / 4 - m_rmeLogo.GetWidth() / 2, 40), true);
 
     wxFont font = GetFont();
-    font.SetPointSize(24);
+    font.SetPointSize(22);
     dc.SetFont(font);
     wxSize headerSize = dc.GetTextExtent(m_titleText);
     wxSize headerPoint(GetSize().x / 4, GetSize().y / 4);
     dc.SetTextForeground(m_textColour);
     dc.DrawText(m_titleText, wxPoint(headerPoint.x - headerSize.x / 2, headerPoint.y));
 
-    dc.SetFont(GetFont());
+	dc.SetFont(GetFont().Larger());
     wxSize versionSize = dc.GetTextExtent(m_versionText);
     dc.SetTextForeground(m_textColour.ChangeLightness(110));
     dc.DrawText(m_versionText, wxPoint(headerPoint.x - versionSize.x / 2, headerPoint.y + headerSize.y + 10));
