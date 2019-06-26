@@ -2258,22 +2258,21 @@ void MapPopupMenu::Update()
 			Creature* topCreature = tile->creature;
 			Spawn* topSpawn = tile->spawn;
 
-			for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); ++it) {
-				Item* iter_item = *it;
-				if(iter_item->isWall()) {
-					Brush* wb = iter_item->getWallBrush();
+			for (auto *item : tile->items) {
+				if(item->isWall()) {
+					Brush* wb = item->getWallBrush();
 					if(wb && wb->visibleInPalette()) hasWall = true;
 				}
-				if(iter_item->isTable()) {
-					Brush* tb = iter_item->getTableBrush();
+				if(item->isTable()) {
+					Brush* tb = item->getTableBrush();
 					if(tb && tb->visibleInPalette()) hasTable = true;
 				}
-				if(iter_item->isCarpet()) {
-					Brush* cb = iter_item->getCarpetBrush();
+				if(item->isCarpet()) {
+					Brush* cb = item->getCarpetBrush();
 					if(cb && cb->visibleInPalette()) hasCarpet = true;
 				}
-				if(iter_item->isSelected()) {
-					topItem = iter_item;
+				if(item->isSelected()) {
+					topItem = item;
 				}
 			}
 			if(!topItem) {
@@ -2393,7 +2392,7 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 			return;
 		}
 
-		if(tile && tile->ground && !oldBrush || !tile && oldBrush) {
+		if((tile && tile->ground && !oldBrush) || (!tile && oldBrush)) {
 			return;
 		}
 
@@ -2450,7 +2449,7 @@ void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, Ground
 	}
 
 	Tile* tile = map->getTile(px, py, center.z);
-	if(tile && tile->ground && !brush || !tile && brush) {
+	if((tile && tile->ground && !brush) || (!tile && brush)) {
 		return;
 	}
 

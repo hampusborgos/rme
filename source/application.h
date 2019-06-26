@@ -27,6 +27,7 @@
 
 #include "process_com.h"
 #include "map_display.h"
+#include "welcome_dialog.h"
 
 class Item;
 class Creature;
@@ -80,6 +81,7 @@ public:
 	void AddRecentFile(const FileName& file);
 	void LoadRecentFiles();
 	void SaveRecentFiles();
+	std::vector<wxString> GetRecentFiles();
 
 	MainToolBar* GetAuiToolBar() const { return tool_bar; }
 
