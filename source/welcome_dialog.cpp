@@ -117,7 +117,7 @@ void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
     dc.DrawBitmap(m_rmeLogo, wxPoint(GetSize().x / 4 - m_rmeLogo.GetWidth() / 2, 40), true);
 
     wxFont font = GetFont();
-    font.SetPointSize(22);
+    font.SetPointSize(21);
     dc.SetFont(font);
     wxSize headerSize = dc.GetTextExtent(m_titleText);
     wxSize headerPoint(GetSize().x / 4, GetSize().y / 4);
