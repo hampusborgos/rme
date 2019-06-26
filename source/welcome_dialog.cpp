@@ -74,7 +74,7 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
                          baseColour,
                          recentFiles);
 
-    wxSize buttonSize(150, 40);
+    wxSize buttonSize(150, 35);
     wxColour buttonBaseColour = baseColour.ChangeLightness(90);
 
     int buttonPosCenterX = size.x / 4 - buttonSize.x / 2;
@@ -115,14 +115,14 @@ void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
 
     dc.DrawBitmap(m_rmeLogo, wxPoint(GetSize().x / 4 - m_rmeLogo.GetWidth() / 2, 40), true);
 
-    m_font.SetPointSize(24);
+    m_font.SetPointSize(20);
     dc.SetFont(m_font);
     wxSize headerSize = dc.GetTextExtent(m_titleText);
     wxSize headerPoint(GetSize().x / 4, GetSize().y / 4);
     dc.SetTextForeground(m_textColour);
     dc.DrawText(m_titleText, wxPoint(headerPoint.x - headerSize.x / 2, headerPoint.y));
 
-    m_font.SetPointSize(14);
+    m_font.SetPointSize(12);
     dc.SetFont(m_font);
     wxSize versionSize = dc.GetTextExtent(m_versionText);
     dc.SetTextForeground(m_textColour.ChangeLightness(110));
@@ -143,7 +143,7 @@ WelcomeDialogButton::WelcomeDialogButton(wxWindow *parent,
           m_backgroundHover(baseColour.ChangeLightness(93)) {
     SetBackgroundColour(m_background);
 
-    m_font.SetPointSize(12);
+    m_font.SetPointSize(10);
 
     Bind(wxEVT_PAINT, &WelcomeDialogButton::OnPaint, this);
     Bind(wxEVT_ENTER_WINDOW, &WelcomeDialogButton::OnMouseEnter, this);
@@ -207,7 +207,7 @@ RecentItem::RecentItem(wxWindow *parent,
 
 void RecentItem::OnPaint(wxPaintEvent &event) {
     wxFont font;
-    font.SetPointSize(12);
+    font.SetPointSize(10);
 
     wxPaintDC dc(this);
 

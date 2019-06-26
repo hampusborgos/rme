@@ -519,8 +519,8 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
     auto * client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
 
-	wxSizerFlags firstRowFlags = wxSizerFlags(0).Border(wxTOP|wxLEFT|wxRIGHT, 10);
-	wxSizerFlags rowFlags = wxSizerFlags(0).Border(wxLEFT|wxRIGHT, 10);
+	wxSizerFlags firstRowFlags = wxSizerFlags(0).Border(wxTOP|wxLEFT|wxRIGHT, 10).Expand();
+	wxSizerFlags rowFlags = wxSizerFlags(0).Border(wxLEFT|wxRIGHT, 10).Expand();
 
 	int version_counter = 0;
 	for (auto version : versions) {
