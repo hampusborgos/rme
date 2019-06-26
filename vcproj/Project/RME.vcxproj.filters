@@ -368,6 +368,9 @@
     <ClInclude Include="..\..\source\artprovider.h">
       <Filter>gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\welcome_dialog.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -644,6 +647,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\artprovider.cpp">
       <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\welcome_dialog.cpp">
+      <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
