@@ -11,6 +11,8 @@
 
 #include "client_version.h"
 #include "pugicast.h"
+#include "otml.h"
+#include <wx/dir.h>
 
 // Static methods to load/save
 
@@ -422,15 +424,30 @@ FileName ClientVersion::getLocalDataPath() const
 	return f;
 }
 
-bool ClientVersion::hasValidPaths() const
+bool ClientVersion::hasValidPaths()
 {
 	if(!client_path.DirExists()) {
 		return false;
 	}
 
-	FileName dat_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".dat";
-	FileName spr_path = client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".spr";
-	if(!dat_path.FileExists() || !spr_path.FileExists()) {
+	wxDir dir(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
+	wxString otfi_file;
+	metadata_path = wxFileName(client_path.GetFullPath(), wxString(ASSETS_NAME) + ".dat");
+	sprites_path = wxFileName(client_path.GetFullPath(), wxString(ASSETS_NAME) + ".spr");
+
+	if(dir.GetFirst(&otfi_file, "*.otfi", wxDIR_FILES)) {
+		wxFileName otfi(client_path.GetFullPath(), otfi_file);
+		OTMLDocumentPtr doc = OTMLDocument::parse(otfi.GetFullPath().ToStdString());
+		if(doc->size() != 0 && doc->hasChildAt("DatSpr")) {
+			OTMLNodePtr node = doc->get("DatSpr");
+			std::string metadata = node->valueAt<std::string>("metadata-file", std::string(ASSETS_NAME) + ".dat");
+			std::string sprites = node->valueAt<std::string>("sprites-file", std::string(ASSETS_NAME) + ".spr");
+			metadata_path = wxFileName(client_path.GetFullPath(), wxString(metadata));
+			sprites_path = wxFileName(client_path.GetFullPath(), wxString(sprites));
+		}
+	}
+
+	if(!metadata_path.FileExists() || !sprites_path.FileExists()) {
 		return false;
 	}
 
@@ -439,7 +456,7 @@ bool ClientVersion::hasValidPaths() const
 	}
 
 	// Peek the version of the files
-	FileReadHandle dat_file(static_cast<const char*>(dat_path.GetFullPath().mb_str()));
+	FileReadHandle dat_file(static_cast<const char*>(metadata_path.GetFullPath().mb_str()));
 	if(!dat_file.isOk()) {
 		wxLogError("Could not open metadata file.");
 		return false;
@@ -449,7 +466,7 @@ bool ClientVersion::hasValidPaths() const
 	dat_file.getU32(datSignature);
 	dat_file.close();
 
-	FileReadHandle spr_file(static_cast<const char*>(spr_path.GetFullPath().mb_str()));
+	FileReadHandle spr_file(static_cast<const char*>(sprites_path.GetFullPath().mb_str()));
 	if(!spr_file.isOk()) {
 		wxLogError("Could not open sprites file.");
 		return false;
@@ -475,10 +492,11 @@ bool ClientVersion::hasValidPaths() const
 bool ClientVersion::loadValidPaths()
 {
 	while(!hasValidPaths()) {
-		g_gui.PopupDialog(
-			"Error",
-			"Could not locate metadata and/or sprite files, please navigate to your client assets " + name + " installation folder.",
-			wxOK);
+		wxString message = "Could not locate metadata and/or sprite files, please navigate to your client assets %s installation folder.\n";
+		message << "Attempted metadata file: %s\n";
+		message << "Attempted sprites file: %s\n";
+
+		g_gui.PopupDialog("Error", wxString::Format(message, name, metadata_path.GetFullPath(), sprites_path.GetFullPath()), wxOK);
 
 		wxString dirHelpText("Select assets directory.");
 		wxDirDialog file_dlg(nullptr, dirHelpText, "", wxDD_DIR_MUST_EXIST);
@@ -517,11 +535,6 @@ ClientVersionID ClientVersion::getID() const
 bool ClientVersion::isVisible() const
 {
 	return visible;
-}
-
-FileName ClientVersion::getClientPath() const
-{
-	return client_path;
 }
 
 void ClientVersion::setClientPath(const FileName& dir)

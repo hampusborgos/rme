@@ -282,6 +282,9 @@ public:
 	void garbageCollection();
 	void addSpriteToCleanup(GameSprite* spr);
 
+	wxFileName getMetadataFileName() const { return metadata_file; }
+	wxFileName getSpritesFileName() const { return sprites_file; }
+
 	bool hasTransparency() const;
 	bool isUnloaded() const;
 
@@ -307,6 +310,8 @@ private:
 	bool has_transparency;
 	bool has_frame_durations;
 	bool has_frame_groups;
+	wxFileName metadata_file;
+	wxFileName sprites_file;
 
 	int loaded_textures;
 	int lastclean;

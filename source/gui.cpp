@@ -260,7 +260,7 @@ bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& w
 		loaded_version = version;
 		if(!getLoadedVersion()->hasValidPaths()) {
 			if(!getLoadedVersion()->loadValidPaths()) {
-				error = "Couldn't load relevant data files";
+				error = "Couldn't load relevant asset files";
 				loaded_version = CLIENT_VERSION_NONE;
 				return false;
 			}
@@ -330,8 +330,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.gfx.client_version = getLoadedVersion();
 
-	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".otfi");
-	if(!g_gui.gfx.loadOTFI(otfi_path, error, warnings)) {
+	if(!g_gui.gfx.loadOTFI(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR), error, warnings)) {
 		error = "Couldn't load otfi file: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
@@ -340,19 +339,19 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.CreateLoadBar("Loading asset files");
 	g_gui.SetLoadDone(0, "Loading metadata file...");
-	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".dat");
 
-	if(!g_gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
+	wxFileName metadata_path = g_gui.gfx.getMetadataFileName();
+	if(!g_gui.gfx.loadSpriteMetadata(metadata_path, error, warnings)) {
 		error = "Couldn't load metadata: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".spr");
-
 	g_gui.SetLoadDone(10, "Loading sprites file...");
-	if(!g_gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
+
+	wxFileName sprites_path = g_gui.gfx.getSpritesFileName();
+	if(!g_gui.gfx.loadSpriteData(sprites_path.GetFullPath(), error, warnings)) {
 		error = "Couldn't load sprites: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
