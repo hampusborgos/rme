@@ -279,6 +279,7 @@ void Application::OnWelcomeWindowClosed(wxCloseEvent& event)
 
 void Application::OnWelcomeWindowAction(wxCommandEvent& event)
 {
+    g_gui.welcomeDialog->Hide();
     g_gui.welcomeDialog->Destroy();
     g_gui.welcomeDialog = nullptr;
     g_gui.root->Show(true);
@@ -296,6 +297,7 @@ void Application::MacOpenFiles(const wxArrayString& fileNames)
 {
 	if (!fileNames.IsEmpty()) {
 	    if (g_gui.welcomeDialog != nullptr) {
+            g_gui.welcomeDialog->Hide();
             g_gui.welcomeDialog->Destroy();
             g_gui.welcomeDialog = nullptr;
 	        g_gui.root->Show();
