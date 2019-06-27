@@ -47,6 +47,7 @@ class DoorBrush;
 class FlagBrush;
 
 class MainFrame;
+class WelcomeDialog;
 class MapWindow;
 class MapCanvas;
 
@@ -355,6 +356,7 @@ public:
 	wxAuiManager* aui_manager;
 	MapTabbook* tabbook;
 	MainFrame* root; // The main frame
+	WelcomeDialog* welcomeDialog;
 	CopyBuffer copybuffer;
 
 	MinimapWindow* minimap;

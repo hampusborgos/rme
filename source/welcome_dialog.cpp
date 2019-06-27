@@ -3,12 +3,13 @@
 #include "settings.h"
 #include "preferences.h"
 
+wxDEFINE_EVENT(WELCOME_DIALOG_ACTION, wxCommandEvent);
+
 WelcomeDialog::WelcomeDialog(const wxString &titleText,
                              const wxString &versionText,
                              const wxBitmap &rmeLogo,
                              const std::vector<wxString> &recentFiles)
-        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 450)),
-          m_recentMapPath("") {
+        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 450)) {
     Centre();
     wxColour baseColour = wxColor(250, 250, 250);
     m_welcomeDialogPanel = newd WelcomeDialogPanel(this,
@@ -25,20 +26,24 @@ void WelcomeDialog::OnButtonClicked(wxMouseEvent &event) {
     wxSize buttonSize = button->GetSize();
     wxPoint clickPoint = event.GetPosition();
     if (clickPoint.x > 0 && clickPoint.x < buttonSize.x && clickPoint.y > 0 && clickPoint.y < buttonSize.x) {
-        if (button->GetAction() == wxID_OPEN) {
-            wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ?
-                                "(*.otbm;*.otgz)|*.otbm;*.otgz" :
-                                "(*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz";
-            wxFileDialog fileDialog(this, "Open map file", "", "", wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-            if (fileDialog.ShowModal() == wxID_OK) {
-                m_recentMapPath = fileDialog.GetPath();
-                EndModal(wxID_FILE);
-            }
-        } else if (button->GetAction() == wxID_PREFERENCES) {
+        if (button->GetAction() == wxID_PREFERENCES) {
             PreferencesWindow preferencesWindow(m_welcomeDialogPanel, true);
             preferencesWindow.ShowModal();
         } else {
-            EndModal(button->GetAction());
+            wxCommandEvent actionEvent(WELCOME_DIALOG_ACTION);
+            if (button->GetAction() == wxID_OPEN) {
+                wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ?
+                                    "(*.otbm;*.otgz)|*.otbm;*.otgz" :
+                                    "(*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz";
+                wxFileDialog fileDialog(this, "Open map file", "", "", wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+                if (fileDialog.ShowModal() == wxID_OK) {
+                    actionEvent.SetString(fileDialog.GetPath());
+                } else {
+                    return;
+                }
+            }
+            actionEvent.SetId(button->GetAction());
+            ProcessWindowEvent(actionEvent);
         }
     }
 }
@@ -48,8 +53,10 @@ void WelcomeDialog::OnRecentItemClicked(wxMouseEvent &event) {
     wxSize buttonSize = recentItem->GetSize();
     wxPoint clickPoint = event.GetPosition();
     if (clickPoint.x > 0 && clickPoint.x < buttonSize.x && clickPoint.y > 0 && clickPoint.y < buttonSize.x) {
-        m_recentMapPath = recentItem->GetText();
-        EndModal(wxID_FILE);
+        wxCommandEvent actionEvent(WELCOME_DIALOG_ACTION);
+        actionEvent.SetString(recentItem->GetText());
+        actionEvent.SetId(wxID_OPEN);
+        ProcessWindowEvent(actionEvent);
     }
 }
 
@@ -124,7 +131,7 @@ void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {
     dc.SetTextForeground(m_textColour);
     dc.DrawText(m_titleText, wxPoint(headerPoint.x - headerSize.x / 2, headerPoint.y));
 
-	dc.SetFont(GetFont().Larger());
+    dc.SetFont(GetFont().Larger());
     wxSize versionSize = dc.GetTextExtent(m_versionText);
     dc.SetTextForeground(m_textColour.ChangeLightness(110));
     dc.DrawText(m_versionText, wxPoint(headerPoint.x - versionSize.x / 2, headerPoint.y + headerSize.y + 10));

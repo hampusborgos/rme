@@ -23,6 +23,7 @@
 #include "palette_window.h"
 #include "map_display.h"
 #include "application.h"
+#include "welcome_dialog.h"
 
 #include "live_client.h"
 #include "live_tab.h"
@@ -744,7 +745,7 @@ void GUI::NewMapView()
 		auto *newMapTab = newd MapTab(mapTab);
 		newMapTab->OnSwitchEditorMode(mode);
 
-		SetStatusText("Created newd view");
+		SetStatusText("Created new view");
 		UpdateTitle();
 		RefreshPalettes();
 		root->UpdateMenubar();
