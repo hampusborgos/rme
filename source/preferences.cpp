@@ -515,28 +515,23 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
 	topsizer->AddSpacer(10);
 
-	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxSize(450, 450), wxSUNKEN_BORDER);
+	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxSize(450, 450));
     auto * client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
 
-	wxSizerFlags firstRowFlags = wxSizerFlags(0).Border(wxTOP|wxLEFT|wxRIGHT, 10).Expand();
-	wxSizerFlags rowFlags = wxSizerFlags(0).Border(wxLEFT|wxRIGHT, 10).Expand();
-
-	int version_counter = 0;
+    int version_counter = 0;
 	for (auto version : versions) {
         if(!version->isVisible())
 			continue;
 
 		default_version_choice->Append(wxstr(version->getName()));
 
-		wxString searchtip;
-		searchtip << "Client " << wxstr(version->getName());
-		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, searchtip);
-		client_list_sizer->Add(tmp_text, version_counter == 0 ? firstRowFlags : rowFlags);
+		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString(version->getName()));
+		client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
 
 		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, version->getClientPath().GetFullPath());
 		version_dir_pickers.push_back(dir_picker);
-		client_list_sizer->Add(dir_picker, version_counter == 0 ? firstRowFlags : rowFlags);
+		client_list_sizer->Add(dir_picker, wxSizerFlags(0).Border(wxRIGHT, 10).Expand());
 
 		wxString tooltip;
 		tooltip << "The editor will look for " << wxstr(version->getName()) << " DAT & SPR here.";
