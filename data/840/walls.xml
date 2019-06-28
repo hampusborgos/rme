@@ -857,7 +857,7 @@
 			<item id="8485" chance="0"/>
 		</wall>
 		<wall type="pole">
-			<item id="8477" chance="1	"/>
+			<item id="8477" chance="1"/>
 		</wall>
 	</brush>
 	
