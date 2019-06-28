@@ -79,10 +79,6 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 	always_make_backup_chkbox->SetValue(g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP) == 1);
 	sizer->Add(always_make_backup_chkbox, 0, wxLEFT | wxTOP, 5);
 
-	create_on_startup_chkbox = newd wxCheckBox(general_page, wxID_ANY, "Create map on startup");
-	create_on_startup_chkbox->SetValue(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP) == 1);
-	sizer->Add(create_on_startup_chkbox, 0, wxLEFT | wxTOP, 5);
-
 	update_check_on_startup_chkbox = newd wxCheckBox(general_page, wxID_ANY, "Check for updates on startup");
 	update_check_on_startup_chkbox->SetValue(g_settings.getInteger(Config::USE_UPDATER) == 1);
 	sizer->Add(update_check_on_startup_chkbox, 0, wxLEFT | wxTOP, 5);
@@ -585,7 +581,6 @@ void PreferencesWindow::Apply()
 	bool must_restart = false;
 	// General
 	g_settings.setInteger(Config::ALWAYS_MAKE_BACKUP, always_make_backup_chkbox->GetValue());
-	g_settings.setInteger(Config::CREATE_MAP_ON_STARTUP, create_on_startup_chkbox->GetValue());
 	g_settings.setInteger(Config::USE_UPDATER, update_check_on_startup_chkbox->GetValue());
 	g_settings.setInteger(Config::ONLY_ONE_INSTANCE, only_one_instance_chkbox->GetValue());
 	g_settings.setInteger(Config::UNDO_SIZE, undo_size_spin->GetValue());

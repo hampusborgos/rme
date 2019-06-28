@@ -47,12 +47,8 @@ public:
 	void Unload();
 
 private:
-	wxString m_fileToOpen;
-
 	void FixVersionDiscrapencies();
 	bool ParseCommandLineMap(wxString& fileName);
-    void OnWelcomeWindowClosed(wxCloseEvent& event);
-    void OnWelcomeWindowAction(wxCommandEvent& event);
 
 	virtual void OnFatalException();
 

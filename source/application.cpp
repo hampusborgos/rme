@@ -180,15 +180,11 @@ bool Application::OnInit()
     wxIcon icon(rme_icon);
     g_gui.root->SetIcon(icon);
 
-    if (fileToOpen == wxEmptyString) {
-        std::vector<wxString> recent_files = g_gui.root->GetRecentFiles();
-        g_gui.welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, wxBitmap(icon), recent_files);
-        g_gui.welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &Application::OnWelcomeWindowClosed, this);
-        g_gui.welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &Application::OnWelcomeWindowAction, this);
-        g_gui.welcomeDialog->Show();
-    } else {
+    if (fileToOpen != wxEmptyString) {
         g_gui.root->Show();
         g_gui.LoadMap(FileName(fileToOpen));
+    } else {
+        g_gui.ShowWelcomeDialog(icon);
     }
 
 	// Set idle event handling mode
@@ -271,37 +267,9 @@ bool Application::OnInit()
 	return true;
 }
 
-void Application::OnWelcomeWindowClosed(wxCloseEvent& event)
-{
-    g_gui.welcomeDialog->Destroy();
-    g_gui.root->Close();
-}
-
-void Application::OnWelcomeWindowAction(wxCommandEvent& event)
-{
-    g_gui.welcomeDialog->Hide();
-    g_gui.welcomeDialog->Destroy();
-    g_gui.welcomeDialog = nullptr;
-    g_gui.root->Show(true);
-    if (event.GetId() == wxID_NEW) {
-        if(g_gui.NewMap()) {
-            // You generally don't want to save this map...
-            g_gui.GetCurrentEditor()->map.clearChanges();
-        }
-    } else if (event.GetId() == wxID_OPEN) {
-        g_gui.LoadMap(FileName(event.GetString()));
-    }
-}
-
 void Application::MacOpenFiles(const wxArrayString& fileNames)
 {
 	if (!fileNames.IsEmpty()) {
-	    if (g_gui.welcomeDialog != nullptr) {
-            g_gui.welcomeDialog->Hide();
-            g_gui.welcomeDialog->Destroy();
-            g_gui.welcomeDialog = nullptr;
-	        g_gui.root->Show();
-	    }
 		g_gui.LoadMap(FileName(fileNames.Item(0)));
 	}
 }

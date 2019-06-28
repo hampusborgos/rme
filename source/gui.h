@@ -147,6 +147,9 @@ public:
 	 */
 	void SetLoadScale(int32_t from, int32_t to);
 
+	void ShowWelcomeDialog(const wxBitmap &icon);
+	void FinishWelcomeDialog();
+
 	/**
 	 * Destroys (hides) the current loading bar.
 	 */
@@ -162,6 +165,9 @@ public:
 
 	// This sends the event to the main window (redirecting from other controls)
 	void AddPendingCanvasEvent(wxEvent& event);
+
+    void OnWelcomeDialogClosed(wxCloseEvent &event);
+    void OnWelcomeDialogAction(wxCommandEvent &event);
 
 protected:
 	void DisableRendering() {++disabled_counter;}
