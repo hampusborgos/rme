@@ -2355,4 +2355,67 @@
 		<item id="7348" chance="10"/>
 	</brush>
 
+	<brush name="scale roof" type="ground" server_lookid="10884" z-order="7000">
+		<item id="10884" chance="1"/>
+
+		<border align="outer" id="212"/>
+		<border align="outer" to="none" id="212"/>
+	</brush>
+
+	<brush name="striped marquee red white, vertical" type="ground" server_lookid="5189" z-order="6000">
+		<item id="5189" chance="10"/>
+
+		<border align="outer" to="none" id="214"/>
+		<border align="outer" id="214"/>
+	</brush>
+
+	<brush name="striped marquee red white, horizontal" type="ground" server_lookid="5160" z-order="6000">
+		<item id="5160" chance="10"/>
+
+		<border align="outer" to="none" id="215"/>
+		<border align="outer" id="215"/>
+	</brush>
+
+	<brush name="striped marquee blue yellow, vertical" type="ground" server_lookid="5200" z-order="6000">
+		<item id="5200" chance="10"/>
+
+		<border align="outer" to="none" id="216"/>
+		<border align="outer" id="216"/>
+	</brush>
+
+	<brush name="striped marquee blue yellow, horizontal" type="ground" server_lookid="5174" z-order="6000">
+		<item id="5174" chance="10"/>
+
+		<border align="outer" to="none" id="217"/>
+		<border align="outer" id="217"/>
+	</brush>
+
+	<brush name="marquee green, vertical" type="ground" server_lookid="5224" z-order="6000">
+		<item id="5224" chance="10"/>
+
+		<border align="outer" to="none" id="218"/>
+		<border align="outer" id="218"/>
+	</brush>
+
+	<brush name="marquee green, horizontal" type="ground" server_lookid="5213" z-order="6000">
+		<item id="5213" chance="10"/>
+
+		<border align="outer" to="none" id="219"/>
+		<border align="outer" id="219"/>
+	</brush>
+
+	<brush name="marquee blue, vertical" type="ground" server_lookid="5248" z-order="6000">
+		<item id="5248" chance="10"/>
+
+		<border align="outer" to="none" id="220"/>
+		<border align="outer" id="220"/>
+	</brush>
+
+	<brush name="marquee blue, horizontal" type="ground" server_lookid="5237" z-order="6000">
+		<item id="5237" chance="10"/>
+
+		<border align="outer" to="none" id="221"/>
+		<border align="outer" id="221"/>
+	</brush>
+
 </materials>
