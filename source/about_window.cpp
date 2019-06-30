@@ -173,7 +173,7 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 #elif __LINUX__
 		"Linux";
 #elif __APPLE__
-		"Mac OSX";
+		"macOS";
 #else
 	"Unsupported OS";
 #endif
