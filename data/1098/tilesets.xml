@@ -220,6 +220,7 @@
 			<brush name="mango tree"/>
 			<item id="6094"/>
 			<brush name="dead bushes"/>
+			<brush name="twines"/>
 			<brush name="swamp plants"/>
 			<brush name="flowers"/>
 			<brush name="herbs"/>
@@ -241,6 +242,7 @@
 			<brush name="log covered in moss"/>
 			<brush name="tree crown"/>
 			<brush name="branches"/>
+			<brush name="roots"/>
 			<brush name="bamboo plant"/>
 			<brush name="giant mushrooms"/>
 			<brush name="moldy giant mushrooms"/>
@@ -279,6 +281,7 @@
 			<brush name="weird shaped stones"/>
 			<brush name="debris"/>
 			<brush name="lava hole"/>
+			<brush name="lava stream"/>
 			<brush name="gray rubble"/>
 			<brush name="brown rubble"/>
 			<brush name="rough gray rubble"/>
@@ -286,7 +289,9 @@
 			<brush name="mossy rocks"/>
 			<brush name="rubles"/>
 			<brush name="plant wall2"/>
-			
+			<brush name="small stream blue"/>
+			<brush name="small stream green"/>
+
 			<brush name="demon oak"/>
 			<item fromid="8289" toid="8290"/>
 		</doodad>
@@ -661,6 +666,7 @@
 			<brush name="gilded throne"/>
 			<brush name="dull throne"/>
 			<brush name="large throne"/>
+			<brush name="stone throne"/>
 			-- carpets --
 			<brush name="brown bear skin rug"/>
 			<brush name="white bear skin rug"/>
@@ -669,6 +675,8 @@
 			<brush name="blue carpet"/>
 			<brush name="green carpet"/>
 			<brush name="brown carpet"/>
+			<brush name="old carpet"/>
+			<brush name="oriental carpet"/>
 		</doodad>
 		<raw>
 			<item fromid="1602" toid="1808"/>
@@ -787,6 +795,8 @@
 			<brush name="cobweb"/>
 			<brush name="gray cloth wall"/>
 			<brush name="brown cloth wall"/>
+			<brush name="tanned tiger fur"/>
+			<brush name="brown mammoth fur"/>
 			<brush name="stone altar"/>
 			<brush name="decorative altar"/>
 			<brush name="railways"/>
