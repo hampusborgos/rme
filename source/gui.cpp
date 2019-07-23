@@ -1282,7 +1282,7 @@ void GUI::UpdateMenubar()
 	root->UpdateMenubar();
 }
 
-void GUI::SetScreenCenterPosition(Position position)
+bool GUI::SetScreenCenterPosition(Position position)
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab)

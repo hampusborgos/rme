@@ -1036,7 +1036,7 @@ int LuaInterface::luaSelectionGetTiles(lua_State* L)
 		return 1;
 	}
 
-	TileVector& tiles = editor->selection.getTiles();
+	TileSet& tiles = editor->selection.getTiles();
 	lua_createtable(L, tiles.size(), 0);
 
 	int index = 0;
@@ -1191,7 +1191,7 @@ int LuaInterface::luaSelectionSaveAsMinimap(lua_State* L)
 	int max_y = 0;
 	int max_z = 0;
 
-	const TileVector& tiles = editor->selection.getTiles();
+	const TileSet& tiles = editor->selection.getTiles();
 	for(Tile* tile : tiles) {
 		if(tile->empty())
 			continue;

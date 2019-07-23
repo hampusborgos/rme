@@ -881,32 +881,32 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				std::string value = attribute.as_string();
 				if(value == "down") {
-					it.floorChangeDown = true;
-					it.floorChange = true;
+					item.floorChangeDown = true;
+					item.floorChange = true;
 				} else if (value == "north") {
-					it.floorChangeNorth = true;
-					it.floorChange = true;
+					item.floorChangeNorth = true;
+					item.floorChange = true;
 				} else if (value == "south") {
-					it.floorChangeSouth = true;
-					it.floorChange = true;
+					item.floorChangeSouth = true;
+					item.floorChange = true;
 				} else if (value == "west") {
-					it.floorChangeWest = true;
-					it.floorChange = true;
+					item.floorChangeWest = true;
+					item.floorChange = true;
 				} else if (value == "east") {
-					it.floorChangeEast = true;
-					it.floorChange = true;
+					item.floorChangeEast = true;
+					item.floorChange = true;
 				} else if(value == "northex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if(value == "southex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if(value == "westex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if(value == "eastex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if (value == "southalt")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if (value == "eastalt")
-					it.floorChange = true;
+					item.floorChange = true;
 			}
 		}
 	}
