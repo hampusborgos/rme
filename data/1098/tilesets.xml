@@ -220,6 +220,7 @@
 			<brush name="mango tree"/>
 			<item id="6094"/>
 			<brush name="dead bushes"/>
+			<brush name="twines"/>
 			<brush name="swamp plants"/>
 			<brush name="flowers"/>
 			<brush name="herbs"/>
@@ -241,6 +242,7 @@
 			<brush name="log covered in moss"/>
 			<brush name="tree crown"/>
 			<brush name="branches"/>
+			<brush name="roots"/>
 			<brush name="bamboo plant"/>
 			<brush name="giant mushrooms"/>
 			<brush name="moldy giant mushrooms"/>
@@ -279,6 +281,7 @@
 			<brush name="weird shaped stones"/>
 			<brush name="debris"/>
 			<brush name="lava hole"/>
+			<brush name="lava stream"/>
 			<brush name="gray rubble"/>
 			<brush name="brown rubble"/>
 			<brush name="rough gray rubble"/>
@@ -286,7 +289,9 @@
 			<brush name="mossy rocks"/>
 			<brush name="rubles"/>
 			<brush name="plant wall2"/>
-			
+			<brush name="small stream blue"/>
+			<brush name="small stream green"/>
+
 			<brush name="demon oak"/>
 			<item fromid="8289" toid="8290"/>
 		</doodad>
@@ -428,42 +433,14 @@
 			<brush name="gray stone tiles"/>
 			<brush name="gray stone tiles pressed"/>
 			<brush name="gray stone tiles depressed"/>
-			<brush name="pyramid ramp"/>
 			<!-- <brush name="wooden raft"/> -->
-			<brush name="store counter"/>
-			<brush name="plaster wall"/>
-			<brush name="wooden archway"/>
-			<brush name="damaged plaster wall"/>
-			<brush name="plaster wall arch"/>
-			<brush name="rope wall"/>
-			<brush name="croft wall"/>
-			<brush name="brick wall"/>
-			<brush name="brick wall arch"/>
-			<brush name="stone wall"/>
-			<brush name="rock wall"/>
-			<brush name="wood wall"/>
-			<brush name="egypt wall"/>
-			<brush name="egypt stone wall"/>
-			<brush name="alabaster wall"/>
-			<brush name="marble wall"/>
-			<brush name="ruin wall"/>
-			<brush name="wooden wall"/>
-			<brush name="ornamented wooden wall"/>
-			<brush name="low stone-wooden wall"/>
-			<brush name="ornamented low stone-wooden wall"/>
-			<brush name="high stone-wooden wall"/>
-			<brush name="ornamented high stone-wooden wall"/>
-			
-			<brush name="fence"/>
-			<brush name="dark fence"/>
-			<brush name="steel bars"/>
-			<brush name="steel rebar"/>
 		</terrain>
 	</tileset>
 	
 	<tileset name="Roofs">
 		<terrain>
 			<brush name="flat roof"/>
+			<brush name="scale roof"/>
 			<brush name="brown bamboo roof"/>
 			<brush name="green bamboo roof"/>
 			<brush name="stiff bamboo roof, horizontal"/>
@@ -480,6 +457,14 @@
 			<brush name="wooden roof, left"/>
 			<brush name="wooden roof, vertical"/>
 			<brush name="wooden roof, right"/>
+			<brush name="striped marquee red white, vertical"/>
+			<brush name="striped marquee red white, horizontal"/>
+			<brush name="striped marquee blue yellow, vertical"/>
+			<brush name="striped marquee blue yellow, horizontal"/>
+			<brush name="marquee green, vertical"/>
+			<brush name="marquee green, horizontal"/>
+			<brush name="marquee blue, vertical"/>
+			<brush name="marquee blue, horizontal"/>
 		</terrain>
 		<raw>
 			<item fromid="9092" toid="9099"/>
@@ -515,6 +500,7 @@
 			<brush name="black stone trapdoor"/>
 			<brush name="gray stone stairs"/>
 			<brush name="gray stone trapdoor"/>
+			<brush name="pyramid ramp"/>
 		</terrain>
 	</tileset>
 	
@@ -680,6 +666,7 @@
 			<brush name="gilded throne"/>
 			<brush name="dull throne"/>
 			<brush name="large throne"/>
+			<brush name="stone throne"/>
 			-- carpets --
 			<brush name="brown bear skin rug"/>
 			<brush name="white bear skin rug"/>
@@ -688,6 +675,8 @@
 			<brush name="blue carpet"/>
 			<brush name="green carpet"/>
 			<brush name="brown carpet"/>
+			<brush name="old carpet"/>
+			<brush name="oriental carpet"/>
 		</doodad>
 		<raw>
 			<item fromid="1602" toid="1808"/>
@@ -806,6 +795,8 @@
 			<brush name="cobweb"/>
 			<brush name="gray cloth wall"/>
 			<brush name="brown cloth wall"/>
+			<brush name="tanned tiger fur"/>
+			<brush name="brown mammoth fur"/>
 			<brush name="stone altar"/>
 			<brush name="decorative altar"/>
 			<brush name="railways"/>
@@ -1896,6 +1887,34 @@
 	</tileset>
 	
 	<tileset name="Walls">
+		<terrain>
+			<brush name="rope wall"/>
+			<brush name="fence"/>
+			<brush name="dark fence"/>
+			<brush name="steel bars"/>
+			<brush name="steel rebar"/>
+			<brush name="plaster wall"/>
+			<brush name="damaged plaster wall"/>
+			<brush name="plaster wall arch"/>
+			<brush name="wooden archway"/>
+			<brush name="wood wall"/>
+			<brush name="croft wall"/>
+			<brush name="wooden wall"/>
+			<brush name="ornamented wooden wall"/>
+			<brush name="low stone-wooden wall"/>
+			<brush name="ornamented low stone-wooden wall"/>
+			<brush name="high stone-wooden wall"/>
+			<brush name="ornamented high stone-wooden wall"/>
+			<brush name="stone wall"/>
+			<brush name="brick wall"/>
+			<brush name="brick wall arch"/>
+			<brush name="egypt stone wall"/>
+			<brush name="egypt wall"/>
+			<brush name="alabaster wall"/>
+			<brush name="marble wall"/>
+			<brush name="ruin wall"/>
+			<brush name="rock wall"/>
+		</terrain>
 		<raw>
 	        <item fromid="1205" toid="1208"/>
 	        <item fromid="1025" toid="1035"/>

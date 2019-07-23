@@ -85,6 +85,10 @@ namespace MenuBar
 		MAP_CLEAN_HOUSE_ITEMS,
 		MAP_PROPERTIES,
 		MAP_STATISTICS,
+		VIEW_TOOLBARS_BRUSHES,
+		VIEW_TOOLBARS_POSITION,
+		VIEW_TOOLBARS_SIZES,
+		VIEW_TOOLBARS_STANDARD,
 		NEW_VIEW,
 		TOGGLE_FULLSCREEN,
 		ZOOM_IN,
@@ -164,6 +168,7 @@ public:
 	void AddRecentFile(FileName file);
 	void LoadRecentFiles();
 	void SaveRecentFiles();
+	std::vector<wxString> GetRecentFiles();
 
 	// Interface
 	void EnableItem(MenuBar::ActionID id, bool enable);
@@ -235,6 +240,7 @@ public:
 	void OnMapStatistics(wxCommandEvent& event);
 
 	// View Menu
+	void OnToolbars(wxCommandEvent& event);
 	void OnNewView(wxCommandEvent& event);
 	void OnToggleFullscreen(wxCommandEvent& event);
 	void OnZoomIn(wxCommandEvent& event);

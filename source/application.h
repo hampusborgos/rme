@@ -21,11 +21,13 @@
 #define RME_APPLICATION_H_
 
 #include "gui.h"
+#include "main_toolbar.h"
 #include "action.h"
 #include "settings.h"
 
 #include "process_com.h"
 #include "map_display.h"
+#include "welcome_dialog.h"
 
 class Item;
 class Creature;
@@ -41,15 +43,11 @@ class Application : public wxApp
 public:
 	~Application();
 	virtual bool OnInit();
-	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
 	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
 private:
-	bool m_startup;
-	wxString m_fileToOpen;
-
 	void FixVersionDiscrapencies();
 	bool ParseCommandLineMap(wxString& fileName);
 
@@ -80,6 +78,9 @@ public:
 	void AddRecentFile(const FileName& file);
 	void LoadRecentFiles();
 	void SaveRecentFiles();
+	std::vector<wxString> GetRecentFiles();
+
+	MainToolBar* GetAuiToolBar() const { return tool_bar; }
 
 	void OnUpdateMenus(wxCommandEvent& event);
 	void UpdateFloorMenu();
@@ -97,6 +98,7 @@ public:
 	void PrepareDC(wxDC& dc);
 protected:
 	MainMenuBar* menu_bar;
+	MainToolBar* tool_bar;
 
 	friend class Application;
 	friend class GUI;

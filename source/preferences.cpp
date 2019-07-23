@@ -37,30 +37,30 @@ BEGIN_EVENT_TABLE(PreferencesWindow, wxDialog)
 	EVT_COLLAPSIBLEPANE_CHANGED(wxID_ANY, PreferencesWindow::OnCollapsiblePane)
 END_EVENT_TABLE()
 
-PreferencesWindow::PreferencesWindow(wxWindow* parent) : wxDialog(parent, wxID_ANY, "Preferences", wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX)
-{
-	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
+PreferencesWindow::PreferencesWindow(wxWindow *parent, bool clientVersionSelected = false)
+        : wxDialog(parent, wxID_ANY, "Preferences", wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX) {
+    wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
-	//book->SetPadding(4);
+    book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
+    //book->SetPadding(4);
 
-	book->AddPage(CreateGeneralPage(), "General", true);
-	book->AddPage(CreateEditorPage(), "Editor");
-	book->AddPage(CreateGraphicsPage(), "Graphics");
-	book->AddPage(CreateUIPage(), "Interface");
-	book->AddPage(CreateClientPage(), "Client Version");
+    book->AddPage(CreateGeneralPage(), "General", true);
+    book->AddPage(CreateEditorPage(), "Editor");
+    book->AddPage(CreateGraphicsPage(), "Graphics");
+    book->AddPage(CreateUIPage(), "Interface");
+    book->AddPage(CreateClientPage(), "Client Version", clientVersionSelected);
 
-	sizer->Add(book, 1, wxEXPAND | wxALL, 10);
+    sizer->Add(book, 1, wxEXPAND | wxALL, 10);
 
-	wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
-	subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
-	subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
-	subsizer->Add(newd wxButton(this, wxID_APPLY, "Apply"), wxSizerFlags(1).Center());
-	sizer->Add(subsizer, 0, wxCENTER | wxLEFT | wxBOTTOM | wxRIGHT, 10);
+    wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
+    subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
+    subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Border(wxALL, 5).Left().Center());
+    subsizer->Add(newd wxButton(this, wxID_APPLY, "Apply"), wxSizerFlags(1).Center());
+    sizer->Add(subsizer, 0, wxCENTER | wxLEFT | wxBOTTOM | wxRIGHT, 10);
 
-	SetSizerAndFit(sizer);
-	Centre(wxBOTH);
-	// FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
+    SetSizerAndFit(sizer);
+    Centre(wxBOTH);
+    // FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
 }
 
 PreferencesWindow::~PreferencesWindow()
@@ -79,10 +79,6 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 	always_make_backup_chkbox->SetValue(g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP) == 1);
 	sizer->Add(always_make_backup_chkbox, 0, wxLEFT | wxTOP, 5);
 
-	create_on_startup_chkbox = newd wxCheckBox(general_page, wxID_ANY, "Create map on startup");
-	create_on_startup_chkbox->SetValue(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP) == 1);
-	sizer->Add(create_on_startup_chkbox, 0, wxLEFT | wxTOP, 5);
-
 	update_check_on_startup_chkbox = newd wxCheckBox(general_page, wxID_ANY, "Check for updates on startup");
 	update_check_on_startup_chkbox->SetValue(g_settings.getInteger(Config::USE_UPDATER) == 1);
 	sizer->Add(update_check_on_startup_chkbox, 0, wxLEFT | wxTOP, 5);
@@ -94,7 +90,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 
 	sizer->AddSpacer(10);
 
-	wxFlexGridSizer* grid_sizer = newd wxFlexGridSizer(2, 10, 10);
+    auto * grid_sizer = newd wxFlexGridSizer(2, 10, 10);
 	grid_sizer->AddGrowableCol(1);
 
 	grid_sizer->Add(tmptext = newd wxStaticText(general_page, wxID_ANY, "Undo queue size: "), 0);
@@ -121,7 +117,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 	sizer->AddSpacer(10);
 
 	wxString position_choices[] = { "  {x = 0, y = 0, z = 0}",
-									"  {\"x\":0,\"y\":0,\"z\":0}",
+                                    R"(  {"x":0,"y":0,"z":0})",
 									"  x, y, z",
 									"  (x, y, z)",
 									"  Position(x, y, z)" };
@@ -223,7 +219,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
 
 	sizer->AddSpacer(10);
 
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
+    auto * subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 
 	// Icon background color
@@ -266,7 +262,7 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
 	// Screenshot dir
 	subsizer->Add(tmp = newd wxStaticText(graphics_page, wxID_ANY, "Screenshot directory: "), 0);
 	screenshot_directory_picker = newd wxDirPickerCtrl(graphics_page, wxID_ANY);
-	subsizer->Add(screenshot_directory_picker);
+	subsizer->Add(screenshot_directory_picker, 1, wxEXPAND);
 	wxString ss = wxstr(g_settings.getString(Config::SCREENSHOT_DIRECTORY));
 	screenshot_directory_picker->SetPath(ss);
 	SetWindowToolTip(screenshot_directory_picker, "Screenshot taken in the editor will be saved to this directory.");
@@ -392,7 +388,7 @@ wxNotebookPage* PreferencesWindow::CreateUIPage()
 
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
+    auto * subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 	terrain_palette_style_choice = AddPaletteStyleChoice(
 		ui_page, subsizer,
@@ -468,14 +464,14 @@ wxNotebookPage* PreferencesWindow::CreateUIPage()
 
 	sizer->Add(newd wxStaticText(ui_page, wxID_ANY, "Scroll speed: "), 0, wxLEFT | wxTOP, 5);
 
-	int true_scrollspeed = int(std::abs(g_settings.getFloat(Config::SCROLL_SPEED)) * 10);
+    auto true_scrollspeed = int(std::abs(g_settings.getFloat(Config::SCROLL_SPEED)) * 10);
 	scroll_speed_slider = newd wxSlider(ui_page, wxID_ANY, true_scrollspeed, 1, max(true_scrollspeed, 100));
 	scroll_speed_slider->SetToolTip("This controls how fast the map will scroll when you hold down the center mouse button and move it around.");
 	sizer->Add(scroll_speed_slider, 0, wxEXPAND, 5);
 
 	sizer->Add(newd wxStaticText(ui_page, wxID_ANY, "Zoom speed: "), 0, wxLEFT | wxTOP, 5);
 
-	int true_zoomspeed = int(g_settings.getFloat(Config::ZOOM_SPEED) * 10);
+    auto true_zoomspeed = int(g_settings.getFloat(Config::ZOOM_SPEED) * 10);
 	zoom_speed_slider = newd wxSlider(ui_page, wxID_ANY, true_zoomspeed, 1, max(true_zoomspeed, 100));
 	zoom_speed_slider->SetToolTip("This controls how fast you will zoom when you scroll the center mouse button.");
 	sizer->Add(zoom_speed_slider, 0, wxEXPAND, 5);
@@ -495,7 +491,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
-	wxFlexGridSizer* options_sizer = newd wxFlexGridSizer(2, 10, 10);
+    auto * options_sizer = newd wxFlexGridSizer(2, 10, 10);
 	options_sizer->AddGrowableCol(1);
 
 	// Default client version choice control
@@ -515,27 +511,23 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
 	topsizer->AddSpacer(10);
 
-	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxSize(400, 350), wxSUNKEN_BORDER);
-	wxFlexGridSizer* client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
+	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxSize(450, 450));
+    auto * client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
-	client_list_window->SetVirtualSize( 500, 1000 );
 
-	int version_counter = 0;
-	for(ClientVersionList::iterator version_iter = versions.begin(); version_iter != versions.end(); ++version_iter) {
-		const ClientVersion* version = *version_iter;
-		if(!version->isVisible())
+    int version_counter = 0;
+	for (auto version : versions) {
+        if(!version->isVisible())
 			continue;
 
 		default_version_choice->Append(wxstr(version->getName()));
 
-		wxString searchtip;
-		searchtip << "Version " << wxstr(version->getName()) << " search path";
-		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, searchtip);
-		client_list_sizer->Add(tmp_text, 0);
+		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString(version->getName()));
+		client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
 
 		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, version->getClientPath().GetFullPath());
 		version_dir_pickers.push_back(dir_picker);
-		client_list_sizer->Add(dir_picker, 0);
+		client_list_sizer->Add(dir_picker, wxSizerFlags(0).Border(wxRIGHT, 10).Expand());
 
 		wxString tooltip;
 		tooltip << "The editor will look for " << wxstr(version->getName()) << " DAT & SPR here.";
@@ -578,7 +570,7 @@ void PreferencesWindow::OnClickApply(wxCommandEvent& WXUNUSED(event))
 
 void PreferencesWindow::OnCollapsiblePane(wxCollapsiblePaneEvent& event)
 {
-	wxWindow* win = (wxWindow*)event.GetEventObject();
+    auto * win = (wxWindow*)event.GetEventObject();
 	win->GetParent()->Fit();
 }
 
@@ -589,7 +581,6 @@ void PreferencesWindow::Apply()
 	bool must_restart = false;
 	// General
 	g_settings.setInteger(Config::ALWAYS_MAKE_BACKUP, always_make_backup_chkbox->GetValue());
-	g_settings.setInteger(Config::CREATE_MAP_ON_STARTUP, create_on_startup_chkbox->GetValue());
 	g_settings.setInteger(Config::USE_UPDATER, update_check_on_startup_chkbox->GetValue());
 	g_settings.setInteger(Config::ONLY_ONE_INSTANCE, only_one_instance_chkbox->GetValue());
 	g_settings.setInteger(Config::UNDO_SIZE, undo_size_spin->GetValue());
@@ -696,13 +687,8 @@ void PreferencesWindow::Apply()
 	// Client
 	ClientVersionList versions = ClientVersion::getAllVisible();
 	int version_counter = 0;
-	for(ClientVersionList::iterator version_iter = versions.begin();
-		 version_iter != versions.end();
-		 ++version_iter)
-	{
-		ClientVersion* version = *version_iter;
-
-		wxString dir = version_dir_pickers[version_counter]->GetPath();
+	for (auto version : versions) {
+        wxString dir = version_dir_pickers[version_counter]->GetPath();
 		if(dir.Length() > 0 && dir.Last() != '/' && dir.Last() != '\\')
 			dir.Append("/");
 		version->setClientPath(FileName(dir));

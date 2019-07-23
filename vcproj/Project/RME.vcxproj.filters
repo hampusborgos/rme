@@ -371,6 +371,15 @@
 	<ClInclude Include="..\..\source\find_item_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\main_toolbar.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\artprovider.h">
+      <Filter>gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\welcome_dialog.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -646,6 +655,15 @@
       <Filter>gui\dialogs</Filter>
     </ClCompile>
 	<ClCompile Include="..\..\source\find_item_window.cpp">
+      <Filter>gui\dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\main_toolbar.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\artprovider.cpp">
+      <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\welcome_dialog.cpp">
       <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>

@@ -179,12 +179,11 @@ struct ClientData
 class ClientVersion;
 typedef std::vector<ClientVersion*> ClientVersionList;
 
-//
 class ClientVersion : boost::noncopyable
 {
 public:
 	ClientVersion(OtbVersion otb, std::string versionName, wxString path);
-	~ClientVersion() {}
+	~ClientVersion() = default;
 
 	static void loadVersions();
 	static void unloadVersions();
@@ -201,7 +200,7 @@ public:
 
 	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}
 
-	bool hasValidPaths() const;
+	bool hasValidPaths();
 	bool loadValidPaths();
 	void setClientPath(const FileName& dir);
 
@@ -216,8 +215,9 @@ public:
 
 	FileName getDataPath() const;
 	FileName getLocalDataPath() const;
-	FileName getClientPath() const;
-
+	FileName getClientPath() const { return client_path; }
+	wxFileName getMetadataPath() const { return metadata_path; }
+	wxFileName getSpritesPath() const { return sprites_path; }
 
 private:
 	OtbVersion otb;
@@ -233,6 +233,8 @@ private:
 
 	wxString data_path;
 	FileName client_path;
+	wxFileName metadata_path;
+	wxFileName sprites_path;
 
 private:
 	static void loadOTBInfo(pugi::xml_node otb_nodes);

@@ -61,10 +61,10 @@ void NumberTextCtrl::OnTextEnter(wxCommandEvent& evt)
 	CheckRange();
 }
 
-void NumberTextCtrl::SetIntValue(long v)
+void NumberTextCtrl::SetIntValue(long value)
 {
 	wxString sv;
-	sv << v;
+	sv << value;
 	// Will generate events
 	SetValue(sv);
 }
@@ -75,6 +75,22 @@ long NumberTextCtrl::GetIntValue()
 	if(GetValue().ToLong(&l))
 		return l;
 	return 0;
+}
+
+void NumberTextCtrl::SetMinValue(long value)
+{
+	if(value == minval)
+		return;
+	minval = value;
+	CheckRange();
+}
+
+void NumberTextCtrl::SetMaxValue(long value)
+{
+	if(value == maxval)
+		return;
+	maxval = value;
+	CheckRange();
 }
 
 void NumberTextCtrl::CheckRange()

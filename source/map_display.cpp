@@ -1842,12 +1842,12 @@ void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyServerId(wxCommandEvent& WXUNUSED(event))
 {
-	ASSERT(editor.selection.size() == 1)
+	ASSERT(editor.selection.size() == 1);
 
 	if(wxTheClipboard->Open()) {
 		Tile* tile = editor.selection.getSelectedTile();
 		ItemVector selected_items = tile->getSelectedItems();
-		ASSERT(selected_items.size() == 1)
+		ASSERT(selected_items.size() == 1);
 
 		const Item* item = selected_items.front();
 
@@ -1861,12 +1861,12 @@ void MapCanvas::OnCopyServerId(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyClientId(wxCommandEvent& WXUNUSED(event))
 {
-	ASSERT(editor.selection.size() == 1)
+	ASSERT(editor.selection.size() == 1);
 
 	if(wxTheClipboard->Open()) {
 		Tile* tile = editor.selection.getSelectedTile();
 		ItemVector selected_items = tile->getSelectedItems();
-		ASSERT(selected_items.size() == 1)
+		ASSERT(selected_items.size() == 1);
 
 		const Item* item = selected_items.front();
 
@@ -1880,12 +1880,12 @@ void MapCanvas::OnCopyClientId(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyName(wxCommandEvent& WXUNUSED(event))
 {
-	ASSERT(editor.selection.size() == 1)
+	ASSERT(editor.selection.size() == 1);
 
 	if(wxTheClipboard->Open()) {
 		Tile* tile = editor.selection.getSelectedTile();
 		ItemVector selected_items = tile->getSelectedItems();
-		ASSERT(selected_items.size() == 1)
+		ASSERT(selected_items.size() == 1);
 
 		const Item* item = selected_items.front();
 
@@ -2164,7 +2164,7 @@ void MapCanvas::EnterSelectionMode()
 
 bool MapCanvas::isPasting() const
 {
-	return g_gui.isPasting();
+	return g_gui.IsPasting();
 }
 
 void MapCanvas::StartPasting()
@@ -2258,22 +2258,21 @@ void MapPopupMenu::Update()
 			Creature* topCreature = tile->creature;
 			Spawn* topSpawn = tile->spawn;
 
-			for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); ++it) {
-				Item* iter_item = *it;
-				if(iter_item->isWall()) {
-					Brush* wb = iter_item->getWallBrush();
+			for (auto *item : tile->items) {
+				if(item->isWall()) {
+					Brush* wb = item->getWallBrush();
 					if(wb && wb->visibleInPalette()) hasWall = true;
 				}
-				if(iter_item->isTable()) {
-					Brush* tb = iter_item->getTableBrush();
+				if(item->isTable()) {
+					Brush* tb = item->getTableBrush();
 					if(tb && tb->visibleInPalette()) hasTable = true;
 				}
-				if(iter_item->isCarpet()) {
-					Brush* cb = iter_item->getCarpetBrush();
+				if(item->isCarpet()) {
+					Brush* cb = item->getCarpetBrush();
 					if(cb && cb->visibleInPalette()) hasCarpet = true;
 				}
-				if(iter_item->isSelected()) {
-					topItem = iter_item;
+				if(item->isSelected()) {
+					topItem = item;
 				}
 			}
 			if(!topItem) {
@@ -2296,7 +2295,7 @@ void MapPopupMenu::Update()
 						Append( MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 					}
 
-					if(teleport && teleport->noDestination()) {
+					if(teleport && teleport->hasDestination()) {
 						Append( MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 					}
 					if(topSelectedItem->isOpen()) {
@@ -2393,7 +2392,7 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 			return;
 		}
 
-		if(tile && tile->ground && !oldBrush || !tile && oldBrush) {
+		if((tile && tile->ground && !oldBrush) || (!tile && oldBrush)) {
 			return;
 		}
 
@@ -2450,7 +2449,7 @@ void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, Ground
 	}
 
 	Tile* tile = map->getTile(px, py, center.z);
-	if(tile && tile->ground && !brush || !tile && brush) {
+	if((tile && tile->ground && !brush) || (!tile && brush)) {
 		return;
 	}
 

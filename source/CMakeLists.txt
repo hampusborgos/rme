@@ -2,6 +2,7 @@ set(rme_H
 ${CMAKE_CURRENT_LIST_DIR}/about_window.h
 ${CMAKE_CURRENT_LIST_DIR}/action.h
 ${CMAKE_CURRENT_LIST_DIR}/application.h
+${CMAKE_CURRENT_LIST_DIR}/artprovider.h
 ${CMAKE_CURRENT_LIST_DIR}/basemap.h
 ${CMAKE_CURRENT_LIST_DIR}/browse_tile_window.h
 ${CMAKE_CURRENT_LIST_DIR}/brush.h
@@ -51,6 +52,7 @@ ${CMAKE_CURRENT_LIST_DIR}/live_tab.h
 ${CMAKE_CURRENT_LIST_DIR}/luascript.h
 ${CMAKE_CURRENT_LIST_DIR}/main.h
 ${CMAKE_CURRENT_LIST_DIR}/main_menubar.h
+${CMAKE_CURRENT_LIST_DIR}/main_toolbar.h
 ${CMAKE_CURRENT_LIST_DIR}/map.h
 ${CMAKE_CURRENT_LIST_DIR}/map_allocator.h
 ${CMAKE_CURRENT_LIST_DIR}/map_display.h
@@ -99,12 +101,14 @@ ${CMAKE_CURRENT_LIST_DIR}/updater.h
 ${CMAKE_CURRENT_LIST_DIR}/wall_brush.h
 ${CMAKE_CURRENT_LIST_DIR}/waypoint_brush.h
 ${CMAKE_CURRENT_LIST_DIR}/waypoints.h
+${CMAKE_CURRENT_LIST_DIR}/welcome_dialog.h
 )
 
 set(rme_SRC
 ${CMAKE_CURRENT_LIST_DIR}/about_window.cpp
 ${CMAKE_CURRENT_LIST_DIR}/action.cpp
 ${CMAKE_CURRENT_LIST_DIR}/application.cpp
+${CMAKE_CURRENT_LIST_DIR}/artprovider.cpp
 ${CMAKE_CURRENT_LIST_DIR}/basemap.cpp
 ${CMAKE_CURRENT_LIST_DIR}/brush.cpp
 ${CMAKE_CURRENT_LIST_DIR}/brush_tables.cpp
@@ -150,6 +154,7 @@ ${CMAKE_CURRENT_LIST_DIR}/live_socket.cpp
 ${CMAKE_CURRENT_LIST_DIR}/live_tab.cpp
 ${CMAKE_CURRENT_LIST_DIR}/luascript.cpp
 ${CMAKE_CURRENT_LIST_DIR}/main_menubar.cpp
+${CMAKE_CURRENT_LIST_DIR}/main_toolbar.cpp
 ${CMAKE_CURRENT_LIST_DIR}/map.cpp
 ${CMAKE_CURRENT_LIST_DIR}/map_display.cpp
 ${CMAKE_CURRENT_LIST_DIR}/map_drawer.cpp
@@ -193,6 +198,7 @@ ${CMAKE_CURRENT_LIST_DIR}/updater.cpp
 ${CMAKE_CURRENT_LIST_DIR}/wall_brush.cpp
 ${CMAKE_CURRENT_LIST_DIR}/waypoint_brush.cpp
 ${CMAKE_CURRENT_LIST_DIR}/waypoints.cpp
+${CMAKE_CURRENT_LIST_DIR}/welcome_dialog.cpp
 ${CMAKE_CURRENT_LIST_DIR}/json/json_spirit_reader.cpp
 ${CMAKE_CURRENT_LIST_DIR}/json/json_spirit_value.cpp
 ${CMAKE_CURRENT_LIST_DIR}/json/json_spirit_writer.cpp

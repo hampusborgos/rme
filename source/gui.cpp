@@ -7,6 +7,7 @@
 #include <wx/display.h>
 
 #include "gui.h"
+#include "main_menubar.h"
 
 #include "editor.h"
 #include "brush.h"
@@ -22,6 +23,7 @@
 #include "palette_window.h"
 #include "map_display.h"
 #include "application.h"
+#include "welcome_dialog.h"
 
 #include "live_client.h"
 #include "live_tab.h"
@@ -108,7 +110,7 @@ wxGLContext* GUI::GetGLContext(wxGLCanvas* win)
 wxString GUI::GetDataDirectory()
 {
 	std::string cfg_str = g_settings.getString(Config::DATA_DIRECTORY);
-	if(cfg_str.size()) {
+	if(!cfg_str.empty()) {
 		FileName dir;
 		dir.Assign(wxstr(cfg_str));
 		wxString path;
@@ -191,7 +193,7 @@ wxString GUI::GetLocalDirectory()
 wxString GUI::GetExtensionsDirectory()
 {
 	std::string cfg_str = g_settings.getString(Config::EXTENSIONS_DIRECTORY);
-	if(cfg_str.size()) {
+	if(!cfg_str.empty()) {
 		FileName dir;
 		dir.Assign(wxstr(cfg_str));
 		wxString path;
@@ -259,7 +261,7 @@ bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& w
 		loaded_version = version;
 		if(!getLoadedVersion()->hasValidPaths()) {
 			if(!getLoadedVersion()->loadValidPaths()) {
-				error = "Couldn't load relevant data files";
+				error = "Couldn't load relevant asset files";
 				loaded_version = CLIENT_VERSION_NONE;
 				return false;
 			}
@@ -321,7 +323,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	{
 		exec_directory = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetExecutablePath();
 	}
-	catch(std::bad_cast)
+	catch(std::bad_cast&)
 	{
 		error = "Couldn't establish working directory...";
 		return false;
@@ -329,8 +331,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.gfx.client_version = getLoadedVersion();
 
-	FileName otfi_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".otfi");
-	if(!g_gui.gfx.loadOTFI(otfi_path, error, warnings)) {
+	if(!g_gui.gfx.loadOTFI(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR), error, warnings)) {
 		error = "Couldn't load otfi file: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
@@ -339,19 +340,19 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.CreateLoadBar("Loading asset files");
 	g_gui.SetLoadDone(0, "Loading metadata file...");
-	FileName dat_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".dat");
 
-	if(!g_gui.gfx.loadSpriteMetadata(dat_path, error, warnings)) {
+	wxFileName metadata_path = g_gui.gfx.getMetadataFileName();
+	if(!g_gui.gfx.loadSpriteMetadata(metadata_path, error, warnings)) {
 		error = "Couldn't load metadata: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
 	}
 
-	FileName spr_path = wxString(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + wxString(ASSETS_NAME) + ".spr");
-
 	g_gui.SetLoadDone(10, "Loading sprites file...");
-	if(!g_gui.gfx.loadSpriteData(spr_path.GetFullPath(), error, warnings)) {
+
+	wxFileName sprites_path = g_gui.gfx.getSpritesFileName();
+	if(!g_gui.gfx.loadSpriteData(sprites_path.GetFullPath(), error, warnings)) {
 		error = "Couldn't load sprites: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
@@ -483,7 +484,7 @@ void GUI::SetCurrentZoom(double zoom)
 void GUI::FitViewToMap()
 {
 	for(int index = 0; index < tabbook->GetTabCount(); ++index) {
-		if(MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(index))) {
+		if(auto *tab = dynamic_cast<MapTab*>(tabbook->GetTab(index))) {
 			tab->GetView()->FitToMap();
 		}
 	}
@@ -492,7 +493,7 @@ void GUI::FitViewToMap()
 void GUI::FitViewToMap(MapTab* mt)
 {
 	for(int index = 0; index < tabbook->GetTabCount(); ++index) {
-		if(MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(index))) {
+		if(auto *tab = dynamic_cast<MapTab*>(tabbook->GetTab(index))) {
 			if(tab->HasSameReference(mt)) {
 				tab->GetView()->FitToMap();
 			}
@@ -502,6 +503,8 @@ void GUI::FitViewToMap(MapTab* mt)
 
 bool GUI::NewMap()
 {
+    FinishWelcomeDialog();
+
 	Editor* editor;
 	try
 	{
@@ -513,8 +516,9 @@ bool GUI::NewMap()
 		return false;
 	}
 
-	MapTab* mapTab = newd MapTab(tabbook, editor);
+	auto *mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
+    editor->map.clearChanges();
 
 	SetStatusText("Created new map");
 	UpdateTitle();
@@ -525,8 +529,51 @@ bool GUI::NewMap()
 	return true;
 }
 
+void GUI::OpenMap()
+{
+	wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_LOAD_FILE_WILDCARD_OTGZ : MAP_LOAD_FILE_WILDCARD;
+	wxFileDialog dialog(root, "Open map file", wxEmptyString, wxEmptyString, wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+
+	if (dialog.ShowModal() == wxID_OK)
+		LoadMap(dialog.GetPath());
+}
+
+void GUI::SaveMap()
+{
+	if (!IsEditorOpen())
+		return;
+
+	if (GetCurrentMap().hasFile()) {
+		SaveCurrentMap(true);
+	} else {
+		wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD;
+		wxFileDialog dialog(root, "Save...", wxEmptyString, wxEmptyString, wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+		if (dialog.ShowModal() == wxID_OK)
+			SaveCurrentMap(dialog.GetPath(), true);
+	}
+}
+
+void GUI::SaveMapAs()
+{
+	if (!IsEditorOpen())
+		return;
+
+	wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ? MAP_SAVE_FILE_WILDCARD_OTGZ : MAP_SAVE_FILE_WILDCARD;
+	wxFileDialog dialog(root, "Save As...", "", "", wildcard, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+
+	if (dialog.ShowModal() == wxID_OK) {
+		SaveCurrentMap(dialog.GetPath(), true);
+		UpdateTitle();
+		root->menu_bar->AddRecentFile(dialog.GetPath());
+		root->UpdateMenubar();
+	}
+}
+
 bool GUI::LoadMap(const FileName& fileName)
 {
+    FinishWelcomeDialog();
+
 	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
 		g_gui.CloseCurrentEditor();
 
@@ -541,7 +588,7 @@ bool GUI::LoadMap(const FileName& fileName)
 		return false;
 	}
 
-	MapTab* mapTab = newd MapTab(tabbook, editor);
+	auto *mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
 
 	root->AddRecentFile(fileName);
@@ -619,7 +666,7 @@ MapTab* GUI::GetCurrentMapTab() const
 {
 	if(tabbook && tabbook->GetTabCount() > 0) {
 		EditorTab* editorTab = tabbook->GetCurrentTab();
-		MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+		auto *mapTab = dynamic_cast<MapTab*>(editorTab);
 		return mapTab;
 	}
 	return nullptr;
@@ -651,13 +698,13 @@ int GUI::GetOpenMapCount()
 	std::set<Map*> open_maps;
 
 	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
-		MapTab* tab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
+		auto *tab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
 		if(tab)
 			open_maps.insert(open_maps.begin(), tab->GetMap());
 
 	}
 
-	return open_maps.size();
+	return static_cast<int>(open_maps.size());
 }
 
 void GUI::SetCurrentEditor(Editor* editor)
@@ -713,13 +760,13 @@ void GUI::CloseCurrentEditor()
 bool GUI::CloseLiveEditors(LiveSocket* sock)
 {
 	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
-		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
+		auto *mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
 		if(mapTab) {
 			Editor* editor = mapTab->GetEditor();
 			if(editor->GetLiveClient() == sock)
 				tabbook->DeleteTab(i--);
 		}
-		LiveLogTab* liveLogTab = dynamic_cast<LiveLogTab*>(tabbook->GetTab(i));
+		auto *liveLogTab = dynamic_cast<LiveLogTab*>(tabbook->GetTab(i));
 		if(liveLogTab) {
 			if(liveLogTab->GetSocket() == sock) {
 				liveLogTab->Disconnect();
@@ -735,7 +782,7 @@ bool GUI::CloseLiveEditors(LiveSocket* sock)
 bool GUI::CloseAllEditors()
 {
 	for(int i = 0; i < tabbook->GetTabCount(); ++i) {
-		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
+		auto *mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(i));
 		if(mapTab) {
 			if(mapTab->IsUniqueReference() && mapTab->GetMap() && mapTab->GetMap()->hasChanged()) {
 				tabbook->SetFocusedTab(i);
@@ -759,10 +806,10 @@ void GUI::NewMapView()
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab) {
-		MapTab* newMapTab = newd MapTab(mapTab);
+		auto *newMapTab = newd MapTab(mapTab);
 		newMapTab->OnSwitchEditorMode(mode);
 
-		SetStatusText("Created newd view");
+		SetStatusText("Created new view");
 		UpdateTitle();
 		RefreshPalettes();
 		root->UpdateMenubar();
@@ -859,6 +906,8 @@ void GUI::LoadPerspective()
 		aui_manager->Update();
 		root->UpdateMenubar();
 	}
+
+	root->GetAuiToolBar()->LoadPerspective();
 }
 
 void GUI::SavePerspective()
@@ -870,9 +919,9 @@ void GUI::SavePerspective()
 	g_settings.setInteger(Config::MINIMAP_VISIBLE, minimap? 1: 0);
 
 	wxString pinfo;
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		if(aui_manager->GetPane(*piter).IsShown())
-			pinfo << aui_manager->SavePaneInfo(aui_manager->GetPane(*piter)) << "|";
+	for (auto &palette : palettes) {
+		if(aui_manager->GetPane(palette).IsShown())
+			pinfo << aui_manager->SavePaneInfo(aui_manager->GetPane(palette)) << "|";
 	}
 	g_settings.setString(Config::PALETTE_LAYOUT, nstr(pinfo));
 
@@ -880,6 +929,8 @@ void GUI::SavePerspective()
 		wxString s = aui_manager->SavePaneInfo(aui_manager->GetPane(minimap));
 		g_settings.setString(Config::MINIMAP_LAYOUT, nstr(s));
 	}
+
+	root->GetAuiToolBar()->SavePerspective();
 }
 
 void GUI::HideSearchWindow()
@@ -937,17 +988,17 @@ PaletteWindow* GUI::NewPalette()
 
 void GUI::RefreshPalettes(Map* m, bool usedefault)
 {
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		(*piter)->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : nullptr): nullptr));
+	for (auto &palette : palettes) {
+		palette->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : nullptr): nullptr));
 	}
 	SelectBrush();
 }
 
 void GUI::RefreshOtherPalettes(PaletteWindow* p)
 {
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		if(*piter != p)
-			(*piter)->OnUpdate(IsEditorOpen()? &GetCurrentMap() : nullptr);
+	for (auto &palette : palettes) {
+		if(palette != p)
+			palette->OnUpdate(IsEditorOpen()? &GetCurrentMap() : nullptr);
 	}
 	SelectBrush();
 }
@@ -957,7 +1008,7 @@ PaletteWindow* GUI::CreatePalette()
 	if(!IsVersionLoaded())
 		return nullptr;
 
-	PaletteWindow* palette = newd PaletteWindow(root, g_materials.tilesets);
+	auto *palette = newd PaletteWindow(root, g_materials.tilesets);
 	aui_manager->AddPane(palette, wxAuiPaneInfo().Caption("Palette").TopDockable(false).BottomDockable(false));
 	aui_manager->Update();
 
@@ -977,8 +1028,7 @@ void GUI::ActivatePalette(PaletteWindow* p)
 
 void GUI::DestroyPalettes()
 {
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		PaletteWindow* palette = *piter;
+	for (auto palette : palettes) {
 		aui_manager->DetachPane(palette);
 		palette->Destroy();
 		palette = nullptr;
@@ -992,8 +1042,8 @@ void GUI::RebuildPalettes()
 	// Palette lits might be modified due to active palette changes
 	// Use a temporary list for iterating
 	PaletteList tmp = palettes;
-	for(PaletteList::iterator piter = tmp.begin(); piter != tmp.end(); ++piter) {
-		(*piter)->ReloadSettings(IsEditorOpen()? &GetCurrentMap() : nullptr);
+	for (auto &piter : tmp) {
+		piter->ReloadSettings(IsEditorOpen()? &GetCurrentMap() : nullptr);
 	}
 	aui_manager->Update();
 }
@@ -1003,8 +1053,8 @@ void GUI::ShowPalette()
 	if(palettes.empty())
 		return;
 
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		if(aui_manager->GetPane(*piter).IsShown())
+	for (auto &palette : palettes) {
+		if(aui_manager->GetPane(palette).IsShown())
 			return;
 	}
 
@@ -1100,7 +1150,7 @@ void GUI::RefreshView()
 
 	std::vector<EditorTab*> editorTabs;
 	for(int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
-		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
+		auto * mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
 		if(mapTab) {
 			editorTabs.push_back(mapTab);
 		}
@@ -1126,7 +1176,7 @@ void GUI::CreateLoadBar(wxString message, bool canCancel /* = false */ )
 	progressBar->Show(true);
 
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
-		MapTab* mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
+		auto * mt = dynamic_cast<MapTab*>(tabbook->GetTab(idx));
 		if(mt && mt->GetEditor()->IsLiveServer())
 			mt->GetEditor()->GetLiveServer()->startOperation(progressText);
 	}
@@ -1166,7 +1216,7 @@ bool GUI::SetLoadDone(int32_t done, const wxString& newMessage)
 	}
 
 	for(int32_t index = 0; index < tabbook->GetTabCount(); ++index) {
-		MapTab* mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
+		auto * mapTab = dynamic_cast<MapTab*>(tabbook->GetTab(index));
 		if(mapTab && mapTab->GetEditor()) {
 			LiveServer* server = mapTab->GetEditor()->GetLiveServer();
 			if(server) {
@@ -1195,6 +1245,38 @@ void GUI::DestroyLoadBar()
 	}
 }
 
+void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
+    std::vector<wxString> recent_files = root->GetRecentFiles();
+    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, icon, recent_files);
+    welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
+    welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
+    welcomeDialog->Show();
+}
+
+void GUI::FinishWelcomeDialog() {
+    if (welcomeDialog != nullptr) {
+        welcomeDialog->Hide();
+        welcomeDialog->Destroy();
+        welcomeDialog = nullptr;
+        root->Show();
+    }
+}
+
+void GUI::OnWelcomeDialogClosed(wxCloseEvent &event)
+{
+    welcomeDialog->Destroy();
+    root->Close();
+}
+
+void GUI::OnWelcomeDialogAction(wxCommandEvent &event)
+{
+    if (event.GetId() == wxID_NEW) {
+        NewMap();
+    } else if (event.GetId() == wxID_OPEN) {
+        LoadMap(FileName(event.GetString()));
+    }
+}
+
 void GUI::UpdateMenubar()
 {
 	root->UpdateMenubar();
@@ -1208,11 +1290,52 @@ void GUI::SetScreenCenterPosition(Position position)
 	return true;
 }
 
+void GUI::DoCut()
+{
+	if (!IsSelectionMode())
+		return;
+
+	Editor* editor = GetCurrentEditor();
+	if (!editor)
+		return;
+
+	editor->copybuffer.cut(*editor, GetCurrentFloor());
+	RefreshView();
+	root->UpdateMenubar();
+}
+
+void GUI::DoCopy()
+{
+	if (!IsSelectionMode())
+		return;
+
+	Editor* editor = GetCurrentEditor();
+	if (!editor)
+		return;
+
+	editor->copybuffer.copy(*editor, GetCurrentFloor());
+	RefreshView();
+	root->UpdateMenubar();
+}
+
 void GUI::DoPaste()
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab)
 		copybuffer.paste(*mapTab->GetEditor(), mapTab->GetCanvas()->GetCursorPosition());
+}
+
+void GUI::PreparePaste()
+{
+	Editor* editor = GetCurrentEditor();
+	if (editor) {
+		SetSelectionMode();
+		editor->selection.start();
+		editor->selection.clear();
+		editor->selection.finish();
+		StartPasting();
+		RefreshView();
+	}
 }
 
 void GUI::StartPasting()
@@ -1325,7 +1448,7 @@ void GUI::SetTitle(wxString title)
 		g_gui.root->SetTitle(wxString("Remere's Map Editor BETA") << TITLE_APPEND);
 	}
 #else
-	if(title != "") {
+	if(!title.empty()) {
 		g_gui.root->SetTitle(title << " - Remere's Map Editor" << TITLE_APPEND);
 	} else {
 		g_gui.root->SetTitle(wxString("Remere's Map Editor") << TITLE_APPEND);
@@ -1350,6 +1473,12 @@ void GUI::UpdateMenus()
 {
 	wxCommandEvent evt(EVT_UPDATE_MENUS);
 	g_gui.root->AddPendingEvent(evt);
+}
+
+void GUI::ShowToolbar(ToolBarID id, bool show)
+{
+	if (root && root->GetAuiToolBar())
+		root->GetAuiToolBar()->Show(id, show);
 }
 
 void GUI::SwitchMode()
@@ -1382,7 +1511,7 @@ void GUI::SetDrawingMode()
 	std::set<MapTab*> al;
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		EditorTab* editorTab = tabbook->GetTab(idx);
-		if(MapTab* mapTab = dynamic_cast<MapTab*>(editorTab)) {
+		if(auto * mapTab = dynamic_cast<MapTab*>(editorTab)) {
 			if(al.find(mapTab) != al.end())
 				continue;
 
@@ -1419,9 +1548,11 @@ void GUI::SetBrushSize(int nz)
 {
 	SetBrushSizeInternal(nz);
 
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
+	for (auto &palette : palettes) {
+		palette->OnUpdateBrushSize(brush_shape, brush_size);
 	}
+
+	root->GetAuiToolBar()->UpdateBrushSize(brush_shape, brush_size);
 }
 
 void GUI::SetBrushVariation(int nz)
@@ -1444,9 +1575,11 @@ void GUI::SetBrushShape(BrushShape bs)
 	}
 	brush_shape = bs;
 
-	for(PaletteList::iterator piter = palettes.begin(); piter != palettes.end(); ++piter) {
-		(*piter)->OnUpdateBrushSize(brush_shape, brush_size);
+	for (auto &palette : palettes) {
+		palette->OnUpdateBrushSize(brush_shape, brush_size);
 	}
+
+	root->GetAuiToolBar()->UpdateBrushSize(brush_shape, brush_size);
 }
 
 void GUI::SetBrushThickness(bool on, int x, int y)
@@ -1607,6 +1740,7 @@ bool GUI::SelectBrush(const Brush* whatbrush, PaletteType primary)
 		return false;
 
 	SelectBrushInternal(const_cast<Brush*>(whatbrush));
+	root->GetAuiToolBar()->UpdateBrushButtons();
 	return true;
 }
 
@@ -1704,13 +1838,10 @@ void GUI::FillDoodadPreviewBuffer()
 					const CompositeTileList& composites = brush->getComposite(GetBrushVariation());
 
 					// Figure out if the placement is valid
-					for(CompositeTileList::const_iterator composite_iter = composites.begin();
-							composite_iter != composites.end();
-							++composite_iter)
-					{
-						Position pos = center_pos + composite_iter->first + Position(xpos, ypos, 0);
+					for (const auto &composite : composites) {
+						Position pos = center_pos + composite.first + Position(xpos, ypos, 0);
 						if(Tile* tile = doodad_buffer_map->getTile(pos)) {
-							if(tile->size() > 0) {
+							if(!tile->empty()) {
 								fail = true;
 								break;
 							}
@@ -1722,22 +1853,16 @@ void GUI::FillDoodadPreviewBuffer()
 					}
 
 					// Transfer items to the stack
-					for(CompositeTileList::const_iterator composite_iter = composites.begin();
-							composite_iter != composites.end();
-							++composite_iter)
-					{
-						Position pos = center_pos + composite_iter->first + Position(xpos, ypos, 0);
-						const ItemVector& items = composite_iter->second;
+					for (const auto &composite : composites) {
+						Position pos = center_pos + composite.first + Position(xpos, ypos, 0);
+						const ItemVector& items = composite.second;
 						Tile* tile = doodad_buffer_map->getTile(pos);
 
 						if(!tile)
 							tile = doodad_buffer_map->allocator(doodad_buffer_map->createTileL(pos));
 
-						for(ItemVector::const_iterator item_iter = items.begin();
-								item_iter != items.end();
-								++item_iter)
-						{
-							tile->addItem((*item_iter)->deepCopy());
+						for (auto item : items) {
+							tile->addItem(item->deepCopy());
 						}
 						doodad_buffer_map->setTile(tile->getPosition(), tile);
 					}
@@ -1746,7 +1871,7 @@ void GUI::FillDoodadPreviewBuffer()
 					Position pos = center_pos + Position(xpos, ypos, 0);
 					Tile* tile = doodad_buffer_map->getTile(pos);
 					if(tile) {
-						if(tile->size() > 0) {
+						if(!tile->empty()) {
 							fail = true;
 							break;
 						}
@@ -1775,19 +1900,14 @@ void GUI::FillDoodadPreviewBuffer()
 			// All placement is valid...
 
 			// Transfer items to the buffer
-			for(CompositeTileList::const_iterator composite_iter = composites.begin();
-					composite_iter != composites.end();
-					++composite_iter) {
-				Position pos = center_pos + composite_iter->first;
-				const ItemVector& items = composite_iter->second;
+			for (const auto &composite : composites) {
+				Position pos = center_pos + composite.first;
+				const ItemVector& items = composite.second;
 				Tile* tile = doodad_buffer_map->allocator(doodad_buffer_map->createTileL(pos));
 				//std::cout << pos << " = " << center_pos << " + " << buffer_tile->getPosition() << std::endl;
 
-				for(ItemVector::const_iterator item_iter = items.begin();
-						item_iter != items.end();
-						++item_iter)
-				{
-					tile->addItem((*item_iter)->deepCopy());
+				for (auto item : items) {
+					tile->addItem(item->deepCopy());
 				}
 				doodad_buffer_map->setTile(tile->getPosition(), tile);
 			}
@@ -1885,8 +2005,8 @@ const Hotkey& GUI::GetHotkey(int index) const
 void GUI::SaveHotkeys() const
 {
 	std::ostringstream os;
-	for(int i = 0; i < 10; ++i) {
-		os << hotkeys[i] << '\n';
+	for (const auto &hotkey : hotkeys) {
+		os << hotkey << '\n';
 	}
 	g_settings.setString(Config::NUMERICAL_HOTKEYS, os.str());
 }

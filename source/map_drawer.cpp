@@ -1321,10 +1321,10 @@ void MapDrawer::WriteTooltip(Item* item, std::ostringstream& stream)
 
 	stream << "id: " << id << "\n";
 
+	if (action > 0)
+		stream << "aid: " << action << "\n";
 	if(unique > 0)
 		stream << "uid: " << unique << "\n";
-	if(action > 0)
-		stream << "aid: " << action << "\n";
 	if(!text.empty())
 		stream << "text: " << text << "\n";
 }

@@ -20,6 +20,8 @@
 #ifndef RME_DEFINITIONS_H_
 #define RME_DEFINITIONS_H_
 
+#define __W_RME_APPLICATION_NAME__ wxString("Remere's Map Editor")
+
 // Version info
 // xxyyzzt (major, minor, subversion)
 #define __RME_VERSION_MAJOR__      3
@@ -128,6 +130,12 @@
 
 #define CLIENT_MAP_WIDTH 18
 #define CLIENT_MAP_HEIGHT 14
+
+#define MAP_LOAD_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz"
+#define MAP_SAVE_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz"
+
+#define MAP_LOAD_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
+#define MAP_SAVE_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
 
 // wxString conversions
 #define nstr(str) std::string((const char*)(str.mb_str(wxConvUTF8)))

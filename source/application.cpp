@@ -30,6 +30,7 @@
 #include "about_window.h"
 #include "main_menubar.h"
 #include "updater.h"
+#include "artprovider.h"
 
 #include "materials.h"
 #include "map.h"
@@ -112,6 +113,7 @@ bool Application::OnInit()
 
 	// Tell that we are the real thing
 	wxAppConsole::SetInstance(this);
+	wxArtProvider::Push(new ArtProvider());
 
 #ifdef __LINUX__
 	int argc = 1;
@@ -160,11 +162,14 @@ bool Application::OnInit()
 #ifndef __DEBUG_MODE__
 	//wxHandleFatalExceptions(true);
 #endif
-	// Load all the dependency files
-	std::string error;
-	StringVector warnings;
+    // Load all the dependency files
+    std::string error;
+    StringVector warnings;
 
-	g_gui.root = newd MainFrame("Remere's Map Editor", wxDefaultPosition, wxSize(700,500) );
+    wxString fileToOpen = wxEmptyString;
+    ParseCommandLineMap(fileToOpen);
+
+    g_gui.root = newd MainFrame(__W_RME_APPLICATION_NAME__, wxDefaultPosition, wxSize(700,500));
 	SetTopWindow(g_gui.root);
 	g_gui.SetTitle("");
 
@@ -173,8 +178,15 @@ bool Application::OnInit()
 	// Load palette
 	g_gui.LoadPerspective();
 
-	// Show all windows
-	g_gui.root->Show(true);
+    wxIcon icon(rme_icon);
+    g_gui.root->SetIcon(icon);
+
+    if (fileToOpen != wxEmptyString) {
+        g_gui.root->Show();
+        g_gui.LoadMap(FileName(fileToOpen));
+    } else {
+        g_gui.ShowWelcomeDialog(icon);
+    }
 
 	// Initialize lua
 	g_lua.init();
@@ -208,7 +220,7 @@ bool Application::OnInit()
 	}
 #endif
 
-	FileName save_failed_file = g_gui.GetLocalDataDirectory();
+	FileName save_failed_file = GUI::GetLocalDataDirectory();
 	save_failed_file.SetName(".saving.txt");
 	if(save_failed_file.FileExists()) {
 		std::ifstream f(nstr(save_failed_file.GetFullPath()).c_str(), std::ios::in);
@@ -225,11 +237,11 @@ bool Application::OnInit()
 
 		// Query file retrieval if possible
 		if(!backup_otbm.empty()) {
-			int ret = g_gui.PopupDialog(
+            long ret = g_gui.PopupDialog(
 				"Editor Crashed",
 				wxString(
 					"IMPORTANT! THE EDITOR CRASHED WHILE SAVING!\n\n"
-					"Do you want to recover the lost map? (it will be opened immedietely):\n") <<
+					"Do you want to recover the lost map? (it will be opened immediately):\n") <<
 					wxstr(backup_otbm) << "\n" <<
 					wxstr(backup_house) << "\n" <<
 					wxstr(backup_spawn) << "\n",
@@ -240,11 +252,11 @@ bool Application::OnInit()
 				std::remove(backup_otbm.substr(0, backup_otbm.size() - 1).c_str());
 				std::rename(backup_otbm.c_str(), backup_otbm.substr(0, backup_otbm.size() - 1).c_str());
 
-				if(backup_house.size()) {
+				if(!backup_house.empty()) {
 					std::remove(backup_house.substr(0, backup_house.size() - 1).c_str());
 					std::rename(backup_house.c_str(), backup_house.substr(0, backup_house.size() - 1).c_str());
 				}
-				if(backup_spawn.size()) {
+				if(!backup_spawn.empty()) {
 					std::remove(backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
 					std::rename(backup_spawn.c_str(), backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
 				}
@@ -256,60 +268,13 @@ bool Application::OnInit()
 		}
 	}
 
-	// Loads the rme icon
-	wxIcon* icon = newd wxIcon(rme_icon);
-	g_gui.root->SetIcon(*icon);
-	delete icon;
-
-	// Keep track of first event loop entry
-	m_startup = true;
 	return true;
 }
 
-void Application::OnEventLoopEnter(wxEventLoopBase* loop)
-{
-	//First startup?
-	if(!m_startup)
-		return;
-	m_startup = false;
-
-	//Don't try to create a map if we didn't load the client map.
-	if(ClientVersion::getLatestVersion() == nullptr)
-		return;
-
-	//Check if we have a command-line argument. (map path)
-	wxString filePath;
-	if (ParseCommandLineMap(filePath)) {
-		m_fileToOpen = filePath;
-	}
-
-	//Open a map.
-	if (m_fileToOpen != wxEmptyString) {
-		g_gui.LoadMap(FileName(m_fileToOpen));
-	} else {
-		if(g_settings.getInteger(Config::CREATE_MAP_ON_STARTUP)) {
-			//Open a new empty map
-			if(g_gui.NewMap()) {
-				// You generally don't want to save this map...
-				g_gui.GetCurrentEditor()->map.clearChanges();
-			}
-		}
-	}
-}
-
-//This only gets triggered on macOS
 void Application::MacOpenFiles(const wxArrayString& fileNames)
 {
 	if (!fileNames.IsEmpty()) {
-		wxString fileName = fileNames.Item(0);
-		if (m_startup) {
-			//The editor was just opened by clicking a file.
-			//It's too early to load the map here. So we open it later in OnEventLoopEnter.
-			m_fileToOpen = fileName;
-		} else {
-			//The editor is already running. Just open the map!
-			g_gui.LoadMap(FileName(fileName));
-		}
+		g_gui.LoadMap(FileName(fileNames.Item(0)));
 	}
 }
 
@@ -382,7 +347,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	#if wxCHECK_VERSION(3, 1, 0) //3.1.0 or higher
 		// Make sure ShowFullScreen() uses the full screen API on macOS
 		EnableFullScreenView(true);
-	#endif
+    #endif
 
 	// Creates the file-dropdown menu
 	menu_bar = newd MainMenuBar(this);
@@ -392,7 +357,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxFileName filename;
 	filename.Assign(g_gui.getFoundDataDirectory() + "menubar.xml");
 	if(!filename.FileExists())
-		filename = FileName(g_gui.GetDataDirectory() + "menubar.xml");
+		filename = FileName(GUI::GetDataDirectory() + "menubar.xml");
 
 	if(!menu_bar->Load(filename, warnings, error)) {
 		wxLogError(wxString() + "Could not load menubar.xml, editor will NOT be able to show its menu.\n");
@@ -400,26 +365,21 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxStatusBar* statusbar = CreateStatusBar();
 	statusbar->SetFieldsCount(4);
-	SetStatusText( wxString("Welcome to Remere's Map Editor ") << __W_RME_VERSION__);
+	SetStatusText(wxString("Welcome to ") << __W_RME_APPLICATION_NAME__ << " " << __W_RME_VERSION__);
 
 	// Le sizer
 	g_gui.aui_manager = newd wxAuiManager(this);
 	g_gui.tabbook = newd MapTabbook(this, wxID_ANY);
 
+	tool_bar = newd MainToolBar(this, g_gui.aui_manager);
+
 	g_gui.aui_manager->AddPane(g_gui.tabbook, wxAuiPaneInfo().CenterPane().Floatable(false).CloseButton(false).PaneBorder(false));
-	//wxAuiNotebook* p = newd wxAuiNotebook(this, wxID_ANY);
-	//g_gui.tabbook->notebook->AddPage(newd wxPanel(g_gui.tabbook->notebook), "OMG IS TAB");
-	//p->AddPage(newd wxPanel(p), "!!!");
-	//g_gui.aui_manager->AddPane(p, wxAuiPaneInfo());
 	g_gui.aui_manager->Update();
 
 	UpdateMenubar();
 }
 
-MainFrame::~MainFrame()
-{
-	//wxTopLevelWindows.Erase(wxTopLevelWindows.GetFirst());
-}
+MainFrame::~MainFrame() = default;
 
 void MainFrame::OnIdle(wxIdleEvent& event)
 {
@@ -480,6 +440,7 @@ bool MainFrame::MSWTranslateMessage(WXMSG *msg)
 void MainFrame::UpdateMenubar()
 {
 	menu_bar->Update();
+	tool_bar->UpdateButtons();
 }
 
 bool MainFrame::DoQueryClose() {
@@ -544,12 +505,7 @@ bool MainFrame::DoQuerySave(bool doclose)
 			if(g_gui.GetCurrentMap().hasFile()) {
 				g_gui.SaveCurrentMap(true);
 			} else {
-				wxFileDialog file(
-					this, "Save...",
-					"", "",
-					"*.otbm", wxFD_SAVE | wxFD_OVERWRITE_PROMPT
-				);
-
+				wxFileDialog file(this, "Save...", "", "", "*.otbm", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 				int32_t result = file.ShowModal();
 				if(result == wxID_OK) {
 					g_gui.SaveCurrentMap(file.GetPath(), true);
@@ -573,10 +529,9 @@ bool MainFrame::DoQuerySave(bool doclose)
 bool MainFrame::DoQueryImportCreatures()
 {
 	if(g_creatures.hasMissing()) {
-		int ret = g_gui.PopupDialog("Missing creatures", "There are missing creatures and/or NPC in the editor, do you want to load them from an OT monster/npc file?", wxYES | wxNO);
+		long ret = g_gui.PopupDialog("Missing creatures", "There are missing creatures and/or NPC in the editor, do you want to load them from an OT monster/npc file?", wxYES | wxNO);
 		if(ret == wxID_YES) {
-			do
-			{
+			do {
 				wxFileDialog dlg(g_gui.root, "Import monster/npc file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
 				if(dlg.ShowModal() == wxID_OK) {
 					wxArrayString paths;
@@ -644,6 +599,11 @@ void MainFrame::LoadRecentFiles()
 void MainFrame::SaveRecentFiles()
 {
 	menu_bar->SaveRecentFiles();
+}
+
+std::vector<wxString> MainFrame::GetRecentFiles()
+{
+    return menu_bar->GetRecentFiles();
 }
 
 void MainFrame::PrepareDC(wxDC& dc)

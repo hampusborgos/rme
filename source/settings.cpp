@@ -253,7 +253,6 @@ void Settings::IO(IOMode mode)
 	Int(DEFAULT_SPAWNTIME, 60);
 	Int(MAX_SPAWN_RADIUS, 30);
 	Int(CURRENT_SPAWN_RADIUS, 5);
-	Int(CREATE_MAP_ON_STARTUP, 1);
 	Int(DEFAULT_CLIENT_VERSION, CLIENT_VERSION_NONE);
 	Int(RAW_LIKE_SIMONE, 1);
 	Int(ONLY_ONE_INSTANCE, 1);
@@ -313,6 +312,15 @@ void Settings::IO(IOMode mode)
 
 	section("Hotkeys");
 	String(NUMERICAL_HOTKEYS, "none:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\n");
+
+	Int(SHOW_TOOLBAR_STANDARD, 1);
+	Int(SHOW_TOOLBAR_BRUSHES, 0);
+	Int(SHOW_TOOLBAR_POSITION, 0);
+	Int(SHOW_TOOLBAR_SIZES, 0);
+	String(TOOLBAR_STANDARD_LAYOUT, "");
+	String(TOOLBAR_BRUSHES_LAYOUT, "");
+	String(TOOLBAR_POSITION_LAYOUT, "");
+	String(TOOLBAR_SIZES_LAYOUT, "");
 
 	section("");
 	Int(GOTO_WEBSITE_ON_BOOT, 0);

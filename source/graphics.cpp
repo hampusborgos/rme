@@ -29,6 +29,7 @@
 
 #include <wx/mstream.h>
 #include <wx/stopwatch.h>
+#include <wx/dir.h>
 #include "pngfiles.h"
 
 // All 133 template colors
@@ -339,11 +340,14 @@ bool GraphicManager::loadEditorSprites()
 
 bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings)
 {
-	otfi_found = wxFileExists(filename.GetFullPath());
-	if(otfi_found) {
-		std::string path = std::string(filename.GetFullPath().mb_str());
-		OTMLDocumentPtr doc = OTMLDocument::parse(path);
+	wxDir dir(filename.GetFullPath());
+	wxString otfi_file;
 
+	otfi_found = false;
+
+	if(dir.GetFirst(&otfi_file, "*.otfi", wxDIR_FILES)) {
+		wxFileName otfi(filename.GetFullPath(), otfi_file);
+		OTMLDocumentPtr doc = OTMLDocument::parse(otfi.GetFullPath().ToStdString());
 		if(doc->size() == 0 || !doc->hasChildAt("DatSpr")) {
 			error += "'DatSpr' tag not found";
 			return false;
@@ -354,12 +358,22 @@ bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArray
 		has_transparency = node->valueAt<bool>("transparency");
 		has_frame_durations = node->valueAt<bool>("frame-durations");
 		has_frame_groups = node->valueAt<bool>("frame-groups");
-	} else {
+		std::string metadata = node->valueAt<std::string>("metadata-file", std::string(ASSETS_NAME) + ".dat");
+		std::string sprites = node->valueAt<std::string>("sprites-file", std::string(ASSETS_NAME) + ".spr");
+		metadata_file = wxFileName(filename.GetFullPath(), wxString(metadata));
+		sprites_file = wxFileName(filename.GetFullPath(), wxString(sprites));
+		otfi_found = true;
+	}
+	
+	if(!otfi_found) {
 		is_extended = false;
 		has_transparency = false;
 		has_frame_durations = false;
 		has_frame_groups = false;
+		metadata_file = wxFileName(filename.GetFullPath(), wxString(ASSETS_NAME) + ".dat");
+		sprites_file = wxFileName(filename.GetFullPath(), wxString(ASSETS_NAME) + ".spr");
 	}
+
 	return true;
 }
 
