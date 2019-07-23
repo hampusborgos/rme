@@ -2908,6 +2908,15 @@
 			<item id="6979" chance="1"/>
 		</alternate>
 	</brush>
+
+	<brush name="tanned tiger fur" type="doodad" server_lookid="3896" on_blocking="true" thickness="1/100">
+		<alternate> -- south --
+			<item id="3896" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="3897" chance="10"/>
+		</alternate>
+	</brush>
 	
 	<brush name="hanging fish" type="doodad" on_blocking="true" server_lookid="6984">
 		<alternate> -- south --
@@ -2917,7 +2926,6 @@
 			<item id="6985" chance="1"/>
 		</alternate>
 	</brush>
-	
 	
 	<brush name="green fungi" type="wall decoration" on_blocking="true" server_lookid="1921">
 		<wall type="horizontal">
@@ -2955,6 +2963,33 @@
 		<wall type="pole">
 			<item id="1942" chance="1"/>
 		</wall>
+	</brush>
+
+	<brush name="twines" type="table" server_lookid="6220">
+		<table align="north">
+			<item id="6222" chance="10"/>
+		</table>
+		<table align="vertical">
+			<item id="6221" chance="10"/>
+		</table>
+		<table align="south">
+			<item id="6223" chance="10"/>
+		</table>
+		<table align="west">
+			<item id="6224" chance="10"/>
+		</table>
+		<table align="horizontal">
+			<item id="6220" chance="10"/>
+		</table>
+		<table align="east">
+			<item id="6225" chance="10"/>
+		</table>
+		<table align="alone">
+			<item id="6220" chance="10"/>
+		</table>
+		<table align="alone">
+			<item id="6220" chance="10"/>
+		</table>
 	</brush>
 	
 	<!-- Carpet -->
@@ -3028,6 +3063,41 @@
 		<carpet align="csw"    id="5589"/>
 		<carpet align="center" id="5591"/>
 	</brush>
+
+    <brush name="old carpet" type="carpet" server_lookid="9611">
+        <carpet align="n" id="9618"/>
+        <carpet align="e" id="9626"/>
+        <carpet align="s" id="9614"/>
+        <carpet align="w" id="9616"/>
+        <carpet align="cnw" id="9617"/>
+        <carpet align="cne" id="9619"/>
+        <carpet align="cse" id="9613"/>
+        <carpet align="csw" id="9615"/>
+        <carpet align="center" id="9611"/>
+    </brush>
+
+    <brush name="oriental carpet" type="doodad" server_lookid="1804" draggable="true" on_blocking="true" thickness="100/100">
+        <composite chance="1">
+            <tile x="-1" y="0">
+                <item id="1803"/>
+            </tile>
+            <tile x="0" y="0">
+                <item id="1804"/>
+            </tile>
+            <tile x="1" y="0">
+                <item id="1805"/>
+            </tile>
+            <tile x="-1" y="1">
+                <item id="1806"/>
+            </tile>
+            <tile x="0" y="1">
+                <item id="1807"/>
+            </tile>
+            <tile x="1" y="1">
+                <item id="1808"/>
+            </tile>
+        </composite>
+    </brush>
 	
 	<!-- random shit -->
 	
@@ -3147,8 +3217,8 @@
 				<tile x="0" y="0"> <item id="8731"/> </tile>
 				<tile x="0" y="1"> <item id="8733"/> </tile>
 			</composite>
-		<alternate>
 		</alternate>
+		<alternate>
 			<composite chance="10">
 				<tile x="-1" y="0"><item id="8729"/> </tile>
 				<tile x="0" y="0"> <item id="8728"/> </tile>
@@ -3896,5 +3966,177 @@
 		<alternate>
 			<item id="8823" chance="10"/>
 		</alternate>
+	</brush>
+
+	<brush name="roots" type="wall" server_lookid="20856">
+		<wall type="pole">
+			<item id="20856" chance="1"/>
+		</wall>
+		<wall type="horizontal">
+			<item id="20856" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="20854" chance="1"/>
+		</wall>
+		<wall type="south end">
+			<item id="20859" chance="1"/>
+		</wall>
+		<wall type="east end">
+			<item id="20857" chance="1"/>
+		</wall>
+		<wall type="north end">
+			<item id="20855" chance="1"/>
+		</wall>
+		<wall type="west end">
+			<item id="20858" chance="1"/>
+		</wall>
+		<wall type="northeast diagonal">
+			<item id="20866" chance="1"/>
+		</wall>
+		<wall type="northwest diagonal">
+			<item id="20867" chance="1"/>
+		</wall>
+		<wall type="southeast diagonal">
+			<item id="20864" chance="1"/>
+		</wall>
+		<wall type="southwest diagonal">
+			<item id="20865" chance="1"/>
+		</wall>
+		<wall type="south T">
+			<item id="20853" chance="1"/>
+		</wall>
+		<wall type="north T">
+			<item id="20852" chance="1"/>
+		</wall>
+		<wall type="east T">
+			<item id="20861" chance="1"/>
+		</wall>
+		<wall type="west T">
+			<item id="20860" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="small stream blue" type="wall" server_lookid="18013">
+		<wall type="pole">
+			<item id="18013" chance="1"/>
+		</wall>
+		<wall type="horizontal">
+			<item id="18018" chance="1"/>
+			<item id="18013" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="18017" chance="1"/>
+			<item id="18010" chance="1"/>
+		</wall>
+		<wall type="south end">
+			<item id="18016" chance="1"/>
+		</wall>
+		<wall type="east end">
+			<item id="18019" chance="1"/>
+		</wall>
+		<wall type="north end">
+			<item id="18015" chance="1"/>
+		</wall>
+		<wall type="west end">
+			<item id="18020" chance="1"/>
+		</wall>
+		<wall type="northeast diagonal">
+			<item id="18011" chance="1"/>
+		</wall>
+		<wall type="northwest diagonal">
+			<item id="18014" chance="1"/>
+		</wall>
+		<wall type="southeast diagonal">
+			<item id="18009" chance="1"/>
+		</wall>
+		<wall type="southwest diagonal">
+			<item id="18012" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="small stream green" type="wall" server_lookid="17543">
+		<wall type="pole">
+			<item id="17543" chance="1"/>
+		</wall>
+		<wall type="horizontal">
+			<item id="17548" chance="1"/>
+			<item id="17543" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17547" chance="1"/>
+			<item id="17540" chance="1"/>
+		</wall>
+		<wall type="south end">
+			<item id="17546" chance="1"/>
+		</wall>
+		<wall type="east end">
+			<item id="17549" chance="1"/>
+		</wall>
+		<wall type="north end">
+			<item id="17545" chance="1"/>
+		</wall>
+		<wall type="west end">
+			<item id="17550" chance="1"/>
+		</wall>
+		<wall type="northeast diagonal">
+			<item id="17541" chance="1"/>
+		</wall>
+		<wall type="northwest diagonal">
+			<item id="17544" chance="1"/>
+		</wall>
+		<wall type="southeast diagonal">
+			<item id="17539" chance="1"/>
+		</wall>
+		<wall type="southwest diagonal">
+			<item id="17542" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="lava stream" type="wall" server_lookid="15516">
+		<wall type="pole">
+			<item id="15516" chance="1"/>
+		</wall>
+		<wall type="horizontal">
+			<item id="15516" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="15517" chance="1"/>
+		</wall>
+		<wall type="south end">
+			<item id="15528" chance="1"/>
+		</wall>
+		<wall type="east end">
+			<item id="15527" chance="1"/>
+		</wall>
+		<wall type="north end">
+			<item id="15529" chance="1"/>
+		</wall>
+		<wall type="west end">
+			<item id="15526" chance="1"/>
+		</wall>
+		<wall type="northeast diagonal">
+			<item id="15521" chance="1"/>
+		</wall>
+		<wall type="northwest diagonal">
+			<item id="15520" chance="1"/>
+		</wall>
+		<wall type="southeast diagonal">
+			<item id="15519" chance="1"/>
+		</wall>
+		<wall type="southwest diagonal">
+			<item id="15518" chance="1"/>
+		</wall>
+		<wall type="south T">
+			<item id="15525" chance="1"/>
+		</wall>
+		<wall type="north T">
+			<item id="15524" chance="1"/>
+		</wall>
+		<wall type="east T">
+			<item id="15523" chance="1"/>
+		</wall>
+		<wall type="west T">
+			<item id="15522" chance="1"/>
+		</wall>
 	</brush>
 </materials>

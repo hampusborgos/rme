@@ -1,14 +1,5 @@
 <materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="7.6"> 
-	<tileset name="Water creatures">
-		<creatures>
-			<creature name="Azure Frog"/>
-			<creature name="Coral Frog"/>
-			<creature name="Crimson Frog"/>
-			<creature name="Green Frog"/>
-			<creature name="Toad"/>
-		</creatures>
-	</tileset>
-	
+
 	<tileset name="Animals">
 		<creatures>
             <creature name="Sibang"/>
@@ -25,7 +16,6 @@
 			<creature name="Flamingo"/>
 			<creature name="Parrot"/>
 			<creature name="Pig"/>
-			<creature name="Seagull"/>
 			<creature name="Skunk"/>
 			<creature name="Rat"/>
 			<creature name="Badger"/>
@@ -43,11 +33,7 @@
 			<creature name="Tiger"/>
 			<creature name="Crocodile"/>
 			<creature name="War Wolf"/>
-			<creature name="Carrion Worm"/>
-			<creature name="Tortoise"/>
 			<creature name="Terror Bird"/>
-			<creature name="Thornback Tortoise"/>
-			<creature name="Blood Crab"/>
 			<creature name="Elephant"/>
 		</creatures>
 	</tileset>
@@ -67,21 +53,17 @@
 			<creature name="Larva"/>
 			<creature name="Scarab"/>
 			<creature name="Wasp"/>
-			<creature name="Blood Crab"/>
 			<creature name="Crab"/>
 		</creatures>
 	</tileset>
 	
     <tileset name="Bosses">
         <creatures>
-			<creature name="Apprentice Sheng"/>
-			<creature name="Ghazbaran"/>
 			<creature name="Grorlam"/>
 			<creature name="Tiquandas Revenge"/>
 			<creature name="The Horned Fox"/>
 			<creature name="The Old Widow"/>
 			<creature name="General Murius"/>
-			<creature name="Bones"/>
 			<creature name="Dharalion"/>
 			<creature name="Fernfang"/>
 			<creature name="Demodras"/>
@@ -189,13 +171,11 @@
 			<creature name="Banshee"/>
 			<creature name="Bonebeast"/>
 			<creature name="Demon Skeleton"/>
-			<creature name="Destroyer"/>
 			<creature name="Ghoul"/>
 			<creature name="Lich"/>
 			<creature name="Mummy"/>
 			<creature name="Necromancer"/>
 			<creature name="Skeleton"/>
-			<creature name="Spectre"/>
 			<creature name="Vampire"/>
 		</creatures>
 	</tileset>

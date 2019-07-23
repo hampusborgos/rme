@@ -42,15 +42,11 @@ class Application : public wxApp
 public:
 	~Application();
 	virtual bool OnInit();
-	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
 	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
 private:
-	bool m_startup;
-	wxString m_fileToOpen;
-
 	void FixVersionDiscrapencies();
 	bool ParseCommandLineMap(wxString& fileName);
 

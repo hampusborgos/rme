@@ -23,6 +23,7 @@
 #include "palette_window.h"
 #include "map_display.h"
 #include "application.h"
+#include "welcome_dialog.h"
 
 #include "live_client.h"
 #include "live_tab.h"
@@ -502,6 +503,8 @@ void GUI::FitViewToMap(MapTab* mt)
 
 bool GUI::NewMap()
 {
+    FinishWelcomeDialog();
+
 	Editor* editor;
 	try
 	{
@@ -515,6 +518,7 @@ bool GUI::NewMap()
 
 	auto *mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
+    editor->map.clearChanges();
 
 	SetStatusText("Created new map");
 	UpdateTitle();
@@ -568,6 +572,8 @@ void GUI::SaveMapAs()
 
 bool GUI::LoadMap(const FileName& fileName)
 {
+    FinishWelcomeDialog();
+
 	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
 		g_gui.CloseCurrentEditor();
 
@@ -743,7 +749,7 @@ void GUI::NewMapView()
 		auto *newMapTab = newd MapTab(mapTab);
 		newMapTab->OnSwitchEditorMode(mode);
 
-		SetStatusText("Created newd view");
+		SetStatusText("Created new view");
 		UpdateTitle();
 		RefreshPalettes();
 		root->UpdateMenubar();
@@ -1159,6 +1165,38 @@ void GUI::DestroyLoadBar()
 			root->RequestUserAttention();
 		}
 	}
+}
+
+void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
+    std::vector<wxString> recent_files = root->GetRecentFiles();
+    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, icon, recent_files);
+    welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
+    welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
+    welcomeDialog->Show();
+}
+
+void GUI::FinishWelcomeDialog() {
+    if (welcomeDialog != nullptr) {
+        welcomeDialog->Hide();
+        welcomeDialog->Destroy();
+        welcomeDialog = nullptr;
+        root->Show();
+    }
+}
+
+void GUI::OnWelcomeDialogClosed(wxCloseEvent &event)
+{
+    welcomeDialog->Destroy();
+    root->Close();
+}
+
+void GUI::OnWelcomeDialogAction(wxCommandEvent &event)
+{
+    if (event.GetId() == wxID_NEW) {
+        NewMap();
+    } else if (event.GetId() == wxID_OPEN) {
+        LoadMap(FileName(event.GetString()));
+    }
 }
 
 void GUI::UpdateMenubar()

@@ -1,6 +1,9 @@
+#ifndef WELCOME_DIALOG_H
+#define WELCOME_DIALOG_H
 
-#ifndef RME_WELCOME_DIALOG_H
-#define RME_WELCOME_DIALOG_H
+#include <wx/wx.h>
+
+wxDECLARE_EVENT(WELCOME_DIALOG_ACTION, wxCommandEvent);
 
 class WelcomeDialog : public wxDialog
 {
@@ -9,11 +12,9 @@ public:
             const wxString& versionText,
             const wxBitmap& rmeLogo,
             const std::vector<wxString> &recentFiles);
-    wxString GetChosenMapPath(){ return m_recentMapPath; };
     void OnButtonClicked(wxMouseEvent& event);
     void OnRecentItemClicked(wxMouseEvent& event);
 private:
-    wxString m_recentMapPath;
     wxPanel* m_welcomeDialogPanel;
 };
 
@@ -79,4 +80,4 @@ private:
     wxString m_itemText;
 };
 
-#endif //RME_WELCOME_DIALOG_H
+#endif //WELCOME_DIALOG_H
