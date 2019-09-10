@@ -23,6 +23,7 @@
 #include <ostream>
 #include <cstdint>
 #include <vector>
+#include <regex>
 #include <list>
 
 class SmallPosition;
@@ -91,6 +92,7 @@ public:
 	}
 
 	bool isValid() const;
+	bool fromText(const std::string& text);
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Position& pos) {
@@ -121,6 +123,27 @@ inline std::istream& operator>>(std::istream& is, Position& pos) {
 
 inline bool Position::isValid() const {
 	return x >= 0 && x <= MAP_MAX_WIDTH && y >= 0 && y <= MAP_MAX_HEIGHT && z >= 0 && z <= MAP_MAX_LAYER;
+}
+
+inline bool Position::fromText(const std::string& text) {
+	std::vector<std::regex> templates;
+	templates.push_back(std::regex("\\{x = (\\d+), y = (\\d+), z = (\\d+)\\}"));
+	templates.push_back(std::regex("\\{\"x\":(\\d+),\"y\":(\\d+),\"z\":(\\d+)\\}"));
+	templates.push_back(std::regex("(\\d+),? (\\d+),? (\\d+)"));
+	templates.push_back(std::regex("\\((\\d+), (\\d+), (\\d+)\\)"));
+	templates.push_back(std::regex("Position\\((\\d+), (\\d+), (\\d+)\\)"));
+
+	std::smatch match;
+	for(auto regex : templates) {
+		if(std::regex_match(text, match, regex) && match.size() == 4) {
+			x = std::stoi(match[1].str());
+			y = std::stoi(match[2].str());
+			z = std::stoi(match[3].str());
+			return true;
+		}
+	}
+
+	return false;
 }
 
 inline Position abs(const Position& position) {

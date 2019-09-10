@@ -69,6 +69,7 @@ BEGIN_EVENT_TABLE(MapCanvas, wxGLCanvas)
 	EVT_MENU(MAP_POPUP_MENU_COPY_NAME, MapCanvas::OnCopyName)
 	// ----
 	EVT_MENU(MAP_POPUP_MENU_ROTATE, MapCanvas::OnRotateItem)
+	EVT_MENU(MAP_POPUP_MENU_PASTE_POSITION, MapCanvas::OnPastePosition)
 	EVT_MENU(MAP_POPUP_MENU_GOTO, MapCanvas::OnGotoDestination)
 	EVT_MENU(MAP_POPUP_MENU_SWITCH_DOOR, MapCanvas::OnSwitchDoor)
 	// ----
@@ -1953,6 +1954,28 @@ void MapCanvas::OnGotoDestination(wxCommandEvent& WXUNUSED(event))
 	}
 }
 
+void MapCanvas::OnPastePosition(wxCommandEvent& WXUNUSED(event))
+{
+	if(wxTheClipboard->Open()) {
+		wxTextDataObject obj;
+		wxTheClipboard->GetData(obj);
+
+		Tile* tile = editor.selection.getSelectedTile();
+		ItemVector selected_items = tile->getSelectedItems();
+		ASSERT(selected_items.size() > 0);
+		Teleport* teleport = dynamic_cast<Teleport*>(selected_items.front());
+		if(teleport) {
+			Position pos;
+			if(pos.fromText(obj.GetText().ToStdString()))
+				teleport->setDestination(pos);
+			else
+				g_gui.PopupDialog("Paste position failed", "Pasted position didn't have a valid format (must match any copy position format shown in preferences).", wxOK);
+		}
+
+		wxTheClipboard->Close();
+	}
+}
+
 void MapCanvas::OnSwitchDoor(wxCommandEvent& WXUNUSED(event))
 {
 	Tile* tile = editor.selection.getSelectedTile();
@@ -2295,8 +2318,10 @@ void MapPopupMenu::Update()
 						Append( MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 					}
 
-					if(teleport && teleport->hasDestination()) {
-						Append( MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
+					if(teleport) {
+						Append(MAP_POPUP_MENU_PASTE_POSITION, "&Paste Position", "Paste position to destination of this teleport");
+						if(teleport->hasDestination())
+							Append( MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 					}
 					if(topSelectedItem->isOpen()) {
 						Append( MAP_POPUP_MENU_SWITCH_DOOR, "&Close door", "Close this door");
