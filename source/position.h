@@ -126,12 +126,13 @@ inline bool Position::isValid() const {
 }
 
 inline bool Position::fromText(const std::string& text) {
-	std::vector<std::regex> templates;
-	templates.push_back(std::regex("\\{x = (\\d+), y = (\\d+), z = (\\d+)\\}"));
-	templates.push_back(std::regex("\\{\"x\":(\\d+),\"y\":(\\d+),\"z\":(\\d+)\\}"));
-	templates.push_back(std::regex("(\\d+),? (\\d+),? (\\d+)"));
-	templates.push_back(std::regex("\\((\\d+), (\\d+), (\\d+)\\)"));
-	templates.push_back(std::regex("Position\\((\\d+), (\\d+), (\\d+)\\)"));
+	static std::vector<std::regex> templates = {
+		std::regex("\\{x = (\\d+), y = (\\d+), z = (\\d+)\\}"),
+		std::regex("\\{\"x\":(\\d+),\"y\":(\\d+),\"z\":(\\d+)\\}"),
+		std::regex("(\\d+),? (\\d+),? (\\d+)"),
+		std::regex("\\((\\d+), (\\d+), (\\d+)\\)"),
+		std::regex("Position\\((\\d+), (\\d+), (\\d+)\\)")
+	};
 
 	std::smatch match;
 	for(auto regex : templates) {
