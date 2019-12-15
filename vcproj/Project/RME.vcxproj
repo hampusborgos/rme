@@ -54,7 +54,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -125,9 +125,9 @@
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\GitHub\rme\dependencies\vs\lib;C:\wxWidgets-3.0.2\lib;C:\boost_1_55_0\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\DevFolder\C++ Libraries\boost_1_55_0\lib;C:\Users\crille\Documents\GitHub\rme\dependencies\vs\lib;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\lib;$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\GitHub\rme\dependencies\vs\include;C:\wxWidgets-3.1.0\include;C:\wxWidgets-3.1.0\include\msvc;C:\boost_1_57_0;$(IncludePath)</IncludePath>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(RME_INCLUDE);$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\GitHub\rme\dependencies\vs\lib;C:\wxWidgets-3.1.0\lib\vc_lib;C:\wxWidgets-3.1.0\lib;C:\boost_1_57_0\lib32-msvc-12.0;$(LibraryPath)</LibraryPath>
-    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(RME_LIB);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(LibraryPath)</LibraryPath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">C:\Users\crille\Documents\GitHub\rme\dependencies\vs\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include;$(IncludePath)</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Beta Release|x64'">C:\Users\crille\Documents\GitHub\rme\dependencies\vs\include;E:\DevFolder\C++ Libraries\boost_1_55_0\include;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include\msvc;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\include;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">E:\DevFolder\C++ Libraries\boost_1_55_0\lib;C:\Users\crille\Documents\GitHub\rme\dependencies\vs\lib;E:\DevFolder\C++ Libraries\wxWidgets-3.0.0\lib;$(LibraryPath)</LibraryPath>
@@ -165,7 +165,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\wxWidgets-2.9.3\include\msvc;F:\Libs\libarchive-3.0.3;C:\wxWidgets-2.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RME_INCLUDE)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CRTDBG_MAP_ALLOC;__DEBUG__;__EXPERIMENTAL__;LIVE_SERVER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -177,7 +177,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libxml2.lib;comctl32.lib;archive.lib;Rpcrt4.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(RME_LIB)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(TargetName).map</MapFileName>
@@ -219,8 +219,8 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;__RELEASE__;WXUSINGDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(RME_INCLUDE)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;__RELEASE__;WXUSINGDLL;wxMSVC_VERSION_AUTO;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -238,6 +238,7 @@
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalLibraryDirectories>$(RME_LIB)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Beta Release|Win32'">
@@ -270,7 +271,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>C:\wxWidgets-2.9.3\include\msvc;F:\Libs\libarchive-3.0.3;C:\wxWidgets-2.9.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(RME_INCLUDE)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;__RELEASE__;;__RELEASE__;__EXPERIMENTAL__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -283,7 +284,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>libxml2.lib;comctl32.lib;archive.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\wxWidgets-2.9.3\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(RME_LIB)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
