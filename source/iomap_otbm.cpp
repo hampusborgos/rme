@@ -1459,7 +1459,9 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 	pugi::xml_node spawnNodes = doc.append_child("spawns");
 	for(const auto& spawnPosition : map.spawns) {
 		Tile* tile = map.getTile(spawnPosition);
-		ASSERT(tile);
+		if (tile == nullptr)
+            continue;
+
 		Spawn* spawn = tile->spawn;
 		ASSERT(spawn);
 
