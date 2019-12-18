@@ -693,10 +693,10 @@ bool NodeFileWriteHandle::addNode(uint8_t nodetype)
 
 bool NodeFileWriteHandle::endNode()
 {
+	cache[local_write_index++] = NODE_END;
 	if(local_write_index >= cache_size) {
 		renewCache();
 	}
-	cache[local_write_index++] = NODE_END;
 
 	return error_code == FILE_NO_ERROR;
 }
