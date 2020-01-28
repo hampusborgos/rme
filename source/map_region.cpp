@@ -166,9 +166,9 @@ void QTreeNode::clearVisible(uint32_t u)
 bool QTreeNode::isVisible(uint32_t client, bool underground)
 {
 	if(underground) {
-		return testFlags(visible >> MAP_LAYERS, 1 << client);
+		return testFlags(visible >> MAP_LAYERS, static_cast<uint64_t>(1) << client);
 	} else {
-		return testFlags(visible, 1 << client);
+		return testFlags(visible, static_cast<uint64_t>(1) << client);
 	}
 }
 
