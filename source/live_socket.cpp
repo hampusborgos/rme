@@ -105,7 +105,7 @@ void LiveSocket::receiveNode(NetworkMessage& message, Editor& editor, Action* ac
 	}
 
 	for(uint_fast8_t z = 0; z < 16; ++z) {
-		if(testFlags(floorBits, 1 << z)) {
+		if(testFlags(floorBits, static_cast<uint64_t>(1) << z)) {
 			receiveFloor(message, editor, action, ndx, ndy, z, node, node->getFloor(z));
 		}
 	}
@@ -146,7 +146,7 @@ void LiveSocket::sendNode(uint32_t clientId, QTreeNode* node, int32_t ndx, int32
 
 		message.write<uint16_t>(sendMask);
 		for(uint32_t z = 0; z < 16; ++z) {
-			if(testFlags(sendMask, 1 << z)) {
+			if(testFlags(sendMask, static_cast<uint64_t>(1) << z)) {
 				sendFloor(message, floors[z]);
 			}
 		}
@@ -182,7 +182,7 @@ void LiveSocket::receiveFloor(NetworkMessage& message, Editor& editor, Action* a
 			position.x = (ndx * 4) + x;
 			position.y = (ndy * 4) + y;
 
-			if(testFlags(tileBits, 1 << ((x * 4) + y))) {
+			if(testFlags(tileBits, static_cast<uint64_t>(1) << ((x * 4) + y))) {
 				receiveTile(tileNode, editor, action, &position);
 				tileNode->advance();
 			} else {
@@ -216,7 +216,7 @@ void LiveSocket::sendFloor(NetworkMessage& message, Floor* floor)
 	for(uint_fast8_t x = 0; x < 4; ++x) {
 		for(uint_fast8_t y = 0; y < 4; ++y) {
 			uint_fast8_t index = (x * 4) + y;
-			if(testFlags(tileBits, 1 << index)) {
+			if(testFlags(tileBits, static_cast<uint64_t>(1) << index)) {
 				sendTile(mapWriter, floor->locs[index].get(), nullptr);
 			}
 		}
