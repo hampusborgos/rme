@@ -692,6 +692,7 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 	switch(event.GetKeyCode()) {
 		case WXK_PAGEUP:
 			amount = h / 32 + 1;
+			[[fallthrough]];
 		case WXK_UP: {
 			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
@@ -708,6 +709,7 @@ void FindDialog::OnKeyDown(wxKeyEvent& event)
 
 		case WXK_PAGEDOWN:
 			amount = h / 32 + 1;
+			[[fallthrough]];
 		case WXK_DOWN: {
 			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
@@ -976,6 +978,7 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 	switch(event.GetKeyCode()) {
 		case WXK_PAGEUP:
 			amount = h / 32 + 1;
+			[[fallthrough]];
 		case WXK_UP: {
 			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();
@@ -991,6 +994,7 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 		}
 		case WXK_PAGEDOWN:
 			amount = h / 32 + 1;
+			[[fallthrough]];
 		case WXK_DOWN: {
 			if(item_list->GetItemCount() > 0) {
 				ssize_t n = item_list->GetSelection();

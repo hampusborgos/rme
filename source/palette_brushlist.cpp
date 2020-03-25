@@ -596,6 +596,7 @@ void BrushListBox::OnKey(wxKeyEvent& event)
 		case WXK_END:
 			event.Skip(true);
 			} else {
+			[[fallthrough]];
 		default:
 			if(g_gui.GetCurrentTab() != nullptr) {
 				g_gui.GetCurrentMapTab()->GetEventHandler()->AddPendingEvent(event);
