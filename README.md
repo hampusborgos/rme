@@ -41,4 +41,6 @@ Required libraries:
 
 [Compile on Ubuntu](https://github.com/hjnilsson/rme/wiki/Compiling-on-Ubuntu)
 
+[Compile on Arch Linux](https://github.com/hjnilsson/rme/wiki/Compiling-on-Arch-Linux)
+
 [Compile on macOS](https://github.com/hjnilsson/rme/wiki/Compiling-on-macOS)
