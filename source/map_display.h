@@ -118,7 +118,7 @@ public:
 
 protected:
 	void getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder, bool fill = false);
-	void floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions);
+	bool floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions);
 
 private:
 	enum {
@@ -132,6 +132,7 @@ private:
 	Editor& editor;
 	MapDrawer *drawer;
 	int keyCode;
+	int countMaxFills = 0;
 
 // View related
 	int floor;
