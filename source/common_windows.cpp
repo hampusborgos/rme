@@ -520,7 +520,6 @@ void ExportMiniMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 		const wxString& directory = dialog.GetPath();
 		directory_text_field->ChangeValue(directory);
 	}
-	dialog.Destroy();
 	CheckValues();
 }
 
