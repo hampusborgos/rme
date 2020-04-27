@@ -2438,6 +2438,7 @@ bool MapCanvas::floodFill(Map *map, const Position& center, int x, int y, Ground
 {
 	countMaxFills++;
 	if (countMaxFills > (BLOCK_SIZE * 4 * 4)) {
+		countMaxFills = 0;
 		return true;
 	}
 
