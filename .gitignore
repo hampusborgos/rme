@@ -37,7 +37,7 @@ vcproj/Project/x64/
 vcproj/Installer/Beta Release/
 vcproj/Installer/Debug/
 vcproj/Installer/Release/
-
+.vscode/
 
 # Xcode
 xcuserdata
