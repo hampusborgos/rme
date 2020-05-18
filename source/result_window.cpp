@@ -90,7 +90,6 @@ void SearchResultWindow::OnClickExport(wxCommandEvent& WXUNUSED(event))
 			g_gui.DestroyLoadBar();
 		}
 	}
-	dialog.Destroy();
 }
 
 void SearchResultWindow::OnClickClear(wxCommandEvent& WXUNUSED(event))
