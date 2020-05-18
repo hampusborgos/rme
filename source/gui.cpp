@@ -222,6 +222,7 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 		// these are used usually when running from build directories
 		execDir + "/../",
 		execDir + "/../../",
+		execDir + "/../../../",
 		currentDir + "/../",
 	};
 

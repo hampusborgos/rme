@@ -37,14 +37,10 @@ Required libraries:
 * wxWidgets >= 3.0
 * Boost >= 1.55.0
 
-#### Windows
+[Compile on Windows](https://github.com/hjnilsson/rme/wiki/Compiling-on-Windows)
 
-Assuming that you have MSVC 2013 or later and the required libraries installed, clone the project, open the project file in `vcproj/Project/RME.vcproj` then hit build.
+[Compile on Ubuntu](https://github.com/hjnilsson/rme/wiki/Compiling-on-Ubuntu)
 
-For more details you can follow [this tutorial](http://otland.net/threads/compiling-remeres-map-editor-from-the-latest-source-with-msvc-2013.216826/) by dominique120.
+[Compile on Arch Linux](https://github.com/hjnilsson/rme/wiki/Compiling-on-Arch-Linux)
 
-#### Linux
-[Guide for Ubuntu](https://github.com/hjnilsson/rme/wiki/Compiling-on-Ubuntu)
-
-#### Mac
-[Guide for macOS](https://github.com/hjnilsson/rme/wiki/Compiling-on-macOS)
+[Compile on macOS](https://github.com/hjnilsson/rme/wiki/Compiling-on-macOS)

@@ -1236,7 +1236,7 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 
 		g_gui.DestroyLoadBar();
 		return true;
-	} 
+	}
 #endif
 
 	DiskNodeFileWriteHandle f(
@@ -1458,8 +1458,10 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 
 	pugi::xml_node spawnNodes = doc.append_child("spawns");
 	for(const auto& spawnPosition : map.spawns) {
-		Tile* tile = map.getTile(spawnPosition);
-		ASSERT(tile);
+		Tile *tile = map.getTile(spawnPosition);
+		if (tile == nullptr)
+			continue;
+
 		Spawn* spawn = tile->spawn;
 		ASSERT(spawn);
 

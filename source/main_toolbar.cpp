@@ -110,10 +110,13 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 	y_control->SetToolTip("Y Coordinate");
 	z_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_LAYER, wxTE_PROCESS_ENTER, "Z", wxDefaultPosition, wxSize(35, 20));
 	z_control->SetToolTip("Z Coordinate");
+	go_button = newd wxButton(position_toolbar, TOOLBAR_POSITION_GO, wxEmptyString, wxDefaultPosition, wxSize(22, 20));
+	go_button->SetBitmap(go_bitmap);
+	go_button->SetToolTip("Go To Position");
 	position_toolbar->AddControl(x_control);
 	position_toolbar->AddControl(y_control);
 	position_toolbar->AddControl(z_control);
-	position_toolbar->AddTool(TOOLBAR_POSITION_GO, wxEmptyString, go_bitmap, wxNullBitmap, wxITEM_NORMAL, "Go To Position", wxEmptyString, NULL);
+	position_toolbar->AddControl(go_button);
 	position_toolbar->Realize();
 
 	wxBitmap circular_bitmap = wxArtProvider::GetBitmap(ART_CIRCULAR, wxART_TOOLBAR, icon_size);
@@ -149,10 +152,13 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 
 	standard_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnStandardButtonClick, this);
 	brushes_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnBrushesButtonClick, this);
-	position_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnPositionButtonClick, this);
 	x_control->Bind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	x_control->Bind(wxEVT_KEY_UP, &MainToolBar::OnPositionKeyUp, this);
 	y_control->Bind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	y_control->Bind(wxEVT_KEY_UP, &MainToolBar::OnPositionKeyUp, this);
 	z_control->Bind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	z_control->Bind(wxEVT_KEY_UP, &MainToolBar::OnPositionKeyUp, this);
+	go_button->Bind(wxEVT_BUTTON, &MainToolBar::OnPositionButtonClick, this);
 	sizes_toolbar->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnSizesButtonClick, this);
 
 	HideAll();
@@ -162,10 +168,13 @@ MainToolBar::~MainToolBar()
 {
 	standard_toolbar->Unbind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnStandardButtonClick, this);
 	brushes_toolbar->Unbind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnBrushesButtonClick, this);
-	position_toolbar->Unbind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnPositionButtonClick, this);
 	x_control->Unbind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	x_control->Unbind(wxEVT_KEY_UP, &MainToolBar::OnPositionKeyUp, this);
 	y_control->Unbind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	y_control->Unbind(wxEVT_KEY_UP, &MainToolBar::OnPositionKeyUp, this);
 	z_control->Unbind(wxEVT_TEXT_PASTE, &MainToolBar::OnPastePositionText, this);
+	z_control->Unbind(wxEVT_KEY_UP, &MainToolBar::OnPositionKeyUp, this);
+	go_button->Unbind(wxEVT_BUTTON, &MainToolBar::OnPositionButtonClick, this);
 	sizes_toolbar->Unbind(wxEVT_COMMAND_MENU_SELECTED, &MainToolBar::OnSizesButtonClick, this);
 }
 
@@ -484,6 +493,26 @@ void MainToolBar::OnPositionButtonClick(wxCommandEvent& event)
 		if (pos.isValid())
 			g_gui.SetScreenCenterPosition(pos);
 	}
+}
+
+void MainToolBar::OnPositionKeyUp(wxKeyEvent& event)
+{
+	if (event.GetKeyCode() == WXK_TAB) {
+		if (x_control->HasFocus()) {
+			y_control->SelectAll();
+			y_control->SetFocus();
+		} else if (y_control->HasFocus()) {
+			z_control->SelectAll();
+			z_control->SetFocus();
+		} else if (z_control->HasFocus()) {
+			go_button->SetFocus();
+		}
+	} else if (event.GetKeyCode() == WXK_NUMPAD_ENTER || event.GetKeyCode() == WXK_RETURN) {
+		Position pos(x_control->GetIntValue(), y_control->GetIntValue(), z_control->GetIntValue());
+		if (pos.isValid())
+			g_gui.SetScreenCenterPosition(pos);
+	}
+	event.Skip();
 }
 
 void MainToolBar::OnPastePositionText(wxClipboardTextEvent& event)

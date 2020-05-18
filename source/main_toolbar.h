@@ -43,6 +43,7 @@ public:
 	void OnStandardButtonClick(wxCommandEvent& event);
 	void OnBrushesButtonClick(wxCommandEvent& event);
 	void OnPositionButtonClick(wxCommandEvent& event);
+	void OnPositionKeyUp(wxKeyEvent& event);
 	void OnPastePositionText(wxClipboardTextEvent& event);
 	void OnSizesButtonClick(wxCommandEvent& event);
 
@@ -58,6 +59,7 @@ private:
 	NumberTextCtrl* x_control;
 	NumberTextCtrl* y_control;
 	NumberTextCtrl* z_control;
+	wxButton* go_button;
 	wxAuiToolBar* sizes_toolbar;
 };
 
