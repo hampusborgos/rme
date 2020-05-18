@@ -33,7 +33,7 @@ SearchResultWindow::SearchResultWindow(wxWindow* parent) :
 	wxPanel(parent, wxID_ANY)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
-	result_list = newd wxListBox(this, wxID_ANY, wxDefaultPosition, wxSize(200, 330), 0, nullptr, wxLB_SINGLE | wxLB_ALWAYS_SB | wxLB_SORT);
+	result_list = newd wxListBox(this, wxID_ANY, wxDefaultPosition, wxSize(200, 330), 0, nullptr, wxLB_SINGLE | wxLB_ALWAYS_SB);
 	sizer->Add(result_list, wxSizerFlags(1).Expand());
 	
 	wxSizer* buttonsSizer = newd wxBoxSizer(wxHORIZONTAL);
