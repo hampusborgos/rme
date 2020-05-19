@@ -276,6 +276,7 @@ void FindItemDialog::EnableProperties(bool enable)
 void FindItemDialog::RefreshContentsInternal()
 {
 	items_list->Clear();
+	ok_button->Enable(false);
 
 	SearchMode selection = (SearchMode)options_radio_box->GetSelection();
 	bool found_search_results = false;
@@ -420,9 +421,10 @@ void FindItemDialog::RefreshContentsInternal()
 		}
 	}
 
-	if(found_search_results)
+	if(found_search_results) {
 		items_list->SetSelection(0);
-	else
+		ok_button->Enable(true);
+	} else
 		items_list->SetNoMatches();
 
 	items_list->Refresh();
