@@ -274,6 +274,10 @@ protected:
 	Brush* result_find_brush;
 	Brush* result_with_brush;
 
+	wxStdDialogButtonSizer* buttons_box_sizer;
+	wxButton* ok_button;
+	wxButton* cancel_button;
+
 	DECLARE_EVENT_TABLE();
 };
 

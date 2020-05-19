@@ -865,25 +865,24 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 	if(!g_gui.IsEditorOpen())
 		return;
 
-	ReplaceItemDialog dlg(frame, "Replace Item");
+	ReplaceItemDialog dialog(frame);
 
-	if(dlg.ShowModal() == wxID_OK) {
-		uint16_t find_id = dlg.GetResultFindID();
-		uint16_t with_id = dlg.GetResultWithID();
+	if(dialog.ShowModal() == wxID_OK) {
+		uint16_t find_id = dialog.GetResultFindID();
+		uint16_t with_id = dialog.GetResultWithID();
+		if(find_id == 0 || with_id == 0)
+			return;
 
 		OnSearchForItem::Finder finder(find_id);
 		g_gui.GetCurrentEditor()->actionQueue->clear();
-		g_gui.CreateLoadBar("Searching & replacing map...");
+		g_gui.CreateLoadBar("Searching & replacing item...");
 
 		// Search the map
 		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
 
 		// Replace the items in a second step (can't replace while iterating)
-		for(std::vector<std::pair<Tile*, Item*> >::const_iterator replace_iter = finder.found.begin();
-				replace_iter != finder.found.end();
-				++replace_iter)
-		{
-			transformItem(replace_iter->second, with_id, replace_iter->first);
+		for(auto it = finder.found.begin(); it != finder.found.end(); ++it) {
+			transformItem(it->second, with_id, it->first);
 		}
 
 		wxString msg;

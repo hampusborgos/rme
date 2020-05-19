@@ -917,7 +917,7 @@ BEGIN_EVENT_TABLE(ReplaceItemDialog, wxDialog)
 END_EVENT_TABLE()
 
 ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
-	wxDialog(g_gui.root, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxRESIZE_BORDER | wxCAPTION | wxCLOSE_BOX),
+	wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
 	find_idle_input_timer(this),
 	with_idle_input_timer(this)
 {
@@ -949,10 +949,14 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 	topsizer->Add(gridsizer, wxSizerFlags(1).Expand().Border());
 
 	// Buttons
-	wxSizer* stdsizer = newd wxBoxSizer(wxHORIZONTAL);
-	stdsizer->Add(newd wxButton(this, wxID_OK, "Replace"), wxSizerFlags(1).Center());
-	stdsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
-	topsizer->Add(stdsizer, wxSizerFlags(0).Center().Border());
+	buttons_box_sizer = newd wxStdDialogButtonSizer();
+	ok_button = newd wxButton(this, wxID_OK);
+	ok_button->Enable(false);
+	buttons_box_sizer->AddButton(ok_button);
+	cancel_button = newd wxButton(this, wxID_CANCEL);
+	buttons_box_sizer->AddButton(cancel_button);
+	buttons_box_sizer->Realize();
+	topsizer->Add(buttons_box_sizer, 0, wxALIGN_CENTER | wxALL, 5);
 
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
@@ -1015,10 +1019,14 @@ void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
 
 void ReplaceItemDialog::OnTextIdle(wxTimerEvent& event)
 {
+	ok_button->Enable(false);
+
 	if(&event.GetTimer() == &find_idle_input_timer)
 		RefreshContents(find_item_list);
 	else
 		RefreshContents(with_item_list);
+
+	ok_button->Enable(find_item_list->GetItemCount() != 0 && with_item_list->GetItemCount() != 0);
 }
 
 void ReplaceItemDialog::OnTextChange(wxCommandEvent& event)
