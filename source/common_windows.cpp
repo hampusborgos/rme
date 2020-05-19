@@ -462,6 +462,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	// Output folder
 	directory_text_field = newd wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize);
 	directory_text_field->Bind(wxEVT_KEY_UP, &ExportMiniMapWindow::OnDirectoryChanged, this);
+	directory_text_field->SetValue(wxString(g_settings.getString(Config::MIMIMAP_EXPORT_DIR)));
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Output Folder");
 	tmpsizer->Add(directory_text_field, 1, wxALL, 5);
 	tmpsizer->Add(newd wxButton(this, MAP_WINDOW_FILE_BUTTON, "Browse"), 0, wxALL, 5);
@@ -542,6 +543,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	try
 	{
 		FileName directory(directory_text_field->GetValue());
+		g_settings.setString(Config::MIMIMAP_EXPORT_DIR, directory_text_field->GetValue().ToStdString());
 
 		switch(floor_options->GetSelection())
 		{
