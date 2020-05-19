@@ -870,7 +870,7 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 	if(dialog.ShowModal() == wxID_OK) {
 		uint16_t find_id = dialog.GetResultFindID();
 		uint16_t with_id = dialog.GetResultWithID();
-		if(find_id == 0 || with_id == 0)
+		if(find_id == 0 || with_id == 0 || find_id == with_id)
 			return;
 
 		OnSearchForItem::Finder finder(find_id);

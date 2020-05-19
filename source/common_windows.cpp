@@ -958,6 +958,10 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 	buttons_box_sizer->Realize();
 	topsizer->Add(buttons_box_sizer, 0, wxALIGN_CENTER | wxALL, 5);
 
+	// Connect Events
+	find_item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
+	with_item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
+
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
 
@@ -965,10 +969,11 @@ ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
 	RefreshContents(with_item_list);
 }
 
-
 ReplaceItemDialog::~ReplaceItemDialog()
 {
-	////
+	// Disconnect Events
+	find_item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
+	with_item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
 }
 
 void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
@@ -1026,7 +1031,11 @@ void ReplaceItemDialog::OnTextIdle(wxTimerEvent& event)
 	else
 		RefreshContents(with_item_list);
 
-	ok_button->Enable(find_item_list->GetItemCount() != 0 && with_item_list->GetItemCount() != 0);
+	uint16_t find_id = GetResultFindID();
+	if(find_id != 0) {
+		uint16_t with_id = GetResultWithID();
+		ok_button->Enable(with_id != 0 && find_id != with_id);
+	}
 }
 
 void ReplaceItemDialog::OnTextChange(wxCommandEvent& event)
@@ -1037,30 +1046,15 @@ void ReplaceItemDialog::OnTextChange(wxCommandEvent& event)
 		with_idle_input_timer.Start(800, true);
 }
 
+void ReplaceItemDialog::OnClickList(wxCommandEvent& WXUNUSED(event))
+{
+	uint16_t find_id = GetResultFindID();
+	uint16_t with_id = GetResultWithID();
+	ok_button->Enable(find_id != 0 && with_id != 0 && find_id != with_id);
+}
+
 void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
-	// This is kind of stupid as it would fail unless the "Please enter a search string" wasn't there
-	if(find_item_list->GetItemCount() > 0 && with_item_list->GetItemCount() > 0) {
-		if(find_item_list->GetSelection() == wxNOT_FOUND)
-			find_item_list->SetSelection(0);
-		if(with_item_list->GetSelection() == wxNOT_FOUND)
-			with_item_list->SetSelection(0);
-
-		Brush* find_brush = find_item_list->GetSelectedBrush();
-		Brush* with_brush = with_item_list->GetSelectedBrush();
-		if(find_brush && find_brush->isRaw() && with_brush && with_brush->isRaw()) {
-			result_find_brush = find_brush;
-			result_with_brush = with_brush;
-		}
-	}
-
-	if(!result_find_brush || !result_with_brush) {
-		result_find_brush = nullptr;
-		result_with_brush = nullptr;
-		g_gui.PopupDialog("Select both items", "You must select two items for the replacement to work.", wxOK);
-		return;
-	}
-
 	EndModal(wxID_OK);
 }
 
@@ -1110,12 +1104,24 @@ void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
 
 uint16_t ReplaceItemDialog::GetResultFindID() const
 {
-	return result_find_brush ? result_find_brush->asRaw()->getItemID() : 0;
+	if(find_item_list->GetItemCount() != 0) {
+		Brush* brush = find_item_list->GetSelectedBrush();
+		if(brush && brush->isRaw()) {
+			return brush->asRaw()->getItemID();
+		}
+	}
+	return 0;
 }
 
 uint16_t ReplaceItemDialog::GetResultWithID() const
 {
-	return result_with_brush ? result_with_brush->asRaw()->getItemID() : 0;
+	if(with_item_list->GetItemCount() != 0) {
+		Brush* brush = with_item_list->GetSelectedBrush();
+		if(brush && brush->isRaw()) {
+			return brush->asRaw()->getItemID();
+		}
+	}
+	return 0;
 }
 
 // ============================================================================

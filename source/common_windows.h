@@ -271,9 +271,6 @@ protected:
 	wxTimer find_idle_input_timer;
 	wxTimer with_idle_input_timer;
 
-	Brush* result_find_brush;
-	Brush* result_with_brush;
-
 	wxStdDialogButtonSizer* buttons_box_sizer;
 	wxButton* ok_button;
 	wxButton* cancel_button;
