@@ -277,7 +277,7 @@ void Settings::IO(IOMode mode)
 	IntToSave(USE_MEMCACHED_SPRITES, 0);
 	Int(MINIMAP_UPDATE_DELAY, 333);
 	Int(MINIMAP_VIEW_BOX, 1);
-	String(MIMIMAP_EXPORT_DIR, "");
+	String(MINIMAP_EXPORT_DIR, "");
 
 	Int(CURSOR_RED, 0);
 	Int(CURSOR_GREEN, 166);
