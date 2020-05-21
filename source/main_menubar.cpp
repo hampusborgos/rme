@@ -83,6 +83,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SEARCH_ON_SELECTION_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_ITEM, wxITEM_NORMAL, OnSearchForItemOnSelection);
+	MAKE_ACTION(REPLACE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnReplaceItemOnSelection);
 	MAKE_ACTION(SELECT_MODE_COMPENSATE, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_LOWER, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_CURRENT, wxITEM_RADIO, OnSelectionTypeChange);
@@ -311,6 +312,7 @@ void MainMenuBar::Update()
 	EnableItem(SEARCH_ON_SELECTION_CONTAINER, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_WRITEABLE, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_ITEM, has_selection && is_host);
+	EnableItem(REPLACE_ON_SELECTION_ITEM, has_selection && is_host);
 
 	EnableItem(CUT, has_map);
 	EnableItem(COPY, has_map);
@@ -805,23 +807,25 @@ namespace OnSearchForItem
 {
 	struct Finder
 	{
-		Finder(uint16_t itemid) : more_than_value(false), itemid(itemid) {}
-		bool more_than_value;
-		uint16_t itemid;
-		std::vector<std::pair<Tile*, Item*> > found;
+		Finder(uint16_t itemId, uint32_t maxCount) :
+			itemId(itemId), maxCount(maxCount) {}
+
+		uint16_t itemId;
+		uint32_t maxCount;
+		std::vector< std::pair<Tile*, Item*> > result;
+
+		bool limitReached() const { return result.size() >= (size_t)maxCount; }
 
 		void operator()(Map& map, Tile* tile, Item* item, long long done)
 		{
-			if(more_than_value) return;
-			if(done % 0x8000 == 0) {
-				g_gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
-			}
+			if(result.size() >= (size_t)maxCount)
+				return;
 
-			if(item->getID() == itemid) {
-				found.push_back(std::make_pair(tile, item));
-				if(found.size() >= size_t(g_settings.getInteger(Config::REPLACE_SIZE)))
-					more_than_value = true;
-			}
+			if(done % 0x8000 == 0)
+				g_gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
+
+			if(item->getID() == itemId)
+				result.push_back(std::make_pair(tile, item));
 		}
 	};
 }
@@ -834,32 +838,33 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 	FindItemDialog dialog(frame, "Search for Item");
 	dialog.setSearchMode((FindItemDialog::SearchMode)g_settings.getInteger(Config::FIND_ITEM_MODE));
 	if(dialog.ShowModal() == wxID_OK) {
-		OnSearchForItem::Finder finder(dialog.getResultID());
+		OnSearchForItem::Finder finder(dialog.getResultID(), (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
 		g_gui.CreateLoadBar("Searching map...");
 
 		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
-		std::vector<std::pair<Tile*, Item*> >& found = finder.found;
+		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
 
 		g_gui.DestroyLoadBar();
 
-		if(finder.more_than_value) {
+		if(finder.limitReached()) {
 			wxString msg;
-			msg << "Only the first " << size_t(g_settings.getInteger(Config::REPLACE_SIZE)) << " results will be displayed.";
+			msg << "Only the first " << finder.maxCount << " results will be displayed.";
 			g_gui.PopupDialog("Notice", msg, wxOK);
 		}
 
-		SearchResultWindow* result = g_gui.ShowSearchWindow();
-		result->Clear();
-		for(std::vector<std::pair<Tile*, Item*> >::const_iterator iter = found.begin(); iter != found.end(); ++iter) {
+		SearchResultWindow* window = g_gui.ShowSearchWindow();
+		window->Clear();
+		for(std::vector<std::pair<Tile*, Item*> >::const_iterator iter = result.begin(); iter != result.end(); ++iter) {
 			Tile* tile = iter->first;
 			Item* item = iter->second;
-			result->AddPosition(wxstr(item->getName()), tile->getPosition());
+			window->AddPosition(wxstr(item->getName()), tile->getPosition());
 		}
 
 		g_settings.setInteger(Config::FIND_ITEM_MODE, (int)dialog.getSearchMode());
 	}
 	dialog.Destroy();
 }
+
 void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 {
 	if(!g_gui.IsEditorOpen())
@@ -873,26 +878,22 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 		if(find_id == 0 || with_id == 0 || find_id == with_id)
 			return;
 
-		OnSearchForItem::Finder finder(find_id);
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 		g_gui.CreateLoadBar("Searching & replacing item...");
 
-		// Search the map
+		OnSearchForItem::Finder finder(find_id, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
 		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
 
-		// Replace the items in a second step (can't replace while iterating)
-		for(auto it = finder.found.begin(); it != finder.found.end(); ++it) {
+		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
+		for(auto it = result.begin(); it != result.end(); ++it)
 			transformItem(it->second, with_id, it->first);
-		}
 
 		wxString msg;
-		msg << "Replaced " << finder.found.size() << " items.";
+		msg << "Replaced " << result.size() << " items.";
 		g_gui.SetStatusText(msg);
-
 		g_gui.DestroyLoadBar();
+		g_gui.RefreshView();
 	}
-
-	g_gui.RefreshView();
 }
 
 namespace OnSearchForStuff
@@ -1024,32 +1025,62 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 	FindItemDialog dialog(frame, "Search on Selection");
 	dialog.setSearchMode((FindItemDialog::SearchMode)g_settings.getInteger(Config::FIND_ITEM_MODE));
 	if(dialog.ShowModal() == wxID_OK) {
-		OnSearchForItem::Finder finder(dialog.getResultID());
+		OnSearchForItem::Finder finder(dialog.getResultID(), (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
 		g_gui.CreateLoadBar("Searching on selected area...");
 
 		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, true);
-		std::vector<std::pair<Tile*, Item*> >& found = finder.found;
+		std::vector<std::pair<Tile*, Item*> >& result = finder.result;
 
 		g_gui.DestroyLoadBar();
 
-		if(finder.more_than_value) {
+		if(finder.limitReached()) {
 			wxString msg;
-			msg << "Only the first " << size_t(g_settings.getInteger(Config::REPLACE_SIZE)) << " results will be displayed.";
+			msg << "Only the first " << finder.maxCount << " results will be displayed.";
 			g_gui.PopupDialog("Notice", msg, wxOK);
 		}
 
-		SearchResultWindow* result = g_gui.ShowSearchWindow();
-		result->Clear();
-		for(std::vector<std::pair<Tile*, Item*> >::const_iterator iter = found.begin(); iter != found.end(); ++iter) {
+		SearchResultWindow* window = g_gui.ShowSearchWindow();
+		window->Clear();
+		for(std::vector<std::pair<Tile*, Item*> >::const_iterator iter = result.begin(); iter != result.end(); ++iter) {
 			Tile* tile = iter->first;
 			Item* item = iter->second;
-			result->AddPosition(wxstr(item->getName()), tile->getPosition());
+			window->AddPosition(wxstr(item->getName()), tile->getPosition());
 		}
 
 		g_settings.setInteger(Config::FIND_ITEM_MODE, (int)dialog.getSearchMode());
 	}
 
 	dialog.Destroy();
+}
+
+void MainMenuBar::OnReplaceItemOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	if(!g_gui.IsEditorOpen())
+		return;
+
+	ReplaceItemDialog dialog(frame);
+
+	if(dialog.ShowModal() == wxID_OK) {
+		uint16_t find_id = dialog.GetResultFindID();
+		uint16_t with_id = dialog.GetResultWithID();
+		if(find_id == 0 || with_id == 0 || find_id == with_id)
+			return;
+
+		g_gui.CreateLoadBar("Searching & replacing item...");
+
+		OnSearchForItem::Finder finder(find_id, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
+		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, true);
+
+		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
+		for(auto it = result.begin(); it != result.end(); ++it)
+			transformItem(it->second, with_id, it->first);
+
+		wxString msg;
+		msg << "Replaced " << result.size() << " items.";
+		g_gui.SetStatusText(msg);
+		g_gui.DestroyLoadBar();
+		g_gui.RefreshView();
+	}
 }
 
 void MainMenuBar::OnSelectionTypeChange(wxCommandEvent& WXUNUSED(event))

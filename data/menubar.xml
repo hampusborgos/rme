@@ -30,6 +30,7 @@
         <separator/>
         <item name="Find $Item..." hotkey="Ctrl+F" action="FIND_ITEM" help="Find all instances of an item type the map."/>
         <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurances of one item with another."/>
+        <item name="Replace on Selected Area" action="REPLACE_ON_SELECTION_ITEM" help="Replace item on selected area."/>
         <menu name="$Find on Map">
             <item name="Find $Everything" action="SEARCH_ON_MAP_EVERYTHING" help="Find all unique/action/text/container items."/>
             <separator/>
