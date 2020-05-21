@@ -848,7 +848,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 		if(finder.limitReached()) {
 			wxString msg;
-			msg << "Only the first " << finder.maxCount << " results will be displayed.";
+			msg << "The configured limit has been reached. Only " << finder.maxCount << " results will be displayed.";
 			g_gui.PopupDialog("Notice", msg, wxOK);
 		}
 
@@ -888,10 +888,17 @@ void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
 		for(auto it = result.begin(); it != result.end(); ++it)
 			transformItem(it->second, with_id, it->first);
 
+		g_gui.DestroyLoadBar();
+
+		if(finder.limitReached()) {
+			wxString msg;
+			msg << "The configured limit has been reached. Only " << finder.maxCount << " items were replaced.";
+			g_gui.PopupDialog("Notice", msg, wxOK);
+		}
+
 		wxString msg;
 		msg << "Replaced " << result.size() << " items.";
 		g_gui.SetStatusText(msg);
-		g_gui.DestroyLoadBar();
 		g_gui.RefreshView();
 	}
 }
@@ -1035,7 +1042,7 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 
 		if(finder.limitReached()) {
 			wxString msg;
-			msg << "Only the first " << finder.maxCount << " results will be displayed.";
+			msg << "The configured limit has been reached. Only " << finder.maxCount << " results will be displayed.";
 			g_gui.PopupDialog("Notice", msg, wxOK);
 		}
 
@@ -1075,10 +1082,17 @@ void MainMenuBar::OnReplaceItemOnSelection(wxCommandEvent& WXUNUSED(event))
 		for(auto it = result.begin(); it != result.end(); ++it)
 			transformItem(it->second, with_id, it->first);
 
+		g_gui.DestroyLoadBar();
+
+		if(finder.limitReached()) {
+			wxString msg;
+			msg << "The configured limit has been reached. Only " << finder.maxCount << " items were replaced.";
+			g_gui.PopupDialog("Notice", msg, wxOK);
+		}
+
 		wxString msg;
 		msg << "Replaced " << result.size() << " items.";
 		g_gui.SetStatusText(msg);
-		g_gui.DestroyLoadBar();
 		g_gui.RefreshView();
 	}
 }
