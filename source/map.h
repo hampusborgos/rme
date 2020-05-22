@@ -213,37 +213,40 @@ inline long long remove_if_TileOnMap(Map& map, RemoveIfType& remove_if)
 }
 
 template <typename RemoveIfType>
-inline long long remove_if_ItemOnMap(Map& map, RemoveIfType& remove_if) {
-	long long done = 0;
-	long long removed = 0;
+inline int64_t RemoveItemOnMap(Map& map, RemoveIfType& condition, bool selectedOnly) {
+	int64_t done = 0;
+	int64_t removed = 0;
 
-	MapIterator tileiter = map.begin();
+	MapIterator it = map.begin();
 	MapIterator end = map.end();
 
-	while(tileiter != end) {
-		Tile* tile = (*tileiter)->get();
+	while(it != end) {
+		++done;
+		Tile* tile = (*it)->get();
+		if(selectedOnly && !tile->isSelected()) {
+			++it;
+			continue;
+		}
 
 		if(tile->ground) {
-			if(remove_if(map, tile->ground, removed, done)) {
+			if(condition(map, tile->ground, removed, done)) {
 				delete tile->ground;
 				tile->ground = nullptr;
 				++removed;
 			}
 		}
 
-		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ) {
-			Item* item = *itemiter;
-
-			if(remove_if(map, item, removed, done)) {
-				itemiter = tile->items.erase(itemiter);
+		for(auto iit = tile->items.begin(); iit != tile->items.end();) {
+			Item* item = *iit;
+			if(condition(map, item, removed, done)) {
+				iit = tile->items.erase(iit);
 				delete item;
 				++removed;
 			}
 			else
-				++itemiter;
+				++iit;
 		}
-		++tileiter;
-		++done;
+		++it;
 	}
 	return removed;
 }

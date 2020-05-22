@@ -76,6 +76,7 @@
     <menu name="$Select">
         <item name="Replace Item" action="REPLACE_ON_SELECTION_ITEM" help="Replace item on selected area."/>
         <item name="Find Item" action="SEARCH_ON_SELECTION_ITEM" help="Find items on selected area."/>
+        <item name="Remove Item" action="REMOVE_ON_SELECTION_ITEM" help="Remove item on selected area."/>
         <separator/>
         <item name="Find $Everything" action="SEARCH_ON_SELECTION_EVERYTHING" help="Find all unique/action/text/container items."/>
         <separator/>

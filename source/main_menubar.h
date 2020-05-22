@@ -58,6 +58,7 @@ namespace MenuBar
 		SEARCH_ON_SELECTION_WRITEABLE,
 		SEARCH_ON_SELECTION_ITEM,
 		REPLACE_ON_SELECTION_ITEM,
+		REMOVE_ON_SELECTION_ITEM,
 		SELECT_MODE_COMPENSATE,
 		SELECT_MODE_CURRENT,
 		SELECT_MODE_LOWER,
@@ -223,6 +224,8 @@ public:
 	void OnSearchForActionOnMap(wxCommandEvent& event);
 	void OnSearchForContainerOnMap(wxCommandEvent& event);
 	void OnSearchForWriteableOnMap(wxCommandEvent& event);
+
+	// Select menu
 	void OnSearchForStuffOnSelection(wxCommandEvent& event);
 	void OnSearchForUniqueOnSelection(wxCommandEvent& event);
 	void OnSearchForActionOnSelection(wxCommandEvent& event);
@@ -230,6 +233,7 @@ public:
 	void OnSearchForWriteableOnSelection(wxCommandEvent& event);
 	void OnSearchForItemOnSelection(wxCommandEvent& event);
 	void OnReplaceItemOnSelection(wxCommandEvent& event);
+	void OnRemoveItemOnSelection(wxCommandEvent& event);
 
 	// Map menu
 	void OnMapEditTowns(wxCommandEvent& event);

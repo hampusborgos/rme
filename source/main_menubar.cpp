@@ -84,6 +84,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SEARCH_ON_SELECTION_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_ITEM, wxITEM_NORMAL, OnSearchForItemOnSelection);
 	MAKE_ACTION(REPLACE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnReplaceItemOnSelection);
+	MAKE_ACTION(REMOVE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnRemoveItemOnSelection);
 	MAKE_ACTION(SELECT_MODE_COMPENSATE, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_LOWER, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_CURRENT, wxITEM_RADIO, OnSelectionTypeChange);
@@ -225,6 +226,23 @@ MainMenuBar::~MainMenuBar()
 	}
 }
 
+namespace OnMapRemoveItems
+{
+	struct RemoveItemCondition
+	{
+		RemoveItemCondition(uint16_t itemId) :
+			itemId(itemId) { }
+
+		uint16_t itemId;
+
+		bool operator()(Map& map, Item* item, int64_t removed, int64_t done) {
+			if(done % 0x8000 == 0)
+				g_gui.SetLoadDone((uint32_t)(100 * done / map.getTileCount()));
+			return item->getID() == itemId && !item->isComplex();
+		}
+	};
+}
+
 void MainMenuBar::EnableItem(MenuBar::ActionID id, bool enable)
 {
 	std::map<MenuBar::ActionID, std::list<wxMenuItem*> >::iterator fi = items.find(id);
@@ -313,6 +331,7 @@ void MainMenuBar::Update()
 	EnableItem(SEARCH_ON_SELECTION_WRITEABLE, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_ITEM, has_selection && is_host);
 	EnableItem(REPLACE_ON_SELECTION_ITEM, has_selection && is_host);
+	EnableItem(REMOVE_ON_SELECTION_ITEM, has_selection && is_host);
 
 	EnableItem(CUT, has_map);
 	EnableItem(COPY, has_map);
@@ -1097,6 +1116,28 @@ void MainMenuBar::OnReplaceItemOnSelection(wxCommandEvent& WXUNUSED(event))
 	}
 }
 
+void MainMenuBar::OnRemoveItemOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	if(!g_gui.IsEditorOpen())
+		return;
+
+	FindItemDialog dialog(frame, "Remove Item on Selection");
+	if(dialog.ShowModal() == wxID_OK) {
+		g_gui.GetCurrentEditor()->actionQueue->clear();
+		g_gui.CreateLoadBar("Searching item on selection to remove...");
+		OnMapRemoveItems::RemoveItemCondition condition(dialog.getResultID());
+		int64_t count = RemoveItemOnMap(g_gui.GetCurrentMap(), condition, true);
+		g_gui.DestroyLoadBar();
+
+		wxString msg;
+		msg << count << " items removed.";
+		g_gui.PopupDialog("Remove Item", msg, wxOK);
+		g_gui.GetCurrentMap().doChange();
+		g_gui.RefreshView();
+	}
+	dialog.Destroy();
+}
+
 void MainMenuBar::OnSelectionTypeChange(wxCommandEvent& WXUNUSED(event))
 {
 	g_settings.setInteger(Config::COMPENSATED_SELECT, IsItemChecked(MenuBar::SELECT_MODE_COMPENSATE));
@@ -1108,7 +1149,6 @@ void MainMenuBar::OnSelectionTypeChange(wxCommandEvent& WXUNUSED(event))
 	else if(IsItemChecked(MenuBar::SELECT_MODE_VISIBLE))
 		g_settings.setInteger(Config::SELECTION_TYPE, SELECT_VISIBLE_FLOORS);
 }
-
 
 void MainMenuBar::OnCopy(wxCommandEvent& WXUNUSED(event))
 {
@@ -1231,22 +1271,6 @@ void MainMenuBar::OnGotoPosition(wxCommandEvent& WXUNUSED(event))
 	dlg.ShowModal();
 }
 
-namespace OnMapRemoveItems
-{
-	struct condition
-	{
-		condition(uint16_t itemid) : itemid(itemid) {}
-		uint16_t itemid;
-
-		bool operator()(Map& map, Item* item, long long removed, long long done){
-			if(done % 0x8000 == 0)
-				g_gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
-
-			return item->getID() == itemid && !item->isComplex();
-		}
-	};
-}
-
 void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 {
 	if(!g_gui.IsEditorOpen())
@@ -1259,19 +1283,19 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 		g_gui.GetCurrentEditor()->selection.clear();
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 
-		OnMapRemoveItems::condition finder(itemid);
+		OnMapRemoveItems::RemoveItemCondition condition(itemid);
 		g_gui.CreateLoadBar("Searching map for items to remove...");
 
-		long long removed = remove_if_ItemOnMap(g_gui.GetCurrentMap(), finder);
+		int64_t count = RemoveItemOnMap(g_gui.GetCurrentMap(), condition, false);
 
 		g_gui.DestroyLoadBar();
 
 		wxString msg;
-		msg << removed << " items deleted.";
+		msg << count << " items deleted.";
 
 		g_gui.PopupDialog("Search completed", msg, wxOK);
-
 		g_gui.GetCurrentMap().doChange();
+		g_gui.RefreshView();
 	}
 	dialog.Destroy();
 }
@@ -1305,15 +1329,13 @@ void MainMenuBar::OnMapRemoveCorpses(wxCommandEvent& WXUNUSED(event))
 		OnMapRemoveCorpses::condition func;
 		g_gui.CreateLoadBar("Searching map for items to remove...");
 
-		long long removed = remove_if_ItemOnMap(g_gui.GetCurrentMap(), func);
+		int64_t count = RemoveItemOnMap(g_gui.GetCurrentMap(), func, false);
 
 		g_gui.DestroyLoadBar();
 
 		wxString msg;
-		msg << removed << " items deleted.";
-
+		msg << count << " items deleted.";
 		g_gui.PopupDialog("Search completed", msg, wxOK);
-
 		g_gui.GetCurrentMap().doChange();
 	}
 }
