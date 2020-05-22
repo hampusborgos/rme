@@ -24,6 +24,7 @@
 #include "raw_brush.h"
 
 BEGIN_EVENT_TABLE(FindItemDialog, wxDialog)
+	EVT_TIMER(wxID_ANY, FindItemDialog::OnInputTimer)
 	EVT_BUTTON(wxID_OK, FindItemDialog::OnClickOK)
 	EVT_BUTTON(wxID_CANCEL, FindItemDialog::OnClickCancel)
 END_EVENT_TABLE()
@@ -32,7 +33,8 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600), wxDEFAULT_DIALOG_STYLE),
 	result_brush(nullptr),
 	result_id(0),
-	only_pickupables(onlyPickupables)
+	only_pickupables(onlyPickupables),
+	input_timer(this)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -430,37 +432,42 @@ void FindItemDialog::RefreshContentsInternal()
 	items_list->Refresh();
 }
 
-void FindItemDialog::OnOptionChange(wxCommandEvent& event)
+void FindItemDialog::OnOptionChange(wxCommandEvent& WXUNUSED(event))
 {
 	setSearchMode((SearchMode)options_radio_box->GetSelection());
 }
 
-void FindItemDialog::OnServerIdChange(wxCommandEvent& event)
+void FindItemDialog::OnServerIdChange(wxCommandEvent& WXUNUSED(event))
 {
 	RefreshContentsInternal();
 }
 
-void FindItemDialog::OnClientIdChange(wxCommandEvent& event)
+void FindItemDialog::OnClientIdChange(wxCommandEvent& WXUNUSED(event))
 {
 	RefreshContentsInternal();
 }
 
-void FindItemDialog::OnText(wxCommandEvent& event)
+void FindItemDialog::OnText(wxCommandEvent& WXUNUSED(event))
+{
+	input_timer.Start(800, true);
+}
+
+void FindItemDialog::OnTypeChange(wxCommandEvent& WXUNUSED(event))
 {
 	RefreshContentsInternal();
 }
 
-void FindItemDialog::OnTypeChange(wxCommandEvent& event)
+void FindItemDialog::OnPropertyChange(wxCommandEvent& WXUNUSED(event))
 {
 	RefreshContentsInternal();
 }
 
-void FindItemDialog::OnPropertyChange(wxCommandEvent& event)
+void FindItemDialog::OnInputTimer(wxTimerEvent& WXUNUSED(event))
 {
 	RefreshContentsInternal();
 }
 
-void FindItemDialog::OnClickOK(wxCommandEvent& event)
+void FindItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	if(items_list->GetItemCount() != 0) {
 		Brush* brush = items_list->GetSelectedBrush();
@@ -472,7 +479,7 @@ void FindItemDialog::OnClickOK(wxCommandEvent& event)
 	}
 }
 
-void FindItemDialog::OnClickCancel(wxCommandEvent& event)
+void FindItemDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 {
 	EndModal(wxID_CANCEL);
 }

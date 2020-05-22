@@ -71,6 +71,7 @@ private:
 	void OnText(wxCommandEvent& event);
 	void OnTypeChange(wxCommandEvent& event);
 	void OnPropertyChange(wxCommandEvent& event);
+	void OnInputTimer(wxTimerEvent& event);
 	void OnClickOK(wxCommandEvent& event);
 	void OnClickCancel(wxCommandEvent& event);
 
@@ -81,6 +82,7 @@ private:
 	wxSpinCtrl* server_id_spin;
 	wxSpinCtrl* client_id_spin;
 	wxTextCtrl* name_text_input;
+	wxTimer input_timer;
 	wxCheckBox* unpassable;
 	wxCheckBox* unmovable;
 	wxCheckBox* block_missiles;
