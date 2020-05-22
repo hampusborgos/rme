@@ -317,9 +317,9 @@ void MainMenuBar::Update()
 	EnableItem(CUT, has_map);
 	EnableItem(COPY, has_map);
 
-	EnableItem(BORDERIZE_SELECTION, has_map);
+	EnableItem(BORDERIZE_SELECTION, has_map && has_selection);
 	EnableItem(BORDERIZE_MAP, is_local);
-	EnableItem(RANDOMIZE_SELECTION, has_map);
+	EnableItem(RANDOMIZE_SELECTION, has_map && has_selection);
 	EnableItem(RANDOMIZE_MAP, is_local);
 
 	EnableItem(GOTO_PREVIOUS_POSITION, has_map);
