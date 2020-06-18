@@ -2434,10 +2434,16 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 	}
 }
 
-void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions)
+bool MapCanvas::floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions)
 {
+	countMaxFills++;
+	if (countMaxFills > (BLOCK_SIZE * 4 * 4)) {
+		countMaxFills = 0;
+		return true;
+	}
+
 	if(x <= 0 || y <= 0 || x >= BLOCK_SIZE || y >= BLOCK_SIZE) {
-		return;
+		return false;
 	}
 
 	processed[getFillIndex(x, y)] = true;
@@ -2445,38 +2451,41 @@ void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, Ground
 	int px = (center.x + x) - (BLOCK_SIZE/2);
 	int py = (center.y + y) - (BLOCK_SIZE/2);
 	if(px <= 0 || py <= 0 || px >= map->getWidth() || py >= map->getHeight()) {
-		return;
+		return false;
 	}
 
 	Tile* tile = map->getTile(px, py, center.z);
 	if((tile && tile->ground && !brush) || (!tile && brush)) {
-		return;
+		return false;
 	}
 
 	if(tile && brush) {
 		GroundBrush* groundBrush = tile->getGroundBrush();
 		if(!groundBrush || groundBrush->getID() != brush->getID()) {
-			return;
+			return false;
 		}
 	}
 
 	positions->push_back(Position(px, py, center.z));
 
+	bool deny = false;
 	if(!processed[getFillIndex(x-1, y)]) {
-		floodFill(map, center, x-1, y, brush, positions);
+		deny = floodFill(map, center, x-1, y, brush, positions);
 	}
 
-	if(!processed[getFillIndex(x, y-1)]) {
-		floodFill(map, center, x, y-1, brush, positions);
+	if(!deny && !processed[getFillIndex(x, y-1)]) {
+		deny = floodFill(map, center, x, y-1, brush, positions);
 	}
 
-	if(!processed[getFillIndex(x+1, y)]) {
-		floodFill(map, center, x+1, y, brush, positions);
+	if(!deny && !processed[getFillIndex(x+1, y)]) {
+		deny = floodFill(map, center, x+1, y, brush, positions);
 	}
 
-	if(!processed[getFillIndex(x, y+1)]) {
-		floodFill(map, center, x, y+1, brush, positions);
+	if(!deny && !processed[getFillIndex(x, y+1)]) {
+		deny = floodFill(map, center, x, y+1, brush, positions);
 	}
+	
+	return deny;
 }
 
 // ============================================================================
