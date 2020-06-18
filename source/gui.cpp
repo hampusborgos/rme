@@ -1179,9 +1179,9 @@ void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
 void GUI::FinishWelcomeDialog() {
     if (welcomeDialog != nullptr) {
         welcomeDialog->Hide();
+		root->Show();
         welcomeDialog->Destroy();
         welcomeDialog = nullptr;
-        root->Show();
     }
 }
 

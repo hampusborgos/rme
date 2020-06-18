@@ -29,6 +29,7 @@ void WelcomeDialog::OnButtonClicked(wxMouseEvent &event) {
         if (button->GetAction() == wxID_PREFERENCES) {
             PreferencesWindow preferences_window(m_welcome_dialog_panel, true);
             preferences_window.ShowModal();
+            m_welcome_dialog_panel->updateInputs();
         } else {
             wxCommandEvent action_event(WELCOME_DIALOG_ACTION);
             if (button->GetAction() == wxID_OPEN) {
@@ -46,6 +47,10 @@ void WelcomeDialog::OnButtonClicked(wxMouseEvent &event) {
             ProcessWindowEvent(action_event);
         }
     }
+}
+
+void WelcomeDialog::OnCheckboxClicked(const wxCommandEvent& event) {
+    g_settings.setInteger(Config::WELCOME_DIALOG, event.GetInt());
 }
 
 void WelcomeDialog::OnRecentItemClicked(wxMouseEvent &event) {
@@ -116,6 +121,20 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     preferences_button->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnButtonClicked, dialog);
 
     Bind(wxEVT_PAINT, &WelcomeDialogPanel::OnPaint, this);
+
+    wxSizer* vertical_sizer = newd wxBoxSizer(wxVERTICAL);
+    wxSizer* horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
+
+    m_show_welcome_window_checkbox = newd wxCheckBox(this, wxID_ANY, "Show this dialog on startup");
+    m_show_welcome_window_checkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
+    m_show_welcome_window_checkbox->Bind(wxEVT_CHECKBOX, &WelcomeDialog::OnCheckboxClicked, dialog);
+    horizontal_sizer->Add(m_show_welcome_window_checkbox, 0, wxALIGN_BOTTOM | wxALL, 10);
+    vertical_sizer->Add(horizontal_sizer, 1, wxEXPAND);
+    SetSizer(vertical_sizer);
+}
+
+void WelcomeDialogPanel::updateInputs() {
+    m_show_welcome_window_checkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
 }
 
 void WelcomeDialogPanel::OnPaint(wxPaintEvent &event) {

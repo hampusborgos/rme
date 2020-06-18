@@ -5,6 +5,8 @@
 
 wxDECLARE_EVENT(WELCOME_DIALOG_ACTION, wxCommandEvent);
 
+class WelcomeDialogPanel;
+
 class WelcomeDialog : public wxDialog
 {
 public:
@@ -13,9 +15,10 @@ public:
             const wxBitmap& rmeLogo,
             const std::vector<wxString> &recentFiles);
     void OnButtonClicked(wxMouseEvent& event);
+    void OnCheckboxClicked(const wxCommandEvent& event);
     void OnRecentItemClicked(wxMouseEvent& event);
 private:
-    wxPanel* m_welcome_dialog_panel;
+    WelcomeDialogPanel* m_welcome_dialog_panel;
 };
 
 class WelcomeDialogPanel : public wxPanel
@@ -29,11 +32,13 @@ public:
             const wxBitmap& rme_logo,
             const std::vector<wxString> &recent_files);
     void OnPaint(wxPaintEvent& event);
+    void updateInputs();
 private:
     wxBitmap m_rme_logo;
     wxString m_title_text;
     wxString m_version_text;
     wxColour m_text_colour;
+    wxCheckBox* m_show_welcome_window_checkbox;
 };
 
 class WelcomeDialogButton : public wxPanel

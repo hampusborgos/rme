@@ -180,11 +180,13 @@ bool Application::OnInit()
     wxIcon icon(rme_icon);
     g_gui.root->SetIcon(icon);
 
-    if (fileToOpen != wxEmptyString) {
-        g_gui.root->Show();
-        g_gui.LoadMap(FileName(fileToOpen));
+	if (fileToOpen != wxEmptyString) {
+		g_gui.root->Show();
+		g_gui.LoadMap(FileName(fileToOpen));
+	} else if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1) {
+		g_gui.ShowWelcomeDialog(icon);
     } else {
-        g_gui.ShowWelcomeDialog(icon);
+		g_gui.root->Show();
     }
 
 	// Set idle event handling mode

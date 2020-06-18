@@ -75,6 +75,11 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	wxStaticText* tmptext;
 
+	show_welcome_dialog_chkbox = newd wxCheckBox(general_page, wxID_ANY, "Show welcome dialog on startup");
+	show_welcome_dialog_chkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
+	show_welcome_dialog_chkbox->SetToolTip("Show welcome dialog when starting the editor.");
+	sizer->Add(show_welcome_dialog_chkbox, 0, wxLEFT | wxTOP, 5);
+
 	always_make_backup_chkbox = newd wxCheckBox(general_page, wxID_ANY, "Always make map backup");
 	always_make_backup_chkbox->SetValue(g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP) == 1);
 	sizer->Add(always_make_backup_chkbox, 0, wxLEFT | wxTOP, 5);
@@ -580,6 +585,7 @@ void PreferencesWindow::Apply()
 {
 	bool must_restart = false;
 	// General
+	g_settings.setInteger(Config::WELCOME_DIALOG, show_welcome_dialog_chkbox->GetValue());
 	g_settings.setInteger(Config::ALWAYS_MAKE_BACKUP, always_make_backup_chkbox->GetValue());
 	g_settings.setInteger(Config::USE_UPDATER, update_check_on_startup_chkbox->GetValue());
 	g_settings.setInteger(Config::ONLY_ONE_INSTANCE, only_one_instance_chkbox->GetValue());
