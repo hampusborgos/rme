@@ -31,10 +31,10 @@ END_EVENT_TABLE()
 
 FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onlyPickupables/* = false*/) :
 	wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxSize(800, 600), wxDEFAULT_DIALOG_STYLE),
+	input_timer(this),
 	result_brush(nullptr),
 	result_id(0),
-	only_pickupables(onlyPickupables),
-	input_timer(this)
+	only_pickupables(onlyPickupables)
 {
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 

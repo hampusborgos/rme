@@ -14,9 +14,9 @@ public:
             const wxString& versionText,
             const wxBitmap& rmeLogo,
             const std::vector<wxString> &recentFiles);
-    void OnButtonClicked(wxMouseEvent& event);
+    void OnButtonClicked(const wxMouseEvent& event);
     void OnCheckboxClicked(const wxCommandEvent& event);
-    void OnRecentItemClicked(wxMouseEvent& event);
+    void OnRecentItemClicked(const wxMouseEvent& event);
 private:
     WelcomeDialogPanel* m_welcome_dialog_panel;
 };
@@ -31,23 +31,24 @@ public:
             const wxColour& base_colour,
             const wxBitmap& rme_logo,
             const std::vector<wxString> &recent_files);
-    void OnPaint(wxPaintEvent& event);
+    void OnPaint(const wxPaintEvent& event);
     void updateInputs();
 private:
     wxBitmap m_rme_logo;
     wxString m_title_text;
     wxString m_version_text;
     wxColour m_text_colour;
-    wxCheckBox* m_show_welcome_window_checkbox;
+    wxColour m_background_colour;
+    wxCheckBox* m_show_welcome_dialog_checkbox;
 };
 
 class WelcomeDialogButton : public wxPanel
 {
 public:
     WelcomeDialogButton(wxWindow* parent, const wxPoint& pos, const wxSize& size, const wxColour& base_colour, const wxString &text);
-    void OnPaint(wxPaintEvent& event);
-    void OnMouseEnter(wxMouseEvent& event);
-    void OnMouseLeave(wxMouseEvent& event);
+    void OnPaint(const wxPaintEvent& event);
+    void OnMouseEnter(const wxMouseEvent& event);
+    void OnMouseLeave(const wxMouseEvent& event);
     wxStandardID GetAction() { return m_action; };
     void SetAction(wxStandardID action) { m_action = action; };
 private:
@@ -56,6 +57,7 @@ private:
     wxColour m_text_colour;
     wxColour m_background;
     wxColour m_background_hover;
+    bool m_is_hover;
 };
 
 class RecentMapsPanel : public wxPanel
@@ -73,9 +75,9 @@ class RecentItem : public wxPanel
 {
 public:
     RecentItem(wxWindow* parent, const wxPoint& pos, const wxSize& size, const wxColour& base_colour, const wxString &item_name);
-    void OnPaint(wxPaintEvent& event);
-    void OnMouseEnter(wxMouseEvent& event);
-    void OnMouseLeave(wxMouseEvent& event);
+    void OnPaint(const wxPaintEvent& event);
+    void OnMouseEnter(const wxMouseEvent& event);
+    void OnMouseLeave(const wxMouseEvent& event);
     wxString GetText() { return m_item_text; };
 private:
     wxColour m_base_colour;
@@ -83,6 +85,7 @@ private:
     wxColour m_background;
     wxColour m_background_hover;
     wxString m_item_text;
+    bool m_is_hover;
 };
 
 #endif //WELCOME_DIALOG_H

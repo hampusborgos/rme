@@ -1758,6 +1758,8 @@ void MainMenuBar::OnToolbars(wxCommandEvent& event)
 			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_STANDARD, event.IsChecked());
 			break;
+	    default:
+	        break;
 	}
 }
 
