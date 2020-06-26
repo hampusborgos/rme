@@ -313,6 +313,9 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 	int start_x, start_y;
 	static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
 
+	screen_x *= GetContentScaleFactor();
+	screen_y *= GetContentScaleFactor();
+
 	if(screen_x < 0) {
 		*map_x = (start_x + screen_x) / TILE_SIZE;
 	} else {
@@ -1468,8 +1471,8 @@ void MapCanvas::OnWheel(wxMouseEvent& event)
 		static_cast<MapWindow*>(GetParent())->GetViewSize(&screensize_x, &screensize_y);
 
 		// This took a day to figure out!
-		int scroll_x = int(screensize_x * diff * (std::max(cursor_x, 1) / double(screensize_x)));
-		int scroll_y = int(screensize_y * diff * (std::max(cursor_y, 1) / double(screensize_y)));
+		int scroll_x = int(screensize_x * diff * (std::max(cursor_x, 1) / double(screensize_x))) * GetContentScaleFactor();
+		int scroll_y = int(screensize_y * diff * (std::max(cursor_y, 1) / double(screensize_y))) * GetContentScaleFactor();
 
 		static_cast<MapWindow*>(GetParent())->ScrollRelative(-scroll_x, -scroll_y);
 	}

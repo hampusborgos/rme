@@ -88,6 +88,8 @@ void MapWindow::GetViewStart(int* x, int* y)
 void MapWindow::GetViewSize(int* x, int* y)
 {
 	canvas->GetSize(x, y);
+	*x *= canvas->GetContentScaleFactor();
+	*y *= canvas->GetContentScaleFactor();
 }
 
 void MapWindow::FitToMap()
