@@ -18,7 +18,7 @@ WelcomeDialog::WelcomeDialog(const wxString& title_text,
                                                      title_text,
                                                      version_text,
                                                      base_colour,
-                                                     rme_logo,
+                                                     wxBitmap(rme_logo.ConvertToImage().Scale(FromDIP(48), FromDIP(48))),
                                                      recent_files);
 }
 
@@ -156,14 +156,14 @@ void WelcomeDialogPanel::OnPaint(const wxPaintEvent &event) {
     dc.DrawBitmap(m_rme_logo, wxPoint(GetSize().x / 4 - m_rme_logo.GetWidth() / 2, FromDIP(40)), true);
 
     wxFont font = GetFont();
-    font.SetPointSize(21);
+    font.SetPointSize(18);
     dc.SetFont(font);
     wxSize header_size = dc.GetTextExtent(m_title_text);
     wxSize header_point(GetSize().x / 4, GetSize().y / 4);
     dc.SetTextForeground(m_text_colour);
     dc.DrawText(m_title_text, wxPoint(header_point.x - header_size.x / 2, header_point.y));
 
-    dc.SetFont(GetFont().Larger());
+    dc.SetFont(GetFont());
     wxSize version_size = dc.GetTextExtent(m_version_text);
     dc.SetTextForeground(m_text_colour.ChangeLightness(110));
     dc.DrawText(m_version_text, wxPoint(header_point.x - version_size.x / 2, header_point.y + header_size.y + 10));
