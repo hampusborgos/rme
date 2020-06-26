@@ -9,7 +9,7 @@ WelcomeDialog::WelcomeDialog(const wxString &title_text,
                              const wxString &version_text,
                              const wxBitmap &rme_logo,
                              const std::vector<wxString> &recent_files)
-        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 450)) {
+        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 480)) {
     Centre();
     wxColour base_colour = wxColor(250, 250, 250);
     m_welcome_dialog_panel = newd WelcomeDialogPanel(this,
@@ -81,11 +81,10 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
 
     auto *recent_maps_panel = newd RecentMapsPanel(this,
                                                    dialog,
-                                                   wxDefaultPosition,
-                                                   wxSize(size.x / 2, size.y),
                                                    base_colour,
                                                    recent_files);
-    recent_maps_panel->SetBackgroundColour(base_colour.ChangeLightness(99));
+    recent_maps_panel->SetMaxSize(wxSize(size.x / 2, size.y));
+    recent_maps_panel->SetBackgroundColour(base_colour.ChangeLightness(98));
 
     wxSize button_size(150, 35);
     wxColour button_base_colour = base_colour.ChangeLightness(90);
@@ -110,8 +109,6 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
                                                      "Open");
     open_map_button->SetAction(wxID_OPEN);
     open_map_button->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnButtonClicked, dialog);
-
-    wxPoint preferences_button_point(button_pos_center_x, open_map_button_point.y + button_size.y + 10);
     auto *preferences_button = newd WelcomeDialogButton(this,
                                                         wxDefaultPosition,
                                                         button_size,
@@ -122,15 +119,15 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
 
     Bind(wxEVT_PAINT, &WelcomeDialogPanel::OnPaint, this);
 
-    wxSizer* rootSizer = newd wxBoxSizer(wxHORIZONTAL);
-    wxSizer* buttons_sizer = newd wxBoxSizer(wxVERTICAL);
+    wxSizer *rootSizer = newd wxBoxSizer(wxHORIZONTAL);
+    wxSizer *buttons_sizer = newd wxBoxSizer(wxVERTICAL);
     buttons_sizer->AddSpacer(size.y / 2);
     buttons_sizer->Add(new_map_button, 0, wxALIGN_CENTER | wxTOP, 10);
     buttons_sizer->Add(open_map_button, 0, wxALIGN_CENTER | wxTOP, 10);
     buttons_sizer->Add(preferences_button, 0, wxALIGN_CENTER | wxTOP, 10);
 
-    wxSizer* vertical_sizer = newd wxBoxSizer(wxVERTICAL);
-    wxSizer* horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
+    wxSizer *vertical_sizer = newd wxBoxSizer(wxVERTICAL);
+    wxSizer *horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
 
     m_show_welcome_dialog_checkbox = newd wxCheckBox(this, wxID_ANY, "Show this dialog on startup");
     m_show_welcome_dialog_checkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
@@ -214,69 +211,54 @@ void WelcomeDialogButton::OnMouseLeave(const wxMouseEvent &event) {
 
 RecentMapsPanel::RecentMapsPanel(wxWindow *parent,
                                  WelcomeDialog *dialog,
-                                 const wxPoint &pos,
-                                 const wxSize &size,
                                  const wxColour &base_colour,
                                  const std::vector<wxString> &recent_files)
-        : wxPanel(parent, wxID_ANY, pos, size) {
-    int height = 40;
-    int position = 0;
+        : wxPanel(parent, wxID_ANY) {
+    wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
     for (const wxString &file : recent_files) {
-        auto *recent_item = newd RecentItem(this, wxPoint(0, position), wxSize(size.x, height), base_colour, file);
+        auto *recent_item = newd RecentItem(this, base_colour, file);
+        sizer->Add(recent_item, 0, wxEXPAND);
         recent_item->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnRecentItemClicked, dialog);
-        position += height;
     }
+    SetSizerAndFit(sizer);
 }
 
 RecentItem::RecentItem(wxWindow *parent,
-                       const wxPoint &pos,
-                       const wxSize &size,
                        const wxColour &base_colour,
                        const wxString &item_name)
-        : wxPanel(parent, wxID_ANY, pos, size),
-          m_base_colour(base_colour),
+        : wxPanel(parent, wxID_ANY),
           m_text_colour(base_colour.ChangeLightness(40)),
-          m_background(base_colour.ChangeLightness(96)),
-          m_background_hover(base_colour.ChangeLightness(93)),
-          m_item_text(item_name),
-          m_is_hover(false) {
-
-    Bind(wxEVT_PAINT, &RecentItem::OnPaint, this);
+          m_text_colour_hover(base_colour.ChangeLightness(20)),
+          m_item_text(item_name) {
+    SetBackgroundColour(base_colour.ChangeLightness(95));
+    m_title = newd wxStaticText(this, wxID_ANY, wxFileNameFromPath(m_item_text));
+    m_title->SetFont(GetFont().Bold());
+    m_title->SetForegroundColour(m_text_colour);
+    m_title->SetToolTip(m_item_text);
+    m_file_path = newd wxStaticText(this, wxID_ANY, m_item_text, wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_START);
+    m_file_path->SetToolTip(m_item_text);
+    m_file_path->SetFont(GetFont().Smaller());
+    m_file_path->SetForegroundColour(m_text_colour);
+    wxBoxSizer *mainSizer = newd wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *sizer = newd wxBoxSizer(wxVERTICAL);
+    sizer->Add(m_title);
+    sizer->Add(m_file_path, 1, wxTOP, 2);
+    mainSizer->Add(sizer, 0, wxEXPAND | wxALL, 8);
     Bind(wxEVT_ENTER_WINDOW, &RecentItem::OnMouseEnter, this);
     Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseLeave, this);
-}
-
-void RecentItem::OnPaint(const wxPaintEvent &event) {
-    wxPaintDC dc(this);
-
-    wxColour colour = m_is_hover ? m_background_hover : m_background;
-    dc.SetBrush(wxBrush(colour));
-    dc.SetPen(wxPen(colour));
-    dc.DrawRectangle(wxRect(wxPoint(0, 0), GetClientSize()));
-
-    dc.SetPen(wxPen(m_base_colour.ChangeLightness(99), 1));
-    dc.DrawLine(0, 0, GetSize().x, 0);
-
-    dc.SetFont(GetFont());
-    dc.SetTextForeground(m_text_colour);
-    wxSize text_size = dc.GetTextExtent(m_item_text);
-
-    int x, y = GetSize().y / 2 - text_size.y / 2, padding = GetSize().y / 4;
-    if (text_size.x + padding * 2 > GetSize().x) {
-        x = GetSize().x - text_size.x - padding;
-    } else {
-        x = padding;
-    }
-
-    dc.DrawText(m_item_text, wxPoint(x, y));
+    m_title->Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseEnter, this);
+    m_file_path->Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseEnter, this);
+    SetSizerAndFit(mainSizer);
 }
 
 void RecentItem::OnMouseEnter(const wxMouseEvent &event) {
-    m_is_hover = true;
+    m_title->SetForegroundColour(m_text_colour_hover);
+    m_file_path->SetForegroundColour(m_text_colour_hover);
     Refresh();
 }
 
 void RecentItem::OnMouseLeave(const wxMouseEvent &event) {
-    m_is_hover = false;
+    m_title->SetForegroundColour(m_text_colour);
+    m_file_path->SetForegroundColour(m_text_colour);
     Refresh();
 }
