@@ -5,11 +5,12 @@
 
 wxDEFINE_EVENT(WELCOME_DIALOG_ACTION, wxCommandEvent);
 
-WelcomeDialog::WelcomeDialog(const wxString &title_text,
+WelcomeDialog::WelcomeDialog(const wxString& title_text,
                              const wxString &version_text,
+                             const wxSize& size,
                              const wxBitmap &rme_logo,
                              const std::vector<wxString> &recent_files)
-        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, wxSize(800, 480)) {
+        : wxDialog(nullptr, wxID_ANY, "", wxDefaultPosition, size) {
     Centre();
     wxColour base_colour = wxColor(250, 250, 250);
     m_welcome_dialog_panel = newd WelcomeDialogPanel(this,
@@ -86,7 +87,7 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     recent_maps_panel->SetMaxSize(wxSize(size.x / 2, size.y));
     recent_maps_panel->SetBackgroundColour(base_colour.ChangeLightness(98));
 
-    wxSize button_size(150, 35);
+    wxSize button_size = FromDIP(wxSize(150, 35));
     wxColour button_base_colour = base_colour.ChangeLightness(90);
 
     int button_pos_center_x = size.x / 4 - button_size.x / 2;
@@ -101,7 +102,6 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     new_map_button->SetAction(wxID_NEW);
     new_map_button->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnButtonClicked, dialog);
 
-    wxPoint open_map_button_point(button_pos_center_x, newMapButtonPoint.y + button_size.y + 10);
     auto *open_map_button = newd WelcomeDialogButton(this,
                                                      wxDefaultPosition,
                                                      button_size,
@@ -122,9 +122,9 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     wxSizer *rootSizer = newd wxBoxSizer(wxHORIZONTAL);
     wxSizer *buttons_sizer = newd wxBoxSizer(wxVERTICAL);
     buttons_sizer->AddSpacer(size.y / 2);
-    buttons_sizer->Add(new_map_button, 0, wxALIGN_CENTER | wxTOP, 10);
-    buttons_sizer->Add(open_map_button, 0, wxALIGN_CENTER | wxTOP, 10);
-    buttons_sizer->Add(preferences_button, 0, wxALIGN_CENTER | wxTOP, 10);
+    buttons_sizer->Add(new_map_button, 0, wxALIGN_CENTER | wxTOP, FromDIP(10));
+    buttons_sizer->Add(open_map_button, 0, wxALIGN_CENTER | wxTOP, FromDIP(10));
+    buttons_sizer->Add(preferences_button, 0, wxALIGN_CENTER | wxTOP, FromDIP(10));
 
     wxSizer *vertical_sizer = newd wxBoxSizer(wxVERTICAL);
     wxSizer *horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -133,7 +133,7 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     m_show_welcome_dialog_checkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
     m_show_welcome_dialog_checkbox->Bind(wxEVT_CHECKBOX, &WelcomeDialog::OnCheckboxClicked, dialog);
     m_show_welcome_dialog_checkbox->SetBackgroundColour(m_background_colour);
-    horizontal_sizer->Add(m_show_welcome_dialog_checkbox, 0, wxALIGN_BOTTOM | wxALL, 10);
+    horizontal_sizer->Add(m_show_welcome_dialog_checkbox, 0, wxALIGN_BOTTOM | wxALL, FromDIP(10));
     vertical_sizer->Add(buttons_sizer, 1, wxEXPAND);
     vertical_sizer->Add(horizontal_sizer, 1, wxEXPAND);
 
@@ -153,7 +153,7 @@ void WelcomeDialogPanel::OnPaint(const wxPaintEvent &event) {
     dc.SetPen(wxPen(m_background_colour));
     dc.DrawRectangle(wxRect(wxPoint(0, 0), GetClientSize()));
 
-    dc.DrawBitmap(m_rme_logo, wxPoint(GetSize().x / 4 - m_rme_logo.GetWidth() / 2, 40), true);
+    dc.DrawBitmap(m_rme_logo, wxPoint(GetSize().x / 4 - m_rme_logo.GetWidth() / 2, FromDIP(40)), true);
 
     wxFont font = GetFont();
     font.SetPointSize(21);
@@ -243,8 +243,8 @@ RecentItem::RecentItem(wxWindow *parent,
     wxBoxSizer *mainSizer = newd wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer *sizer = newd wxBoxSizer(wxVERTICAL);
     sizer->Add(m_title);
-    sizer->Add(m_file_path, 1, wxTOP, 2);
-    mainSizer->Add(sizer, 0, wxEXPAND | wxALL, 8);
+    sizer->Add(m_file_path, 1, wxTOP, FromDIP(2));
+    mainSizer->Add(sizer, 0, wxEXPAND | wxALL, FromDIP(8));
     Bind(wxEVT_ENTER_WINDOW, &RecentItem::OnMouseEnter, this);
     Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseLeave, this);
     m_title->Bind(wxEVT_LEFT_UP, &RecentItem::PropagateItemClicked, this);

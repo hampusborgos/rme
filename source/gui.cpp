@@ -1170,7 +1170,7 @@ void GUI::DestroyLoadBar()
 
 void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
     std::vector<wxString> recent_files = root->GetRecentFiles();
-    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, icon, recent_files);
+    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, root->FromDIP(wxSize(800, 480)), icon, recent_files);
     welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
     welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
     welcomeDialog->Show();

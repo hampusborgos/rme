@@ -12,6 +12,7 @@ class WelcomeDialog : public wxDialog
 public:
     WelcomeDialog(const wxString& titleText,
             const wxString& versionText,
+            const wxSize& size,
             const wxBitmap& rmeLogo,
             const std::vector<wxString> &recentFiles);
     void OnButtonClicked(const wxMouseEvent& event);
