@@ -149,6 +149,7 @@ public:
 
 	void ShowWelcomeDialog(const wxBitmap &icon);
 	void FinishWelcomeDialog();
+    bool IsWelcomeDialogShown();
 
 	/**
 	 * Destroys (hides) the current loading bar.

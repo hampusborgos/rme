@@ -165,8 +165,8 @@ bool Application::OnInit()
     std::string error;
     StringVector warnings;
 
-    wxString fileToOpen = wxEmptyString;
-    ParseCommandLineMap(fileToOpen);
+    m_file_to_open = wxEmptyString;
+    ParseCommandLineMap(m_file_to_open);
 
     g_gui.root = newd MainFrame(__W_RME_APPLICATION_NAME__, wxDefaultPosition, wxSize(700,500));
 	SetTopWindow(g_gui.root);
@@ -180,13 +180,10 @@ bool Application::OnInit()
     wxIcon icon(rme_icon);
     g_gui.root->SetIcon(icon);
 
-	if (fileToOpen != wxEmptyString) {
-		g_gui.root->Show();
-		g_gui.LoadMap(FileName(fileToOpen));
-	} else if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1) {
-		g_gui.ShowWelcomeDialog(icon);
+    if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1 && m_file_to_open == wxEmptyString) {
+        g_gui.ShowWelcomeDialog(icon);
     } else {
-		g_gui.root->Show();
+        g_gui.root->Show();
     }
 
 	// Set idle event handling mode
@@ -265,8 +262,29 @@ bool Application::OnInit()
 			}
 		}
 	}
-
+    // Keep track of first event loop entry
+    m_startup = true;
 	return true;
+}
+
+void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
+
+    //First startup?
+    if (!m_startup)
+        return;
+    m_startup = false;
+
+    //Don't try to create a map if we didn't load the client map.
+    if(ClientVersion::getLatestVersion() == nullptr)
+        return;
+
+    //Open a map.
+    if (m_file_to_open != wxEmptyString) {
+        g_gui.LoadMap(FileName(m_file_to_open));
+    } else if (!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
+        // You generally don't want to save this map...
+        g_gui.GetCurrentEditor()->map.clearChanges();
+    }
 }
 
 void Application::MacOpenFiles(const wxArrayString& fileNames)

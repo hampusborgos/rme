@@ -1185,6 +1185,10 @@ void GUI::FinishWelcomeDialog() {
     }
 }
 
+bool GUI::IsWelcomeDialogShown() {
+    return welcomeDialog != nullptr && welcomeDialog->IsShown();
+}
+
 void GUI::OnWelcomeDialogClosed(wxCloseEvent &event)
 {
     welcomeDialog->Destroy();
