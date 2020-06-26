@@ -132,6 +132,7 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     m_show_welcome_dialog_checkbox = newd wxCheckBox(this, wxID_ANY, "Show this dialog on startup");
     m_show_welcome_dialog_checkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
     m_show_welcome_dialog_checkbox->Bind(wxEVT_CHECKBOX, &WelcomeDialog::OnCheckboxClicked, dialog);
+    m_show_welcome_dialog_checkbox->SetBackgroundColour(m_background_colour);
     horizontal_sizer->Add(m_show_welcome_dialog_checkbox, 0, wxALIGN_BOTTOM | wxALL, 10);
     vertical_sizer->Add(buttons_sizer, 1, wxEXPAND);
     vertical_sizer->Add(horizontal_sizer, 1, wxEXPAND);
@@ -246,19 +247,33 @@ RecentItem::RecentItem(wxWindow *parent,
     mainSizer->Add(sizer, 0, wxEXPAND | wxALL, 8);
     Bind(wxEVT_ENTER_WINDOW, &RecentItem::OnMouseEnter, this);
     Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseLeave, this);
-    m_title->Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseEnter, this);
-    m_file_path->Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseEnter, this);
+    m_title->Bind(wxEVT_LEFT_UP, &RecentItem::PropagateItemClicked, this);
+    m_file_path->Bind(wxEVT_LEFT_UP, &RecentItem::PropagateItemClicked, this);
     SetSizerAndFit(mainSizer);
 }
 
+void RecentItem::PropagateItemClicked(wxMouseEvent& event) {
+    event.ResumePropagation(1);
+    event.SetEventObject(this);
+    event.Skip();
+}
+
 void RecentItem::OnMouseEnter(const wxMouseEvent &event) {
-    m_title->SetForegroundColour(m_text_colour_hover);
-    m_file_path->SetForegroundColour(m_text_colour_hover);
-    Refresh();
+    if (GetScreenRect().Contains(ClientToScreen(event.GetPosition()))
+        && m_title->GetForegroundColour() != m_text_colour_hover) {
+        m_title->SetForegroundColour(m_text_colour_hover);
+        m_file_path->SetForegroundColour(m_text_colour_hover);
+        m_title->Refresh();
+        m_file_path->Refresh();
+    }
 }
 
 void RecentItem::OnMouseLeave(const wxMouseEvent &event) {
-    m_title->SetForegroundColour(m_text_colour);
-    m_file_path->SetForegroundColour(m_text_colour);
-    Refresh();
+    if (!GetScreenRect().Contains(ClientToScreen(event.GetPosition()))
+        && m_title->GetForegroundColour() != m_text_colour) {
+        m_title->SetForegroundColour(m_text_colour);
+        m_file_path->SetForegroundColour(m_text_colour);
+        m_title->Refresh();
+        m_file_path->Refresh();
+    }
 }

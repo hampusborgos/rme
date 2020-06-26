@@ -75,6 +75,7 @@ public:
     RecentItem(wxWindow* parent, const wxColour& base_colour, const wxString &item_name);
     void OnMouseEnter(const wxMouseEvent& event);
     void OnMouseLeave(const wxMouseEvent& event);
+    void PropagateItemClicked(wxMouseEvent& event);
     wxString GetText() { return m_item_text; };
 private:
     wxColour m_text_colour;
