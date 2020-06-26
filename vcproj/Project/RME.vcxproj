@@ -200,7 +200,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)..\dependencies\vs\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;__RELEASE__;WXUSINGDLL;wxMSVC_VERSION_AUTO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;__RELEASE__;WXUSINGDLL;wxMSVC_VERSION_AUTO;__SNAPSHOT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -209,6 +209,7 @@
       <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BufferSecurityCheck>false</BufferSecurityCheck>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;archive.lib;glut32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -231,7 +232,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(SolutionDir)..\dependencies\vs\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;__RELEASE__;WXUSINGDLL;wxMSVC_VERSION_AUTO;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;__RELEASE__;WXUSINGDLL;wxMSVC_VERSION_AUTO;__SNAPSHOT__;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -243,6 +244,7 @@
       <AdditionalOptions>-Zm114 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;WS2_32.lib;archive.lib;glut64.lib;%(AdditionalDependencies)</AdditionalDependencies>

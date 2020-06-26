@@ -1373,6 +1373,13 @@ void GUI::SetTitle(wxString title)
 	} else {
 		g_gui.root->SetTitle(wxString("Remere's Map Editor BETA") << TITLE_APPEND);
 	}
+#elif __SNAPSHOT__
+	if (title != "") {
+		g_gui.root->SetTitle(title << " - Remere's Map Editor - SNAPSHOT" << TITLE_APPEND);
+	}
+	else {
+		g_gui.root->SetTitle(wxString("Remere's Map Editor - SNAPSHOT") << TITLE_APPEND);
+	}
 #else
 	if(!title.empty()) {
 		g_gui.root->SetTitle(title << " - Remere's Map Editor" << TITLE_APPEND);

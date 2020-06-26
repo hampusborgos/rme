@@ -25,8 +25,8 @@
 // Version info
 // xxyyzzt (major, minor, subversion)
 #define __RME_VERSION_MAJOR__      3
-#define __RME_VERSION_MINOR__      6
-#define __RME_SUBVERSION__         1
+#define __RME_VERSION_MINOR__      7
+#define __RME_SUBVERSION__         0
 
 #define __LIVE_NET_VERSION__       5
 
@@ -43,6 +43,9 @@
 #ifdef __EXPERIMENTAL__
 #   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__) + " BETA")
 #   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__ << " BETA")
+#elif __SNAPSHOT__
+#   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__) + " - SNAPSHOT")
+#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__ << " - SNAPSHOT")
 #else
 #   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__))
 #   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__)
