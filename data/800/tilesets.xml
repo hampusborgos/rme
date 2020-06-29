@@ -71,11 +71,11 @@
 			<item id="958"/>
 			<item id="965"/>
 			<item id="966"/>
+			<item id="491"/>
+			<item id="492"/>
 			<item id="1284"/>
 			<item id="1509"/>
 			<item id="194"/>
-			<item id="464"/>
-			<item id="466"/>
 			<item id="4595"/>
 			<item id="4608"/>
 			<item fromid="4609" toid="4625"/>
@@ -83,6 +83,46 @@
 			<item fromid="4691" toid="4712"/>
 			<item fromid="4749" toid="4759"/>
 			<item fromid="4820" toid="4825"/>
+			<item fromid="416" toid="422"/>
+			<item fromid="424" toid="426"/>
+			<item fromid="446" toid="456"/>			
+			<item id="465"/>
+			<item id="467"/>
+			<item fromid="471" toid="474"/>
+			<item fromid="599" toid="605"/>
+			<item fromid="618" toid="629"/>
+			<item fromid="709" toid="711"/>
+			<item id="3139"/>
+			<item fromid="3152" toid="3187"/>
+			<item fromid="3190" toid="3217"/>
+			<item fromid="3264" toid="3265"/>
+			<item id="3348"/>
+			<item fromid="4405" toid="4455"/>
+			<item fromid="4526" toid="4541"/>
+			<item fromid="4566" toid="4579"/>
+			<item fromid="5711" toid="5726"/>
+			<item fromid="5814" toid="5815"/>
+			<item id="6172"/>
+			<item id="6210"/>
+			<item id="6213"/>
+			<item id="6353"/>
+			<item id="6389"/>
+			<item fromid="6580" toid="6608"/>
+			<item fromid="6683" toid="6686"/>
+			<item fromid="6804" toid="6809"/>
+			<item id="6838"/>
+			<item id="6869"/>
+			<item id="6925"/>
+			<item id="6967"/>
+			<item fromid="7062" toid="7066"/>
+			<item id="7200"/>
+			<item fromid="7236" toid="7237"/>
+			<item id="7272"/>
+			<item id="7348"/>
+			<item fromid="7350" toid="7358"/>
+			<item id="3258"/>
+			<item id="3263"/>
+			
 		</raw>
 	</tileset>
 	
@@ -116,14 +156,17 @@
 			<brush name="tar pit"/>
 			<brush name="white gravel"/>
 			<brush name="loose gravel"/>
+			<brush name="loose gravel (brown)"/>
 			<brush name="mountain ground"/>
 			<brush name="mountain top ground"/>
-			<brush name="rocky ground"/>
+			<brush name="rocky ground (inner)"/>
+			<brush name="rocky ground (outer)"/>
 			<brush name="frozen mud"/>
 			<brush item="3311"/>
 		</terrain>
 		<doodad>
 			<brush name="mossy wall"/>
+			<brush name="mountain moss"/>
 			<brush name="green fungi"/>
 			<brush name="plant wall"/>
 			<brush name="grass tufts"/>
@@ -211,6 +254,9 @@
 			<brush name="lava"/>
 			<brush name="melting ground"/>
 			<brush name="void"/>
+			<brush name="fiery wall" after="rock wall"/>
+			<brush name="metal wall" after="rock wall"/>
+			<brush name="bone wall" after="rock wall"/>
 		</terrain>
 		<raw>
 			<item fromid="101"/>
@@ -248,7 +294,8 @@
 			<brush name="white gravel"/>
 			<brush name="mountain ground"/>
 			<brush name="mountain top ground"/>
-			<brush name="rocky ground"/>
+			<brush name="rocky ground (outer)"/>
+			<brush name="rocky ground (inner)"/>
 			<brush name="frozen mud"/>
 			<brush name="fur carpet"/>
 		</terrain>
@@ -264,6 +311,7 @@
 		<terrain>
 			<brush name="stone floor"/>
 			<brush name="cobblestone"/>
+			<brush name="brown cobblestone"/>
 			<brush name="grassy cobblestone"/>
 			<brush name="lawn"/>
 			<brush name="wooden floor"/>
@@ -293,6 +341,7 @@
 			<brush name="brick wall"/>
 			<brush name="brick wall arch"/>
 			<brush name="stone wall"/>
+			<brush name="stone archway"/>
 			<brush name="rock wall"/>
 			<brush name="wood wall"/>
 			<brush name="egypt wall"/>
@@ -306,6 +355,28 @@
 			<brush name="ornamented low stone-wooden wall"/>
 			<brush name="high stone-wooden wall"/>
 			<brush name="ornamented high stone-wooden wall"/>
+			<brush name="frozen wall"/>
+			<brush name="bamboo wall"/>
+			<brush name="bone wall"/>
+			<brush name="jungle stone wall ornamented"/>
+			
+			<brush name="paravent wall" after="rock wall"/>
+			<brush name="fiery wall" after="rock wall"/>
+			<brush name="jungle stone wall" after="rock wall"/>
+			<brush name="jungle stone wall ornamented" after="rock wall"/>
+			<brush name="metal wall" after="rock wall"/>
+			<brush name="bone wall" after="rock wall"/>
+			<brush name="bamboo wall" after="rock wall"/>
+			<brush name="thin bamboo wall" after="rock wall"/>
+			<brush name="grass wall" after="rock wall"/>
+			-- railings --
+			<brush name="marble railing" after="dark fence"/>
+			<brush name="ornamented marble railing" after="dark fence"/>
+			<brush name="pillared marble railing" after="dark fence"/>
+			<brush name="stone railing" after="dark fence"/>
+			<brush name="ornamented sandstone railing" after="dark fence"/>
+			<brush name="sandstone railing" after="dark fence"/>
+			<brush name="jungle stone railing" after="dark fence"/>
 			
 			<brush name="fence"/>
 			<brush name="dark fence"/>
@@ -505,6 +576,9 @@
 			<brush name="blue carpet"/>
 			<brush name="green carpet"/>
 			<brush name="brown carpet"/>
+			-- other --
+			<brush name="distillery"/>
+			
 		</doodad>
 		<raw>
 			<item fromid="1602" toid="1808"/>
@@ -622,6 +696,25 @@
 			<item fromid="5046"/>
 			<item fromid="5055" toid="5056"/>
 			<item fromid="5074" toid="5079"/>
+			<item fromid="3310" />
+			<item fromid="3689" toid="3696"/>
+			<item fromid="3743" toid="3744"/>
+			<item fromid="3844" toid="3851"/>
+			<item fromid="3867" toid="3873"/>
+			<item fromid="3882" toid="3900"/>
+			<item fromid="3977" toid="3981"/>
+			<item fromid="4404" />
+			<item fromid="4875" />
+			<item fromid="5025" toid="5044"/>
+			<item fromid="5332" toid="5361"/>
+			<item fromid="5402" toid="5404"/>
+			<item fromid="5472" toid="5477"/>
+			<item fromid="5480" toid="5482"/>
+			<item fromid="5496" toid="5503"/>
+			<item fromid="5505" toid="5514"/>
+			<item fromid="5544" toid="5546"/>
+			<item fromid="5547" toid="5552"/>
+			<item fromid="5598" toid="5613"/>
 		</raw>
 	</tileset>
 
@@ -647,6 +740,9 @@
 			<item id="1903"/>
 			<item id="1904"/>
 			<item id="1905"/>
+			<item fromid="1900" toid="1902"/>
+			<item fromid="2025" toid="2030"/>
+			<item fromid="7137" toid="7139"/>
 		</raw>
 	</tileset>
 
@@ -946,8 +1042,15 @@
 		</items>
 	</tileset>
 	
-	<tileset name="Collectables">
+	<tileset name="Addons">
 		<items>
+	        <item fromid="5808" toid="5810"/>
+	        <item fromid="5875" toid="5914"/>
+	        <item fromid="5917" toid="5922"/>
+	        <item fromid="5925"/>
+	        <item fromid="5930"/>
+	        <item fromid="5937" toid="5946"/>
+		
 		</items>
 	</tileset>
 	
@@ -968,6 +1071,17 @@
 			<brush name="smoke field (not decaying)"/>
 			<brush name="searing fire field (decaying)"/>
 		</doodad>
+		<raw>
+	        <item fromid="1387"/>
+	        <item fromid="1397"/>
+	        <item fromid="1487" toid="1498"/>
+	        <item fromid="1500" toid="1508"/>
+	        <item fromid="5023" toid="5024"/>
+	        <item fromid="7359" toid="7360"/>
+	        <item fromid="7465" toid="7473"/>		
+		</raw>
+		
+		
 	</tileset>
 	
 	<tileset name="Containers">
@@ -1093,6 +1207,7 @@
 	<tileset name="Stairs / Ramps / Ladders">
 		<raw>
 			<!-- Holes -->
+			<item fromid="293" toid="294"/>
 			<item fromid="383" toid="385"/>
 			<item fromid="392"/>
 			<item fromid="418"/>
@@ -1134,6 +1249,266 @@
 			<item fromid="1396"/>
 			<item fromid="5258" toid="5260"/>
 			<item fromid="3687" toid="3688"/>
+			<item fromid="1388" toid="1395"/>
+			<item fromid="1398" toid="1405"/>
+			<item fromid="3679" toid="3686"/>
+			<item fromid="5545"/>
+			<item fromid="5691"/>
+			<item fromid="6909" toid="6916"/>
+			<item fromid="7053"/>
+		</raw>
+	</tileset>
+	
+	<tileset name="Buildings">
+		<raw>
+			<!-- Walls -->
+			<item fromid="1025" toid="1070"/>
+			<item fromid="1089" toid="1208"/>
+			<item fromid="463" toid="466"/>
+			<item fromid="903" toid="917"/>
+			<item fromid="1084" toid="1088"/>
+			<item fromid="1215" toid="1218"/>
+			<item fromid="1263" toid="1276"/>
+			<item fromid="1514" toid="1547"/>
+			<item fromid="1549" toid="1601"/>
+			<item fromid="3361" toid="3534"/>
+			<item fromid="3711" toid="3714"/>
+			<item fromid="3745" toid="3801"/>
+			<item fromid="5009" toid="5013"/>
+			<item fromid="5146" toid="5155"/>
+			<item fromid="5254" toid="5257"/>
+			<item fromid="5261" toid="5277"/>
+			<item fromid="5303" toid="5331"/>
+			<item fromid="5400" toid="5401"/>
+			<item fromid="5478" toid="5479"/>
+			<item fromid="5504"/>
+			<item fromid="5519" toid="5521"/>
+			<item fromid="6133" toid="6191"/>
+			<item fromid="6232" toid="6248"/>
+			<item fromid="6268" toid="6270"/>
+			<item fromid="6275" toid="6276"/>
+			<item fromid="6281" toid="6284"/>
+			<item fromid="6395" toid="6432"/>
+			<item fromid="6436" toid="6475"/>
+			<item fromid="6728" toid="6749"/>
+			<item fromid="6761" toid="6792"/>
+			<item fromid="6803" />
+			<item fromid="6839" toid="6867"/>
+			<item fromid="6882" toid="6888"/>
+			<item fromid="6953" toid="6965"/>
+			<item fromid="6968" toid="6969"/>
+			<item fromid="6993" toid="6998"/>
+			<item fromid="7025" toid="7032"/>
+			<item fromid="7051" toid="7052"/>
+			<item fromid="7060" toid="7061"/>
+			<item fromid="7095" toid="7101"/>
+			<item fromid="7143" toid="7144"/>
+			<item fromid="7291" toid="7302"/>
+
+			
+		</raw>
+	</tileset>
+	
+	<tileset name="Doors">
+		<raw>
+			<item fromid="1209" toid="1214"/>
+			<item fromid="1219" toid="1262"/>
+			<item fromid="3535" toid="3552"/>
+			<item fromid="5098" toid="5145"/>
+			<item fromid="5278" toid="5295"/>
+			<item fromid="5515" toid="5518"/>
+			<item fromid="5732" toid="5737"/>
+			<item fromid="5745" toid="5746"/>
+			<item fromid="5748" toid="5749"/>
+			<item fromid="6192" toid="6209"/>
+			<item fromid="6249" toid="6266"/>
+			<item fromid="6795" toid="6802"/>
+			<item fromid="6891" toid="6908"/>
+			<item fromid="7033" toid="7050"/>
+			<item fromid="7054" toid="7057"/>			
+		</raw>
+	</tileset>
+	
+	<tileset name="Borders (full)">
+		<raw>
+			<item fromid="110" toid="279"/>
+			<item fromid="281" toid="292"/>
+			<item fromid="295" toid="350"/>
+			<item fromid="356" toid="367"/>
+			<item fromid="371" toid="382"/>
+			<item fromid="393" toid="404"/>
+			<item fromid="494" toid="597"/>
+			<item fromid="606" toid="617"/>
+			<item fromid="630" toid="669"/>
+			<item fromid="672" toid="707"/>
+			<item fromid="712" toid="723"/>
+			<item fromid="725" toid="776"/>
+			<item fromid="778" toid="789"/>
+			<item fromid="792" toid="803"/>
+			<item fromid="805"/>
+			<item fromid="807" toid="872"/>
+			<item fromid="879" toid="890"/>
+			<item fromid="967" toid="1024"/>
+			<item fromid="3246" toid="3257"/>
+			<item fromid="3259" toid="3262"/>
+			<item fromid="3266" toid="3297"/>
+			<item fromid="3553" toid="3568"/>
+			<item fromid="3575" toid="3586"/>
+			<item fromid="4632" toid="4643"/>
+			<item fromid="6612" toid="6626"/>
+			<item fromid="7187" toid="7188"/>
+			<item fromid="7190" toid="7199"/>			
+		</raw>
+	</tileset>
+	
+	<tileset name="Borders (transparent)">
+		<raw>
+			<item fromid="434" toid="445"/>	
+			<item fromid="477" toid="478"/>	
+			<item fromid="487" toid="488"/>	
+			<item fromid="891" toid="902"/>	
+			<item fromid="921" toid="923"/>	
+			<item fromid="925"/>	
+			<item fromid="928"/>	
+			<item fromid="930" toid="935"/>	
+			<item fromid="938" />	
+			<item fromid="940" toid="945"/>	
+			<item fromid="949" toid="955"/>	
+			<item fromid="959" toid="964"/>	
+			<item fromid="1072" toid="1083"/>
+			<item fromid="3140" toid="3151"/>
+			<item fromid="3188" toid="3189"/>
+			<item fromid="3218"/>	
+			<item fromid="3221" toid="3245"/>
+			<item fromid="3298" toid="3309"/>
+			<item fromid="3349" toid="3360"/>	
+			<item fromid="4456" toid="4467"/>	
+			<item fromid="4514" toid="4525"/>	
+			<item fromid="4542" toid="4565"/>	
+			<item fromid="4596" toid="4607"/>	
+			<item fromid="4644" toid="4663"/>	
+			<item fromid="4667" toid="4690"/>
+			<item fromid="4713" toid="4748"/>
+			<item fromid="4760" toid="4819"/>
+			<item fromid="4828" toid="4831"/>
+			<item fromid="5045"/>		
+			<item fromid="5047" toid="5054"/>
+			<item fromid="5683" toid="5686"/>
+			<item fromid="5771" toid="5774"/>
+			<item fromid="5816" toid="5851"/>
+			<item fromid="6153" toid="6171"/>
+			<item fromid="6211" toid="6212"/>
+			<item fromid="6214" toid="6215"/>
+			<item fromid="6562" toid="6565"/>
+			<item fromid="6627" toid="6706"/>
+			<item fromid="6810" toid="6837"/>
+			<item fromid="6870" toid="6881"/>
+			<item fromid="6926" toid="6937"/>
+			<item fromid="6939" toid="6950"/>
+			<item fromid="7067" toid="7090"/>
+			<item fromid="7102" toid="7105"/>
+			<item fromid="7107" />	
+			<item fromid="7110" toid="7120"/>
+			<item fromid="7201" toid="7212"/>			
+		</raw>
+	</tileset>
+	
+	<tileset name="Hangables">
+		<raw>		
+			<item fromid="1809" toid="1850"/>
+			<item fromid="1855" toid="1856"/>
+			<item fromid="1858" toid="1859"/>
+			<item fromid="1861" toid="1862"/>
+			<item fromid="1864" toid="1865"/>
+			<item fromid="1867" toid="1868"/>
+			<item fromid="1867" toid="1868"/>
+			<item fromid="1870" toid="1871"/>
+			<item fromid="1873" toid="1876"/>
+			<item fromid="1878" toid="1879"/>
+			<item fromid="1882" toid="1899"/>
+			<item fromid="1906" toid="1944"/>
+			<item fromid="2037" toid="2040"/>
+			<item fromid="2058" toid="2061"/>
+			<item fromid="2066" toid="2069"/>
+			<item fromid="3861" toid="3866"/>
+			<item fromid="3874" toid="3881"/>
+			<item fromid="3898" toid="2899"/>
+			<item fromid="3943" toid="3950"/>
+			<item fromid="5016" toid="5022"/>
+			<item fromid="5057" toid="5073"/>
+			<item fromid="5362" toid="5389"/>
+			<item fromid="5483" toid="5484"/>
+			<item fromid="5561" toid="5564"/>
+			<item fromid="5596" toid="5597"/>
+			<item fromid="5614" toid="5618"/>
+			<item fromid="5655" toid="5658"/>
+			<item fromid="6116" toid="6117"/>
+			<item fromid="6121" toid="6122"/>
+			<item fromid="6220" toid="6231"/>
+			<item fromid="6289" toid="6290"/>
+			<item fromid="6434"/>
+			<item fromid="6492" toid="6493"/>
+			<item fromid="6496"/>
+			<item fromid="6502" toid="6505"/>
+			<item fromid="6513" toid="6515"/>
+			<item fromid="6517" toid="6519"/>
+			<item fromid="6524" toid="6526"/>
+			<item fromid="6978" toid="6979"/>
+			<item fromid="7232" toid="7235"/>
+			<item fromid="7238" toid="7241"/>
+			<item fromid="7393" toid="7401"/>
+			<item fromid="6435"/>
+		</raw>
+	</tileset>
+	
+	<tileset name="Traps">
+		<raw>
+			<item fromid="1510" toid="1513"/>		
+		</raw>
+	</tileset>
+	
+	<tileset name="Furniture(Packed)">
+		<raw>
+			<item fromid="3901" toid="3938"/>	
+			<item fromid="6114" toid="6115"/>	
+			<item fromid="6372" toid="6373"/>	
+			<item fromid="5086" toid="5088"/>				
+		</raw>
+	</tileset>
+	
+	<tileset name="Food">
+		<raw>
+			<item fromid="2667" toid="2696"/>
+			<item fromid="2787" toid="2797"/>
+			<item fromid="4849" />		
+			<item fromid="5553" />	
+			<item fromid="6277" toid="6280"/>
+			<item fromid="6569" />
+			<item fromid="6574" />	
+			<item fromid="7245" />	
+		</raw>
+	</tileset>
+	
+	<tileset name="Mountains">
+		<raw>
+			<item fromid="873" toid="878"/>	
+			<item fromid="919" />	
+			<item fromid="4468" toid="4513"/>
+			<item fromid="4580" toid="4594"/>
+			<item fromid="4826" toid="4827"/>
+		
+		</raw>
+	</tileset>
+	
+	<tileset name="Carpetbrushes">
+		<raw>
+			<item fromid="5485" toid="5495"/>
+			<item fromid="5555" toid="5556"/>
+			<item fromid="5569" toid="5595"/>
+			<item fromid="6374" toid="6386"/>
+			<item fromid="6476" toid="6488"/>
+			<item fromid="7145" toid="7157"/>
+		
 		</raw>
 	</tileset>
 </materials>
