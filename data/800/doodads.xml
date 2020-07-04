@@ -71,6 +71,24 @@
 		<item id="2702" chance="10"/>
 	</brush>
 	
+	<brush name="mountain moss" type="doodad" server_lookid="4580" draggable="true" on_blocking="false" thickness="12/100">
+		<item id="4580" chance="10"/>
+		<item id="4581" chance="10"/>
+		<item id="4582" chance="10"/>
+		<item id="4583" chance="10"/>
+		<item id="4584" chance="10"/>
+		<item id="4585" chance="10"/>
+		<item id="4586" chance="10"/>
+		<item id="4587" chance="10"/>
+		<item id="4588" chance="10"/>
+		<item id="4589" chance="10"/>
+		<item id="4590" chance="10"/>
+		<item id="4591" chance="10"/>
+		<item id="4592" chance="10"/>
+		<item id="4593" chance="10"/>
+		<item id="4594" chance="10"/>
+	</brush>
+	
 	<brush name="gray rocks" type="doodad" server_lookid="1285" draggable="true" on_blocking="true" thickness="15/100">
 		<item id="1285" chance="15"/>
 		<item id="1356" chance="15"/>
@@ -498,6 +516,22 @@
 		<carpet align="dse"    id="6383"/>
 		<carpet align="dsw"    id="6384"/>
 		<carpet align="center" id="6374"/>
+	</brush>
+	
+	<brush name="loose gravel (brown)" type="carpet" server_lookid="6476">
+		<carpet align="n"      id="6478"/>
+		<carpet align="e"      id="6479"/>
+		<carpet align="s"      id="6477"/>
+		<carpet align="w"      id="6480"/>
+		<carpet align="cnw"    id="6483"/>
+		<carpet align="cne"    id="6484"/>
+		<carpet align="cse"    id="6481"/>
+		<carpet align="csw"    id="6482"/>
+		<carpet align="dnw"    id="6488"/>
+		<carpet align="dne"    id="6487"/>
+		<carpet align="dse"    id="6485"/>
+		<carpet align="dsw"    id="6486"/>
+		<carpet align="center" id="6476"/>
 	</brush>
 	
 	<brush name="straw mat" type="carpet" server_lookid="5485">
@@ -2712,5 +2746,14 @@
 		<item id="2257" chance="10"/>
 		<item id="2258" chance="10"/>
 		<item id="2259" chance="10"/>
+	</brush>
+	
+	<brush name="distillery" type="doodad" server_lookid="5513" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate> -- south --
+			<item id="5513" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="5514" chance="10"/>
+		</alternate>
 	</brush>
 </materials>

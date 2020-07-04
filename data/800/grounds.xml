@@ -25,7 +25,6 @@
 		<item id="4567" chance="20"/>
 		<item id="4568" chance="20"/>
 		<item id="4569" chance="20"/>
-		<item id="4756" chance="20"/>
 		<item id="470" chance="0"/>
 		
 		<border align="outer" id="2"/>
@@ -785,6 +784,10 @@
 	<brush name="cobblestone" type="border" server_lookid="724" z-order="100">
 		<item id="724" chance="1000"/>
 	</brush>
+
+	<brush name="brown cobblestone" type="border" server_lookid="6389" z-order="100">
+		<item id="6389" chance="1000"/>
+	</brush>
 	
 	<brush name="grassy cobblestone" type="border" server_lookid="791" z-order="1500">
 		<item id="791" chance="1000"/>
@@ -847,12 +850,31 @@
 		<friend name="sea"/>
 	</brush>
 	
-	<brush name="rocky ground" type="border" server_lookid="4570" z-order="2610">
+	<brush name="rocky ground (outer)" type="border" server_lookid="4570" z-order="2610">
 		<item id="4570" chance="100"/>
 		<item id="4571" chance="100"/>
 		<item id="4572" chance="100"/>
 		<item id="4573" chance="100"/>
 		<item id="4574" chance="100"/>
+		<!--<item id="4575" chance="100"/>
+		<item id="4576" chance="100"/>
+		<item id="4577" chance="100"/>
+		<item id="4578" chance="100"/>
+		<item id="4579" chance="100"/>
+		<item id="4595" chance="0"/>
+		<item id="4566" chance="0"/>
+		<item id="4759" chance="0"/>-->
+		
+		<border align="outer" id="11"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	
+	<brush name="rocky ground (inner)" type="border" server_lookid="4571" z-order="2610">
+		<!--<item id="4570" chance="100"/>
+		<item id="4571" chance="100"/>
+		<item id="4572" chance="100"/>
+		<item id="4573" chance="100"/>
+		<item id="4574" chance="100"/>-->
 		<item id="4575" chance="100"/>
 		<item id="4576" chance="100"/>
 		<item id="4577" chance="100"/>
@@ -862,8 +884,8 @@
 		<item id="4566" chance="0"/>
 		<item id="4759" chance="0"/>
 		
-		<border align="outer" id="11"/>
 		<border align="inner" to="none" id="1"/>
+		<border align="inner" to="mountain top ground" id="20"/>
 	</brush>
 	
 	<brush name="white gravel" type="border" server_lookid="104" z-order="2900">
