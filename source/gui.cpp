@@ -1174,6 +1174,7 @@ void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
     welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
     welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
     welcomeDialog->Show();
+    UpdateMenubar();
 }
 
 void GUI::FinishWelcomeDialog() {
