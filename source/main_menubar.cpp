@@ -289,9 +289,11 @@ void MainMenuBar::Update()
 	using namespace MenuBar;
 	// This updates all buttons and sets them to proper enabled/disabled state
 
-    if (!menubar->Enable(!g_gui.IsWelcomeDialogShown())) {
+	bool enable = !g_gui.IsWelcomeDialogShown();
+	menubar->Enable(enable);
+    if (!enable) {
         return;
-    }
+	}
 
 	Editor* editor = g_gui.GetCurrentEditor();
 	if(editor) {
