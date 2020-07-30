@@ -1,21 +1,19 @@
 //////////////////////////////////////////////////////////////////////
 // This file is part of Remere's Map Editor
 //////////////////////////////////////////////////////////////////////
-// This program is free software: you can redistribute it and/or modify
+// Remere's Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// This program is distributed in the hope that it will be useful,
+// Remere's Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/gui_ids.h $
-// $Id: gui_ids.h 301 2010-02-23 19:27:39Z admin $
 
 #ifndef RME_COMMON_H_
 #define RME_COMMON_H_
@@ -166,7 +164,7 @@ enum EditorActionID
 
 	PALETTE_DELAYED_REFRESH_TIMER,
 	PALETTE_LAYOUT_FIX_TIMER,
-	
+
 	TOOLBAR_POSITION_GO,
 	TOOLBAR_SIZES_CIRCULAR,
 	TOOLBAR_SIZES_RECTANGULAR,
