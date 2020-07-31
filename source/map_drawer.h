@@ -98,6 +98,7 @@ class MapDrawer
 
 protected:
 	std::vector<MapTooltip*> tooltips;
+	std::ostringstream tooltip;
 
 public:
 	MapDrawer(MapCanvas* canvas);

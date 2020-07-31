@@ -283,7 +283,7 @@ void MapDrawer::DrawMap()
 
 					if(!live_client || nd->isVisible(map_z > GROUND_LAYER)) {
 						for(int map_x = 0; map_x < 4; ++map_x) {
-							for(int map_y = 0; map_y < 4; ++map_y) {
+							for (int map_y = 0; map_y < 4; ++map_y) {
 								DrawTile(nd->getTile(map_x, map_y, map_z));
 							}
 						}
@@ -1368,7 +1368,6 @@ void MapDrawer::DrawTile(TileLocation* location)
 	int map_y = location->getY();
 	int map_z = location->getZ();
 
-	std::ostringstream tooltip;
 
 	if(options.show_tooltips && location->getWaypointCount() > 0) {
 		Waypoint* waypoint = canvas->editor.map.waypoints.getWaypoint(location);
@@ -1514,6 +1513,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 		else
 			MakeTooltip(draw_x, draw_y, tooltip.str());
 	}
+	tooltip.str("");
 }
 
 void MapDrawer::DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b)
