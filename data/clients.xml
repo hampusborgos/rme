@@ -1,6 +1,6 @@
 <client_config>
 	<!--
-		This file should only be edited by OT mainters.
+		This file should only be edited by OT maintainers.
 		If you don't know what you're doing, changing anything
 		in this file
 
@@ -278,7 +278,7 @@
 			<extensions from="8.20 - 8.31" to="10.98"/>
 			<data format="10.57" dat="0x42A3" spr="0x57BBD603"/>
 		</client>
-		
+
 		<client name="10.100" otb="10.100" visible="true" data_directory="10100">
             <otbm version="3"/>
             <extensions from="8.20 - 8.31" to="10.100"/>

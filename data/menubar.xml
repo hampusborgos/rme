@@ -10,7 +10,7 @@
         <separator/>
         <menu name="$Import">
             <item name="$Import Map..." action="IMPORT_MAP" help="Import map data from another map file."/>
-            <item name="Import $Monsters/NPC..." action="IMPORT_MONSTERS" help="Import etiher a monsters.xml file or a specific monster/NPC."/>
+            <item name="Import $Monsters/NPC..." action="IMPORT_MONSTERS" help="Import either a monsters.xml file or a specific monster/NPC."/>
             <item name="Import Mi$nimap..." action="IMPORT_MINIMAP" help="Import map data from a .bmp file."/>
         </menu>
         <menu name="$Export">
@@ -26,10 +26,10 @@
     </menu>
     <menu name="$Edit">
         <item name="$Undo" hotkey="Ctrl+Z" action="UNDO" help="Undo last action."/>
-        <item name="$Redo" hotkey="Ctrl+Shift+Z" action="REDO" help="Redo last undoed action."/>
+        <item name="$Redo" hotkey="Ctrl+Shift+Z" action="REDO" help="Redo last undid action."/>
         <separator/>
         <item name="Find $Item..." hotkey="Ctrl+F" action="FIND_ITEM" help="Find all instances of an item type the map."/>
-        <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurances of one item with another."/>
+        <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurrences of one item with another."/>
         <menu name="$Find on Map">
             <item name="Find $Everything" action="SEARCH_ON_MAP_EVERYTHING" help="Find all unique/action/text/container items."/>
             <separator/>

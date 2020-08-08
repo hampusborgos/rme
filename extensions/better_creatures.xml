@@ -1,4 +1,4 @@
-<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="8.00;8.10"> 
+<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="8.00;8.10">
 	<tileset name="Water creatures">
 		<creatures>
 			<creature name="Azure Frog"/>
@@ -19,7 +19,7 @@
 			<creature name="Quara Predator Scout"/>
 		</creatures>
 	</tileset>
-	
+
 	<tileset name="Animals">
 		<creatures>
             <creature name="Sibang"/>
@@ -67,7 +67,7 @@
 			<creature name="Mammoth"/>
 		</creatures>
 	</tileset>
-	
+
     <tileset name="Arena Bosses">
         <creatures>
             <creature name="Frostfur"/>
@@ -102,7 +102,7 @@
 			<creature name="The Obliverator"/>
          </creatures>
     </tileset>
-	
+
 	<tileset name="Bugs">
 		<creatures>
 			<creature name="Crystal Spider"/>
@@ -124,7 +124,7 @@
 			<creature name="Crab"/>
 		</creatures>
 	</tileset>
-	
+
     <tileset name="Bosses">
         <creatures>
 			<creature name="Apprentice Sheng"/>
@@ -162,7 +162,7 @@
 			<creature name="Orshabaal"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Large and Nasty">
         <creatures>
             <creature name="Cyclops"/>
@@ -184,7 +184,7 @@
 			<creature name="The Imperor"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Humans">
         <creatures>
             <creature name="Dwarf"/>
@@ -217,7 +217,7 @@
 			<creature name="Warlock"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Lesser humans">
         <creatures>
             <creature name="Dwarf"/>
@@ -250,7 +250,7 @@
 			<creature name="Swamp Troll"/>
          </creatures>
     </tileset>
-	
+
 	<tileset name="Magical Creatures">
 		<creatures>
 			<creature name="Deathslicer"/>
@@ -276,7 +276,7 @@
 			<creature name="Hydra"/>
 		</creatures>
     </tileset>
-	
+
     <tileset name="Pharaohs">
         <creatures>
             <creature name="Dipthrah"/>
@@ -289,7 +289,7 @@
 			<creature name="Rahemos"/>
          </creatures>
     </tileset>
-	
+
 	<tileset name="Undead">
 		<creatures>
 			<creature name="Banshee"/>

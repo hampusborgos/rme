@@ -1,6 +1,7 @@
 <materialsextension
 	name="walls and railings"
 	author="Marco/Heer Karel"
+	authorurl="https://otland.net/members/karel.3338/"
 	description="Walls and railing extension"
 	client="8.00;8.10;8.20 - 8.31">
 
@@ -82,7 +83,7 @@
 			<door id="3541" type="quest" open="true"/>
 			<door id="3542" type="magic" open="false"/>
 			<door id="3543" type="magic" open="true"/>
-			<door id="3449" type="window"/>            
+			<door id="3449" type="window"/>
 		</wall>
 		<wall type="vertical">
 			<item id="3423" chance="400"/>
@@ -299,10 +300,9 @@
 		</wall>
 	</brush>
 
-
 	<tileset name="Town">
 		<terrain>
-			-- walls --
+			<!-- walls -->
 			<brush name="paravent wall" after="rock wall"/>
 			<brush name="fiery wall" after="rock wall"/>
 			<brush name="jungle stone wall" after="rock wall"/>
@@ -312,7 +312,7 @@
 			<brush name="bamboo wall" after="rock wall"/>
 			<brush name="thin bamboo wall" after="rock wall"/>
 			<brush name="grass wall" after="rock wall"/>
-			-- railings --
+			<!-- railings -->
 			<brush name="marble railing" after="dark fence"/>
 			<brush name="ornamented marble railing" after="dark fence"/>
 			<brush name="pillared marble railing" after="dark fence"/>
@@ -325,7 +325,7 @@
 
 	<tileset name="Cave">
 		<terrain>
-			-- walls --
+			<!-- walls -->
 			<brush name="fiery wall" after="rock wall"/>
 			<brush name="metal wall" after="rock wall"/>
 			<brush name="bone wall" after="rock wall"/>

@@ -1,15 +1,15 @@
-<materialsextension name="Better creature categories (8.40)" author="Remere" description="Added the creatures of the 8.4 update." client="8.40"> 
+<materialsextension name="Better creature categories (8.40)" author="Remere" description="Added the creatures of the 8.4 update." client="8.40">
     	<tileset name="Water creatures">
 		<creatures>
 			<creature name="Young Sea Serpent"/>
 		</creatures>
 	</tileset>
-	
+
 	<tileset name="Giants">
         <creatures>
          </creatures>
     </tileset>
-	
+
     <tileset name="Humans">
         <creatures>
             <creature name="Crazed Beggar"/>
@@ -21,13 +21,13 @@
             <creature name="Ice Witch"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Lesser humans">
         <creatures>
             <creature name="Mutated Human"/>
          </creatures>
     </tileset>
-	
+
 	<tileset name="Magical Creatures">
 		<creatures>
 			<creature name="Nightmare Scion"/>
@@ -37,7 +37,7 @@
             <creature name="Haunted Spirit"/>
 		</creatures>
     </tileset>
-	
+
 	<tileset name="Elementals">
 		<creatures>
 			<creature name="Acid Blob"/>
@@ -49,7 +49,7 @@
             <creature name="Damaged Worker Golem"/>
 		</creatures>
     </tileset>
-	
+
 	<tileset name="Undead">
 		<creatures>
 			<creature name="Undead Gladiator"/>
@@ -58,7 +58,7 @@
             <creature name="Vampire Bride"/>
 		</creatures>
 	</tileset>
-	
+
 	<tileset name="Freaks">
 		<creatures>
             <creature name="Hellspawn"/>

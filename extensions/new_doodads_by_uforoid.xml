@@ -5,10 +5,10 @@
 	client="8.10;8.20 - 8.31">
 
 	<brush name="pirate statue" type="doodad" server_lookid="5671" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="5671" chance="30"/> </alternate> -- south --
-		<alternate> <item id="5674" chance="30"/> </alternate> -- east --
-		<alternate> <item id="5673" chance="30"/> </alternate> -- north --
-		<alternate> <item id="5672" chance="30"/> </alternate> -- west --
+		<alternate> <item id="5671" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="5674" chance="30"/> </alternate> <!-- east -->
+		<alternate> <item id="5673" chance="30"/> </alternate> <!-- north -->
+		<alternate> <item id="5672" chance="30"/> </alternate> <!-- west -->
 	</brush>
 
 	<tileset name="Statues">
@@ -32,7 +32,7 @@
 
 	<brush name="female golden bed" type="doodad" server_lookid="7795" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7795"/>
@@ -43,7 +43,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7809"/>
@@ -57,7 +57,7 @@
 
 	<brush name="golden bed" type="doodad" server_lookid="7819" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7819"/>
@@ -68,7 +68,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7821"/>
@@ -82,7 +82,7 @@
 
 	<brush name="male golden bed" type="doodad" server_lookid="7795" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7795"/>
@@ -93,7 +93,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7797"/>
@@ -107,7 +107,7 @@
 
 	<brush name="male green bed" type="doodad" server_lookid="7787" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7787"/>
@@ -118,7 +118,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7789"/>
@@ -132,7 +132,7 @@
 
 	<brush name="female green bed" type="doodad" server_lookid="7799" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7799"/>
@@ -143,7 +143,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7801"/>
@@ -157,7 +157,7 @@
 
 	<brush name="green bed" type="doodad" server_lookid="7811" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7811"/>
@@ -168,7 +168,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7813"/>
@@ -182,7 +182,7 @@
 
 	<brush name="female red bed" type="doodad" server_lookid="7803" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7803"/>
@@ -193,7 +193,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7805"/>
@@ -207,7 +207,7 @@
 
 	<brush name="male red bed" type="doodad" server_lookid="7791" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7791"/>
@@ -218,7 +218,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7793"/>
@@ -232,7 +232,7 @@
 
 	<brush name="red bed" type="doodad" server_lookid="7815" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7815"/>
@@ -243,7 +243,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7817"/>
@@ -257,7 +257,7 @@
 
 	<brush name="female hay bed" type="doodad" server_lookid="7841" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7841"/>
@@ -268,7 +268,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7843"/>
@@ -282,7 +282,7 @@
 
 	<brush name="female bed" type="doodad" server_lookid="7778" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-		-- south --
+		<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7778"/>
@@ -293,7 +293,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7779"/>
@@ -307,7 +307,7 @@
 
 	<brush name="female cot bed" type="doodad" server_lookid="7781" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7781"/>
@@ -318,7 +318,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7783"/>
@@ -332,7 +332,7 @@
 
 	<brush name="female hammock bed" type="doodad" server_lookid="7785" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
-			-- south --
+			<!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7785"/>
@@ -343,7 +343,7 @@
 			</composite>
 		</alternate>
 		<alternate>
-			-- east --
+			<!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0">
 					<item id="7786"/>
@@ -372,5 +372,4 @@
 			<brush name="female hammock bed" after="hammock with sleeper"/>
 		</doodad>
 	</tileset>
-
 </materialsextension>

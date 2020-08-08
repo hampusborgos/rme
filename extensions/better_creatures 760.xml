@@ -1,4 +1,4 @@
-<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="7.6"> 
+<materialsextension name="Better creature categories" author="Devil Boy/Remere" description="More creature categories." client="7.6">
 
 	<tileset name="Animals">
 		<creatures>
@@ -37,7 +37,7 @@
 			<creature name="Elephant"/>
 		</creatures>
 	</tileset>
-	
+
 	<tileset name="Bugs">
 		<creatures>
 			<creature name="Giant Spider"/>
@@ -56,7 +56,7 @@
 			<creature name="Crab"/>
 		</creatures>
 	</tileset>
-	
+
     <tileset name="Bosses">
         <creatures>
 			<creature name="Grorlam"/>
@@ -69,7 +69,7 @@
 			<creature name="Demodras"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Large and Nasty">
         <creatures>
             <creature name="Cyclops"/>
@@ -78,7 +78,7 @@
 			<creature name="Demon"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Humans">
         <creatures>
             <creature name="Dwarf"/>
@@ -103,7 +103,7 @@
 			<creature name="Warlock"/>
          </creatures>
     </tileset>
-	
+
     <tileset name="Lesser humans">
         <creatures>
             <creature name="Dwarf"/>
@@ -135,7 +135,7 @@
 			<creature name="Swamp Troll"/>
          </creatures>
     </tileset>
-	
+
 	<tileset name="Magical Creatures">
 		<creatures>
 			<creature name="Deathslicer"/>
@@ -154,7 +154,7 @@
 			<creature name="Hydra"/>
 		</creatures>
     </tileset>
-	
+
     <tileset name="Pharaohs">
         <creatures>
             <creature name="Dipthrah"/>
@@ -165,7 +165,7 @@
 			<creature name="Rahemos"/>
          </creatures>
     </tileset>
-	
+
 	<tileset name="Undead">
 		<creatures>
 			<creature name="Banshee"/>
