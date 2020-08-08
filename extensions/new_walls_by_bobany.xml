@@ -1,6 +1,7 @@
 <materialsextension
 	name="New Walls"
 	author="Bobany"
+	authorurl="https://otland.net/members/bobany.3198/"
 	description="Additional walls"
 	client="8.10;8.20 - 8.31">
 
@@ -60,7 +61,6 @@
 		</wall>
 	</brush>
 
-
 	<brush name="ice railing" type="wall" server_lookid="6956">
 		<wall type="horizontal">
 			<item id="6956" chance="500"/>
@@ -104,21 +104,21 @@
 		<wall type="pole">
 			<item id="9060" chance="500"/>
 		</wall>
-		
+
 		<friend name="white tent wall" redirect="true"/>
 	</brush>
 
 	<brush name="fishes" type="doodad" server_lookid="6984" draggable="true" on_blocking="true" thickness="60/100">
 		<alternate>
-			<item id="6984" chance="10"/> 
+			<item id="6984" chance="10"/>
 		</alternate>
 		<alternate>
-			<item id="6985" chance="10"/> 
+			<item id="6985" chance="10"/>
 		</alternate>
 	</brush>
 
 	<brush name="thorn bush" type="wall" server_lookid="3996">
-		<wall type="pole">               
+		<wall type="pole">
 			<item id="3999" chance="1"/>
 		</wall>
 		<wall type="horizontal">
@@ -141,15 +141,15 @@
 		<terrain>
 			<brush name="wooden railing" after="dark fence"/>
 		</terrain>
-	</tileset> 
-	
+	</tileset>
+
 	<tileset name="Snow">
 		<terrain>
 			<brush name="frozen wall"/>
 			<brush name="ice railing"/>
 		</terrain>
-	</tileset> 
-	
+	</tileset>
+
 	<tileset name="Exterior">
 		<doodad>
 			<brush name="white tent wall" after="garish striped tent"/>
@@ -158,11 +158,10 @@
 			<brush name="fishes"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Nature">
 		<doodad>
 			<brush name="thorn bush"/>
 		</doodad>
 	</tileset>
-
 </materialsextension>

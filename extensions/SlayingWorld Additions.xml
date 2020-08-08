@@ -1,1333 +1,1330 @@
 <materialsextension
 	name="All Sort Of Things"
-	url="http://otland.net/f19/extension-9-10-remere-map-editor-ver-2-2-walls-grounds-doodads-extensions-163329/"
+	url="https://otland.net/threads/extension-9-10-remere-map-editor-ver-2-2-walls-grounds-doodads-extensions.163329/"
 	author="Edgar (SlayingWorld)"
-	authorurl="http://otland.net/members/garedgar/"
+	authorurl="https://otland.net/members/slaying-world.36678/"
 	description="New brushes etc"
 	client="9.10">
 
-<border id="9001"> -- New Sand --
-<borderitem edge="n"    item="10456"/>
-<borderitem edge="s"    item="10457"/>
-<borderitem edge="w"    item="10458"/>
-<borderitem edge="e"    item="10459"/>
-<borderitem edge="cnw"  item="10462"/>
-<borderitem edge="cse"  item="10460"/>
-<borderitem edge="csw"  item="10461"/>
-<borderitem edge="cne"  item="10463"/>
-<borderitem edge="dnw"  item="10465"/>
-<borderitem edge="dsw"  item="10467"/>
-<borderitem edge="dne"  item="10464"/>
-<borderitem edge="dse"  item="10466"/>
-</border>
-<border id="9002"> -- Riverbed --
-<borderitem edge="n"    item="11153"/>
-<borderitem edge="s"    item="11079"/>
-<borderitem edge="w"    item="11080"/>
-<borderitem edge="e"    item="11078"/>
-<borderitem edge="cnw"  item="11084"/>
-<borderitem edge="cse"  item="11082"/>
-<borderitem edge="csw"  item="11083"/>
-<borderitem edge="cne"  item="11081"/>
-<borderitem edge="dnw"  item="11088"/>
-<borderitem edge="dsw"  item="11087"/>
-<borderitem edge="dne"  item="11085"/>
-<borderitem edge="dse"  item="11086"/>
-</border>
-<border id="9003"> -- Strange Mud --
-<borderitem edge="n"    item="11165"/>
-<borderitem edge="s"    item="11166"/>
-<borderitem edge="w"    item="11168"/>
-<borderitem edge="e"    item="11167"/>
-<borderitem edge="cnw"  item="11172"/>
-<borderitem edge="cse"  item="11169"/>
-<borderitem edge="csw"  item="11170"/>
-<borderitem edge="cne"  item="11171"/>
-<borderitem edge="dnw"  item="11175"/>
-<borderitem edge="dsw"  item="11174"/>
-<borderitem edge="dne"  item="11176"/>
-<borderitem edge="dse"  item="11173"/>
-</border>
-<border id="9004"> -- Rice Pad --
-<borderitem edge="n"    item="11031"/>
-<borderitem edge="s"    item="11032"/>
-<borderitem edge="w"    item="11033"/>
-<borderitem edge="e"    item="11034"/>
-<borderitem edge="cnw"  item="11038"/>
-<borderitem edge="cse"  item="11035"/>
-<borderitem edge="csw"  item="11036"/>
-<borderitem edge="cne"  item="11037"/>
-<borderitem edge="dnw"  item="11041"/>
-<borderitem edge="dsw"  item="11039"/>
-<borderitem edge="dne"  item="11042"/>
-<borderitem edge="dse"  item="11040"/>
-</border>
-<border id="9005"> -- Strange Mud II --
-<borderitem edge="n"    item="11177"/>
-<borderitem edge="s"    item="11178"/>
-<borderitem edge="w"    item="11180"/>
-<borderitem edge="e"    item="11179"/>
-<borderitem edge="cnw"  item="11184"/>
-<borderitem edge="cse"  item="11181"/>
-<borderitem edge="csw"  item="11182"/>
-<borderitem edge="cne"  item="11183"/>
-<borderitem edge="dnw"  item="11187"/>
-<borderitem edge="dsw"  item="11186"/>
-<borderitem edge="dne"  item="11188"/>
-<borderitem edge="dse"  item="11185"/>
-</border>
-<border id="9006"> -- Lizard Figure Flooring --
-<borderitem edge="n"    item="10858"/>
-<borderitem edge="s"    item="10857"/>
-<borderitem edge="w"    item="10860"/>
-<borderitem edge="e"    item="10859"/>
-<borderitem edge="cnw"  item="10867"/>
-<borderitem edge="cse"  item="10865"/>
-<borderitem edge="csw"  item="10866"/>
-<borderitem edge="cne"  item="10868"/>
-<borderitem edge="dnw"  item="10863"/>
-<borderitem edge="dsw"  item="10862"/>
-<borderitem edge="dne"  item="10864"/>
-<borderitem edge="dse"  item="10861"/>
-</border>
-<border id="9007"> -- Destroyed Blue Lizard Flooring --
-<borderitem edge="n"    item="12362"/>
-<borderitem edge="s"    item="12361"/>
-<borderitem edge="w"    item="12364"/>
-<borderitem edge="e"    item="12363"/>
-<borderitem edge="cnw"  item="12371"/>
-<borderitem edge="cse"  item="12369"/>
-<borderitem edge="csw"  item="12370"/>
-<borderitem edge="cne"  item="12372"/>
-<borderitem edge="dnw"  item="12367"/>
-<borderitem edge="dsw"  item="12366"/>
-<borderitem edge="dne"  item="12368"/>
-<borderitem edge="dse"  item="12365"/>
-</border>
-<border id="9008"> -- Lizard Roof --
-<borderitem edge="n"    item="10889"/>
-<borderitem edge="s"    item="10886"/>
-<borderitem edge="w"    item="10892"/>
-<borderitem edge="e"    item="10891"/>
-<borderitem edge="cnw"  item="10890"/>
-<borderitem edge="cse"  item="10885"/>
-<borderitem edge="csw"  item="10887"/>
-<borderitem edge="cne"  item="10888"/>
-<borderitem edge="dnw"  item="10896"/>
-<borderitem edge="dsw"  item="10894"/>
-<borderitem edge="dne"  item="10895"/>
-<borderitem edge="dse"  item="10893"/>
-</border>
-<border id="9010"> -- DIRT mountain inner border --
-	<borderitem edge="e"   item="8003"/>
-	<borderitem edge="s"   item="8007"/>
-	<borderitem edge="dse" item="8006"/>
-</border>
-<border id="9011"> -- DIRT mountain outter border --
-	<borderitem edge="e"   item="8003"/>
-	<borderitem edge="s"   item="8007"/>
-	<borderitem edge="cse" item="7998"/>
-</border>
-<border id="9012" type="optional"> -- DIRT mountain optional border --
-	<borderitem edge="n"   item="7989"/>
-	<borderitem edge="e"   item="8168"/>
-	<borderitem edge="s"   item="8169"/>
-	<borderitem edge="w"   item="7988"/>
-	<borderitem edge="cnw" item="7995"/>
-	<borderitem edge="cne" item="7996"/>
-	<borderitem edge="csw" item="7994"/>
-	<borderitem edge="cse" item="8371"/>
-	<borderitem edge="dnw" item="8135"/>
-	<borderitem edge="dne" item="8137"/>
-	<borderitem edge="dsw" item="8136"/>
-	<borderitem edge="dse" item="8138"/>
-</border>
-<border id="9013"> -- New Pinkish Sand --
-<borderitem edge="n"    item="10638"/>
-<borderitem edge="s"    item="10640"/>
-<borderitem edge="w"    item="10641"/>
-<borderitem edge="e"    item="10639"/>
-<borderitem edge="cnw"  item="10642"/>
-<borderitem edge="cse"  item="10645"/>
-<borderitem edge="csw"  item="10644"/>
-<borderitem edge="cne"  item="10643"/>
-<borderitem edge="dnw"  item="10646"/>
-<borderitem edge="dsw"  item="10648"/>
-<borderitem edge="dne"  item="10647"/>
-<borderitem edge="dse"  item="10649"/>
-</border>
-<border id="9014"> -- Acid --
-<borderitem edge="n"    item="11551"/>
-<borderitem edge="s"    item="11549"/>
-<borderitem edge="w"    item="11552"/>
-<borderitem edge="e"    item="11550"/>
-<borderitem edge="cse"  item="11557"/>
-<borderitem edge="cnw"  item="11559"/>
-<borderitem edge="cne"  item="11560"/>
-<borderitem edge="csw"  item="11558"/>
-<borderitem edge="dse"  item="11555"/>
-<borderitem edge="dne"  item="11553"/>
-<borderitem edge="dsw"  item="11556"/>
-<borderitem edge="dnw"  item="11554"/>
-</border>
-<border id="9015"> -- Corrupt Rice Pad --
-<borderitem edge="n"    item="11451"/>
-<borderitem edge="s"    item="11452"/>
-<borderitem edge="w"    item="11453"/>
-<borderitem edge="e"    item="11454"/>
-<borderitem edge="cnw"  item="11458"/>
-<borderitem edge="cse"  item="11455"/>
-<borderitem edge="csw"  item="11456"/>
-<borderitem edge="cne"  item="11457"/>
-<borderitem edge="dnw"  item="11461"/>
-<borderitem edge="dsw"  item="11459"/>
-<borderitem edge="dne"  item="11462"/>
-<borderitem edge="dse"  item="11460"/>
-</border>
-<border id="9016"> -- New Strange Mud --
-<borderitem edge="n"    item="11492"/>
-<borderitem edge="s"    item="11494"/>
-<borderitem edge="w"    item="11493"/>
-<borderitem edge="e"    item="11495"/>
-<borderitem edge="cnw"  item="11498"/>
-<borderitem edge="cse"  item="11497"/>
-<borderitem edge="csw"  item="11496"/>
-<borderitem edge="cne"  item="11499"/>
-<borderitem edge="dnw"  item="11500"/>
-<borderitem edge="dsw"  item="11503"/>
-<borderitem edge="dne"  item="11501"/>
-<borderitem edge="dse"  item="11502"/>
-</border>
-<border id="9017"> -- New Strange Rock --
-<borderitem edge="n"    item="11510"/>
-<borderitem edge="s"    item="11512"/>
-<borderitem edge="w"    item="11513"/>
-<borderitem edge="e"    item="11511"/>
-<borderitem edge="cnw"  item="11514"/>
-<borderitem edge="cse"  item="11517"/>
-<borderitem edge="csw"  item="11516"/>
-<borderitem edge="cne"  item="11515"/>
-<borderitem edge="dnw"  item="11518"/>
-<borderitem edge="dsw"  item="11520"/>
-<borderitem edge="dne"  item="11519"/>
-<borderitem edge="dse"  item="11521"/>
-</border>
-<border id="9018"> -- Brown Strange Mud --
-<borderitem edge="n"    item="11775"/>
-<borderitem edge="s"    item="11777"/>
-<borderitem edge="w"    item="11776"/>
-<borderitem edge="e"    item="11778"/>
-<borderitem edge="cnw"  item="11785"/>
-<borderitem edge="cse"  item="11787"/>
-<borderitem edge="csw"  item="11788"/>
-<borderitem edge="cne"  item="11786"/>
-<borderitem edge="dnw"  item="11789"/>
-<borderitem edge="dsw"  item="11792"/>
-<borderitem edge="dne"  item="11790"/>
-<borderitem edge="dse"  item="11791"/>
-</border>
-<border id="9019" type="optional"> -- YA Strange Mud Optional --
-	<borderitem edge="n"   item="11804"/>
-	<borderitem edge="e"   item="11805"/>
-	<borderitem edge="s"   item="11806"/>
-	<borderitem edge="w"   item="11807"/>
-	<borderitem edge="cnw" item="11808"/>
-	<borderitem edge="cne" item="11809"/>
-	<borderitem edge="csw" item="11810"/>
-	<borderitem edge="cse" item="11811"/>
-	<borderitem edge="dnw" item="11812"/>
-	<borderitem edge="dne" item="11813"/>
-	<borderitem edge="dsw" item="11814"/>
-	<borderitem edge="dse" item="11815"/>
-</border>
-<border id="9020"> -- Strange Black Mud --
-<borderitem edge="n"    item="11729"/>
-<borderitem edge="s"    item="11731"/>
-<borderitem edge="w"    item="11732"/>
-<borderitem edge="e"    item="11730"/>
-<borderitem edge="cnw"  item="11733"/>
-<borderitem edge="cse"  item="11736"/>
-<borderitem edge="csw"  item="11735"/>
-<borderitem edge="cne"  item="11734"/>
-<borderitem edge="dnw"  item="11737"/>
-<borderitem edge="dsw"  item="11739"/>
-<borderitem edge="dne"  item="11738"/>
-<borderitem edge="dse"  item="11740"/>
-</border>
-<border id="9021" type="optional"> -- Strange Black Mud Optional --
-	<borderitem edge="n"   item="11702"/>
-	<borderitem edge="e"   item="11703"/>
-	<borderitem edge="s"   item="11704"/>
-	<borderitem edge="w"   item="11705"/>
-	<borderitem edge="cnw" item="11706"/>
-	<borderitem edge="cne" item="11707"/>
-	<borderitem edge="csw" item="11708"/>
-	<borderitem edge="cse" item="11709"/>
-	<borderitem edge="dnw" item="11710"/>
-	<borderitem edge="dne" item="11711"/>
-	<borderitem edge="dsw" item="11712"/>
-	<borderitem edge="dse" item="11713"/>
-</border>
-<border id="9022"> -- New Dark Mud --
-<borderitem edge="n"    item="13201"/>
-<borderitem edge="s"    item="13211"/>
-<borderitem edge="w"    item="13202"/>
-<borderitem edge="e"    item="13212"/>
-<borderitem edge="cnw"  item="13203"/>
-<borderitem edge="cse"  item="13206"/>
-<borderitem edge="csw"  item="13205"/>
-<borderitem edge="cne"  item="13204"/>
-<borderitem edge="dnw"  item="13207"/>
-<borderitem edge="dsw"  item="13209"/>
-<borderitem edge="dne"  item="13208"/>
-<borderitem edge="dse"  item="13210"/>
-</border>
-<border id="9023"> -- Weird Beige Ground --
-<borderitem edge="n"    item="13084"/>
-<borderitem edge="s"    item="13083"/>
-<borderitem edge="w"    item="13086"/>
-<borderitem edge="e"    item="13085"/>
-<borderitem edge="cnw"  item="13095"/>
-<borderitem edge="cse"  item="13091"/>
-<borderitem edge="csw"  item="13093"/>
-<borderitem edge="cne"  item="13097"/>
-<borderitem edge="dnw"  item="13089"/>
-<borderitem edge="dsw"  item="13088"/>
-<borderitem edge="dne"  item="13090"/>
-<borderitem edge="dse"  item="13087"/>
-</border>
-<border id="9024"> -- Orange Weird Ground --
-<borderitem edge="n"    item="13621"/>
-<borderitem edge="s"    item="13620"/>
-<borderitem edge="w"    item="13623"/>
-<borderitem edge="e"    item="13622"/>
-<borderitem edge="cnw"  item="13630"/>
-<borderitem edge="cse"  item="13628"/>
-<borderitem edge="csw"  item="13629"/>
-<borderitem edge="cne"  item="13631"/>
-<borderitem edge="dnw"  item="13626"/>
-<borderitem edge="dsw"  item="13625"/>
-<borderitem edge="dne"  item="13627"/>
-<borderitem edge="dse"  item="13624"/>
-</border>
-<border id="9025"> -- Yellow Weird Ground --
-<borderitem edge="n"    item="13609"/>
-<borderitem edge="s"    item="13607"/>
-<borderitem edge="w"    item="13610"/>
-<borderitem edge="e"    item="13608"/>
-<borderitem edge="cnw"  item="13617"/>
-<borderitem edge="cse"  item="13615"/>
-<borderitem edge="csw"  item="13616"/>
-<borderitem edge="cne"  item="13618"/>
-<borderitem edge="dnw"  item="13612"/>
-<borderitem edge="dsw"  item="13614"/>
-<borderitem edge="dne"  item="13611"/>
-<borderitem edge="dse"  item="13613"/>
-</border>
+	<border id="9001"> <!-- New Sand -->
+		<borderitem edge="n"    item="10456"/>
+		<borderitem edge="s"    item="10457"/>
+		<borderitem edge="w"    item="10458"/>
+		<borderitem edge="e"    item="10459"/>
+		<borderitem edge="cnw"  item="10462"/>
+		<borderitem edge="cse"  item="10460"/>
+		<borderitem edge="csw"  item="10461"/>
+		<borderitem edge="cne"  item="10463"/>
+		<borderitem edge="dnw"  item="10465"/>
+		<borderitem edge="dsw"  item="10467"/>
+		<borderitem edge="dne"  item="10464"/>
+		<borderitem edge="dse"  item="10466"/>
+	</border>
+	<border id="9002"> <!-- Riverbed -->
+		<borderitem edge="n"    item="11153"/>
+		<borderitem edge="s"    item="11079"/>
+		<borderitem edge="w"    item="11080"/>
+		<borderitem edge="e"    item="11078"/>
+		<borderitem edge="cnw"  item="11084"/>
+		<borderitem edge="cse"  item="11082"/>
+		<borderitem edge="csw"  item="11083"/>
+		<borderitem edge="cne"  item="11081"/>
+		<borderitem edge="dnw"  item="11088"/>
+		<borderitem edge="dsw"  item="11087"/>
+		<borderitem edge="dne"  item="11085"/>
+		<borderitem edge="dse"  item="11086"/>
+	</border>
+	<border id="9003"> <!-- Strange Mud -->
+		<borderitem edge="n"    item="11165"/>
+		<borderitem edge="s"    item="11166"/>
+		<borderitem edge="w"    item="11168"/>
+		<borderitem edge="e"    item="11167"/>
+		<borderitem edge="cnw"  item="11172"/>
+		<borderitem edge="cse"  item="11169"/>
+		<borderitem edge="csw"  item="11170"/>
+		<borderitem edge="cne"  item="11171"/>
+		<borderitem edge="dnw"  item="11175"/>
+		<borderitem edge="dsw"  item="11174"/>
+		<borderitem edge="dne"  item="11176"/>
+		<borderitem edge="dse"  item="11173"/>
+	</border>
+	<border id="9004"> <!-- Rice Pad -->
+		<borderitem edge="n"    item="11031"/>
+		<borderitem edge="s"    item="11032"/>
+		<borderitem edge="w"    item="11033"/>
+		<borderitem edge="e"    item="11034"/>
+		<borderitem edge="cnw"  item="11038"/>
+		<borderitem edge="cse"  item="11035"/>
+		<borderitem edge="csw"  item="11036"/>
+		<borderitem edge="cne"  item="11037"/>
+		<borderitem edge="dnw"  item="11041"/>
+		<borderitem edge="dsw"  item="11039"/>
+		<borderitem edge="dne"  item="11042"/>
+		<borderitem edge="dse"  item="11040"/>
+	</border>
+	<border id="9005"> <!-- Strange Mud II -->
+		<borderitem edge="n"    item="11177"/>
+		<borderitem edge="s"    item="11178"/>
+		<borderitem edge="w"    item="11180"/>
+		<borderitem edge="e"    item="11179"/>
+		<borderitem edge="cnw"  item="11184"/>
+		<borderitem edge="cse"  item="11181"/>
+		<borderitem edge="csw"  item="11182"/>
+		<borderitem edge="cne"  item="11183"/>
+		<borderitem edge="dnw"  item="11187"/>
+		<borderitem edge="dsw"  item="11186"/>
+		<borderitem edge="dne"  item="11188"/>
+		<borderitem edge="dse"  item="11185"/>
+	</border>
+	<border id="9006"> <!-- Lizard Figure Flooring -->
+		<borderitem edge="n"    item="10858"/>
+		<borderitem edge="s"    item="10857"/>
+		<borderitem edge="w"    item="10860"/>
+		<borderitem edge="e"    item="10859"/>
+		<borderitem edge="cnw"  item="10867"/>
+		<borderitem edge="cse"  item="10865"/>
+		<borderitem edge="csw"  item="10866"/>
+		<borderitem edge="cne"  item="10868"/>
+		<borderitem edge="dnw"  item="10863"/>
+		<borderitem edge="dsw"  item="10862"/>
+		<borderitem edge="dne"  item="10864"/>
+		<borderitem edge="dse"  item="10861"/>
+	</border>
+	<border id="9007"> <!-- Destroyed Blue Lizard Flooring -->
+		<borderitem edge="n"    item="12362"/>
+		<borderitem edge="s"    item="12361"/>
+		<borderitem edge="w"    item="12364"/>
+		<borderitem edge="e"    item="12363"/>
+		<borderitem edge="cnw"  item="12371"/>
+		<borderitem edge="cse"  item="12369"/>
+		<borderitem edge="csw"  item="12370"/>
+		<borderitem edge="cne"  item="12372"/>
+		<borderitem edge="dnw"  item="12367"/>
+		<borderitem edge="dsw"  item="12366"/>
+		<borderitem edge="dne"  item="12368"/>
+		<borderitem edge="dse"  item="12365"/>
+	</border>
+	<border id="9008"> <!-- Lizard Roof -->
+		<borderitem edge="n"    item="10889"/>
+		<borderitem edge="s"    item="10886"/>
+		<borderitem edge="w"    item="10892"/>
+		<borderitem edge="e"    item="10891"/>
+		<borderitem edge="cnw"  item="10890"/>
+		<borderitem edge="cse"  item="10885"/>
+		<borderitem edge="csw"  item="10887"/>
+		<borderitem edge="cne"  item="10888"/>
+		<borderitem edge="dnw"  item="10896"/>
+		<borderitem edge="dsw"  item="10894"/>
+		<borderitem edge="dne"  item="10895"/>
+		<borderitem edge="dse"  item="10893"/>
+	</border>
+	<border id="9010"> <!-- DIRT mountain inner border -->
+		<borderitem edge="e"   item="8003"/>
+		<borderitem edge="s"   item="8007"/>
+		<borderitem edge="dse" item="8006"/>
+	</border>
+	<border id="9011"> <!-- DIRT mountain outter border -->
+		<borderitem edge="e"   item="8003"/>
+		<borderitem edge="s"   item="8007"/>
+		<borderitem edge="cse" item="7998"/>
+	</border>
+	<border id="9012" type="optional"> <!-- DIRT mountain optional border -->
+		<borderitem edge="n"   item="7989"/>
+		<borderitem edge="e"   item="8168"/>
+		<borderitem edge="s"   item="8169"/>
+		<borderitem edge="w"   item="7988"/>
+		<borderitem edge="cnw" item="7995"/>
+		<borderitem edge="cne" item="7996"/>
+		<borderitem edge="csw" item="7994"/>
+		<borderitem edge="cse" item="8371"/>
+		<borderitem edge="dnw" item="8135"/>
+		<borderitem edge="dne" item="8137"/>
+		<borderitem edge="dsw" item="8136"/>
+		<borderitem edge="dse" item="8138"/>
+	</border>
+	<border id="9013"> <!-- New Pinkish Sand -->
+		<borderitem edge="n"    item="10638"/>
+		<borderitem edge="s"    item="10640"/>
+		<borderitem edge="w"    item="10641"/>
+		<borderitem edge="e"    item="10639"/>
+		<borderitem edge="cnw"  item="10642"/>
+		<borderitem edge="cse"  item="10645"/>
+		<borderitem edge="csw"  item="10644"/>
+		<borderitem edge="cne"  item="10643"/>
+		<borderitem edge="dnw"  item="10646"/>
+		<borderitem edge="dsw"  item="10648"/>
+		<borderitem edge="dne"  item="10647"/>
+		<borderitem edge="dse"  item="10649"/>
+	</border>
+	<border id="9014"> <!-- Acid -->
+		<borderitem edge="n"    item="11551"/>
+		<borderitem edge="s"    item="11549"/>
+		<borderitem edge="w"    item="11552"/>
+		<borderitem edge="e"    item="11550"/>
+		<borderitem edge="cse"  item="11557"/>
+		<borderitem edge="cnw"  item="11559"/>
+		<borderitem edge="cne"  item="11560"/>
+		<borderitem edge="csw"  item="11558"/>
+		<borderitem edge="dse"  item="11555"/>
+		<borderitem edge="dne"  item="11553"/>
+		<borderitem edge="dsw"  item="11556"/>
+		<borderitem edge="dnw"  item="11554"/>
+	</border>
+	<border id="9015"> <!-- Corrupt Rice Pad -->
+		<borderitem edge="n"    item="11451"/>
+		<borderitem edge="s"    item="11452"/>
+		<borderitem edge="w"    item="11453"/>
+		<borderitem edge="e"    item="11454"/>
+		<borderitem edge="cnw"  item="11458"/>
+		<borderitem edge="cse"  item="11455"/>
+		<borderitem edge="csw"  item="11456"/>
+		<borderitem edge="cne"  item="11457"/>
+		<borderitem edge="dnw"  item="11461"/>
+		<borderitem edge="dsw"  item="11459"/>
+		<borderitem edge="dne"  item="11462"/>
+		<borderitem edge="dse"  item="11460"/>
+	</border>
+	<border id="9016"> <!-- New Strange Mud -->
+		<borderitem edge="n"    item="11492"/>
+		<borderitem edge="s"    item="11494"/>
+		<borderitem edge="w"    item="11493"/>
+		<borderitem edge="e"    item="11495"/>
+		<borderitem edge="cnw"  item="11498"/>
+		<borderitem edge="cse"  item="11497"/>
+		<borderitem edge="csw"  item="11496"/>
+		<borderitem edge="cne"  item="11499"/>
+		<borderitem edge="dnw"  item="11500"/>
+		<borderitem edge="dsw"  item="11503"/>
+		<borderitem edge="dne"  item="11501"/>
+		<borderitem edge="dse"  item="11502"/>
+	</border>
+	<border id="9017"> <!-- New Strange Rock -->
+		<borderitem edge="n"    item="11510"/>
+		<borderitem edge="s"    item="11512"/>
+		<borderitem edge="w"    item="11513"/>
+		<borderitem edge="e"    item="11511"/>
+		<borderitem edge="cnw"  item="11514"/>
+		<borderitem edge="cse"  item="11517"/>
+		<borderitem edge="csw"  item="11516"/>
+		<borderitem edge="cne"  item="11515"/>
+		<borderitem edge="dnw"  item="11518"/>
+		<borderitem edge="dsw"  item="11520"/>
+		<borderitem edge="dne"  item="11519"/>
+		<borderitem edge="dse"  item="11521"/>
+	</border>
+	<border id="9018"> <!-- Brown Strange Mud -->
+		<borderitem edge="n"    item="11775"/>
+		<borderitem edge="s"    item="11777"/>
+		<borderitem edge="w"    item="11776"/>
+		<borderitem edge="e"    item="11778"/>
+		<borderitem edge="cnw"  item="11785"/>
+		<borderitem edge="cse"  item="11787"/>
+		<borderitem edge="csw"  item="11788"/>
+		<borderitem edge="cne"  item="11786"/>
+		<borderitem edge="dnw"  item="11789"/>
+		<borderitem edge="dsw"  item="11792"/>
+		<borderitem edge="dne"  item="11790"/>
+		<borderitem edge="dse"  item="11791"/>
+	</border>
+	<border id="9019" type="optional"> <!-- YA Strange Mud Optional -->
+		<borderitem edge="n"   item="11804"/>
+		<borderitem edge="e"   item="11805"/>
+		<borderitem edge="s"   item="11806"/>
+		<borderitem edge="w"   item="11807"/>
+		<borderitem edge="cnw" item="11808"/>
+		<borderitem edge="cne" item="11809"/>
+		<borderitem edge="csw" item="11810"/>
+		<borderitem edge="cse" item="11811"/>
+		<borderitem edge="dnw" item="11812"/>
+		<borderitem edge="dne" item="11813"/>
+		<borderitem edge="dsw" item="11814"/>
+		<borderitem edge="dse" item="11815"/>
+	</border>
+	<border id="9020"> <!-- Strange Black Mud -->
+		<borderitem edge="n"    item="11729"/>
+		<borderitem edge="s"    item="11731"/>
+		<borderitem edge="w"    item="11732"/>
+		<borderitem edge="e"    item="11730"/>
+		<borderitem edge="cnw"  item="11733"/>
+		<borderitem edge="cse"  item="11736"/>
+		<borderitem edge="csw"  item="11735"/>
+		<borderitem edge="cne"  item="11734"/>
+		<borderitem edge="dnw"  item="11737"/>
+		<borderitem edge="dsw"  item="11739"/>
+		<borderitem edge="dne"  item="11738"/>
+		<borderitem edge="dse"  item="11740"/>
+	</border>
+	<border id="9021" type="optional"> <!-- Strange Black Mud Optional -->
+		<borderitem edge="n"   item="11702"/>
+		<borderitem edge="e"   item="11703"/>
+		<borderitem edge="s"   item="11704"/>
+		<borderitem edge="w"   item="11705"/>
+		<borderitem edge="cnw" item="11706"/>
+		<borderitem edge="cne" item="11707"/>
+		<borderitem edge="csw" item="11708"/>
+		<borderitem edge="cse" item="11709"/>
+		<borderitem edge="dnw" item="11710"/>
+		<borderitem edge="dne" item="11711"/>
+		<borderitem edge="dsw" item="11712"/>
+		<borderitem edge="dse" item="11713"/>
+	</border>
+	<border id="9022"> <!-- New Dark Mud -->
+		<borderitem edge="n"    item="13201"/>
+		<borderitem edge="s"    item="13211"/>
+		<borderitem edge="w"    item="13202"/>
+		<borderitem edge="e"    item="13212"/>
+		<borderitem edge="cnw"  item="13203"/>
+		<borderitem edge="cse"  item="13206"/>
+		<borderitem edge="csw"  item="13205"/>
+		<borderitem edge="cne"  item="13204"/>
+		<borderitem edge="dnw"  item="13207"/>
+		<borderitem edge="dsw"  item="13209"/>
+		<borderitem edge="dne"  item="13208"/>
+		<borderitem edge="dse"  item="13210"/>
+	</border>
+	<border id="9023"> <!-- Weird Beige Ground -->
+		<borderitem edge="n"    item="13084"/>
+		<borderitem edge="s"    item="13083"/>
+		<borderitem edge="w"    item="13086"/>
+		<borderitem edge="e"    item="13085"/>
+		<borderitem edge="cnw"  item="13095"/>
+		<borderitem edge="cse"  item="13091"/>
+		<borderitem edge="csw"  item="13093"/>
+		<borderitem edge="cne"  item="13097"/>
+		<borderitem edge="dnw"  item="13089"/>
+		<borderitem edge="dsw"  item="13088"/>
+		<borderitem edge="dne"  item="13090"/>
+		<borderitem edge="dse"  item="13087"/>
+	</border>
+	<border id="9024"> <!-- Orange Weird Ground -->
+		<borderitem edge="n"    item="13621"/>
+		<borderitem edge="s"    item="13620"/>
+		<borderitem edge="w"    item="13623"/>
+		<borderitem edge="e"    item="13622"/>
+		<borderitem edge="cnw"  item="13630"/>
+		<borderitem edge="cse"  item="13628"/>
+		<borderitem edge="csw"  item="13629"/>
+		<borderitem edge="cne"  item="13631"/>
+		<borderitem edge="dnw"  item="13626"/>
+		<borderitem edge="dsw"  item="13625"/>
+		<borderitem edge="dne"  item="13627"/>
+		<borderitem edge="dse"  item="13624"/>
+	</border>
+	<border id="9025"> <!-- Yellow Weird Ground -->
+		<borderitem edge="n"    item="13609"/>
+		<borderitem edge="s"    item="13607"/>
+		<borderitem edge="w"    item="13610"/>
+		<borderitem edge="e"    item="13608"/>
+		<borderitem edge="cnw"  item="13617"/>
+		<borderitem edge="cse"  item="13615"/>
+		<borderitem edge="csw"  item="13616"/>
+		<borderitem edge="cne"  item="13618"/>
+		<borderitem edge="dnw"  item="13612"/>
+		<borderitem edge="dsw"  item="13614"/>
+		<borderitem edge="dne"  item="13611"/>
+		<borderitem edge="dse"  item="13613"/>
+	</border>
 
-<!-- Divider BORDERS&BRUSHES -->
+	<!-- Divider BORDERS&BRUSHES -->
 
-<!-- Grounds -->
+	<!-- Grounds -->
+	<brush name="New Muddy Sand" type="ground" server_lookid="10445" z-order="3100">
+		<item id="10445" chance="70"/>
+		<item id="10441" chance="70"/>
+		<item id="10442" chance="70"/>
+		<item id="10443" chance="70"/>
+		<item id="10444" chance="70"/>
+		<item id="10446" chance="70"/>
+		<item id="10447" chance="70"/>
+		<item id="10448" chance="70"/>
+		<border align="outer" id="9001"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Riverbed" type="ground" server_lookid="11077" z-order="3900">
+		<item id="11077" chance="70"/>
+		<border align="outer" id="9002"/>
+	</brush>
+	<brush name="Rice Pad" type="ground" server_lookid="11030" z-order="4500">
+		<item id="11030" chance="70"/>
+		<border align="outer" id="9004"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Strange Mud" type="ground" server_lookid="11145" z-order="3001">
+		<item id="11145" chance="70"/>
+		<item id="11146" chance="5"/>
+		<item id="11147" chance="5"/>
+		<item id="11148" chance="5"/>
+		<item id="11149" chance="5"/>
+		<item id="11150" chance="5"/>
+		<item id="11151" chance="5"/>
+		<item id="11152" chance="5"/>
+		<border align="outer" id="9003"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Strange Mud II" type="ground" server_lookid="11154" z-order="3002">
+		<item id="11154" chance="70"/>
+		<item id="11155" chance="10"/>
+		<item id="11156" chance="10"/>
+		<item id="11157" chance="10"/>
+		<item id="11158" chance="10"/>
+		<item id="11159" chance="10"/>
+		<item id="11160" chance="10"/>
+		<border align="outer" id="9005"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Lizard Figure Flooring" type="ground" server_lookid="10851" z-order="4500">
+		<item id="10846" chance="95"/>
+		<item id="10847" chance="3"/>
+		<item id="10848" chance="3"/>
+		<item id="10849" chance="3"/>
+		<item id="10850" chance="3"/>
+		<item id="10851" chance="3"/>
+		<item id="10852" chance="3"/>
+		<item id="10853" chance="3"/>
+		<item id="10854" chance="3"/>
+		<item id="10855" chance="3"/>
+		<item id="10856" chance="3"/>
+		<border align="outer" id="9006"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Acid" type="ground" server_lookid="11548" z-order="3900">
+		<item id="11548" chance="70"/>
+		<border align="outer" id="9014"/>
+	</brush>
+	<brush name="Corrupt Rice Pad" type="ground" server_lookid="11450" z-order="4500">
+		<item id="11450" chance="70"/>
+		<border align="outer" id="9015"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="New Strange Mud" type="ground" server_lookid="11491" z-order="3005">
+		<item id="11490" chance="30"/>
+		<item id="11491" chance="30"/>
+		<border align="outer" id="9016"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="New Strange Rock" type="ground" server_lookid="11505" z-order="3004">
+		<item id="11505" chance="30"/>
+		<item id="11506" chance="30"/>
+		<item id="11507" chance="30"/>
+		<item id="11508" chance="30"/>
+		<item id="11509" chance="30"/>
+		<border align="outer" id="9017"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Destroyed Blue Lizard Flooring" type="ground" server_lookid="12376" z-order="3101">
+		<item id="12373" chance="70"/>
+		<item id="12374" chance="70"/>
+		<item id="12375" chance="70"/>
+		<item id="12376" chance="70"/>
+		<item id="12377" chance="70"/>
+		<item id="12378" chance="70"/>
+		<item id="12379" chance="70"/>
+		<item id="12380" chance="70"/>
+		<item id="12381" chance="70"/>
+		<border align="outer" id="9007"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Lizard Roof" type="ground" server_lookid="10884" z-order="9000">
+		<item id="10884" chance="100"/>
+		<border align="outer" to="none" id="9008"/>
+		<border align="outer" id="9008"/>
+	</brush>
+	<brush name="Lizard Stone Flooring new" type="ground" server_lookid="10766" z-order="9000">
+		<item id="10766" chance="70"/>
+		<item id="10767" chance="70"/>
+		<item id="10768" chance="70"/>
+		<item id="10769" chance="70"/>
+		<item id="10770" chance="70"/>
+		<item id="10772" chance="70"/>
+		<item id="10773" chance="70"/>
+		<item id="10774" chance="70"/>
+	</brush>
+	<brush name="Weird Red Figure Flooring" type="ground" server_lookid="12115" z-order="9000">
+		<item id="12115" chance="70"/>
+		<item id="12116" chance="70"/>
+		<item id="12117" chance="70"/>
+		<item id="12118" chance="70"/>
+		<item id="12119" chance="70"/>
+	</brush>
+	<brush name="Weird Dark Figure Flooring" type="ground" server_lookid="12120" z-order="9000">
+		<item id="12120" chance="70"/>
+	</brush>
+	<brush name="dirt mountain" type="ground" server_lookid="7976" z-order="9900">
+		<item id="8133" chance="1"/>
 
-<brush name="New Muddy Sand" type="ground" server_lookid="10445" z-order="3100">
-<item id="10445" chance="70"/>
-<item id="10441" chance="70"/>
-<item id="10442" chance="70"/>
-<item id="10443" chance="70"/>
-<item id="10444" chance="70"/>
-<item id="10446" chance="70"/>
-<item id="10447" chance="70"/>
-<item id="10448" chance="70"/>
-<border align="outer" id="9001"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Riverbed" type="ground" server_lookid="11077" z-order="3900">
-<item id="11077" chance="70"/>
-<border align="outer" id="9002"/>
-</brush>
-<brush name="Rice Pad" type="ground" server_lookid="11030" z-order="4500">
-<item id="11030" chance="70"/>
-<border align="outer" id="9004"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Strange Mud" type="ground" server_lookid="11145" z-order="3001">
-<item id="11145" chance="70"/>
-<item id="11146" chance="5"/>
-<item id="11147" chance="5"/>
-<item id="11148" chance="5"/>
-<item id="11149" chance="5"/>
-<item id="11150" chance="5"/>
-<item id="11151" chance="5"/>
-<item id="11152" chance="5"/>
-<border align="outer" id="9003"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Strange Mud II" type="ground" server_lookid="11154" z-order="3002">
-<item id="11154" chance="70"/>
-<item id="11155" chance="10"/>
-<item id="11156" chance="10"/>
-<item id="11157" chance="10"/>
-<item id="11158" chance="10"/>
-<item id="11159" chance="10"/>
-<item id="11160" chance="10"/>
-<border align="outer" id="9005"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Lizard Figure Flooring" type="ground" server_lookid="10851" z-order="4500">
-<item id="10846" chance="95"/>
-<item id="10847" chance="3"/>
-<item id="10848" chance="3"/>
-<item id="10849" chance="3"/>
-<item id="10850" chance="3"/>
-<item id="10851" chance="3"/>
-<item id="10852" chance="3"/>
-<item id="10853" chance="3"/>
-<item id="10854" chance="3"/>
-<item id="10855" chance="3"/>
-<item id="10856" chance="3"/>
-<border align="outer" id="9006"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Acid" type="ground" server_lookid="11548" z-order="3900">
-<item id="11548" chance="70"/>
-<border align="outer" id="9014"/>
-</brush>
-<brush name="Corrupt Rice Pad" type="ground" server_lookid="11450" z-order="4500">
-<item id="11450" chance="70"/>
-<border align="outer" id="9015"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="New Strange Mud" type="ground" server_lookid="11491" z-order="3005">
-<item id="11490" chance="30"/>
-<item id="11491" chance="30"/>
-<border align="outer" id="9016"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="New Strange Rock" type="ground" server_lookid="11505" z-order="3004">
-<item id="11505" chance="30"/>
-<item id="11506" chance="30"/>
-<item id="11507" chance="30"/>
-<item id="11508" chance="30"/>
-<item id="11509" chance="30"/>
-<border align="outer" id="9017"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Destroyed Blue Lizard Flooring" type="ground" server_lookid="12376" z-order="3101">
-<item id="12373" chance="70"/>
-<item id="12374" chance="70"/>
-<item id="12375" chance="70"/>
-<item id="12376" chance="70"/>
-<item id="12377" chance="70"/>
-<item id="12378" chance="70"/>
-<item id="12379" chance="70"/>
-<item id="12380" chance="70"/>
-<item id="12381" chance="70"/>
-<border align="outer" id="9007"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Lizard Roof" type="ground" server_lookid="10884" z-order="9000">
-	<item id="10884" chance="100"/>
-	<border align="outer" to="none" id="9008"/>
-	<border align="outer" id="9008"/>
-</brush>
-<brush name="Lizard Stone Flooring new" type="ground" server_lookid="10766" z-order="9000">
-	<item id="10766" chance="70"/>
-	<item id="10767" chance="70"/>
-	<item id="10768" chance="70"/>
-	<item id="10769" chance="70"/>
-	<item id="10770" chance="70"/>
-	<item id="10772" chance="70"/>
-	<item id="10773" chance="70"/>
-	<item id="10774" chance="70"/>
-</brush>
-<brush name="Weird Red Figure Flooring" type="ground" server_lookid="12115" z-order="9000">
-	<item id="12115" chance="70"/>
-	<item id="12116" chance="70"/>
-	<item id="12117" chance="70"/>
-	<item id="12118" chance="70"/>
-	<item id="12119" chance="70"/>
-</brush>
-<brush name="Weird Dark Figure Flooring" type="ground" server_lookid="12120" z-order="9000">
-	<item id="12120" chance="70"/>
-</brush>
-<brush name="dirt mountain" type="ground" server_lookid="7976" z-order="9900">
-	<item id="8133" chance="1"/>
-		
-	<border align="inner" to="none" id="9010"/>
-	<border align="outer" to="none" id="9011"/>
-	<border align="inner" id="9010"/>
-	<border align="outer" id="9011"/>
-	<optional id="9012"/>
-</brush>
-<brush name="New Pinkish Sand" type="ground" server_lookid="10637" z-order="3103">
-<item id="10637" chance="70"/>
-<border align="outer" id="9013"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Brown Strange Mud" type="ground" server_lookid="11561" z-order="3105">
-<item id="11561" chance="70"/>
-<border align="outer" id="9018"/>
-<border align="inner" to="none" id="1"/>
-<optional id="9019"/>
-</brush>
-<brush name="Strange Black Mud" type="ground" server_lookid="11504" z-order="3106">
-<item id="11504" chance="70"/>
-<border align="outer" id="9020"/>
-<border align="inner" to="none" id="1"/>
-<optional id="9021"/>
-</brush>
-<brush name="Weird Beige Ground" type="ground" server_lookid="13077" z-order="1">
-<item id="13077" chance="70"/>
-<item id="13078" chance="70"/>
-<item id="13079" chance="70"/>
-<item id="13080" chance="70"/>
-<item id="13081" chance="70"/>
-<item id="13082" chance="70"/>
-<border align="outer" id="9023"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="New Dark Mud" type="ground" server_lookid="12929" z-order="3099">
-<item id="12929" chance="70"/>
-<border align="outer" id="9022"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Orange Weird Ground" type="ground" server_lookid="13636" z-order="3500">
-<item id="13636" chance="70"/>
-<item id="13637" chance="70"/>
-<item id="13638" chance="70"/>
-<item id="13639" chance="70"/>
-<item id="13640" chance="70"/>
-<item id="13641" chance="70"/>
-<item id="13642" chance="70"/>
-<item id="13643" chance="70"/>
-<border align="outer" id="9024"/>
-<border align="inner" to="none" id="1"/>
-</brush>
-<brush name="Yellow Weird Ground" type="ground" server_lookid="13619" z-order="3500">
-<item id="13619" chance="70"/>
-<border align="outer" id="9025"/>
-<border align="inner" to="none" id="1"/>
-</brush>
+		<border align="inner" to="none" id="9010"/>
+		<border align="outer" to="none" id="9011"/>
+		<border align="inner" id="9010"/>
+		<border align="outer" id="9011"/>
+		<optional id="9012"/>
+	</brush>
+	<brush name="New Pinkish Sand" type="ground" server_lookid="10637" z-order="3103">
+		<item id="10637" chance="70"/>
+		<border align="outer" id="9013"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Brown Strange Mud" type="ground" server_lookid="11561" z-order="3105">
+		<item id="11561" chance="70"/>
+		<border align="outer" id="9018"/>
+		<border align="inner" to="none" id="1"/>
+		<optional id="9019"/>
+	</brush>
+	<brush name="Strange Black Mud" type="ground" server_lookid="11504" z-order="3106">
+		<item id="11504" chance="70"/>
+		<border align="outer" id="9020"/>
+		<border align="inner" to="none" id="1"/>
+		<optional id="9021"/>
+	</brush>
+	<brush name="Weird Beige Ground" type="ground" server_lookid="13077" z-order="1">
+		<item id="13077" chance="70"/>
+		<item id="13078" chance="70"/>
+		<item id="13079" chance="70"/>
+		<item id="13080" chance="70"/>
+		<item id="13081" chance="70"/>
+		<item id="13082" chance="70"/>
+		<border align="outer" id="9023"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="New Dark Mud" type="ground" server_lookid="12929" z-order="3099">
+		<item id="12929" chance="70"/>
+		<border align="outer" id="9022"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Orange Weird Ground" type="ground" server_lookid="13636" z-order="3500">
+		<item id="13636" chance="70"/>
+		<item id="13637" chance="70"/>
+		<item id="13638" chance="70"/>
+		<item id="13639" chance="70"/>
+		<item id="13640" chance="70"/>
+		<item id="13641" chance="70"/>
+		<item id="13642" chance="70"/>
+		<item id="13643" chance="70"/>
+		<border align="outer" id="9024"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
+	<brush name="Yellow Weird Ground" type="ground" server_lookid="13619" z-order="3500">
+		<item id="13619" chance="70"/>
+		<border align="outer" id="9025"/>
+		<border align="inner" to="none" id="1"/>
+	</brush>
 
-<brush name="Wood I" type="ground" server_lookid="11856" z-order="900">
-<item id="11856" chance="70"/>
-</brush>
-<brush name="Wood II" type="ground" server_lookid="11857" z-order="9000">
-<item id="11857" chance="70"/>
-</brush>
-<brush name="Wood III" type="ground" server_lookid="11858" z-order="9000">
-<item id="11858" chance="70"/>
-</brush>
-<brush name="Wood IV" type="ground" server_lookid="11859" z-order="9000">
-<item id="11859" chance="70"/>
-</brush>
-<brush name="Wood V" type="ground" server_lookid="11860" z-order="900">
-<item id="11860" chance="70"/>
-</brush>
-<brush name="Wood VI" type="ground" server_lookid="11861" z-order="9000">
-<item id="11862" chance="70"/>
-</brush>
-<brush name="Wood VII" type="ground" server_lookid="11863" z-order="9000">
-<item id="11863" chance="70"/>
-</brush>
-<brush name="Glowing Switch" type="ground" server_lookid="11062" z-order="9100">
-<item id="11062" chance="100"/>
-</brush>
+	<brush name="Wood I" type="ground" server_lookid="11856" z-order="900">
+		<item id="11856" chance="70"/>
+	</brush>
+	<brush name="Wood II" type="ground" server_lookid="11857" z-order="9000">
+		<item id="11857" chance="70"/>
+	</brush>
+	<brush name="Wood III" type="ground" server_lookid="11858" z-order="9000">
+		<item id="11858" chance="70"/>
+	</brush>
+	<brush name="Wood IV" type="ground" server_lookid="11859" z-order="9000">
+		<item id="11859" chance="70"/>
+	</brush>
+	<brush name="Wood V" type="ground" server_lookid="11860" z-order="900">
+		<item id="11860" chance="70"/>
+	</brush>
+	<brush name="Wood VI" type="ground" server_lookid="11861" z-order="9000">
+		<item id="11862" chance="70"/>
+	</brush>
+	<brush name="Wood VII" type="ground" server_lookid="11863" z-order="9000">
+		<item id="11863" chance="70"/>
+	</brush>
+	<brush name="Glowing Switch" type="ground" server_lookid="11062" z-order="9100">
+		<item id="11062" chance="100"/>
+	</brush>
 
-<!-- Walls -->
+	<!-- Walls -->
+	<brush name="Lizard Roof Wall" type="wall" server_lookid="10651">
+		<wall type="horizontal">
+			<item id="10651" chance="500"/>
+			<item id="10653" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="10685" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<!--<door id="10775" type="normal" open="false"/>
+			<door id="10776" type="normal" open="false"/>
+			<door id="10777" type="normal" open="true"/>
+			<door id="6255" type="locked" open="false"/>
+			<door id="6256" type="locked" open="true"/>
+			<door id="6261" type="quest" open="false"/>
+			<door id="6262" type="quest" open="true"/>
+			<door id="6265" type="magic" open="false"/>
+			<door id="6266" type="magic" open="true"/> -->
+			<door id="11065" type="hatch_window" open="false"/>
+			<!--<door id="6446" type="hatch_window" open="true"/>-->
+			<door id="11064" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10650" chance="400"/>
+			<item id="10673" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="10679" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<!--<door id="6249" type="normal" open="false"/>
+			<door id="6250" type="normal" open="false"/>
+			<door id="6251" type="normal" open="true"/>
+			<door id="6255" type="locked" open="false"/>
+			<door id="6256" type="locked" open="true"/>
+			<door id="6259" type="quest" open="false"/>
+			<door id="6260" type="quest" open="true"/>
+			<door id="6263" type="magic" open="false"/>
+			<door id="6264" type="magic" open="true"/>-->
+			<door id="11071" type="hatch_window" open="false"/>
+			<!--<door id="6447" type="hatch_window" open="true"/> -->
+			<door id="11070" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10654" chance="1000"/>
+			<item id="10676" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="10682" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="10688" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="11201" chance="1000"/>
+		</wall>
+	</brush>
+	<brush name="Lizard Fortess Wall" type="wall" server_lookid="10664">
+		<wall type="horizontal">
+			<item id="10664" chance="500"/>
+			<item id="10664" chance="0"/>
+			<item id="10664" chance="0"/>
+			<item id="10664" chance="100"/>
+			<item id="10664" chance="100"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10662" chance="500"/>
+			<item id="10662" chance="0"/>
+			<item id="10662" chance="0"/>
+			<item id="10662" chance="100"/>
+			<item id="10662" chance="100"/>
+		</wall>
+		<wall type="corner">
+			<item id="10668" chance="1000"/>
+			<item id="10668" chance="0"/>
+			<item id="10668" chance="0"/>
+			<item id="10668" chance="0"/>
+		</wall>
+		<wall type="pole">
+			<item id="10652" chance="500"/>
+		</wall>
+	</brush>
+	<brush name="Lizard Wall" type="wall" server_lookid="10663">
+		<wall type="horizontal">
+			<item id="10663" chance="500"/>
+			<item id="10665" chance="0"/>
+			<item id="10686" chance="0"/>
+			<door id="10776" type="normal" open="false"/>
+			<door id="10777" type="normal" open="true"/>
+			<door id="10780" type="magic" open="false"/>
+			<door id="10782" type="quest" open="false"/>
+			<door id="11066" type="hatch_window" open="false"/>
+			<door id="11067" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10674" chance="500"/>
+			<item id="10680" chance="0"/>
+			<item id="10661" chance="0"/>
+			<door id="10784" type="normal" open="false"/>
+			<door id="10786" type="normal" open="true"/>
+			<door id="10789" type="magic" open="false"/>
+			<door id="10791" type="quest" open="false"/>
+			<door id="11072" type="hatch_window" open="false"/>
+			<door id="11073" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10667" chance="1000"/>
+			<item id="10677" chance="0"/>
+			<item id="10683" chance="0"/>
+			<item id="10689" chance="0"/>
+		</wall>
+		<wall type="pole">
+			<item id="11202" chance="500"/>
+		</wall>
+	</brush>
+	<brush name="Crystal Lizard Wall" type="wall" server_lookid="11938">
+		<wall type="horizontal">
+			<item id="11938" chance="500"/>
+			<item id="11938" chance="0"/>
+			<item id="11938" chance="0"/>
+			<door id="11961" type="normal" open="false"/>
+			<door id="12188" type="quest" open="false"/>
+			<door id="12228" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="11937" chance="500"/>
+			<item id="11937" chance="0"/>
+			<item id="11937" chance="0"/>
+			<door id="11960" type="normal" open="false"/>
+			<door id="12198" type="quest" open="false"/>
+			<door id="11948" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="11941" chance="1000"/>
+			<item id="11941" chance="0"/>
+			<item id="11941" chance="0"/>
+			<item id="11941" chance="0"/>
+		</wall>
+		<wall type="pole">
+			<item id="11939" chance="500"/>
+		</wall>
+	</brush>
+	<brush name="Crystal Lizard Railing" type="wall" server_lookid="11946">
+		<wall type="horizontal">
+			<item id="11946" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="11944" chance="500"/>
+		</wall>
+		<wall type="corner">
+			<item id="11943" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="12230" chance="500"/>
+		</wall>
+	</brush>
+	<brush name="Lizard snakeless Railing" type="wall" server_lookid="10691">
+		<wall type="horizontal">
+			<item id="10691" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10692" chance="500"/>
+		</wall>
+		<wall type="corner">
+			<item id="10693" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="10697" chance="500"/>
+		</wall>
+	</brush>
+	<brush name="Lizard snake Railing" type="wall" server_lookid="10694">
+		<wall type="horizontal">
+			<item id="10694" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10695" chance="500"/>
+		</wall>
+		<wall type="corner">
+			<item id="10696" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="10698" chance="500"/>
+		</wall>
+	</brush>
 
-<brush name="Lizard Roof Wall" type="wall" server_lookid="10651">
-	<wall type="horizontal">
-		<item id="10651" chance="500"/>
-		<item id="10653" chance="0"/> -- This needs to be here for backwards compability --
-		<item id="10685" chance="0"/> -- This needs to be here for backwards compability --
-		<!--<door id="10775" type="normal" open="false"/>
-		<door id="10776" type="normal" open="false"/>
-		<door id="10777" type="normal" open="true"/>
-		<door id="6255" type="locked" open="false"/>
-		<door id="6256" type="locked" open="true"/>
-		<door id="6261" type="quest" open="false"/>
-		<door id="6262" type="quest" open="true"/>
-		<door id="6265" type="magic" open="false"/>
-		<door id="6266" type="magic" open="true"/> -->
-		<door id="11065" type="hatch_window" open="false"/>
-		<!--<door id="6446" type="hatch_window" open="true"/>-->
-		<door id="11064" type="window"/>
-	</wall>
-	<wall type="vertical">
-		<item id="10650" chance="400"/>
-		<item id="10673" chance="0"/> -- This needs to be here for backwards compability --
-		<item id="10679" chance="0"/> -- This needs to be here for backwards compability --
-		<!--<door id="6249" type="normal" open="false"/>
-		<door id="6250" type="normal" open="false"/>
-		<door id="6251" type="normal" open="true"/>
-		<door id="6255" type="locked" open="false"/>
-		<door id="6256" type="locked" open="true"/>
-		<door id="6259" type="quest" open="false"/>
-		<door id="6260" type="quest" open="true"/> 
-		<door id="6263" type="magic" open="false"/>
-		<door id="6264" type="magic" open="true"/>-->
-		<door id="11071" type="hatch_window" open="false"/>
-		<!--<door id="6447" type="hatch_window" open="true"/> -->
-		<door id="11070" type="window"/>
-	</wall>
-	<wall type="corner">
-		<item id="10654" chance="1000"/>
-		<item id="10676" chance="0"/> -- This needs to be here for backwards compability --
-		<item id="10682" chance="0"/> -- This needs to be here for backwards compability --
-		<item id="10688" chance="0"/> -- This needs to be here for backwards compability --
-	</wall>
-	<wall type="pole">
-		<item id="11201" chance="1000"/>
-	</wall>
-</brush>
-<brush name="Lizard Fortess Wall" type="wall" server_lookid="10664"> 
-	<wall type="horizontal"> 
-		<item id="10664" chance="500"/> <!-- Wall horizontal -->
-		<item id="10664" chance="0"/> <!-- Variavel horizontal --> 
-		<item id="10664" chance="0"/> <!-- Variavel horizontal --> 
-		<item id="10664" chance="100"/> <!-- Variavel horizontal -->    
-		<item id="10664" chance="100"/> <!-- Variavel horizontal -->     
-	</wall> 
-	<wall type="vertical"> 
-		<item id="10662" chance="500"/> <!-- Wall vertical -->
-		<item id="10662" chance="0"/>  <!-- Wall vertical --> 
-		<item id="10662" chance="0"/>  <!-- Wall vertical --> 
-		<item id="10662" chance="100"/> <!-- Wall vertical -->
-		<item id="10662" chance="100"/> <!-- Wall Vertical -->     
-	</wall> 
-	<wall type="corner"> 
-		<item id="10668" chance="1000"/> <!-- Canto -->
-		<item id="10668" chance="0"/> <!-- Variavel Canto -->
-		<item id="10668" chance="0"/> <!-- Variavel Canto -->
-		<item id="10668" chance="0"/> <!-- Variavel Canto --> 
-	</wall> 
-	<wall type="pole"> 
-		<item id="10652" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush> 
-<brush name="Lizard Wall" type="wall" server_lookid="10663"> 
-	<wall type="horizontal"> 
-		<item id="10663" chance="500"/> <!-- Wall horizontal -->
-		<item id="10665" chance="0"/> <!-- Variavel horizontal --> 
-		<item id="10686" chance="0"/> <!-- Variavel horizontal -->   
-		<door id="10776" type="normal" open="false"/> <!-- Porta Horizontal normal fechada -->
-		<door id="10777" type="normal" open="true"/> <!-- Porta Horizontal normal aberta -->
-		<door id="10780" type="magic" open="false"/> <!-- Porta horizontal por lv fechada -->
-		<door id="10782" type="quest" open="false"/> <!-- Porta horizontal especial fechado -->
-		<door id="11066" type="hatch_window" open="false"/>  <!-- Janela horizontal fechada -->
-		<door id="11067" type="window"/>  <!-- Janela Horizontal normal -->
-	</wall> 
-	<wall type="vertical"> 
-		<item id="10674" chance="500"/> <!-- Wall vertical -->
-		<item id="10680" chance="0"/>  <!-- Wall vertical --> 
-		<item id="10661" chance="0"/>  <!-- Wall vertical -->    
-		<door id="10784" type="normal" open="false"/> <!-- Porta Vertical normal fechada -->
-		<door id="10786" type="normal" open="true"/> <!-- Porta Vertical normal aberta -->
-		<door id="10789" type="magic" open="false"/> <!-- Porta Vertical de lv fechada -->
-		<door id="10791" type="quest" open="false"/> <!-- Porta Vertical especial fechada -->
-		<door id="11072" type="hatch_window" open="false"/> <!-- Janela Vertical fechada -->
-		<door id="11073" type="window"/> <!-- Janela Vertical normal -->
-	</wall> 
-	<wall type="corner"> 
-		<item id="10667" chance="1000"/> <!-- Canto -->
-		<item id="10677" chance="0"/> <!-- Variavel Canto -->
-		<item id="10683" chance="0"/> <!-- Variavel Canto -->
-		<item id="10689" chance="0"/> <!-- Variavel Canto --> 
-	</wall> 
-	<wall type="pole"> 
-		<item id="11202" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush> 
-<brush name="Crystal Lizard Wall" type="wall" server_lookid="11938"> 
-	<wall type="horizontal"> 
-		<item id="11938" chance="500"/> <!-- Wall horizontal -->
-		<item id="11938" chance="0"/> <!-- Variavel horizontal --> 
-		<item id="11938" chance="0"/> <!-- Variavel horizontal -->   
-		<door id="11961" type="normal" open="false"/> <!-- Porta Horizontal normal fechada -->
-		<door id="12188" type="quest" open="false"/> <!-- Porta horizontal especial fechado -->
-		<door id="12228" type="window"/>  <!-- Janela Horizontal normal -->
-	</wall> 
-	<wall type="vertical"> 
-		<item id="11937" chance="500"/> <!-- Wall vertical -->
-		<item id="11937" chance="0"/>  <!-- Wall vertical --> 
-		<item id="11937" chance="0"/>  <!-- Wall vertical -->    
-		<door id="11960" type="normal" open="false"/> <!-- Porta Vertical normal fechada -->
-		<door id="12198" type="quest" open="false"/> <!-- Porta Vertical especial fechada -->
-		<door id="11948" type="window"/> <!-- Janela Vertical normal -->
-	</wall> 
-	<wall type="corner"> 
-		<item id="11941" chance="1000"/> <!-- Canto -->
-		<item id="11941" chance="0"/> <!-- Variavel Canto -->
-		<item id="11941" chance="0"/> <!-- Variavel Canto -->
-		<item id="11941" chance="0"/> <!-- Variavel Canto --> 
-	</wall> 
-	<wall type="pole"> 
-		<item id="11939" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush> 
-<brush name="Crystal Lizard Railing" type="wall" server_lookid="11946"> 
-	<wall type="horizontal"> 
-		<item id="11946" chance="500"/> <!-- Wall horizontal --> 
-	</wall> 
-	<wall type="vertical"> 
-		<item id="11944" chance="500"/> <!-- Wall vertical -->   
-	</wall> 
-	<wall type="corner"> 
-		<item id="11943" chance="1000"/> <!-- Canto -->
-	</wall> 
-	<wall type="pole"> 
-		<item id="12230" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush> 
-<brush name="Lizard snakeless Railing" type="wall" server_lookid="10691"> 
-	<wall type="horizontal"> 
-		<item id="10691" chance="500"/> <!-- Wall horizontal --> 
-	</wall> 
-	<wall type="vertical"> 
-		<item id="10692" chance="500"/> <!-- Wall vertical -->   
-	</wall> 
-	<wall type="corner"> 
-		<item id="10693" chance="1000"/> <!-- Canto -->
-	</wall> 
-	<wall type="pole"> 
-		<item id="10697" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush> 
-<brush name="Lizard snake Railing" type="wall" server_lookid="10694"> 
-	<wall type="horizontal"> 
-		<item id="10694" chance="500"/> <!-- Wall horizontal --> 
-	</wall> 
-	<wall type="vertical"> 
-		<item id="10695" chance="500"/> <!-- Wall vertical -->   
-	</wall> 
-	<wall type="corner"> 
-		<item id="10696" chance="1000"/> <!-- Canto -->
-	</wall> 
-	<wall type="pole"> 
-		<item id="10698" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush>
+	<brush name="Abomination Wall" type="wall" server_lookid="11834">
+		<wall type="horizontal">
+			<item id="11834" chance="500"/>
+			<item id="11847" chance="500"/>
+			<item id="11848" chance="500"/>
+			<item id="11853" chance="500"/>
+			<item id="11854" chance="500"/>
+			<item id="11855" chance="500"/>
+			<door id="11911" type="normal" open="false"/>
+			<door id="11908" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="11833" chance="500"/>
+			<item id="11844" chance="500"/>
+			<item id="11845" chance="500"/>
+			<item id="11846" chance="500"/>
+			<item id="11850" chance="500"/>
+			<item id="11851" chance="500"/>
+			<item id="11852" chance="500"/>
+			<door id="11913" type="normal" open="false"/>
+			<door id="11909" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="11837" chance="1000"/>
+			<item id="11837" chance="0"/>
+			<item id="11837" chance="0"/>
+			<item id="11837" chance="0"/>
+		</wall>
+		<wall type="pole">
+			<item id="11835" chance="500"/>
+		</wall>
+	</brush>
 
-<brush name="Abomination Wall" type="wall" server_lookid="11834"> 
-	<wall type="horizontal"> 
-		<item id="11834" chance="500"/> <!-- Wall horizontal -->
-		<item id="11847" chance="500"/> <!-- Variavel horizontal --> 
-		<item id="11848" chance="500"/> <!-- Variavel horizontal -->   
-		<item id="11853" chance="500"/> <!-- Variavel horizontal -->  
-		<item id="11854" chance="500"/> <!-- Variavel horizontal -->  
-		<item id="11855" chance="500"/> <!-- Variavel horizontal -->  
-		<door id="11911" type="normal" open="false"/> <!-- Porta Horizontal normal fechada -->
-		<door id="11908" type="window"/>  <!-- Janela Horizontal normal -->
-	</wall> 
-	<wall type="vertical"> 
-		<item id="11833" chance="500"/> <!-- Wall vertical -->
-		<item id="11844" chance="500"/>  <!-- Wall vertical --> 
-		<item id="11845" chance="500"/>  <!-- Wall vertical --> 
-		<item id="11846" chance="500"/>  <!-- Wall vertical --> 
-		<item id="11850" chance="500"/>  <!-- Wall vertical --> 	
-		<item id="11851" chance="500"/>  <!-- Wall vertical -->
-		<item id="11852" chance="500"/>  <!-- Wall vertical -->		
-		<door id="11913" type="normal" open="false"/> <!-- Porta Vertical normal fechada -->
-		<door id="11909" type="window"/> <!-- Janela Vertical normal -->
-	</wall> 
-	<wall type="corner"> 
-		<item id="11837" chance="1000"/> <!-- Canto -->
-		<item id="11837" chance="0"/> <!-- Variavel Canto -->
-		<item id="11837" chance="0"/> <!-- Variavel Canto -->
-		<item id="11837" chance="0"/> <!-- Variavel Canto --> 
-	</wall> 
-	<wall type="pole"> 
-		<item id="11835" chance="500"/> <!-- Pilar -->
-	</wall> 
-</brush>  
+	<!-- Doodads -->
+	<brush name="Yellow Grass" type="doodad" server_lookid="10737" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="10737" chance="10"/>
+		<item id="10738" chance="10"/>
+		<item id="10739" chance="10"/>
+		<item id="10740" chance="10"/>
+		<item id="10741" chance="9"/>
+	</brush>
+	<brush name="Zao Yellow Flora" type="doodad" server_lookid="10743" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="10728" chance="10"/>
+		<item id="10729" chance="5"/>
+		<item id="10734" chance="10"/>
+		<item id="10735" chance="50"/>
+		<item id="10736" chance="40"/>
+		<item id="10742" chance="10"/>
+		<item id="10743" chance="50"/>
+		<item id="10763" chance="40"/>
+		<item id="10764" chance="30"/>
+		<item id="10913" chance="10"/>
+	</brush>
+	<brush name="Walkable Stones" type="doodad" server_lookid="9728" draggable="true" on_blocking="false" thickness="90/90">
+		<item id="9728" chance="10"/>
+		<item id="9727" chance="10"/>
+	</brush>
+	<brush name="Zao Corrupt Flora" type="doodad" server_lookid="10803" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="10802" chance="10"/>
+		<item id="10803" chance="10"/>
+		<item id="10804" chance="10"/>
+		<item id="10805" chance="10"/>
+		<item id="10806" chance="10"/>
+		<item id="10807" chance="50"/>
+		<item id="10808" chance="50"/>
+		<item id="10809" chance="50"/>
+		<item id="10811" chance="10"/>
+		<item id="10813" chance="10"/>
+		<item id="10816" chance="10"/>
+		<item id="10817" chance="10"/>
+		<item id="10788" chance="10"/>
+		<item id="10793" chance="10"/>
+		<item id="10876" chance="10"/>
+		<composite chance="10">
+			<tile x="0" y="0">
+				<item id="10798"/>
+			</tile>
+			<tile x="1" y="0">
+				<item id="10799"/>
+			</tile>
+			<tile x="0" y="1">
+				<item id="10800"/>
+			</tile>
+			<tile x="1" y="1">
+				<item id="10801"/>
+			</tile>
+		</composite>
+		<composite chance="10">
+			<tile x="0" y="0">
+				<item id="10794"/>
+			</tile>
+			<tile x="1" y="0">
+				<item id="10795"/>
+			</tile>
+			<tile x="0" y="1">
+				<item id="10796"/>
+			</tile>
+			<tile x="1" y="1">
+				<item id="10797"/>
+			</tile>
+		</composite>
+	</brush>
+	<brush name="Zao Alive Flora" type="doodad" server_lookid="10733" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="10730" chance="10"/>
+		<item id="10731" chance="10"/>
+		<item id="10732" chance="10"/>
+		<item id="10733" chance="10"/>
+		<item id="10869" chance="10"/>
+		<item id="10914" chance="50"/>
+		<item id="10915" chance="50"/>
+		<item id="10916" chance="50"/>
+		<item id="10917" chance="10"/>
+		<item id="10912" chance="10"/>
+	</brush>
+	<brush name="Zao Bridge Finishing" type="doodad" server_lookid="11986" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="11986" chance="10"/> </alternate>
+		<alternate> <item id="11987" chance="10"/> </alternate>
+		<alternate> <item id="11988" chance="10"/> </alternate>
+		<alternate> <item id="11989" chance="10"/> </alternate>
+	</brush>
+	<brush name="Corrupt Rice Plant" type="doodad" server_lookid="11763" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="11763" chance="10"/> </alternate>
+		<alternate> <item id="11764" chance="10"/> </alternate>
+		<alternate> <item id="11765" chance="10"/> </alternate>
+		<alternate> <item id="11766" chance="10"/> </alternate>
+		<alternate> <item id="11767" chance="10"/> </alternate>
+		<alternate> <item id="11768" chance="10"/> </alternate>
+		<alternate> <item id="11769" chance="10"/> </alternate>
+		<alternate> <item id="11770" chance="10"/> </alternate>
+	</brush>
+	<brush name="Rice Plant" type="doodad" server_lookid="11043" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="11043" chance="10"/> </alternate>
+		<alternate> <item id="11044" chance="10"/> </alternate>
+		<alternate> <item id="11045" chance="10"/> </alternate>
+		<alternate> <item id="11046" chance="10"/> </alternate>
+		<alternate> <item id="11047" chance="10"/> </alternate>
+		<alternate> <item id="11048" chance="10"/> </alternate>
+		<alternate> <item id="11049" chance="10"/> </alternate>
+		<alternate> <item id="11050" chance="10"/> </alternate>
+	</brush>
+	<brush name="Defensive Constructions I" type="doodad" server_lookid="10880" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10880" chance="10"/> </alternate>
+		<alternate> <item id="10881" chance="10"/> </alternate>
+	</brush>
+	<brush name="Defensive Constructions II" type="doodad" server_lookid="10882" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10882" chance="10"/> </alternate>
+		<alternate> <item id="10883" chance="10"/> </alternate>
+	</brush>
+	<brush name="Defensive Constructions III" type="doodad" server_lookid="10960" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10960" chance="10"/> </alternate>
+		<alternate> <item id="10961" chance="10"/> </alternate>
+		<alternate> <item id="10962" chance="10"/> </alternate>
+	</brush>
+	<brush name="Gray Lizard Table" type="doodad" server_lookid="10967" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10967" chance="10"/> </alternate>
+		<alternate> <item id="10968" chance="10"/> </alternate>
+	</brush>
+	<brush name="Red Lizard Table" type="doodad" server_lookid="10969" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10969" chance="10"/> </alternate>
+		<alternate> <item id="10970" chance="10"/> </alternate>
+	</brush>
+	<brush name="Dragon Banner" type="doodad" server_lookid="10963" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10963" chance="10"/> </alternate>
+		<alternate> <item id="10964" chance="10"/> </alternate>
+	</brush>
+	<brush name="Red Banner" type="doodad" server_lookid="10965" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10965" chance="10"/> </alternate>
+		<alternate> <item id="10966" chance="10"/> </alternate>
+	</brush>
+	<brush name="Dragon Light ON" type="doodad" server_lookid="10974" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10974" chance="10"/> </alternate>
+		<alternate> <item id="10972" chance="10"/> </alternate>
+	</brush>
+	<brush name="Dragon Light OFF" type="doodad" server_lookid="10973" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10971" chance="10"/> </alternate>
+		<alternate> <item id="10973" chance="10"/> </alternate>
+	</brush>
+	<brush name="Lizard Weapon Rack" type="doodad" server_lookid="10979" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10979" chance="10"/> </alternate>
+		<alternate> <item id="10980" chance="10"/> </alternate>
+		<alternate> <item id="10981" chance="10"/> </alternate>
+		<alternate> <item id="10982" chance="10"/> </alternate>
+		<alternate> <item id="10983" chance="10"/> </alternate>
+		<alternate> <item id="10984" chance="10"/> </alternate>
+	</brush>
+	<brush name="New Lizard Weapons" type="doodad" server_lookid="12167" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="12167" chance="10"/> </alternate>
+		<alternate> <item id="12166" chance="10"/> </alternate>
+		<alternate> <item id="12168" chance="10"/> </alternate>
+		<alternate> <item id="12169" chance="10"/> </alternate>
+		<alternate> <item id="12170" chance="10"/> </alternate>
+		<alternate> <item id="12171" chance="10"/> </alternate>
+		<alternate> <item id="12172" chance="10"/> </alternate>
+		<alternate> <item id="12173" chance="10"/> </alternate>
+		<alternate> <item id="12174" chance="10"/> </alternate>
+		<alternate> <item id="12175" chance="10"/> </alternate>
+	</brush>
+	<brush name="Zao New Corrupt Flora" type="doodad" server_lookid="11633" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="11628" chance="10"/>
+		<item id="11629" chance="10"/>
+		<item id="11630" chance="10"/>
+		<item id="11631" chance="10"/>
+		<item id="11632" chance="10"/>
+		<item id="11633" chance="10"/>
+		<item id="11634" chance="10"/>
+		<item id="11635" chance="10"/>
+		<item id="11636" chance="10"/>
+		<item id="11637" chance="10"/>
+		<item id="11638" chance="10"/>
+		<item id="11639" chance="10"/>
+		<item id="11640" chance="10"/>
+	</brush>
+	<brush name="Zao New Flora" type="doodad" server_lookid="11935" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="11931" chance="10"/>
+		<item id="11932" chance="10"/>
+		<item id="11933" chance="10"/>
+		<item id="11934" chance="10"/>
+		<item id="11935" chance="10"/>
+		<item id="11936" chance="10"/>
+		<item id="11937" chance="10"/>
+		<item id="11938" chance="10"/>
+		<item id="11939" chance="10"/>
+		<item id="11940" chance="10"/>
+		<item id="11941" chance="10"/>
+		<item id="11942" chance="10"/>
+		<item id="11943" chance="10"/>
+	</brush>
+	<brush name="Zao Black Peebles" type="doodad" server_lookid="11599" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="11599" chance="10"/>
+		<item id="11600" chance="10"/>
+		<item id="11601" chance="10"/>
+		<item id="11602" chance="10"/>
+		<item id="11603" chance="10"/>
+		<item id="11604" chance="10"/>
+		<item id="11605" chance="10"/>
+		<item id="11606" chance="10"/>
+		<item id="11607" chance="10"/>
+	</brush>
+	<brush name="Zao Acid Pools" type="doodad" server_lookid="11608" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="11608" chance="10"/>
+		<item id="11609" chance="10"/>
+		<item id="11610" chance="10"/>
+		<item id="11623" chance="10"/>
+		<item id="11624" chance="10"/>
+		<item id="11625" chance="10"/>
+		<item id="11626" chance="10"/>
+		<item id="11627" chance="10"/>
+	</brush>
+	<brush name="Green Nature Claws" type="doodad" server_lookid="10873" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10873" chance="10"/> </alternate>
+		<alternate> <item id="10872" chance="10"/> </alternate>
+	</brush>
+	<brush name="Yellow Nature Claws" type="doodad" server_lookid="10874" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10874" chance="10"/> </alternate>
+		<alternate> <item id="10875" chance="10"/> </alternate>
+	</brush>
+	<brush name="Yellow Strange Bush" type="doodad" server_lookid="10877" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10877" chance="10"/> </alternate>
+		<alternate> <item id="10878" chance="10"/> </alternate>
+	</brush>
+	<brush name="Green Strange Bush" type="doodad" server_lookid="10870" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10870" chance="10"/> </alternate>
+		<alternate> <item id="10871" chance="10"/> </alternate>
+	</brush>
+	<brush name="Dragon Throne" type="doodad" server_lookid="10950" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10950" chance="10"/> </alternate>
+		<alternate> <item id="10951" chance="10"/> </alternate>
+	</brush>
+	<brush name="Red Banners" type="doodad" server_lookid="10952" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10952" chance="10"/> </alternate>
+		<alternate> <item id="10953" chance="10"/> </alternate>
+		<alternate> <item id="10954" chance="10"/> </alternate>
+		<alternate> <item id="10955" chance="10"/> </alternate>
+		<alternate> <item id="11010" chance="10"/> </alternate>
+		<alternate> <item id="11012" chance="10"/> </alternate>
+	</brush>
+	<brush name="Purple Banners" type="doodad" server_lookid="10956" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="10956" chance="10"/> </alternate>
+		<alternate> <item id="10957" chance="10"/> </alternate>
+		<alternate> <item id="10958" chance="10"/> </alternate>
+		<alternate> <item id="10959" chance="10"/> </alternate>
+		<alternate> <item id="11009" chance="10"/> </alternate>
+		<alternate> <item id="11011" chance="10"/> </alternate>
+	</brush>
+	<brush name="Dark Banners" type="doodad" server_lookid="11289" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="11289" chance="10"/> </alternate>
+		<alternate> <item id="11290" chance="10"/> </alternate>
+		<alternate> <item id="11291" chance="10"/> </alternate>
+		<alternate> <item id="11292" chance="10"/> </alternate>
+		<alternate> <item id="11293" chance="10"/> </alternate>
+		<alternate> <item id="11294" chance="10"/> </alternate>
+		<alternate> <item id="11297" chance="10"/> </alternate>
+		<alternate> <item id="11298" chance="10"/> </alternate>
+	</brush>
+	<brush name="Zao Dark Tentacles" type="doodad" server_lookid="11652" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="11644" chance="10"/>
+		<item id="11645" chance="10"/>
+		<item id="11646" chance="10"/>
+		<item id="11647" chance="10"/>
+		<item id="11652" chance="50"/>
+		<item id="11653" chance="40"/>
+		<item id="11654" chance="50"/>
+		<item id="11657" chance="40"/>
+		<item id="11663" chance="10"/>
+		<item id="11664" chance="10"/>
+	</brush>
+	<brush name="Bone Piles" type="doodad" server_lookid="11122" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="11122" chance="10"/>
+		<composite chance="10">
+			<tile x="0" y="0">
+				<item id="11351"/>
+			</tile>
+			<tile x="1" y="0">
+				<item id="11352"/>
+			</tile>
+			<tile x="1" y="1">
+				<item id="11354"/>
+			</tile>
+			<tile x="0" y="1">
+				<item id="11353"/>
+			</tile>
+		</composite>
+	</brush>
+	<brush name="Crane" type="doodad" server_lookid="3979" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="3977" chance="10"/> </alternate>
+		<alternate> <item id="3978" chance="10"/> </alternate>
+		<alternate> <item id="3979" chance="10"/> </alternate>
+		<alternate> <item id="3980" chance="10"/> </alternate>
+	</brush>
+	<brush name="Burning Skull" type="doodad" server_lookid="5021" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="5020" chance="10"/> </alternate>
+		<alternate> <item id="5021" chance="10"/> </alternate>
+	</brush>
+	<brush name="Distilling Machine" type="doodad" server_lookid="5469" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="5469" chance="10"/> </alternate>
+		<alternate> <item id="5470" chance="10"/> </alternate>
+	</brush>
+	<brush name="Carts" type="doodad" server_lookid="5544" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="5544" chance="10"/> </alternate>
+		<alternate> <item id="5546" chance="10"/> </alternate>
+		<alternate> <item id="5547" chance="10"/> </alternate>
+		<alternate> <item id="5548" chance="10"/> </alternate>
+	</brush>
+	<brush name="Treasure Chest" type="doodad" server_lookid="5675" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="5675" chance="10"/> </alternate>
+		<alternate> <item id="5676" chance="10"/> </alternate>
+	</brush>
+	<brush name="Sharks" type="doodad" server_lookid="5704" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="5704" chance="10"/>
+		<item id="5738" chance="10"/>
+		<item id="5705" chance="10"/>
+	</brush>
+	<brush name="Firefly" type="doodad" server_lookid="6495" draggable="true" on_blocking="false" thickness="20/90">
+		<item id="6495" chance="10"/>
+		<item id="6491" chance="10"/>
+		<item id="6494" chance="10"/>
+	</brush>
+	<brush name="Hanging Skeleton" type="doodad" server_lookid="6524" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="6524" chance="10"/> </alternate>
+		<alternate> <item id="6525" chance="10"/> </alternate>
+	</brush>
+	<brush name="Igloo Base" type="doodad" server_lookid="6753" draggable="true" on_blocking="true" thickness="100/100">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="6752"/> </tile>
+			<tile x="0" y="1"> <item id="6751"/> </tile>
+			<tile x="1" y="0"> <item id="6753"/> </tile>
+			<tile x="1" y="1"> <item id="6750"/> </tile>
+		</composite>
+	</brush>
+	<brush name="Barbarian Banner" type="doodad" server_lookid="6793" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<alternate> <item id="6793" chance="10"/> </alternate>
+		<alternate> <item id="6794" chance="10"/> </alternate>
+	</brush>
+	<brush name="Geyser" type="doodad" server_lookid="7106" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<item id="7106" chance="10"/>
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="7106"/> </tile>
+			<tile x="0" y="0"> <item id="7108"/> </tile>
+		</composite>
+	</brush>
 
-<!-- Doodads -->
-
-<brush name="Yellow Grass" type="doodad" server_lookid="10737" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="10737" chance="10"/>
-	<item id="10738" chance="10"/>
-	<item id="10739" chance="10"/>
-	<item id="10740" chance="10"/>
-	<item id="10741" chance="9"/>
-</brush>
-<brush name="Zao Yellow Flora" type="doodad" server_lookid="10743" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="10728" chance="10"/>
-	<item id="10729" chance="5"/>
-	<item id="10734" chance="10"/>
-	<item id="10735" chance="50"/> -- More --
-	<item id="10736" chance="40"/> -- More --
-	<item id="10742" chance="10"/>
-	<item id="10743" chance="50"/> -- More --
-	<item id="10763" chance="40"/> -- More --
-	<item id="10764" chance="30"/> -- More --
-	<item id="10913" chance="10"/>
-</brush>
-<brush name="Walkable Stones" type="doodad" server_lookid="9728" draggable="true" on_blocking="false" thickness="90/90">
-	<item id="9728" chance="10"/>
-	<item id="9727" chance="10"/>
-</brush>
-<brush name="Zao Corrupt Flora" type="doodad" server_lookid="10803" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="10802" chance="10"/>
-	<item id="10803" chance="10"/>
-	<item id="10804" chance="10"/>
-	<item id="10805" chance="10"/>
-	<item id="10806" chance="10"/>
-	<item id="10807" chance="50"/> -- More --
-	<item id="10808" chance="50"/> -- More --
-	<item id="10809" chance="50"/> -- More --
-	<item id="10811" chance="10"/>
-	<item id="10813" chance="10"/>
-	<item id="10816" chance="10"/>
-	<item id="10817" chance="10"/>
-	<item id="10788" chance="10"/>
-	<item id="10793" chance="10"/>
-	<item id="10876" chance="10"/>
-	<composite chance="10">
-		<tile x="0" y="0">
-			<item id="10798"/>
-		</tile>
-		<tile x="1" y="0">
-			<item id="10799"/>
-		</tile>
-		<tile x="0" y="1">
-			<item id="10800"/>
-		</tile>
-		<tile x="1" y="1">
-			<item id="10801"/>
-		</tile>
-	</composite>
-	<composite chance="10">
-		<tile x="0" y="0">
-			<item id="10794"/>
-		</tile>
-		<tile x="1" y="0">
-			<item id="10795"/>
-		</tile>
-		<tile x="0" y="1">
-			<item id="10796"/>
-		</tile>
-		<tile x="1" y="1">
-			<item id="10797"/>
-		</tile>
-	</composite>
-</brush>
-<brush name="Zao Alive Flora" type="doodad" server_lookid="10733" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="10730" chance="10"/>
-	<item id="10731" chance="10"/>
-	<item id="10732" chance="10"/>
-	<item id="10733" chance="10"/>
-	<item id="10869" chance="10"/>
-	<item id="10914" chance="50"/> -- More --
-	<item id="10915" chance="50"/> -- More --
-	<item id="10916" chance="50"/> -- More --
-	<item id="10917" chance="10"/>
-	<item id="10912" chance="10"/>
-</brush>
-<brush name="Zao Bridge Finishing" type="doodad" server_lookid="11986" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="11986" chance="10"/> </alternate>
-	<alternate> <item id="11987" chance="10"/> </alternate>
-	<alternate> <item id="11988" chance="10"/> </alternate>
-	<alternate> <item id="11989" chance="10"/> </alternate>
-</brush>
-<brush name="Corrupt Rice Plant" type="doodad" server_lookid="11763" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="11763" chance="10"/> </alternate>
-	<alternate> <item id="11764" chance="10"/> </alternate>
-	<alternate> <item id="11765" chance="10"/> </alternate>
-	<alternate> <item id="11766" chance="10"/> </alternate>
-	<alternate> <item id="11767" chance="10"/> </alternate>
-	<alternate> <item id="11768" chance="10"/> </alternate>
-	<alternate> <item id="11769" chance="10"/> </alternate>
-	<alternate> <item id="11770" chance="10"/> </alternate>
-</brush>
-<brush name="Rice Plant" type="doodad" server_lookid="11043" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="11043" chance="10"/> </alternate>
-	<alternate> <item id="11044" chance="10"/> </alternate>
-	<alternate> <item id="11045" chance="10"/> </alternate>
-	<alternate> <item id="11046" chance="10"/> </alternate>
-	<alternate> <item id="11047" chance="10"/> </alternate>
-	<alternate> <item id="11048" chance="10"/> </alternate>
-	<alternate> <item id="11049" chance="10"/> </alternate>
-	<alternate> <item id="11050" chance="10"/> </alternate>
-</brush>
-<brush name="Defensive Constructions I" type="doodad" server_lookid="10880" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10880" chance="10"/> </alternate>
-	<alternate> <item id="10881" chance="10"/> </alternate>
-</brush>
-<brush name="Defensive Constructions II" type="doodad" server_lookid="10882" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10882" chance="10"/> </alternate>
-	<alternate> <item id="10883" chance="10"/> </alternate>
-</brush>
-<brush name="Defensive Constructions III" type="doodad" server_lookid="10960" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10960" chance="10"/> </alternate>
-	<alternate> <item id="10961" chance="10"/> </alternate>
-	<alternate> <item id="10962" chance="10"/> </alternate>
-</brush>
-<brush name="Gray Lizard Table" type="doodad" server_lookid="10967" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10967" chance="10"/> </alternate>
-	<alternate> <item id="10968" chance="10"/> </alternate>
-</brush>
-<brush name="Red Lizard Table" type="doodad" server_lookid="10969" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10969" chance="10"/> </alternate>
-	<alternate> <item id="10970" chance="10"/> </alternate>
-</brush>
-<brush name="Dragon Banner" type="doodad" server_lookid="10963" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10963" chance="10"/> </alternate>
-	<alternate> <item id="10964" chance="10"/> </alternate>
-</brush>
-<brush name="Red Banner" type="doodad" server_lookid="10965" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10965" chance="10"/> </alternate>
-	<alternate> <item id="10966" chance="10"/> </alternate>
-</brush>
-<brush name="Dragon Light ON" type="doodad" server_lookid="10974" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10974" chance="10"/> </alternate>
-	<alternate> <item id="10972" chance="10"/> </alternate>
-</brush>
-<brush name="Dragon Light OFF" type="doodad" server_lookid="10973" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10971" chance="10"/> </alternate>
-	<alternate> <item id="10973" chance="10"/> </alternate>
-</brush>
-<brush name="Lizard Weapon Rack" type="doodad" server_lookid="10979" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10979" chance="10"/> </alternate>
-	<alternate> <item id="10980" chance="10"/> </alternate>
-	<alternate> <item id="10981" chance="10"/> </alternate>
-	<alternate> <item id="10982" chance="10"/> </alternate>
-	<alternate> <item id="10983" chance="10"/> </alternate>
-	<alternate> <item id="10984" chance="10"/> </alternate>
-</brush>
-<brush name="New Lizard Weapons" type="doodad" server_lookid="12167" draggable="true" on_blocking="false" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="12167" chance="10"/> </alternate>
-	<alternate> <item id="12166" chance="10"/> </alternate>
-	<alternate> <item id="12168" chance="10"/> </alternate>
-	<alternate> <item id="12169" chance="10"/> </alternate>
-	<alternate> <item id="12170" chance="10"/> </alternate>
-	<alternate> <item id="12171" chance="10"/> </alternate>
-	<alternate> <item id="12172" chance="10"/> </alternate>
-	<alternate> <item id="12173" chance="10"/> </alternate>
-	<alternate> <item id="12174" chance="10"/> </alternate>
-	<alternate> <item id="12175" chance="10"/> </alternate>
-</brush>
-<brush name="Zao New Corrupt Flora" type="doodad" server_lookid="11633" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="11628" chance="10"/>
-	<item id="11629" chance="10"/>
-	<item id="11630" chance="10"/>
-	<item id="11631" chance="10"/>
-	<item id="11632" chance="10"/>
-	<item id="11633" chance="10"/>
-	<item id="11634" chance="10"/>
-	<item id="11635" chance="10"/>
-	<item id="11636" chance="10"/>
-	<item id="11637" chance="10"/>
-	<item id="11638" chance="10"/>
-	<item id="11639" chance="10"/>
-	<item id="11640" chance="10"/>
-</brush>
-<brush name="Zao New Flora" type="doodad" server_lookid="11935" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="11931" chance="10"/>
-	<item id="11932" chance="10"/>
-	<item id="11933" chance="10"/>
-	<item id="11934" chance="10"/>
-	<item id="11935" chance="10"/>
-	<item id="11936" chance="10"/>
-	<item id="11937" chance="10"/>
-	<item id="11938" chance="10"/>
-	<item id="11939" chance="10"/>
-	<item id="11940" chance="10"/>
-	<item id="11941" chance="10"/>
-	<item id="11942" chance="10"/>
-	<item id="11943" chance="10"/>
-</brush>
-<brush name="Zao Black Peebles" type="doodad" server_lookid="11599" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="11599" chance="10"/>
-	<item id="11600" chance="10"/>
-	<item id="11601" chance="10"/>
-	<item id="11602" chance="10"/>
-	<item id="11603" chance="10"/>
-	<item id="11604" chance="10"/>
-	<item id="11605" chance="10"/>
-	<item id="11606" chance="10"/>
-	<item id="11607" chance="10"/>
-</brush>
-<brush name="Zao Acid Pools" type="doodad" server_lookid="11608" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="11608" chance="10"/>
-	<item id="11609" chance="10"/>
-	<item id="11610" chance="10"/>
-	<item id="11623" chance="10"/>
-	<item id="11624" chance="10"/>
-	<item id="11625" chance="10"/>
-	<item id="11626" chance="10"/>
-	<item id="11627" chance="10"/>
-</brush>
-<brush name="Green Nature Claws" type="doodad" server_lookid="10873" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10873" chance="10"/> </alternate>
-	<alternate> <item id="10872" chance="10"/> </alternate>
-</brush>
-<brush name="Yellow Nature Claws" type="doodad" server_lookid="10874" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10874" chance="10"/> </alternate>
-	<alternate> <item id="10875" chance="10"/> </alternate>
-</brush>
-<brush name="Yellow Strange Bush" type="doodad" server_lookid="10877" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10877" chance="10"/> </alternate>
-	<alternate> <item id="10878" chance="10"/> </alternate>
-</brush>
-<brush name="Green Strange Bush" type="doodad" server_lookid="10870" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10870" chance="10"/> </alternate>
-	<alternate> <item id="10871" chance="10"/> </alternate>
-</brush>
-<brush name="Dragon Throne" type="doodad" server_lookid="10950" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10950" chance="10"/> </alternate>
-	<alternate> <item id="10951" chance="10"/> </alternate>
-</brush>
-<brush name="Red Banners" type="doodad" server_lookid="10952" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10952" chance="10"/> </alternate>
-	<alternate> <item id="10953" chance="10"/> </alternate>
-	<alternate> <item id="10954" chance="10"/> </alternate>
-	<alternate> <item id="10955" chance="10"/> </alternate>
-	<alternate> <item id="11010" chance="10"/> </alternate>
-	<alternate> <item id="11012" chance="10"/> </alternate>
-</brush>
-<brush name="Purple Banners" type="doodad" server_lookid="10956" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="10956" chance="10"/> </alternate>
-	<alternate> <item id="10957" chance="10"/> </alternate>
-	<alternate> <item id="10958" chance="10"/> </alternate>
-	<alternate> <item id="10959" chance="10"/> </alternate>
-	<alternate> <item id="11009" chance="10"/> </alternate>
-	<alternate> <item id="11011" chance="10"/> </alternate>
-</brush>
-<brush name="Dark Banners" type="doodad" server_lookid="11289" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="11289" chance="10"/> </alternate>
-	<alternate> <item id="11290" chance="10"/> </alternate>
-	<alternate> <item id="11291" chance="10"/> </alternate>
-	<alternate> <item id="11292" chance="10"/> </alternate>
-	<alternate> <item id="11293" chance="10"/> </alternate>
-	<alternate> <item id="11294" chance="10"/> </alternate>
-	<alternate> <item id="11297" chance="10"/> </alternate>
-	<alternate> <item id="11298" chance="10"/> </alternate>
-</brush>
-<brush name="Zao Dark Tentacles" type="doodad" server_lookid="11652" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="11644" chance="10"/>
-	<item id="11645" chance="10"/>
-	<item id="11646" chance="10"/>
-	<item id="11647" chance="10"/>
-	<item id="11652" chance="50"/> -- Tall one --
-	<item id="11653" chance="40"/> -- Tall one --
-	<item id="11654" chance="50"/> -- Tall one --
-	<item id="11657" chance="40"/> -- Tall one --
-	<item id="11663" chance="10"/>
-	<item id="11664" chance="10"/>
-</brush>
-<brush name="Bone Piles" type="doodad" server_lookid="11122" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="11122" chance="10"/>
-	<composite chance="10">
-		<tile x="0" y="0">
-			<item id="11351"/>
-		</tile>
-		<tile x="1" y="0">
-			<item id="11352"/>
-		</tile>
-		<tile x="1" y="1">
-			<item id="11354"/>
-		</tile>
-		<tile x="0" y="1">
-			<item id="11353"/>
-		</tile>
-	</composite>
-</brush>
-<brush name="Crane" type="doodad" server_lookid="3979" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="3977" chance="10"/> </alternate>
-	<alternate> <item id="3978" chance="10"/> </alternate>
-	<alternate> <item id="3979" chance="10"/> </alternate>
-	<alternate> <item id="3980" chance="10"/> </alternate>
-</brush>
-<brush name="Burning Skull" type="doodad" server_lookid="5021" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="5020" chance="10"/> </alternate>
-	<alternate> <item id="5021" chance="10"/> </alternate>
-</brush>
-<brush name="Distilling Machine" type="doodad" server_lookid="5469" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="5469" chance="10"/> </alternate>
-	<alternate> <item id="5470" chance="10"/> </alternate>
-</brush>
-<brush name="Carts" type="doodad" server_lookid="5544" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="5544" chance="10"/> </alternate>
-	<alternate> <item id="5546" chance="10"/> </alternate>
-	<alternate> <item id="5547" chance="10"/> </alternate>
-	<alternate> <item id="5548" chance="10"/> </alternate>
-</brush>
-<brush name="Treasure Chest" type="doodad" server_lookid="5675" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="5675" chance="10"/> </alternate>
-	<alternate> <item id="5676" chance="10"/> </alternate>
-</brush>
-<brush name="Sharks" type="doodad" server_lookid="5704" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="5704" chance="10"/>
-	<item id="5738" chance="10"/>
-	<item id="5705" chance="10"/>
-</brush>
-<brush name="Firefly" type="doodad" server_lookid="6495" draggable="true" on_blocking="false" thickness="20/90">
-	<item id="6495" chance="10"/>
-	<item id="6491" chance="10"/>
-	<item id="6494" chance="10"/>
-</brush>
-<brush name="Hanging Skeleton" type="doodad" server_lookid="6524" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="6524" chance="10"/> </alternate>
-	<alternate> <item id="6525" chance="10"/> </alternate>
-</brush>
-<brush name="Igloo Base" type="doodad" server_lookid="6753" draggable="true" on_blocking="true" thickness="100/100">
-	<composite chance="10">
-		<tile x="0" y="0"> <item id="6752"/> </tile>
-		<tile x="0" y="1"> <item id="6751"/> </tile>
-		<tile x="1" y="0"> <item id="6753"/> </tile>
-		<tile x="1" y="1"> <item id="6750"/> </tile>
-	</composite>
-</brush>
-<brush name="Barbarian Banner" type="doodad" server_lookid="6793" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<alternate> <item id="6793" chance="10"/> </alternate>
-	<alternate> <item id="6794" chance="10"/> </alternate>
-</brush>
-<brush name="Geyser" type="doodad" server_lookid="7106" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
-	<item id="7106" chance="10"/>
-	<composite chance="10">
-		<tile x="0" y="0"> <item id="7106"/> </tile>
-		<tile x="0" y="0"> <item id="7108"/> </tile>
-	</composite>
-</brush>
-<!-- Tileset Configs -->
-
-<tileset name="Cave">
-	<terrain>
-		<brush name="dirt mountain"/>
-		<brush name="New Muddy Sand"/>
-		<brush name="New Pinkish Sand"/>
-		<brush name="Riverbed"/>
-		<brush name="Strange Mud"/>
-		<brush name="Strange Mud II"/>
-		<brush name="Rice Pad"/>
-		<brush name="Corrupt Rice Pad"/>
-		<brush name="Lizard Figure Flooring"/>
-		<brush name="Destroyed Blue Lizard Flooring"/>
-		<brush name="Lizard Stone Flooring new"/>
-		<brush name="Weird Red Figure Flooring"/>
-		<brush name="Weird Dark Figure Flooring"/>
-		<brush name="Lizard Roof"/>
-		<brush name="Acid"/>
-		<brush name="New Strange Rock"/>
-		<brush name="New Strange Mud"/>
-		<brush name="Brown Strange Mud"/>
-		<brush name="Strange Black Mud"/>
-		<brush name="Weird Beige Ground"/>
-		<brush name="New Dark Mud"/>
-		<brush name="Orange Weird Ground"/>
-		<brush name="Yellow Weird Ground"/>
-		<brush name="Crystal Lizard Wall"/>
-		<brush name="Crystal Lizard Railing"/>
-		<brush name="Lizard snakeless Railing"/>
-		<brush name="Lizard snake Railing"/>
-		<brush name="Abomination Wall"/>
-	</terrain>
-</tileset>
-<tileset name="Town">
-	<terrain>
-		<brush name="Wood I"/>
-		<brush name="Wood II"/>
-		<brush name="Wood III"/>
-		<brush name="Wood IV"/>
-		<brush name="Wood V"/>
-		<brush name="Wood VI"/>
-		<brush name="Wood VII"/>
-		<brush name="Glowing Switch"/>
-		<brush name="Lizard Fortess Wall"/>
-		<brush name="Lizard Roof Wall"/>
-		<brush name="Lizard Wall"/>
-	</terrain>
-</tileset>
-<tileset name="Nature">
-	<doodad>
-		<brush name="Yellow Grass"/>
-		<brush name="Zao Yellow Flora"/>
-		<brush name="Zao Corrupt Flora"/>
-		<brush name="Zao Alive Flora"/>
-		<brush name="Walkable Stones"/>
-		<brush name="Corrupt Rice Plant"/>
-		<brush name="Rice Plant"/>
-	</doodad>
-</tileset>
-<tileset name="Exterior">
-	<doodad>
-		<brush name="Defensive Constructions I"/>
-		<brush name="Defensive Constructions II"/>
-		<brush name="Defensive Constructions III"/>
-		<brush name="Gray Lizard Table"/>
-		<brush name="Red Lizard Table"/>
-		<brush name="Dragon Banner"/>
-		<brush name="Red Banner"/>
-		<brush name="Dragon Light ON"/>
-		<brush name="Dragon Light OFF"/>
-		<brush name="Lizard Weapon Rack"/>
-		<brush name="New Lizard Weapons"/>
-		<brush name="Zao New Corrupt Flora"/>
-		<brush name="Zao New Flora"/>
-		<brush name="Zao Black Peebles"/>
-		<brush name="Zao Acid Pools"/>
-		<brush name="Green Nature Claws"/>
-		<brush name="Yellow Nature Claws"/>
-		<brush name="Yellow Strange Bush"/>
-		<brush name="Green Strange Bush"/>
-		<brush name="Dragon Throne"/>
-		<item id="11013"/>
-		<brush name="Red Banners"/>
-		<brush name="Purple Banners"/>
-		<brush name="Dark Banners"/>
-		<brush name="Zao Dark Tentacles"/>
-		<item id="11714"/> -- Obelisk --
-		<brush name="Bone Piles"/>
-		<brush name="Crane"/>
-		<brush name="Burning Skull"/>
-		<brush name="Distilling Machine"/>
-		<brush name="Carts"/>
-		<brush name="Treasure Chest"/>
-		<item id="6390"/> -- Ornamented Fountain --
-		<brush name="Sharks"/>
-		<brush name="Firefly"/>
-		<brush name="Hanging Skeleton"/>
-	</doodad>
-</tileset>
-<tileset name="Collectables">
-	<doodad>
-		<item fromid="10548" toid="10569"/>
-		<item fromid="10571" toid="10585"/>
-		<item fromid="10600" toid="10603"/>
-		<item fromid="10605" toid="10611"/>
-		<item fromid="11189" toid="11200"/>
-		<item id="11206"/>
-		<item fromid="11208" toid="11210"/>
-		<item fromid="11212" toid="11238"/>
-		<item id="11245"/>
-		<item fromid="11321" toid="11322"/>
-		<item fromid="11324" toid="11328"/>
-		<item fromid="11330" toid="11335"/>
-		<item id="11337"/>
-		<item id="11361"/>
-		<item id="11366"/>
-		<item id="11367"/>
-		<item fromid="11369" toid="11373"/>
-		<item fromid="12399" toid="12414"/>
-		<item fromid="12419" toid="12440"/>
-		<item fromid="12442" toid="12449"/>
-		<item fromid="12466" toid="12471"/>
-		<item fromid="12614" toid="12617"/>
-		<item fromid="12627" toid="12629"/>
-		<item id="12636"/>
-	</doodad>
-</tileset>
-<tileset name="Fansite Rewards">
-	<item>
-		<item id="2108"/>
-		<item id="2110"/>
-		<item id="2112"/>
-		<item id="2113"/>
-		<item id="9447"/>
-		<item id="9941"/>
-		<item id="9942"/>
-		<item id="2322"/>
-		<item id="2326"/>
-		<item id="6579"/>
-		<item id="2194"/>
-		<item id="6566"/>
-		<item id="6567"/>
-		<item id="5080"/>
-		<item id="3954"/>
-		<item id="3955"/>
-		<item id="5669"/>
-		<item id="6492"/>
-		<item id="6526"/>
-		<item fromid="6534" toid="6537"/>
-		<item fromid="6539" toid="6540"/>
-		<item fromid="7393" toid="7401"/>
-		<item id="7964"/>
-		<item fromid="8298" toid="8306"/>
-		<item id="8310"/>
-		<item id="8974"/>
-		<item id="9006"/>
-		<item id="9019"/>
-		<item id="9693"/>
-		<item id="9955"/>
-		<item id="9969"/>
-		<item id="9981"/>
-		<item id="10306"/>
-		<item id="11115"/>
-		<item id="11116"/>
-		<item id="11207"/>
-		<item id="11211"/>
-		<item id="11336"/>
-		<item id="11342"/>
-		<item id="11346"/>
-		<item fromid="13165" toid="13169"/>
-	</item>
-</tileset>
-<tileset name="Exterior">
-	<doodad>
-		<item fromid="10989" toid="10998"/>
-		<item fromid="9939" toid="9940"/>
-		<item fromid="9943" toid="9952"/>
-		<item fromid="9471" toid="9486"/>
-		<item id="9531"/>
-		<item id="9534"/>
-	</doodad>
-</tileset>
-<tileset name="Statues">
-	<doodad>
-		<item fromid="10999" toid="11006"/>
-		<item fromid="10946" toid="10949"/>
-		<item fromid="10709" toid="10714"/>
-		<item id="10541"/>
-		<item fromid="10349" toid="10356"/>
-		<item fromid="11089" toid="11096"/>
-		<item id="12773"/>
-		<item id="12774"/>
-		<item fromid="12121" toid="12124"/>
-		<item fromid="12161" toid="12162"/>
-		<item fromid="12164" toid="12165"/>
-	</doodad>
-</tileset>
-<tileset name="Architecture">
-	<doodad>
-		<item fromid="10697" toid="10699"/>
-		<item fromid="11793" toid="11795"/>
-		<item id="11797"/>
-		<item id="11910"/>
-		<item id="12383"/>
-		<item fromid="11931" toid="11933"/>
-		<item fromid="11963" toid="11964"/>
-		<item fromid="11999" toid="12016"/>
-		<item id="11058"/>
-		<item fromid="12042" toid="12043"/>
-		<item fromid="12158" toid="12169"/>
-		<item fromid="12652" toid="12653"/>
-		<item fromid="12848" toid="12856"/>
-		<item fromid="12870" toid="12879"/>
-	</doodad>
-</tileset>
-<tileset name="Bridges">
-	<raw>
-		<item fromid="3756" toid="3791"/>
-		<item fromid="11868" toid="11907"/>
-		<item fromid="11864" toid="11867"/>
-	</raw>
-</tileset>
-<tileset name="Interior">
-	<doodad>
-		<item fromid="5472" toid="5475"/>
-		<brush name="torture machine"/>
-		<brush name="Hanging Skeleton"/>
-	</doodad>
-</tileset>
-<tileset name="Snow">
-	<doodad>
-		<item fromid="6757" toid="6760"/>
-		<brush name="Igloo Base"/>
-		<item fromid="6754" toid="6756"/>
-		<brush name="Barbarian Banner"/>
-		<item id="6966"/> -- Ground Icicles --
-		<brush name="Geyser"/>
-	</doodad>
-</tileset>
+	<!-- Tileset Configs -->
+	<tileset name="Cave">
+		<terrain>
+			<brush name="dirt mountain"/>
+			<brush name="New Muddy Sand"/>
+			<brush name="New Pinkish Sand"/>
+			<brush name="Riverbed"/>
+			<brush name="Strange Mud"/>
+			<brush name="Strange Mud II"/>
+			<brush name="Rice Pad"/>
+			<brush name="Corrupt Rice Pad"/>
+			<brush name="Lizard Figure Flooring"/>
+			<brush name="Destroyed Blue Lizard Flooring"/>
+			<brush name="Lizard Stone Flooring new"/>
+			<brush name="Weird Red Figure Flooring"/>
+			<brush name="Weird Dark Figure Flooring"/>
+			<brush name="Lizard Roof"/>
+			<brush name="Acid"/>
+			<brush name="New Strange Rock"/>
+			<brush name="New Strange Mud"/>
+			<brush name="Brown Strange Mud"/>
+			<brush name="Strange Black Mud"/>
+			<brush name="Weird Beige Ground"/>
+			<brush name="New Dark Mud"/>
+			<brush name="Orange Weird Ground"/>
+			<brush name="Yellow Weird Ground"/>
+			<brush name="Crystal Lizard Wall"/>
+			<brush name="Crystal Lizard Railing"/>
+			<brush name="Lizard snakeless Railing"/>
+			<brush name="Lizard snake Railing"/>
+			<brush name="Abomination Wall"/>
+		</terrain>
+	</tileset>
+	<tileset name="Town">
+		<terrain>
+			<brush name="Wood I"/>
+			<brush name="Wood II"/>
+			<brush name="Wood III"/>
+			<brush name="Wood IV"/>
+			<brush name="Wood V"/>
+			<brush name="Wood VI"/>
+			<brush name="Wood VII"/>
+			<brush name="Glowing Switch"/>
+			<brush name="Lizard Fortess Wall"/>
+			<brush name="Lizard Roof Wall"/>
+			<brush name="Lizard Wall"/>
+		</terrain>
+	</tileset>
+	<tileset name="Nature">
+		<doodad>
+			<brush name="Yellow Grass"/>
+			<brush name="Zao Yellow Flora"/>
+			<brush name="Zao Corrupt Flora"/>
+			<brush name="Zao Alive Flora"/>
+			<brush name="Walkable Stones"/>
+			<brush name="Corrupt Rice Plant"/>
+			<brush name="Rice Plant"/>
+		</doodad>
+	</tileset>
+	<tileset name="Exterior">
+		<doodad>
+			<brush name="Defensive Constructions I"/>
+			<brush name="Defensive Constructions II"/>
+			<brush name="Defensive Constructions III"/>
+			<brush name="Gray Lizard Table"/>
+			<brush name="Red Lizard Table"/>
+			<brush name="Dragon Banner"/>
+			<brush name="Red Banner"/>
+			<brush name="Dragon Light ON"/>
+			<brush name="Dragon Light OFF"/>
+			<brush name="Lizard Weapon Rack"/>
+			<brush name="New Lizard Weapons"/>
+			<brush name="Zao New Corrupt Flora"/>
+			<brush name="Zao New Flora"/>
+			<brush name="Zao Black Pebbles"/>
+			<brush name="Zao Acid Pools"/>
+			<brush name="Green Nature Claws"/>
+			<brush name="Yellow Nature Claws"/>
+			<brush name="Yellow Strange Bush"/>
+			<brush name="Green Strange Bush"/>
+			<brush name="Dragon Throne"/>
+			<item id="11013"/>
+			<brush name="Red Banners"/>
+			<brush name="Purple Banners"/>
+			<brush name="Dark Banners"/>
+			<brush name="Zao Dark Tentacles"/>
+			<item id="11714"/>
+			<brush name="Bone Piles"/>
+			<brush name="Crane"/>
+			<brush name="Burning Skull"/>
+			<brush name="Distilling Machine"/>
+			<brush name="Carts"/>
+			<brush name="Treasure Chest"/>
+			<item id="6390"/>
+			<brush name="Sharks"/>
+			<brush name="Firefly"/>
+			<brush name="Hanging Skeleton"/>
+		</doodad>
+	</tileset>
+	<tileset name="Creature Products">
+		<doodad>
+			<item fromid="10548" toid="10569"/>
+			<item fromid="10571" toid="10585"/>
+			<item fromid="10600" toid="10603"/>
+			<item fromid="10605" toid="10611"/>
+			<item fromid="11189" toid="11200"/>
+			<item id="11206"/>
+			<item fromid="11208" toid="11210"/>
+			<item fromid="11212" toid="11238"/>
+			<item id="11245"/>
+			<item fromid="11321" toid="11322"/>
+			<item fromid="11324" toid="11328"/>
+			<item fromid="11330" toid="11335"/>
+			<item id="11337"/>
+			<item id="11361"/>
+			<item id="11366"/>
+			<item id="11367"/>
+			<item fromid="11369" toid="11373"/>
+			<item fromid="12399" toid="12414"/>
+			<item fromid="12419" toid="12440"/>
+			<item fromid="12442" toid="12449"/>
+			<item fromid="12466" toid="12471"/>
+			<item fromid="12614" toid="12617"/>
+			<item fromid="12627" toid="12629"/>
+			<item id="12636"/>
+		</doodad>
+	</tileset>
+	<tileset name="Fansite Rewards">
+		<item>
+			<item id="2108"/>
+			<item id="2110"/>
+			<item id="2112"/>
+			<item id="2113"/>
+			<item id="9447"/>
+			<item id="9941"/>
+			<item id="9942"/>
+			<item id="2322"/>
+			<item id="2326"/>
+			<item id="6579"/>
+			<item id="2194"/>
+			<item id="6566"/>
+			<item id="6567"/>
+			<item id="5080"/>
+			<item id="3954"/>
+			<item id="3955"/>
+			<item id="5669"/>
+			<item id="6492"/>
+			<item id="6526"/>
+			<item fromid="6534" toid="6537"/>
+			<item fromid="6539" toid="6540"/>
+			<item fromid="7393" toid="7401"/>
+			<item id="7964"/>
+			<item fromid="8298" toid="8306"/>
+			<item id="8310"/>
+			<item id="8974"/>
+			<item id="9006"/>
+			<item id="9019"/>
+			<item id="9693"/>
+			<item id="9955"/>
+			<item id="9969"/>
+			<item id="9981"/>
+			<item id="10306"/>
+			<item id="11115"/>
+			<item id="11116"/>
+			<item id="11207"/>
+			<item id="11211"/>
+			<item id="11336"/>
+			<item id="11342"/>
+			<item id="11346"/>
+			<item fromid="13165" toid="13169"/>
+		</item>
+	</tileset>
+	<tileset name="Exterior">
+		<doodad>
+			<item fromid="10989" toid="10998"/>
+			<item fromid="9939" toid="9940"/>
+			<item fromid="9943" toid="9952"/>
+			<item fromid="9471" toid="9486"/>
+			<item id="9531"/>
+			<item id="9534"/>
+		</doodad>
+	</tileset>
+	<tileset name="Statues">
+		<doodad>
+			<item fromid="10999" toid="11006"/>
+			<item fromid="10946" toid="10949"/>
+			<item fromid="10709" toid="10714"/>
+			<item id="10541"/>
+			<item fromid="10349" toid="10356"/>
+			<item fromid="11089" toid="11096"/>
+			<item id="12773"/>
+			<item id="12774"/>
+			<item fromid="12121" toid="12124"/>
+			<item fromid="12161" toid="12162"/>
+			<item fromid="12164" toid="12165"/>
+		</doodad>
+	</tileset>
+	<tileset name="Architecture">
+		<doodad>
+			<item fromid="10697" toid="10699"/>
+			<item fromid="11793" toid="11795"/>
+			<item id="11797"/>
+			<item id="11910"/>
+			<item id="12383"/>
+			<item fromid="11931" toid="11933"/>
+			<item fromid="11963" toid="11964"/>
+			<item fromid="11999" toid="12016"/>
+			<item id="11058"/>
+			<item fromid="12042" toid="12043"/>
+			<item fromid="12158" toid="12169"/>
+			<item fromid="12652" toid="12653"/>
+			<item fromid="12848" toid="12856"/>
+			<item fromid="12870" toid="12879"/>
+		</doodad>
+	</tileset>
+	<tileset name="Bridges">
+		<raw>
+			<item fromid="3756" toid="3791"/>
+			<item fromid="11868" toid="11907"/>
+			<item fromid="11864" toid="11867"/>
+		</raw>
+	</tileset>
+	<tileset name="Interior">
+		<doodad>
+			<item fromid="5472" toid="5475"/>
+			<brush name="torture machine"/>
+			<brush name="Hanging Skeleton"/>
+		</doodad>
+	</tileset>
+	<tileset name="Snow">
+		<doodad>
+			<item fromid="6757" toid="6760"/>
+			<brush name="Igloo Base"/>
+			<item fromid="6754" toid="6756"/>
+			<brush name="Barbarian Banner"/>
+			<item id="6966"/>
+			<brush name="Geyser"/>
+		</doodad>
+	</tileset>
 </materialsextension>

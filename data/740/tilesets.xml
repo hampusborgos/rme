@@ -91,7 +91,7 @@
 			<item id="466"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Nature">
 		<terrain>
 			<brush name="mountain"/>
@@ -152,7 +152,7 @@
 			<brush name="rough gray rubble"/>
 			<brush name="rough brown rubble"/>
 			<brush name="dead trees"/>
-			<brush name="rush wood"/>			
+			<brush name="rush wood"/>
 			<brush name="snowy trees"/>
 		</doodad>
 		<raw>
@@ -164,7 +164,7 @@
 			<item fromid="2798" toid="2805"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
@@ -181,14 +181,14 @@
 		<raw>
 			<item fromid="101"/>
 			<item fromid="351" toid="355"/>
-			
+
 			<item fromid="384"/>
 			<item fromid="383"/>
 			<item fromid="385"/>
 			<item fromid="392"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Town">
 		<terrain>
 			<brush name="stone floor"/>
@@ -226,14 +226,14 @@
 			<brush name="egypt wall"/>
 			<brush name="egypt stone wall"/>
 			<brush name="pyramid ramp"/>
-			
+
 			<brush name="fence"/>
 			<brush name="dark fence"/>
 			<!-- This does not work 'perfectly yet
 			<brush name="steel bars"/>
 			<brush name="steel rebar"/>
 			-->
-			<brush name="flat roof"/>		
+			<brush name="flat roof"/>
 			<brush name="brick roof, left"/>
 			<brush name="brick roof, vertical"/>
 			<brush name="brick roof, right"/>
@@ -249,7 +249,7 @@
 			<brush name="sewer grate"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Stairs">
 		<doodad>
 			<brush name="wooden ladder hole"/>
@@ -264,7 +264,7 @@
 			<brush name="ramp"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Boats">
 		<raw>
 			<item fromid="1277" toid="1284"/>
@@ -275,14 +275,14 @@
 		<doodad>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Sea">
 		<raw>
 			<item fromid="2226"/>
 			<item fromid="2240"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Hangables">
 		<doodad>
 			<brush name="blackboard"/>
@@ -305,7 +305,7 @@
 			<item id="1880"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Interior">
 		<doodad>
 			<brush name="small drawer"/>
@@ -417,9 +417,9 @@
 			<item fromid="1450" toid="1451"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Exterior">
-		<doodad>			
+		<doodad>
 			-- creepy --
 			<brush name="wooden coffin"/>
 			<brush name="stone coffin (no rose)"/>
@@ -428,17 +428,17 @@
 			<brush name="stone coffin (red rose)"/>
 			<brush name="buried stone coffin"/>
 			<brush name="sarcophagus"/>
-			<item fromid="1406" toid="1409"/>			
+			<item fromid="1406" toid="1409"/>
 			-- Campfires --
 			<item fromid="1421" toid="1428"/>
-			
-			-- fountains --	
+
+			-- fountains --
 			<brush name="marble fountain - on"/>
 			<brush name="marble fountain - off"/>
 			<item id="1378"/>
 			<brush name="normal fountain - on"/>
 			<brush name="normal fountain - off"/>
-			
+
 			-- flags --
 			<brush name="dragon flag"/>
 			<brush name="castle flag"/>
@@ -449,7 +449,7 @@
 			<brush name="bench"/>
 			-- signs --
 			<item fromid="1429" toid="1434"/>
-			<item fromid="1438" toid="1439"/>	
+			<item fromid="1438" toid="1439"/>
 		</doodad>
 		<raw>
 			<item fromid="486"/>
@@ -539,7 +539,7 @@
 			<item fromid="2640" toid="2646"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Ornaments">
 		<items>
 			-- Amulets --
@@ -574,7 +574,7 @@
 			<item fromid="2127"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Tools">
 		<items>
 			<item fromid="2548" toid="2580"/>
@@ -637,13 +637,13 @@
 			<item fromid="2187" toid="2191"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Shields">
 		<items>
 			<item fromid="2509" toid="2542"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Trinkets">
 		<items>
 			-- Some random stuff --
@@ -684,7 +684,7 @@
 			<item id="2062"/>
 			<item id="2062"/>
 			<item id="2063"/>
-			
+
 			<item fromid="2366" toid="2375"/>
 			<item fromid="2597" toid="2598"/>
 			<item id="2599"/>
@@ -715,12 +715,12 @@
 			<item id="2639"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Collectables">
 		<items>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Magic Fields">
 		<doodad>
 			<brush name="fire field (not decaying)"/>
@@ -739,7 +739,7 @@
 			<brush name="searing fire field (decaying)"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Containers">
 		<items>
 	        <item fromid="1987" toid="1989"/>
@@ -756,7 +756,7 @@
 	        <item fromid="2595" toid="2596"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Writables">
 		<items>
 			<item fromid="1947" toid="1986"/>
@@ -769,14 +769,14 @@
 			<item id="2217"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Food">
 		<items>
 			<item id="2666"/>
 			<item fromid="2667" toid="2679"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Trash">
 		<doodad>
 			<brush name="broken bottles"/>
@@ -804,7 +804,7 @@
 			<item fromid="2806" toid="3134"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Stairs / Ramps / Ladders">
 		<raw>
 			<!-- Holes -->
@@ -814,7 +814,7 @@
 			<item fromid="468" toid="470"/>
 			<item fromid="481" toid="485"/>
 			<item fromid="489"/>
-			
+
 			<!-- Stairs / Ladder Down -->
 			<item fromid="369" toid="370"/>
 			<item fromid="408"/>
@@ -823,17 +823,17 @@
 			<item fromid="423"/>
 			<item fromid="427" toid="429"/>
 			<item fromid="432" toid="433"/>
-			
+
 			<!-- Other -->
 			<item fromid="430"/>
 			<item fromid="461" toid="462"/>
 			<item fromid="475" toid="476"/>
 			<item fromid="479" toid="480"/>
 			<item fromid="924"/>
-			
+
 			<!-- Ladders -->
 			<item fromid="1386"/>
-			
+
 			<!-- Stairs -->
 			<item fromid="1385"/>
 			<item fromid="1396"/>
