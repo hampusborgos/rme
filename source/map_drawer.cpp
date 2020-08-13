@@ -283,7 +283,7 @@ void MapDrawer::DrawMap()
 
 					if(!live_client || nd->isVisible(map_z > GROUND_LAYER)) {
 						for(int map_x = 0; map_x < 4; ++map_x) {
-							for (int map_y = 0; map_y < 4; ++map_y) {
+							for(int map_y = 0; map_y < 4; ++map_y) {
 								DrawTile(nd->getTile(map_x, map_y, map_z));
 							}
 						}
