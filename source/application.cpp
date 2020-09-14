@@ -37,7 +37,7 @@
 
 #include <wx/snglinst.h>
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__WINDOWS__)
 #include <GL/glut.h>
 #endif
 
@@ -112,7 +112,7 @@ bool Application::OnInit()
 	wxAppConsole::SetInstance(this);
 	wxArtProvider::Push(new ArtProvider());
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__WINDOWS__)
 	int argc = 1;
 	char* argv[1] = { wxString(this->argv[0]).char_str() };
 	glutInit(&argc, argv);

@@ -17,10 +17,10 @@
 
 #include "main.h"
 
-#ifdef __LINUX__
-	#include <GL/glut.h>
-#else
+#ifdef __APPLE__
 	#include <GLUT/glut.h>
+#else
+	#include <GL/glut.h>
 #endif
 
 #include "editor.h"
