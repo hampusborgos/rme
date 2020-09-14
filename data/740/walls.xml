@@ -1,10 +1,9 @@
 <materials>
-	
 	<brush name="plaster wall" type="wall" server_lookid="1037">
 		<wall type="horizontal">
 			<item id="1037" chance="500"/>
-			<item id="1039" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1045" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1039" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1045" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 			<door id="1215" type="archway" open="false"/>
 			<door id="1216" type="archway" open="false"/>
 			<door id="1212" type="normal" open="false"/>
@@ -20,8 +19,8 @@
 		</wall>
 		<wall type="vertical">
 			<item id="1036" chance="400"/>
-			<item id="1041" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1043" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1041" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1043" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 			<door id="1217" type="archway" open="false"/>
 			<door id="1218" type="archway" open="false"/>
 			<door id="1210" type="normal" open="false"/>
@@ -37,43 +36,43 @@
 		</wall>
 		<wall type="corner">
 			<item id="1042" chance="1000"/>
-			<item id="1040" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1044" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1046" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1047" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1048" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1040" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1044" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1046" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1047" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1048" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="pole">
 			<item id="1038" chance="1000"/>
 		</wall>
 	</brush>
-	
+
 	<brush name="stone wall" type="wall" server_lookid="1050">
 		<wall type="horizontal">
 			<item id="1050" chance="500"/>
-			<item id="1052" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1058" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1052" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1058" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 			<door id="1267" type="window"/>
 		</wall>
 		<wall type="vertical">
 			<item id="1049" chance="400"/>
-			<item id="1054" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1056" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1054" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1056" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 			<door id="1268" type="window"/>
 		</wall>
 		<wall type="corner">
 			<item id="1053" chance="1000"/>
-			<item id="1055" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1057" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1059" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1055" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1057" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1059" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="pole">
 			<item id="1051" chance="1000"/>
 		</wall>
-		
+
 		<friend name="plaster wall" redirect="true"/>
 	</brush>
-	
+
 	<brush name="brick wall" type="wall" server_lookid="1026">
 		<wall type="horizontal">
 			<item id="1026" chance="1"/>
@@ -93,17 +92,17 @@
 		</wall>
 		<wall type="corner">
 			<item id="1029" chance="1"/>
-			<item id="1031" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1033" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1035" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1031" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1033" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1035" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="pole">
 			<item id="1027" chance="1"/>
 		</wall>
-		
+
 		<friend name="plaster wall" redirect="true"/>
 	</brush>
-	
+
 	<brush name="egypt wall" type="wall" server_lookid="1061">
 		<wall type="horizontal">
 			<item id="1061" chance="1"/>
@@ -137,15 +136,15 @@
 		</wall>
 		<wall type="corner">
 			<item id="1064" chance="1"/>
-			<item id="1066" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1068" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1070" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1066" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1068" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1070" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="pole">
 			<item id="1062" chance="1"/>
 		</wall>
 	</brush>
-	
+
 	<brush name="egypt stone wall" type="wall" server_lookid="1101">
 		<wall type="horizontal">
 			<item id="1101" chance="1"/>
@@ -161,41 +160,41 @@
 		</wall>
 		<wall type="corner">
 			<item id="1104" chance="1"/>
-			<item id="1106" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1108" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="1110" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="1106" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1108" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1110" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="pole">
 			<item id="1102" chance="1"/>
 		</wall>
-		
+
 		<friend name="egypt wall" redirect="true"/> -- There can only be one redirection! --
 	</brush>
-	
+
 	<brush name="rock wall" type="wall" server_lookid="904">
 		<wall type="horizontal">
 			<item id="904" chance="500"/>
-			<item id="906" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="912" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="906" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="912" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="vertical">
 			<item id="903" chance="400"/>
-			<item id="908" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="910" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="908" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="910" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="corner">
 			<item id="907" chance="1000"/>
-			<item id="909" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="911" chance="0"/> -- This needs to be here for backwards compability --
-			<item id="913" chance="0"/> -- This needs to be here for backwards compability --
+			<item id="909" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="911" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="913" chance="0"/> <!-- This needs to be here for backwards compatibility -->
 		</wall>
 		<wall type="pole">
 			<item id="905" chance="1000"/>
 		</wall>
-		
+
 		<friend id="plaster wall" redirect="true"/>
 	</brush>
-	
+
 	<brush name="brick wall arch" type="doodad" server_lookid="1208" draggable="false" on_blocking="true" redo_borders="true" thickness="100/100">
 		<alternate>
 			<composite chance="10">
@@ -210,7 +209,7 @@
 			</composite>
 		</alternate>
 	</brush>
-	
+
 	<brush name="rock wall arch" type="doodad" server_lookid="917" draggable="false" on_blocking="true" redo_borders="true" thickness="100/100">
 		<alternate>
 			<composite chance="10">
@@ -225,7 +224,7 @@
 			</composite>
 		</alternate>
 	</brush>
-	
+
 	<brush name="plaster wall arch" type="doodad" server_lookid="1216" draggable="true" on_blocking="true" redo_borders="true" thickness="100/100">
 		<alternate>
 			<composite chance="10">

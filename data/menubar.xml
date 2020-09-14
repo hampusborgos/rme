@@ -10,7 +10,7 @@
         <separator/>
         <menu name="$Import">
             <item name="$Import Map..." action="IMPORT_MAP" help="Import map data from another map file."/>
-            <item name="Import $Monsters/NPC..." action="IMPORT_MONSTERS" help="Import etiher a monsters.xml file or a specific monster/NPC."/>
+            <item name="Import $Monsters/NPC..." action="IMPORT_MONSTERS" help="Import either a monsters.xml file or a specific monster/NPC."/>
             <item name="Import Mi$nimap..." action="IMPORT_MINIMAP" help="Import map data from a .bmp file."/>
         </menu>
         <menu name="$Export">
@@ -26,10 +26,10 @@
     </menu>
     <menu name="$Edit">
         <item name="$Undo" hotkey="Ctrl+Z" action="UNDO" help="Undo last action."/>
-        <item name="$Redo" hotkey="Ctrl+Shift+Z" action="REDO" help="Redo last undoed action."/>
+        <item name="$Redo" hotkey="Ctrl+Shift+Z" action="REDO" help="Redo last undid action."/>
         <separator/>
         <item name="Find $Item..." hotkey="Ctrl+F" action="FIND_ITEM" help="Find all instances of an item type the map."/>
-        <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurances of one item with another."/>
+        <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurrences of one item with another."/>
         <menu name="$Find on Map">
             <item name="Find $Everything" action="SEARCH_ON_MAP_EVERYTHING" help="Find all unique/action/text/container items."/>
             <separator/>
@@ -74,18 +74,20 @@
         <item name="$Statistics" hotkey="F8" action="MAP_STATISTICS" help="Show map statistics."/>
     </menu>
     <menu name="$Select">
-        <item name="Replace Item" action="REPLACE_ON_SELECTION_ITEM" help="Replace item on selected area."/>
-        <item name="Find Item" action="SEARCH_ON_SELECTION_ITEM" help="Find items on selected area."/>
-        <item name="Remove Item" action="REMOVE_ON_SELECTION_ITEM" help="Remove item on selected area."/>
+        <item name="Replace Item on Selection" action="REPLACE_ON_SELECTION_ITEM" help="Replace item on selected area."/>
+        <item name="Find Item on Selection" action="SEARCH_ON_SELECTION_ITEM" help="Find items on selected area."/>
+        <item name="Remove Item on Selection" action="REMOVE_ON_SELECTION_ITEM" help="Remove item on selected area."/>
         <separator/>
-        <item name="Find $Everything" action="SEARCH_ON_SELECTION_EVERYTHING" help="Find all unique/action/text/container items."/>
+        <menu name="$Find on Selection">
+            <item name="Find $Everything" action="SEARCH_ON_SELECTION_EVERYTHING" help="Find all unique/action/text/container items."/>
+            <separator/>
+            <item name="Find $Unique" action="SEARCH_ON_SELECTION_UNIQUE" help="Find all items with an unique ID on selected area."/>
+            <item name="Find $Action" action="SEARCH_ON_SELECTION_ACTION" help="Find all items with an action ID on selected area."/>
+            <item name="Find $Container" action="SEARCH_ON_SELECTION_CONTAINER" help="Find all containers on selected area."/>
+            <item name="Find $Writeable" action="SEARCH_ON_SELECTION_WRITEABLE" help="Find all writeable items on selected area."/>
+        </menu>
         <separator/>
-        <item name="Find $Unique" action="SEARCH_ON_SELECTION_UNIQUE" help="Find all items with an unique ID on selected area."/>
-        <item name="Find $Action" action="SEARCH_ON_SELECTION_ACTION" help="Find all items with an action ID on selected area."/>
-        <item name="Find $Container" action="SEARCH_ON_SELECTION_CONTAINER" help="Find all containers on selected area."/>
-        <item name="Find $Writeable" action="SEARCH_ON_SELECTION_WRITEABLE" help="Find all writeable items on selected area."/>
-        <separator/>
-        <menu name="$Selection">
+        <menu name="$Selection Mode">
             <item name="$Compensate Selection" action="SELECT_MODE_COMPENSATE" help="Compensate for floor difference when selecting."/>
             <separator/>
             <item name="$Current Floor" action="SELECT_MODE_CURRENT" help="Select only current floor."/>

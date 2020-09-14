@@ -1,6 +1,6 @@
-<materialsextension name="Marquees" author="Remere" description="This adds all the roof marquees" client="8.00;8.10;8.20 - 8.31"> 
+<materialsextension name="Marquees" author="Remere" description="This adds all the roof marquees" client="8.00;8.10;8.20 - 8.31">
 
-	<border id="88400"> -- red striped marquee horizontal border --	
+	<border id="88400"> <!-- red striped marquee horizontal border -->
 		<borderitem edge="n"   item="5166"/>
 		<borderitem edge="w"   item="5167"/>
 		<borderitem edge="e"   item="5158"/>
@@ -10,8 +10,8 @@
 		<borderitem edge="cse" item="5161"/>
 		<borderitem edge="csw" item="5162"/>
 	</border>
-	
-	<border id="88401"> -- red striped marquee vertical border --	
+
+	<border id="88401"> <!-- red striped marquee vertical border -->
 		<borderitem edge="n"   item="5192"/>
 		<borderitem edge="w"   item="5190"/>
 		<borderitem edge="e"   item="5188"/>
@@ -21,8 +21,8 @@
 		<borderitem edge="cse" item="5182"/>
 		<borderitem edge="csw" item="5184"/>
 	</border>
-	
-	<border id="88402"> -- blue/yellow striped marquee horizontal border --	
+
+	<border id="88402"> <!-- blue/yellow striped marquee horizontal border -->
 		<borderitem edge="n"   item="5175"/>
 		<borderitem edge="w"   item="5180"/>
 		<borderitem edge="e"   item="5171"/>
@@ -32,8 +32,8 @@
 		<borderitem edge="cse" item="5170"/>
 		<borderitem edge="csw" item="5179"/>
 	</border>
-	
-	<border id="88403"> -- blue/yellow striped marquee vertical border --	
+
+	<border id="88403"> <!-- blue/yellow striped marquee vertical border -->
 		<borderitem edge="n"   item="5201"/>
 		<borderitem edge="w"   item="5204"/>
 		<borderitem edge="e"   item="5196"/>
@@ -43,8 +43,8 @@
 		<borderitem edge="cse" item="5194"/>
 		<borderitem edge="csw" item="5202"/>
 	</border>
-	
-	<border id="88404"> -- green marquee horizontal border --	
+
+	<border id="88404"> <!-- green marquee horizontal border -->
 		<borderitem edge="n"   item="5214"/>
 		<borderitem edge="w"   item="5216"/>
 		<borderitem edge="e"   item="5207"/>
@@ -54,8 +54,8 @@
 		<borderitem edge="cse" item="5206"/>
 		<borderitem edge="csw" item="5215"/>
 	</border>
-	
-	<border id="88405"> -- green marquee vertical border --	
+
+	<border id="88405"> <!-- green marquee vertical border -->
 		<borderitem edge="n"   item="5225"/>
 		<borderitem edge="w"   item="5228"/>
 		<borderitem edge="e"   item="5220"/>
@@ -65,8 +65,8 @@
 		<borderitem edge="cse" item="5218"/>
 		<borderitem edge="csw" item="5226"/>
 	</border>
-	
-	<border id="88406"> -- blue marquee horizontal border --	
+
+	<border id="88406"> <!-- blue marquee horizontal border -->
 		<borderitem edge="n"   item="5238"/>
 		<borderitem edge="w"   item="5240"/>
 		<borderitem edge="e"   item="5231"/>
@@ -76,8 +76,8 @@
 		<borderitem edge="cse" item="5230"/>
 		<borderitem edge="csw" item="5239"/>
 	</border>
-	
-	<border id="88407"> -- blue marquee vertical border --	
+
+	<border id="88407"> <!-- blue marquee vertical border -->
 		<borderitem edge="n"   item="5249"/>
 		<borderitem edge="w"   item="5252"/>
 		<borderitem edge="e"   item="5244"/>
@@ -87,73 +87,73 @@
 		<borderitem edge="cse" item="5242"/>
 		<borderitem edge="csw" item="5250"/>
 	</border>
-    
+
 	<brush name="red striped marquee horizontal" type="ground" server_lookid="5160" z-order="15501">
 		<item id="5160" chance="1"/>
 		<item id="5159" chance="0"/>
-		
+
 		<border align="outer" id="88400"/>
 		<border align="outer" id="88400" to="none"/>
 	</brush>
-    
+
 	<brush name="red striped marquee vertical" type="ground" server_lookid="5189" z-order="15501">
 		<item id="5189" chance="1"/>
 		<item id="5186" chance="0"/>
-		
+
 		<border align="outer" id="88401"/>
 		<border align="outer" id="88401" to="none"/>
 	</brush>
-    
+
 	<brush name="yellow striped marquee horizontal" type="ground" server_lookid="5174" z-order="15502">
 		<item id="5174" chance="1"/>
 		<item id="5177" chance="0"/>
-		
+
 		<border align="outer" id="88402"/>
 		<border align="outer" id="88402" to="none"/>
 	</brush>
-    
+
 	<brush name="yellow striped marquee vertical" type="ground" server_lookid="5200" z-order="15502">
 		<item id="5200" chance="1"/>
 		<item id="5199" chance="0"/>
-		
+
 		<border align="outer" id="88403"/>
 		<border align="outer" id="88403" to="none"/>
 	</brush>
-    
+
 	<brush name="green marquee horizontal" type="ground" server_lookid="5213" z-order="15503">
 		<item id="5213" chance="1"/>
 		<item id="5210" chance="0"/>
-		
+
 		<border align="outer" id="88404"/>
 		<border align="outer" id="88404" to="none"/>
 	</brush>
-    
+
 	<brush name="green marquee vertical" type="ground" server_lookid="5224" z-order="15503">
 		<item id="5224" chance="1"/>
 		<item id="5223" chance="0"/>
-		
+
 		<border align="outer" id="88405"/>
 		<border align="outer" id="88405" to="none"/>
 	</brush>
-    
+
 	<brush name="blue marquee horizontal" type="ground" server_lookid="5237" z-order="15504">
 		<item id="5237" chance="1"/>
 		<item id="5234" chance="0"/>
-		
+
 		<border align="outer" id="88406"/>
 		<border align="outer" id="88406" to="none"/>
 	</brush>
-    
+
 	<brush name="blue marquee vertical" type="ground" server_lookid="5248" z-order="15504">
 		<item id="5248" chance="1"/>
 		<item id="5247" chance="0"/>
-		
+
 		<border align="outer" id="88407"/>
 		<border align="outer" id="88407" to="none"/>
 	</brush>
-	
-    <tileset name="Roofs"> 
-        <terrain> 
+
+    <tileset name="Roofs">
+        <terrain>
 			<brush name="red striped marquee horizontal"/>
 			<brush name="red striped marquee vertical"/>
 			<brush name="yellow striped marquee horizontal"/>
@@ -162,6 +162,6 @@
 			<brush name="green marquee vertical"/>
 			<brush name="blue marquee horizontal"/>
 			<brush name="blue marquee vertical"/>
-        </terrain> 
-    </tileset> 
+        </terrain>
+    </tileset>
 </materialsextension>

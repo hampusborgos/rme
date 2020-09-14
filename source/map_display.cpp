@@ -1,6 +1,19 @@
 //////////////////////////////////////////////////////////////////////
 // This file is part of Remere's Map Editor
 //////////////////////////////////////////////////////////////////////
+// Remere's Map Editor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Remere's Map Editor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////
 
 #include "main.h"
 
@@ -312,6 +325,9 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 {
 	int start_x, start_y;
 	static_cast<MapWindow*>(GetParent())->GetViewStart(&start_x, &start_y);
+
+	screen_x *= GetContentScaleFactor();
+	screen_y *= GetContentScaleFactor();
 
 	if(screen_x < 0) {
 		*map_x = (start_x + screen_x) / TILE_SIZE;
@@ -1468,8 +1484,8 @@ void MapCanvas::OnWheel(wxMouseEvent& event)
 		static_cast<MapWindow*>(GetParent())->GetViewSize(&screensize_x, &screensize_y);
 
 		// This took a day to figure out!
-		int scroll_x = int(screensize_x * diff * (std::max(cursor_x, 1) / double(screensize_x)));
-		int scroll_y = int(screensize_y * diff * (std::max(cursor_y, 1) / double(screensize_y)));
+		int scroll_x = int(screensize_x * diff * (std::max(cursor_x, 1) / double(screensize_x))) * GetContentScaleFactor();
+		int scroll_y = int(screensize_y * diff * (std::max(cursor_y, 1) / double(screensize_y))) * GetContentScaleFactor();
 
 		static_cast<MapWindow*>(GetParent())->ScrollRelative(-scroll_x, -scroll_y);
 	}
@@ -2291,19 +2307,22 @@ void MapPopupMenu::Update()
 			if(topSelectedItem || topCreature || topItem) {
 				Teleport* teleport = dynamic_cast<Teleport*>(topSelectedItem);
 				if(topSelectedItem && (topSelectedItem->isBrushDoor() || topSelectedItem->isRoteable() || teleport)) {
-					if(topSelectedItem->isRoteable()) {
-						Append( MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
-					}
 
-					if(teleport && teleport->hasDestination()) {
-						Append( MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
+					if(topSelectedItem->isRoteable()) 
+						Append(MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
+
+					if(teleport && teleport->hasDestination()) 
+						Append(MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
+
+					if(topSelectedItem->isDoor())
+					{
+						if (topSelectedItem->isOpen()) {
+							Append(MAP_POPUP_MENU_SWITCH_DOOR, "&Close door", "Close this door");
+						} else {
+							Append(MAP_POPUP_MENU_SWITCH_DOOR, "&Open door", "Open this door");
+						}
+						AppendSeparator();
 					}
-					if(topSelectedItem->isOpen()) {
-						Append( MAP_POPUP_MENU_SWITCH_DOOR, "&Close door", "Close this door");
-					} else {
-						Append( MAP_POPUP_MENU_SWITCH_DOOR, "&Open door", "Open this door");
-					}
-					AppendSeparator();
 				}
 
 				if(topCreature)
@@ -2434,10 +2453,16 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 	}
 }
 
-void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions)
+bool MapCanvas::floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions)
 {
+	countMaxFills++;
+	if (countMaxFills > (BLOCK_SIZE * 4 * 4)) {
+		countMaxFills = 0;
+		return true;
+	}
+
 	if(x <= 0 || y <= 0 || x >= BLOCK_SIZE || y >= BLOCK_SIZE) {
-		return;
+		return false;
 	}
 
 	processed[getFillIndex(x, y)] = true;
@@ -2445,38 +2470,41 @@ void MapCanvas::floodFill(Map *map, const Position& center, int x, int y, Ground
 	int px = (center.x + x) - (BLOCK_SIZE/2);
 	int py = (center.y + y) - (BLOCK_SIZE/2);
 	if(px <= 0 || py <= 0 || px >= map->getWidth() || py >= map->getHeight()) {
-		return;
+		return false;
 	}
 
 	Tile* tile = map->getTile(px, py, center.z);
 	if((tile && tile->ground && !brush) || (!tile && brush)) {
-		return;
+		return false;
 	}
 
 	if(tile && brush) {
 		GroundBrush* groundBrush = tile->getGroundBrush();
 		if(!groundBrush || groundBrush->getID() != brush->getID()) {
-			return;
+			return false;
 		}
 	}
 
 	positions->push_back(Position(px, py, center.z));
 
+	bool deny = false;
 	if(!processed[getFillIndex(x-1, y)]) {
-		floodFill(map, center, x-1, y, brush, positions);
+		deny = floodFill(map, center, x-1, y, brush, positions);
 	}
 
-	if(!processed[getFillIndex(x, y-1)]) {
-		floodFill(map, center, x, y-1, brush, positions);
+	if(!deny && !processed[getFillIndex(x, y-1)]) {
+		deny = floodFill(map, center, x, y-1, brush, positions);
 	}
 
-	if(!processed[getFillIndex(x+1, y)]) {
-		floodFill(map, center, x+1, y, brush, positions);
+	if(!deny && !processed[getFillIndex(x+1, y)]) {
+		deny = floodFill(map, center, x+1, y, brush, positions);
 	}
 
-	if(!processed[getFillIndex(x, y+1)]) {
-		floodFill(map, center, x, y+1, brush, positions);
+	if(!deny && !processed[getFillIndex(x, y+1)]) {
+		deny = floodFill(map, center, x, y+1, brush, positions);
 	}
+
+	return deny;
 }
 
 // ============================================================================

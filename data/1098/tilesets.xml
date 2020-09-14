@@ -1,6 +1,6 @@
 <materials>
 	<!-- TILESETS -->
-	
+
 	<tileset name="Grounds">
 		<raw>
 			<item id="100"/>
@@ -147,7 +147,7 @@
 			<item fromid="9833" toid="9834"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Nature">
 		<terrain>
 			<brush name="sea"/>
@@ -255,7 +255,7 @@
 			<brush name="swamp source"/>
 			<brush name="water source"/>
 			<brush name="waterfall"/>
-			<item fromid="8632"/> -- whirlpool --
+			<item fromid="8632"/> <!-- whirlpool -->
 			<item fromid="4875"/>
 			<item fromid="5677"/>
 			<brush name="mud cave rocks"/>
@@ -321,7 +321,7 @@
 			<item fromid="4826" toid="4827"/>
 			<item fromid="873" toid="878"/>
 			<item fromid="903" toid="917"/>
-			<item fromid="8632"/> -- whirlpool --
+			<item fromid="8632"/> <!-- whirlpool -->
 			<item id="6094"/>
 			<item fromid="4875"/>
 			<item fromid="5677"/>
@@ -332,9 +332,9 @@
 			<item fromid="6610" toid="6611"/>
 			<item fromid="6707" toid="6727"/>
 			<item fromid="7536" toid="7550"/>
-	        <item id="7551"/>
-	        <item id="7552"/>
-	        <item id="7553"/>
+			<item id="7551"/>
+			<item id="7552"/>
+			<item id="7553"/>
 			<item fromid="7554" toid="7557"/>
 			<item fromid="7566"/>
 			<item fromid="7585" toid="7586"/>
@@ -350,7 +350,7 @@
 			<item fromid="8214" toid="8240"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
@@ -368,7 +368,7 @@
 			<brush name="void"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Snow">
 		<terrain>
 			<brush name="sea"/>
@@ -404,7 +404,7 @@
 			<brush name="floating ice"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Town">
 		<terrain>
 			<brush name="stone floor"/>
@@ -436,7 +436,7 @@
 			<!-- <brush name="wooden raft"/> -->
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Roofs">
 		<terrain>
 			<brush name="flat roof"/>
@@ -474,7 +474,7 @@
 			<item fromid="9759" toid="9766"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Stairs">
 		<terrain>
 			<brush name="snowy ramp"/>
@@ -503,7 +503,7 @@
 			<brush name="pyramid ramp"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Boats">
 		<raw>
 			<item fromid="4883" toid="4947"/>
@@ -516,7 +516,7 @@
 			<item fromid="3587" toid="3600"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Sea">
 		<raw>
 			<item fromid="2226"/>
@@ -602,7 +602,7 @@
 			<item fromid="9838" toid="9845"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Interior">
 		<doodad>
 			<brush name="depot"/>
@@ -644,17 +644,17 @@
 			<item id="2334"/>
 			<item id="2555"/>
 			<item fromid="6502"/>
-			-- MUSIC!1111111 --
+			<!-- music -->
 			<item id="2192"/>
 			<item id="2180"/>
 			<brush name="piano"/>
 			<brush name="harp"/>
-			-- tables --
+			<!-- tables -->
 			<item id="1614"/>
 			<item id="1615"/>
 			<item id="1616"/>
 			<item id="1619"/>
-			-- chairs --
+			<!-- chairs -->
 			<brush name="wooden chair"/>
 			<brush name="rocking chair"/>
 			<brush name="red cushioned chair"/>
@@ -667,7 +667,7 @@
 			<brush name="dull throne"/>
 			<brush name="large throne"/>
 			<brush name="stone throne"/>
-			-- carpets --
+			<!-- carpets -->
 			<brush name="brown bear skin rug"/>
 			<brush name="white bear skin rug"/>
 			<brush name="bear skin rug"/>
@@ -718,7 +718,7 @@
 			<item fromid="9956" toid="9959"/>
 			<item fromid="9972" toid="9973"/>
 			<item fromid="9975" toid="9979"/>
-			-- Potted plants --
+			<!-- potted plants -->
 			<item fromid="6502"/>
 			<item fromid="7655"/>
 			<item fromid="7665"/>
@@ -727,10 +727,10 @@
 			<item fromid="9982" toid="9991"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Beds">
 		<doodad>
-			-- beds --
+			<!-- beds -->
 			<brush name="normal bed"/>
 			<brush name="normal bed with sleeper"/>
 			<brush name="cot"/>
@@ -741,7 +741,7 @@
 			<brush name="hay bed with sleeper"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Statues">
 		<doodad>
 			<item fromid="1444" toid="1445"/>
@@ -764,7 +764,7 @@
 			<brush name="hunter statue"/>
 			<brush name="hydra fight statue"/>
 			<brush name="snake charmer statue"/>
-			
+
 			<brush name="lizard statue"/>
 			<brush name="broken lizard statue"/>
 			<brush name="giant snake head statue"/>
@@ -776,7 +776,7 @@
 			<brush name="stone monkey"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Exterior">
 		<doodad>
 			<item id="1387"/>
@@ -808,7 +808,7 @@
 			<brush name="lumberjack stuff"/>
 			<brush name="leaning planks"/>
 			<brush name="planks"/>
-			
+
 			<brush name="ballista"/>
 			<brush name="catapult"/>
 			<brush name="torture machine"/>
@@ -819,49 +819,49 @@
 			<brush name="stuck arrow"/>
 			<brush name="stuck axe"/>
 			<brush name="pillory"/>
-			
-			-- graves --
+
+			<!-- graves -->
 			<item fromid="1406"	toid="1409"/>
-			
-			-- coffins --
+
+			<!-- coffins -->
 			<brush name="stone coffin (no rose)"/>
 			<brush name="stone coffin (yellow rose)"/>
 			<brush name="stone coffin (blue rose)"/>
 			<brush name="stone coffin (red rose)"/>
 			<brush name="buried stone coffin"/>
 			<brush name="sarcophagus"/>
-			
-			-- Campfires --
+
+			<!-- campfires -->
 			<item fromid="1421" toid="1428"/>
 			<item fromid="1481" toid="1486"/>
 			<item fromid="2601" toid="2605"/>
 			<brush name="large cauldron"/>
 			<brush name="large cauldron with fire"/>
-			
-			-- fountains --
+
+			<!-- fountains -->
 			<brush name="ancient fountain - off"/>
 			<brush name="ancient fountain - on"/>
 			<brush name="water well"/>
 			<brush name="lava fountain"/>
-			
+
 			<brush name="marble fountain - on"/>
 			<brush name="marble fountain - off"/>
 			<item id="1378"/>
 			<brush name="normal fountain - on"/>
 			<brush name="normal fountain - off"/>
 			<brush name="wall fountain"/>
-			
-			-- tents --
+
+			<!-- tents -->
 			<brush name="gray striped tent"/>
 			<brush name="red striped tent"/>
 			<brush name="garish striped tent"/>
-			
-			-- misc --
+
+			<!-- misc -->
 			<brush name="white caravan wagon"/>
 			<brush name="caravan wagon chassis"/>
 			<brush name="orc wagon"/>
-			
-			-- uber skeleton --
+
+			<!-- uber skeleton -->
 			<item fromid="8388" toid="8415"/>
 		</doodad>
 		<raw>
@@ -945,10 +945,10 @@
 			<item fromid="9304" toid="9306"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Signs">
 		<doodad>
-			-- Signs --
+			<!-- signs -->
 			<brush name="tavern sign"/>
 			<brush name="large shop sign"/>
 			<brush name="large archer's shop sign"/>
@@ -997,7 +997,7 @@
 
 	<tileset name="Equipment">
 		<items_and_raw>
-			-- Helmets --
+			<!-- helmets -->
 			<item fromid="2128"/>
 			<item fromid="2342" toid="2343"/>
 			<item fromid="5924"/>
@@ -1035,9 +1035,9 @@
 			<item fromid="9778"/>
 			<item fromid="9820" toid="9822"/>
 			<item fromid="9927"/>
-			-- Armor --
-	        <item fromid="2463" toid="2467"/>
-	        <item fromid="2472"/>
+			<!-- armor -->
+			<item fromid="2463" toid="2467"/>
+			<item fromid="2472"/>
 			<item fromid="2476"/>
 			<item fromid="2483" toid="2487"/>
 			<item fromid="2489"/>
@@ -1063,7 +1063,7 @@
 			<item fromid="9776"/>
 			<item fromid="9808" toid="9810"/>
 			<item fromid="9928"/>
-			-- Legs --
+			<!-- legs -->
 			<item fromid="2468" toid="2470"/>
 			<item fromid="2477" toid="2478"/>
 			<item fromid="2488"/>
@@ -1083,7 +1083,7 @@
 			<item fromid="9777"/>
 			<item fromid="9811" toid="9813"/>
 			<item fromid="9929"/>
-			-- Boots --
+			<!-- boots -->
 			<item fromid="2195"/>
 			<item fromid="6530"/>
 			<item fromid="6132"/>
@@ -1100,10 +1100,10 @@
 			<item fromid="9930" toid="9933"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Ornaments">
 		<items_and_raw>
-			-- Amulets --
+			<!-- amulets -->
 			<item fromid="2661"/>
 			<item fromid="2161"/>
 			<item fromid="2170"/>
@@ -1126,7 +1126,7 @@
 			<item fromid="2142"/>
 			<item fromid="7887" toid="7890"/>
 			<item id="5785"/>
-			-- Rings --
+			<!-- rings -->
 			<item fromid="2207" toid="2209"/>
 			<item fromid="2213"/>
 			<item fromid="2214"/>
@@ -1138,14 +1138,14 @@
 			<item fromid="6093"/>
 			<item fromid="6300" toid="6301"/>
 			<item fromid="8752"/>
-			
+
 			<item fromid="2164" toid="2169"/>
 			<item fromid="2179"/>
 			<item fromid="2202" toid="2206"/>
 			<item fromid="2210" toid="2216"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Tools">
 		<items_and_raw>
 			<item id="5710"/>
@@ -1168,7 +1168,7 @@
 
 	<tileset name="Weapons">
 		<items_and_raw>
-			-- Swords --
+			<!-- swords -->
 			<item fromid="2376" toid="2377"/>
 			<item fromid="2379"/>
 			<item fromid="2383" toid="2385"/>
@@ -1196,7 +1196,7 @@
 			<item fromid="2351"/>
 			<item fromid="8602"/>
 			<item fromid="8930" toid="8932"/>
-			-- Maces --
+			<!-- maces -->
 			<item fromid="2382"/>
 			<item fromid="2391"/>
 			<item fromid="2394"/>
@@ -1225,7 +1225,7 @@
 			<item fromid="7421" toid="7432"/>
 			<item fromid="8293"/>
 			<item fromid="8927" toid="8929"/>
-			-- Axes --
+			<!-- axes -->
 			<item fromid="2378"/>
 			<item fromid="2380" toid="2381"/>
 			<item fromid="2386" toid="2388"/>
@@ -1245,7 +1245,7 @@
 			<item fromid="7433" toid="7436"/>
 			<item fromid="8601"/>
 			<item fromid="8924" toid="8926"/>
-			-- Distance --
+			<!-- distance -->
 			<item fromid="5907"/>
 			<item fromid="2389"/>
 			<item fromid="7378"/>
@@ -1257,14 +1257,14 @@
 			<item fromid="2352"/>
 			<item fromid="2410"/>
 			<item fromid="8849" toid="8858"/>
-			-- Ammo --
+			<!-- ammo -->
 			<item fromid="2543" toid="2547"/>
 			<item fromid="6529"/>
 			<item fromid="7363" toid="7368"/>
 			<item fromid="2399"/>
 		</items_and_raw>
 		<raw>
-			-- Wands --
+			<!-- wands -->
 			<item fromid="2181" toid="2186"/>
 			<item fromid="2187" toid="2191"/>
 			<item fromid="7958"/>
@@ -1275,33 +1275,33 @@
 			<item fromid="8920"/>
 			<item fromid="8921"/>
 			<item fromid="8922"/>
-			-- Tomes --
+			<!-- tomes -->
 			<item fromid="8900" toid="8904"/>
 			<item fromid="8918"/>
-			-- Swords --
+			<!-- swords -->
 			<item fromid="7854" toid="7858"/>
 			<item fromid="7869" toid="7873"/>
 			<item fromid="7744" toid="7748"/>
 			<item fromid="7763" toid="7767"/>
-			-- Maces --
+			<!-- maces -->
 			<item fromid="7864" toid="7868"/>
 			<item fromid="7879" toid="7883"/>
 			<item fromid="7754" toid="7758"/>
 			<item fromid="7773" toid="7777"/>
-			-- Axes --
+			<!-- axes -->
 			<item fromid="7859" toid="7863"/>
 			<item fromid="7874" toid="7878"/>
 			<item fromid="7749" toid="7753"/>
 			<item fromid="7768" toid="7772"/>
-			-- Ammo --
+			<!-- ammo -->
 			<item fromid="7850"/>
 			<item fromid="7838" toid="7840"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Weapons (Magic)">
 		<items>
-			-- Wands --
+			<!-- wands -->
 			<item fromid="2181" toid="2186"/>
 			<item fromid="2187" toid="2191"/>
 			<item fromid="7958"/>
@@ -1312,30 +1312,30 @@
 			<item fromid="8920"/>
 			<item fromid="8921"/>
 			<item fromid="8922"/>
-			-- Tomes --
+			<!-- tomes -->
 			<item fromid="8900" toid="8904"/>
 			<item fromid="8918"/>
-			-- Swords --
+			<!-- swords -->
 			<item fromid="7854" toid="7858"/>
 			<item fromid="7869" toid="7873"/>
 			<item fromid="7744" toid="7748"/>
 			<item fromid="7763" toid="7767"/>
-			-- Maces --
+			<!-- maces -->
 			<item fromid="7864" toid="7868"/>
 			<item fromid="7879" toid="7883"/>
 			<item fromid="7754" toid="7758"/>
 			<item fromid="7773" toid="7777"/>
-			-- Axes --
+			<!-- axes -->
 			<item fromid="7859" toid="7863"/>
 			<item fromid="7874" toid="7878"/>
 			<item fromid="7749" toid="7753"/>
 			<item fromid="7768" toid="7772"/>
-			-- Ammo --
+			<!-- ammo -->
 			<item fromid="7850"/>
 			<item fromid="7838" toid="7840"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Shields">
 		<items_and_raw>
 			<item fromid="2509" toid="2542"/>
@@ -1348,15 +1348,15 @@
 			<item fromid="9814" toid="9816"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Trinkets">
 		<items_and_raw>
-			-- Some random stuff --
-			<item id="2036"/> -- Watch (Also ID 6091, 6092, but those are useless?) --
+			<!-- some random stuff -->
+			<item id="2036"/>
 			<item fromid="5792" toid="5797"/>
 			<item id="5798"/>
 			<item fromid="7934" toid="7937"/>
-			-- Trinkets --
+			<!-- trinkets -->
 			<item fromid="2176" toid="2178"/>
 			<item id="2344"/>
 			<item id="2345"/>
@@ -1386,7 +1386,7 @@
 			<item fromid="6091"/>
 			<item fromid="5946"/>
 			<item fromid="5865"/>
-			-- Instruments --
+			<!-- instruments -->
 			<item id="2364"/>
 			<item id="2368"/>
 			<item id="2369"/>
@@ -1404,7 +1404,7 @@
 			<item id="6572"/>
 			<item id="2332"/>
 			<item id="5786"/>
-			-- Lights --
+			<!-- lights -->
 			<item id="2041" toid="2049"/>
 			<item id="2051"/>
 			<item id="2050"/>
@@ -1423,11 +1423,11 @@
 			<item fromid="2042" toid="2049"/>
 			<item fromid="2057"/>
 			<item fromid="2162" toid="2163"/>
-			
-			-- Instruments --
+
+			<!-- Instruments -->
 			<item fromid="2366" toid="2374"/>
-			
-			-- Random --
+
+			<!-- Random -->
 			<item id="2375"/>
 			<item id="4874"/>
 			<item fromid="2597" toid="2598"/>
@@ -1447,13 +1447,13 @@
 			<item fromid="2327"/>
 			<item fromid="7441" toid="7442"/>
 			<item fromid="7444" toid="7448"/>
-			-- Food related --
+			<!-- Food related -->
 			<item id="2033"/>
 			<item id="2035"/>
 			<item id="2033"/>
-			-- Keys --
+			<!-- Keys -->
 			<item fromid="2086" toid="2092"/>
-			-- Game pieces --
+			<!-- Game pieces -->
 			<item id="2625"/>
 			<item fromid="2626" toid="2631"/>
 			<item id="2624"/>
@@ -1466,7 +1466,7 @@
 			<item id="6092"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Fluid Containers">
 		<items_and_raw>
 			<item fromid="3941" toid="3942"/>
@@ -1487,7 +1487,7 @@
 			<item id="7636"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Jewelry">
 		<items_and_raw>
 			<item fromid="2143" toid="2160"/>
@@ -1497,10 +1497,10 @@
 			<item fromid="2139" toid="2141"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Magic Fields">
 		<doodad>
-			<item id="1387"/> -- magic forcefield --
+			<item id="1387"/> <!-- magic forcefield -->
 			<brush name="fire field (not decaying)"/>
 			<brush name="poison field (not decaying)"/>
 			<brush name="energy field (not decaying)"/>
@@ -1522,37 +1522,37 @@
 			<item fromid="8753" toid="8759"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Containers">
 		<items_and_raw>
-	        <item fromid="1987" toid="1989"/>
-	        <item fromid="1990" toid="1997"/>
-	        <item fromid="7737" toid="7739"/>
-	        <item fromid="1998" toid="2004"/>
-	        <item fromid="5949" toid="5950"/>
-	        <item fromid="3939" toid="3940"/>
-            <item fromid="5926" toid="5927"/>
-	        <item fromid="7342" toid="7343"/>
-	        <item fromid="2365"/>
-	        <item fromid="2330" toid="2331"/>
-	        <item fromid="2595" toid="2596"/>
-	        <item fromid="5801"/>
-	        <item fromid="6085"/>
-	        <item fromid="6104"/>
-	        <item fromid="6109" toid="6112"/>
-	        <item fromid="6506" toid="6511"/>
-	        <item fromid="3901" toid="3938"/>
-	        <item fromid="5086" toid="5088"/>
-	        <item fromid="6114" toid="6115"/>
-	        <item fromid="7904" toid="7907"/>
-	        <item fromid="7955"/>
-	        <item fromid="7960" toid="7962"/>
-	        <item fromid="6372" toid="6373"/>
-	        <item fromid="7700"/>
+			<item fromid="1987" toid="1989"/>
+			<item fromid="1990" toid="1997"/>
+			<item fromid="7737" toid="7739"/>
+			<item fromid="1998" toid="2004"/>
+			<item fromid="5949" toid="5950"/>
+			<item fromid="3939" toid="3940"/>
+			<item fromid="5926" toid="5927"/>
+			<item fromid="7342" toid="7343"/>
+			<item fromid="2365"/>
+			<item fromid="2330" toid="2331"/>
+			<item fromid="2595" toid="2596"/>
+			<item fromid="5801"/>
+			<item fromid="6085"/>
+			<item fromid="6104"/>
+			<item fromid="6109" toid="6112"/>
+			<item fromid="6506" toid="6511"/>
+			<item fromid="3901" toid="3938"/>
+			<item fromid="5086" toid="5088"/>
+			<item fromid="6114" toid="6115"/>
+			<item fromid="7904" toid="7907"/>
+			<item fromid="7955"/>
+			<item fromid="7960" toid="7962"/>
+			<item fromid="6372" toid="6373"/>
+			<item fromid="7700"/>
 			<item fromid="9774" toid="9775"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Writeables">
 		<items_and_raw>
 			<item fromid="1947" toid="1986"/>
@@ -1589,7 +1589,7 @@
 			<item fromid="7528" toid="7535"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Food">
 		<items_and_raw>
 			<item fromid="2666" toid="2696"/>
@@ -1610,7 +1610,7 @@
 			<item fromid="8838" toid="8848"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Trash">
 		<doodad>
 			<brush name="broken bottles"/>
@@ -1694,14 +1694,14 @@
 			<item fromid="9823" toid="9824"/>
 			<item fromid="9829" toid="9832"/>
 			<item fromid="9867" toid="9882"/>
-			<item fromid="9909" toid="9926"/>	
+			<item fromid="9909" toid="9926"/>
 			<item fromid="9935" toid="9938"/>
 			<item fromid="9960" toid="9968"/>
 			<item fromid="10002" toid="10005"/>
 			<item fromid="10007" toid="10009"/>
 		</doodad_and_raw>
 	</tileset>
-	
+
 	<tileset name="Stairs / Ramps / Ladders">
 		<raw>
 			<!-- Holes -->
@@ -1712,7 +1712,7 @@
 			<item fromid="481" toid="485"/>
 			<item fromid="489"/>
 			<item fromid="5731"/>
-			
+
 			<!-- Stairs / Ladder Down -->
 			<item fromid="369" toid="370"/>
 			<item fromid="408"/>
@@ -1729,7 +1729,7 @@
 			<item fromid="9574"/>
 			<item fromid="9606"/>
 			<item fromid="9846"/>
-			
+
 			<!-- Other -->
 			<item fromid="430"/>
 			<item fromid="461" toid="462"/>
@@ -1742,13 +1742,13 @@
 			<item fromid="6917" toid="6924"/>
 			<item fromid="8559" toid="8566"/>
 			<item fromid="8288"/>
-			
+
 			<!-- Ladders -->
 			<item fromid="1386"/>
 			<item fromid="3678"/>
 			<item fromid="5543"/>
 			<item fromid="8599"/>
-			
+
 			<!-- Stairs -->
 			<item fromid="1385"/>
 			<item fromid="1396"/>
@@ -1756,7 +1756,7 @@
 			<item fromid="5258" toid="5260"/>
 			<item fromid="3687" toid="3688"/>
 			<item fromid="9573"/>
-			
+
 			<!-- Ramps -->
 			<item fromid="1388" toid="1395"/>
 			<item fromid="1398" toid="1405"/>
@@ -1765,7 +1765,7 @@
 			<item fromid="8372" toid="8379"/>
 		</raw>
 	</tileset>
-	
+
 	<!--
 	<tileset name="Pillars">
 		<terrain_and_raw>
@@ -1781,7 +1781,7 @@
 		</terrain_and_raw>
 	</tileset>
 	-->
-	
+
 	<tileset name="Addon and Quest Items">
 		<items_and_raw>
 			<item fromid="2344" toid="2349"/>
@@ -1829,7 +1829,7 @@
 			<item fromid="5940"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Architecture">
 		<doodad>
 			<item id="1514"/>
@@ -1885,7 +1885,7 @@
 			<item fromid="9784" toid="9791"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Walls">
 		<terrain>
 			<brush name="rope wall"/>
@@ -1916,53 +1916,53 @@
 			<brush name="rock wall"/>
 		</terrain>
 		<raw>
-	        <item fromid="1205" toid="1208"/>
-	        <item fromid="1025" toid="1035"/>
-	        <item fromid="1205" toid="1202"/>
-	        <item fromid="1265" toid="1266"/>
-	        <item fromid="6440" toid="6443"/>
-	        <item fromid="6281" toid="6284"/>
-	        <item fromid="5098" toid="5115"/>
-	        <item fromid="5146" toid="5155"/>
-	        <item fromid="1263" toid="1264"/>
-	        <item fromid="6436" toid="6439"/>
-	        <item fromid="1036" toid="1048"/>
+			<item fromid="1205" toid="1208"/>
+			<item fromid="1025" toid="1035"/>
+			<item fromid="1205" toid="1202"/>
+			<item fromid="1265" toid="1266"/>
+			<item fromid="6440" toid="6443"/>
+			<item fromid="6281" toid="6284"/>
+			<item fromid="5098" toid="5115"/>
+			<item fromid="5146" toid="5155"/>
+			<item fromid="1263" toid="1264"/>
+			<item fromid="6436" toid="6439"/>
+			<item fromid="1036" toid="1048"/>
 			<item fromid="1209" toid="1230"/>
 			<item fromid="5137" toid="5142"/>
-            <item fromid="1532"/>
-	        <item fromid="1049" toid="1059"/>
-	        <item fromid="1524" toid="1531"/>
-	        <item fromid="1267" toid="1268"/>
-	        <item fromid="6444" toid="6447"/>
-	        <item fromid="6454" toid="6457"/>
-	        <item fromid="1060" toid="1070"/>
-	        <item fromid="1084" toid="1088"/>
-	        <item fromid="1570" toid="1577"/>
-	        <item fromid="1100" toid="1110"/>
-	        <item fromid="1562" toid="1569"/>
-	        <item fromid="1273" toid="1276"/>
-	        <item fromid="6462" toid="6465"/>
-	        <item fromid="1231" toid="1248"/>
-	        <item fromid="1089" toid="1099"/>
-            <item fromid="5009"/>
-	        <item fromid="1111" toid="1119"/>
-	        <item fromid="5010" toid="5011"/>
-	        <item fromid="1120" toid="1169"/>
-	        <item fromid="1176" toid="1195"/>
-	        <item fromid="1582" toid="1593"/>
-	        <item fromid="5305" toid="5314"/>
-	        <item fromid="1269" toid="1272"/>
-	        <item fromid="5303" toid="5304"/>
-	        <item fromid="6448" toid="6449"/>
-	        <item fromid="1249" toid="1262"/>
-	        <item fromid="5515" toid="5518"/>
-	        <item fromid="1170" toid="1175"/>
-	        <item fromid="1594" toid="1601"/>
-	        <item fromid="1196" toid="1204"/>
-	        <item fromid="5012" toid="5013"/>
-            <item fromid="6466" toid="6469"/>
-	        <item fromid="5256" toid="5257"/>
-	        <item fromid="5400" toid="5401"/>
+			<item fromid="1532"/>
+			<item fromid="1049" toid="1059"/>
+			<item fromid="1524" toid="1531"/>
+			<item fromid="1267" toid="1268"/>
+			<item fromid="6444" toid="6447"/>
+			<item fromid="6454" toid="6457"/>
+			<item fromid="1060" toid="1070"/>
+			<item fromid="1084" toid="1088"/>
+			<item fromid="1570" toid="1577"/>
+			<item fromid="1100" toid="1110"/>
+			<item fromid="1562" toid="1569"/>
+			<item fromid="1273" toid="1276"/>
+			<item fromid="6462" toid="6465"/>
+			<item fromid="1231" toid="1248"/>
+			<item fromid="1089" toid="1099"/>
+			<item fromid="5009"/>
+			<item fromid="1111" toid="1119"/>
+			<item fromid="5010" toid="5011"/>
+			<item fromid="1120" toid="1169"/>
+			<item fromid="1176" toid="1195"/>
+			<item fromid="1582" toid="1593"/>
+			<item fromid="5305" toid="5314"/>
+			<item fromid="1269" toid="1272"/>
+			<item fromid="5303" toid="5304"/>
+			<item fromid="6448" toid="6449"/>
+			<item fromid="1249" toid="1262"/>
+			<item fromid="5515" toid="5518"/>
+			<item fromid="1170" toid="1175"/>
+			<item fromid="1594" toid="1601"/>
+			<item fromid="1196" toid="1204"/>
+			<item fromid="5012" toid="5013"/>
+			<item fromid="6466" toid="6469"/>
+			<item fromid="5256" toid="5257"/>
+			<item fromid="5400" toid="5401"/>
 			<item fromid="5478" toid="5479"/>
 			<item fromid="5519" toid="5520"/>
 			<item fromid="3361" toid="3422"/>
@@ -2164,7 +2164,7 @@
 			<item fromid="9792" toid="9799"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Blank">
 		<raw>
 			<item fromid="1934"/>

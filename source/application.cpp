@@ -1,21 +1,19 @@
 //////////////////////////////////////////////////////////////////////
 // This file is part of Remere's Map Editor
 //////////////////////////////////////////////////////////////////////
-// This program is free software: you can redistribute it and/or modify
+// Remere's Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// This program is distributed in the hope that it will be useful,
+// Remere's Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
-// $URL: http://svn.rebarp.se/svn/RME/trunk/source/application.hpp $
-// $Id: application.hpp 320 2010-03-08 16:38:07Z admin $
 
 #include "main.h"
 
@@ -40,7 +38,7 @@
 
 #include <wx/snglinst.h>
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__WINDOWS__)
 #include <GL/glut.h>
 #endif
 
@@ -115,7 +113,7 @@ bool Application::OnInit()
 	wxAppConsole::SetInstance(this);
 	wxArtProvider::Push(new ArtProvider());
 
-#ifdef __LINUX__
+#if defined(__LINUX__) || defined(__WINDOWS__)
 	int argc = 1;
 	char* argv[1] = { wxString(this->argv[0]).char_str() };
 	glutInit(&argc, argv);
@@ -166,8 +164,8 @@ bool Application::OnInit()
     std::string error;
     StringVector warnings;
 
-    wxString fileToOpen = wxEmptyString;
-    ParseCommandLineMap(fileToOpen);
+    m_file_to_open = wxEmptyString;
+    ParseCommandLineMap(m_file_to_open);
 
     g_gui.root = newd MainFrame(__W_RME_APPLICATION_NAME__, wxDefaultPosition, wxSize(700,500));
 	SetTopWindow(g_gui.root);
@@ -181,11 +179,10 @@ bool Application::OnInit()
     wxIcon icon(rme_icon);
     g_gui.root->SetIcon(icon);
 
-    if (fileToOpen != wxEmptyString) {
-        g_gui.root->Show();
-        g_gui.LoadMap(FileName(fileToOpen));
-    } else {
+    if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1 && m_file_to_open == wxEmptyString) {
         g_gui.ShowWelcomeDialog(icon);
+    } else {
+        g_gui.root->Show();
     }
 
 	// Initialize lua
@@ -267,8 +264,29 @@ bool Application::OnInit()
 			}
 		}
 	}
-
+    // Keep track of first event loop entry
+    m_startup = true;
 	return true;
+}
+
+void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
+
+    //First startup?
+    if (!m_startup)
+        return;
+    m_startup = false;
+
+    //Don't try to create a map if we didn't load the client map.
+    if(ClientVersion::getLatestVersion() == nullptr)
+        return;
+
+    //Open a map.
+    if (m_file_to_open != wxEmptyString) {
+        g_gui.LoadMap(FileName(m_file_to_open));
+    } else if (!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
+        // You generally don't want to save this map...
+        g_gui.GetCurrentEditor()->map.clearChanges();
+    }
 }
 
 void Application::MacOpenFiles(const wxArrayString& fileNames)

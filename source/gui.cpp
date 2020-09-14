@@ -1,6 +1,19 @@
 //////////////////////////////////////////////////////////////////////
 // This file is part of Remere's Map Editor
 //////////////////////////////////////////////////////////////////////
+// Remere's Map Editor is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Remere's Map Editor is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program. If not, see <http://www.gnu.org/licenses/>.
+//////////////////////////////////////////////////////////////////////
 
 #include "main.h"
 
@@ -1248,19 +1261,24 @@ void GUI::DestroyLoadBar()
 
 void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
     std::vector<wxString> recent_files = root->GetRecentFiles();
-    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, icon, recent_files);
+    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, root->FromDIP(wxSize(800, 480)), icon, recent_files);
     welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
     welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
     welcomeDialog->Show();
+    UpdateMenubar();
 }
 
 void GUI::FinishWelcomeDialog() {
     if (welcomeDialog != nullptr) {
         welcomeDialog->Hide();
+        root->Show();
         welcomeDialog->Destroy();
         welcomeDialog = nullptr;
-        root->Show();
     }
+}
+
+bool GUI::IsWelcomeDialogShown() {
+    return welcomeDialog != nullptr && welcomeDialog->IsShown();
 }
 
 void GUI::OnWelcomeDialogClosed(wxCloseEvent &event)
@@ -1447,6 +1465,13 @@ void GUI::SetTitle(wxString title)
 		g_gui.root->SetTitle(title << " - Remere's Map Editor BETA" << TITLE_APPEND);
 	} else {
 		g_gui.root->SetTitle(wxString("Remere's Map Editor BETA") << TITLE_APPEND);
+	}
+#elif __SNAPSHOT__
+	if (title != "") {
+		g_gui.root->SetTitle(title << " - Remere's Map Editor - SNAPSHOT" << TITLE_APPEND);
+	}
+	else {
+		g_gui.root->SetTitle(wxString("Remere's Map Editor - SNAPSHOT") << TITLE_APPEND);
 	}
 #else
 	if(!title.empty()) {

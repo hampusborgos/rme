@@ -1,138 +1,137 @@
 <materialsextension
 	name="Miscellanous Stuff"
-	author="The_next"
-	authorurl="http://otland.net/members/the_next/"
-	description="This adds a new doodad brush and give you alot of new floors, walls etc etc.."
+	author="the_next"
+	authorurl="https://otland.net/members/the_next.157092/"
+	description="This adds a new doodad brush and give you a lot of new floors, walls etc etc.."
 	client="9.10">
 
 	<brush name="rudder of the boat" type="doodad" server_lookid="1281" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="1281" chance="30"/> </alternate> -- south --
-		<alternate> <item id="1282" chance="30"/> </alternate> -- east --
-		<alternate> <item id="1283" chance="30"/> </alternate> -- north --
-		<alternate> <item id="1280" chance="30"/> </alternate> -- west --
+		<alternate> <item id="1281" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="1282" chance="30"/> </alternate> <!-- east -->
+		<alternate> <item id="1283" chance="30"/> </alternate> <!-- north -->
+		<alternate> <item id="1280" chance="30"/> </alternate> <!-- west -->
 	</brush>
-	
+
 	<brush name="Street lamp" type="doodad" server_lookid="10999" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10999" chance="30"/> </alternate> -- south --
-		<alternate> <item id="10999" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11001" chance="30"/> </alternate> 
+		<alternate> <item id="10999" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="10999" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11001" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="lamp" type="doodad" server_lookid="11916" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11916" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11916" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="gates" type="doodad" server_lookid="9944" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="9944" chance="30"/> </alternate> -- south --
-		<alternate> <item id="9951" chance="30"/> </alternate> -- south --
+		<alternate> <item id="9944" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="9951" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Brown floor" type="ground" server_lookid="10765" z-order="1">
 		<item id="10765" chance="10"/>
 	</brush>
-	
+
 	<brush name="strange floor" type="ground" server_lookid="11953" z-order="1">
 		<item id="11953" chance="10"/>
 	</brush>
 
-
 	<brush name="Sign with x" type="doodad" server_lookid="13921" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="13921" chance="30"/> </alternate> -- south --
-		<alternate> <item id="13922" chance="30"/> </alternate> 
+		<alternate> <item id="13921" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="13922" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="street lamp1" type="doodad" server_lookid="12015" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12015" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12014" chance="30"/> </alternate> 
+		<alternate> <item id="12015" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12014" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="Dragon throne" type="doodad" server_lookid="11203" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11203" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11204" chance="30"/> </alternate> 
+		<alternate> <item id="11203" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11204" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="Chairs" type="doodad" server_lookid="12789" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12789" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12788" chance="30"/> </alternate> -- east --
-		<alternate> <item id="12787" chance="30"/> </alternate> -- north --
-		<alternate> <item id="12790" chance="30"/> </alternate> -- west --
+		<alternate> <item id="12789" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12788" chance="30"/> </alternate> <!-- east -->
+		<alternate> <item id="12787" chance="30"/> </alternate> <!-- north -->
+		<alternate> <item id="12790" chance="30"/> </alternate> <!-- west -->
 	</brush>
-	
+
 	<brush name="Chest" type="doodad" server_lookid="12664" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12664" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12665" chance="30"/> </alternate> 
+		<alternate> <item id="12664" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12665" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="Chest1" type="doodad" server_lookid="13902" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="13902" chance="30"/> </alternate> -- south --
-		<alternate> <item id="13903" chance="30"/> </alternate> 
+		<alternate> <item id="13902" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="13903" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="interior" type="doodad" server_lookid="12799" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12799" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12800" chance="30"/> </alternate> 
+		<alternate> <item id="12799" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12800" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="weaponwall" type="doodad" server_lookid="12048" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12048" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12053" chance="30"/> </alternate> 
+		<alternate> <item id="12048" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12053" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="Statue" type="doodad" server_lookid="12652" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12652" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12653" chance="30"/> </alternate> 
+		<alternate> <item id="12652" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12653" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="statue2" type="doodad" server_lookid="12042" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12042" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12043" chance="30"/> </alternate> 
+		<alternate> <item id="12042" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12043" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="statue3" type="doodad" server_lookid="12039" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12039" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12040" chance="30"/> </alternate> 
+		<alternate> <item id="12039" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12040" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="pillar stone" type="doodad" server_lookid="12852" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12852" chance="30"/> </alternate> -- south -- 
+		<alternate> <item id="12852" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="weaponwall2" type="doodad" server_lookid="12140" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12140" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12138" chance="30"/> </alternate> 
+		<alternate> <item id="12140" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12138" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="weaponwall3" type="doodad" server_lookid="12045" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12045" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12050" chance="30"/> </alternate> 
-	</brush>
-	
-	<brush name="Dragonlight" type="doodad" server_lookid="12209" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12209" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12211" chance="30"/> </alternate> 
+		<alternate> <item id="12045" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12050" chance="30"/> </alternate>
 	</brush>
 
-	
+	<brush name="Dragonlight" type="doodad" server_lookid="12209" draggable="true" on_blocking="true" thickness="10/10">
+		<alternate> <item id="12209" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12211" chance="30"/> </alternate>
+	</brush>
+
+
 	<brush name="Pillar" type="doodad" server_lookid="10053" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10053" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10053" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="pillar strange" type="doodad" server_lookid="12874" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12874" chance="30"/> </alternate> -- south --
+		<alternate> <item id="12874" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="pillar strange2" type="doodad" server_lookid="12879" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12879" chance="30"/> </alternate> -- south --
+		<alternate> <item id="12879" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Pillar1" type="doodad" server_lookid="10056" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10056" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10056" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="pillar3" type="doodad" server_lookid="11963" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11963" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11963" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="grass tufts" type="doodad">
 		<!-- Double the chance of these items to appear in favor of 6216 -->
 		<item id="6217" chance="10"/>
@@ -150,7 +149,7 @@
 			</composite>
 		</alternate>
 		</brush>
-		
+
 	<brush name="Bridge" type="doodad" server_lookid="11903" draggable="true" on_blocking="true" thickness="100/100">
 		<alternate>
 			<composite chance="10">
@@ -174,163 +173,159 @@
 		</brush>
 
 	<brush name="hang1" type="doodad" server_lookid="12045" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11917" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12050" chance="30"/> </alternate> 
+		<alternate> <item id="11917" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12050" chance="30"/> </alternate>
 	</brush>
-	
+
 	<brush name="Blood Splatter" type="doodad" server_lookid="9731" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="9731" chance="30"/> </alternate> -- south --
-		<alternate> <item id="9732" chance="30"/> </alternate> 
+		<alternate> <item id="9731" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="9732" chance="30"/> </alternate>
 	</brush>
-	
+
 	<brush name="Dragonbanner" type="doodad" server_lookid="10954" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10954" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10954" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Dragonbannermark" type="doodad" server_lookid="10952" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10952" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10952" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Dragonbannermark1" type="doodad" server_lookid="10953" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10953" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10953" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Dragonbannermark2" type="doodad" server_lookid="10956" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10956" chance="30"/> </alternate> -- south --
-		<alternate> <item id="10957" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10956" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="10957" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Groundbanner" type="doodad" server_lookid="11011" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11011" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11011" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Groundbanner2" type="doodad" server_lookid="11012" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11012" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11012" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Groundbanner3" type="doodad" server_lookid="11013" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11013" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11013" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Groundbanner4" type="doodad" server_lookid="11289" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11289" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11291" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11289" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11291" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Groundbanner5" type="doodad" server_lookid="11290" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11290" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11292" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11290" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11292" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Groundbanner6" type="doodad" server_lookid="11293" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11293" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11294" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11293" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11294" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Groundbanner7" type="doodad" server_lookid="11297" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11297" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11298" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11297" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11298" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Groundbanner8" type="doodad" server_lookid="12174" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12174" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12171" chance="30"/> </alternate> -- south --
+		<alternate> <item id="12174" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12171" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Groundbanner9" type="doodad" server_lookid="12175" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12175" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12172" chance="30"/> </alternate> -- south --
+		<alternate> <item id="12175" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12172" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="golden figure" type="doodad" server_lookid="13722" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="13722" chance="30"/> </alternate> -- south --
-		<alternate> <item id="13723" chance="30"/> </alternate> -- south --
+		<alternate> <item id="13722" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="13723" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="golden figure1" type="doodad" server_lookid="13725" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="13725" chance="30"/> </alternate> -- south --
-		<alternate> <item id="13724" chance="30"/> </alternate> -- south --
+		<alternate> <item id="13725" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="13724" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="Dragonbannermark1" type="doodad" server_lookid="10953" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10953" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10953" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="Dragonbannermark1" type="doodad" server_lookid="10953" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="10953" chance="30"/> </alternate> -- south --
+		<alternate> <item id="10953" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="golden pillar" type="doodad" server_lookid="13733" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="13733" chance="30"/> </alternate> -- south --
+		<alternate> <item id="13733" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="strange chair" type="doodad" server_lookid="11966" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11966" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11968" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11967" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11969" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11966" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11968" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11967" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11969" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="hangable flag" type="doodad" server_lookid="13695" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="13695" chance="30"/> </alternate> -- south --
-		<alternate> <item id="13694" chance="30"/> </alternate> -- south --
+		<alternate> <item id="13695" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="13694" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
 	<brush name="hangable flag1" type="doodad" server_lookid="11917" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11917" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11918" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11917" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11918" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="hangable flag2" type="doodad" server_lookid="12803" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="12803" chance="30"/> </alternate> -- south --
-		<alternate> <item id="12804" chance="30"/> </alternate> -- south --
+		<alternate> <item id="12803" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="12804" chance="30"/> </alternate> <!-- south -->
 	</brush>
-	
+
 	<brush name="hangable flag3" type="doodad" server_lookid="11919" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="11919" chance="30"/> </alternate> -- south --
-		<alternate> <item id="11920" chance="30"/> </alternate> -- south --
+		<alternate> <item id="11919" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="11920" chance="30"/> </alternate> <!-- south -->
 	</brush>
 
-    <brush name="Trollhair plants" type="doodad" server_lookid="10743" draggable="true" on_blocking="false" thickness="11/90"> 
-        <item id="10743" chance="10"/> 
-        <item id="10741" chance="10"/> 
-        <item id="10742" chance="10"/> 
-    </brush>
-	
-    <brush name="pepper roots grass" type="doodad" server_lookid="10735" draggable="true" on_blocking="false" thickness="11/90"> 
-        <item id="10735" chance="10"/> 
-        <item id="10736" chance="10"/>  
+    <brush name="Trollhair plants" type="doodad" server_lookid="10743" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="10743" chance="10"/>
+        <item id="10741" chance="10"/>
+        <item id="10742" chance="10"/>
     </brush>
 
-    <brush name="necrotic grass" type="doodad" server_lookid="10807" draggable="true" on_blocking="false" thickness="11/90"> 
-        <item id="10807" chance="10"/> 
-        <item id="10809" chance="10"/>  
-        <item id="10808" chance="10"/> 
+    <brush name="pepper roots grass" type="doodad" server_lookid="10735" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="10735" chance="10"/>
+        <item id="10736" chance="10"/>
     </brush>
-	
-    <brush name="high grass" type="doodad" server_lookid="10914" draggable="true" on_blocking="false" thickness="11/90"> 
-        <item id="10914" chance="10"/> 
-        <item id="10915" chance="10"/>  
-        <item id="10916" chance="10"/> 
-    </brush>
-	
-    <brush name="rice" type="doodad" server_lookid="11043" draggable="true" on_blocking="false" thickness="11/90"> 
-        <item id="11043" chance="10"/> 
-        <item id="11044" chance="10"/>  
-        <item id="11045" chance="10"/> 
-        <item id="11046" chance="10"/> 
-        <item id="11047" chance="10"/> 
-        <item id="11048" chance="10"/> 
-        <item id="11049" chance="10"/> 
-    </brush>
-	
-	
-	
-	
-	\\ TILESET ----------------------::----------------------------------------------::------------------------
-	
-\\ NATURE
 
+    <brush name="necrotic grass" type="doodad" server_lookid="10807" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="10807" chance="10"/>
+        <item id="10809" chance="10"/>
+        <item id="10808" chance="10"/>
+    </brush>
+
+    <brush name="high grass" type="doodad" server_lookid="10914" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="10914" chance="10"/>
+        <item id="10915" chance="10"/>
+        <item id="10916" chance="10"/>
+    </brush>
+
+    <brush name="rice" type="doodad" server_lookid="11043" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="11043" chance="10"/>
+        <item id="11044" chance="10"/>
+        <item id="11045" chance="10"/>
+        <item id="11046" chance="10"/>
+        <item id="11047" chance="10"/>
+        <item id="11048" chance="10"/>
+        <item id="11049" chance="10"/>
+    </brush>
+
+<!-- TILESET -->
+
+	<!-- NATURE -->
 	<tileset name="Nature">
 		<doodad>
 			<brush name="Trollhair plants" after="normal fountain - off"/>
@@ -340,11 +335,8 @@
 			<brush name="rice" after="normal fountain - off"/>
 		</doodad>
 	</tileset>
-	
-	
-\\ EXTERIOR ----------------------::------------------------
-	
-	
+
+	<!-- EXTERIOR -->
 	<tileset name="Exterior">
 		<doodad>
 			<brush name="rudder of the boat" after="normal fountain - off"/>
@@ -352,10 +344,8 @@
 			<brush name="Bridge" after="normal fountain - off"/>
 		</doodad>
 	</tileset>
-      
-\\ INTERIOR ----------------------::------------------------
- 
- 
+
+	<!-- INTERIOR -->
 	<tileset name="Interior">
 		<doodad>
 			<brush name="weaponwall" after="normal fountain - off"/>
@@ -370,8 +360,7 @@
 		</doodad>
 	</tileset>
 
-\\ STATUES
-
+	<!-- STATUES -->
 	<tileset name="Statues">
 		<doodad>
 			<brush name="Statue" after="normal fountain - off"/>
@@ -382,9 +371,7 @@
 		</doodad>
 	</tileset>
 
-
-\\ TOWN     ----------------------::------------------------
-
+	<!-- TOWN -->
 	<tileset name="Town">
 		<terrain>
 			<brush name="Brown floor" after="normal fountain - off"/>
@@ -392,16 +379,14 @@
 		</terrain>
 	</tileset>
 
-\\ SIGNS    ----------------------::------------------------
-
+	<!-- SIGNS -->
 	<tileset name="Signs">
 		<doodad>
 			<brush name="Sign with x" after="normal fountain - off"/>
 		</doodad>
 	</tileset>
 
-\\ ARCHITECTURE ----------------------::------------------------
-	
+	<!-- ARCHITECTURE -->
 	<tileset name="Architecture">
 		<doodad>
 			<brush name="Street lamp" after="normal fountain - off"/>
@@ -418,24 +403,21 @@
 		</doodad>
 	</tileset>
 
-\\ SPLASH ------------------------------------------------
-
+	<!-- SPLASH -->
 	<tileset name="Splash">
 		<doodad>
 			<brush name="Blood Splatter" after="normal fountain - off"/>
 		</doodad>
 	</tileset>
 
- \\ HANGABLES -----------------------------------------------------
- 
+	<!-- HANGABLES -->
  	<tileset name="Hangables">
 		<doodad>
 			<brush name="Dragonlight" after="normal fountain - off"/>
 		</doodad>
 	</tileset>
-	
-\\ BANNERS
 
+	<!-- BANNERS -->
  	<tileset name="Banners">
 		<doodad>
 			<brush name="Dragonbanner" after="normal fountain - off"/>
@@ -457,11 +439,4 @@
 			<brush name="hangable flag3" after="normal fountain - off"/>
 		</doodad>
 	</tileset>
-
-
-
-
- 
-
-
 </materialsextension>

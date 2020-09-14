@@ -1,4 +1,4 @@
-<materialsextension name="Smithing" author="SADZA" description="This adds Smithing sprites from 8.20" client="8.20">	
+<materialsextension name="Smithing" author="SADZA" description="This adds Smithing sprites from 8.20" client="8.20">
 
 	<brush name="gutter" type="wall" server_lookid="8661">
 		<wall type="pole">               <item id="8661" chance="1"/> </wall>
@@ -14,7 +14,7 @@
 		<wall type="southwest diagonal"> <item id="8658" chance="1"/> </wall>
 		<wall type="untouchable">        <item id="8646" chance="1"/> </wall>
 	</brush>
-	
+
 	<brush name="tub" type="doodad" server_lookid="8647" draggable="true" on_blocking="true" thickness="100/100">
 		<composite chance="10">
 			<tile x="0" y="0"> <item id="8646"/> </tile>
@@ -22,42 +22,42 @@
 			<tile x="0" y="1"> <item id="8647"/> </tile>
 		</composite>
 	</brush>
-	
+
 	<brush name="bellows" type="doodad" server_lookid="8670" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate> <item id="8670" chance="30"/> </alternate>
 		<alternate> <item id="8669" chance="30"/> </alternate>
 	</brush>
 
 	<brush name="bolts (fire)" type="doodad" server_lookid="8672" draggable="true" on_blocking="true" thickness="100/100">
-		<alternate> -- south --
+		<alternate> <!-- south -->
 			<composite chance="10">
 				<tile x="0" y="0"> <item id="8674"/> </tile>
 				<tile x="0" y="1"> <item id="8672"/> </tile>
 			</composite>
 		</alternate>
-		<alternate> -- east --
+		<alternate> <!-- east -->
 			<composite chance="10">
 				<tile x="0" y="0"> <item id="8675"/> </tile>
 				<tile x="1" y="0"> <item id="8673"/> </tile>
 			</composite>
 		</alternate>
 	</brush>
-	
+
 	<brush name="stove (fire)" type="doodad" server_lookid="8688" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate> <item id="8688" chance="30"/> </alternate>
 		<alternate> <item id="8690" chance="30"/> </alternate>
 	</brush>
-	
+
 	<brush name="stove" type="doodad" server_lookid="8689" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate> <item id="8689" chance="30"/> </alternate>
 		<alternate> <item id="8691" chance="30"/> </alternate>
 	</brush>
-	
+
 	<brush name="bolts" type="doodad" server_lookid="8676" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate> <item id="8676" chance="30"/> </alternate>
 		<alternate> <item id="8677" chance="30"/> </alternate>
 	</brush>
-	
+
 	<brush name="gutter (fire)" type="wall" server_lookid="8667">
 		<wall type="pole">               <item id="8667" chance="1"/> </wall>
 		<wall type="horizontal">         <item id="8667" chance="1"/> </wall>
@@ -72,7 +72,7 @@
 		<wall type="southwest diagonal"> <item id="8664" chance="1"/> </wall>
 		<wall type="untouchable">        <item id="8645" chance="1"/> </wall>
 	</brush>
-	
+
 	<brush name="tub (fire)" type="doodad" server_lookid="8645" draggable="true" on_blocking="true" thickness="100/100">
 		<composite chance="10">
 			<tile x="0" y="0"> <item id="8645"/> </tile>
@@ -80,7 +80,7 @@
 			<tile x="0" y="1"> <item id="8643"/> </tile>
 		</composite>
 	</brush>
-	
+
 	<tileset name="Smithing">
 		<doodad>
 			<brush name="gutter (fire)"/>
