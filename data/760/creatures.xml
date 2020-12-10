@@ -114,28 +114,28 @@
   <creature name="troll" type="monster" looktype="15"/>
   <creature name="valkyrie" type="monster" looktype="139" lookhead="113" lookbody="57" looklegs="95" lookfeet="113"/>
   <creature name="vampire" type="monster" looktype="68"/>
-  <creature name="war wolf" type="monster" looktype="3"/>
+  <creature name="War Wolf" type="monster" looktype="3"/>
   <creature name="warlock" type="monster" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128"/>
   <creature name="wasp" type="monster" looktype="44"/>
   <creature name="wild warrior" type="monster" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57"/>
-  <creature name="winter wolf" type="monster" looktype="52"/>
+  <creature name="Winter Wolf" type="monster" looktype="52"/>
   <creature name="witch" type="monster" looktype="54"/>
   <creature name="wolf" type="monster" looktype="27"/>
-  
+
   <creature name="yeti" type="monster" looktype="110"/>
   <creature name="black sheep" type="monster" looktype="13"/>
   <creature name="butterfly blue" type="monster" looktype="227"/>
   <creature name="butterfly purple" type="monster" looktype="213"/>
   <creature name="butterfly yellow" type="monster" looktype="10"/>
   <creature name="butterfly red" type="monster" looktype="228"/>
-  
+
   <creature name="deathslicer" type="monster" looktype="102"/>
   <creature name="flamethrower" type="monster"/>
   <creature name="magicthrower" type="monster" lookitem="1560"/>
   <creature name="plaguethrower" type="monster"/>
   <creature name="shredderthrower" type="monster"/>
   <creature name="demongoblin" type="monster" looktype="201"/>
-    
+
   <creature name="Tiquandas Revenge" type="monster" looktype="120"/>
   <creature name="Demodras" type="monster" looktype="204"/>
   <creature name="Dharalion" type="monster" looktype="203"/>
@@ -154,5 +154,5 @@
   <creature name="Rahemos" type="monster" looktype="87"/>
   <creature name="Thalas" type="monster" looktype="90"/>
   <creature name="Vashresamun" type="monster" looktype="90"/>
-  <creature name="Orshabaal" type="monster" looktype="201"/>  
+  <creature name="Orshabaal" type="monster" looktype="201"/>
 </creatures>

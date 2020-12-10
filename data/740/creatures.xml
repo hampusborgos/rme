@@ -114,11 +114,11 @@
 	<creature name="troll" type="monster" looktype="15"/>
 	<creature name="valkyrie" type="monster" looktype="139" lookhead="113" lookbody="57" looklegs="95" lookfeet="113"/>
 	<creature name="vampire" type="monster" looktype="68"/>
-	<creature name="war wolf" type="monster" looktype="3"/>
+	<creature name="War Wolf" type="monster" looktype="3"/>
 	<creature name="warlock" type="monster" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128"/>
 	<creature name="wasp" type="monster" looktype="44"/>
 	<creature name="wild warrior" type="monster" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57"/>
-	<creature name="winter wolf" type="monster" looktype="52"/>
+	<creature name="Winter Wolf" type="monster" looktype="52"/>
 	<creature name="witch" type="monster" looktype="54"/>
 	<creature name="wolf" type="monster" looktype="27"/>
 
