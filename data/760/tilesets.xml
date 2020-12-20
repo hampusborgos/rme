@@ -20,7 +20,7 @@
 	</tileset>
 	<tileset name="Blank">
 		<raw>
-		<item fromid="4328" toid="4393"/>	
+		<item fromid="4328" toid="4393"/>
 		</raw>
 	</tileset>
 	<tileset name="Borders solid">
@@ -227,7 +227,7 @@
 			<item fromid="4820" toid="4825"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Nature">
 		<terrain>
 			<brush name="sea"/>
@@ -330,7 +330,7 @@
 			<item fromid="3569" toid="3574"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
@@ -356,7 +356,7 @@
 			<item fromid="392"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Snow">
 		<terrain>
 			<brush name="sea"/>
@@ -375,7 +375,7 @@
 
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Town">
 		<terrain>
 			<brush name="stone floor"/>
@@ -457,7 +457,7 @@
 			<brush name="wooden roof, right"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Stairs">
 		<terrain>
 			<!-- Stairs -->
@@ -482,7 +482,7 @@
 			<brush name="gray stone trapdoor"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Boats">
 		<raw>
 			<item fromid="4883" toid="4947"/>
@@ -500,7 +500,7 @@
 		<doodad>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Sea">
 		<raw>
 			<item fromid="2226"/>
@@ -546,7 +546,7 @@
 		<item fromid="2066" toid="2069"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Interior">
 		<doodad>
 			<brush name="small drawer"/>
@@ -638,7 +638,7 @@
 			<item fromid="4394" toid="4402"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Statues">
 		<doodad>
 			<item fromid="1444" toid="1445"/>
@@ -653,7 +653,7 @@
 			<brush name="female statue"/>
 			<brush name="female statue with flame"/>
 			<brush name="hunter statue"/>
-			
+
 			<brush name="lizard statue"/>
 			<brush name="broken lizard statue"/>
 			<brush name="giant snake head statue"/>
@@ -662,14 +662,14 @@
 			<item fromid="1450" toid="1451"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Exterior">
 		<doodad>
 			<brush name="stone altar"/>
 			<brush name="decorative altar"/>
 			<brush name="sacrifical stone"/>
 			<brush name="sacrifical stone with blood"/>
-			
+
 			-- coffins --
 			<brush name="stone coffin (no rose)"/>
 			<brush name="stone coffin (yellow rose)"/>
@@ -678,18 +678,18 @@
 			<brush name="buried stone coffin"/>
 			<item fromid="1406" toid="1409"/>
 			<brush name="sarcophagus"/>
-			
+
 			-- Campfires --
 			<item fromid="1421" toid="1428"/>
 			<item fromid="1481" toid="1486"/>
 			<item fromid="2601" toid="2605"/>
-			
+
 			-- fountains --
 			<brush name="ancient fountain - off"/>
 			<brush name="ancient fountain - on"/>
 			<brush name="water well"/>
 			<brush name="lava fountain"/>
-			
+
 			<brush name="marble fountain - on"/>
 			<brush name="marble fountain - off"/>
 			<item id="1378"/>
@@ -801,7 +801,7 @@
 			<item fromid="3982"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Ornaments">
 		<items_and_raw>
 			-- Amulets --
@@ -836,7 +836,7 @@
 			<item fromid="2127"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Tools">
 		<items_and_raw>
 			<item fromid="2548" toid="2580"/>
@@ -909,14 +909,14 @@
 			<item fromid="2187" toid="2191"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Shields">
 		<items_and_raw>
 			<item fromid="2509" toid="2542"/>
 			<item fromid="3973" toid="3975"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Trinkets">
 		<items_and_raw>
 			-- Some random stuff --
@@ -961,7 +961,7 @@
 			<item id="2062"/>
 			<item id="2062"/>
 			<item id="2063"/>
-			
+
 			<item fromid="2366" toid="2375"/>
 			<item id="4874"/>
 			<item fromid="2597" toid="2598"/>
@@ -996,12 +996,12 @@
 			<item id="2639"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Collectables">
 		<items_and_raw>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Magic Fields">
 		<doodad>
 			<brush name="fire field (not decaying)"/>
@@ -1020,7 +1020,7 @@
 			<brush name="searing fire field (decaying)"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Containers">
 		<items_and_raw>
 	        <item fromid="1987" toid="1989"/>
@@ -1039,7 +1039,7 @@
 	        <item fromid="2595" toid="2596"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Writables">
 		<items_and_raw>
 			<item fromid="1947" toid="1986"/>
@@ -1057,7 +1057,7 @@
 			<item id="4855"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Food">
 		<items_and_raw>
 			<item id="2666"/>
@@ -1068,7 +1068,7 @@
 			<item id="2032"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Trash">
 		<doodad>
 			<brush name="broken bottles"/>
@@ -1099,7 +1099,7 @@
 			<item fromid="4251" toid="4327"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Stairs / Ramps / Ladders">
 		<raw>
 			<!-- Holes -->
@@ -1109,7 +1109,7 @@
 			<item fromid="468" toid="470"/>
 			<item fromid="481" toid="485"/>
 			<item fromid="489"/>
-			
+
 			<!-- Stairs / Ladder Down -->
 			<item fromid="369" toid="370"/>
 			<item fromid="408"/>
@@ -1122,7 +1122,7 @@
 			<item fromid="3135" toid="3138"/>
 			<item fromid="3219" toid="3220"/>
 			<item fromid="4834" toid="4837"/>
-			
+
 			<!-- Other -->
 			<item fromid="430"/>
 			<item fromid="461" toid="462"/>
@@ -1135,14 +1135,14 @@
 			<!-- Ladders -->
 			<item fromid="1386"/>
 			<item fromid="3678"/>
-			
+
 			<!-- Stairs -->
 			<item fromid="1385"/>
 			<item fromid="1396"/>
 			<item fromid="3687" toid="3688"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Monsters">
 		<creatures>
 			<creature name="amazon" type="monster" looktype="137" lookhead="113" lookbody="120" looklegs="114" lookfeet="132"/>
@@ -1258,11 +1258,11 @@
 			<creature name="troll" type="monster" looktype="15"/>
 			<creature name="valkyrie" type="monster" looktype="139" lookhead="113" lookbody="57" looklegs="95" lookfeet="113"/>
 			<creature name="vampire" type="monster" looktype="68"/>
-			<creature name="war wolf" type="monster" looktype="3"/>
+			<creature name="War Wolf" type="monster" looktype="3"/>
 			<creature name="warlock" type="monster" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128"/>
 			<creature name="wasp" type="monster" looktype="44"/>
 			<creature name="wild warrior" type="monster" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57"/>
-			<creature name="winter wolf" type="monster" looktype="52"/>
+			<creature name="Winter Wolf" type="monster" looktype="52"/>
 			<creature name="witch" type="monster" looktype="54"/>
 			<creature name="wolf" type="monster" looktype="27"/>
 			<creature name="yeti" type="monster" looktype="110"/>
@@ -1273,7 +1273,7 @@
 			<creature name="butterfly red" type="monster" looktype="228"/>
 		</creatures>
 	</tileset>
-	
+
 	<tileset name="Tibia Bosses">
 		<creatures>
 			<creature name="deathslicer" type="monster" looktype="102"/>
@@ -1300,7 +1300,7 @@
 			<creature name="Rahemos" type="monster" looktype="87"/>
 			<creature name="Thalas" type="monster" looktype="90"/>
 			<creature name="Vashresamun" type="monster" looktype="90"/>
-			<creature name="Orshabaal" type="monster" looktype="201"/>  
+			<creature name="Orshabaal" type="monster" looktype="201"/>
 		</creatures>
 	</tileset>
 

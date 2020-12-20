@@ -293,7 +293,7 @@
   <creature name="Yakchal" type="monster" looktype="149"/>
   <creature name="Yellow Butterfly" type="monster" looktype="10"/>
   <creature name="Yeti" type="monster" looktype="110" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  
+
   <creature name="Bog Raider" type="monster" looktype="299"/>
   <creature name="Cockroach" type="monster" looktype="284"/>
   <creature name="Cryo Elemental" type="monster" looktype="261"/>

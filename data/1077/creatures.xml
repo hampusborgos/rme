@@ -133,7 +133,7 @@
     <creature name="Deepling Spellsinger" type="monster" looktype="443"/>
     <creature name="Deepling Tyrant" type="monster" looktype="442"/>
     <creature name="Deepling Warrior" type="monster" looktype="441"/>
-    <creature name="Deepling worker" type="monster" looktype="470"/>
+    <creature name="Deepling Worker" type="monster" looktype="470"/>
     <creature name="Deer" type="monster" looktype="31"/>
     <creature name="Defiler" type="monster" looktype="238"/>
     <creature name="Demodras" type="monster" looktype="204"/>
@@ -630,7 +630,7 @@
     <creature name="Vulcongra" type="monster" looktype="509"/>
     <creature name="Wailing Widow" type="monster" looktype="347"/>
     <creature name="War Golem" type="monster" looktype="326"/>
-    <creature name="War wolf" type="monster" looktype="3"/>
+    <creature name="War Wolf" type="monster" looktype="3"/>
     <creature name="Warlock" type="monster" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128"/>
     <creature name="Warlord Ruzad" type="monster" looktype="2" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
     <creature name="Wasp" type="monster" looktype="44"/>
@@ -646,7 +646,7 @@
     <creature name="Wild Dog" type="monster" looktype="32" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
     <creature name="Wild Warrior" type="monster" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57"/>
     <creature name="Wilting Leaf Golem" type="monster" looktype="573"/>
-    <creature name="Winter wolf" type="monster" looktype="52"/>
+    <creature name="Winter Wolf" type="monster" looktype="52"/>
     <creature name="Wisp" type="monster" looktype="294"/>
     <creature name="Witch" type="monster" looktype="54"/>
     <creature name="Wolf" type="monster" looktype="27"/>
