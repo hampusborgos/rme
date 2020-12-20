@@ -50,7 +50,6 @@ protected:
 BrowseTileListBox::BrowseTileListBox(wxWindow* parent, wxWindowID id, Tile* tile) :
 wxVListBox(parent, id, wxDefaultPosition, wxSize(200, 180), wxLB_MULTIPLE), edit_tile(tile)
 {
-	edit_tile->select();
 	UpdateItems();
 }
 
@@ -105,12 +104,11 @@ void BrowseTileListBox::RemoveSelected()
 	items.clear();
 
 	// Delete the items from the tile
-	ItemVector tile_selection = edit_tile->popSelectedItems();
+	ItemVector tile_selection = edit_tile->popSelectedItems(true);
 	for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
 		delete *iit;
 	}
 
-	edit_tile->select();
 	UpdateItems();
 	Refresh();
 }
