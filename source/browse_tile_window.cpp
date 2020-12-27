@@ -151,9 +151,13 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 
 	wxSizer* infoSizer = newd wxBoxSizer(wxVERTICAL);
     wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
-	buttons->Add(newd wxButton(this, wxID_REMOVE, "Delete"));
+	delete_button = newd wxButton(this, wxID_REMOVE, "Delete");
+	delete_button->Enable(false);
+	buttons->Add(delete_button);
 	buttons->AddSpacer(5);
-	buttons->Add(newd wxButton(this, wxID_FIND, "Select RAW"));
+	select_raw_button = newd wxButton(this, wxID_FIND, "Select RAW");
+	select_raw_button->Enable(false);
+	buttons->Add(select_raw_button);
 	infoSizer->Add(buttons);
 	infoSizer->AddSpacer(5);
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "Position:  " + pos), wxSizerFlags(0).Left());
@@ -173,17 +177,28 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	sizer->Add(btnSizer, wxSizerFlags(0).Center().DoubleBorder());
 
 	SetSizerAndFit(sizer);
+
+	// Connect Events
+	item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(BrowseTileWindow::OnItemSelected), NULL, this);
 }
 
 BrowseTileWindow::~BrowseTileWindow()
 {
-	////
+	// Disconnect Events
+	item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(BrowseTileWindow::OnItemSelected), NULL, this);
+}
+
+void BrowseTileWindow::OnItemSelected(wxCommandEvent& WXUNUSED(event))
+{
+	const size_t count = item_list->GetSelectedCount();
+	delete_button->Enable(count != 0);
+	select_raw_button->Enable(count == 1);
 }
 
 void BrowseTileWindow::OnClickDelete(wxCommandEvent& WXUNUSED(event))
 {
 	item_list->RemoveSelected();
-	item_count_txt->SetLabelText("Item count: " + i2ws(item_list->GetItemCount()));
+	item_count_txt->SetLabelText("Item count:  " + i2ws(item_list->GetItemCount()));
 }
 
 void BrowseTileWindow::OnClickSelectRaw(wxCommandEvent& WXUNUSED(event))

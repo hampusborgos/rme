@@ -30,6 +30,7 @@ public:
 	BrowseTileWindow(wxWindow* parent, Tile* tile, wxPoint position = wxDefaultPosition);
 	~BrowseTileWindow();
 
+	void OnItemSelected(wxCommandEvent&);
 	void OnClickDelete(wxCommandEvent&);
 	void OnClickSelectRaw(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
@@ -38,6 +39,8 @@ public:
 protected:
 	BrowseTileListBox* item_list;
 	wxStaticText* item_count_txt;
+	wxButton* delete_button;
+	wxButton* select_raw_button;
 
 	DECLARE_EVENT_TABLE();
 };
