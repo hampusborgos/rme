@@ -697,7 +697,7 @@
 		<borderitem edge="dse" item="6727"/>
 	</border>
 
-	<border id="55"> <!-- inner icy mountain border--
+	<border id="55"> <!-- inner icy mountain border -->
 		<borderitem edge="s"   item="6729"/>
 		<borderitem edge="e"   item="6728"/>
 		<borderitem edge="cse" item="6730"/>
