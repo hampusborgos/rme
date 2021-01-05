@@ -1672,7 +1672,7 @@
 
 		<border align="inner" to="none" id="53"/>
 		<border align="outer" to="none" id="52"/>
-		<!-- <border align="inner" to="icy mountain" id="133"/> -->>
+		<!-- <border align="inner" to="icy mountain" id="133"/> -->
 		<border align="inner" id="53"/>
 		<border align="outer" id="52"/>
 	</brush>
