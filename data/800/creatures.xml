@@ -283,13 +283,13 @@
   <creature name="vampire" type="monster" looktype="68" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Vashresamun" type="monster" looktype="90" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Verminor" type="monster" looktype="201"/>
-  <creature name="war wolf" type="monster" looktype="3" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="War Wolf" type="monster" looktype="3" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="warlock" type="monster" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128"/>
   <creature name="wasp" type="monster" looktype="44" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="water elemental" type="monster" looktype="11" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Webster" type="monster" looktype="263"/>
   <creature name="wild warrior" type="monster" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57"/>
-  <creature name="winter wolf" type="monster" looktype="52" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Winter Wolf" type="monster" looktype="52" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="witch" type="monster" looktype="54" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="wolf" type="monster" looktype="27" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="wyvern" type="monster" looktype="239"/>
