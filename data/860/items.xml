@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <items>
+	<item id="1" name="water" />
+	<item id="2" name="lifefluid" />
+	<item id="3" name="beer" />
+	<item id="4" name="slime" />
+	<item id="5" name="lemonade" />
+	<item id="6" name="milk" />
+	<item id="7" name="manafluid" />
+	<item id="10" name="blood" />
+	<item id="11" name="oil" />
+	<item id="13" name="urine" />
+	<item id="14" name="coconut milk" />
+	<item id="15" name="wine" />
+	<item id="19" name="mud" />
+	<item id="21" name="fruit juice" />
+	<item id="26" name="lava" />
+	<item id="27" name="rum" />
+	<item id="28" name="swamp" />
+	<item id="35" name="tea" />
+	<item id="43" name="mead" />
 	<item id="100" name="void" />
 	<item id="101" name="earth" />
 	<item id="103" name="dirt" />
@@ -219,10 +238,14 @@
 	</item>
 	<item fromid="1196" toid="1204" article="a" name="lava wall" />
 	<item fromid="1205" toid="1208" article="an" name="archway" />
-	<item fromid="1209" toid="1210" article="a" name="closed door" editorsuffix=" (Locked)">
+	<item id="1209" article="a" name="closed door" editorsuffix=" (Locked)">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="1210" article="a" name="closed door">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
 	</item>
 	<item id="1211" article="an" name="open door">
 		<attribute key="type" value="door" />
@@ -643,7 +666,6 @@
 	</item>
 	<item id="1492" article="a" name="fire field">
 		<attribute key="type" value="magicfield" />
-		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="fire">
 			<attribute key="initdamage" value="20" />
 			<attribute key="ticks" value="10000" />
@@ -653,7 +675,6 @@
 	</item>
 	<item id="1493" article="a" name="fire field">
 		<attribute key="type" value="magicfield" />
-		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="fire">
 			<attribute key="ticks" value="10000" />
 			<attribute key="count" value="7" />
@@ -662,12 +683,10 @@
 	</item>
 	<item id="1494" article="a" name="fire field">
 		<attribute key="type" value="magicfield" />
-		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="fire" />
 	</item>
 	<item id="1495" article="an" name="energy field">
 		<attribute key="type" value="magicfield" />
-		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="energy">
 			<attribute key="initdamage" value="30" />
 			<attribute key="ticks" value="10000" />
@@ -676,7 +695,6 @@
 	</item>
 	<item id="1496" article="a" name="poison field">
 		<attribute key="type" value="magicfield" />
-		<attribute key="replaceable" value="0" />
 		<attribute key="field" value="poison">
 			<attribute key="ticks" value="5000" />
 			<attribute key="start" value="5" />
@@ -686,7 +704,8 @@
 	<item id="1497" article="a" name="magic wall">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="20" />
+		<attribute key="durationMin" value="14" />
+		<attribute key="durationMax" value="20" />
 	</item>
 	<item id="1498" article="a" name="magic wall">
 		<attribute key="type" value="magicfield" />
@@ -694,7 +713,8 @@
 	<item id="1499" article="a" name="rush wood">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="45" />
+		<attribute key="durationMin" value="38" />
+		<attribute key="durationMax" value="45" />
 		<attribute key="blocking" value="1" />
 	</item>
 	<item id="1500" article="a" name="fire field">
@@ -9077,8 +9097,8 @@
 	</item>
 	<item id="5732" article="a" name="closed door" editorsuffix=" (Locked)">
 		<attribute key="type" value="door" />
-		<attribute key="description" value="It is locked." />
 		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
 	</item>
 	<item id="5733" article="a" name="closed door">
 		<attribute key="type" value="door" />
@@ -9088,6 +9108,7 @@
 	</item>
 	<item id="5735" article="a" name="closed door" editorsuffix=" (Locked)">
 		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
 	</item>
 	<item id="5736" article="a" name="closed door">
@@ -15292,14 +15313,24 @@
 	<item fromid="8526" toid="8533" article="a" name="gem" />
 	<item fromid="8534" toid="8537" article="a" name="buttress" />
 	<item fromid="8538" toid="8540" article="a" name="stone pillar" />
-	<item fromid="8541" toid="8542" article="a" name="closed door">
+	<item id="8541" article="a" name="closed door" editorsuffix=" (Locked)">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="8542" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
 	<item id="8543" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item fromid="8544" toid="8545" article="a" name="closed door">
+	<item id="8544" article="a" name="closed door" editorsuffix=" (Locked)">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="8545" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
@@ -16676,14 +16707,24 @@
 	<item fromid="9144" toid="9146" name="white marble floor" />
 	<item fromid="9147" toid="9158" article="a" name="stone wall" />
 	<item fromid="9159" toid="9164" article="an" name="archway" />
-	<item fromid="9165" toid="9166" article="a" name="closed door">
+	<item id="9165" article="a" name="closed door" editorsuffix=" (Locked)">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="9166" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
 	<item id="9167" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item fromid="9168" toid="9169" article="a" name="closed door">
+	<item id="9168" article="a" name="closed door" editorsuffix=" (Locked)">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="9169" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
@@ -16753,14 +16794,24 @@
 	<item fromid="9249" toid="9251" article="a" name="golden ornament" />
 	<item fromid="9252" toid="9262" name="copper pipes" />
 	<item fromid="9263" toid="9266" article="an" name="iron wall" />
-	<item fromid="9267" toid="9268" article="a" name="closed door">
+	<item id="9267" article="a" name="closed door" editorsuffix=" (Locked)">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="9268" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
 	<item id="9269" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item fromid="9270" toid="9271" article="a" name="closed door">
+	<item id="9270" article="a" name="closed door" editorsuffix=" (Locked)">
+		<attribute key="type" value="door" />
+		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
+	</item>
+	<item id="9271" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 	</item>
@@ -17673,23 +17724,15 @@
 	</item>
 	<item id="9976" article="a" name="crystal pedestal">
 		<attribute key="weight" value="4000" />
-		<attribute key="decayTo" value="9977" />
-		<attribute key="duration" value="15" />
 	</item>
 	<item id="9977" article="a" name="crystal pedestal">
 		<attribute key="weight" value="4000" />
-		<attribute key="decayTo" value="9978" />
-		<attribute key="duration" value="10" />
 	</item>
 	<item id="9978" article="a" name="crystal pedestal">
 		<attribute key="weight" value="4000" />
-		<attribute key="decayTo" value="9979" />
-		<attribute key="duration" value="11" />
 	</item>
 	<item id="9979" article="a" name="crystal pedestal">
 		<attribute key="weight" value="4000" />
-		<attribute key="decayTo" value="9976" />
-		<attribute key="duration" value="9" />
 	</item>
 	<item id="9980" article="a" name="crystal of power">
 		<attribute key="description" value="It is said to make you more resistant to weaknesses and to supply you with energy." />
@@ -19379,12 +19422,14 @@
 	<item id="11098" article="a" name="magic wall">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="20" />
+		<attribute key="durationMin" value="14" />
+		<attribute key="durationMax" value="20" />
 	</item>
 	<item id="11099" article="a" name="rush wood">
 		<attribute key="type" value="magicfield" />
 		<attribute key="decayTo" value="0" />
-		<attribute key="duration" value="45" />
+		<attribute key="durationMin" value="38" />
+		<attribute key="durationMax" value="45" />
 	</item>
 	<item id="11100" article="a" name="flask with beaver bait">
 		<attribute key="description" value="It smells like a mixture of wood and fish. Phew." />
@@ -20606,11 +20651,12 @@
 	<item fromid="12170" toid="12175" article="a" name="banner structure" />
 	<item id="12176" article="a" name="dragon structure" />
 	<item fromid="12177" toid="12187" name="roof" />
-	<item id="12188" article="a" name="closed door">
+	<item id="12188" article="a" name="closed door" editorsuffix=" (Locked)">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
 	</item>
-	<item id="12189" article="a" name="closed door" editorsuffix=" (Locked)">
+	<item id="12189" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -20634,11 +20680,12 @@
 	<item id="12196" article="an" name="open door">
 		<attribute key="type" value="door" />
 	</item>
-	<item id="12197" article="a" name="closed door">
+	<item id="12197" article="a" name="closed door" editorsuffix=" (Locked)">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
+		<attribute key="description" value="It is locked." />
 	</item>
-	<item id="12198" article="a" name="closed door" editorsuffix=" (Locked)">
+	<item id="12198" article="a" name="closed door">
 		<attribute key="type" value="door" />
 		<attribute key="blockprojectile" value="1" />
 		<attribute key="description" value="It is locked." />
@@ -21520,23 +21567,4 @@
 		<attribute key="description" value="They will expire within a short time, sell them back to Esrik before they do." />
 		<attribute key="weight" value="2500" />
 	</item>
-	<item id="30001" name="water" />
-	<item id="30002" name="lifefluid" />
-	<item id="30003" name="beer" />
-	<item id="30004" name="slime" />
-	<item id="30005" name="lemonade" />
-	<item id="30006" name="milk" />
-	<item id="30007" name="manafluid" />
-	<item id="30010" name="blood" />
-	<item id="30011" name="oil" />
-	<item id="30013" name="urine" />
-	<item id="30014" name="coconut milk" />
-	<item id="30015" name="wine" />
-	<item id="30019" name="mud" />
-	<item id="30021" name="fruit juice" />
-	<item id="30026" name="lava" />
-	<item id="30027" name="rum" />
-	<item id="30028" name="swamp" />
-	<item id="30035" name="tea" />
-	<item id="30043" name="mead" />
 </items>
