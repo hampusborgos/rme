@@ -423,6 +423,9 @@ std::string Item::LiquidID2Name(uint16_t id)
 		case LIQUID_LAVA: return "Lava";
 		case LIQUID_RUM: return "Rum";
 		case LIQUID_SWAMP: return "Swamp";
+		case LIQUID_INK: return "Ink";
+		case LIQUID_TEA: return "Tea";
+		case LIQUID_MEAD: return "Mead";
 		default: return "Unknown";
 	}
 }
@@ -448,6 +451,9 @@ uint16_t Item::LiquidName2ID(std::string liquid)
 	if(liquid == "lava") return LIQUID_LAVA;
 	if(liquid == "rum") return LIQUID_RUM;
 	if(liquid == "swamp") return LIQUID_SWAMP;
+	if(liquid == "ink") return LIQUID_INK;
+	if(liquid == "tea") return LIQUID_TEA;
+	if(liquid == "mead") return LIQUID_MEAD;
 	return LIQUID_NONE;
 }
 
