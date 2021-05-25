@@ -57,6 +57,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 
 	MAKE_ACTION(IMPORT_MAP, wxITEM_NORMAL, OnImportMap);
 	MAKE_ACTION(IMPORT_MONSTERS, wxITEM_NORMAL, OnImportMonsterData);
+	MAKE_ACTION(IMPORT_NPCS, wxITEM_NORMAL, OnImportNpcData);
 	MAKE_ACTION(IMPORT_MINIMAP, wxITEM_NORMAL, OnImportMinimap);
 	MAKE_ACTION(EXPORT_MINIMAP, wxITEM_NORMAL, OnExportMinimap);
 
@@ -135,8 +136,10 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SHOW_EXTRA, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_INGAME_BOX, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_GRID, wxITEM_CHECK, OnChangeViewSettings);
-	MAKE_ACTION(SHOW_CREATURES, wxITEM_CHECK, OnChangeViewSettings);
-	MAKE_ACTION(SHOW_SPAWNS, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_MONSTERS, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_SPAWNS_MONSTER, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_NPCS, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_SPAWNS_NPC, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_SPECIAL, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_AS_MINIMAP, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_ONLY_COLORS, wxITEM_CHECK, OnChangeViewSettings);
@@ -158,7 +161,8 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SELECT_TERRAIN, wxITEM_NORMAL, OnSelectTerrainPalette);
 	MAKE_ACTION(SELECT_DOODAD, wxITEM_NORMAL, OnSelectDoodadPalette);
 	MAKE_ACTION(SELECT_ITEM, wxITEM_NORMAL, OnSelectItemPalette);
-	MAKE_ACTION(SELECT_CREATURE, wxITEM_NORMAL, OnSelectCreaturePalette);
+	MAKE_ACTION(SELECT_MONSTER, wxITEM_NORMAL, OnSelectMonsterPalette);
+	MAKE_ACTION(SELECT_NPC, wxITEM_NORMAL, OnSelectNpcPalette);
 	MAKE_ACTION(SELECT_HOUSE, wxITEM_NORMAL, OnSelectHousePalette);
 	MAKE_ACTION(SELECT_WAYPOINT, wxITEM_NORMAL, OnSelectWaypointPalette);
 	MAKE_ACTION(SELECT_RAW, wxITEM_NORMAL, OnSelectRawPalette);
@@ -370,7 +374,8 @@ void MainMenuBar::Update()
 	EnableItem(ZOOM_NORMAL, has_map);
 
 	if(has_map)
-		CheckItem(SHOW_SPAWNS, g_settings.getBoolean(Config::SHOW_SPAWNS));
+		CheckItem(SHOW_SPAWNS_MONSTER, g_settings.getBoolean(Config::SHOW_SPAWNS_MONSTER));
+		CheckItem(SHOW_SPAWNS_NPC, g_settings.getBoolean(Config::SHOW_SPAWNS_NPC));
 
 	EnableItem(WIN_MINIMAP, loaded);
 	EnableItem(NEW_PALETTE, loaded);
@@ -378,7 +383,8 @@ void MainMenuBar::Update()
 	EnableItem(SELECT_DOODAD, loaded);
 	EnableItem(SELECT_ITEM, loaded);
 	EnableItem(SELECT_HOUSE, loaded);
-	EnableItem(SELECT_CREATURE, loaded);
+	EnableItem(SELECT_MONSTER, loaded);
+	EnableItem(SELECT_NPC, loaded);
 	EnableItem(SELECT_WAYPOINT, loaded);
 	EnableItem(SELECT_RAW, loaded);
 
@@ -432,8 +438,10 @@ void MainMenuBar::LoadValues()
 	CheckItem(SHOW_EXTRA, !g_settings.getBoolean(Config::SHOW_EXTRA));
 	CheckItem(SHOW_GRID, g_settings.getBoolean(Config::SHOW_GRID));
 	CheckItem(HIGHLIGHT_ITEMS, g_settings.getBoolean(Config::HIGHLIGHT_ITEMS));
-	CheckItem(SHOW_CREATURES, g_settings.getBoolean(Config::SHOW_CREATURES));
-	CheckItem(SHOW_SPAWNS, g_settings.getBoolean(Config::SHOW_SPAWNS));
+	CheckItem(SHOW_MONSTERS, g_settings.getBoolean(Config::SHOW_MONSTERS));
+	CheckItem(SHOW_SPAWNS_MONSTER, g_settings.getBoolean(Config::SHOW_SPAWNS_MONSTER));
+	CheckItem(SHOW_NPCS, g_settings.getBoolean(Config::SHOW_NPCS));
+	CheckItem(SHOW_SPAWNS_NPC, g_settings.getBoolean(Config::SHOW_SPAWNS_NPC));
 	CheckItem(SHOW_SPECIAL, g_settings.getBoolean(Config::SHOW_SPECIAL_TILES));
 	CheckItem(SHOW_AS_MINIMAP, g_settings.getBoolean(Config::SHOW_AS_MINIMAP));
 	CheckItem(SHOW_ONLY_COLORS, g_settings.getBoolean(Config::SHOW_ONLY_TILEFLAGS));
@@ -544,17 +552,19 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 	entries[19].Set(wxACCEL_SHIFT, (int)'I', MAIN_FRAME_MENU + MenuBar::SHOW_INGAME_BOX);
 	entries[20].Set(wxACCEL_SHIFT, (int)'G', MAIN_FRAME_MENU + MenuBar::SHOW_GRID);
 	entries[21].Set(wxACCEL_NORMAL, (int)'V', MAIN_FRAME_MENU + MenuBar::HIGHLIGHT_ITEMS);
-	entries[22].Set(wxACCEL_NORMAL, (int)'F', MAIN_FRAME_MENU + MenuBar::SHOW_CREATURES);
-	entries[23].Set(wxACCEL_NORMAL, (int)'S', MAIN_FRAME_MENU + MenuBar::SHOW_SPAWNS);
-	entries[24].Set(wxACCEL_NORMAL, (int)'E', MAIN_FRAME_MENU + MenuBar::SHOW_SPECIAL);
-	entries[25].Set(wxACCEL_SHIFT, (int)'E', MAIN_FRAME_MENU + MenuBar::SHOW_AS_MINIMAP);
-	entries[26].Set(wxACCEL_CTRL, (int)'E', MAIN_FRAME_MENU + MenuBar::SHOW_ONLY_COLORS);
-	entries[27].Set(wxACCEL_CTRL, (int)'M', MAIN_FRAME_MENU + MenuBar::SHOW_ONLY_MODIFIED);
-	entries[28].Set(wxACCEL_CTRL, (int)'H', MAIN_FRAME_MENU + MenuBar::SHOW_HOUSES);
-	entries[29].Set(wxACCEL_NORMAL, (int)'O', MAIN_FRAME_MENU + MenuBar::SHOW_PATHING);
-	entries[30].Set(wxACCEL_NORMAL, (int)'Y', MAIN_FRAME_MENU + MenuBar::SHOW_TOOLTIPS);
-	entries[31].Set(wxACCEL_NORMAL, (int)'L', MAIN_FRAME_MENU + MenuBar::SHOW_PREVIEW);
-	entries[32].Set(wxACCEL_NORMAL, (int)'K', MAIN_FRAME_MENU + MenuBar::SHOW_WALL_HOOKS);
+	entries[22].Set(wxACCEL_NORMAL, (int)'F', MAIN_FRAME_MENU + MenuBar::SHOW_MONSTERS);
+	entries[23].Set(wxACCEL_NORMAL, (int)'S', MAIN_FRAME_MENU + MenuBar::SHOW_SPAWNS_MONSTER);
+	entries[24].Set(wxACCEL_NORMAL, (int)'X', MAIN_FRAME_MENU + MenuBar::SHOW_NPCS);
+	entries[25].Set(wxACCEL_NORMAL, (int)'U', MAIN_FRAME_MENU + MenuBar::SHOW_SPAWNS_NPC);
+	entries[26].Set(wxACCEL_NORMAL, (int)'E', MAIN_FRAME_MENU + MenuBar::SHOW_SPECIAL);
+	entries[27].Set(wxACCEL_SHIFT, (int)'E', MAIN_FRAME_MENU + MenuBar::SHOW_AS_MINIMAP);
+	entries[28].Set(wxACCEL_CTRL, (int)'E', MAIN_FRAME_MENU + MenuBar::SHOW_ONLY_COLORS);
+	entries[29].Set(wxACCEL_CTRL, (int)'M', MAIN_FRAME_MENU + MenuBar::SHOW_ONLY_MODIFIED);
+	entries[30].Set(wxACCEL_CTRL, (int)'H', MAIN_FRAME_MENU + MenuBar::SHOW_HOUSES);
+	entries[31].Set(wxACCEL_NORMAL, (int)'O', MAIN_FRAME_MENU + MenuBar::SHOW_PATHING);
+	entries[32].Set(wxACCEL_NORMAL, (int)'Y', MAIN_FRAME_MENU + MenuBar::SHOW_TOOLTIPS);
+	entries[33].Set(wxACCEL_NORMAL, (int)'L', MAIN_FRAME_MENU + MenuBar::SHOW_PREVIEW);
+	entries[34].Set(wxACCEL_NORMAL, (int)'K', MAIN_FRAME_MENU + MenuBar::SHOW_WALL_HOOKS);
 
 	// Window
 	entries[33].Set(wxACCEL_NORMAL, (int)'M', MAIN_FRAME_MENU + MenuBar::WIN_MINIMAP);
@@ -562,9 +572,10 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 	entries[35].Set(wxACCEL_NORMAL, (int)'D', MAIN_FRAME_MENU + MenuBar::SELECT_DOODAD);
 	entries[36].Set(wxACCEL_NORMAL, (int)'I', MAIN_FRAME_MENU + MenuBar::SELECT_ITEM);
 	entries[37].Set(wxACCEL_NORMAL, (int)'H', MAIN_FRAME_MENU + MenuBar::SELECT_HOUSE);
-	entries[38].Set(wxACCEL_NORMAL, (int)'C', MAIN_FRAME_MENU + MenuBar::SELECT_CREATURE);
-	entries[39].Set(wxACCEL_NORMAL, (int)'W', MAIN_FRAME_MENU + MenuBar::SELECT_WAYPOINT);
-	entries[40].Set(wxACCEL_NORMAL, (int)'R', MAIN_FRAME_MENU + MenuBar::SELECT_RAW);
+	entries[38].Set(wxACCEL_NORMAL, (int)'C', MAIN_FRAME_MENU + MenuBar::SELECT_MONSTER);
+	entries[39].Set(wxACCEL_NORMAL, (int)'N', MAIN_FRAME_MENU + MenuBar::SELECT_NPC);
+	entries[40].Set(wxACCEL_NORMAL, (int)'W', MAIN_FRAME_MENU + MenuBar::SELECT_WAYPOINT);
+	entries[41].Set(wxACCEL_NORMAL, (int)'R', MAIN_FRAME_MENU + MenuBar::SELECT_RAW);
 
 	wxAcceleratorTable accelerator(count, entries);
 	frame->SetAcceleratorTable(accelerator);
@@ -751,14 +762,32 @@ void MainMenuBar::OnImportMap(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnImportMonsterData(wxCommandEvent& WXUNUSED(event))
 {
-	wxFileDialog dlg(g_gui.root, "Import monster/npc file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
+	wxFileDialog dlg(g_gui.root, "Import monster file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
 	if(dlg.ShowModal() == wxID_OK) {
 		wxArrayString paths;
 		dlg.GetPaths(paths);
 		for(uint32_t i = 0; i < paths.GetCount(); ++i) {
 			wxString error;
 			wxArrayString warnings;
-			bool ok = g_creatures.importXMLFromOT(FileName(paths[i]), error, warnings);
+			bool ok = g_monsters.importXMLFromOT(FileName(paths[i]), error, warnings);
+			if(ok)
+				g_gui.ListDialog("Monster loader errors", warnings);
+			else
+				wxMessageBox("Error OT data file \"" + paths[i] + "\".\n" + error, "Error", wxOK | wxICON_INFORMATION, g_gui.root);
+		}
+	}
+}
+
+void MainMenuBar::OnImportNpcData(wxCommandEvent& WXUNUSED(event))
+{
+	wxFileDialog dlg(g_gui.root, "Import npc file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
+	if(dlg.ShowModal() == wxID_OK) {
+		wxArrayString paths;
+		dlg.GetPaths(paths);
+		for(uint32_t i = 0; i < paths.GetCount(); ++i) {
+			wxString error;
+			wxArrayString warnings;
+			bool ok = g_npcs.importXMLFromOT(FileName(paths[i]), error, warnings);
 			if(ok)
 				g_gui.ListDialog("Monster loader errors", warnings);
 			else
@@ -1516,9 +1545,12 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	uint64_t walkable_tile_count = 0;
 	double percent_pathable = 0.0;
 	double percent_detailed = 0.0;
-	uint64_t spawn_count = 0;
-	uint64_t creature_count = 0;
-	double creatures_per_spawn = 0.0;
+	uint64_t spawn_monster_count = 0;
+	uint64_t spawn_npc_count = 0;
+	uint64_t monster_count = 0;
+	uint64_t npc_count = 0;
+	double monsters_per_spawn = 0.0;
+	double npcs_per_spawn = 0.0;
 
 	uint64_t item_count = 0;
 	uint64_t loose_item_count = 0;
@@ -1586,11 +1618,17 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 		}
 #undef ANALYZE_ITEM
 
-		if(tile->spawn)
-			spawn_count += 1;
+		if(tile->spawnMonster)
+			spawn_monster_count += 1;
+		
+		if(tile->spawnNpc)
+			spawn_npc_count += 1;
 
-		if(tile->creature)
-			creature_count += 1;
+		if(tile->monster)
+			monster_count += 1;
+
+		if(tile->npc)
+			npc_count += 1;
 
 		if(tile->isBlocking())
 			blocking_tile_count += 1;
@@ -1603,9 +1641,10 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 		load_counter += 1;
 	}
 
-	creatures_per_spawn =       (spawn_count != 0? double(creature_count) /      double(spawn_count) : -1.0);
-	percent_pathable    = 100.0*(tile_count != 0?  double(walkable_tile_count) / double(tile_count) : -1.0);
-	percent_detailed    = 100.0*(tile_count != 0?  double(detailed_tile_count) / double(tile_count) : -1.0);
+	monsters_per_spawn = (spawn_monster_count != 0? double(monster_count) / double(spawn_monster_count) : -1.0);
+	npcs_per_spawn = (spawn_npc_count != 0? double(npc_count) / double(spawn_npc_count) : -1.0);
+	percent_pathable = 100.0*(tile_count != 0? double(walkable_tile_count) / double(tile_count) : -1.0);
+	percent_detailed = 100.0*(tile_count != 0? double(detailed_tile_count) / double(tile_count) : -1.0);
 
 	load_counter = 0;
 	Houses& houses = map->houses;
@@ -1668,11 +1707,16 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	os << "\t\tNumber of items with Action ID: " << action_item_count << "\n";
 	os << "\t\tNumber of items with Unique ID: " << unique_item_count << "\n";
 
-	os << "\tCreature data:\n";
-	os << "\t\tTotal creature count: " << creature_count << "\n";
-	os << "\t\tTotal spawn count: " << spawn_count << "\n";
-	if(creatures_per_spawn >= 0)
-		os << "\t\tMean creatures per spawn: " << creatures_per_spawn << "\n";
+	os << "\tMonster data:\n";
+	os << "\t\tTotal monster count: " << monster_count << "\n";
+	os << "\t\tTotal monster spawn count: " << spawn_monster_count << "\n";
+	os << "\t\tTotal npc count: " << npc_count << "\n";
+	os << "\t\tTotal npc spawn count: " << spawn_npc_count << "\n";
+	if(monsters_per_spawn >= 0)
+		os << "\t\tMean monsters per spawn: " << monsters_per_spawn << "\n";
+	
+	if(npcs_per_spawn >= 0)
+		os << "\t\tMean npcs per spawn: " << npcs_per_spawn << "\n";
 
 	os << "\tTown/House data:\n";
 	os << "\t\tTotal number of towns: " << town_count << "\n";
@@ -1832,8 +1876,10 @@ void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)
 	g_settings.setInteger(Config::SHOW_AS_MINIMAP, IsItemChecked(MenuBar::SHOW_AS_MINIMAP));
 	g_settings.setInteger(Config::SHOW_ONLY_TILEFLAGS, IsItemChecked(MenuBar::SHOW_ONLY_COLORS));
 	g_settings.setInteger(Config::SHOW_ONLY_MODIFIED_TILES, IsItemChecked(MenuBar::SHOW_ONLY_MODIFIED));
-	g_settings.setInteger(Config::SHOW_CREATURES, IsItemChecked(MenuBar::SHOW_CREATURES));
-	g_settings.setInteger(Config::SHOW_SPAWNS, IsItemChecked(MenuBar::SHOW_SPAWNS));
+	g_settings.setInteger(Config::SHOW_MONSTERS, IsItemChecked(MenuBar::SHOW_MONSTERS));
+	g_settings.setInteger(Config::SHOW_SPAWNS_MONSTER, IsItemChecked(MenuBar::SHOW_SPAWNS_MONSTER));
+	g_settings.setInteger(Config::SHOW_NPCS, IsItemChecked(MenuBar::SHOW_NPCS));
+	g_settings.setInteger(Config::SHOW_SPAWNS_NPC, IsItemChecked(MenuBar::SHOW_SPAWNS_NPC));
 	g_settings.setInteger(Config::SHOW_HOUSES, IsItemChecked(MenuBar::SHOW_HOUSES));
 	g_settings.setInteger(Config::HIGHLIGHT_ITEMS, IsItemChecked(MenuBar::HIGHLIGHT_ITEMS));
 	g_settings.setInteger(Config::SHOW_BLOCKING, IsItemChecked(MenuBar::SHOW_PATHING));
@@ -1887,9 +1933,14 @@ void MainMenuBar::OnSelectHousePalette(wxCommandEvent& WXUNUSED(event))
 	g_gui.SelectPalettePage(TILESET_HOUSE);
 }
 
-void MainMenuBar::OnSelectCreaturePalette(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnSelectMonsterPalette(wxCommandEvent& WXUNUSED(event))
 {
-	g_gui.SelectPalettePage(TILESET_CREATURE);
+	g_gui.SelectPalettePage(TILESET_MONSTER);
+}
+
+void MainMenuBar::OnSelectNpcPalette(wxCommandEvent& WXUNUSED(event))
+{
+	g_gui.SelectPalettePage(TILESET_NPC);
 }
 
 void MainMenuBar::OnSelectWaypointPalette(wxCommandEvent& WXUNUSED(event))

@@ -15,35 +15,23 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_CREATURE_H_
-#define RME_CREATURE_H_
+#ifndef RME_MONSTER_H_
+#define RME_MONSTER_H_
 
-#include "creatures.h"
+#include "monsters.h"
+#include "enums.h"
 
-enum Direction
-{
-	NORTH = 0,
-	EAST = 1,
-	SOUTH = 2,
-	WEST = 3,
-
-	DIRECTION_FIRST = NORTH,
-	DIRECTION_LAST = WEST
-};
-
-IMPLEMENT_INCREMENT_OP(Direction)
-
-class Creature {
+class Monster {
 public:
-	Creature(CreatureType* ctype);
-	Creature(std::string type_name);
-	~Creature();
+	Monster(MonsterType* ctype);
+	Monster(std::string type_name);
+	~Monster();
 
 	// Static conversions
 	static std::string DirID2Name(uint16_t id);
 	static uint16_t DirName2ID(std::string id);
 
-	Creature* deepCopy() const;
+	Monster* deepCopy() const;
 
 	const Outfit& getLookType() const;
 
@@ -55,13 +43,11 @@ public:
 	void deselect() {selected = false;}
 	void select() {selected = true;}
 
-	bool isNpc() const;
-
 	std::string getName() const;
-	CreatureBrush* getBrush() const;
+	MonsterBrush* getBrush() const;
 
-	int getSpawnTime() const {return spawntime;}
-	void setSpawnTime(int spawntime) {this->spawntime = spawntime;}
+	int getSpawnMonsterTime() const {return spawntime;}
+	void setSpawnMonsterTime(int spawntime) {this->spawntime = spawntime;}
 
 	Direction getDirection() const { return direction; }
 	void setDirection(Direction direction) { this->direction = direction; }
@@ -74,42 +60,34 @@ protected:
 	bool selected;
 };
 
-inline void Creature::save() {
+inline void Monster::save() {
 	saved = true;
 }
 
-inline void Creature::reset() {
+inline void Monster::reset() {
 	saved = false;
 }
 
-inline bool Creature::isSaved() {
+inline bool Monster::isSaved() {
 	return saved;
 }
 
-inline bool Creature::isNpc() const {
-	CreatureType* type = g_creatures[type_name];
-	if(type) {
-		return type->isNpc;
-	}
-	return false;
-}
-
-inline std::string Creature::getName() const {
-	CreatureType* type = g_creatures[type_name];
+inline std::string Monster::getName() const {
+	MonsterType* type = g_monsters[type_name];
 	if(type) {
 		return type->name;
 	}
 	return "";
 }
-inline CreatureBrush* Creature::getBrush() const {
-	CreatureType* type = g_creatures[type_name];
+inline MonsterBrush* Monster::getBrush() const {
+	MonsterType* type = g_monsters[type_name];
 	if(type) {
 		return type->brush;
 	}
 	return nullptr;
 }
 
-typedef std::vector<Creature*> CreatureVector;
-typedef std::list<Creature*> CreatureList;
+typedef std::vector<Monster*> MonsterVector;
+typedef std::list<Monster*> MonsterList;
 
 #endif

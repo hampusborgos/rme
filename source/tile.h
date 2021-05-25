@@ -21,6 +21,8 @@
 #include "position.h"
 #include "item.h"
 #include "map_region.h"
+#include "spawn_npc.h"
+#include "npc.h"
 #include <unordered_set>
 
 enum {
@@ -48,11 +50,13 @@ enum : uint8_t {
 class Tile
 {
 public: // Members
-	TileLocation*  location;
-	Item*          ground;
-	ItemVector     items;
-	Creature*      creature;
-	Spawn*         spawn;
+	TileLocation* location;
+	Item* ground;
+	ItemVector items;
+	Monster* monster;
+	SpawnMonster* spawnMonster;
+	Npc* npc;
+	SpawnNpc* spawnNpc;
 	uint32_t house_id; // House id for this tile (pointer not safe)
 
 public:

@@ -22,10 +22,11 @@
 #include "tile.h"
 #include "town.h"
 #include "house.h"
-#include "spawn.h"
+#include "spawn_monster.h"
 #include "complexitem.h"
 #include "waypoints.h"
 #include "templates.h"
+#include "spawn_npc.h"
 
 class Map : public BaseMap
 {
@@ -59,15 +60,25 @@ public:
 	bool hasError() const {return error.size() != 0;}
 	wxString getError() const {return error;}
 
-	// Mess with spawns
-	bool addSpawn(Tile* spawn);
-	void removeSpawn(Tile* tile);
-	void removeSpawn(const Position& position) { removeSpawn(getTile(position)); }
+	// Mess with spawnsMonster
+	bool addSpawnMonster(Tile* spawnMonster);
+	void removeSpawnMonster(Tile* tile);
+	void removeSpawnMonster(const Position& position) { removeSpawnMonster(getTile(position)); }
 
-	// Returns all possible spawns on the target tile
-	SpawnList getSpawnList(Tile* t);
-	SpawnList getSpawnList(const Position& position) { return getSpawnList(getTile(position)); }
-	SpawnList getSpawnList(int32_t x, int32_t y, int32_t z) { return getSpawnList(getTile(x, y, z)); }
+	// Returns all possible spawnsMonster on the target tile
+	SpawnMonsterList getSpawnMonsterList(Tile* t);
+	SpawnMonsterList getSpawnMonsterList(const Position& position) { return getSpawnMonsterList(getTile(position)); }
+	SpawnMonsterList getSpawnMonsterList(int32_t x, int32_t y, int32_t z) { return getSpawnMonsterList(getTile(x, y, z)); }
+
+	// Mess with npc spawns
+	bool addSpawnNpc(Tile* spawnMonster);
+	void removeSpawnNpc(Tile* tile);
+	void removeSpawnNpc(const Position& position) { removeSpawnNpc(getTile(position)); }
+
+	// Returns all possible npc spawns on the target tile
+	SpawnNpcList getSpawnNpcList(Tile* t);
+	SpawnNpcList getSpawnNpcList(const Position& position) { return getSpawnNpcList(getTile(position)); }
+	SpawnNpcList getSpawnNpcList(int32_t x, int32_t y, int32_t z) { return getSpawnNpcList(getTile(x, y, z)); }
 
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to
@@ -81,14 +92,16 @@ public:
 	int getHeight() const {return height;}
 	std::string getMapDescription() const {return description;}
 	std::string getHouseFilename() const {return housefile;}
-	std::string getSpawnFilename() const {return spawnfile;}
+	std::string getSpawnFilename() const {return spawnmonsterfile;}
+	std::string getSpawnNpcFilename() const {return spawnnpcfile;}
 
 	// Set some map data
 	void setWidth(int new_width);
 	void setHeight(int new_height);
 	void setMapDescription(const std::string& new_description);
 	void setHouseFilename(const std::string& new_housefile);
-	void setSpawnFilename(const std::string& new_spawnfile);
+	void setSpawnMonsterFilename(const std::string& new_spawnmonsterfile);
+	void setSpawnNpcFilename(const std::string& new_npcfile);
 
 	void flagAsNamed() {unnamed = false;}
 
@@ -97,7 +110,8 @@ protected:
 	bool open(const std::string identifier);
 
 protected:
-	void removeSpawnInternal(Tile* tile);
+	void removeSpawnMonsterInternal(Tile* tile);
+	void removeSpawnNpcInternal(Tile* tile);
 
 	wxArrayString warnings;
 	wxString error;
@@ -111,13 +125,15 @@ protected:
 	// Map Width and Height - for info purposes
 	uint16_t width, height;
 
-	std::string spawnfile; // The maps spawnfile
+	std::string spawnmonsterfile; // The maps spawnmonsterfile
+	std::string spawnnpcfile; // The maps spawnnpcfile
 	std::string housefile; // The housefile
 
 public:
 	Towns towns;
 	Houses houses;
-	Spawns spawns;
+	SpawnsMonster spawnsMonster;
+	SpawnsNpc spawnsNpc;
 
 protected:
 	bool has_changed; // If the map has changed

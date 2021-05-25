@@ -362,21 +362,27 @@ void Map::setHouseFilename(const std::string&  new_housefile)
 	unnamed = false;
 }
 
-void Map::setSpawnFilename(const std::string&  new_spawnfile)
+void Map::setSpawnMonsterFilename(const std::string&  new_spawnmonsterfile)
 {
-	spawnfile = new_spawnfile;
+	spawnmonsterfile = new_spawnmonsterfile;
 	unnamed = false;
 }
 
-bool Map::addSpawn(Tile* tile)
+void Map::setSpawnNpcFilename(const std::string&  new_spawnnpcfile)
 {
-	Spawn* spawn = tile->spawn;
-	if(spawn) {
+	spawnnpcfile = new_spawnnpcfile;
+	unnamed = false;
+}
+
+bool Map::addSpawnMonster(Tile* tile)
+{
+	SpawnMonster* spawnMonster = tile->spawnMonster;
+	if(spawnMonster) {
 		int z = tile->getZ();
-		int start_x = tile->getX() - spawn->getSize();
-		int start_y = tile->getY() - spawn->getSize();
-		int end_x = tile->getX() + spawn->getSize();
-		int end_y = tile->getY() + spawn->getSize();
+		int start_x = tile->getX() - spawnMonster->getSize();
+		int start_y = tile->getY() - spawnMonster->getSize();
+		int end_x = tile->getX() + spawnMonster->getSize();
+		int end_y = tile->getY() + spawnMonster->getSize();
 
 		for(int y = start_y; y <= end_y; ++y) {
 			for(int x = start_x; x <= end_x; ++x) {
@@ -384,79 +390,79 @@ bool Map::addSpawn(Tile* tile)
 				ctile_loc->increaseSpawnCount();
 			}
 		}
-		spawns.addSpawn(tile);
+		spawnsMonster.addSpawnMonster(tile);
 		return true;
 	}
 	return false;
 }
 
-void Map::removeSpawnInternal(Tile* tile)
+void Map::removeSpawnMonsterInternal(Tile* tile)
 {
-	Spawn* spawn = tile->spawn;
-	ASSERT(spawn);
+	SpawnMonster* spawnMonster = tile->spawnMonster;
+	ASSERT(spawnMonster);
 
 	int z = tile->getZ();
-	int start_x = tile->getX() - spawn->getSize();
-	int start_y = tile->getY() - spawn->getSize();
-	int end_x = tile->getX() + spawn->getSize();
-	int end_y = tile->getY() + spawn->getSize();
+	int start_x = tile->getX() - spawnMonster->getSize();
+	int start_y = tile->getY() - spawnMonster->getSize();
+	int end_x = tile->getX() + spawnMonster->getSize();
+	int end_y = tile->getY() + spawnMonster->getSize();
 
 	for(int y = start_y; y <= end_y; ++y) {
 		for(int x = start_x; x <= end_x; ++x) {
 			TileLocation* ctile_loc = getTileL(x, y, z);
-			if(ctile_loc != nullptr && ctile_loc->getSpawnCount() > 0)
-				ctile_loc->decreaseSpawnCount();
+			if(ctile_loc != nullptr && ctile_loc->getSpawnMonsterCount() > 0)
+				ctile_loc->decreaseSpawnMonsterCount();
 		}
 	}
 }
 
-void Map::removeSpawn(Tile* tile)
+void Map::removeSpawnMonster(Tile* tile)
 {
-	if(tile->spawn) {
-		removeSpawnInternal(tile);
-		spawns.removeSpawn(tile);
+	if(tile->spawnMonster) {
+		removeSpawnMonsterInternal(tile);
+		spawnsMonster.removeSpawnMonster(tile);
 	}
 }
 
-SpawnList Map::getSpawnList(Tile* where)
+SpawnMonsterList Map::getSpawnMonsterList(Tile* where)
 {
-	SpawnList list;
+	SpawnMonsterList list;
 	TileLocation* tile_loc = where->getLocation();
 	if(tile_loc) {
-		if(tile_loc->getSpawnCount() > 0) {
+		if(tile_loc->getSpawnMonsterCount() > 0) {
 			uint32_t found = 0;
-			if(where->spawn) {
+			if(where->spawnMonster) {
 				++found;
-				list.push_back(where->spawn);
+				list.push_back(where->spawnMonster);
 			}
 
-			// Scans the border tiles in an expanding square around the original spawn
+			// Scans the border tiles in an expanding square around the original monster spawn
 			int z = where->getZ();
 			int start_x = where->getX() - 1, end_x = where->getX() + 1;
 			int start_y = where->getY() - 1, end_y = where->getY() + 1;
-			while(found != tile_loc->getSpawnCount()) {
+			while(found != tile_loc->getSpawnMonsterCount()) {
 				for(int x = start_x; x <= end_x; ++x) {
 					Tile* tile = getTile(x, start_y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
+					if(tile && tile->spawnMonster) {
+						list.push_back(tile->spawnMonster);
 						++found;
 					}
 					tile = getTile(x, end_y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
+					if(tile && tile->spawnMonster) {
+						list.push_back(tile->spawnMonster);
 						++found;
 					}
 				}
 
 				for(int y = start_y + 1; y < end_y; ++y) {
 					Tile* tile = getTile(start_x, y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
+					if(tile && tile->spawnMonster) {
+						list.push_back(tile->spawnMonster);
 						++found;
 					}
 					tile = getTile(end_x, y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
+					if(tile && tile->spawnMonster) {
+						list.push_back(tile->spawnMonster);
 						++found;
 					}
 				}
@@ -466,6 +472,106 @@ SpawnList Map::getSpawnList(Tile* where)
 		}
 	}
 	return list;
+}
+
+bool Map::addSpawnNpc(Tile* tile)
+{
+	SpawnNpc* spawnNpc = tile->spawnNpc;
+	if(spawnNpc) {
+		int z = tile->getZ();
+		int start_x = tile->getX() - spawnNpc->getSize();
+		int start_y = tile->getY() - spawnNpc->getSize();
+		int end_x = tile->getX() + spawnNpc->getSize();
+		int end_y = tile->getY() + spawnNpc->getSize();
+
+		for(int y = start_y; y <= end_y; ++y) {
+			for(int x = start_x; x <= end_x; ++x) {
+				TileLocation* ctile_loc = createTileL(x, y, z);
+				ctile_loc->increaseSpawnNpcCount();
+			}
+		}
+		spawnsNpc.addSpawnNpc(tile);
+		return true;
+	}
+	return false;
+}
+
+void Map::removeSpawnNpcInternal(Tile* tile)
+{
+	SpawnNpc* spawnNpc = tile->spawnNpc;
+	ASSERT(spawnNpc);
+
+	int z = tile->getZ();
+	int start_x = tile->getX() - spawnNpc->getSize();
+	int start_y = tile->getY() - spawnNpc->getSize();
+	int end_x = tile->getX() + spawnNpc->getSize();
+	int end_y = tile->getY() + spawnNpc->getSize();
+
+	for(int y = start_y; y <= end_y; ++y) {
+		for(int x = start_x; x <= end_x; ++x) {
+			TileLocation* ctile_loc = getTileL(x, y, z);
+			if(ctile_loc != nullptr && ctile_loc->getSpawnNpcCount() > 0)
+				ctile_loc->decreaseSpawnNpcCount();
+		}
+	}
+}
+
+void Map::removeSpawnNpc(Tile* tile)
+{
+	if(tile->spawnNpc) {
+		removeSpawnNpcInternal(tile);
+		spawnsNpc.removeSpawnNpc(tile);
+	}
+}
+
+SpawnNpcList Map::getSpawnNpcList(Tile* where)
+{
+	SpawnNpcList listNpc;
+	TileLocation* tile_loc = where->getLocation();
+	if(tile_loc) {
+		if(tile_loc->getSpawnNpcCount() > 0) {
+			uint32_t found = 0;
+			if(where->spawnNpc) {
+				++found;
+				listNpc.push_back(where->spawnNpc);
+			}
+
+			// Scans the border tiles in an expanding square around the original spawnNpc
+			int z = where->getZ();
+			int start_x = where->getX() - 1, end_x = where->getX() + 1;
+			int start_y = where->getY() - 1, end_y = where->getY() + 1;
+			while(found != tile_loc->getSpawnNpcCount()) {
+				for(int x = start_x; x <= end_x; ++x) {
+					Tile* tile = getTile(x, start_y, z);
+					if(tile && tile->spawnNpc) {
+						listNpc.push_back(tile->spawnNpc);
+						++found;
+					}
+					tile = getTile(x, end_y, z);
+					if(tile && tile->spawnNpc) {
+						listNpc.push_back(tile->spawnNpc);
+						++found;
+					}
+				}
+
+				for(int y = start_y + 1; y < end_y; ++y) {
+					Tile* tile = getTile(start_x, y, z);
+					if(tile && tile->spawnNpc) {
+						listNpc.push_back(tile->spawnNpc);
+						++found;
+					}
+					tile = getTile(end_x, y, z);
+					if(tile && tile->spawnNpc) {
+						listNpc.push_back(tile->spawnNpc);
+						++found;
+					}
+				}
+				--start_x, --start_y;
+				++end_x, ++end_y;
+			}
+		}
+	}
+	return listNpc;
 }
 
 bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)

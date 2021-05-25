@@ -10,7 +10,8 @@
         <separator/>
         <menu name="$Import">
             <item name="$Import Map..." action="IMPORT_MAP" help="Import map data from another map file."/>
-            <item name="Import $Monsters/NPC..." action="IMPORT_MONSTERS" help="Import either a monsters.xml file or a specific monster/NPC."/>
+            <item name="Import $Monsters..." action="IMPORT_MONSTERS" help="Import either a monsters.xml file or a specific monster."/>
+            <item name="Import $NPC..." action="IMPORT_NPCS" help="Import either a npc.xml file or a specific NPC."/>
             <item name="Import Mi$nimap..." action="IMPORT_MINIMAP" help="Import map data from a .bmp file."/>
         </menu>
         <menu name="$Export">
@@ -121,8 +122,10 @@
         <item name="Show $Grid" hotkey="Shift+G" action="SHOW_GRID" help="Shows a grid over all items."/>
         <item name="H$ighlight items" hotkey="V" action="HIGHLIGHT_ITEMS" help="Highlight tiles with items on them."/>
         <separator/>
-        <item name="Show creatures" hotkey="F" action="SHOW_CREATURES" help="Show creatures on the map."/>
+        <item name="Show monsters" hotkey="F" action="SHOW_MONSTERS" help="Show monsters on the map."/>
         <item name="Show spawns" hotkey="S" action="SHOW_SPAWNS" help="Show spawns on the map."/>
+        <item name="Show npcs" hotkey="X" action="SHOW_NPCS" help="Show monsters on the map."/>
+        <item name="Show spawns" hotkey="U" action="SHOW_SPAWNS_NPC" help="Show spawns on the map."/>
         <item name="Sho$w special" hotkey="E" action="SHOW_SPECIAL" help="Show special tiles on the map, like PZ."/>
         <item name="Show as minimap" hotkey="Shift+E" action="SHOW_AS_MINIMAP" help="Show only the tile minimap colors."/>
         <item name="Only show $colors" hotkey="Ctrl+E" action="SHOW_ONLY_COLORS" help="Show only the special tiles on the map."/>
@@ -141,7 +144,8 @@
         <item name="$Doodad Palette" hotkey="D" action="SELECT_DOODAD" help="Select the Doodad palette."/>
         <item name="$Item Palette" hotkey="I" action="SELECT_ITEM" help="Select the Item palette."/>
         <item name="$House Palette" hotkey="H" action="SELECT_HOUSE" help="Select the House palette."/>
-        <item name="$Creature Palette" hotkey="C" action="SELECT_CREATURE" help="Select the Creature palette."/>
+        <item name="$Creature Palette" hotkey="C" action="SELECT_MONSTER" help="Select the Creature palette."/>
+        <item name="$Npc Palette" hotkey="N" action="SELECT_NPC" help="Select the Npc palette."/>
         <item name="$Waypoint Palette" hotkey="W" action="SELECT_WAYPOINT" help="Select the Waypoint palette."/>
         <item name="$RAW Palette" hotkey="R" action="SELECT_RAW" help="Select the RAW palette."/>
     </menu>

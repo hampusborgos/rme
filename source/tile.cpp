@@ -20,20 +20,24 @@
 #include "brush.h"
 
 #include "tile.h"
-#include "creature.h"
+#include "monster.h"
 #include "house.h"
 #include "basemap.h"
-#include "spawn.h"
+#include "spawn_monster.h"
 #include "ground_brush.h"
 #include "wall_brush.h"
 #include "carpet_brush.h"
 #include "table_brush.h"
+#include "npc.h"
+#include "spawn_npc.h"
 
 Tile::Tile(int x, int y, int z) :
 	location(nullptr),
 	ground(nullptr),
-	creature(nullptr),
-	spawn(nullptr),
+	monster(nullptr),
+	spawnMonster(nullptr),
+	npc(nullptr),
+	spawnNpc(nullptr),
 	house_id(0),
 	mapflags(0),
 	statflags(0),
@@ -45,8 +49,10 @@ Tile::Tile(int x, int y, int z) :
 Tile::Tile(TileLocation& loc) :
 	location(&loc),
 	ground(nullptr),
-	creature(nullptr),
-	spawn(nullptr),
+	monster(nullptr),
+	spawnMonster(nullptr),
+	npc(nullptr),
+	spawnNpc(nullptr),
 	house_id(0),
 	mapflags(0),
 	statflags(0),
@@ -61,10 +67,12 @@ Tile::~Tile()
 		delete items.back();
 		items.pop_back();
 	}
-	delete creature;
+	delete monster;
 	//printf("%d,%d,%d,%p\n", tilePos.x, tilePos.y, tilePos.z, ground);
 	delete ground;
-	delete spawn;
+	delete spawnMonster;
+	delete npc;
+	delete spawnNpc;
 }
 
 Tile* Tile::deepCopy(BaseMap& map)
@@ -72,8 +80,10 @@ Tile* Tile::deepCopy(BaseMap& map)
 	Tile* copy = map.allocator.allocateTile(location);
 	copy->flags = flags;
 	copy->house_id = house_id;
-	if(spawn) copy->spawn = spawn->deepCopy();
-	if(creature) copy->creature = creature->deepCopy();
+	if(spawnMonster) copy->spawnMonster = spawnMonster->deepCopy();
+	if(spawnNpc) copy->spawnNpc = spawnNpc->deepCopy();
+	if(monster) copy->monster = monster->deepCopy();
+	if(npc) copy->npc = npc->deepCopy();
 	// Spawncount & exits are not transferred on copy!
 	if(ground) copy->ground = ground->deepCopy();
 
@@ -111,11 +121,14 @@ int Tile::size() const
 	int sz = 0;
 	if(ground) ++sz;
 	sz += items.size();
-	if(creature) ++sz;
-	if(spawn) ++sz;
+	if(monster) ++sz;
+	if(spawnMonster) ++sz;
+	if(npc) ++sz;
+	if(spawnNpc) ++sz;
 	if(location) {
 		if(location->getHouseExits()) ++sz;
-		if(location->getSpawnCount()) ++sz;
+		if(location->getSpawnMonsterCount()) ++sz;
+		if(location->getSpawnNpcCount()) ++sz;
 		if(location->getWaypointCount()) ++ sz;
 	}
 	return sz;
@@ -133,22 +146,40 @@ void Tile::merge(Tile* other) {
 		other->ground = nullptr;
 	}
 
-	if(other->creature) {
-		delete creature;
-		creature = other->creature;
-		other->creature = nullptr;
+	if(other->monster) {
+		delete monster;
+		monster = other->monster;
+		other->monster = nullptr;
 	}
 
-	if(other->spawn) {
-		delete spawn;
-		spawn = other->spawn;
-		other->spawn = nullptr;
+	if(other->spawnMonster) {
+		delete spawnMonster;
+		spawnMonster = other->spawnMonster;
+		other->spawnMonster = nullptr;
 	}
 
-	if(other->creature) {
-		delete creature;
-		creature = other->creature;
-		other->creature = nullptr;
+	if(other->npc) {
+		delete npc;
+		npc = other->npc;
+		other->npc = nullptr;
+	}
+
+	if(other->spawnNpc) {
+		delete spawnNpc;
+		spawnNpc = other->spawnNpc;
+		other->spawnNpc = nullptr;
+	}
+
+	if(other->monster) {
+		delete monster;
+		monster = other->monster;
+		other->monster = nullptr;
+	}
+
+	if(other->npc) {
+		delete npc;
+		npc = other->npc;
+		other->npc = nullptr;
 	}
 
 	ItemVector::iterator it;
@@ -238,8 +269,10 @@ void Tile::select()
 {
 	if(size() == 0) return;
 	if(ground) ground->select();
-	if(spawn) spawn->select();
-	if(creature) creature->select();
+	if(spawnMonster) spawnMonster->select();
+	if(spawnNpc) spawnNpc->select();
+	if(monster) monster->select();
+	if(npc) npc->select();
 
 	ItemVector::iterator it;
 
@@ -256,8 +289,10 @@ void Tile::select()
 void Tile::deselect()
 {
 	if(ground) ground->deselect();
-	if(spawn) spawn->deselect();
-	if(creature) creature->deselect();
+	if(spawnMonster) spawnMonster->deselect();
+	if(spawnNpc) spawnNpc->deselect();
+	if(monster) monster->deselect();
+	if(npc) npc->deselect();
 
 	ItemVector::iterator it;
 
@@ -382,10 +417,16 @@ void Tile::update()
 {
 	statflags &= TILESTATE_MODIFIED;
 
-	if(spawn && spawn->isSelected()) {
+	if(spawnMonster && spawnMonster->isSelected()) {
 		statflags |= TILESTATE_SELECTED;
 	}
-	if(creature && creature->isSelected()) {
+	if(spawnNpc && spawnNpc->isSelected()) {
+		statflags |= TILESTATE_SELECTED;
+	}
+	if(monster && monster->isSelected()) {
+		statflags |= TILESTATE_SELECTED;
+	}
+	if(npc && npc->isSelected()) {
 		statflags |= TILESTATE_SELECTED;
 	}
 

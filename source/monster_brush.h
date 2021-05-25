@@ -15,32 +15,37 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_SPAWN_BRUSH_H
-#define RME_SPAWN_BRUSH_H
+#ifndef RME_monster_BRUSH_H
+#define RME_monster_BRUSH_H
 
 #include "brush.h"
 
 //=============================================================================
-// SpawnBrush, place spawns
+// MonsterBrush, place monsters
 
-class SpawnBrush : public Brush
+class MonsterBrush : public Brush
 {
 public:
-	SpawnBrush(); // Create a RAWBrush of the specified type
-	virtual ~SpawnBrush();
+	MonsterBrush(MonsterType* type); // Create a RAWBrush of the specified type
+	virtual ~MonsterBrush();
 
-	bool isSpawn() const { return true; }
-	SpawnBrush* asSpawn() { return static_cast<SpawnBrush*>(this); }
+	bool isMonster() const { return true; }
+	MonsterBrush* asMonster() { return static_cast<MonsterBrush*>(this); }
 
 	virtual bool canDraw(BaseMap* map, const Position& position) const;
-	virtual void draw(BaseMap* map, Tile* tile, void* parameter); // parameter is brush size
+	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 
-	virtual int getLookID() const; // We don't have a look, sorry!
+	MonsterType* getType() const {return monster_type;}
+
+	virtual int getLookID() const; // We don't have a look type, this will always return 0
 	virtual std::string getName() const;
-	virtual bool canDrag() const { return true; }
-	virtual bool canSmear() const { return false; }
+	virtual bool canDrag() const { return false; }
+	virtual bool canSmear() const { return true; }
 	virtual bool oneSizeFitsAll() const { return true; }
+
+protected:
+	MonsterType* monster_type;
 };
 
 #endif

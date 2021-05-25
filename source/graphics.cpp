@@ -161,7 +161,6 @@ GameSprite* GraphicManager::getCreatureSprite(int id)
 	return nullptr;
 }
 
-
 uint16_t GraphicManager::getItemSpriteMaxID() const
 {
 	return item_count;

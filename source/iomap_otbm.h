@@ -35,7 +35,7 @@ enum OTBM_ItemAttribute
 	OTBM_ATTR_TELE_DEST = 8,
 	OTBM_ATTR_ITEM = 9,
 	OTBM_ATTR_DEPOT_ID = 10,
-	OTBM_ATTR_EXT_SPAWN_FILE = 11,
+	OTBM_ATTR_EXT_SPAWN_MONSTER_FILE = 11,
 	OTBM_ATTR_RUNE_CHARGES = 12,
 	OTBM_ATTR_EXT_HOUSE_FILE = 13,
 	OTBM_ATTR_HOUSEDOORID = 14,
@@ -47,6 +47,7 @@ enum OTBM_ItemAttribute
 	OTBM_ATTR_SLEEPERGUID = 20,
 	OTBM_ATTR_SLEEPSTART = 21,
 	OTBM_ATTR_CHARGES = 22,
+	OTBM_ATTR_EXT_SPAWN_NPC_FILE = 23,
 
 	OTBM_ATTR_ATTRIBUTE_MAP = 128
 };
@@ -69,6 +70,8 @@ enum OTBM_NodeTypes_t
 	OTBM_HOUSETILE = 14,
 	OTBM_WAYPOINTS = 15,
 	OTBM_WAYPOINT = 16,
+	OTBM_SPAWN_NPC_AREA = 17,
+	OTBM_SPAWNS_NPC = 18
 };
 
 struct OTBM_root_header
@@ -131,16 +134,20 @@ protected:
 	static bool getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver);
 
 	virtual bool loadMap(Map& map, NodeFileReadHandle& handle);
-	bool loadSpawns(Map& map, const FileName& dir);
-	bool loadSpawns(Map& map, pugi::xml_document& doc);
+	bool loadSpawnsMonster(Map& map, const FileName& dir);
+	bool loadSpawnsMonster(Map& map, pugi::xml_document& doc);
 	bool loadHouses(Map& map, const FileName& dir);
 	bool loadHouses(Map& map, pugi::xml_document& doc);
+	bool loadSpawnsNpc(Map& map, const FileName& dir);
+	bool loadSpawnsNpc(Map& map, pugi::xml_document& doc);
 
 	virtual bool saveMap(Map& map, NodeFileWriteHandle& handle);
 	bool saveSpawns(Map& map, const FileName& dir);
 	bool saveSpawns(Map& map, pugi::xml_document& doc);
 	bool saveHouses(Map& map, const FileName& dir);
 	bool saveHouses(Map& map, pugi::xml_document& doc);
+	bool saveSpawnsNpc(Map& map, const FileName& dir);
+	bool saveSpawnsNpc(Map& map, pugi::xml_document& doc);
 };
 
 #endif

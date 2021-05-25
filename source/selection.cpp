@@ -19,7 +19,8 @@
 
 #include "selection.h"
 #include "tile.h"
-#include "creature.h"
+#include "monster.h"
+#include "npc.h"
 #include "item.h"
 #include "editor.h"
 #include "gui.h"
@@ -89,34 +90,66 @@ void Selection::add(Tile* tile, Item* item)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile, Spawn* spawn)
+void Selection::add(Tile* tile, SpawnMonster* spawnMonster)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
-	ASSERT(spawn);
+	ASSERT(spawnMonster);
 
-	if(spawn->isSelected()) return;
+	if(spawnMonster->isSelected()) return;
 
 	// Make a copy of the tile with the item selected
-	spawn->select();
+	spawnMonster->select();
 	Tile* new_tile = tile->deepCopy(editor.map);
-	spawn->deselect();
+	spawnMonster->deselect();
 
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile, Creature* creature)
+void Selection::add(Tile* tile, SpawnNpc* spawnNpc)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
-	ASSERT(creature);
+	ASSERT(spawnNpc);
 
-	if(creature->isSelected()) return;
+	if(spawnNpc->isSelected()) return;
 
 	// Make a copy of the tile with the item selected
-	creature->select();
+	spawnNpc->select();
 	Tile* new_tile = tile->deepCopy(editor.map);
-	creature->deselect();
+	spawnNpc->deselect();
+
+	subsession->addChange(newd Change(new_tile));
+}
+
+void Selection::add(Tile* tile, Monster* monster)
+{
+	ASSERT(subsession);
+	ASSERT(tile);
+	ASSERT(monster);
+
+	if(monster->isSelected()) return;
+
+	// Make a copy of the tile with the item selected
+	monster->select();
+	Tile* new_tile = tile->deepCopy(editor.map);
+	monster->deselect();
+
+	subsession->addChange(newd Change(new_tile));
+}
+
+void Selection::add(Tile* tile, Npc* npc)
+{
+	ASSERT(subsession);
+	ASSERT(tile);
+	ASSERT(npc);
+
+	if(npc->isSelected()) return;
+
+	// Make a copy of the tile with the item selected
+	npc->select();
+	Tile* new_tile = tile->deepCopy(editor.map);
+	npc->deselect();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -147,30 +180,58 @@ void Selection::remove(Tile* tile, Item* item)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::remove(Tile* tile, Spawn* spawn)
+void Selection::remove(Tile* tile, SpawnMonster* spawnMonster)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
-	ASSERT(spawn);
+	ASSERT(spawnMonster);
 
-	bool tmp = spawn->isSelected();
-	spawn->deselect();
+	bool tmp = spawnMonster->isSelected();
+	spawnMonster->deselect();
 	Tile* new_tile = tile->deepCopy(editor.map);
-	if(tmp) spawn->select();
+	if(tmp) spawnMonster->select();
 
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::remove(Tile* tile, Creature* creature)
+void Selection::remove(Tile* tile, SpawnNpc* spawnNpc)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
-	ASSERT(creature);
+	ASSERT(spawnNpc);
 
-	bool tmp = creature->isSelected();
-	creature->deselect();
+	bool tmp = spawnNpc->isSelected();
+	spawnNpc->deselect();
 	Tile* new_tile = tile->deepCopy(editor.map);
-	if(tmp) creature->select();
+	if(tmp) spawnNpc->select();
+
+	subsession->addChange(newd Change(new_tile));
+}
+
+void Selection::remove(Tile* tile, Monster* monster)
+{
+	ASSERT(subsession);
+	ASSERT(tile);
+	ASSERT(monster);
+
+	bool tmp = monster->isSelected();
+	monster->deselect();
+	Tile* new_tile = tile->deepCopy(editor.map);
+	if(tmp) monster->select();
+
+	subsession->addChange(newd Change(new_tile));
+}
+
+void Selection::remove(Tile* tile, Npc* npc)
+{
+	ASSERT(subsession);
+	ASSERT(tile);
+	ASSERT(npc);
+
+	bool tmp = npc->isSelected();
+	npc->deselect();
+	Tile* new_tile = tile->deepCopy(editor.map);
+	if(tmp) npc->select();
 
 	subsession->addChange(newd Change(new_tile));
 }

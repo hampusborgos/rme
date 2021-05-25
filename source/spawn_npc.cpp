@@ -15,46 +15,46 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_FORWARD_H
-#define RME_FORWARD_H
+#include "main.h"
 
-class Map;
-class Tile;
-class TileLocation;
-class Item;
-class container;
-class SpawnMonster;
-class SpawnNpc;
-struct Outfit;
-class House;
-class Monster;
-class Npc;
-class BaseMap;
-class Waypoint;
-class Waypoints;
-class Tileset;
-class Town;
-class Position;
-class Editor;
-class GUI;
-class Selection;
-class CopyBuffer;
-class ItemType;
-class Monsters;
-class Npcs;
-class ItemDatabase;
-class QTreeNode;
-class Floor;
-class Action;
+#include "tile.h"
+#include "spawn_npc.h"
 
-class Brush;
+SpawnsNpc::SpawnsNpc()
+{
+	////
+}
 
-#include <unordered_set>
+SpawnsNpc::~SpawnsNpc()
+{
+	////
+}
 
-typedef std::vector<uint32_t> HouseExitList;
-typedef std::vector<Tile*> TileVector;
-typedef std::unordered_set<Tile*> TileSet;
-typedef std::vector<Item*> ItemVector;
-typedef std::vector<Brush*> BrushVector;
+void SpawnsNpc::addSpawnNpc(Tile* tile)
+{
+	ASSERT(tile->spawnNpc);
 
+	auto it = spawnsNpc.insert(tile->getPosition());
+	ASSERT(it.second);
+}
+
+void SpawnsNpc::removeSpawnNpc(Tile* tile) {
+	ASSERT(tile->spawnNpc);
+	spawnsNpc.erase(tile->getPosition());
+#if 0
+	SpawnNpcPositionList::iterator iter = begin();
+	while(iter != end()) {
+		if(*iter == tile->getPosition()) {
+			spawnsNpc.erase(iter);
+			return;
+		}
+		++iter;
+	}
+	ASSERT(false);
 #endif
+}
+
+std::ostream& operator<<(std::ostream& os, const SpawnNpc& spawnNpc) {
+	os << &spawnNpc << ":: -> " << spawnNpc.getSize() << std::endl;
+	return os;
+}

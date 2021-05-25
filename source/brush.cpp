@@ -19,13 +19,15 @@
 
 #include "brush.h"
 #include "carpet_brush.h"
-#include "creature_brush.h"
+#include "monster_brush.h"
+#include "npc_brush.h"
 #include "doodad_brush.h"
 #include "ground_brush.h"
 #include "house_brush.h"
 #include "house_exit_brush.h"
 #include "raw_brush.h"
-#include "spawn_brush.h"
+#include "spawn_monster_brush.h"
+#include "spawn_npc_brush.h"
 #include "table_brush.h"
 #include "wall_brush.h"
 #include "waypoint_brush.h"
@@ -36,8 +38,10 @@
 
 #include "item.h"
 #include "complexitem.h"
-#include "creatures.h"
-#include "creature.h"
+#include "monsters.h"
+#include "monster.h"
+#include "npcs.h"
+#include "npc.h"
 #include "map.h"
 
 #include "gui.h"
@@ -72,7 +76,8 @@ void Brushes::init()
 {
 	addBrush(g_gui.optional_brush = newd OptionalBorderBrush());
 	addBrush(g_gui.eraser = newd EraserBrush());
-	addBrush(g_gui.spawn_brush = newd SpawnBrush());
+	addBrush(g_gui.spawn_brush = newd SpawnMonsterBrush());
+	addBrush(g_gui.spawn_npc_brush = newd SpawnNpcBrush());
 	addBrush(g_gui.normal_door_brush = newd DoorBrush(WALL_DOOR_NORMAL));
 	addBrush(g_gui.locked_door_brush = newd DoorBrush(WALL_DOOR_LOCKED));
 	addBrush(g_gui.magic_door_brush = newd DoorBrush(WALL_DOOR_MAGIC));

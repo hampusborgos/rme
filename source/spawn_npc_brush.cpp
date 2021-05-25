@@ -17,44 +17,56 @@
 
 #include "main.h"
 
-#include "tile.h"
-#include "spawn.h"
+#include "spawn_npc_brush.h"
+#include "basemap.h"
+#include "spawn_npc.h"
 
-Spawns::Spawns()
+//=============================================================================
+// Spawn npc brush
+
+SpawnNpcBrush::SpawnNpcBrush() :
+	Brush()
 {
 	////
 }
 
-Spawns::~Spawns()
+SpawnNpcBrush::~SpawnNpcBrush()
 {
 	////
 }
 
-void Spawns::addSpawn(Tile* tile)
+int SpawnNpcBrush::getLookID() const
 {
-	ASSERT(tile->spawn);
-
-	auto it = spawns.insert(tile->getPosition());
-	ASSERT(it.second);
+	return 0;
 }
 
-void Spawns::removeSpawn(Tile* tile) {
-	ASSERT(tile->spawn);
-	spawns.erase(tile->getPosition());
-#if 0
-	SpawnPositionList::iterator iter = begin();
-	while(iter != end()) {
-		if(*iter == tile->getPosition()) {
-			spawns.erase(iter);
-			return;
+std::string SpawnNpcBrush::getName() const
+{
+	return "Spawn Npc Brush";
+}
+
+bool SpawnNpcBrush::canDraw(BaseMap* map, const Position& position) const
+{
+	Tile* tile = map->getTile(position);
+	if(tile) {
+		if(tile->spawnNpc) {
+			return false;
 		}
-		++iter;
 	}
-	ASSERT(false);
-#endif
+	return true;
 }
 
-std::ostream& operator<<(std::ostream& os, const Spawn& spawn) {
-	os << &spawn << ":: -> " << spawn.getSize() << std::endl;
-	return os;
+void SpawnNpcBrush::undraw(BaseMap* map, Tile* tile)
+{
+	delete tile->spawnNpc;
+	tile->spawnNpc = nullptr;
+}
+
+void SpawnNpcBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+{
+	ASSERT(tile);
+	ASSERT(parameter); // Should contain an int which is the size of the newd spawn npc
+	if(tile->spawnNpc == nullptr) {
+		tile->spawnNpc = newd SpawnNpc(max(1, *(int*)parameter));
+	}
 }

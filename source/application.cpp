@@ -33,7 +33,8 @@
 #include "materials.h"
 #include "map.h"
 #include "complexitem.h"
-#include "creature.h"
+#include "monster.h"
+#include "npc.h"
 
 #include <wx/snglinst.h>
 
@@ -218,11 +219,12 @@ bool Application::OnInit()
 	if(save_failed_file.FileExists()) {
 		std::ifstream f(nstr(save_failed_file.GetFullPath()).c_str(), std::ios::in);
 
-		std::string backup_otbm, backup_house, backup_spawn;
+		std::string backup_otbm, backup_house, backup_spawn, backup_spawn_npc;
 
 		getline(f, backup_otbm);
 		getline(f, backup_house);
 		getline(f, backup_spawn);
+		getline(f, backup_spawn_npc);
 
 		// Remove the file
 		f.close();
@@ -230,14 +232,15 @@ bool Application::OnInit()
 
 		// Query file retrieval if possible
 		if(!backup_otbm.empty()) {
-            long ret = g_gui.PopupDialog(
+			long ret = g_gui.PopupDialog(
 				"Editor Crashed",
 				wxString(
 					"IMPORTANT! THE EDITOR CRASHED WHILE SAVING!\n\n"
 					"Do you want to recover the lost map? (it will be opened immediately):\n") <<
 					wxstr(backup_otbm) << "\n" <<
 					wxstr(backup_house) << "\n" <<
-					wxstr(backup_spawn) << "\n",
+					wxstr(backup_spawn) << "\n" <<
+					wxstr(backup_spawn_npc) << "\n",
 				wxYES | wxNO);
 
 			if(ret == wxID_YES) {
@@ -252,6 +255,10 @@ bool Application::OnInit()
 				if(!backup_spawn.empty()) {
 					std::remove(backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
 					std::rename(backup_spawn.c_str(), backup_spawn.substr(0, backup_spawn.size() - 1).c_str());
+				}
+				if(!backup_spawn_npc.empty()) {
+					std::remove(backup_spawn_npc.substr(0, backup_spawn_npc.size() - 1).c_str());
+					std::rename(backup_spawn_npc.c_str(), backup_spawn_npc.substr(0, backup_spawn_npc.size() - 1).c_str());
 				}
 
 				// Load the map
@@ -542,18 +549,19 @@ bool MainFrame::DoQuerySave(bool doclose)
 
 bool MainFrame::DoQueryImportCreatures()
 {
-	if(g_creatures.hasMissing()) {
-		long ret = g_gui.PopupDialog("Missing creatures", "There are missing creatures and/or NPC in the editor, do you want to load them from an OT monster/npc file?", wxYES | wxNO);
+	// Monsters
+	if(g_monsters.hasMissing()) {
+		long ret = g_gui.PopupDialog("Missing monsters", "There are missing monsters in the editor, do you want to load them from an OT monster file?", wxYES | wxNO);
 		if(ret == wxID_YES) {
 			do {
-				wxFileDialog dlg(g_gui.root, "Import monster/npc file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
+				wxFileDialog dlg(g_gui.root, "Import monster file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
 				if(dlg.ShowModal() == wxID_OK) {
 					wxArrayString paths;
 					dlg.GetPaths(paths);
 					for(uint32_t i = 0; i < paths.GetCount(); ++i) {
 						wxString error;
 						wxArrayString warnings;
-						bool ok = g_creatures.importXMLFromOT(FileName(paths[i]), error, warnings);
+						bool ok = g_monsters.importXMLFromOT(FileName(paths[i]), error, warnings);
 						if(ok)
 							g_gui.ListDialog("Monster loader errors", warnings);
 						else
@@ -562,7 +570,31 @@ bool MainFrame::DoQueryImportCreatures()
 				} else {
 					break;
 				}
-			} while(g_creatures.hasMissing());
+			} while(g_monsters.hasMissing());
+		}
+	}
+	// Npcs
+	if(g_npcs.hasMissing()) {
+		long ret = g_gui.PopupDialog("Missing npcs", "There are missing npcs in the editor, do you want to load them from an OT npc file?", wxYES | wxNO);
+		if(ret == wxID_YES) {
+			do {
+				wxFileDialog dlg(g_gui.root, "Import npc file", "","","*.xml", wxFD_OPEN | wxFD_MULTIPLE | wxFD_FILE_MUST_EXIST);
+				if(dlg.ShowModal() == wxID_OK) {
+					wxArrayString paths;
+					dlg.GetPaths(paths);
+					for(uint32_t i = 0; i < paths.GetCount(); ++i) {
+						wxString error;
+						wxArrayString warnings;
+						bool ok = g_npcs.importXMLFromOT(FileName(paths[i]), error, warnings);
+						if(ok)
+							g_gui.ListDialog("Npc loader errors", warnings);
+						else
+							wxMessageBox("Error OT data file \"" + paths[i] + "\".\n" + error, "Error", wxOK | wxICON_INFORMATION, g_gui.root);
+					}
+				} else {
+					break;
+				}
+			} while(g_npcs.hasMissing());
 		}
 	}
 	g_gui.RefreshPalettes();

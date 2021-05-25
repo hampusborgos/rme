@@ -29,8 +29,10 @@ class OldPropertiesWindow : public ObjectPropertiesWindowBase
 {
 public:
 	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Item* item, wxPoint = wxDefaultPosition);
-	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Creature* creature, wxPoint = wxDefaultPosition);
-	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Spawn* spawn, wxPoint = wxDefaultPosition);
+	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Monster* monster, wxPoint = wxDefaultPosition);
+	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, SpawnMonster* spawnMonster, wxPoint = wxDefaultPosition);
+	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Npc* npc, wxPoint = wxDefaultPosition);
+	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, SpawnNpc* spawnNpc, wxPoint = wxDefaultPosition);
 	virtual ~OldPropertiesWindow();
 
 	void OnFocusChange(wxFocusEvent&);

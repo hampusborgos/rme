@@ -15,46 +15,32 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_FORWARD_H
-#define RME_FORWARD_H
+#ifndef RME_SPAWN_NPC_BRUSH_H
+#define RME_SPAWN_NPC_BRUSH_H
 
-class Map;
-class Tile;
-class TileLocation;
-class Item;
-class container;
-class SpawnMonster;
-class SpawnNpc;
-struct Outfit;
-class House;
-class Monster;
-class Npc;
-class BaseMap;
-class Waypoint;
-class Waypoints;
-class Tileset;
-class Town;
-class Position;
-class Editor;
-class GUI;
-class Selection;
-class CopyBuffer;
-class ItemType;
-class Monsters;
-class Npcs;
-class ItemDatabase;
-class QTreeNode;
-class Floor;
-class Action;
+#include "brush.h"
 
-class Brush;
+//=============================================================================
+// SpawnNpcBrush, place spawns npc
 
-#include <unordered_set>
+class SpawnNpcBrush : public Brush
+{
+public:
+	SpawnNpcBrush(); // Create a RAWBrush of the specified type
+	virtual ~SpawnNpcBrush();
 
-typedef std::vector<uint32_t> HouseExitList;
-typedef std::vector<Tile*> TileVector;
-typedef std::unordered_set<Tile*> TileSet;
-typedef std::vector<Item*> ItemVector;
-typedef std::vector<Brush*> BrushVector;
+	bool isSpawnNpc() const { return true; }
+	SpawnNpcBrush* asSpawnNpc() { return static_cast<SpawnNpcBrush*>(this); }
+
+	virtual bool canDraw(BaseMap* map, const Position& position) const;
+	virtual void draw(BaseMap* map, Tile* tile, void* parameter); // parameter is brush size
+	virtual void undraw(BaseMap* map, Tile* tile);
+
+	virtual int getLookID() const; // We don't have a look, sorry!
+	virtual std::string getName() const;
+	virtual bool canDrag() const { return true; }
+	virtual bool canSmear() const { return false; }
+	virtual bool oneSizeFitsAll() const { return true; }
+};
 
 #endif

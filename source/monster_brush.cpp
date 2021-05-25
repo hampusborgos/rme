@@ -17,50 +17,48 @@
 
 #include "main.h"
 
-#include "creature_brush.h"
+#include "monster_brush.h"
 #include "settings.h"
 #include "tile.h"
-#include "creature.h"
+#include "monster.h"
 #include "basemap.h"
-#include "spawn.h"
+#include "spawn_monster.h"
 
 //=============================================================================
-// Creature brush
+// Monster brush
 
-CreatureBrush::CreatureBrush(CreatureType* type) :
+MonsterBrush::MonsterBrush(MonsterType* type) :
 	Brush(),
-	creature_type(type)
+	monster_type(type)
 {
 	ASSERT(type->brush == nullptr);
 	type->brush = this;
 }
 
-CreatureBrush::~CreatureBrush()
+MonsterBrush::~MonsterBrush()
 {
 	////
 }
 
-int CreatureBrush::getLookID() const
+int MonsterBrush::getLookID() const
 {
 	return 0;
 }
 
-std::string CreatureBrush::getName() const
+std::string MonsterBrush::getName() const
 {
-	if(creature_type)
-		return creature_type->name;
-	return "Creature Brush";
+	if(monster_type)
+		return monster_type->name;
+	return "Monster Brush";
 }
 
-bool CreatureBrush::canDraw(BaseMap* map, const Position& position) const
+bool MonsterBrush::canDraw(BaseMap* map, const Position& position) const
 {
 	Tile* tile = map->getTile(position);
-	if(creature_type && tile && !tile->isBlocking()) {
-		if(tile->getLocation()->getSpawnCount() != 0 || g_settings.getInteger(Config::AUTO_CREATE_SPAWN)) {
- 		   if(tile->isPZ()) {
-				if(creature_type->isNpc) {
-					return true;
-				}
+	if(monster_type && tile && !tile->isBlocking()) {
+		if(tile->getLocation()->getSpawnMonsterCount() != 0 || g_settings.getInteger(Config::AUTO_CREATE_SPAWN_MONSTER)) {
+ 			if(tile->isPZ()) {
+				return false;
 			} else {
 				return true;
 			}
@@ -69,25 +67,25 @@ bool CreatureBrush::canDraw(BaseMap* map, const Position& position) const
 	return false;
 }
 
-void CreatureBrush::undraw(BaseMap* map, Tile* tile)
+void MonsterBrush::undraw(BaseMap* map, Tile* tile)
 {
-	delete tile->creature;
-	tile->creature = nullptr;
+	delete tile->monster;
+	tile->monster = nullptr;
 }
 
-void CreatureBrush::draw(BaseMap* map, Tile* tile, void* parameter)
+void MonsterBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 {
 	ASSERT(tile);
 	ASSERT(parameter);
 	if(canDraw(map, tile->getPosition())) {
 		undraw(map, tile);
-		if(creature_type) {
-			if(tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
-				// manually place spawn on location
-				tile->spawn = newd Spawn(1);
+		if(monster_type) {
+			if(tile->spawnMonster == nullptr && tile->getLocation()->getSpawnMonsterCount() == 0) {
+				// manually place spawnMonster on location
+				tile->spawnMonster = newd SpawnMonster(1);
 			}
-			tile->creature = newd Creature(creature_type);
-			tile->creature->setSpawnTime(*(int*)parameter);
+			tile->monster = newd Monster(monster_type);
+			tile->monster->setSpawnMonsterTime(*(int*)parameter);
 		}
 	}
 }

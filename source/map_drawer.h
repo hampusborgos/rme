@@ -58,8 +58,10 @@ struct DrawingOptions {
 
 	int show_grid;
 	bool show_all_floors;
-	bool show_creatures;
-	bool show_spawns;
+	bool show_monsters;
+	bool show_spawns_monster;
+	bool show_npcs;
+	bool show_spawns_npc;
 	bool show_houses;
 	bool show_shade;
 	bool show_special_tiles;
@@ -132,7 +134,8 @@ protected:
 	void BlitItem(int& screenx, int& screeny, const Position& pos, const Item* item, bool ephemeral = false, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void BlitSpriteType(int screenx, int screeny, GameSprite* spr, int red = 255, int green = 255, int blue = 255, int alpha = 255);
-	void BlitCreature(int screenx, int screeny, const Creature* c, int red = 255, int green = 255, int blue = 255, int alpha = 255);
+	void BlitCreature(int screenx, int screeny, const Monster* npc, int red = 255, int green = 255, int blue = 255, int alpha = 255);
+	void BlitCreature(int screenx, int screeny, const Npc* c, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red = 255, int green = 255, int blue = 255, int alpha = 255);
 	void DrawTile(TileLocation* tile);
 	void DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b);
@@ -146,6 +149,7 @@ protected:
 		COLOR_HOUSE_BRUSH,
 		COLOR_FLAG_BRUSH,
 		COLOR_SPAWN_BRUSH,
+		COLOR_SPAWN_NPC_BRUSH,
 		COLOR_ERASER,
 		COLOR_VALID,
 		COLOR_INVALID,

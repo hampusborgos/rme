@@ -171,10 +171,15 @@ wxNotebookPage* PreferencesWindow::CreateEditorPage()
 	eraser_leave_unique_chkbox->SetToolTip("The eraser will leave containers with items in them, items with unique or action id and items.");
 	sizer->Add(eraser_leave_unique_chkbox, 0, wxLEFT | wxTOP, 5);
 
-	auto_create_spawn_chkbox = newd wxCheckBox(editor_page, wxID_ANY, "Auto create spawn when placing creature");
-	auto_create_spawn_chkbox->SetValue(g_settings.getBoolean(Config::AUTO_CREATE_SPAWN));
-	auto_create_spawn_chkbox->SetToolTip("When this option is checked, you can place creatures without placing a spawn manually, the spawn will be place automatically.");
+	auto_create_spawn_chkbox = newd wxCheckBox(editor_page, wxID_ANY, "Auto create spawn when placing monster");
+	auto_create_spawn_chkbox->SetValue(g_settings.getBoolean(Config::AUTO_CREATE_SPAWN_MONSTER));
+	auto_create_spawn_chkbox->SetToolTip("When this option is checked, you can place monsters without placing a spawn manually, the spawn will be place automatically.");
 	sizer->Add(auto_create_spawn_chkbox, 0, wxLEFT | wxTOP, 5);
+
+	auto_create_spawn_npc_chkbox = newd wxCheckBox(editor_page, wxID_ANY, "Auto create spawn when placing npc");
+	auto_create_spawn_npc_chkbox->SetValue(g_settings.getBoolean(Config::AUTO_CREATE_SPAWN_NPC));
+	auto_create_spawn_npc_chkbox->SetToolTip("When this option is checked, you can place npcs without placing a spawn manually, the spawn will be place automatically.");
+	sizer->Add(auto_create_spawn_npc_chkbox, 0, wxLEFT | wxTOP, 5);
 
 	allow_multiple_orderitems_chkbox = newd wxCheckBox(editor_page, wxID_ANY, "Prevent toporder conflict");
 	allow_multiple_orderitems_chkbox->SetValue(g_settings.getBoolean(Config::RAW_LIKE_SIMONE));
@@ -601,7 +606,8 @@ void PreferencesWindow::Apply()
 	g_settings.setInteger(Config::AUTO_ASSIGN_DOORID, auto_assign_doors_chkbox->GetValue());
 	g_settings.setInteger(Config::ERASER_LEAVE_UNIQUE, eraser_leave_unique_chkbox->GetValue());
 	g_settings.setInteger(Config::DOODAD_BRUSH_ERASE_LIKE, doodad_erase_same_chkbox->GetValue());
-	g_settings.setInteger(Config::AUTO_CREATE_SPAWN, auto_create_spawn_chkbox->GetValue());
+	g_settings.setInteger(Config::AUTO_CREATE_SPAWN_MONSTER, auto_create_spawn_chkbox->GetValue());
+	g_settings.setInteger(Config::AUTO_CREATE_SPAWN_NPC, auto_create_spawn_npc_chkbox->GetValue());
 	g_settings.setInteger(Config::RAW_LIKE_SIMONE, allow_multiple_orderitems_chkbox->GetValue());
 	g_settings.setInteger(Config::MERGE_MOVE, merge_move_chkbox->GetValue());
 	g_settings.setInteger(Config::MERGE_PASTE, merge_paste_chkbox->GetValue());

@@ -20,7 +20,8 @@
 #include "copybuffer.h"
 #include "editor.h"
 #include "gui.h"
-#include "creature.h"
+#include "monster.h"
+#include "npc.h"
 
 CopyBuffer::CopyBuffer() :
 	tiles(newd BaseMap())
@@ -89,11 +90,19 @@ void CopyBuffer::copy(Editor& editor, int floor)
 			copied_tile->addItem((*iit)->deepCopy());
 		}
 
-		if(tile->creature && tile->creature->isSelected()) {
-			copied_tile->creature = tile->creature->deepCopy();
+		// Monster
+		if(tile->monster && tile->monster->isSelected()) {
+			copied_tile->monster = tile->monster->deepCopy();
 		}
-		if(tile->spawn && tile->spawn->isSelected()) {
-			copied_tile->spawn = tile->spawn->deepCopy();
+		if(tile->spawnMonster && tile->spawnMonster->isSelected()) {
+			copied_tile->spawnMonster = tile->spawnMonster->deepCopy();
+		}
+		// Npc
+		if(tile->npc && tile->npc->isSelected()) {
+			copied_tile->npc = tile->npc->deepCopy();
+		}
+		if(tile->spawnNpc && tile->spawnNpc->isSelected()) {
+			copied_tile->spawnNpc = tile->spawnNpc->deepCopy();
 		}
 
 		tiles->setTile(copied_tile);
@@ -150,14 +159,26 @@ void CopyBuffer::cut(Editor& editor, int floor)
 			copied_tile->addItem(*iit);
 		}
 
-		if(newtile->creature && newtile->creature->isSelected()) {
-			copied_tile->creature = newtile->creature;
-			newtile->creature = nullptr;
+		// Monster
+		if(newtile->monster && newtile->monster->isSelected()) {
+			copied_tile->monster = newtile->monster;
+			newtile->monster = nullptr;
 		}
 
-		if(newtile->spawn && newtile->spawn->isSelected()) {
-			copied_tile->spawn = newtile->spawn;
-			newtile->spawn = nullptr;
+		if(newtile->spawnMonster && newtile->spawnMonster->isSelected()) {
+			copied_tile->spawnMonster = newtile->spawnMonster;
+			newtile->spawnMonster = nullptr;
+		}
+
+		// Npc
+		if(newtile->npc && newtile->npc->isSelected()) {
+			copied_tile->npc = newtile->npc;
+			newtile->npc = nullptr;
+		}
+
+		if(newtile->spawnNpc && newtile->spawnNpc->isSelected()) {
+			copied_tile->spawnNpc = newtile->spawnNpc;
+			newtile->spawnNpc = nullptr;
 		}
 
 		tiles->setTile(copied_tile->getPosition(), copied_tile);

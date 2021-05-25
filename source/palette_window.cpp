@@ -25,7 +25,8 @@
 #include "palette_window.h"
 #include "palette_brushlist.h"
 #include "palette_house.h"
-#include "palette_creature.h"
+#include "palette_monster.h"
+#include "palette_npc.h"
 #include "palette_waypoints.h"
 
 #include "house_brush.h"
@@ -48,7 +49,8 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 	terrain_palette(nullptr),
 	doodad_palette(nullptr),
 	item_palette(nullptr),
-	creature_palette(nullptr),
+	monster_palette(nullptr),
+	npc_palette(nullptr),
 	house_palette(nullptr),
 	waypoint_palette(nullptr),
 	raw_palette(nullptr)
@@ -73,8 +75,11 @@ PaletteWindow::PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets)
 	waypoint_palette = static_cast<WaypointPalettePanel*>(CreateWaypointPalette(choicebook, tilesets));
 	choicebook->AddPage(waypoint_palette, waypoint_palette->GetName());
 
-	creature_palette = static_cast<CreaturePalettePanel*>(CreateCreaturePalette(choicebook, tilesets));
-	choicebook->AddPage(creature_palette, creature_palette->GetName());
+	monster_palette = static_cast<MonsterPalettePanel*>(CreateMonsterPalette(choicebook, tilesets));
+	choicebook->AddPage(monster_palette, monster_palette->GetName());
+
+	npc_palette = static_cast<NpcPalettePanel*>(CreateNpcPalette(choicebook, tilesets));
+	choicebook->AddPage(npc_palette, npc_palette->GetName());
 
 	raw_palette = static_cast<BrushPalettePanel*>(CreateRAWPalette(choicebook, tilesets));
 	choicebook->AddPage(raw_palette, raw_palette->GetName());
@@ -153,9 +158,15 @@ PalettePanel* PaletteWindow::CreateWaypointPalette(wxWindow *parent, const Tiles
 	return panel;
 }
 
-PalettePanel* PaletteWindow::CreateCreaturePalette(wxWindow *parent, const TilesetContainer& tilesets)
+PalettePanel* PaletteWindow::CreateMonsterPalette(wxWindow *parent, const TilesetContainer& tilesets)
 {
-	CreaturePalettePanel* panel = newd CreaturePalettePanel(parent);
+	MonsterPalettePanel* panel = newd MonsterPalettePanel(parent);
+	return panel;
+}
+
+PalettePanel* PaletteWindow::CreateNpcPalette(wxWindow *parent, const TilesetContainer& tilesets)
+{
+	NpcPalettePanel* panel = newd NpcPalettePanel(parent);
 	return panel;
 }
 
@@ -217,8 +228,11 @@ void PaletteWindow::InvalidateContents()
 		panel->InvalidateContents();
 	}
 	LoadCurrentContents();
-	if(creature_palette) {
-		creature_palette->OnUpdate();
+	if(monster_palette) {
+		monster_palette->OnUpdate();
+	}
+	if(npc_palette) {
+		npc_palette->OnUpdate();
 	}
 	if(house_palette) {
 		house_palette->OnUpdate();
@@ -298,9 +312,16 @@ bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary)
 			}
 			break;
 		}
-		case TILESET_CREATURE: {
-			if(creature_palette && creature_palette->SelectBrush(whatbrush)) {
-				SelectPage(TILESET_CREATURE);
+		case TILESET_MONSTER: {
+			if(monster_palette && monster_palette->SelectBrush(whatbrush)) {
+				SelectPage(TILESET_MONSTER);
+				return true;
+			}
+			break;
+		}
+		case TILESET_NPC: {
+			if(npc_palette && npc_palette->SelectBrush(whatbrush)) {
+				SelectPage(TILESET_NPC);
 				return true;
 			}
 			break;
@@ -338,10 +359,18 @@ bool PaletteWindow::OnSelectBrush(const Brush* whatbrush, PaletteType primary)
 		}
 	}
 
-	// Test if it's a creature brush
-	if(primary != TILESET_CREATURE) {
-		if(creature_palette && creature_palette->SelectBrush(whatbrush)) {
-			SelectPage(TILESET_CREATURE);
+	// Test if it's a monster brush
+	if(primary != TILESET_MONSTER) {
+		if(monster_palette && monster_palette->SelectBrush(whatbrush)) {
+			SelectPage(TILESET_MONSTER);
+			return true;
+		}
+	}
+
+	// Test if it's a npc brush
+	if(primary != TILESET_NPC) {
+		if(npc_palette && npc_palette->SelectBrush(whatbrush)) {
+			SelectPage(TILESET_NPC);
 			return true;
 		}
 	}
@@ -391,8 +420,11 @@ void PaletteWindow::OnUpdateBrushSize(BrushShape shape, int size)
 
 void PaletteWindow::OnUpdate(Map* map)
 {
-	if(creature_palette) {
-		creature_palette->OnUpdate();
+	if(monster_palette) {
+		monster_palette->OnUpdate();
+	}
+	if(npc_palette) {
+		npc_palette->OnUpdate();
 	}
 	if(house_palette) {
 		house_palette->SetMap(map);

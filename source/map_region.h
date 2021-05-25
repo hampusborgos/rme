@@ -36,7 +36,8 @@ public:
 protected:
 	Tile* tile;
 	Position position;
-	size_t spawn_count;
+	size_t spawn_monster_count;
+	size_t spawn_npc_count;
 	size_t waypoint_count;
 	HouseExitList* house_exits; // Any house exits pointing here
 
@@ -56,9 +57,14 @@ public:
 	int getY() const {return position.y;}
 	int getZ() const {return position.z;}
 
-	size_t getSpawnCount() const {return spawn_count;}
-	void increaseSpawnCount() {spawn_count++;}
-	void decreaseSpawnCount() {spawn_count--;}
+	size_t getSpawnMonsterCount() const {return spawn_monster_count;}
+	void increaseSpawnCount() {spawn_monster_count++;}
+	void decreaseSpawnMonsterCount() {spawn_monster_count--;}
+
+	size_t getSpawnNpcCount() const {return spawn_npc_count;}
+	void increaseSpawnNpcCount() {spawn_npc_count++;}
+	void decreaseSpawnNpcCount() {spawn_npc_count--;}
+
 	size_t getWaypointCount() const {return waypoint_count;}
 	void increaseWaypointCount() {waypoint_count++;}
 	void decreaseWaypointCount() {waypoint_count--;}

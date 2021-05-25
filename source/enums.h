@@ -15,46 +15,20 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_FORWARD_H
-#define RME_FORWARD_H
+#ifndef RME_ENUMS_H
+#define RME_ENUMS_H
 
-class Map;
-class Tile;
-class TileLocation;
-class Item;
-class container;
-class SpawnMonster;
-class SpawnNpc;
-struct Outfit;
-class House;
-class Monster;
-class Npc;
-class BaseMap;
-class Waypoint;
-class Waypoints;
-class Tileset;
-class Town;
-class Position;
-class Editor;
-class GUI;
-class Selection;
-class CopyBuffer;
-class ItemType;
-class Monsters;
-class Npcs;
-class ItemDatabase;
-class QTreeNode;
-class Floor;
-class Action;
+enum Direction
+{
+	NORTH = 0,
+	EAST = 1,
+	SOUTH = 2,
+	WEST = 3,
 
-class Brush;
+	DIRECTION_FIRST = NORTH,
+	DIRECTION_LAST = WEST
+};
 
-#include <unordered_set>
-
-typedef std::vector<uint32_t> HouseExitList;
-typedef std::vector<Tile*> TileVector;
-typedef std::unordered_set<Tile*> TileSet;
-typedef std::vector<Item*> ItemVector;
-typedef std::vector<Brush*> BrushVector;
+IMPLEMENT_INCREMENT_OP(Direction)
 
 #endif

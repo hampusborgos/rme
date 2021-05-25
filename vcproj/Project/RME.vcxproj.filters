@@ -91,10 +91,10 @@
     <ClInclude Include="..\..\source\copybuffer.h">
       <Filter>editor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\creature.h">
+    <ClInclude Include="..\..\source\monster.h">
       <Filter>objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\creatures.h">
+    <ClInclude Include="..\..\source\monsters.h">
       <Filter>managers</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\dcbutton.h">
@@ -233,7 +233,7 @@
     <ClInclude Include="..\..\source\palette_common.h">
       <Filter>gui\palette</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\palette_creature.h">
+    <ClInclude Include="..\..\source\palette_monster.h">
       <Filter>gui\palette</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\palette_house.h">
@@ -267,7 +267,7 @@
     <ClInclude Include="..\..\source\settings.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\spawn.h">
+    <ClInclude Include="..\..\source\spawn_monster.h">
       <Filter>objects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\sprites.h">
@@ -303,10 +303,10 @@
     <ClInclude Include="..\..\source\raw_brush.h">
       <Filter>editor\brushes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\spawn_brush.h">
+    <ClInclude Include="..\..\source\spawn_monster_brush.h">
       <Filter>editor\brushes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\creature_brush.h">
+    <ClInclude Include="..\..\source\monster_brush.h">
       <Filter>editor\brushes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\source\waypoint_brush.h">
@@ -459,7 +459,7 @@
     <ClCompile Include="..\..\source\complexitem.cpp">
       <Filter>objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\creature.cpp">
+    <ClCompile Include="..\..\source\monster.cpp">
       <Filter>objects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\house.cpp">
@@ -477,7 +477,7 @@
     <ClCompile Include="..\..\source\map_region.cpp">
       <Filter>objects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\spawn.cpp">
+    <ClCompile Include="..\..\source\spawn_monster.cpp">
       <Filter>objects</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\tile.cpp">
@@ -504,7 +504,7 @@
     <ClCompile Include="..\..\source\client_version.cpp">
       <Filter>managers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\creatures.cpp">
+    <ClCompile Include="..\..\source\monsters.cpp">
       <Filter>managers</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\items.cpp">
@@ -546,7 +546,7 @@
     <ClCompile Include="..\..\source\palette_common.cpp">
       <Filter>gui\palette</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\palette_creature.cpp">
+    <ClCompile Include="..\..\source\palette_monster.cpp">
       <Filter>gui\palette</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\palette_house.cpp">
@@ -570,7 +570,7 @@
     <ClCompile Include="..\..\source\wall_brush.cpp">
       <Filter>editor\brushes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\spawn_brush.cpp">
+    <ClCompile Include="..\..\source\spawn_monster_brush.cpp">
       <Filter>editor\brushes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\raw_brush.cpp">
@@ -591,7 +591,7 @@
     <ClCompile Include="..\..\source\doodad_brush.cpp">
       <Filter>editor\brushes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\creature_brush.cpp">
+    <ClCompile Include="..\..\source\monster_brush.cpp">
       <Filter>editor\brushes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\carpet_brush.cpp">

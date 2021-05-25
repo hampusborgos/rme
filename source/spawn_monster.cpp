@@ -15,46 +15,46 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_FORWARD_H
-#define RME_FORWARD_H
+#include "main.h"
 
-class Map;
-class Tile;
-class TileLocation;
-class Item;
-class container;
-class SpawnMonster;
-class SpawnNpc;
-struct Outfit;
-class House;
-class Monster;
-class Npc;
-class BaseMap;
-class Waypoint;
-class Waypoints;
-class Tileset;
-class Town;
-class Position;
-class Editor;
-class GUI;
-class Selection;
-class CopyBuffer;
-class ItemType;
-class Monsters;
-class Npcs;
-class ItemDatabase;
-class QTreeNode;
-class Floor;
-class Action;
+#include "tile.h"
+#include "spawn_monster.h"
 
-class Brush;
+SpawnsMonster::SpawnsMonster()
+{
+	////
+}
 
-#include <unordered_set>
+SpawnsMonster::~SpawnsMonster()
+{
+	////
+}
 
-typedef std::vector<uint32_t> HouseExitList;
-typedef std::vector<Tile*> TileVector;
-typedef std::unordered_set<Tile*> TileSet;
-typedef std::vector<Item*> ItemVector;
-typedef std::vector<Brush*> BrushVector;
+void SpawnsMonster::addSpawnMonster(Tile* tile)
+{
+	ASSERT(tile->spawnMonster);
 
+	auto it = spawnsMonster.insert(tile->getPosition());
+	ASSERT(it.second);
+}
+
+void SpawnsMonster::removeSpawnMonster(Tile* tile) {
+	ASSERT(tile->spawnMonster);
+	spawnsMonster.erase(tile->getPosition());
+#if 0
+	SpawnMonsterPositionList::iterator iter = begin();
+	while(iter != end()) {
+		if(*iter == tile->getPosition()) {
+			spawnsMonster.erase(iter);
+			return;
+		}
+		++iter;
+	}
+	ASSERT(false);
 #endif
+}
+
+std::ostream& operator<<(std::ostream& os, const SpawnMonster& spawnMonster) {
+	os << &spawnMonster << ":: -> " << spawnMonster.getSize() << std::endl;
+	return os;
+}

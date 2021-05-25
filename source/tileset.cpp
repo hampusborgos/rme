@@ -18,8 +18,10 @@
 #include "main.h"
 
 #include "tileset.h"
-#include "creatures.h"
-#include "creature_brush.h"
+#include "monsters.h"
+#include "monster_brush.h"
+#include "npcs.h"
+#include "npc_brush.h"
 #include "items.h"
 #include "raw_brush.h"
 #include "pugicast.h"
@@ -110,34 +112,64 @@ void Tileset::loadCategory(pugi::xml_node node, wxArrayString &warnings)
 	} else if(nodeName == "items_and_raw") {
 		category = getCategory(TILESET_ITEM);
 		subCategory = getCategory(TILESET_RAW);
-	} else if(nodeName == "creatures") {
-		category = getCategory(TILESET_CREATURE);
+	} else if(nodeName == "monsters") {
+		category = getCategory(TILESET_MONSTER);
 		for(pugi::xml_node brushNode = node.first_child(); brushNode; brushNode = brushNode.next_sibling()) {
 			const std::string& brushName = as_lower_str(brushNode.name());
-			if(brushName != "creature") {
+			if(brushName != "monster") {
 				continue;
 			}
 
 			pugi::xml_attribute attribute;
 			if(!(attribute = brushNode.attribute("name"))) {
-				warnings.push_back("Couldn't read creature name tag of creature tileset");
+				warnings.push_back("Couldn't read monster name tag of monster tileset");
 				continue;
 			}
 
-			const std::string& creatureName = attribute.as_string();
-			CreatureType* ctype = g_creatures[creatureName];
+			const std::string& monsterName = attribute.as_string();
+			MonsterType* ctype = g_monsters[monsterName];
 			if(ctype) {
-				CreatureBrush* brush;
+				MonsterBrush* brush;
 				if(ctype->brush) {
 					brush = ctype->brush;
 				} else {
-					brush = ctype->brush = newd CreatureBrush(ctype);
+					brush = ctype->brush = newd MonsterBrush(ctype);
 					brushes.addBrush(brush);
 				}
 				brush->flagAsVisible();
 				category->brushlist.push_back(brush);
 			} else {
-				warnings.push_back(wxString("Unknown creature type \"") << wxstr(creatureName) << "\"");
+				warnings.push_back(wxString("Unknown monster type \"") << wxstr(monsterName) << "\"");
+			}
+		}
+	} else if(nodeName == "npcs") {
+		category = getCategory(TILESET_NPC);
+		for(pugi::xml_node brushNode = node.first_child(); brushNode; brushNode = brushNode.next_sibling()) {
+			const std::string& brushName = as_lower_str(brushNode.name());
+			if(brushName != "npc") {
+				continue;
+			}
+
+			pugi::xml_attribute attribute;
+			if(!(attribute = brushNode.attribute("name"))) {
+				warnings.push_back("Couldn't read npc name tag of npc tileset");
+				continue;
+			}
+
+			const std::string& npcName = attribute.as_string();
+			NpcType* npcType = g_npcs[npcName];
+			if(npcType) {
+				NpcBrush* brush;
+				if(npcType->brush) {
+					brush = npcType->brush;
+				} else {
+					brush = npcType->brush = newd NpcBrush(npcType);
+					brushes.addBrush(brush);
+				}
+				brush->flagAsVisible();
+				category->brushlist.push_back(brush);
+			} else {
+				warnings.push_back(wxString("Unknown npc type \"") << wxstr(npcName) << "\"");
 			}
 		}
 	}

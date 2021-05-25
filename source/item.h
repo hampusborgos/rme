@@ -23,7 +23,8 @@
 //#include "iomap_otmm.h"
 #include "item_attributes.h"
 
-class Creature;
+class Monster;
+class Npc;
 class Border;
 class Tile;
 
@@ -49,6 +50,7 @@ enum SplashType
 	LIQUID_LEMONADE = 5,
 	LIQUID_MILK = 6,
 	LIQUID_MANAFLUID = 7,
+	LIQUID_INK = 8,
 	LIQUID_WATER2 = 9,
 	LIQUID_LIFEFLUID = 10,
 	LIQUID_OIL = 11,
@@ -61,9 +63,11 @@ enum SplashType
 	LIQUID_LAVA = 26,
 	LIQUID_RUM = 27,
 	LIQUID_SWAMP = 28,
+	LIQUID_TEA = 35,
+	LIQUID_MEAD = 43,
 
 	LIQUID_FIRST = LIQUID_WATER,
-	LIQUID_LAST = LIQUID_SWAMP
+	LIQUID_LAST = LIQUID_MEAD
 };
 
 IMPLEMENT_INCREMENT_OP(SplashType)

@@ -32,8 +32,10 @@
 #include "waypoint_brush.h"
 #include "house_exit_brush.h"
 #include "doodad_brush.h"
-#include "creature_brush.h"
-#include "spawn_brush.h"
+#include "monster_brush.h"
+#include "npc_brush.h"
+#include "spawn_monster_brush.h"
+#include "spawn_npc_brush.h"
 
 #include "live_server.h"
 #include "live_client.h"
@@ -80,7 +82,8 @@ Editor::Editor(CopyBuffer& copybuffer) :
 
 	std::string sname = "Untitled-" + i2s(++unnamed_counter);
 	map.name = sname + ".otbm";
-	map.spawnfile = sname + "-spawn.xml";
+	map.spawnmonsterfile = sname + "-monster.xml";
+	map.spawnnpcfile = sname + "-npc.xml";
 	map.housefile = sname + "-house.xml";
 	map.description = "No map description available.";
 	map.unnamed = true;
@@ -195,8 +198,10 @@ void Editor::saveMap(FileName filename, bool showdialog)
 		FileName _name(filename);
 		_name.SetExt("xml");
 
-		_name.SetName(filename.GetName() + "-spawn");
-		map.spawnfile = nstr(_name.GetFullName());
+		_name.SetName(filename.GetName() + "-monster");
+		map.spawnmonsterfile = nstr(_name.GetFullName());
+		_name.SetName(filename.GetName() + "-npc");
+		map.spawnnpcfile = nstr(_name.GetFullName());
 		_name.SetName(filename.GetName() + "-house");
 		map.housefile = nstr(_name.GetFullName());
 
@@ -210,7 +215,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 
 	// Make temporary backups
 	//converter.Assign(wxstr(savefile));
-	std::string backup_otbm, backup_house, backup_spawn;
+	std::string backup_otbm, backup_house, backup_spawn, backup_spawn_npc;
 
 	if(converter.GetExt() == "otgz") {
 		save_otgz = true;
@@ -233,11 +238,18 @@ void Editor::saveMap(FileName filename, bool showdialog)
 			std::rename((map_path + map.housefile).c_str(), backup_house.c_str());
 		}
 
-		converter.SetFullName(wxstr(map.spawnfile));
+		converter.SetFullName(wxstr(map.spawnmonsterfile));
 		if(converter.FileExists()) {
 			backup_spawn = map_path + nstr(converter.GetName()) + ".xml~";
 			std::remove(backup_spawn.c_str());
-			std::rename((map_path + map.spawnfile).c_str(), backup_spawn.c_str());
+			std::rename((map_path + map.spawnmonsterfile).c_str(), backup_spawn.c_str());
+		}
+
+		converter.SetFullName(wxstr(map.spawnnpcfile));
+		if(converter.FileExists()) {
+			backup_spawn_npc = map_path + nstr(converter.GetName()) + ".xml~";
+			std::remove(backup_spawn_npc.c_str());
+			std::rename((map_path + map.spawnnpcfile).c_str(), backup_spawn_npc.c_str());
 		}
 	}
 
@@ -248,7 +260,8 @@ void Editor::saveMap(FileName filename, bool showdialog)
 		f <<
 			backup_otbm << std::endl <<
 			backup_house << std::endl <<
-			backup_spawn << std::endl;
+			backup_spawn << std::endl <<
+			backup_spawn_npc << std::endl;
 	}
 
 	{
@@ -284,9 +297,15 @@ void Editor::saveMap(FileName filename, bool showdialog)
 			}
 
 			if(!backup_spawn.empty()) {
-				converter.SetFullName(wxstr(map.spawnfile));
+				converter.SetFullName(wxstr(map.spawnmonsterfile));
 				std::string spawn_filename = map_path + nstr(converter.GetName());
 				std::rename(backup_spawn.c_str(), std::string(spawn_filename + ".xml").c_str());
+			}
+
+			if(!backup_spawn_npc.empty()) {
+				converter.SetFullName(wxstr(map.spawnnpcfile));
+				std::string spawnnpc_filename = map_path + nstr(converter.GetName());
+				std::rename(backup_spawn_npc.c_str(), std::string(spawnnpc_filename + ".xml").c_str());
 			}
 
 			// Display the error
@@ -336,15 +355,22 @@ void Editor::saveMap(FileName filename, bool showdialog)
 		}
 
 		if(!backup_spawn.empty()) {
-			converter.SetFullName(wxstr(map.spawnfile));
+			converter.SetFullName(wxstr(map.spawnmonsterfile));
 			std::string spawn_filename = map_path + nstr(converter.GetName());
 			std::rename(backup_spawn.c_str(), std::string(spawn_filename + "." + date.str() + ".xml").c_str());
+		}
+		
+		if(!backup_spawn_npc.empty()) {
+			converter.SetFullName(wxstr(map.spawnnpcfile));
+			std::string spawnnpc_filename = map_path + nstr(converter.GetName());
+			std::rename(backup_spawn_npc.c_str(), std::string(spawnnpc_filename + "." + date.str() + ".xml").c_str());
 		}
 	} else {
 		// Delete the temporary files
 		std::remove(backup_otbm.c_str());
 		std::remove(backup_house.c_str());
 		std::remove(backup_spawn.c_str());
+		std::remove(backup_spawn_npc.c_str());
 	}
 
 	map.clearChanges();
@@ -450,7 +476,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 	return true;
 }
 
-bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type)
+bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type, ImportType spawn_npc_import_type)
 {
 	selection.clear();
 	actionQueue->clear();
@@ -628,34 +654,75 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 		}
 	}
 
-	std::map<Position, Spawn*> spawn_map;
+	// Monster spawn import
+	std::map<Position, SpawnMonster*> spawn_monster_map;
 	if(spawn_import_type != IMPORT_DONT) {
-		for(SpawnPositionList::iterator siter = imported_map.spawns.begin(); siter != imported_map.spawns.end();) {
-			Position old_spawn_pos = *siter;
-			Position new_spawn_pos = *siter + offset;
+		for(SpawnNpcPositionList::iterator siter = imported_map.spawnsMonster.begin(); siter != imported_map.spawnsMonster.end();) {
+			Position oldSpawnMonsterPos = *siter;
+			Position newSpawnMonsterPos = *siter + offset;
 			switch(spawn_import_type) {
 				case IMPORT_SMART_MERGE:
 				case IMPORT_INSERT:
 				case IMPORT_MERGE: {
-					Tile* imported_tile = imported_map.getTile(old_spawn_pos);
+					Tile* imported_tile = imported_map.getTile(oldSpawnMonsterPos);
 					if(imported_tile) {
-						ASSERT(imported_tile->spawn);
-						spawn_map[new_spawn_pos] = imported_tile->spawn;
+						ASSERT(imported_tile->spawnMonster);
+						spawn_monster_map[newSpawnMonsterPos] = imported_tile->spawnMonster;
 
-						SpawnPositionList::iterator next = siter;
+						SpawnNpcPositionList::iterator next = siter;
 						bool cont = true;
-						Position next_spawn;
+						Position next_spawn_monster;
 
 						++next;
-						if(next == imported_map.spawns.end())
+						if(next == imported_map.spawnsMonster.end())
 							cont = false;
 						else
-							next_spawn = *next;
-						imported_map.spawns.erase(siter);
+							next_spawn_monster = *next;
+						imported_map.spawnsMonster.erase(siter);
 						if(cont)
-							siter = imported_map.spawns.find(next_spawn);
+							siter = imported_map.spawnsMonster.find(next_spawn_monster);
 						else
-							siter = imported_map.spawns.end();
+							siter = imported_map.spawnsMonster.end();
+					}
+					break;
+				}
+				case IMPORT_DONT: {
+					++siter;
+					break;
+				}
+			}
+		}
+	}
+
+	// Npc spawn import
+	std::map<Position, SpawnNpc*> spawn_npc_map;
+	if(spawn_npc_import_type != IMPORT_DONT) {
+		for(SpawnNpcPositionList::iterator siter = imported_map.spawnsNpc.begin(); siter != imported_map.spawnsNpc.end();) {
+			Position oldSpawnNpcPos = *siter;
+			Position newSpawnNpcPos = *siter + offset;
+			switch(spawn_npc_import_type) {
+				case IMPORT_SMART_MERGE:
+				case IMPORT_INSERT:
+				case IMPORT_MERGE: {
+					Tile* importedTile = imported_map.getTile(oldSpawnNpcPos);
+					if(importedTile) {
+						ASSERT(importedTile->spawnNpc);
+						spawn_npc_map[newSpawnNpcPos] = importedTile->spawnNpc;
+
+						SpawnNpcPositionList::iterator next = siter;
+						bool cont = true;
+						Position next_spawn_npc;
+
+						++next;
+						if(next == imported_map.spawnsNpc.end())
+							cont = false;
+						else
+							next_spawn_npc = *next;
+						imported_map.spawnsNpc.erase(siter);
+						if(cont)
+							siter = imported_map.spawnsNpc.find(next_spawn_npc);
+						else
+							siter = imported_map.spawnsNpc.end();
 					}
 					break;
 				}
@@ -743,27 +810,43 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 
 		Tile* old_tile = map.getTile(new_pos);
 		if(old_tile) {
-			map.removeSpawn(old_tile);
+			map.removeSpawnMonster(old_tile);
 		}
-		import_tile->spawn = nullptr;
+		import_tile->spawnMonster = nullptr;
 
 		map.setTile(new_pos, import_tile, true);
 	}
 
-	for(std::map<Position, Spawn*>::iterator spawn_iter = spawn_map.begin(); spawn_iter != spawn_map.end(); ++spawn_iter) {
-		Position pos = spawn_iter->first;
+	for(std::map<Position, SpawnMonster*>::iterator spawn_monster_iter = spawn_monster_map.begin(); spawn_monster_iter != spawn_monster_map.end(); ++spawn_monster_iter) {
+		Position pos = spawn_monster_iter->first;
 		TileLocation* location = map.createTileL(pos);
 		Tile* tile = location->get();
 		if(!tile) {
 			tile = map.allocator(location);
 			map.setTile(pos, tile);
-		} else if(tile->spawn) {
-			map.removeSpawnInternal(tile);
-			delete tile->spawn;
+		} else if(tile->spawnMonster) {
+			map.removeSpawnMonsterInternal(tile);
+			delete tile->spawnMonster;
 		}
-		tile->spawn = spawn_iter->second;
+		tile->spawnMonster = spawn_monster_iter->second;
 
-		map.addSpawn(tile);
+		map.addSpawnMonster(tile);
+	}
+
+	for(std::map<Position, SpawnNpc*>::iterator spawn_npc_iter = spawn_npc_map.begin(); spawn_npc_iter != spawn_npc_map.end(); ++spawn_npc_iter) {
+		Position pos = spawn_npc_iter->first;
+		TileLocation* location = map.createTileL(pos);
+		Tile* tile = location->get();
+		if(!tile) {
+			tile = map.allocator(location);
+			map.setTile(pos, tile);
+		} else if(tile->spawnNpc) {
+			map.removeSpawnNpcInternal(tile);
+			delete tile->spawnNpc;
+		}
+		tile->spawnNpc = spawn_npc_iter->second;
+
+		map.addSpawnNpc(tile);
 	}
 
 	g_gui.DestroyLoadBar();
@@ -998,15 +1081,25 @@ void Editor::moveSelection(Position offset)
 			Item* item = (*iit);
 			tmp_storage_tile->addItem(item);
 		}
-		// Move spawns
-		if(new_src_tile->spawn && new_src_tile->spawn->isSelected()) {
-			tmp_storage_tile->spawn = new_src_tile->spawn;
-			new_src_tile->spawn = nullptr;
+		// Move monster spawns
+		if(new_src_tile->spawnMonster && new_src_tile->spawnMonster->isSelected()) {
+			tmp_storage_tile->spawnMonster = new_src_tile->spawnMonster;
+			new_src_tile->spawnMonster = nullptr;
 		}
-		// Move creatures
-		if(new_src_tile->creature && new_src_tile->creature->isSelected()) {
-			tmp_storage_tile->creature = new_src_tile->creature;
-			new_src_tile->creature = nullptr;
+		// Move monster
+		if(new_src_tile->monster && new_src_tile->monster->isSelected()) {
+			tmp_storage_tile->monster = new_src_tile->monster;
+			new_src_tile->monster = nullptr;
+		}
+		// Move npc
+		if(new_src_tile->npc && new_src_tile->npc->isSelected()) {
+			tmp_storage_tile->npc = new_src_tile->npc;
+			new_src_tile->npc = nullptr;
+		}
+		// Move npc spawns
+		if(new_src_tile->spawnNpc && new_src_tile->spawnNpc->isSelected()) {
+			tmp_storage_tile->spawnNpc = new_src_tile->spawnNpc;
+			new_src_tile->spawnNpc = nullptr;
 		}
 
 		// Move house data & tile status if ground is transferred
@@ -1182,15 +1275,25 @@ void Editor::destroySelection()
 				// Delete the items from the tile
 				delete *iit;
 			}
-
-			if(newtile->creature && newtile->creature->isSelected()) {
-				delete newtile->creature;
-				newtile->creature = nullptr;
+			// Monster
+			if(newtile->monster && newtile->monster->isSelected()) {
+				delete newtile->monster;
+				newtile->monster = nullptr;
 			}
 
-			if(newtile->spawn && newtile->spawn->isSelected()) {
-				delete newtile->spawn;
-				newtile->spawn = nullptr;
+			if(newtile->spawnMonster && newtile->spawnMonster->isSelected()) {
+				delete newtile->spawnMonster;
+				newtile->spawnMonster = nullptr;
+			}
+			// Npc
+			if(newtile->npc && newtile->npc->isSelected()) {
+				delete newtile->npc;
+				newtile->npc = nullptr;
+			}
+
+			if(newtile->spawnNpc && newtile->spawnNpc->isSelected()) {
+				delete newtile->spawnNpc;
+				newtile->spawnNpc = nullptr;
 			}
 
 			if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
@@ -1416,7 +1519,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 		action->addChange(newd Change(new_tile));
 		batch->addAndCommitAction(action);
 		addBatch(batch, 2);
-	} else if(brush->isSpawn() || brush->isCreature()) {
+	} else if(brush->isSpawnMonster() || brush->isMonster()) {
 		BatchAction* batch = actionQueue->createBatch(ACTION_DRAW);
 		Action* action = actionQueue->createAction(batch);
 
@@ -1428,8 +1531,33 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 			new_tile = map.allocator(map.createTileL(offset));
 		}
 		int param;
-		if(brush->isCreature()) {
-			param = g_gui.GetSpawnTime();
+		if(brush->isMonster()) {
+			param = g_gui.GetSpawnMonsterTime();
+		} else {
+			param = g_gui.GetBrushSize();
+		}
+		if(dodraw) {
+			brush->draw(&map, new_tile, &param);
+		} else {
+			brush->undraw(&map, new_tile);
+		}
+		action->addChange(newd Change(new_tile));
+		batch->addAndCommitAction(action);
+		addBatch(batch, 2);
+	} else if(brush->isSpawnNpc() || brush->isNpc()) {
+		BatchAction* batch = actionQueue->createBatch(ACTION_DRAW);
+		Action* action = actionQueue->createAction(batch);
+
+		Tile* tile = map.getTile(offset);
+		Tile* new_tile = nullptr;
+		if(tile) {
+			new_tile = tile->deepCopy(map);
+		} else {
+			new_tile = map.allocator(map.createTileL(offset));
+		}
+		int param;
+		if(brush->isNpc()) {
+			param = g_gui.GetSpawnNpcTime();
 		} else {
 			param = g_gui.GetBrushSize();
 		}

@@ -46,3 +46,8 @@ xcuserdata
 # CLion
 .idea/
 cmake-build-debug/
+
+# User
+*.dll
+*.exe
+*.pdb

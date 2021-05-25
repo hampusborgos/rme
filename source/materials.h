@@ -35,6 +35,7 @@ public:
 	bool loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings);
 	bool loadExtensions(FileName identifier, wxString& error, wxArrayString& warnings);
 	void createOtherTileset();
+	void createNpcTileset();
 
 	bool isInTileset(Item* item, std::string tileset) const;
 	bool isInTileset(Brush* brush, std::string tileset) const;

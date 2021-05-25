@@ -15,37 +15,32 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_CREATURE_BRUSH_H
-#define RME_CREATURE_BRUSH_H
+#ifndef RME_SPAWN_MONSTER_BRUSH_H
+#define RME_SPAWN_MONSTER_BRUSH_H
 
 #include "brush.h"
 
 //=============================================================================
-// CreatureBrush, place creatures
+// SpawnMonsterBrush, place monster spawn
 
-class CreatureBrush : public Brush
+class SpawnMonsterBrush : public Brush
 {
 public:
-	CreatureBrush(CreatureType* type); // Create a RAWBrush of the specified type
-	virtual ~CreatureBrush();
+	SpawnMonsterBrush(); // Create a RAWBrush of the specified type
+	virtual ~SpawnMonsterBrush();
 
-	bool isCreature() const { return true; }
-	CreatureBrush* asCreature() { return static_cast<CreatureBrush*>(this); }
+	bool isSpawnMonster() const { return true; }
+	SpawnMonsterBrush* asSpawnMonster() { return static_cast<SpawnMonsterBrush*>(this); }
 
 	virtual bool canDraw(BaseMap* map, const Position& position) const;
-	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
+	virtual void draw(BaseMap* map, Tile* tile, void* parameter); // parameter is brush size
 	virtual void undraw(BaseMap* map, Tile* tile);
 
-	CreatureType* getType() const {return creature_type;}
-
-	virtual int getLookID() const; // We don't have a look type, this will always return 0
+	virtual int getLookID() const; // We don't have a look, sorry!
 	virtual std::string getName() const;
-	virtual bool canDrag() const { return false; }
-	virtual bool canSmear() const { return true; }
+	virtual bool canDrag() const { return true; }
+	virtual bool canSmear() const { return false; }
 	virtual bool oneSizeFitsAll() const { return true; }
-
-protected:
-	CreatureType* creature_type;
 };
 
 #endif
