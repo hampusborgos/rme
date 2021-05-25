@@ -1,0 +1,14 @@
+<materials>
+	<tileset name="Crystals">
+		<raw>
+			<item fromid="7696" toid="7703"/>
+			<item fromid="14940" toid="14974"/>
+			<item fromid="15016" toid="15021"/>
+			<item fromid="15273" toid="15274"/>
+			<item id="15319"/>
+			<item id="15467"/>
+			<item id="16168"/>
+			<item fromid="19303" toid="19313"/>
+		</raw>
+	</tileset>
+</materials>

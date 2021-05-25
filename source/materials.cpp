@@ -213,7 +213,7 @@ bool Materials::unserializeMaterials(const FileName& filename, pugi::xml_node no
 
 			FileName includeName;
 			includeName.SetPath(filename.GetPath());
-			includeName.SetFullName(wxString(attribute.as_string(), wxConvUTF8));
+			includeName.SetName(wxString(attribute.as_string(), wxConvUTF8));
 
 			wxString subError;
 			if(!loadMaterials(includeName, subError, warnings)) {

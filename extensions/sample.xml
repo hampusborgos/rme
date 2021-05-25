@@ -6,18 +6,18 @@
 	description="This adds a new doodad brush and modifies an old one."
 	client="8.00;8.20 - 8.31">
 
-	<brush name="rudder of the boat" type="doodad" server_lookid="1281" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate> <item id="1281" chance="30"/> </alternate> <!-- south -->
-		<alternate> <item id="1282" chance="30"/> </alternate> <!-- east -->
-		<alternate> <item id="1283" chance="30"/> </alternate> <!-- north -->
-		<alternate> <item id="1280" chance="30"/> </alternate> <!-- west -->
+	<brush name="rudder of the boat" type="doodad" server_lookid="1752" draggable="true" on_blocking="true" thickness="10/10">
+		<alternate> <item id="1752" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="1753" chance="30"/> </alternate> <!-- east -->
+		<alternate> <item id="1754" chance="30"/> </alternate> <!-- north -->
+		<alternate> <item id="1751" chance="30"/> </alternate> <!-- west -->
 	</brush>
 
 	<brush name="grass tufts" type="doodad">
 		<!-- Double the chance of these items to appear in favor of 6216 -->
+		<item id="21935" chance="10"/>
 		<item id="6217" chance="10"/>
 		<item id="6218" chance="10"/>
-		<item id="6219" chance="10"/>
 	</brush>
 
 	<tileset name="Exterior">

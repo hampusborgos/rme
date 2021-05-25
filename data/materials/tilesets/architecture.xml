@@ -1,0 +1,232 @@
+<materials>
+	<tileset name="Architecture">
+		<doodad>
+			<brush name="steel bars"/>
+			<brush name="steel rebar"/>
+			<brush name="pink rebar"/>
+			<brush name="dark steel rebar"/>
+			<brush name="lattice"/>
+			<brush name="rope wall"/>
+			<brush name="rod cord"/>
+			<brush name="fence"/>
+			<brush name="dark fence"/>
+			<brush name="krailos spikes1"/>
+			<brush name="krailos spikes2"/>
+			<brush name="krailos fence"/>
+			<item fromid="2152" toid="2153"/>
+			<item fromid="2263" toid="2264"/>
+			<item id="477"/>
+			<item id="2115"/>
+			<item fromid="2188" toid="2190"/>
+			<brush name="obelisk"/>
+			<brush name="light desert pillar1"/>
+			<brush name="light desert pillar2"/>
+			<brush name="light desert pillar3"/>
+			<brush name="light desert pillar4"/>
+			<brush name="dark desert pillar1"/>
+			<brush name="dark desert pillar2"/>
+			<brush name="dark desert pillar3"/>
+			<brush name="dark desert pillar4"/>
+			<item id="12476"/>
+			<item fromid="7708" toid="7710"/>
+			<item fromid="2289" toid="2290"/>
+			<item id="6972"/>
+			<item id="6973"/>
+			<item fromid="5025" toid="5032"/>
+			<item fromid="8388" toid="8389"/>
+			<item id="8518"/>
+			<item fromid="8865"/>
+			<item fromid="9428" toid="9429"/>
+			<item id="10954"/>
+			<item fromid="10975" toid="10976"/>
+			<item fromid="11007" toid="11008"/>
+			<item id="11047"/>
+			<item id="11053"/>
+			<item id="11057"/>
+			<item id="13106"/>
+			<item id="13122"/>
+			<item fromid="15484" toid="15487"/>
+			<item fromid="15611"/>
+			<item id="16572"/>
+			<item fromid="17336" toid="17338"/>
+			<item id="17340"/>
+			<item fromid="19974" toid="19981"/>
+			<item fromid="7507" toid="7514"/>
+			<brush name="grey gate"/>
+			<brush name="wooden gate"/>
+			<brush name="stone gate"/>
+			<brush name="zao colored gate"/>
+			<item fromid="9783" toid="9784"/>
+			<brush name="zao decoration"/>
+			<brush name="zao grey gate"/>
+			<brush name="zao claw gate"/>
+			<brush name="white linen entrance"/>
+			<brush name="striped linen entrance"/>
+			<brush name="wooden decoration wall"/>
+			<brush name="krailos structure1"/>
+			<brush name="krailos structure2"/>
+			<brush name="krailos structure3"/>
+			<brush name="krailos structure4"/>
+			<item id="30839"/>
+			<item fromid="31131" toid="31133"/>
+			<item fromid="31474" toid="31477"/>
+			<item id="33182"/>
+			<item id="33211"/>
+			<item id="33240"/>
+			<item id="33264"/>
+			<brush name="pillar skull move"/>
+			<brush name="ruddy obelisk"/>
+			<brush name="ancient sepulchre"/>
+			<brush name="earth elf pillar"/>
+			<brush name="earth elf portal"/>
+			<brush name="snow elf pillar"/>
+			<brush name="snow elf portal"/>
+			<brush name="library pillar 1"/>
+			<brush name="library pillar 2"/>
+			<brush name="library pillar 3"/>
+			<brush name="library column"/>
+			<brush name="new column"/>
+			<brush name="column"/>
+			<brush name="damaged column"/>
+			<brush name="column with grass"/>
+			<brush name="damaged grass column"/>
+			<brush name="grass column"/>
+			<brush name="different column"/>
+			<brush name="short wall"/>
+			<brush name="short wall grass"/>
+			<brush name="stone pillar"/>
+			<brush name="stone pillar (grey)"/>
+		</doodad>
+		<raw>
+			<!-- Railings -->
+			<item fromid="2154" toid="2161"/>
+			<item fromid="2171" toid="2180"/>
+			<item fromid="7095" toid="7101"/>
+			<item id="5520"/>
+			<item fromid="5314" toid="5330"/>
+			<item id="5503"/>
+			<item fromid="9774" toid="9782"/>
+			<item fromid="9911" toid="9912"/>
+			<item fromid="17232" toid="17234"/>
+			<item fromid="17929" toid="17935"/>
+			<item fromid="17652" toid="17657"/>
+			<item fromid="17963" toid="17966"/>
+			<item fromid="22259" toid="22270"/>
+			<!-- Fences -->
+			<item fromid="2181" toid="2185"/>
+			<item fromid="5732" toid="5737"/>
+			<item fromid="8569" toid="8570"/>
+			<item fromid="20239" toid="20244"/>
+			<item fromid="20266" toid="20269"/>
+			<!-- Pillars -->
+			<item id="2152"/>
+			<item id="2153"/>
+			<item id="2263"/>
+			<item id="2264"/>
+			<item fromid="7708" toid="7710"/>
+			<item fromid="2289" toid="2290"/>
+			<item fromid="5025" toid="5032"/>
+			<item fromid="8388" toid="8389"/>
+			<item id="8518"/>
+			<item fromid="8865"/>
+			<item fromid="8870" toid="8877"/>
+			<item fromid="9133" toid="9140"/>
+			<item fromid="9428" toid="9429"/>
+			<item id="10954"/>
+			<item fromid="10975" toid="10976"/>
+			<item fromid="11007" toid="11008"/>
+			<item id="11047"/>
+			<item id="11053"/>
+			<item id="11057"/>
+			<item id="13106"/>
+			<item id="13122"/>
+			<item fromid="15484" toid="15487"/>
+			<item fromid="15611"/>
+			<item id="16572"/>
+			<item fromid="17336" toid="17338"/>
+			<item id="17340"/>
+			<item id="17520"/>
+			<item id="19246"/>
+			<item fromid="19974" toid="19981"/>
+			<item id="21573"/>
+			<item fromid="23993" toid="24016"/>
+			<item fromid="30614" toid="30615"/>
+			<item fromid="30625" toid="30646"/>
+			<item id="32913"/>
+			<item fromid="33325" toid="33329"/>
+			<item fromid="31474" toid="31477"/>
+			<item fromid="31131" toid="31133"/>
+			<!-- Structural -->
+			<item fromid="8555" toid="8568"/>
+			<item fromid="7507" toid="7514"/>
+			<item fromid="9025" toid="9026"/>
+			<item fromid="9029" toid="9033"/>
+			<item fromid="9036" toid="9038"/>
+			<item id="9426"/>
+			<item fromid="9430" toid="9431"/>
+			<item id="9427"/>
+			<item fromid="9516" toid="9517"/>
+			<item fromid="9519" toid="9523"/>
+			<item fromid="9533" toid="9536"/>
+			<item fromid="9783" toid="9791"/>
+			<item id="9804"/>
+			<item fromid="9798" toid="9801"/>
+			<item fromid="9809" toid="9810"/>
+			<item fromid="10001" toid="10008"/>
+			<item id="10010"/>
+			<item fromid="10012" toid="10014"/>
+			<item fromid="10072" toid="10081"/>
+			<item fromid="10141" toid="10144"/>
+			<item fromid="11380" toid="11391"/>
+			<item fromid="11837" toid="11840"/>
+			<item fromid="15601" toid="15604"/>
+			<item fromid="15609" toid="15610"/>
+			<item fromid="33914" toid="33915"/>
+			<!-- Poles and Struts -->
+			<item fromid="6886" toid="6888"/>
+			<item fromid="6981" toid="6983"/>
+			<item fromid="6986"/>
+			<item fromid="240" toid="252"/>
+			<item fromid="265"/>
+			<item fromid="267"/>
+			<item fromid="11825" toid="11828"/>
+			<item id="16583"/>
+			<item id="16601"/>
+			<item fromid="17310" toid="17314"/>
+			<item fromid="25499" toid="25506"/>
+			<item fromid="25635" toid="25642"/>
+			<item fromid="25644" toid="25647"/>
+			<item fromid="25650" toid="25653"/>
+			<item fromid="30977" toid="30982"/>
+			<item fromid="31038" toid="31072"/>
+			<item fromid="32080" toid="32087"/>
+			<!-- Random -->
+			<item fromid="3145" toid="3146"/>
+			<item fromid="33986" toid="33997"/>
+			<item fromid="33736" toid="33739"/>
+			<item fromid="33847" toid="33849"/>
+			<item fromid="6961" toid="6965"/>
+			<item fromid="6993" toid="6998"/>
+			<item fromid="13104" toid="13105"/>
+			<item fromid="22318" toid="22347"/>
+			<item fromid="22498" toid="22501"/>
+			<item fromid="23879" toid="23883"/>
+			<item fromid="25333" toid="25338"/>
+			<item fromid="25350" toid="25355"/>
+			<item fromid="27952" toid="27963"/>
+			<item fromid="28008" toid="28017"/>
+			<item fromid="28137" toid="28144"/>
+			<item fromid="28230" toid="28243"/>
+			<item fromid="28408" toid="28418"/>
+			<item fromid="28425" toid="28428"/>
+			<item id="33240"/>
+			<!-- pilar hands archt -->
+			<item id="33264"/>
+			<!-- pilar plants archt -->
+			<item id="33211"/>
+			<!-- pilar messy archt -->
+			<item id="33182"/>
+			<!-- pilar cracked archt -->
+		</raw>
+	</tileset>
+</materials>

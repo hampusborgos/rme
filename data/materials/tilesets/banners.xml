@@ -1,0 +1,30 @@
+<materials>
+	<tileset name="Banners">
+		<raw>
+			<item fromid="2606" toid="2611"/>
+			<item fromid="8579" toid="8586"/>
+			<item fromid="9461" toid="9480"/>
+			<item fromid="10046" toid="10049"/>
+			<item fromid="10961" toid="10964"/>
+			<item fromid="11259" toid="11264"/>
+			<item fromid="11815" toid="11818"/>
+			<item fromid="12435" toid="12438"/>
+			<item fromid="5616" toid="5617"/>
+			<item fromid="6793" toid="6794"/>
+			<item fromid="7789" toid="7796"/>
+			<item id="8526"/>
+			<item id="9292"/>
+			<item id="4989"/>
+			<item id="4990"/>
+			<item id="2018"/>
+			<item id="2019"/>
+			<item id="2020"/>
+			<item id="27840"/>
+			<item fromid="10035" toid="10042"/>
+			<item fromid="10090" toid="10096"/>
+			<item fromid="10372" toid="10381"/>
+			<item fromid="11214" toid="11219"/>
+			<item fromid="29342" toid="29343"/>
+		</raw>
+	</tileset>
+</materials>

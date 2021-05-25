@@ -1,0 +1,123 @@
+<materials>
+	<tileset name="Statues">
+		<doodad>
+			<item fromid="2027" toid="2028"/>
+			<item fromid="2031" toid="2032"/>
+			<brush name="knight statue"/>
+			<brush name="mage statue"/>
+			<brush name="king statue"/>
+			<brush name="dwarven king statue"/>
+			<brush name="amazon statue"/>
+			<brush name="bitter dwarf statue"/>
+			<brush name="angry dwarf statue"/>
+			<brush name="minotaur statue"/>
+			<brush name="goblin statue"/>
+			<brush name="gargoyle statue"/>
+			<brush name="gargoyle statue pedestal"/>
+			<brush name="cobra statue"/>
+			<brush name="cobra statue pedestal"/>
+			<brush name="giant cyclops statue"/>
+			<brush name="bonelord statue"/>
+			<brush name="bat statue"/>
+			<brush name="mino head statue"/>
+			<brush name="men head statue"/>
+			<brush name="men entire statue"/>
+			<brush name="female statue"/>
+			<brush name="female statue with flame"/>
+			<brush name="hunter statue"/>
+			<brush name="hydra fight statue"/>
+			<brush name="snake charmer statue"/>
+			<brush name="lizard statue"/>
+			<brush name="broken lizard statue"/>
+			<brush name="giant snake head statue"/>
+			<brush name="giant snake head statue (open)"/>
+			<brush name="giant hand statue"/>
+			<item fromid="2033" toid="2034"/>
+			<item fromid="746" toid="751"/>
+			<item id="19131"/>
+			<brush name="strange statue"/>
+			<brush name="earth element statue"/>
+			<brush name="ice element statue"/>
+			<brush name="totem poles"/>
+			<brush name="stone monkey"/>
+			<brush name="pirate statue"/>
+			<brush name="vampire bride statue"/>
+			<brush name="vampire lord statue"/>
+			<brush name="dracoyl statue"/>
+			<brush name="metal hand"/>
+			<brush name="yalaharian statue"/>
+			<item id="8390"/>
+			<brush name="carlin axeman"/>
+			<brush name="carlin swordsman"/>
+			<brush name="carlin bowman"/>
+			<brush name="serpent's statue"/>
+			<brush name="zao dragon statue1"/>
+			<brush name="serpent decoration"/>
+			<brush name="zao lizard statue"/>
+			<brush name="zao dragon statue2"/>
+			<brush name="zao dragon statue3"/>
+			<brush name="zao dragon statue4"/>
+			<brush name="zao dragon statue5"/>
+			<brush name="zao dragon statue6"/>
+			<item id="10322"/>
+			<brush name="zao dragon statue7"/>
+			<brush name="zao dragon statue8"/>
+			<brush name="skull pillar"/>
+			<brush name="zao dragon statue9"/>
+			<brush name="zao statue"/>
+			<brush name="giant stone dragon"/>
+			<brush name="face of colossus"/>
+			<brush name="fists of colossus"/>
+			<brush name="feet of colossus"/>
+			<brush name="hyaena statue"/>
+			<brush name="golden scorpion"/>
+			<brush name="small golden scorpion"/>
+			<brush name="toad pedestal"/>
+			<brush name="target dummy"/>
+			<brush name="skill trainer"/>
+			<brush name="venore beam statue"/>
+			<brush name="rafzan statue"/>
+			<brush name="golden statue"/>
+			<brush name="dragon oramond statue1"/>
+			<brush name="dragon oramond statue2"/>
+			<brush name="dragon oramond statue3"/>
+			<brush name="dragon oramond statue4"/>
+			<brush name="dragon oramond statue5"/>
+			<brush name="oramond statue1"/>
+			<brush name="oramond statue1"/>
+			<brush name="dracoyl oramond statue1"/>
+			<brush name="dracoyl oramond statue2"/>
+			<brush name="knight oramond statue1"/>
+			<brush name="knight oramond statue2"/>
+			<brush name="knight oramond statue3"/>
+			<brush name="knight oramond statue4"/>
+			<brush name="dark stone totem"/>
+			<brush name="small strange creature statue"/>
+			<brush name="regular strange creature statue"/>
+			<brush name="large strange creature statue"/>
+			<brush name="small blue creature statue"/>
+			<brush name="regular blue creature statue"/>
+			<brush name="large blue creature statue"/>
+			<brush name="decoration statue1 - on"/>
+			<brush name="decoration statue1 - off"/>
+			<brush name="decoration statue2 - on"/>
+			<brush name="decoration statue2 - off"/>
+			<brush name="lion statue 1"/>
+			<brush name="lion statue 2"/>
+			<brush name="lion statue 3"/>
+			<brush name="statue of suon"/>
+			<brush name="sphinx statue"/>
+			<brush name="sphinx statue 2"/>
+			<brush name="statue of bastesh"/>
+			<brush name="statue of fafnar"/>
+			<brush name="small sphinx statue"/>
+			<brush name="medium sphinx statue"/>
+			<brush name="big sphinx statue"/>
+			<brush name="blue rest lion"/>
+			<brush name="blue stand lion"/>
+			<item fromid="28187" toid="28188"/>
+			<item fromid="25648" toid="25649"/>
+			<item id="25684"/>
+		</doodad>
+	</tileset>
+</materials>

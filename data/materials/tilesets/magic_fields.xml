@@ -1,0 +1,82 @@
+<materials>
+	<tileset name="Magic Fields">
+		<doodad>
+			<item id="1949"/>
+			<!-- Magic Forcefield -->
+			<item id="22761"/>
+			<item id="8193"/>
+			<brush name="something sparkling"/>
+			<brush name="fire field (not decaying)"/>
+			<brush name="poison field (not decaying)"/>
+			<brush name="energy field (not decaying)"/>
+			<brush name="fire field (decaying)"/>
+			<brush name="burning ground fire"/>
+			<brush name="poison field (decaying)"/>
+			<brush name="energy field (decaying)"/>
+			<brush name="magic wall (not decaying)"/>
+			<brush name="magic wall (decaying)"/>
+			<item fromid="12370" toid="12371"/>
+			<brush name="wild growth (decaying)"/>
+			<item id="10182"/>
+			<item id="10181"/>
+			<brush name="yellow fire field (decaying)"/>
+			<brush name="poison gas (decaying)"/>
+			<brush name="yellow energy field (decaying)"/>
+			<brush name="smoke field (not decaying)"/>
+			<item fromid="19125" toid="19127"/>
+			<item fromid="9371"/>
+			<item id="19135"/>
+			<item fromid="10069" toid="10071"/>
+			<item fromid="2118" toid="2138"/>
+			<item fromid="25047" toid="25058"/>
+			<item fromid="23467" toid="23468"/>
+			<item fromid="23482" toid="23484"/>
+			<item fromid="24225" toid="24229"/>
+			<item id="25748"/>
+			<item id="25750"/>
+			<item id="25774"/>
+			<item fromid="25796" toid="25800"/>
+			<item fromid="28202" toid="28203"/>
+			<item fromid="27527" toid="27529"/>
+			<item fromid="27589" toid="27658"/>
+			<item fromid="29979" toid="29980"/>
+			<brush name="ornamented golden portal"/>
+			<item id="14753"/>
+			<item id="28207"/>
+			<item id="28168"/>
+			<item id="28177"/>
+			<item fromid="33004" toid="33007"/>
+			<item id="32979"/>
+			<item fromid="34009" toid="34013"/>
+			<brush name="searing fire field (decaying)"/>
+			<item id="28204"/>
+			<item id="33790"/>
+			<item id="34169"/>
+			<item id="27528"/>
+			<item id="775"/>
+			<item id="21739"/>
+			<item id="21741"/>
+			<item fromid="1756" toid="1758"/>
+			<brush name="hovering shelf levitating"/>
+		</doodad>
+		<raw>
+			<item id="775"/>
+			<item id="1959"/>
+			<item id="2140"/>
+			<item fromid="7465" toid="7473"/>
+			<item fromid="7925" toid="7931"/>
+			<item fromid="1722" toid="1723"/>
+			<item id="10840"/>
+			<item id="10842"/>
+			<item fromid="25047" toid="25058"/>
+			<item fromid="27527" toid="27529"/>
+			<item fromid="27589" toid="27589"/>
+			<item id="28207"/>
+			<item fromid="33004" toid="33007"/>
+			<item id="32979"/>
+			<item fromid="34009" toid="34013"/>
+			<item id="33790"/>
+			<item id="34169"/>
+		</raw>
+	</tileset>
+</materials>

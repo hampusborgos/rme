@@ -1,0 +1,8 @@
+<materials>
+	<tileset name="Archway">
+		<raw>
+			<item fromid="19405" toid="19408"/>
+			<item fromid="19411" toid="19412"/>
+		</raw>
+	</tileset>
+</materials>

@@ -1,0 +1,150 @@
+<materials>
+	<tileset name="Roofs">
+		<terrain>
+			<brush name="flat roof"/>
+			<brush name="brown bamboo roof"/>
+			<brush name="green bamboo roof"/>
+			<brush name="stiff bamboo roof, horizontal"/>
+			<brush name="stiff bamboo roof, vertical"/>
+			<brush name="brick roof, left"/>
+			<brush name="brick roof, vertical"/>
+			<brush name="brick roof, right"/>
+			<brush name="brick roof, up"/>
+			<brush name="brick roof, horizontal"/>
+			<brush name="brick roof, down"/>
+			<brush name="wooden roof, up"/>
+			<brush name="wooden roof, horizontal"/>
+			<brush name="wooden roof, down"/>
+			<brush name="wooden roof, left"/>
+			<brush name="wooden roof, vertical"/>
+			<brush name="wooden roof, right"/>
+			<brush name="fur roof"/>
+			<brush name="striped marquee red white (vertical)"/>
+			<brush name="striped marquee red white (horizontal)"/>
+			<brush name="striped marquee blue yellow (vertical)"/>
+			<brush name="striped marquee blue yellow (horizontal)"/>
+			<brush name="marquee green (vertical)"/>
+			<brush name="marquee green (horizontal)"/>
+			<brush name="marquee blue (vertical)"/>
+			<brush name="marquee blue (horizontal)"/>
+			<brush name="scale roof"/>
+			<brush name="red slanted roof"/>
+			<brush name="red slanted center roof"/>
+			<brush name="red slanted center top roof"/>
+			<brush name="red slanted roof - end"/>
+			<brush name="red slanted center roof - end"/>
+			<brush name="red slanted center top roof - end"/>
+			<brush name="red slanted roof - windows"/>
+			<brush name="small roof"/>
+			<brush name="roof funnel"/>
+			<brush name="roof chimney"/>
+			<brush name="roof chimney steam"/>
+			<brush name="small tower"/>
+			<brush name="small golden tower"/>
+			<brush name="golden tower"/>
+			<brush name="golden tower - rim"/>
+			<brush name="venorean roof"/>
+			<brush name="venorean center roof"/>
+			<brush name="venorean center top roof"/>
+			<brush name="venorean roof - end"/>
+			<brush name="venorean center roof - end"/>
+			<brush name="venorean center top roof - end"/>
+			<brush name="venorean roof - windows"/>
+			<brush name="venorean framework roof"/>
+			<brush name="venorean framework roof - end"/>
+			<brush name="roshamuul roof"/>
+			<brush name="roshamuul center roof"/>
+			<brush name="roshamuul center top roof"/>
+			<brush name="roshamuul roof - end"/>
+			<brush name="roshamuul center roof - end"/>
+			<brush name="roshamuul center top roof - end"/>
+			<brush name="roshamuul roof chimney - short"/>
+			<brush name="roshamuul roof chimney - long"/>
+			<brush name="oramond roof"/>
+			<brush name="oramond center roof"/>
+			<brush name="oramond center top roof"/>
+			<brush name="oramond roof - front"/>
+			<brush name="oramond center roof - front"/>
+			<brush name="oramond center top roof - front"/>
+			<brush name="oramond roof - end"/>
+			<brush name="oramond center roof - end"/>
+			<brush name="oramond center top roof - end"/>
+			<brush name="krailos roof"/>
+			<brush name="krailos center roof"/>
+			<brush name="krailos center top roof"/>
+			<brush name="krailos roof - end"/>
+			<brush name="krailos center roof - end"/>
+			<brush name="krailos center top roof - end"/>
+			<brush name="green elf roof 1"/>
+			<brush name="green elf roof 2"/>
+			<brush name="green elf roof 3"/>
+			<brush name="green elf roof 4"/>
+			<item fromid="6562" toid="6563"/>
+
+			<item fromid="19628" toid="19670"/>
+			<item fromid="19672" toid="19674"/>
+			<item fromid="19678" toid="19688"/>
+			<item id="19691"/>
+			<item fromid="19693" toid="19715"/>
+			<item fromid="19717" toid="19728"/>
+			<item fromid="19730" toid="19736"/>
+			<item fromid="19742" toid="19756"/>
+
+			<item id="29213"/>
+			<item id="29194"/>
+			<item id="29212"/>
+			<item id="29195"/>
+			<item fromid="29182" toid="29184"/>
+			<item fromid="29189" toid="29191"/>
+			<item fromid="29200" toid="29202"/>
+			<item fromid="29207" toid="29208"/>
+			<brush name="blue elf roof 1"/>
+			<brush name="blue elf roof 2"/>
+			<brush name="blue elf roof 3"/>
+			<brush name="blue elf roof 4"/>
+			<item id="29249"/>
+			<item id="29230"/>
+			<item id="29248"/>
+			<item id="29231"/>
+			<item fromid="29218" toid="29220"/>
+			<item fromid="29225" toid="29227"/>
+			<item fromid="29236" toid="29238"/>
+			<item fromid="29243" toid="29245"/>
+		</terrain>
+		<raw>
+			<item fromid="33654" toid="33685"/>
+			<item fromid="33692" toid="33706"/>
+			<item fromid="5157" toid="5252"/>
+			<item fromid="5033" toid="5040"/>
+			<item fromid="5043" toid="5045"/>
+			<item fromid="5047" toid="5054"/>
+			<item id="5403"/>
+
+			<item fromid="9408" toid="9425"/>
+			<item id="8218"/>
+			<item fromid="8415" toid="8416"/>
+			<item fromid="8425" toid="8426"/>
+			<item fromid="8484" toid="8488"/>
+			<item fromid="8501" toid="8502"/>
+			<item fromid="8621" toid="8644"/>
+			<item fromid="8844" toid="8851"/>
+			<item fromid="16573" toid="16575"/>
+			<item fromid="17235" toid="17237"/>
+			<item fromid="16581" toid="16582"/>
+			<item fromid="16602" toid="16615"/>
+			<item id="17339"/>
+			<item id="17345"/>
+			<item fromid="17578" toid="17597"/>
+			<item fromid="17630" toid="17651"/>
+			<item fromid="17658" toid="17665"/>
+			<item fromid="17801" toid="17806"/>
+			<item fromid="19806" toid="19807"/>
+			<item id="19738"/>
+			<item id="19741"/>
+			<item fromid="20794" toid="20887"/>
+			<item fromid="22458" toid="22493"/>
+			<item fromid="29178" toid="29208"/>
+			<item fromid="29210" toid="29249"/>
+		</raw>
+	</tileset>
+</materials>

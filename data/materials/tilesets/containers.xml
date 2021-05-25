@@ -1,0 +1,95 @@
+<materials>
+	<tileset name="Containers">
+		<items>
+			<item fromid="2855" toid="2856"/>
+			<item fromid="2853"/>
+			<item fromid="11698"/>
+			<item fromid="12413"/>
+			<item fromid="11698"/>
+			<item fromid="21333" toid="21334"/>
+			<item fromid="2857" toid="2861"/>
+			<item fromid="9191"/>
+			<item fromid="2862"/>
+			<item fromid="9151"/>
+			<item fromid="2863"/>
+			<item fromid="2864"/>
+			<item fromid="13429"/>
+			<item fromid="5927"/>
+			<item fromid="235"/>
+			<item fromid="8853"/>
+			<item fromid="14751"/>
+			<item fromid="5950"/>
+			<item fromid="6496"/>
+			<item fromid="653"/>
+			<item fromid="653"/>
+			<item fromid="655"/>
+			<item fromid="655"/>
+			<item fromid="654"/>
+			<item fromid="7343"/>
+			<item fromid="8861"/>
+			<item fromid="9603"/>
+			<item fromid="10325"/>
+			<item fromid="2854"/>
+			<item fromid="2865" toid="2871"/>
+			<item fromid="5949"/>
+			<item fromid="2872"/>
+			<item fromid="5926"/>
+			<item fromid="7342"/>
+			<item fromid="3253"/>
+			<item fromid="5801"/>
+			<item fromid="8860"/>
+			<item fromid="9601" toid="9602"/>
+			<item fromid="9604" toid="9605"/>
+			<item fromid="10202"/>
+			<item fromid="10324"/>
+			<item fromid="10326" toid="10327"/>
+			<item fromid="10346"/>
+			<item fromid="14248" toid="14249"/>
+			<item fromid="14674"/>
+			<item fromid="16099" toid="16100"/>
+			<item fromid="20347"/>
+			<item fromid="21445"/>
+			<item id="24393"/>
+			<item id="24395"/>
+			<item fromid="3217" toid="3218"/>
+			<item fromid="3503" toid="3504"/>
+			<item fromid="6085"/>
+			<item fromid="6104"/>
+			<item fromid="6109" toid="6112"/>
+			<item fromid="6505" toid="6510"/>
+			<item fromid="2775" toid="2812"/>
+			<item fromid="5086" toid="5088"/>
+			<item fromid="6114" toid="6115"/>
+			<item fromid="831" toid="834"/>
+			<item fromid="140"/>
+			<item fromid="897" toid="899"/>
+			<item fromid="6371" toid="6372"/>
+			<item fromid="397"/>
+			<item fromid="7864" toid="7865"/>
+			<item fromid="9061"/>
+			<item fromid="10207"/>
+			<item fromid="10209"/>
+			<item fromid="10216"/>
+			<item fromid="10288"/>
+			<item fromid="2783" toid="2784"/>
+			<item fromid="14741"/>
+			<item fromid="14756"/>
+			<item fromid="17972"/>
+			<item fromid="17974" toid="17975"/>
+			<item fromid="17977"/>
+			<item fromid="19159"/>
+			<item fromid="21292"/>
+			<item fromid="21295"/>
+			<item fromid="21411"/>
+			<item fromid="22084"/>
+			<item fromid="23525"/>
+			<item fromid="25780"/>
+			<item id="28571"/>
+			<item id="30197"/>
+			<item id="31625"/>
+			<item id="32620"/>
+			<item fromid="33939" toid="33942"/>
+			<item id="33948"/>
+		</items>
+	</tileset>
+</materials>

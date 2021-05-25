@@ -1,0 +1,79 @@
+<materials>
+	<tileset name="Jewelry">
+		<items>
+			<item fromid="3017"/>
+			<item fromid="3026" toid="3030"/>
+			<item fromid="3032" toid="3033"/>
+			<item fromid="9057"/>
+			<item fromid="3034"/>
+			<item fromid="3031"/>
+			<item fromid="3035"/>
+			<item fromid="3043"/>
+			<item fromid="3036" toid="3039"/>
+			<item fromid="3041"/>
+			<item fromid="3040"/>
+			<item fromid="3042"/>
+			<item fromid="3060" toid="3062"/>
+			<item id="3077"/>
+			<item fromid="3205"/>
+			<item fromid="3206"/>
+			<item fromid="3241"/>
+			<item fromid="3243"/>
+			<item fromid="3247"/>
+			<item fromid="4834"/>
+			<item fromid="4871"/>
+			<item fromid="3022" toid="3024"/>
+			<item fromid="5021"/>
+			<item fromid="6526"/>
+			<item fromid="6561"/>
+			<item fromid="281" toid="282"/>
+			<item fromid="675" toid="678"/>
+			<item id="7527"/>
+			<item fromid="940" toid="948"/>
+			<item fromid="954"/>
+			<item fromid="8737"/>
+			<item fromid="8828" toid="8829"/>
+			<item fromid="9058"/>
+			<item fromid="9697"/>
+			<item fromid="10187"/>
+			<item fromid="16262" toid="16263"/>
+			<item id="21746"/>
+			<item fromid="22118"/>
+			<item fromid="22170"/>
+			<item fromid="22174" toid="22180"/>
+			<item fromid="22182"/>
+			<item fromid="22516"/>
+			<item fromid="22720" toid="22724"/>
+			<item fromid="24390" toid="24392"/>
+			<item fromid="24929" toid="24930"/>
+			<item fromid="24967" toid="24968"/>
+			<item id="25737"/>
+			<item fromid="27444" toid="27447"/>
+			<item id="27509"/>
+			<item id="28522"/>
+			<item fromid="28915" toid="28918"/>
+			<item id="23682"/>
+			<item fromid="29287" toid="29289"/>
+			<item fromid="29299" toid="29300"/>
+			<item fromid="29345" toid="29347"/>
+			<item id="29351"/>
+			<item id="30004"/>
+			<item fromid="30059" toid="30061"/>
+			<item id="30131"/>
+			<item fromid="30180" toid="30184"/>
+			<item fromid="31164"/>
+			<item id="31265"/>
+			<item id="31268"/>
+			<item fromid="31354" toid="31356"/>
+			<item id="31676"/>
+			<item fromid="32622" toid="32626"/>
+			<item fromid="32724" toid="32725"/>
+			<item fromid="32757"/>
+			<item fromid="32919" toid="32921"/>
+			<item fromid="32769" toid="32771"/>
+			<item id="32567"/>
+			<item id="34332"/>
+			<item id="34331"/>
+		</items>
+	</tileset>
+</materials>

@@ -1,0 +1,23 @@
+<materials>
+	<tileset name="Trash">
+		<doodad>
+			<item id="34249"/>
+			<brush name="broken bottles"/>
+			<brush name="rotten food"/>
+			<brush name="rubbish"/>
+			<brush name="bones"/>
+			<brush name="skeletons"/>
+			<item id="8275"/>
+			<item id="19148"/>
+			<item id="3123"/>
+			<brush name="leaves"/>
+			<item id="3131"/>
+			<brush name="bamboo garbage"/>
+			<brush name="wooden trash"/>
+			<brush name="metal trash"/>
+			<brush name="all trash"/>
+			<brush name="bottles"/>
+			<item fromid="27309" toid="27318"/>
+		</doodad>
+	</tileset>
+</materials>

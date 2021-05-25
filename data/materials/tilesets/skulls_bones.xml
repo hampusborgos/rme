@@ -1,0 +1,60 @@
+<materials>
+	<tileset name="Skulls / Bones">
+		<raw>
+			<item id="3111"/>
+			<item fromid="3114" toid="3116"/>
+			<item fromid="3132" toid="3133"/>
+			<item id="5024"/>
+			<item fromid="5812" toid="5813"/>
+			<item fromid="5015" toid="5020"/>
+			<item fromid="6523" toid="6524"/>
+			<item fromid="6972" toid="6973"/>
+			<item fromid="8605" toid="8606"/>
+			<item fromid="6889" toid="6890"/>
+			<item fromid="6970" toid="6977"/>
+			<item fromid="7058" toid="7059"/>
+			<item fromid="1047" toid="1048"/>
+			<item fromid="7556" toid="7557"/>
+			<item fromid="7758" toid="7759"/>
+			<item fromid="7799" toid="7802"/>
+			<item id="8532"/>
+			<item id="9175"/>
+			<item id="10205"/>
+			<item id="10336"/>
+			<item fromid="10434" toid="10437"/>
+			<item id="10876"/>
+			<item fromid="20179" toid="20180"/>
+			<item id="10134"/>
+			<item id="10159"/>
+			<item fromid="11188" toid="11192"/>
+			<item id="11196"/>
+			<item fromid="10135" toid="10139"/>
+			<item fromid="12144" toid="12146"/>
+			<item fromid="12247" toid="12248"/>
+			<item id="12144"/>
+			<item id="12145"/>
+			<item fromid="12282" toid="12284"/>
+			<item fromid="12294" toid="12300"/>
+			<item id="12146"/>
+			<item fromid="15752" toid="15757"/>
+			<item fromid="15759" toid="15770"/>
+			<item fromid="15774" toid="15784"/>
+			<item fromid="15786" toid="15791"/>
+			<item fromid="18903" toid="18905"/>
+			<item id="19081"/>
+			<item fromid="19088" toid="19091"/>
+			<item fromid="19097" toid="19098"/>
+			<item id="19160"/>
+			<item id="20265"/>
+			<item id="21770"/>
+			<item id="12194"/>
+			<item id="12198"/>
+			<item id="12200"/>
+			<item id="12201"/>
+			<item id="23680"/>
+			<item fromid="29988" toid="29990"/>
+			<item fromid="31209" toid="31216"/>
+			<item fromid="31223" toid="31226"/>
+		</raw>
+	</tileset>
+</materials>

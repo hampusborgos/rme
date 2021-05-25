@@ -1,0 +1,59 @@
+<materials>
+	<tileset name="Snow">
+		<terrain>
+			<brush name="sea"/>
+			<brush name="walkable sea"/>
+			<brush name="mountain"/>
+			<brush name="snowy mountain"/>
+			<brush name="icy mountain"/>
+			<brush name="icy earth"/>
+			<brush name="snowy ramp"/>
+			<brush name="ramp"/>
+			<brush name="snow"/>
+			<brush name="ice"/>
+			<brush name="ice floe"/>
+			<brush name="white gravel"/>
+			<brush name="ice stone floor"/>
+			<brush name="mountain ground"/>
+			<brush name="rock soil"/>
+			<brush name="rocky ground"/>
+			<brush name="frozen mud"/>
+			<brush name="frozen mud (thick border)"/>
+		</terrain>
+		<doodad>
+			<brush name="snowy dead trees"/>
+			<brush name="snowy alive trees"/>
+			<brush name="dead trees"/>
+			<brush name="snowy rocks"/>
+			<brush name="small snowy rocks"/>
+			<brush name="ice floe"/>
+			<brush name="snow drift"/>
+			<brush name="iceberg"/>
+			<brush name="floating ice"/>
+			<brush name="frozen human (warrior)"/>
+			<brush name="frozen human (wizard female)"/>
+			<brush name="frozen human (wizard male)"/>
+			<brush name="frozen human (druid)"/>
+			<brush name="frozen human (mage)"/>
+			<brush name="snowman"/>
+			<brush name="ice hut"/>
+			<brush name="hanging ice"/>
+			<brush name="frozen railing1"/>
+			<brush name="frozen railing2"/>
+			<item id="6966"/>
+			<brush name="husky sled"/>
+			<item fromid="6750" toid="6755"/>
+			<item fromid="6757" toid="6760"/>
+			<item fromid="6953" toid="6965"/>
+			<item id="7741"/>
+			<item id="7744"/>
+			<item fromid="15752" toid="15784"/>
+			<item fromid="15790" toid="15791"/>
+			<item fromid="18903" toid="18905"/>
+			<item id="24357"/>
+			<item fromid="29971" toid="29974"/>
+			<item id="30336"/>
+			<item fromid="32775" toid="32785"/>
+		</doodad>
+	</tileset>
+</materials>

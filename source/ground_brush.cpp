@@ -215,7 +215,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
 					continue;
 				} else if(!it.isGroundTile()) {
-					warnings.push_back("Ground dependency equivalent is not a ground item.\n");
+					warnings.push_back("Ground id " + std::to_string(ground_equivalent) + " dependency equivalent is not a ground item.\n");
 					continue;
 				} else if(it.brush && it.brush != this) {
 					warnings.push_back("Ground dependency equivalent does not use the same brush as ground border.\n");
@@ -255,7 +255,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				if(!it.isGroundTile()) {
-					warnings.push_back("Ground dependency equivalent is not a ground item.\n");
+					warnings.push_back("Ground id " + std::to_string(ground_equivalent) + " dependency equivalent is not a ground item.\n");	
 				}
 
 				if(it.brush && it.brush != this) {

@@ -1,0 +1,39 @@
+<materials>
+	<tileset name="Festive Items">
+		<items>
+			<item id="2986"/>
+			<item id="6279"/>
+			<item id="14750"/>
+			<item fromid="6488" toid="6489"/>
+			<item fromid="6501" toid="6510"/>
+			<item fromid="6512" toid="6514"/>
+			<item fromid="6516" toid="6518"/>
+			<item fromid="6570" toid="6571"/>
+			<item fromid="6572" toid="6572"/>
+			<item id="6575"/>
+			<item id="6578"/>
+			<item id="649"/>
+			<item id="13902"/>
+			<item id="13905"/>
+			<item id="13914"/>
+			<item id="13918"/>
+			<item fromid="14025" toid="14028"/>
+			<item id="14681"/>
+			<item id="21853"/>
+			<item id="21856"/>
+			<item fromid="24396" toid="24397"/>
+			<item fromid="24950" toid="24951"/>
+			<item id="9232"/>
+			<item id="25302"/>
+			<item id="3218"/>
+			<item id="23488"/>
+			<item id="9586"/>
+			<item id="23737"/>
+			<item fromid="30227" toid="30249"/>
+			<item fromid="30187" toid="30191"/>
+			<item fromid="30198" toid="30214"/>
+			<item fromid="30255" toid="30271"/>
+			<item fromid="30315" toid="30316"/>
+		</items>
+	</tileset>
+</materials>

@@ -1,0 +1,1364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monsters>
+    <monster name="A Carved Stone Tile" looktype="0" />
+    <monster name="A Shielded Astral Glyph" looktype="0" />
+    <monster name="Abyssador" looktype="495" />
+    <monster name="Abyssal Calamary" looktype="451" />
+    <monster name="Achad" looktype="146" lookhead="93" lookbody="93" looklegs="57" lookfeet="97" lookaddons="3" />
+    <monster name="Acid Blob" looktype="314" />
+    <monster name="Acolyte Of Darkness" looktype="9" />
+    <monster name="Acolyte Of The Cult" looktype="194" lookhead="114" lookbody="121" looklegs="121" lookfeet="57" lookaddons="0" />
+    <monster name="Adept Of The Cult" looktype="194" lookhead="114" lookbody="94" looklegs="94" lookfeet="57" lookaddons="0" />
+    <monster name="Adult Goanna" looktype="1195" />
+    <monster name="Adventurer" looktype="129" lookhead="92" lookbody="15" looklegs="92" lookfeet="82" lookaddons="0" />
+    <monster name="Aftershock" looktype="875" lookhead="114" lookbody="114" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Aggressive Lava" looktype="614" />
+    <monster name="Aggressive Matter" looktype="615" />
+    <monster name="Agressive Chicken" looktype="111" />
+    <monster name="Agrestic Chicken" looktype="111" />
+    <monster name="Alptramun" looktype="1143" />
+    <monster name="Amazon" looktype="137" lookhead="113" lookbody="120" looklegs="95" lookfeet="115" lookaddons="0" />
+    <monster name="An Astral Glyph" looktype="0" />
+    <monster name="An Observer Eye" looktype="925" />
+    <monster name="Ancient Scarab" looktype="79" />
+    <monster name="Ancient Spawn Of Morgathla" looktype="1067" />
+    <monster name="Angry Adventurer" looktype="129" lookhead="92" lookbody="15" looklegs="92" lookfeet="82" lookaddons="0" />
+    <monster name="Angry Demon" looktype="35" />
+    <monster name="Angry Plant" looktype="120" />
+    <monster name="Animated Clomp" looktype="860" />
+    <monster name="Animated Cyclops" looktype="22" />
+    <monster name="Animated Feather" looktype="1058" />
+    <monster name="Animated Guzzlemaw" looktype="584" />
+    <monster name="Animated Moohtant" looktype="607" />
+    <monster name="Animated Mummy" looktype="65" />
+    <monster name="Animated Ogre Brute" looktype="857" />
+    <monster name="Animated Ogre Savage" looktype="858" />
+    <monster name="Animated Ogre Shaman" looktype="859" />
+    <monster name="Animated Rotworm" looktype="26" />
+    <monster name="Animated Skunk" looktype="106" />
+    <monster name="Animated Snowman" looktype="1159" lookhead="19" lookbody="10" looklegs="19" lookfeet="57" lookaddons="0" />
+    <monster name="Animated Stone Golem" looktype="67" />
+    <monster name="Animated Stone Rhino" looktype="936" />
+    <monster name="Animated Sword" looktype="0" />
+    <monster name="Annihilon" looktype="12" lookhead="19" lookbody="104" looklegs="96" lookfeet="96" lookaddons="0" />
+    <monster name="Anomaly" looktype="876" lookhead="19" lookbody="98" looklegs="19" lookfeet="79" lookaddons="1" />
+    <monster name="Apocalypse" looktype="12" lookhead="38" lookbody="114" looklegs="0" lookfeet="94" lookaddons="0" />
+    <monster name="Apprentice Sheng" looktype="23" />
+    <monster name="Arachir The Ancient One" looktype="287" />
+    <monster name="Arachnophobica" looktype="1135" />
+    <monster name="Arctic Faun" looktype="980" lookhead="85" lookbody="0" looklegs="0" lookfeet="85" lookaddons="0" />
+    <monster name="Armadile" looktype="487" />
+    <monster name="Armenius" looktype="68" />
+    <monster name="Ascending Ferumbras" looktype="844" />
+    <monster name="Ashmunrah" looktype="87" />
+    <monster name="Askarak Demon" looktype="420" />
+    <monster name="Askarak Lord" looktype="410" />
+    <monster name="Askarak Prince" looktype="419" />
+    <monster name="Assassin" looktype="152" lookhead="114" lookbody="95" looklegs="95" lookfeet="95" lookaddons="3" />
+    <monster name="Avalanche" looktype="261" />
+    <monster name="Axeitus Headbanger" looktype="71" />
+    <monster name="Azerus" looktype="309" />
+    <monster name="Azerus2" looktype="309" />
+    <monster name="Azure Frog" looktype="226" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" lookaddons="0" />
+    <monster name="Baby Dragon" looktype="271" />
+    <monster name="Bad Dream" looktype="0" />
+    <monster name="Badger" looktype="105" />
+    <monster name="Baleful Bunny" looktype="1157" lookhead="95" lookbody="42" looklegs="19" lookfeet="57" lookaddons="0" />
+    <monster name="Bandit" looktype="129" lookhead="58" lookbody="59" looklegs="45" lookfeet="114" lookaddons="0" />
+    <monster name="Bane Bringer" looktype="310" />
+    <monster name="Bane Of Light" looktype="68" />
+    <monster name="Banshee" looktype="78" />
+    <monster name="Barbaria" looktype="264" lookhead="78" lookbody="116" looklegs="95" lookfeet="121" lookaddons="0" />
+    <monster name="Barbarian Bloodwalker" looktype="255" lookhead="114" lookbody="132" looklegs="132" lookfeet="132" lookaddons="0" />
+    <monster name="Barbarian Brutetamer" looktype="264" lookhead="78" lookbody="116" looklegs="95" lookfeet="121" lookaddons="0" />
+    <monster name="Barbarian Headsplitter" looktype="253" lookhead="115" lookbody="105" looklegs="119" lookfeet="132" lookaddons="0" />
+    <monster name="Barbarian Skullhunter" looktype="254" />
+    <monster name="Barkless Devotee" looktype="990" />
+    <monster name="Barkless Fanatic" looktype="990" />
+    <monster name="Baron Brute" looktype="2" />
+    <monster name="Bat" looktype="122" />
+    <monster name="Battlemaster Zunzu" looktype="343" />
+    <monster name="Bazir" looktype="35" />
+    <monster name="Bear" looktype="16" />
+    <monster name="Behemoth" looktype="55" />
+    <monster name="Berserker Chicken" looktype="111" />
+    <monster name="Betrayed Wraith" looktype="233" />
+    <monster name="Bibby Bloodbath" looktype="2" />
+    <monster name="Big Boss Trolliver" looktype="281" />
+    <monster name="Biting Book" looktype="1066" />
+    <monster name="Biting Cold" looktype="53" />
+    <monster name="Black Cobra" looktype="81" />
+    <monster name="Black Knight" looktype="131" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" lookaddons="3" />
+    <monster name="Black Sheep" looktype="13" />
+    <monster name="Black Sphinx Acolyte" looktype="1200" lookhead="114" lookbody="95" looklegs="94" lookfeet="95" lookaddons="0" />
+    <monster name="Black Vixen" looktype="1038" />
+    <monster name="Blazing Fire Elemental" looktype="49" />
+    <monster name="Blightwalker" looktype="246" />
+    <monster name="Blistering Fire Elemental" looktype="242" />
+    <monster name="Blood Beast" looktype="602" />
+    <monster name="Blood Crab" looktype="200" />
+    <monster name="Blood Hand" looktype="552" />
+    <monster name="Blood Priest" looktype="553" />
+    <monster name="Bloodback" looktype="1039" />
+    <monster name="Bloodpaw" looktype="42" />
+    <monster name="Blue Butterfly" looktype="227" />
+    <monster name="Blue Djinn" looktype="80" />
+    <monster name="Boar" looktype="380" />
+    <monster name="Bog Frog" looktype="412" />
+    <monster name="Bog Raider" looktype="299" />
+    <monster name="Bone Capsule" looktype="863" />
+    <monster name="Bone Jaw" looktype="384" />
+    <monster name="Bonebeast" looktype="101" />
+    <monster name="Bonelord" looktype="17" />
+    <monster name="Bones" looktype="231" />
+    <monster name="Bonny Bunny" looktype="1158" lookhead="95" lookbody="42" looklegs="19" lookfeet="57" lookaddons="0" />
+    <monster name="Bony Sea Devil" looktype="1294" />
+    <monster name="Boogey" looktype="300" />
+    <monster name="Boogy" looktype="981" />
+    <monster name="Bound Astral Power" looktype="879" />
+    <monster name="Bovinus" looktype="25" />
+    <monster name="Brachiodemon" looktype="1299" />
+    <monster name="Bragrumol" looktype="856" />
+    <monster name="Brain Squid" looktype="1059" lookhead="97" lookbody="18" looklegs="61" lookfeet="85" lookaddons="0" />
+    <monster name="Braindeath" looktype="256" />
+    <monster name="Branchy Crawler" looktype="1297" />
+    <monster name="Breach Brood" looktype="878" />
+    <monster name="Bretzecutioner" looktype="236" />
+    <monster name="Bright Percht Sleigh" looktype="1164" />
+    <monster name="Brimstone Bug" looktype="352" />
+    <monster name="Brittle Skeleton" looktype="33" />
+    <monster name="Broken Shaper" looktype="932" lookhead="132" lookbody="95" looklegs="0" lookfeet="121" lookaddons="0" />
+    <monster name="Brokul" looktype="1076" />
+    <monster name="Brother Chill" looktype="261" />
+    <monster name="Brother Freeze" looktype="261" />
+    <monster name="Brown Horse" looktype="436" />
+    <monster name="Bruise Payne" looktype="307" />
+    <monster name="Brutus Bloodbeard" looktype="98" />
+    <monster name="Bug" looktype="45" />
+    <monster name="Bullwark" looktype="607" />
+    <monster name="Burning Book" looktype="1061" lookhead="79" lookbody="113" looklegs="78" lookfeet="0" lookaddons="0" />
+    <monster name="Burning Gladiator" looktype="541" lookhead="95" lookbody="113" looklegs="21" lookfeet="21" lookaddons="1" />
+    <monster name="Burrowing Beetle" looktype="83" />
+    <monster name="Burster Spectre" looktype="1122" lookhead="7" lookbody="19" looklegs="86" lookfeet="19" lookaddons="0" />
+    <monster name="Butterfly" looktype="227" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Calamary" looktype="451" />
+    <monster name="Canopic Jar" looktype="598" />
+    <monster name="Capricious Phantom" looktype="1298" lookhead="81" lookbody="114" looklegs="85" lookfeet="83" lookaddons="0" />
+    <monster name="Captain Jones" looktype="196" />
+    <monster name="Captured Dwarf" looktype="538" />
+    <monster name="Carniphila" looktype="120" />
+    <monster name="Carrion Worm" looktype="192" />
+    <monster name="Cart Packed With Gold" looktype="1175" />
+    <monster name="Cat" looktype="276" />
+    <monster name="Cave Devourer" looktype="1036" />
+    <monster name="Cave Parrot" looktype="217" />
+    <monster name="Cave Rat" looktype="56" />
+    <monster name="Cave Spider" looktype="38" />
+    <monster name="Centipede" looktype="124" />
+    <monster name="Chakoya Toolshaper" looktype="259" />
+    <monster name="Chakoya Tribewarden" looktype="259" />
+    <monster name="Chakoya Windcaller" looktype="260" />
+    <monster name="Charged Anomaly" looktype="876" lookhead="80" lookbody="80" looklegs="19" lookfeet="80" lookaddons="1" />
+    <monster name="Charged Disruption" looktype="0" />
+    <monster name="Charged Energy Elemental" looktype="293" />
+    <monster name="Charger" looktype="293" />
+    <monster name="Charging Outburst" looktype="876" lookhead="77" lookbody="82" looklegs="82" lookfeet="0" lookaddons="3" />
+    <monster name="Chasm Spawn" looktype="1037" />
+    <monster name="Chayenne" looktype="155" lookhead="78" lookbody="0" looklegs="105" lookfeet="99" lookaddons="0" />
+    <monster name="Chicken" looktype="111" />
+    <monster name="Chikhaton" looktype="361" />
+    <monster name="Chizzoron The Distorter" looktype="340" />
+    <monster name="Choking Fear" looktype="586" />
+    <monster name="Clay Guardian" looktype="333" />
+    <monster name="Cliff Strider" looktype="497" />
+    <monster name="Cloak Of Terror" looktype="1295" />
+    <monster name="Clomp" looktype="860" />
+    <monster name="Clubarc The Plunderer" looktype="342" />
+    <monster name="Cobra Assassin" looktype="1217" lookhead="2" lookbody="2" looklegs="77" lookfeet="1" lookaddons="1" />
+    <monster name="Cobra Scout" looktype="1217" lookhead="1" lookbody="1" looklegs="101" lookfeet="78" lookaddons="2" />
+    <monster name="Cobra Vizier" looktype="1217" lookhead="19" lookbody="19" looklegs="86" lookfeet="19" lookaddons="0" />
+    <monster name="Cobra" looktype="81" />
+    <monster name="Cockroach" looktype="284" />
+    <monster name="Cold Percht Sleigh" looktype="1163" />
+    <monster name="Coldheart" looktype="261" />
+    <monster name="Colerian The Barbarian" looktype="253" lookhead="76" lookbody="115" looklegs="115" lookfeet="43" lookaddons="0" />
+    <monster name="Concentrated Death" looktype="315" />
+    <monster name="Condensed Sins" looktype="315" />
+    <monster name="Containment Crystal" looktype="0" />
+    <monster name="Containment Machine" looktype="0" />
+    <monster name="Control Tower" looktype="0" />
+    <monster name="Coral Frog" looktype="226" lookhead="114" lookbody="98" looklegs="97" lookfeet="114" lookaddons="0" />
+    <monster name="Corrupted Soul" looktype="355" />
+    <monster name="Corym Charlatan" looktype="532" />
+    <monster name="Corym Skirmisher" looktype="533" />
+    <monster name="Corym Vanguard" looktype="534" lookhead="101" lookbody="0" looklegs="101" lookfeet="0" lookaddons="0" />
+    <monster name="Cosmic Energy Prism A" looktype="0" />
+    <monster name="Cosmic Energy Prism B" looktype="0" />
+    <monster name="Cosmic Energy Prism C" looktype="0" />
+    <monster name="Cosmic Energy Prism D" looktype="0" />
+    <monster name="Count Vlarkorth" looktype="1221" lookhead="10" lookbody="19" looklegs="19" lookfeet="19" lookaddons="1" />
+    <monster name="Countess Sorrow" looktype="241" lookhead="20" lookbody="0" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Courage Leech" looktype="1315" />
+    <monster name="Crab" looktype="112" />
+    <monster name="Crackler" looktype="293" />
+    <monster name="Crawler" looktype="456" />
+    <monster name="Crazed Beggar" looktype="153" lookhead="59" lookbody="38" looklegs="38" lookfeet="97" lookaddons="3" />
+    <monster name="Crazed Dwarf" looktype="69" />
+    <monster name="Crazed Summer Rearguard" looktype="1136" lookhead="1" lookbody="94" looklegs="20" lookfeet="119" lookaddons="0" />
+    <monster name="Crazed Summer Vanguard" looktype="1136" lookhead="20" lookbody="94" looklegs="20" lookfeet="81" lookaddons="1" />
+    <monster name="Crazed Winter Rearguard" looktype="1136" lookhead="86" lookbody="85" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Crazed Winter Vanguard" looktype="1136" />
+    <monster name="Crimson Frog" looktype="226" lookhead="94" lookbody="78" looklegs="94" lookfeet="78" lookaddons="0" />
+    <monster name="Crocodile" looktype="119" />
+    <monster name="Crustacea Gigantica" looktype="383" />
+    <monster name="Crypt Defiler" looktype="146" lookhead="115" lookbody="115" looklegs="61" lookfeet="96" lookaddons="3" />
+    <monster name="Crypt Shambler" looktype="100" />
+    <monster name="Crypt Warden" looktype="1190" lookhead="41" lookbody="38" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Crystal Spider" looktype="263" />
+    <monster name="Crystal Wolf" looktype="391" />
+    <monster name="Crystalcrusher" looktype="511" />
+    <monster name="Cult Believer" looktype="132" lookhead="98" lookbody="77" looklegs="39" lookfeet="57" lookaddons="1" />
+    <monster name="Cult Enforcer" looktype="134" lookhead="114" lookbody="19" looklegs="76" lookfeet="76" lookaddons="1" />
+    <monster name="Cult Scholar" looktype="145" />
+    <monster name="Cursed Book" looktype="1061" lookhead="79" lookbody="83" looklegs="113" lookfeet="0" lookaddons="0" />
+    <monster name="Cursed Gladiator" looktype="100" />
+    <monster name="Cursed Prospector" looktype="1268" />
+    <monster name="Custodian" looktype="1217" lookhead="1" lookbody="1" looklegs="19" lookfeet="19" lookaddons="1" />
+    <monster name="Cyclops Drone" looktype="280" />
+    <monster name="Cyclops Smith" looktype="277" />
+    <monster name="Cyclops" looktype="22" />
+    <monster name="Damage Resonance" looktype="0" />
+    <monster name="Damaged Crystal Golem" looktype="508" />
+    <monster name="Damaged Worker Golem" looktype="304" />
+    <monster name="Damned Soul" looktype="232" />
+    <monster name="Darakan The Executioner" looktype="255" lookhead="78" lookbody="114" looklegs="114" lookfeet="114" lookaddons="0" />
+    <monster name="Dark Apprentice" looktype="133" lookhead="78" lookbody="57" looklegs="95" lookfeet="115" lookaddons="1" />
+    <monster name="Dark Druid" looktype="144" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" lookaddons="1" />
+    <monster name="Dark Faun" looktype="980" lookhead="94" lookbody="114" looklegs="57" lookfeet="94" lookaddons="0" />
+    <monster name="Dark Knight" looktype="131" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" lookaddons="3" />
+    <monster name="Dark Knowledge" looktype="1061" />
+    <monster name="Dark Magician" looktype="133" lookhead="116" lookbody="95" looklegs="50" lookfeet="132" lookaddons="2" />
+    <monster name="Dark Monk" looktype="225" />
+    <monster name="Dark Paladin" looktype="129" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" lookaddons="1" />
+    <monster name="Dark Percht Sleigh" looktype="1165" />
+    <monster name="Dark Sorcerer" looktype="130" lookhead="95" lookbody="95" looklegs="95" lookfeet="95" lookaddons="3" />
+    <monster name="Dark Soul" looktype="714" />
+    <monster name="Dark Torturer" looktype="234" />
+    <monster name="Darkfang" looktype="308" />
+    <monster name="Dawn Bat" looktype="122" />
+    <monster name="Dawn Scorpion" looktype="43" />
+    <monster name="Dawnfire Asura" looktype="150" lookhead="114" lookbody="94" looklegs="78" lookfeet="79" lookaddons="1" />
+    <monster name="Dawnfly" looktype="528" />
+    <monster name="Dazed Leaf Golem" looktype="567" />
+    <monster name="Deadeye Devious" looktype="151" lookhead="115" lookbody="76" looklegs="35" lookfeet="117" lookaddons="2" />
+    <monster name="Death Blob" looktype="315" />
+    <monster name="Death Dragon" looktype="231" />
+    <monster name="Death Priest Shargon" looktype="278" />
+    <monster name="Death Priest" looktype="99" lookhead="95" lookbody="116" looklegs="119" lookfeet="115" lookaddons="0" />
+    <monster name="Deathbine" looktype="120" />
+    <monster name="Deathbringer" looktype="231" />
+    <monster name="Deathling Scout" looktype="413" />
+    <monster name="Deathling Spellsinger" looktype="1088" />
+    <monster name="Deathslicer" looktype="102" />
+    <monster name="Deathspawn" looktype="226" lookhead="114" lookbody="98" looklegs="97" lookfeet="114" lookaddons="0" />
+    <monster name="Deathstrike" looktype="500" />
+    <monster name="Deaththrower" looktype="0" />
+    <monster name="Deep Terror" looktype="676" />
+    <monster name="Deepling Brawler" looktype="470" />
+    <monster name="Deepling Elite" looktype="441" />
+    <monster name="Deepling Guard" looktype="442" />
+    <monster name="Deepling Master Librarian" looktype="443" />
+    <monster name="Deepling Scout" looktype="413" />
+    <monster name="Deepling Spellsinger" looktype="443" />
+    <monster name="Deepling Tyrant" looktype="442" />
+    <monster name="Deepling Warrior" looktype="441" />
+    <monster name="Deepling Worker" looktype="470" />
+    <monster name="Deepsea Blood Crab" looktype="200" />
+    <monster name="Deepworm" looktype="1033" />
+    <monster name="Deer" looktype="31" />
+    <monster name="Defiler" looktype="238" />
+    <monster name="Demodras" looktype="204" />
+    <monster name="Demon Blood" looktype="1041" />
+    <monster name="Demon Goblin" looktype="35" />
+    <monster name="Demon Outcast" looktype="590" />
+    <monster name="Demon Parrot" looktype="217" />
+    <monster name="Demon Skeleton" looktype="37" />
+    <monster name="Demon Slave" looktype="35" />
+    <monster name="Demon Summoner" looktype="0" />
+    <monster name="Demon" looktype="35" />
+    <monster name="Depolarized Crackler" looktype="290" />
+    <monster name="Depowered Minotaur" looktype="25" />
+    <monster name="Despair" looktype="0" />
+    <monster name="Desperate Soul" looktype="262" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" lookaddons="0" />
+    <monster name="Desperate White Deer" looktype="400" />
+    <monster name="Destabilized Ferumbras" looktype="844" />
+    <monster name="Destroyed Pillar" looktype="0" />
+    <monster name="Destroyer" looktype="236" />
+    <monster name="Devourer" looktype="617" />
+    <monster name="Dharalion" looktype="203" />
+    <monster name="Diabolic Imp" looktype="237" />
+    <monster name="Diamond Servant Replica" looktype="397" />
+    <monster name="Diamond Servant" looktype="397" />
+    <monster name="Diblis The Fair" looktype="287" />
+    <monster name="Dipthrah" looktype="87" />
+    <monster name="Dire Penguin" looktype="250" />
+    <monster name="Diremaw" looktype="1034" />
+    <monster name="Dirtbeard" looktype="98" />
+    <monster name="Diseased Bill" looktype="299" />
+    <monster name="Diseased Dan" looktype="299" />
+    <monster name="Diseased Fred" looktype="299" />
+    <monster name="Disgusting Ooze" looktype="238" />
+    <monster name="Disruption" looktype="0" />
+    <monster name="Distorted Phantom" looktype="1298" lookhead="113" lookbody="94" looklegs="132" lookfeet="76" lookaddons="0" />
+    <monster name="Doctor Perhaps" looktype="133" lookhead="95" lookbody="0" looklegs="94" lookfeet="114" lookaddons="1" />
+    <monster name="Dog" looktype="32" />
+    <monster name="Donkey" looktype="387" />
+    <monster name="Doom Deer" looktype="31" />
+    <monster name="Doomhowl" looktype="308" />
+    <monster name="Dorokoll The Mystic Stop" looktype="154" lookhead="115" lookbody="60" looklegs="19" lookfeet="58" lookaddons="2" />
+    <monster name="Dorokoll The Mystic" looktype="154" lookhead="115" lookbody="60" looklegs="19" lookfeet="58" lookaddons="2" />
+    <monster name="Dracola" looktype="231" />
+    <monster name="Dragon Egg" looktype="0" />
+    <monster name="Dragon Essence" looktype="248" />
+    <monster name="Dragon Hatchling" looktype="271" />
+    <monster name="Dragon Lord Hatchling" looktype="272" />
+    <monster name="Dragon Lord" looktype="39" />
+    <monster name="Dragon Servant" looktype="39" />
+    <monster name="Dragon Warden" looktype="947" lookhead="5" lookbody="5" looklegs="8" lookfeet="8" lookaddons="0" />
+    <monster name="Dragon Wrath" looktype="351" />
+    <monster name="Dragon" looktype="34" />
+    <monster name="Dragonking Zyrtarch" looktype="938" />
+    <monster name="Dragonling" looktype="505" />
+    <monster name="Draken Abomination" looktype="357" />
+    <monster name="Draken Elite" looktype="362" />
+    <monster name="Draken Spellweaver" looktype="340" />
+    <monster name="Draken Warmaster" looktype="334" />
+    <monster name="Draptor" looktype="382" />
+    <monster name="Drasilla" looktype="34" />
+    <monster name="Dread Intruder" looktype="882" />
+    <monster name="Dread Minion" looktype="882" />
+    <monster name="Dreadbeast" looktype="101" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Dreadmaw" looktype="119" />
+    <monster name="Dreadwing" looktype="307" />
+    <monster name="Drillworm" looktype="527" />
+    <monster name="Dromedary" looktype="404" />
+    <monster name="Druid Familiar" looktype="0" />
+    <monster name="Druid'S Apparition" looktype="148" lookhead="114" lookbody="48" looklegs="114" lookfeet="95" lookaddons="0" />
+    <monster name="Dryad" looktype="137" lookhead="80" lookbody="59" looklegs="7" lookfeet="101" lookaddons="3" />
+    <monster name="Duke Krule" looktype="1221" lookhead="19" lookbody="0" looklegs="0" lookfeet="0" lookaddons="3" />
+    <monster name="Duskbringer" looktype="300" />
+    <monster name="Dwarf Geomancer" looktype="66" />
+    <monster name="Dwarf Guard" looktype="70" />
+    <monster name="Dwarf Miner" looktype="160" lookhead="77" lookbody="101" looklegs="97" lookfeet="115" lookaddons="0" />
+    <monster name="Dwarf Soldier" looktype="71" />
+    <monster name="Dwarf" looktype="69" />
+    <monster name="Dworc Fleshhunter" looktype="215" />
+    <monster name="Dworc Venomsniper" looktype="216" />
+    <monster name="Dworc Voodoomaster" looktype="214" />
+    <monster name="Earl Osam" looktype="1223" lookhead="95" lookbody="38" looklegs="60" lookfeet="76" lookaddons="0" />
+    <monster name="Earth Elemental" looktype="301" />
+    <monster name="Earth Overlord" looktype="285" />
+    <monster name="Earworm" looktype="26" />
+    <monster name="Eclipse Knight" looktype="234" />
+    <monster name="Efreet" looktype="103" />
+    <monster name="Ekatrix" looktype="54" />
+    <monster name="Elder Bonelord" looktype="108" />
+    <monster name="Elder Mummy" looktype="65" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Elder Wyrm" looktype="561" />
+    <monster name="Electric Sparks" looktype="0" />
+    <monster name="Elephant" looktype="211" />
+    <monster name="Elf Arcanist" looktype="63" />
+    <monster name="Elf Scout" looktype="64" />
+    <monster name="Elf" looktype="62" />
+    <monster name="Eliz The Unyielding stop" looktype="632" lookhead="1" lookbody="38" looklegs="38" lookfeet="0" lookaddons="2" />
+    <monster name="Eliz The Unyielding" looktype="632" lookhead="1" lookbody="38" looklegs="38" lookfeet="0" lookaddons="2" />
+    <monster name="Ember Beast" looktype="498" />
+    <monster name="Emerald Damselfly" looktype="528" />
+    <monster name="Empowered Glooth Horror" looktype="677" />
+    <monster name="Energetic Book" looktype="1061" lookhead="15" lookbody="91" looklegs="85" lookfeet="0" lookaddons="0" />
+    <monster name="Energized Raging Mage" looktype="423" />
+    <monster name="Energuardian Of Tales" looktype="1063" lookhead="66" lookbody="85" looklegs="82" lookfeet="93" lookaddons="3" />
+    <monster name="Energy Elemental" looktype="293" />
+    <monster name="Energy Overlord" looktype="290" />
+    <monster name="Energy Pulse" looktype="294" />
+    <monster name="Enfeebled Silencer" looktype="585" />
+    <monster name="Enlightened Of The Cult" looktype="193" />
+    <monster name="Enraged Crystal Golem" looktype="508" />
+    <monster name="Enraged Sand Brood" looktype="82" />
+    <monster name="Enraged Soul" looktype="568" />
+    <monster name="Enraged Squirrel" looktype="274" />
+    <monster name="Enraged White Deer" looktype="400" />
+    <monster name="Enslaved Dwarf" looktype="494" />
+    <monster name="Enthralled Demon" looktype="35" />
+    <monster name="Eradicator" looktype="875" lookhead="94" lookbody="3" looklegs="78" lookfeet="94" lookaddons="1" />
+    <monster name="Eruption Of Destruction" looktype="0" />
+    <monster name="Eshtaba The Conjurer Stop" looktype="149" lookhead="95" lookbody="68" looklegs="68" lookfeet="68" lookaddons="3" />
+    <monster name="Eshtaba The Conjurer" looktype="149" lookhead="95" lookbody="68" looklegs="68" lookfeet="68" lookaddons="3" />
+    <monster name="Esmeralda" looktype="305" />
+    <monster name="Essence Of Darkness" looktype="315" />
+    <monster name="Essence Of Malice" looktype="351" />
+    <monster name="Eternal Guardian" looktype="345" />
+    <monster name="Ethershreck" looktype="351" />
+    <monster name="Evil Mastermind" looktype="256" />
+    <monster name="Evil Prospector" looktype="1268" />
+    <monster name="Evil Sheep Lord" looktype="13" />
+    <monster name="Evil Sheep" looktype="14" />
+    <monster name="Execowtioner" looktype="609" />
+    <monster name="Exotic Bat" looktype="1373" />
+    <monster name="Exotic Cave Spider" looktype="1344" />
+    <monster name="Eye Of The Seven" looktype="109" />
+    <monster name="Faceless Bane" looktype="1122" />
+    <monster name="Fahim The Wise" looktype="104" />
+    <monster name="Falcon Knight" looktype="1071" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="1" />
+    <monster name="Falcon Paladin" looktype="1071" lookhead="57" lookbody="94" looklegs="38" lookfeet="86" lookaddons="2" />
+    <monster name="Fallen Challenger" looktype="231" />
+    <monster name="Fallen Mooh'Tah Master ghar" looktype="29" />
+    <monster name="Fatality" looktype="113" />
+    <monster name="Faun" looktype="980" lookhead="81" lookbody="115" looklegs="114" lookfeet="81" lookaddons="0" />
+    <monster name="Fazzrah" looktype="343" />
+    <monster name="Feeble Glooth Horror" looktype="677" />
+    <monster name="Feral Sphinx" looktype="1188" lookhead="76" lookbody="75" looklegs="38" lookfeet="50" lookaddons="2" />
+    <monster name="Fernfang" looktype="206" />
+    <monster name="Feroxa" looktype="158" lookhead="57" lookbody="76" looklegs="77" lookfeet="57" lookaddons="0" />
+    <monster name="Feroxa2" looktype="731" lookhead="57" lookbody="76" looklegs="77" lookfeet="57" lookaddons="0" />
+    <monster name="Feroxa3" looktype="158" lookhead="57" lookbody="76" looklegs="77" lookfeet="57" lookaddons="0" />
+    <monster name="Feroxa4" looktype="716" lookhead="57" lookbody="76" looklegs="77" lookfeet="57" lookaddons="0" />
+    <monster name="Feroxa5" looktype="731" lookhead="57" lookbody="76" looklegs="77" lookfeet="57" lookaddons="0" />
+    <monster name="Ferumbras Essence" looktype="294" />
+    <monster name="Ferumbras Mortal Shell" looktype="229" />
+    <monster name="Ferumbras Soul Splinter" looktype="843" />
+    <monster name="Ferumbras" looktype="229" />
+    <monster name="Fetter" looktype="235" lookhead="20" lookbody="0" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Feverish Citizen" looktype="425" />
+    <monster name="Feversleep" looktype="593" />
+    <monster name="Fiery Blood" looktype="49" />
+    <monster name="Fiery Heart" looktype="0" />
+    <monster name="Filth Toad" looktype="222" />
+    <monster name="Fire Devil" looktype="40" />
+    <monster name="Fire Elemental" looktype="49" />
+    <monster name="Fire Overlord" looktype="243" />
+    <monster name="Firestarter" looktype="159" lookhead="94" lookbody="77" looklegs="78" lookfeet="79" lookaddons="0" />
+    <monster name="Fish" looktype="455" />
+    <monster name="Flame Of Omrafir" looktype="49" />
+    <monster name="Flameborn" looktype="322" />
+    <monster name="Flamethrower" looktype="0" />
+    <monster name="Flamingo" looktype="212" />
+    <monster name="Fleabringer" looktype="341" />
+    <monster name="Fleshcrawler" looktype="79" />
+    <monster name="Fleshslicer" looktype="457" />
+    <monster name="Flimsy Lost Soul" looktype="1268" />
+    <monster name="Floating Savant" looktype="1063" lookhead="113" lookbody="94" looklegs="78" lookfeet="78" lookaddons="0" />
+    <monster name="Floor Blob" looktype="459" />
+    <monster name="Fluffy" looktype="240" />
+    <monster name="Flying Book" looktype="1060" />
+    <monster name="Force Field" looktype="0" />
+    <monster name="Foreman Kneebiter" looktype="70" />
+    <monster name="Foreshock" looktype="875" />
+    <monster name="Forest Fury" looktype="569" />
+    <monster name="Fox" looktype="1029" />
+    <monster name="Frazzlemaw" looktype="594" />
+    <monster name="Freakish Lost Soul" looktype="1268" />
+    <monster name="Freed Soul" looktype="294" />
+    <monster name="Freegoiz" looktype="12" lookhead="38" lookbody="114" looklegs="0" lookfeet="94" lookaddons="0" />
+    <monster name="Frenzy" looktype="290" />
+    <monster name="Frost Dragon Hatchling" looktype="283" />
+    <monster name="Frost Dragon" looktype="248" />
+    <monster name="Frost Flower Asura" looktype="150" />
+    <monster name="Frost Giant" looktype="257" />
+    <monster name="Frost Giantess" looktype="265" />
+    <monster name="Frost Servant" looktype="261" />
+    <monster name="Frost Troll" looktype="53" />
+    <monster name="Frostfur" looktype="52" />
+    <monster name="Frozen Man" looktype="0" />
+    <monster name="Frozen Minion" looktype="53" />
+    <monster name="Furious Orc Berserker" looktype="8" />
+    <monster name="Furious Scorpion" looktype="398" />
+    <monster name="Furious Troll" looktype="15" />
+    <monster name="Fury Of The Emperor" looktype="351" />
+    <monster name="Fury" looktype="149" lookhead="94" lookbody="77" looklegs="96" lookfeet="0" lookaddons="3" />
+    <monster name="Furyosa" looktype="149" lookhead="94" lookbody="77" looklegs="96" lookfeet="0" lookaddons="3" />
+    <monster name="Gaffir" looktype="1217" lookhead="34" lookbody="129" looklegs="113" lookfeet="19" lookaddons="0" />
+    <monster name="Gang Member" looktype="151" lookhead="114" lookbody="19" looklegs="42" lookfeet="20" lookaddons="0" />
+    <monster name="Gargoyle" looktype="95" />
+    <monster name="Gaz'Haragoth" looktype="591" />
+    <monster name="Gazer Spectre" looktype="1122" lookhead="94" lookbody="20" looklegs="77" lookfeet="20" lookaddons="0" />
+    <monster name="Gazer" looktype="109" />
+    <monster name="Gelidrazah The Frozen" looktype="947" lookhead="57" lookbody="11" looklegs="38" lookfeet="38" lookaddons="3" />
+    <monster name="General Murius" looktype="611" />
+    <monster name="Generator" looktype="0" />
+    <monster name="Ghastly Dragon" looktype="351" />
+    <monster name="Ghazbaran" looktype="12" />
+    <monster name="Ghost Wolf" looktype="730" />
+    <monster name="Ghost" looktype="48" />
+    <monster name="Ghoul" looktype="18" />
+    <monster name="Ghoulish Hyaena" looktype="94" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Ghulosh' Deathgaze" looktype="1063" lookhead="57" lookbody="57" looklegs="57" lookfeet="57" lookaddons="0" />
+    <monster name="Ghulosh" looktype="1062" lookhead="79" lookbody="94" looklegs="94" lookfeet="94" lookaddons="3" />
+    <monster name="Giant Spider Wyda" looktype="38" />
+    <monster name="Giant Spider" looktype="38" />
+    <monster name="Gladiator" looktype="131" lookhead="78" lookbody="3" looklegs="79" lookfeet="114" lookaddons="0" />
+    <monster name="Glitterscale" looktype="34" />
+    <monster name="Gloom Wolf" looktype="716" />
+    <monster name="Glooth Anemone" looktype="604" />
+    <monster name="Glooth Bandit" looktype="129" lookhead="115" lookbody="80" looklegs="114" lookfeet="114" lookaddons="0" />
+    <monster name="Glooth Battery" looktype="0" />
+    <monster name="Glooth Blob" looktype="614" />
+    <monster name="Glooth Bomb" looktype="680" />
+    <monster name="Glooth Brigand" looktype="137" lookhead="114" lookbody="114" looklegs="109" lookfeet="114" lookaddons="0" />
+    <monster name="Glooth Fairy" looktype="600" />
+    <monster name="Glooth Golem" looktype="600" />
+    <monster name="Glooth Horror" looktype="677" />
+    <monster name="Glooth Masher" looktype="600" />
+    <monster name="Glooth Powered Minotaur" looktype="607" />
+    <monster name="Glooth Slasher" looktype="600" />
+    <monster name="Glooth Trasher" looktype="600" />
+    <monster name="Glooth-Generator" looktype="0" />
+    <monster name="Gnarlhound" looktype="341" />
+    <monster name="Gnome Pack Crawler" looktype="492" />
+    <monster name="Gnomevil" looktype="504" />
+    <monster name="Gnorre Chyllson" looktype="251" lookhead="11" lookbody="9" looklegs="11" lookfeet="85" lookaddons="1" />
+    <monster name="Goblin Assassin" looktype="296" />
+    <monster name="Goblin Leader" looktype="61" />
+    <monster name="Goblin Scavenger" looktype="297" />
+    <monster name="Goblin" looktype="61" />
+    <monster name="Golden Servant Replica" looktype="396" />
+    <monster name="Golden Servant" looktype="396" />
+    <monster name="Goldhanded Cultist" looktype="132" lookhead="95" lookbody="79" looklegs="41" lookfeet="94" lookaddons="2" />
+    <monster name="Golgordan" looktype="12" lookhead="108" lookbody="100" looklegs="105" lookfeet="114" lookaddons="0" />
+    <monster name="Gorgo" looktype="330" />
+    <monster name="Gorzindel" looktype="1062" lookhead="94" lookbody="100" looklegs="0" lookfeet="0" lookaddons="1" />
+    <monster name="Gozzler" looktype="313" />
+    <monster name="Grand Canon Dominus" looktype="1071" lookhead="57" lookbody="75" looklegs="77" lookfeet="86" lookaddons="0" />
+    <monster name="Grand Chaplain Gaunder" looktype="1071" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="1" />
+    <monster name="Grand Commander Soeren" looktype="1071" lookhead="38" lookbody="94" looklegs="38" lookfeet="86" lookaddons="2" />
+    <monster name="Grand Master Oberon" looktype="1072" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="1" />
+    <monster name="Grand Mother Foulscale" looktype="34" />
+    <monster name="Grandfather Tridian" looktype="193" />
+    <monster name="Grave Guard" looktype="234" />
+    <monster name="Grave Robber" looktype="146" lookhead="114" lookbody="95" looklegs="76" lookfeet="38" lookaddons="3" />
+    <monster name="Gravedigger" looktype="558" />
+    <monster name="Gravelord Oshuran" looktype="99" lookhead="95" lookbody="116" looklegs="119" lookfeet="115" lookaddons="0" />
+    <monster name="Greater Canopic Jar" looktype="599" />
+    <monster name="Greater Death Minion" looktype="65" />
+    <monster name="Greed" looktype="293" />
+    <monster name="Green Djinn" looktype="51" />
+    <monster name="Green Frog" looktype="224" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" lookaddons="0" />
+    <monster name="Grim Reaper" looktype="300" />
+    <monster name="Grimeleech" looktype="855" />
+    <monster name="Grimgor Guteater" looktype="2" />
+    <monster name="Groam" looktype="413" />
+    <monster name="Grorlam" looktype="205" />
+    <monster name="Grynch Clan Goblin" looktype="61" />
+    <monster name="Gryphon" looktype="1220" />
+    <monster name="Guard Captain Quaid" looktype="1217" lookhead="38" lookbody="57" looklegs="21" lookfeet="2" lookaddons="2" />
+    <monster name="Guardian Of Tales" looktype="1063" lookhead="92" lookbody="54" looklegs="0" lookfeet="79" lookaddons="3" />
+    <monster name="Guilt" looktype="583" />
+    <monster name="Guzzlemaw" looktype="584" />
+    <monster name="Hacker" looktype="8" />
+    <monster name="Hairman The Huge" looktype="116" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Hand Of Cursed Fate" looktype="230" />
+    <monster name="Haunted Dragon" looktype="231" />
+    <monster name="Haunted Treeling" looktype="310" />
+    <monster name="Haunter" looktype="320" />
+    <monster name="Hell Hole" looktype="0" />
+    <monster name="Hellfire Fighter" looktype="243" />
+    <monster name="Hellflayer" looktype="856" />
+    <monster name="Hellgorak" looktype="12" lookhead="19" lookbody="96" looklegs="21" lookfeet="81" lookaddons="0" />
+    <monster name="Hellhound" looktype="240" />
+    <monster name="Hellspawn" looktype="322" />
+    <monster name="Hemming" looktype="308" />
+    <monster name="Heoni" looktype="239" />
+    <monster name="Herald Of Gloom" looktype="320" />
+    <monster name="Hero" looktype="73" />
+    <monster name="Hibernal Moth" looktype="1149" />
+    <monster name="Hide" looktype="219" />
+    <monster name="Hideous Fungus" looktype="499" />
+    <monster name="High Voltage Elemental" looktype="293" />
+    <monster name="Hirintror" looktype="261" />
+    <monster name="Hive Overseer" looktype="458" />
+    <monster name="Hive Pore" looktype="0" />
+    <monster name="Honour Guard" looktype="298" />
+    <monster name="Horadron" looktype="12" lookhead="78" lookbody="80" looklegs="110" lookfeet="77" lookaddons="0" />
+    <monster name="Horestis" looktype="88" />
+    <monster name="Horrible Dream" looktype="315" />
+    <monster name="Horse" looktype="435" />
+    <monster name="Hot Dog" looktype="32" />
+    <monster name="Humongous Fungus" looktype="488" />
+    <monster name="Humorless Fungus" looktype="517" />
+    <monster name="Hunter" looktype="129" lookhead="95" lookbody="116" looklegs="121" lookfeet="115" lookaddons="0" />
+    <monster name="Husky" looktype="258" />
+    <monster name="Hyaena" looktype="94" />
+    <monster name="Hydra" looktype="121" />
+    <monster name="Ice Dragon" looktype="947" lookhead="9" lookbody="9" looklegs="9" lookfeet="0" lookaddons="0" />
+    <monster name="Ice Golem" looktype="261" />
+    <monster name="Ice Overlord" looktype="11" />
+    <monster name="Ice Witch" looktype="149" />
+    <monster name="Icecold Book" looktype="1061" lookhead="87" lookbody="85" looklegs="79" lookfeet="0" lookaddons="0" />
+    <monster name="Icicle" looktype="904" />
+    <monster name="Imp Intruder" looktype="237" />
+    <monster name="Incineron" looktype="243" />
+    <monster name="Incredibly Old Witch" looktype="54" />
+    <monster name="Infected Weeper" looktype="489" />
+    <monster name="Infernal Demon" looktype="1313" />
+    <monster name="Infernal Frog" looktype="224" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" lookaddons="0" />
+    <monster name="Infernal Phantom" looktype="1298" lookhead="114" lookbody="80" looklegs="94" lookfeet="78" lookaddons="0" />
+    <monster name="Infernalist" looktype="130" lookhead="78" lookbody="76" looklegs="94" lookfeet="115" lookaddons="2" />
+    <monster name="Infernatil" looktype="35" />
+    <monster name="Ink Blob" looktype="1064" />
+    <monster name="Inky" looktype="46" />
+    <monster name="Insane Siren" looktype="1137" lookhead="94" lookbody="94" looklegs="79" lookfeet="20" lookaddons="3" />
+    <monster name="Insect Swarm" looktype="349" />
+    <monster name="Insectoid Scout" looktype="403" />
+    <monster name="Insectoid Worker" looktype="403" />
+    <monster name="Instable Breach Brood" looktype="878" />
+    <monster name="Instable Sparkion" looktype="877" />
+    <monster name="Invading Demon" looktype="35" />
+    <monster name="Irgix The Flimsy" looktype="1268" />
+    <monster name="Iron Servant Replica" looktype="395" />
+    <monster name="Iron Servant" looktype="395" />
+    <monster name="Ironblight" looktype="498" />
+    <monster name="Island Troll" looktype="282" />
+    <monster name="Izcandar The Banished" looktype="1137" lookhead="1" lookbody="114" looklegs="76" lookfeet="0" lookaddons="2" />
+    <monster name="Jagged Earth Elemental" looktype="285" />
+    <monster name="Jailer" looktype="298" />
+    <monster name="Jaul" looktype="444" />
+    <monster name="Jellyfish" looktype="452" />
+    <monster name="Jesse The Wicked" looktype="134" lookhead="76" lookbody="76" looklegs="76" lookfeet="115" lookaddons="3" />
+    <monster name="Juggernaut" looktype="244" />
+    <monster name="Juvenile Cyclops" looktype="22" />
+    <monster name="Kalyassa" looktype="947" lookhead="37" lookbody="113" looklegs="38" lookfeet="95" lookaddons="3" />
+    <monster name="Kerberos" looktype="240" />
+    <monster name="Killer Caiman" looktype="358" />
+    <monster name="Killer Rabbit" looktype="74" />
+    <monster name="King Zelos" looktype="1224" lookhead="10" lookbody="19" looklegs="19" lookfeet="19" lookaddons="1" />
+    <monster name="Knight Familiar" looktype="0" />
+    <monster name="Knight'S Apparition" looktype="131" lookhead="19" lookbody="76" looklegs="74" lookfeet="114" lookaddons="0" />
+    <monster name="Knowledge Elemental" looktype="1065" />
+    <monster name="Knowledge Raider" looktype="878" />
+    <monster name="Kollos" looktype="458" />
+    <monster name="Kongra" looktype="116" />
+    <monster name="Koshei The Deathless" looktype="99" lookhead="95" lookbody="116" looklegs="119" lookfeet="115" lookaddons="0" />
+    <monster name="Kraknaknork'S Demon" looktype="12" lookhead="117" lookbody="58" looklegs="117" lookfeet="0" lookaddons="0" />
+    <monster name="Kraknaknork" looktype="6" />
+    <monster name="Kreebosh The Exile" looktype="103" />
+    <monster name="Kroazur" looktype="842" lookhead="19" lookbody="114" looklegs="94" lookfeet="85" lookaddons="3" />
+    <monster name="Lacewing Moth" looktype="1148" />
+    <monster name="Lady Tenebris" looktype="433" lookhead="57" lookbody="95" looklegs="38" lookfeet="94" lookaddons="2" />
+    <monster name="Ladybug" looktype="448" />
+    <monster name="Lamassu" looktype="1190" lookhead="50" lookbody="2" looklegs="0" lookfeet="95" lookaddons="0" />
+    <monster name="Lancer Beetle" looktype="348" />
+    <monster name="Larva" looktype="82" />
+    <monster name="Last Planegazer" looktype="1063" />
+    <monster name="Latrivan" looktype="12" lookhead="120" lookbody="128" looklegs="121" lookfeet="111" lookaddons="0" />
+    <monster name="Lava Golem" looktype="491" />
+    <monster name="Lava Lurker Attendant" looktype="1041" />
+    <monster name="Lava Lurker" looktype="1041" />
+    <monster name="Lavahole" looktype="0" />
+    <monster name="Leaf Golem" looktype="567" />
+    <monster name="Leiden" looktype="988" />
+    <monster name="Lesser Death Minion" looktype="33" />
+    <monster name="Lesser Fire Devil" looktype="40" />
+    <monster name="Lesser Swarmer" looktype="460" />
+    <monster name="Lethal Lissy" looktype="155" lookhead="77" lookbody="0" looklegs="76" lookfeet="132" lookaddons="3" />
+    <monster name="Leviathan" looktype="275" />
+    <monster name="Librarian" looktype="1067" />
+    <monster name="Lich" looktype="99" lookhead="95" lookbody="116" looklegs="119" lookfeet="115" lookaddons="0" />
+    <monster name="Lion" looktype="41" />
+    <monster name="Liquor Spirit" looktype="986" />
+    <monster name="Lisa" looktype="604" />
+    <monster name="Little Corym Charlatan" looktype="532" />
+    <monster name="Lizard Abomination" looktype="364" />
+    <monster name="Lizard Chosen" looktype="344" />
+    <monster name="Lizard Dragon Priest" looktype="339" />
+    <monster name="Lizard High Guard" looktype="337" />
+    <monster name="Lizard Legionnaire" looktype="338" />
+    <monster name="Lizard Magistratus" looktype="115" />
+    <monster name="Lizard Noble" looktype="115" />
+    <monster name="Lizard Sentinel" looktype="114" />
+    <monster name="Lizard Snakecharmer" looktype="115" />
+    <monster name="Lizard Templar" looktype="113" />
+    <monster name="Lizard Zaogun" looktype="343" />
+    <monster name="Lloyd" looktype="940" />
+    <monster name="Lokathmor" looktype="1062" lookhead="22" lookbody="22" looklegs="79" lookfeet="97" lookaddons="0" />
+    <monster name="Lord Azaram" looktype="1223" />
+    <monster name="Lord Of The Elements" looktype="290" />
+    <monster name="Lost Basher" looktype="538" />
+    <monster name="Lost Berserker" looktype="496" />
+    <monster name="Lost Exile" looktype="537" />
+    <monster name="Lost Gnome" looktype="493" lookhead="10" lookbody="32" looklegs="15" lookfeet="7" lookaddons="0" />
+    <monster name="Lost Husher" looktype="537" />
+    <monster name="Lost Soul" looktype="232" />
+    <monster name="Lost Thrower" looktype="539" />
+    <monster name="Lost Time" looktype="0" />
+    <monster name="Lovely Deer" looktype="31" />
+    <monster name="Lovely Frazzlemaw" looktype="594" />
+    <monster name="Lovely Polar Bear" looktype="42" />
+    <monster name="Lovely Rotworm" looktype="26" />
+    <monster name="Lovely Scorpion" looktype="43" />
+    <monster name="Lovely Snake" looktype="28" />
+    <monster name="Lovely Souleater" looktype="355" />
+    <monster name="Lovely Yielothax" looktype="408" />
+    <monster name="Lucifuga Aranea" looktype="263" />
+    <monster name="Lumbering Carnivor" looktype="1133" />
+    <monster name="Mad Mage" looktype="394" />
+    <monster name="Mad Scientist" looktype="133" lookhead="97" lookbody="0" looklegs="38" lookfeet="97" lookaddons="1" />
+    <monster name="Mad Technomancer" looktype="66" />
+    <monster name="Madareth" looktype="12" lookhead="77" lookbody="116" looklegs="82" lookfeet="79" lookaddons="0" />
+    <monster name="Magic Pillar" looktype="0" />
+    <monster name="Magicthrower" looktype="0" />
+    <monster name="Magma Crawler" looktype="492" />
+    <monster name="Mahrdis" looktype="90" />
+    <monster name="Makeshift Home" looktype="0" />
+    <monster name="Malicious Minion" looktype="40" />
+    <monster name="Malkhar Deathbringer Stop" looktype="134" lookhead="19" lookbody="94" looklegs="41" lookfeet="57" lookaddons="0" />
+    <monster name="Malkhar Deathbringer" looktype="134" lookhead="19" lookbody="94" looklegs="41" lookfeet="57" lookaddons="0" />
+    <monster name="Malofur Mangrinder" looktype="1120" lookhead="19" lookbody="22" looklegs="76" lookfeet="22" lookaddons="0" />
+    <monster name="Mammoth" looktype="199" />
+    <monster name="Man In The Cave" looktype="128" lookhead="77" lookbody="59" looklegs="20" lookfeet="116" lookaddons="1" />
+    <monster name="Manta Ray" looktype="449" />
+    <monster name="Manticore" looktype="1189" lookhead="116" lookbody="97" looklegs="113" lookfeet="20" lookaddons="0" />
+    <monster name="Many Faces" looktype="1296" />
+    <monster name="Marid" looktype="104" />
+    <monster name="Marsh Stalker" looktype="530" />
+    <monster name="Massacre" looktype="244" />
+    <monster name="Massive Earth Elemental" looktype="285" />
+    <monster name="Massive Energy Elemental" looktype="290" />
+    <monster name="Massive Fire Elemental" looktype="242" />
+    <monster name="Massive Water Elemental" looktype="11" />
+    <monster name="Mawhawk" looktype="595" />
+    <monster name="Maxxenius" looktype="1142" />
+    <monster name="Mazoran" looktype="842" lookhead="77" lookbody="79" looklegs="78" lookfeet="94" lookaddons="3" />
+    <monster name="Mazzinor" looktype="1062" lookhead="85" lookbody="27" looklegs="0" lookfeet="0" lookaddons="3" />
+    <monster name="Meadow Strider" looktype="530" />
+    <monster name="Mean Lost Soul" looktype="1268" />
+    <monster name="Mean Minion" looktype="237" />
+    <monster name="Mechanical Fighter" looktype="102" />
+    <monster name="Medusa" looktype="330" />
+    <monster name="Melting Frozen Horror" looktype="261" />
+    <monster name="Menace" looktype="113" />
+    <monster name="Menacing Carnivor" looktype="1139" lookhead="86" lookbody="70" looklegs="81" lookfeet="91" lookaddons="3" />
+    <monster name="Mephiles" looktype="237" />
+    <monster name="Mercury Blob" looktype="316" />
+    <monster name="Merlkin" looktype="117" />
+    <monster name="Metal Gargoyle" looktype="601" />
+    <monster name="Mezlon The Defiler Stop" looktype="144" lookhead="1" lookbody="38" looklegs="1" lookfeet="60" lookaddons="0" />
+    <monster name="Mezlon The Defiler" looktype="144" lookhead="1" lookbody="38" looklegs="1" lookfeet="60" lookaddons="0" />
+    <monster name="Midnight Asura" looktype="150" />
+    <monster name="Midnight Panther" looktype="385" />
+    <monster name="Midnight Spawn" looktype="315" />
+    <monster name="Mimic" looktype="92" />
+    <monster name="Mind-Wrecking Dream" looktype="300" />
+    <monster name="Minion Of Gaz'Haragoth" looktype="590" />
+    <monster name="Minion Of Versperoth" looktype="491" />
+    <monster name="Minishabaal" looktype="237" />
+    <monster name="Minotaur Amazon" looktype="608" />
+    <monster name="Minotaur Archer" looktype="24" />
+    <monster name="Minotaur Bruiser" looktype="25" />
+    <monster name="Minotaur Cult Follower" looktype="25" />
+    <monster name="Minotaur Cult Prophet" looktype="23" />
+    <monster name="Minotaur Cult Zealot" looktype="29" />
+    <monster name="Minotaur Guard" looktype="29" />
+    <monster name="Minotaur Hunter" looktype="612" />
+    <monster name="Minotaur Idol" looktype="1011" />
+    <monster name="Minotaur Invader" looktype="29" />
+    <monster name="Minotaur Mage" looktype="23" />
+    <monster name="Minotaur Occultist" looktype="23" />
+    <monster name="Minotaur Poacher" looktype="24" />
+    <monster name="Minotaur Totem" looktype="0" />
+    <monster name="Minotaur" looktype="25" />
+    <monster name="Mirror Image" looktype="136" lookhead="76" lookbody="114" looklegs="76" lookfeet="76" lookaddons="0" />
+    <monster name="Misguided Bully" looktype="159" lookhead="58" lookbody="22" looklegs="41" lookfeet="76" lookaddons="0" />
+    <monster name="Misguided Shadow" looktype="985" />
+    <monster name="Misguided Thief" looktype="684" lookhead="58" lookbody="58" looklegs="41" lookfeet="76" lookaddons="0" />
+    <monster name="Modified Gnarlhound" looktype="515" />
+    <monster name="Mole" looktype="1048" />
+    <monster name="Monk" looktype="57" />
+    <monster name="Monstor" looktype="244" />
+    <monster name="Mooh'Tah Master" looktype="611" />
+    <monster name="Mooh'Tah Warrior" looktype="611" />
+    <monster name="Moohtant" looktype="607" />
+    <monster name="Morgaroth" looktype="12" />
+    <monster name="Morguthis" looktype="90" />
+    <monster name="Morik The Gladiator" looktype="131" lookhead="57" lookbody="57" looklegs="95" lookfeet="95" lookaddons="1" />
+    <monster name="Mould Phantom" looktype="1298" lookhead="106" lookbody="60" looklegs="131" lookfeet="116" lookaddons="0" />
+    <monster name="Mountain Troll" looktype="15" />
+    <monster name="Mounted Thorn Knight" looktype="512" lookhead="81" lookbody="121" looklegs="121" lookfeet="121" lookaddons="3" />
+    <monster name="Mozradek" looktype="240" />
+    <monster name="Mr. Punish" looktype="234" />
+    <monster name="Muddy Earth Elemental" looktype="301" />
+    <monster name="Muglex Clan Assassin" looktype="296" />
+    <monster name="Muglex Clan Footman" looktype="61" />
+    <monster name="Muglex Clan Scavenger" looktype="297" />
+    <monster name="Mummy" looktype="65" />
+    <monster name="Munster" looktype="56" />
+    <monster name="Mushroom Sniffer" looktype="60" />
+    <monster name="Mutated Bat" looktype="307" />
+    <monster name="Mutated Human" looktype="323" />
+    <monster name="Mutated Rat" looktype="305" />
+    <monster name="Mutated Tiger" looktype="318" />
+    <monster name="Mutated Visco" looktype="554" />
+    <monster name="Mutated Zalamon" looktype="356" />
+    <monster name="Necromancer Servant" looktype="9" />
+    <monster name="Necromancer" looktype="9" />
+    <monster name="Necropharus" looktype="209" />
+    <monster name="Neutral Deepling Warrior" looktype="441" />
+    <monster name="Nightfiend" looktype="568" />
+    <monster name="Nightmare Of Gaz'Haragoth" looktype="587" />
+    <monster name="Nightmare Scion" looktype="321" />
+    <monster name="Nightmare Tendril" looktype="681" />
+    <monster name="Nightmare" looktype="245" />
+    <monster name="Nightmarish Dream" looktype="78" />
+    <monster name="Nightstalker" looktype="320" />
+    <monster name="Noble Lion" looktype="570" />
+    <monster name="Nomad Female" looktype="150" lookhead="115" lookbody="39" looklegs="59" lookfeet="2" lookaddons="2" />
+    <monster name="Nomad" looktype="150" lookhead="115" lookbody="39" looklegs="59" lookfeet="2" lookaddons="2" />
+    <monster name="Norgle Glacierbeard" looktype="257" />
+    <monster name="Northern Pike" looktype="454" />
+    <monster name="Novice Of The Cult" looktype="133" lookhead="114" lookbody="95" looklegs="114" lookfeet="114" lookaddons="0" />
+    <monster name="Nymph" looktype="989" />
+    <monster name="Oberon'S Bile" looktype="0" />
+    <monster name="Oberon'S Hate" looktype="0" />
+    <monster name="Oberon'S Ire" looktype="0" />
+    <monster name="Oberon'S Spite" looktype="0" />
+    <monster name="Obujos" looktype="445" />
+    <monster name="Ocyakao" looktype="259" />
+    <monster name="Ogre Brute" looktype="857" />
+    <monster name="Ogre Rowdy" looktype="1213" />
+    <monster name="Ogre Ruffian" looktype="1212" />
+    <monster name="Ogre Sage" looktype="1214" />
+    <monster name="Ogre Savage" looktype="858" />
+    <monster name="Ogre Shaman" looktype="859" />
+    <monster name="Old Bear" looktype="919" />
+    <monster name="Old Beholder" looktype="924" />
+    <monster name="Old Bug" looktype="920" />
+    <monster name="Old Giant Spider" looktype="910" />
+    <monster name="Old Pig" looktype="921" />
+    <monster name="Old Spider" looktype="922" />
+    <monster name="Old Wasp" looktype="923" />
+    <monster name="Old Wolf" looktype="918" />
+    <monster name="Omnivora" looktype="717" />
+    <monster name="Omrafir" looktype="12" lookhead="78" lookbody="3" looklegs="79" lookfeet="79" lookaddons="0" />
+    <monster name="Omruc" looktype="90" />
+    <monster name="Orc Armor" looktype="2" />
+    <monster name="Orc Berserker" looktype="8" />
+    <monster name="Orc Cult Fanatic" looktype="59" />
+    <monster name="Orc Cult Inquisitor" looktype="8" />
+    <monster name="Orc Cult Minion" looktype="50" />
+    <monster name="Orc Cult Priest" looktype="6" />
+    <monster name="Orc Cultist" looktype="7" />
+    <monster name="Orc Helmet" looktype="2" />
+    <monster name="Orc Leader" looktype="59" />
+    <monster name="Orc Marauder" looktype="342" />
+    <monster name="Orc Rider" looktype="4" />
+    <monster name="Orc Sambackpack" looktype="5" />
+    <monster name="Orc Shaman" looktype="6" />
+    <monster name="Orc Shield" looktype="2" />
+    <monster name="Orc Spearman" looktype="50" />
+    <monster name="Orc Warlord" looktype="2" />
+    <monster name="Orc Warrior" looktype="7" />
+    <monster name="Orc" looktype="5" />
+    <monster name="Orchid Frog" looktype="226" lookhead="109" lookbody="14" looklegs="109" lookfeet="114" lookaddons="0" />
+    <monster name="Orclops Doomhauler" looktype="934" />
+    <monster name="Orclops Ravager" looktype="935" />
+    <monster name="Orcus The Cruel" looktype="59" />
+    <monster name="Orewalker" looktype="490" />
+    <monster name="Organic Matter" looktype="617" />
+    <monster name="Orshabaal" looktype="201" />
+    <monster name="Outburst" looktype="876" lookhead="79" lookbody="0" looklegs="94" lookfeet="0" lookaddons="3" />
+    <monster name="Overcharge" looktype="290" />
+    <monster name="Overcharged Disruption" looktype="0" />
+    <monster name="Overcharged Energy Elemental" looktype="290" />
+    <monster name="Paiz The Pauperizer" looktype="362" />
+    <monster name="Paladin Familiar" looktype="0" />
+    <monster name="Paladin'S Apparition" looktype="129" lookhead="57" lookbody="42" looklegs="114" lookfeet="114" lookaddons="0" />
+    <monster name="Panda" looktype="123" />
+    <monster name="Parasite" looktype="82" />
+    <monster name="Parrot" looktype="217" />
+    <monster name="Party Skeleton" looktype="33" />
+    <monster name="Penguin" looktype="250" />
+    <monster name="Percht Minion" looktype="53" />
+    <monster name="Percht" looktype="1161" lookhead="95" lookbody="42" looklegs="19" lookfeet="57" lookaddons="0" />
+    <monster name="Phantasm" looktype="241" lookhead="20" lookbody="0" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Pi├▒ata Dragon" looktype="0" />
+    <monster name="Pig" looktype="60" />
+    <monster name="Pigeon" looktype="531" />
+    <monster name="Pillar Of Death" looktype="0" />
+    <monster name="Pillar Of Draining" looktype="0" />
+    <monster name="Pillar Of Healing" looktype="0" />
+    <monster name="Pillar Of Protection" looktype="0" />
+    <monster name="Pillar Of Summoning" looktype="0" />
+    <monster name="Pillar" looktype="0" />
+    <monster name="Pink Butterfly" looktype="213" />
+    <monster name="Pirat Cutthroat" looktype="1346" lookhead="2" lookbody="96" looklegs="78" lookfeet="96" lookaddons="1" />
+    <monster name="Pirat Scoundrel" looktype="1346" lookhead="97" lookbody="119" looklegs="80" lookfeet="80" lookaddons="0" />
+    <monster name="Pirate Buccaneer" looktype="97" />
+    <monster name="Pirate Corsair" looktype="98" />
+    <monster name="Pirate Cutthroat" looktype="96" />
+    <monster name="Pirate Ghost" looktype="196" />
+    <monster name="Pirate Marauder" looktype="93" />
+    <monster name="Pirate Skeleton" looktype="195" />
+    <monster name="Pixie" looktype="982" />
+    <monster name="Plagirath" looktype="862" lookhead="84" lookbody="62" looklegs="60" lookfeet="79" lookaddons="1" />
+    <monster name="Plagueroot" looktype="1121" />
+    <monster name="Plaguesmith" looktype="247" />
+    <monster name="Plaguethrower" looktype="0" />
+    <monster name="Plant Abomination" looktype="310" />
+    <monster name="Plant Attendant" looktype="567" />
+    <monster name="Poacher" looktype="129" lookhead="115" lookbody="119" looklegs="119" lookfeet="115" lookaddons="1" />
+    <monster name="Poison Spider" looktype="36" />
+    <monster name="Polar Bear" looktype="42" />
+    <monster name="Poodle" looktype="473" />
+    <monster name="Pooka" looktype="977" />
+    <monster name="Possessed Tree" looktype="310" />
+    <monster name="Preceptor Lazare" looktype="1078" />
+    <monster name="Priestess Of The Wild Sun" looktype="1199" lookhead="114" lookbody="78" looklegs="94" lookfeet="0" lookaddons="0" />
+    <monster name="Priestess" looktype="58" />
+    <monster name="Primitive" looktype="143" lookhead="1" lookbody="1" looklegs="1" lookfeet="1" lookaddons="0" />
+    <monster name="Prince Drazzak" looktype="12" lookhead="77" lookbody="78" looklegs="94" lookfeet="54" lookaddons="0" />
+    <monster name="Professor Maxxen" looktype="679" />
+    <monster name="Purple Butterfly" looktype="213" />
+    <monster name="Putrid Mummy" looktype="976" />
+    <monster name="Pythius The Rotten" looktype="231" />
+    <monster name="Quara Constrictor Scout" looktype="46" />
+    <monster name="Quara Constrictor" looktype="46" />
+    <monster name="Quara Hydromancer Scout" looktype="47" />
+    <monster name="Quara Hydromancer" looktype="47" />
+    <monster name="Quara Mantassin Scout" looktype="72" />
+    <monster name="Quara Mantassin" looktype="72" />
+    <monster name="Quara Pincher Scout" looktype="77" />
+    <monster name="Quara Pincher" looktype="77" />
+    <monster name="Quara Predator Scout" looktype="20" />
+    <monster name="Quara Predator" looktype="20" />
+    <monster name="Rabbit" looktype="74" />
+    <monster name="Rage Of Mazoran" looktype="243" />
+    <monster name="Rage Squid" looktype="1059" lookhead="94" lookbody="78" looklegs="78" lookfeet="0" lookaddons="0" />
+    <monster name="Ragiaz" looktype="862" lookhead="76" lookbody="57" looklegs="19" lookfeet="0" lookaddons="3" />
+    <monster name="Raging Fire" looktype="242" />
+    <monster name="Raging Mage" looktype="416" />
+    <monster name="Rahemos" looktype="87" />
+    <monster name="Rat" looktype="21" />
+    <monster name="Ravenous Beyondling" looktype="876" lookhead="77" lookbody="80" looklegs="85" lookfeet="94" lookaddons="0" />
+    <monster name="Ravenous Hunger" looktype="556" />
+    <monster name="Ravenous Lava Lurker" looktype="1041" />
+    <monster name="Raxias" looktype="980" lookhead="79" lookbody="114" looklegs="82" lookfeet="79" lookaddons="0" />
+    <monster name="Razzagorn" looktype="842" lookhead="78" lookbody="94" looklegs="52" lookfeet="126" lookaddons="0" />
+    <monster name="Reality Reaver" looktype="879" />
+    <monster name="Realityquake" looktype="0" />
+    <monster name="Red Butterfly" looktype="228" />
+    <monster name="Redeemed Soul" looktype="714" />
+    <monster name="Reflection Of Mawhawk" looktype="595" />
+    <monster name="Reflection Of Obujos" looktype="445" />
+    <monster name="Renegade Knight" looktype="268" lookhead="97" lookbody="132" looklegs="76" lookfeet="98" lookaddons="2" />
+    <monster name="Renegade Orc" looktype="59" />
+    <monster name="Renegade Quara Constrictor" looktype="46" />
+    <monster name="Renegade Quara Hydromancer" looktype="47" />
+    <monster name="Renegade Quara Mantassin" looktype="72" />
+    <monster name="Renegade Quara Pincher" looktype="77" />
+    <monster name="Renegade Quara Predator" looktype="20" />
+    <monster name="Retainer Of Baeloc" looktype="100" />
+    <monster name="Retching Horror" looktype="588" />
+    <monster name="Ribstride" looktype="101" />
+    <monster name="Rift Breacher" looktype="875" />
+    <monster name="Rift Brood" looktype="290" />
+    <monster name="Rift Fragment" looktype="0" />
+    <monster name="Rift Invader" looktype="290" />
+    <monster name="Rift Lord" looktype="12" lookhead="9" lookbody="19" looklegs="9" lookfeet="85" lookaddons="0" />
+    <monster name="Rift Minion" looktype="882" />
+    <monster name="Rift Phantom" looktype="48" />
+    <monster name="Rift Scythe" looktype="300" />
+    <monster name="Rift Spawn" looktype="12" lookhead="9" lookbody="0" looklegs="9" lookfeet="85" lookaddons="0" />
+    <monster name="Rift Worm" looktype="295" />
+    <monster name="Ripper Spectre" looktype="1119" lookhead="101" lookbody="39" looklegs="61" lookfeet="39" lookaddons="0" />
+    <monster name="Risen Soldier" looktype="306" />
+    <monster name="Roaring Lion" looktype="570" />
+    <monster name="Roaring Water Elemental" looktype="11" />
+    <monster name="Robby The Reckless" looktype="129" lookhead="76" lookbody="132" looklegs="118" lookfeet="114" lookaddons="1" />
+    <monster name="Rocko" looktype="67" />
+    <monster name="Rocky" looktype="95" />
+    <monster name="Ron The Ripper" looktype="151" lookhead="95" lookbody="94" looklegs="117" lookfeet="97" lookaddons="1" />
+    <monster name="Rorc" looktype="550" />
+    <monster name="Rot Elemental" looktype="615" />
+    <monster name="Rotten Golem" looktype="1312" />
+    <monster name="Rottie The Rotworm" looktype="26" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Rotworm Queen" looktype="295" />
+    <monster name="Rotworm" looktype="26" />
+    <monster name="Rukor Zad" looktype="152" lookhead="114" lookbody="95" looklegs="95" lookfeet="95" lookaddons="3" />
+    <monster name="Running Elite Orc Guard" looktype="2" />
+    <monster name="Rupture" looktype="875" lookhead="77" lookbody="98" looklegs="3" lookfeet="85" lookaddons="0" />
+    <monster name="Rustheap Golem" looktype="603" />
+    <monster name="Sacred Snake" looktype="28" />
+    <monster name="Sacred Spider" looktype="219" />
+    <monster name="Salamander Trainer" looktype="15" />
+    <monster name="Salamander" looktype="529" />
+    <monster name="Sand Brood" looktype="82" />
+    <monster name="Sand Vortex" looktype="0" />
+    <monster name="Sandcrawler" looktype="350" />
+    <monster name="Sandstone Scorpion" looktype="398" />
+    <monster name="Scar Tribe Shaman" looktype="6" />
+    <monster name="Scar Tribe Warrior" looktype="7" />
+    <monster name="Scarab" looktype="83" />
+    <monster name="Scarlett Etzel" looktype="1201" />
+    <monster name="Schiach" looktype="1162" lookhead="19" lookbody="10" looklegs="19" lookfeet="57" lookaddons="0" />
+    <monster name="Scorn Of The Emperor" looktype="351" />
+    <monster name="Scorpion" looktype="43" />
+    <monster name="Sea Serpent" looktype="275" />
+    <monster name="Seacrest Serpent" looktype="675" />
+    <monster name="Seagull" looktype="223" />
+    <monster name="Security Golem" looktype="326" />
+    <monster name="Serpent Spawn" looktype="220" />
+    <monster name="Shaburak Demon" looktype="417" />
+    <monster name="Shaburak Lord" looktype="409" />
+    <monster name="Shaburak Prince" looktype="418" />
+    <monster name="Shadow Fiend" looktype="320" />
+    <monster name="Shadow Hound" looktype="322" />
+    <monster name="Shadow Pupil" looktype="551" />
+    <monster name="Shadow Tentacle" looktype="681" />
+    <monster name="Shadowpelt" looktype="1040" />
+    <monster name="Shaper Matriarch" looktype="933" />
+    <monster name="Shard Of Corruption" looktype="67" />
+    <monster name="Shard Of Magnor" looktype="1221" lookhead="19" lookbody="76" looklegs="114" lookfeet="76" lookaddons="3" />
+    <monster name="Shardhead" looktype="261" />
+    <monster name="Shark" looktype="453" />
+    <monster name="Sharpclaw" looktype="1031" />
+    <monster name="Sharptooth" looktype="20" />
+    <monster name="Sheep" looktype="14" />
+    <monster name="Shiversleep" looktype="592" />
+    <monster name="Shock Head" looktype="579" />
+    <monster name="Shredderthrower" looktype="0" />
+    <monster name="Shulgrax" looktype="842" />
+    <monster name="Sibang" looktype="118" />
+    <monster name="Sight Of Surrender" looktype="583" />
+    <monster name="Silencer" looktype="585" />
+    <monster name="Silver Rabbit" looktype="262" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" lookaddons="0" />
+    <monster name="Sin Devourer" looktype="320" />
+    <monster name="Sir Baeloc" looktype="1222" lookhead="19" lookbody="0" looklegs="0" lookfeet="0" lookaddons="1" />
+    <monster name="Sir Nictros" looktype="1222" lookhead="19" lookbody="0" looklegs="0" lookfeet="0" lookaddons="3" />
+    <monster name="Sir Valorcrest" looktype="287" />
+    <monster name="Skeleton Elite Warrior" looktype="298" />
+    <monster name="Skeleton Warrior" looktype="298" />
+    <monster name="Skeleton" looktype="33" />
+    <monster name="Skunk" looktype="106" />
+    <monster name="Slick Water Elemental" looktype="286" />
+    <monster name="Slim" looktype="101" />
+    <monster name="Slime" looktype="19" />
+    <monster name="Slug" looktype="407" />
+    <monster name="Smuggler Baron Silvertoe" looktype="134" lookhead="38" lookbody="0" looklegs="94" lookfeet="95" lookaddons="0" />
+    <monster name="Smuggler" looktype="134" lookhead="95" lookbody="0" looklegs="113" lookfeet="115" lookaddons="0" />
+    <monster name="Snail Slime" looktype="19" />
+    <monster name="Snake God Essence" looktype="356" />
+    <monster name="Snake Thing" looktype="220" />
+    <monster name="Snake" looktype="28" />
+    <monster name="Solid Frozen Horror" looktype="261" />
+    <monster name="Somewhat Beatable" looktype="34" />
+    <monster name="Son Of Verminor" looktype="19" />
+    <monster name="Sorcerer Familiar" looktype="0" />
+    <monster name="Sorcerer'S Apparition" looktype="138" lookhead="95" lookbody="114" looklegs="52" lookfeet="76" lookaddons="0" />
+    <monster name="Soul Of Dragonking zyrtarch" looktype="938" />
+    <monster name="Soul Reaper" looktype="878" />
+    <monster name="Soul-Broken Harbinger" looktype="1137" lookhead="124" lookbody="31" looklegs="17" lookfeet="81" lookaddons="3" />
+    <monster name="Soulcatcher" looktype="0" />
+    <monster name="Souleater" looktype="355" />
+    <monster name="Soulless Minion" looktype="68" />
+    <monster name="Spark Of Destruction" looktype="879" />
+    <monster name="Sparkion" looktype="877" />
+    <monster name="Spawn Of Havoc" looktype="49" />
+    <monster name="Spectral Scum" looktype="195" />
+    <monster name="Spectre" looktype="235" lookhead="20" lookbody="0" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Sphere Of Wrath" looktype="979" />
+    <monster name="Sphinx" looktype="1188" lookhead="50" lookbody="39" looklegs="0" lookfeet="3" lookaddons="1" />
+    <monster name="Spider Queen" looktype="219" />
+    <monster name="Spider" looktype="30" />
+    <monster name="Spidris Elite" looktype="457" />
+    <monster name="Spidris" looktype="457" />
+    <monster name="Spiky Carnivor" looktype="1139" lookhead="79" lookbody="119" looklegs="57" lookfeet="86" lookaddons="1" />
+    <monster name="Spirit Of Earth" looktype="67" />
+    <monster name="Spirit Of Fertility" looktype="11" />
+    <monster name="Spirit Of Fire" looktype="242" />
+    <monster name="Spirit Of Water" looktype="11" />
+    <monster name="Spit Nettle" looktype="221" />
+    <monster name="Spite Of The Emperor" looktype="351" />
+    <monster name="Spitter" looktype="461" />
+    <monster name="Splasher" looktype="72" />
+    <monster name="Squid Warden" looktype="1059" lookhead="9" lookbody="21" looklegs="41" lookfeet="85" lookaddons="0" />
+    <monster name="Squidgy Slime" looktype="19" />
+    <monster name="Squire Of Nictros" looktype="306" />
+    <monster name="Squirrel" looktype="274" />
+    <monster name="Stabilizing Dread Intruder" looktype="882" />
+    <monster name="Stabilizing Reality Reaver" looktype="879" />
+    <monster name="Stalker" looktype="128" lookhead="78" lookbody="116" looklegs="95" lookfeet="114" lookaddons="0" />
+    <monster name="Stampor" looktype="381" />
+    <monster name="Starving Wolf" looktype="27" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Stolen Knowledge Of Armor" looktype="1061" />
+    <monster name="Stolen Knowledge Of Healing" looktype="1061" />
+    <monster name="Stolen Knowledge Of Lifesteal" looktype="1061" />
+    <monster name="Stolen Knowledge Of Spells" looktype="1061" />
+    <monster name="Stolen Knowledge Of Summoning" looktype="1061" />
+    <monster name="Stolen Soul" looktype="294" />
+    <monster name="Stolen Tome Of Portals" looktype="0" />
+    <monster name="Stone Devourer" looktype="486" />
+    <monster name="Stone Golem" looktype="67" />
+    <monster name="Stone Rhino" looktype="936" />
+    <monster name="Stonecracker" looktype="55" />
+    <monster name="Stonerefiner" looktype="1032" />
+    <monster name="Strange Slime" looktype="19" />
+    <monster name="Strong Glooth Horror" looktype="677" />
+    <monster name="Sulphur Scuttler" looktype="352" />
+    <monster name="Sun-Marked Goanna" looktype="1195" />
+    <monster name="Supercharged Mazzinor" looktype="979" />
+    <monster name="Superior Death Minion" looktype="84" />
+    <monster name="Svoren The Mad" looktype="254" lookhead="80" lookbody="99" looklegs="118" lookfeet="38" lookaddons="0" />
+    <monster name="Swamp Troll" looktype="76" />
+    <monster name="Swampling" looktype="535" />
+    <monster name="Swan Maiden" looktype="138" />
+    <monster name="Swarmer Hatchling" looktype="460" />
+    <monster name="Swarmer" looktype="460" />
+    <monster name="Sword Of Vengeance" looktype="0" />
+    <monster name="Tanjis" looktype="446" />
+    <monster name="Tarantula" looktype="219" />
+    <monster name="Tarbaz" looktype="842" />
+    <monster name="Tarnished Spirit" looktype="566" />
+    <monster name="Tazhadur" looktype="947" lookhead="24" lookbody="120" looklegs="38" lookfeet="95" lookaddons="3" />
+    <monster name="Teleskor" looktype="298" />
+    <monster name="Tentacle Of The Deep Terror" looktype="681" />
+    <monster name="Terofar" looktype="12" lookhead="19" lookbody="0" looklegs="77" lookfeet="79" lookaddons="0" />
+    <monster name="Terramite" looktype="346" />
+    <monster name="Terrified Elephant" looktype="211" />
+    <monster name="Terror Bird" looktype="218" />
+    <monster name="Terrorsleep" looktype="593" />
+    <monster name="Thalas" looktype="90" />
+    <monster name="Thanatursus" looktype="1134" lookhead="19" lookbody="0" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="Thawing Dragon Lord" looktype="1077" />
+    <monster name="The Abomination" looktype="238" />
+    <monster name="The Armored Voidborn" looktype="987" />
+    <monster name="The Astral Source" looktype="0" />
+    <monster name="The Axeorcist" looktype="8" />
+    <monster name="The Baron From Below" looktype="1045" />
+    <monster name="The Blazing Rose" looktype="1068" lookhead="95" lookbody="94" looklegs="57" lookfeet="79" lookaddons="2" />
+    <monster name="The Blazing Time Guardian" looktype="944" />
+    <monster name="The Blightfather" looktype="348" />
+    <monster name="The Bloodtusk" looktype="199" />
+    <monster name="The Bloodweb" looktype="263" />
+    <monster name="The Book Of Death" looktype="1061" />
+    <monster name="The Book Of Secrets" looktype="0" />
+    <monster name="The Cold Of Winter" looktype="53" />
+    <monster name="The Collector" looktype="261" />
+    <monster name="The Corruptor Of Souls" looktype="875" lookhead="5" lookbody="5" looklegs="5" lookfeet="5" lookaddons="3" />
+    <monster name="The Count Of The Core" looktype="1046" />
+    <monster name="The Count" looktype="287" />
+    <monster name="The Dark Dancer" looktype="58" />
+    <monster name="The Destruction" looktype="876" lookhead="78" lookbody="80" looklegs="77" lookfeet="19" lookaddons="0" />
+    <monster name="The Devourer Of Secrets" looktype="309" />
+    <monster name="The Diamond Blossom" looktype="1068" lookhead="85" lookbody="0" looklegs="86" lookfeet="79" lookaddons="3" />
+    <monster name="The Distorted Astral Source" looktype="0" />
+    <monster name="The Dreadorian" looktype="234" />
+    <monster name="The Duke Of The Depths" looktype="1047" />
+    <monster name="The Enraged Thorn Knight" looktype="512" lookhead="81" lookbody="121" looklegs="121" lookfeet="121" lookaddons="3" />
+    <monster name="The Evil Eye" looktype="210" />
+    <monster name="The False God" looktype="984" />
+    <monster name="The Fear Feaster" looktype="1061" lookhead="79" lookbody="83" looklegs="113" lookfeet="0" lookaddons="1" />
+    <monster name="The First Dragon" looktype="947" lookhead="94" lookbody="80" looklegs="120" lookfeet="60" lookaddons="3" />
+    <monster name="The Freezing Time Guardian" looktype="943" />
+    <monster name="The Frog Prince" looktype="224" lookhead="69" lookbody="66" looklegs="69" lookfeet="66" lookaddons="0" />
+    <monster name="The Hag" looktype="264" lookhead="78" lookbody="97" looklegs="95" lookfeet="95" lookaddons="0" />
+    <monster name="The Hairy One" looktype="116" />
+    <monster name="The Halloween Hare" looktype="74" />
+    <monster name="The Handmaiden" looktype="230" />
+    <monster name="The Heat Of Summer" looktype="49" />
+    <monster name="The Horned Fox" looktype="29" />
+    <monster name="The Hunger" looktype="876" lookhead="77" lookbody="80" looklegs="85" lookfeet="94" lookaddons="0" />
+    <monster name="The Hungry Baron From below" looktype="1045" />
+    <monster name="The Imperor" looktype="237" />
+    <monster name="The Keeper" looktype="220" />
+    <monster name="The Last Lore Keeper" looktype="939" />
+    <monster name="The Lily Of Night" looktype="1068" lookhead="90" lookbody="38" looklegs="90" lookfeet="79" lookaddons="2" />
+    <monster name="The Lord Of The Lice" looktype="305" />
+    <monster name="The Many" looktype="121" />
+    <monster name="The Masked Marauder" looktype="234" />
+    <monster name="The Mutated Pumpkin" looktype="292" />
+    <monster name="The Nightmare Beast" looktype="1144" />
+    <monster name="The Noxious Spawn" looktype="220" />
+    <monster name="The Obliverator" looktype="35" />
+    <monster name="The Old Widow" looktype="208" />
+    <monster name="The Pale Count" looktype="557" />
+    <monster name="The Percht Queen" looktype="0" />
+    <monster name="The Pit Lord" looktype="55" />
+    <monster name="The Plasmother" looktype="238" />
+    <monster name="The Rage" looktype="876" lookhead="85" lookbody="114" looklegs="19" lookfeet="0" lookaddons="0" />
+    <monster name="The Ravager" looktype="87" />
+    <monster name="The Remorseless Corruptor" looktype="875" lookhead="77" lookbody="98" looklegs="3" lookfeet="85" lookaddons="3" />
+    <monster name="The Sandking Fake" looktype="1013" />
+    <monster name="The Sandking" looktype="1013" />
+    <monster name="The Scion Of Havoc" looktype="875" lookhead="94" lookbody="79" looklegs="79" lookfeet="79" lookaddons="3" />
+    <monster name="The Scourge Of Oblivion" looktype="875" lookhead="79" lookbody="79" looklegs="60" lookfeet="79" lookaddons="3" />
+    <monster name="The Shatterer" looktype="842" lookhead="77" lookbody="113" looklegs="21" lookfeet="94" lookaddons="0" />
+    <monster name="The Shielded Thorn Knight" looktype="512" lookhead="81" lookbody="121" looklegs="121" lookfeet="121" lookaddons="3" />
+    <monster name="The Sinister Hermit Dirty" looktype="153" lookhead="1" lookbody="63" looklegs="1" lookfeet="63" lookaddons="3" />
+    <monster name="The Sinister Hermit" looktype="153" lookhead="1" lookbody="30" looklegs="30" lookfeet="11" lookaddons="3" />
+    <monster name="The Snapper" looktype="119" />
+    <monster name="The Souldespoiler" looktype="875" lookhead="11" lookbody="0" looklegs="94" lookfeet="95" lookaddons="0" />
+    <monster name="The Source Of Corruption" looktype="979" />
+    <monster name="The Spellstealer" looktype="12" lookhead="81" lookbody="100" looklegs="0" lookfeet="0" lookaddons="0" />
+    <monster name="The Time Guardian" looktype="945" />
+    <monster name="The Unarmored Voidborn" looktype="987" />
+    <monster name="The Voice Of Ruin" looktype="344" />
+    <monster name="The Weakened Count" looktype="68" />
+    <monster name="The Welter" looktype="563" />
+    <monster name="Thieving Squirrel" looktype="274" />
+    <monster name="Thorn Minion" looktype="717" />
+    <monster name="Thorn Steed" looktype="626" />
+    <monster name="Thornback Tortoise" looktype="198" />
+    <monster name="Thornfire Wolf" looktype="414" />
+    <monster name="Thul" looktype="46" />
+    <monster name="Tiger" looktype="125" />
+    <monster name="Time Keeper" looktype="560" />
+    <monster name="Time Waster" looktype="0" />
+    <monster name="Tiquandas Revenge" looktype="120" />
+    <monster name="Tirecz" looktype="334" />
+    <monster name="Toad" looktype="222" />
+    <monster name="Tomb Servant" looktype="100" />
+    <monster name="Tormented Ghost" looktype="48" />
+    <monster name="Tormentor" looktype="245" />
+    <monster name="Tortoise" looktype="197" />
+    <monster name="Training Machine" looktype="1142" />
+    <monster name="Tremor Worm" looktype="295" />
+    <monster name="Tremorak" looktype="285" />
+    <monster name="Troll Champion" looktype="281" />
+    <monster name="Troll Guard" looktype="281" />
+    <monster name="Troll Legionnaire" looktype="53" />
+    <monster name="Troll Marauder" looktype="281" />
+    <monster name="Troll-Trained Salamander" looktype="529" />
+    <monster name="Troll" looktype="15" />
+    <monster name="Tromphonyte" looktype="381" />
+    <monster name="True Dawnfire Asura" looktype="1068" lookhead="79" lookbody="94" looklegs="120" lookfeet="79" lookaddons="0" />
+    <monster name="True Frost Flower Asura" looktype="1068" lookhead="105" lookbody="0" looklegs="105" lookfeet="8" lookaddons="0" />
+    <monster name="True Midnight Asura" looktype="1068" lookhead="72" lookbody="95" looklegs="72" lookfeet="0" lookaddons="0" />
+    <monster name="Tunnel Tyrant" looktype="1035" />
+    <monster name="Turbulent Elemental" looktype="1314" />
+    <monster name="Twisted Pooka" looktype="978" />
+    <monster name="Twisted Shaper" looktype="932" lookhead="68" lookbody="0" looklegs="0" lookfeet="94" lookaddons="0" />
+    <monster name="Tyrn" looktype="562" />
+    <monster name="Ugly Monster" looktype="1218" />
+    <monster name="Unaz The Mean" looktype="1268" />
+    <monster name="Unbeatable Dragon" looktype="39" />
+    <monster name="Unbound Blightwalker" looktype="246" />
+    <monster name="Unbound Defiler" looktype="238" />
+    <monster name="Unbound Demon Outcast" looktype="590" />
+    <monster name="Unbound Demon" looktype="35" />
+    <monster name="Undead Cavebear" looktype="384" />
+    <monster name="Undead Dragon" looktype="231" />
+    <monster name="Undead Elite Gladiator" looktype="306" />
+    <monster name="Undead Gladiator" looktype="306" />
+    <monster name="Undead Mine Worker" looktype="33" />
+    <monster name="Undead Minion" looktype="37" />
+    <monster name="Undead Prospector" looktype="18" />
+    <monster name="Ungreez" looktype="35" />
+    <monster name="Unpleasant Dream" looktype="349" />
+    <monster name="Unstable Spark" looktype="290" />
+    <monster name="Urmahlullu The Immaculate" looktype="1197" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="0" />
+    <monster name="Urmahlullu The Tamed" looktype="1197" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="0" />
+    <monster name="Urmahlullu The Weakened" looktype="1197" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="0" />
+    <monster name="Ushuriel" looktype="12" />
+    <monster name="Valkyrie" looktype="139" lookhead="113" lookbody="38" looklegs="95" lookfeet="96" lookaddons="0" />
+    <monster name="Vampire Bride" looktype="312" />
+    <monster name="Vampire Pig" looktype="60" />
+    <monster name="Vampire Viscount" looktype="555" />
+    <monster name="Vampire" looktype="68" />
+    <monster name="Vampiric Blood" looktype="1041" />
+    <monster name="Vashresamun" looktype="90" />
+    <monster name="Vermin Swarm" looktype="349" />
+    <monster name="Verminor" looktype="12" lookhead="38" lookbody="114" looklegs="0" lookfeet="94" lookaddons="0" />
+    <monster name="Versperoth" looktype="295" />
+    <monster name="Vexclaw" looktype="854" />
+    <monster name="Vibrant Phantom" looktype="1298" lookhead="85" lookbody="85" looklegs="88" lookfeet="91" lookaddons="0" />
+    <monster name="Vicious Manbat" looktype="554" />
+    <monster name="Vicious Squire" looktype="131" lookhead="97" lookbody="26" looklegs="71" lookfeet="114" lookaddons="1" />
+    <monster name="Vile Grandmaster" looktype="268" lookhead="97" lookbody="0" looklegs="95" lookfeet="94" lookaddons="1" />
+    <monster name="Void" looktype="0" />
+    <monster name="Voidshard" looktype="878" />
+    <monster name="Vok The Freakish" looktype="1268" />
+    <monster name="Vulcongra" looktype="509" />
+    <monster name="Wailing Widow" looktype="347" />
+    <monster name="Walker" looktype="605" />
+    <monster name="War Golem" looktype="326" />
+    <monster name="War Servant" looktype="326" />
+    <monster name="War Wolf" looktype="3" />
+    <monster name="Warlock" looktype="130" lookhead="19" lookbody="71" looklegs="128" lookfeet="128" lookaddons="1" />
+    <monster name="Warlord Ruzad" looktype="2" />
+    <monster name="Warm Fire" looktype="49" />
+    <monster name="Wasp" looktype="44" />
+    <monster name="Waspoid" looktype="462" />
+    <monster name="Water Buffalo" looktype="523" />
+    <monster name="Water Elemental" looktype="286" />
+    <monster name="Weakened Demon" looktype="12" lookhead="92" lookbody="0" looklegs="95" lookfeet="100" lookaddons="0" />
+    <monster name="Weakened Frazzlemaw" looktype="594" />
+    <monster name="Weakened Glooth Horror" looktype="677" />
+    <monster name="Weakened Shlorg" looktype="565" />
+    <monster name="Webster" looktype="263" />
+    <monster name="Weeper" looktype="489" />
+    <monster name="Werebadger" looktype="729" />
+    <monster name="Werebear" looktype="720" />
+    <monster name="Wereboar" looktype="721" />
+    <monster name="Werefox" looktype="1030" />
+    <monster name="Werehyaena Shaman" looktype="1300" />
+    <monster name="Werehyaena" looktype="1300" lookhead="57" lookbody="77" looklegs="1" lookfeet="1" lookaddons="0" />
+    <monster name="Werelion" looktype="1301" lookhead="58" lookbody="2" looklegs="94" lookfeet="0" lookaddons="3" />
+    <monster name="Werelioness" looktype="1301" lookhead="58" lookbody="2" looklegs="94" lookfeet="94" lookaddons="0" />
+    <monster name="Werewolf" looktype="308" />
+    <monster name="Whirling Blades" looktype="102" />
+    <monster name="White Deer" looktype="400" />
+    <monster name="White Lion" looktype="1290" />
+    <monster name="White Pale" looktype="564" />
+    <monster name="White Shade" looktype="560" />
+    <monster name="Wiggler" looktype="510" />
+    <monster name="Wild Dog" looktype="32" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" lookaddons="0" />
+    <monster name="Wild Fire Magic" looktype="0" />
+    <monster name="Wild Fury Magic" looktype="0" />
+    <monster name="Wild Horse" looktype="393" />
+    <monster name="Wild Knowledge" looktype="293" />
+    <monster name="Wild Nature Magic" looktype="0" />
+    <monster name="Wild Warrior" looktype="131" lookhead="57" lookbody="57" looklegs="57" lookfeet="57" lookaddons="0" />
+    <monster name="Wild Water Magic" looktype="0" />
+    <monster name="Wildness Of Urmahlullu" looktype="570" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="0" />
+    <monster name="Willi Wasp" looktype="44" />
+    <monster name="Wilting Leaf Golem" looktype="573" />
+    <monster name="Wine Cask" looktype="0" />
+    <monster name="Winter Wolf" looktype="52" />
+    <monster name="Wisdom Of Urmahlullu" looktype="1200" lookhead="57" lookbody="75" looklegs="38" lookfeet="86" lookaddons="0" />
+    <monster name="Wisp" looktype="294" />
+    <monster name="Witch" looktype="54" />
+    <monster name="Wolf" looktype="27" />
+    <monster name="Woodling" looktype="535" />
+    <monster name="Worker Golem" looktype="304" />
+    <monster name="World Devourer" looktype="875" lookhead="82" lookbody="79" looklegs="81" lookfeet="113" lookaddons="3" />
+    <monster name="Worm Priestess" looktype="613" />
+    <monster name="Wrath Of The Emperor" looktype="351" />
+    <monster name="Wyrm" looktype="291" />
+    <monster name="Wyvern" looktype="239" />
+    <monster name="Xenia" looktype="137" lookhead="95" lookbody="115" looklegs="115" lookfeet="95" lookaddons="0" />
+    <monster name="Xogixath" looktype="842" lookhead="3" lookbody="16" looklegs="75" lookfeet="19" lookaddons="2" />
+    <monster name="Yaga The Crone" looktype="54" />
+    <monster name="Yakchal" looktype="149" lookhead="8" lookbody="0" looklegs="85" lookfeet="85" lookaddons="1" />
+    <monster name="Yalahari Despoiler" looktype="309" />
+    <monster name="Yalahari" looktype="309" />
+    <monster name="Yellow Butterfly" looktype="10" />
+    <monster name="Yeti" looktype="110" />
+    <monster name="Yielothax" looktype="408" />
+    <monster name="Young Goanna" looktype="1196" />
+    <monster name="Young Sea Serpent" looktype="317" />
+    <monster name="Young Troll" looktype="15" />
+    <monster name="Zamulosh" looktype="862" lookhead="16" lookbody="12" looklegs="73" lookfeet="55" lookaddons="0" />
+    <monster name="Zamulosh2" looktype="862" lookhead="16" lookbody="12" looklegs="73" lookfeet="55" lookaddons="0" />
+    <monster name="Zamulosh3" looktype="862" lookhead="16" lookbody="12" looklegs="73" lookfeet="55" lookaddons="0" />
+    <monster name="Zanakeph" looktype="231" />
+    <monster name="Zarabustor" looktype="130" />
+    <monster name="Zarcorix Of Yalahar" looktype="309" />
+    <monster name="Zavarash" looktype="12" lookhead="19" lookbody="0" looklegs="77" lookfeet="79" lookaddons="0" />
+    <monster name="Zevelon Duskbringer" looktype="287" />
+    <monster name="Zomba" looktype="41" />
+    <monster name="Zombie" looktype="311" />
+    <monster name="Zoralurk" looktype="12" />
+    <monster name="Zorvorax" looktype="928" />
+    <monster name="Zugurosh" looktype="12" lookhead="2" lookbody="35" looklegs="57" lookfeet="91" lookaddons="0" />
+    <monster name="Zulazza The Corruptor" looktype="334" />
+    <monster name="Zushuka" looktype="149" lookhead="86" lookbody="12" looklegs="31" lookfeet="60" lookaddons="0" />
+</monsters>

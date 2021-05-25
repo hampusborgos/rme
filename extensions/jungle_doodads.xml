@@ -1,0 +1,217 @@
+<materialsextension name="Jungle Doodads" author="Remere" description="This adds most of the missing Jungle doodads" client="8.00;8.10;8.20 - 8.31">
+
+    <brush name="jungle trees" type="doodad" server_lookid="3744" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3743" chance="10"/>
+        <item id="3744" chance="10"/>
+        <item id="3745" chance="10"/>
+    </brush>
+
+    <brush name="jungle bushes" type="doodad" server_lookid="3746" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3746" chance="10"/>
+        <item id="3747" chance="10"/>
+        <item id="3748" chance="10"/>
+        <item id="3749" chance="10"/>
+        <item id="3750" chance="10"/>
+        <item id="3751" chance="10"/>
+        <item id="3753" chance="10"/>
+        <item id="3870" chance="10"/>
+        <item id="3871" chance="10"/>
+    </brush>
+
+    <brush name="jungle umbrellas" type="doodad" server_lookid="3755" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3755" chance="10"/>
+        <item id="3756" chance="10"/>
+        <item id="3757" chance="10"/>
+        <item id="3758" chance="10"/>
+        <item id="3759" chance="10"/>
+        <item id="3760" chance="10"/>
+    </brush>
+
+    <brush name="jungle giant flowers" type="doodad" server_lookid="3752" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3752" chance="10"/>
+        <item id="3872" chance="10"/>
+        <item id="3873" chance="10"/>
+        <item id="3876" chance="10"/>
+        <item id="3877" chance="10"/>
+        <item id="3878" chance="10"/>
+        <item id="3879" chance="10"/>
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3880"/> </tile>
+			<tile x="1" y="0"> <item id="3881"/> </tile>
+			<tile x="0" y="1"> <item id="3882"/> </tile>
+			<tile x="1" y="1"> <item id="3883"/> </tile>
+		</composite>
+        <item id="3884" chance="10"/>
+        <item id="3885" chance="10"/>
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3895"/> </tile>
+			<tile x="1" y="0"> <item id="3896"/> </tile>
+			<tile x="0" y="1"> <item id="3897"/> </tile>
+			<tile x="1" y="1"> <item id="3898"/> </tile>
+		</composite>
+        <item id="3899" chance="10"/>
+        <item id="3921" chance="10"/>
+    </brush>
+
+    <brush name="pearl flowers" type="doodad" server_lookid="3901" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3900" chance="10"/>
+        <item id="3901" chance="10"/>
+        <item id="3902" chance="10"/>
+	</brush>
+
+    <brush name="jungle flowers" type="doodad" server_lookid="3874" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3874" chance="10"/>
+        <item id="3875" chance="10"/>
+        <item id="3891" chance="10"/>
+	</brush>
+
+    <brush name="giant ball mushrooms" type="doodad" server_lookid="3920" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3920" chance="10"/>
+	</brush>
+
+	<!-- This extends upon the normal small mushrooms brush -->
+    <brush name="small mushrooms" type="doodad">
+        <item id="3918" chance="10"/>
+        <item id="3919" chance="10"/>
+	</brush>
+
+	<brush name="skinny branches" type="wall" server_lookid="3783">
+		<wall type="horizontal">         <item id="3778" chance="1"/> </wall>
+		<wall type="vertical">           <item id="3784" chance="1"/> </wall>
+		<wall type="pole">               <item id="3783" chance="1"/> </wall>
+		<wall type="intersection">
+			<item id="3799" chance="1"/>
+			<item id="3781" chance="1"/>
+			<item id="3787" chance="1"/>
+			<item id="3792" chance="1"/>
+			<item id="3797" chance="1"/>
+		</wall>
+		<wall type="south end">          <item id="3788" chance="1"/> </wall>
+		<wall type="east end">           <item id="3782" chance="1"/> </wall>
+		<wall type="north end">          <item id="3783" chance="1"/> </wall>
+		<wall type="west end">           <item id="3777" chance="1"/> </wall>
+		<wall type="northeast diagonal"> <item id="3802" chance="1"/> </wall>
+		<wall type="northwest diagonal"> <item id="3803" chance="1"/> </wall>
+		<wall type="southeast diagonal"> <item id="3800" chance="1"/> </wall>
+		<wall type="southwest diagonal"> <item id="3801" chance="1"/> </wall>
+		<wall type="south T">            <item id="3780" chance="1"/> </wall>
+		<wall type="east T">             <item id="3791" chance="1"/> </wall>
+		<wall type="north T">            <item id="3779" chance="1"/> </wall>
+		<wall type="west T">             <item id="3790" chance="1"/> </wall>
+	</brush>
+
+	<!-- Add some exceptions -->
+	<brush name="branches" type="wall">
+		<wall type="north T">
+			<item id="3969" chance="1"/>
+			<item id="3970" chance="1"/>
+		</wall>
+		<wall type="south T">
+			<item id="3969" chance="1"/>
+			<item id="3970" chance="1"/>
+		</wall>
+		<wall type="east T">
+			<item id="3967" chance="1"/>
+			<item id="3968" chance="1"/>
+		</wall>
+		<wall type="west T">
+			<item id="3967" chance="1"/>
+			<item id="3968" chance="1"/>
+		</wall>
+		<wall type="untouchable">
+			<item id="3952" chance="0"/>
+			<item id="3953" chance="0"/>
+			<item id="3954" chance="0"/>
+			<item id="3955" chance="0"/>
+			<item id="3956" chance="0"/>
+			<item id="3957" chance="0"/>
+			<item id="3958" chance="0"/>
+		</wall>
+	</brush>
+
+    <brush name="thick tree" type="doodad" server_lookid="3773" draggable="true" on_blocking="false" thickness="7/90">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3773"/> </tile>
+			<tile x="1" y="0"> <item id="3775"/> </tile>
+			<tile x="0" y="1"> <item id="3774"/> </tile>
+			<tile x="1" y="1"> <item id="3776"/> </tile>
+		</composite>
+	</brush>
+
+    <brush name="thick tree with roots" type="doodad" server_lookid="3957" draggable="true" on_blocking="false" thickness="7/90">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3773"/> </tile>
+			<tile x="1" y="0"> <item id="3956"/> </tile>
+			<tile x="0" y="1"> <item id="3958"/> </tile>
+			<tile x="1" y="1"> <item id="3957"/> </tile>
+		</composite>
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3773"/> </tile>
+			<tile x="1" y="0"> <item id="3952"/> </tile>
+			<tile x="0" y="1"> <item id="3954"/> </tile>
+			<tile x="1" y="1"> <item id="3953"/> </tile>
+		</composite>
+	</brush>
+
+    <brush name="thick tree with vines" type="doodad" server_lookid="3804" draggable="true" on_blocking="false" thickness="7/90">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3773"/> <item id="3804"/> </tile>
+			<tile x="1" y="0"> <item id="3775"/> <item id="3805"/> </tile>
+			<tile x="0" y="1"> <item id="3774"/> <item id="3807"/> </tile>
+			<tile x="1" y="1"> <item id="3776"/> <item id="3806"/> </tile>
+		</composite>
+	</brush>
+
+    <brush name="thick tree with roots and vines" type="doodad" server_lookid="3808" draggable="true" on_blocking="false" thickness="7/90">
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3773"/> <item id="3804"/> </tile>
+			<tile x="1" y="0"> <item id="3956"/> <item id="3805"/> </tile>
+			<tile x="0" y="1"> <item id="3958"/> <item id="3807"/> </tile>
+			<tile x="1" y="1"> <item id="3957"/> <item id="3806"/> </tile>
+		</composite>
+		<composite chance="10">
+			<tile x="0" y="0"> <item id="3773"/> <item id="3804"/> </tile>
+			<tile x="1" y="0"> <item id="3952"/> <item id="3805"/> </tile>
+			<tile x="0" y="1"> <item id="3954"/> <item id="3807"/> </tile>
+			<tile x="1" y="1"> <item id="3953"/> <item id="3806"/> </tile>
+		</composite>
+	</brush>
+
+    <brush name="cactus" type="doodad" server_lookid="3637" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3637" chance="10"/>
+        <item id="3641" chance="10"/>
+        <item id="3646" chance="10"/>
+        <item id="3647" chance="10"/>
+        <item id="3650" chance="10"/>
+    </brush>
+
+    <brush name="spiky cactus" type="doodad" server_lookid="3642" draggable="true" on_blocking="false" thickness="11/90">
+        <item id="3638" chance="10"/>
+        <item id="3642" chance="10"/>
+        <item id="3643" chance="10"/>
+        <item id="3644" chance="10"/>
+        <item id="3645" chance="10"/>
+        <item id="3648" chance="10"/>
+        <item id="3649" chance="10"/>
+    </brush>
+
+    <tileset name="Nature">
+        <doodad>
+			<brush name="cactus" after="roses"/>
+			<brush name="spiky cactus" after="roses"/>
+			<brush name="thick tree with roots and vines" after="tree crown"/>
+			<brush name="thick tree with vines" after="tree crown"/>
+			<brush name="thick tree with roots" after="tree crown"/>
+			<brush name="thick tree" after="tree crown"/>
+			<brush name="skinny branches" after="branches"/>
+            <brush name="jungle trees" after="bamboo plant"/>
+            <brush name="jungle bushes" after="bamboo plant"/>
+            <brush name="jungle umbrellas" after="bamboo plant"/>
+            <brush name="jungle giant flowers" after="bamboo plant"/>
+            <brush name="pearl flowers" after="bamboo plant"/>
+            <brush name="jungle flowers" after="bamboo plant"/>
+            <brush name="giant ball mushrooms" after="moldy mushrooms"/>
+			<item id="3742" afteritem="3744"/>
+        </doodad>
+    </tileset>
+</materialsextension>

@@ -1,0 +1,63 @@
+<materials>
+	<tileset name="Fluid Containers">
+		<items>
+			<item fromid="2883" toid="2884"/>
+			<item fromid="5928" toid="5929"/>
+			<item fromid="2873" toid="2885"/>
+			<item id="2893"/>
+			<item id="2901"/>
+			<item id="2883"/>
+			<item id="2884"/>
+			<item id="4828"/>
+			<item id="23374"/>
+			<item id="7642"/>
+			<item id="23373"/>
+			<item id="238"/>
+			<item id="237"/>
+			<item id="268"/>
+			<item id="23375"/>
+			<item id="7643"/>
+			<item fromid="7439" toid="4729"/>
+			<item id="7443"/>
+			<item fromid="9170" toid="12785"/>
+			<item fromid="125" toid="138"/>
+			<item id="239"/>
+			<item id="236"/>
+			<item id="266"/>
+			<item id="284"/>
+			<item id="283"/>
+			<item id="285"/>
+			<item id="650"/>
+			<item id="6558"/>
+			<item id="7644"/>
+			<item id="11588"/>
+			<item fromid="18991" toid="18992"/>
+			<item fromid="19107" toid="19109"/>
+			<item id="19133"/>
+			<item fromid="20138" toid="20139"/>
+			<item id="21554"/>
+			<item id="21766"/>
+			<item id="22058"/>
+			<item fromid="22763" toid="22770"/>
+			<item id="24937"/>
+			<item id="24948"/>
+			<item id="25304"/>
+			<item fromid="25731" toid="25732"/>
+			<item id="27461"/>
+			<item id="27654"/>
+			<item id="28495"/>
+			<item id="29432"/>
+			<item id="30003"/>
+			<item id="30006"/>
+			<item fromid="30326" toid="30328"/>
+			<item id="30927"/>
+			<item id="31128"/>
+			<item fromid="31259" toid="31260"/>
+			<item fromid="31296" toid="31297"/>
+			<item id="31350"/>
+			<item id="31612"/>
+			<item fromid="33892" toid="33893"/>
+			<item fromid="34209"/>
+		</items>
+	</tileset>
+</materials>

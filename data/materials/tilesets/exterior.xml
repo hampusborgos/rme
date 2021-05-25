@@ -1,0 +1,612 @@
+<materials>
+	<tileset name="Exterior">
+		<doodad>
+			<item id="34111"/>
+			<item id="1949"/>
+			<brush name="magic stone"/>
+			<item id="3501"/>
+			<item id="3458"/>
+			<item id="3207"/>
+			<item id="3508"/>
+			<brush name="skeletons"/>
+			<brush name="big footprint"/>
+			<brush name="draw well"/>
+			<brush name="vertical mill"/>
+			<brush name="horizontal mill"/>
+			<brush name="cobweb"/>
+			<brush name="gray cloth wall"/>
+			<brush name="brown cloth wall"/>
+			<brush name="tanned tiger fur"/>
+			<brush name="stone altar"/>
+			<brush name="decorative altar"/>
+			<brush name="sacrificial stone"/>
+			<brush name="sacrificial altar"/>
+			<item id="23730"/>
+			<brush name="old desk"/>
+			<brush name="railways"/>
+			<brush name="railway cart"/>
+			<brush name="railway cart 2"/>
+			<brush name="dwarven machine"/>
+			<item id="850"/>
+			<brush name="fishing net"/>
+			<brush name="cracks"/>
+			<brush name="lumberjack stuff"/>
+			<brush name="leaning planks"/>
+			<brush name="planks"/>
+			<brush name="ballista"/>
+			<brush name="catapult"/>
+			<brush name="torture machine"/>
+			<brush name="torture locker"/>
+			<brush name="cage with a victim"/>
+			<brush name="turtle"/>
+			<brush name="archery target"/>
+			<brush name="archery target totem"/>
+			<brush name="stuck arrow"/>
+			<brush name="stuck axe"/>
+			<brush name="pillory"/>
+			<brush name="crucible"/>
+			<brush name="lava pipe - empty"/>
+			<brush name="lava pipe - full"/>
+			<brush name="mould"/>
+			<brush name="mould items"/>
+			<brush name="bellow"/>
+			<item id="7843"/>
+			<brush name="muzzle - on"/>
+			<brush name="muzzle - off"/>
+			<brush name="steaming hot lava"/>
+			<brush name="blood trickle"/>
+			<brush name="blood pipe"/>
+			<brush name="blood mould"/>
+			<item id="31432"/>
+			<brush name="pyramid template"/>
+			<brush name="light desert skull"/>
+			<brush name="dark desert skull"/>
+			<brush name="lit skull lamp"/>
+			<brush name="light papyrus scroll"/>
+			<brush name="dark papyrus scroll"/>
+			<brush name="light ornate tombstone"/>
+			<brush name="dark ornate tombstone"/>
+			<brush name="scorpion altar"/>
+			<brush name="ornamented scorpion table"/>
+			<brush name="open sacrophagus"/>
+			<brush name="open sacrophagus 2"/>
+			<brush name="exalted sarcophagus"/>
+			<brush name="ancient tombstone 1"/>
+			<brush name="ancient tombstone 2"/>
+			<brush name="ancient sarcophagus 1"/>
+			<brush name="ancient stone coffin 1"/>
+			<brush name="new burial case"/>
+			<!-- Graves -->
+			<item id="134"/>
+			<item fromid="1979" toid="1989"/>
+			<item fromid="1992" toid="1995"/>
+			<!-- Coffins -->
+			<brush name="stone coffin (no rose)"/>
+			<brush name="stone coffin (yellow rose)"/>
+			<brush name="stone coffin (blue rose)"/>
+			<brush name="stone coffin (red rose)"/>
+			<brush name="buried stone coffin"/>
+			<brush name="old stone coffin"/>
+			<brush name="sarcophagus"/>
+			<!-- Campfires -->
+			<brush name="campfire"/>
+			<brush name="campfire pot"/>
+			<brush name="new bonfire"/>
+			<brush name="coal basin (immovable)"/>
+			<brush name="coal basin (movable)"/>
+			<brush name="sun coal basin 1"/>
+			<brush name="sun coal basin 2"/>
+			<brush name="large cauldron"/>
+			<brush name="fire, ice, energy & earth shrines"/>
+			<item id="22077"/>
+			<item id="22076"/>
+			<item id="31150"/>
+			<!-- Fountains -->
+			<brush name="cult font"/>
+			<brush name="ancient fountain - off"/>
+			<brush name="ancient fountain - on"/>
+			<brush name="blood well"/>
+			<brush name="water well"/>
+			<brush name="lava fountain"/>
+			<brush name="marble fountain - on"/>
+			<brush name="marble fountain - off"/>
+			<item id="1940"/>
+			<brush name="normal fountain - on"/>
+			<brush name="normal fountain - off"/>
+			<brush name="wall fountain"/>
+			<brush name="large well - water"/>
+			<brush name="large well - no water"/>
+			<brush name="golden fountain"/>
+			<brush name="earth fountain"/>
+			<item id="29283"/>
+			<brush name="snow fountain"/>
+			<brush name="icy fountain"/>
+			<item id="25411"/>
+			<brush name="ink fountain"/>
+			<brush name="ink fountain 2"/>
+			<item id="28182"/>
+			<brush name="molten lava well - empty"/>
+			<brush name="molten lava well - empty (head)"/>
+			<brush name="molten lava well"/>
+			<brush name="molten lava well (head)"/>
+			<brush name="huge cauldron"/>
+			<brush name="huge cauldron WHY"/>
+			<brush name="krailos pot"/>
+			<brush name="color purple pool"/>
+			<brush name="large vortex"/>
+			<!-- Tents -->
+			<brush name="gray striped tent"/>
+			<brush name="red striped tent"/>
+			<brush name="garish striped tent"/>
+			<!-- Misc -->
+			<brush name="white caravan wagon"/>
+			<brush name="caravan wagon chassis"/>
+			<brush name="cage wagon"/>
+			<brush name="orc wagon"/>
+			<brush name="brown roof"/>
+			<brush name="lock"/>
+			<brush name="imbuing shrine"/>
+			<brush name="gilded imbuing shrine"/>
+			<brush name="blue beach chair"/>
+			<brush name="yellow beach chair"/>
+			<brush name="parasol"/>
+			<brush name="stone shelf"/>
+			<brush name="cart"/>
+			<brush name="sugar cart"/>
+			<brush name="bunch of sugar cane"/>
+			<brush name="straw mat 2sqm"/>
+			<brush name="straw mat"/>
+			<brush name="sugar cane stack"/>
+			<brush name="fishing crane"/>
+			<brush name="blue sparkling gems"/>
+			<brush name="red sparkling gems"/>
+			<brush name="blue sparkling gems (mountain)"/>
+			<brush name="red sparkling gems (mountain)"/>
+			<brush name="pieces of wood"/>
+			<brush name="wood pile"/>
+			<brush name="rain barrel - open"/>
+			<brush name="rain barrel - closed"/>
+			<brush name="barrel of hammers"/>
+			<item id="27491"/>
+			<brush name="coal"/>
+			<brush name="red zao bridge"/>
+			<brush name="dark zao bridge"/>
+			<brush name="grey nails"/>
+			<brush name="brown nails"/>
+			<brush name="street lamp"/>
+			<brush name="yalahar street lamp - on"/>
+			<brush name="yalahar street lamp - off"/>
+			<brush name="venore street lamp - on"/>
+			<brush name="venore street lamp - off"/>
+			<brush name="light of change"/>
+			<brush name="food stones"/>
+			<brush name="barbarian banner"/>
+			<brush name="orcish banner"/>
+			<brush name="orcish pole"/>
+			<brush name="new orcish pole"/>
+			<item id="25768"/>
+			<item id="8526"/>
+			<item id="8526"/>
+			<item id="9292"/>
+			<item id="4989"/>
+			<item id="4990"/>
+			<item id="2018"/>
+			<item id="2019"/>
+			<item id="2020"/>
+			<item id="27840"/>
+			<item id="9292"/>
+			<item id="22796"/>
+			<brush name="zao banner - red"/>
+			<brush name="zao banner - purple"/>
+			<brush name="zao banner - red purple"/>
+			<brush name="zao drape banner - red"/>
+			<brush name="zao drape banner - purple"/>
+			<item id="10096"/>
+			<brush name="zao banner - blue1"/>
+			<brush name="zao banner - blue2"/>
+			<brush name="zao banner - black"/>
+			<brush name="zao drape banner - black"/>
+			<brush name="zao banner - blue black"/>
+			<brush name="zao spiked banner - no flag"/>
+			<brush name="zao spiked banner - blank flag"/>
+			<brush name="zao spiked banner - skull flag"/>
+			<brush name="krailos banner"/>
+			<brush name="krailos totem pole"/>
+			<brush name="krailos totem pole - skull"/>
+			<brush name="new unknown pole"/>
+			<brush name="rubbish 4sqm"/>
+			<brush name="small shed"/>
+			<brush name="pallet"/>
+			<brush name="wooden cabin"/>
+			<brush name="venorean saw"/>
+			<brush name="venorean crane"/>
+			<brush name="mining furnace"/>
+			<brush name="mining conveyer"/>
+			<item id="18435"/>
+			<brush name="apparatus (body)"/>
+			<brush name="apparatus (arms)"/>
+			<brush name="roshamuul rubble1"/>
+			<brush name="roshamuul rubble2"/>
+			<brush name="oramond big pipe"/>
+			<brush name="notice board - one big note"/>
+			<brush name="notice board - plenty small notes"/>
+			<brush name="krailos hut"/>
+			<brush name="krailos tanned skin"/>
+			<brush name="krailos thing"/>
+			<brush name="strange altar"/>
+			<brush name="golden memorial"/>
+			<brush name="golden dome"/>
+			<brush name="blue dome"/>
+			<item fromid="7558" toid="7585"/>
+			<brush name="giant head"/>
+			<brush name="old head"/>
+			<item id="28627"/>
+		</doodad>
+		<raw>
+			<!-- Statues -->
+			<item fromid="2025" toid="2026"/>
+			<item fromid="2059" toid="2061"/>
+			<item fromid="2028" toid="2032"/>
+			<item fromid="2035" toid="2059"/>
+			<item id="7629"/>
+			<item id="749"/>
+			<item id="21791"/>
+			<item id="21797"/>
+			<item fromid="8006" toid="8009"/>
+			<item fromid="7949" toid="7952"/>
+			<item fromid="7797" toid="7798"/>
+			<item fromid="7787" toid="7788"/>
+			<item fromid="8006" toid="8009"/>
+			<item fromid="7588" toid="7592"/>
+			<item fromid="2062" toid="2075"/>
+			<item fromid="2080" toid="2091"/>
+			<item fromid="2104" toid="2107"/>
+			<item id="5046"/>
+			<item fromid="5055" toid="5056"/>
+			<item fromid="5670" toid="5673"/>
+			<item fromid="8323" toid="8328"/>
+			<item fromid="8655" toid="8656"/>
+			<item fromid="8836" toid="8837"/>
+			<item fromid="9034" toid="9035"/>
+			<item fromid="9039" toid="9040"/>
+			<item id="8390"/>
+			<item fromid="9432" toid="9439"/>
+			<item fromid="9792" toid="9797"/>
+			<item fromid="9805" toid="9808"/>
+			<item fromid="10015" toid="10022"/>
+			<item fromid="10029" toid="10032"/>
+			<item fromid="10082" toid="10089"/>
+			<item id="10322"/>
+			<item fromid="10468" toid="10475"/>
+			<item fromid="10971" toid="10972"/>
+			<item fromid="11043" toid="11046"/>
+			<item fromid="11266" toid="11271"/>
+			<item fromid="10837" toid="10839"/>
+			<item id="10841"/>
+			<item id="10797"/>
+			<item id="11210"/>
+			<item id="11265"/>
+			<item fromid="11394" toid="11404"/>
+			<item id="11428"/>
+			<item fromid="11696" toid="11697"/>
+			<item id="4060"/>
+			<item fromid="11992" toid="12019"/>
+			<item fromid="12713" toid="12716"/>
+			<item fromid="13149" toid="13154"/>
+			<item fromid="13405" toid="13424"/>
+			<item fromid="13823" toid="13840"/>
+			<item fromid="15894" toid="15905"/>
+			<item fromid="15710" toid="15711"/>
+			<item fromid="16198" toid="16202"/>
+			<item fromid="17300" toid="17309"/>
+			<item fromid="17341" toid="17344"/>
+			<item fromid="17957" toid="17958"/>
+			<item id="748"/>
+			<item id="19112"/>
+			<item id="19142"/>
+			<item fromid="20642" toid="20651"/>
+			<item fromid="20727" toid="20746"/>
+			<item fromid="21134" toid="21136"/>
+			<item id="21149"/>
+			<item id="21390"/>
+			<item id="21843"/>
+			<item fromid="611"/>
+			<item fromid="1751" toid="1754"/>
+			<item fromid="1922" toid="1947"/>
+			<item fromid="7361" toid="7362"/>
+			<item fromid="7474" toid="7475"/>
+			<item fromid="1996" toid="2003"/>
+			<item fromid="2018" toid="2020"/>
+			<item fromid="2108" toid="2115"/>
+			<item id="171"/>
+			<item fromid="3104" toid="3110"/>
+			<item fromid="3112" toid="3113"/>
+			<item fromid="3117" toid="3131"/>
+			<item fromid="3134" toid="3144"/>
+			<item fromid="3221"/>
+			<item fromid="3458"/>
+			<item fromid="3501"/>
+			<item fromid="3510" toid="3514"/>
+			<item fromid="3519" toid="3522"/>
+			<item fromid="3525" toid="3532"/>
+			<item fromid="2083" toid="2103"/>
+			<item fromid="2299" toid="2301"/>
+			<item fromid="5676"/>
+			<item fromid="5677"/>
+			<item fromid="842" toid="850"/>
+			<item fromid="5074" toid="5079"/>
+			<item fromid="5484" toid="5494"/>
+			<item fromid="5554" toid="5555"/>
+			<item fromid="5597" toid="5612"/>
+			<item fromid="5692" toid="5703"/>
+			<item fromid="2004" toid="2011"/>
+			<item fromid="2753" toid="2766"/>
+			<item fromid="5295" toid="5301"/>
+			<item fromid="6473" toid="6474"/>
+			<item id="2116"/>
+			<item fromid="2117" toid="2117"/>
+			<item id="2117"/>
+			<item fromid="2117" toid="2117"/>
+			<item fromid="5659" toid="5664"/>
+			<item fromid="5787" toid="5790"/>
+			<item fromid="5777" toid="5784"/>
+			<item fromid="6475" toid="6487"/>
+			<item fromid="6373" toid="6385"/>
+			<item fromid="1703" toid="1715"/>
+			<item fromid="7145" toid="7157"/>
+			<item fromid="2892"/>
+			<item fromid="2894"/>
+			<item fromid="3135" toid="3144"/>
+			<item fromid="4849"/>
+			<item fromid="4851"/>
+			<item fromid="4569" toid="4583"/>
+			<item fromid="253" toid="264"/>
+			<item fromid="2145" toid="2148"/>
+			<item fromid="2773"/>
+			<item id="10112"/>
+			<item fromid="2511" toid="2542"/>
+			<item fromid="2572" toid="2595"/>
+			<item fromid="7896" toid="7911"/>
+			<item fromid="7121" toid="7132"/>
+			<item id="9118"/>
+			<item fromid="7133" toid="7136"/>
+			<item fromid="9125" toid="9126"/>
+			<item fromid="8672" toid="8688"/>
+			<item fromid="8319" toid="8322"/>
+			<item id="8525"/>
+			<item fromid="8544" toid="8553"/>
+			<item fromid="8571" toid="8578"/>
+			<item fromid="8615"/>
+			<item fromid="8618"/>
+			<item fromid="8659" toid="8666"/>
+			<item fromid="8854" toid="8857"/>
+			<item fromid="8911" toid="8914"/>
+			<item fromid="8970" toid="8998"/>
+			<item fromid="7273" toid="7280"/>
+			<item fromid="2738" toid="2744"/>
+			<item fromid="2767" toid="2768"/>
+			<item id="2771"/>
+			<item fromid="3493" toid="3496"/>
+			<item id="5466"/>
+			<item fromid="5548" toid="5551"/>
+			<item fromid="5546" toid="5547"/>
+			<item id="5543"/>
+			<item id="5545"/>
+			<item fromid="5504" toid="5511"/>
+			<item fromid="5739" toid="5740"/>
+			<item id="6389"/>
+			<item fromid="6284" toid="6285"/>
+			<item fromid="6290" toid="6298"/>
+			<item fromid="7185" toid="7186"/>
+			<item fromid="7171" toid="7173"/>
+			<item id="7189"/>
+			<item id="7255"/>
+			<item id="7254"/>
+			<item id="7259"/>
+			<item fromid="7264" toid="7271"/>
+			<item fromid="7303" toid="7312"/>
+			<item fromid="146" toid="165"/>
+			<item fromid="203" toid="204"/>
+			<item fromid="207" toid="208"/>
+			<item fromid="220" toid="226"/>
+			<item fromid="619" toid="627"/>
+			<item fromid="750" toid="751"/>
+			<item id="1979"/>
+			<item id="7534"/>
+			<item id="939"/>
+			<item id="7751"/>
+			<item fromid="7775" toid="7776"/>
+			<item fromid="7813" toid="7855"/>
+			<item fromid="9119" toid="9124"/>
+			<item fromid="9242" toid="9244"/>
+			<item fromid="7916" toid="7923"/>
+			<item fromid="7953" toid="7956"/>
+			<item fromid="8066" toid="8069"/>
+			<item fromid="8812" toid="8813"/>
+			<item id="8852"/>
+			<item fromid="9110" toid="9111"/>
+			<item id="9176"/>
+			<item id="9250"/>
+			<item id="9253"/>
+			<item id="9532"/>
+			<item fromid="9620" toid="9621"/>
+			<item fromid="9963" toid="9966"/>
+			<item fromid="9980" toid="9994"/>
+			<item fromid="10058" toid="10061"/>
+			<item id="10185"/>
+			<item fromid="10959" toid="10960"/>
+			<item fromid="10973" toid="10974"/>
+			<item fromid="11048" toid="11052"/>
+			<item fromid="11058" toid="11061"/>
+			<item fromid="11083" toid="11084"/>
+			<item fromid="11086" toid="11097"/>
+			<item fromid="11114" toid="11116"/>
+			<item fromid="11150" toid="11156"/>
+			<item id="11158"/>
+			<item fromid="11182" toid="11185"/>
+			<item fromid="11211" toid="11213"/>
+			<item id="11220"/>
+			<item fromid="11392" toid="11393"/>
+			<item fromid="11494" toid="11509"/>
+			<item id="11811"/>
+			<item id="11814"/>
+			<item id="12139"/>
+			<item id="12023"/>
+			<item fromid="12114" toid="12122"/>
+			<item fromid="12301" toid="12302"/>
+			<item fromid="12605" toid="12616"/>
+			<item fromid="12618" toid="12631"/>
+			<item fromid="12636" toid="12639"/>
+			<item fromid="12646" toid="12651"/>
+			<item fromid="12666" toid="12668"/>
+			<item fromid="14207" toid="14218"/>
+			<item fromid="14227" toid="14236"/>
+			<item id="14259"/>
+			<item fromid="17229" toid="17231"/>
+			<item fromid="17318" toid="17321"/>
+			<item fromid="17368" toid="17371"/>
+			<item fromid="17405" toid="17412"/>
+			<item fromid="17523" toid="17524"/>
+			<item fromid="17938" toid="17947"/>
+			<item fromid="18427" toid="18435"/>
+			<item fromid="18591" toid="18608"/>
+			<item fromid="18912" toid="18915"/>
+			<item fromid="19092" toid="19095"/>
+			<item id="19134"/>
+			<item id="19200"/>
+			<item id="19390"/>
+			<item id="19067"/>
+			<item id="19068"/>
+			<item fromid="19600" toid="19603"/>
+			<item fromid="19791" toid="19798"/>
+			<item fromid="19885" toid="19898"/>
+			<item fromid="20031" toid="20044"/>
+			<item id="19824"/>
+			<item fromid="19899" toid="19917"/>
+			<item fromid="19932" toid="19933"/>
+			<item fromid="19925" toid="19931"/>
+			<item fromid="20283" toid="20294"/>
+			<item fromid="21050" toid="21063"/>
+			<item fromid="21125" toid="21132"/>
+			<item id="21147"/>
+			<item id="21290"/>
+			<item fromid="21331" toid="21332"/>
+			<item id="19236"/>
+			<item id="19245"/>
+			<item fromid="22255" toid="22258"/>
+			<item fromid="22300" toid="22309"/>
+			<item fromid="23154" toid="23162"/>
+			<item id="23343"/>
+			<item fromid="23349" toid="23351"/>
+			<item fromid="23485" toid="23486"/>
+			<item fromid="23987" toid="23992"/>
+			<item fromid="24052" toid="24087"/>
+			<item fromid="24132" toid="24149"/>
+			<item fromid="24230" toid="24233"/>
+			<item fromid="24236" toid="24243"/>
+			<item fromid="24245" toid="24248"/>
+			<item fromid="24315" toid="24316"/>
+			<item id="24257"/>
+			<item fromid="24398" toid="24401"/>
+			<item id="24403"/>
+			<item fromid="24406" toid="24408"/>
+			<item fromid="24410" toid="24413"/>
+			<item fromid="24434" toid="24436"/>
+			<item fromid="24888" toid="24902"/>
+			<item fromid="24913" toid="24923"/>
+			<item fromid="24924" toid="24925"/>
+			<item fromid="25091" toid="25104"/>
+			<item fromid="25174" toid="25175"/>
+			<item fromid="25182" toid="25183"/>
+			<item fromid="25201" toid="25202"/>
+			<item fromid="25410" toid="25411"/>
+			<item fromid="25660" toid="25661"/>
+			<item fromid="25685" toid="25686"/>
+			<item fromid="25802" toid="25803"/>
+			<item fromid="25720" toid="25723"/>
+			<item fromid="25767" toid="25768"/>
+			<item fromid="25871" toid="25874"/>
+			<item fromid="27271" toid="27272"/>
+			<item fromid="27309" toid="27353"/>
+			<item fromid="28558" toid="28565"/>
+			<item fromid="28738" toid="28741"/>
+			<item id="28888"/>
+			<item fromid="27948" toid="27951"/>
+			<item id="28649"/>
+			<item fromid="27986" toid="28007"/>
+			<item fromid="19895" toid="19898"/>
+			<item fromid="27302" toid="27305"/>
+			<item id="27547"/>
+			<item id="27669"/>
+			<item fromid="28437" toid="28451"/>
+			<item fromid="28527" toid="28534"/>
+			<item fromid="29274" toid="29275"/>
+			<item fromid="29301" toid="29302"/>
+			<item fromid="29277" toid="29285"/>
+			<item fromid="29307" toid="29318"/>
+			<item fromid="29349" toid="29249"/>
+			<item fromid="29960" toid="29967"/>
+			<item fromid="29981" toid="29986"/>
+			<item fromid="29998" toid="29999"/>
+			<item fromid="30250" toid="30254"/>
+			<item fromid="30303" toid="30304"/>
+			<item fromid="30329" toid="30331"/>
+			<item fromid="30448" toid="30453"/>
+			<item fromid="30454" toid="30469"/>
+			<item fromid="30616" toid="30619"/>
+			<item fromid="30647" toid="30654"/>
+			<item fromid="30668" toid="30669"/>
+			<item fromid="30674" toid="30683"/>
+			<item fromid="30919" toid="30926"/>
+			<item id="30973"/>
+			<item id="30975"/>
+			<item fromid="30983" toid="30991"/>
+			<item fromid="31097" toid="31117"/>
+			<item fromid="31161" toid="31162"/>
+			<item fromid="31213" toid="31216"/>
+			<item fromid="31626" toid="31630"/>
+			<item fromid="32152" toid="32163"/>
+			<item fromid="32266" toid="32267"/>
+			<item fromid="33009" toid="33016"/>
+			<item fromid="31518" toid="31523"/>
+			<item fromid="31683" toid="31684"/>
+			<item fromid="32867" toid="32884"/>
+			<item fromid="33002" toid="33003"/>
+			<item fromid="33085" toid="33096"/>
+			<item fromid="33721" toid="33728"/>
+			<item fromid="33733" toid="33735"/>
+			<item fromid="33998" toid="33999"/>
+			<item id="34111"/>
+			<item fromid="34250" toid="34252"/>
+			<item fromid="34256" toid="34257"/>
+			<!-- Others -->
+			<item fromid="12136" toid="12138"/>
+			<item id="12140"/>
+			<item fromid="12238" toid="12245"/>
+			<item fromid="842" toid="850"/>
+			<item fromid="1922" toid="1942"/>
+			<item id="9120"/>
+			<item fromid="17521" toid="17522"/>
+			<item fromid="19140" toid="19141"/>
+			<item fromid="19161" toid="19165"/>
+			<item fromid="20092" toid="20093"/>
+			<item fromid="20177" toid="20178"/>
+			<item fromid="20316" toid="20319"/>
+			<item id="21394"/>
+			<item id="21794"/>
+			<item fromid="21821" toid="21825"/>
+			<item fromid="21846" toid="21849"/>
+			<item fromid="24250" toid="24256"/>
+			<item id="24317"/>
+			<item fromid="24414" toid="24415"/>
+			<!-- Cake -->
+			<item fromid="12112" toid="12113"/>
+			<item fromid="12085" toid="12089"/>
+			<item id="12105"/>
+			<item id="12107"/>
+			<item id="12109"/>
+			<item id="12111"/>
+			<item fromid="12147" toid="12155"/>
+		</raw>
+	</tileset>
+</materials>

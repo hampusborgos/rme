@@ -1,0 +1,60 @@
+<materials>
+	<tileset name="Weapons (Magic)">
+		<items>
+			<!-- Wands -->
+			<item fromid="3065" toid="3070"/>
+			<item fromid="3071" toid="3075"/>
+			<item fromid="895"/>
+			<item fromid="3321"/>
+			<item fromid="8082"/>
+			<item fromid="8083"/>
+			<item fromid="8084"/>
+			<item fromid="8092"/>
+			<item fromid="8093"/>
+			<item fromid="8094"/>
+			<item id="9187"/>
+			<item id="12603"/>
+			<item id="12732"/>
+			<item id="12741"/>
+			<item id="16096"/>
+			<item id="16115"/>
+			<item fromid="16117" toid="16118"/>
+			<item id="17111"/>
+			<item fromid="22764" toid="22766"/>
+			<item fromid="25700"/>
+			<item id="25760"/>
+			<item id="29425"/>
+			<item id="34090"/>
+			<item id="34091"/>
+			<!-- Tomes -->
+			<item fromid="8072" toid="8076"/>
+			<item fromid="8090"/>
+			<item id="11691"/>
+			<item id="16107"/>
+			<item id="14769"/>
+			<item fromid="20088" toid="20090"/>
+			<item id="21400"/>
+			<item id="22755"/>
+			<!-- Swords -->
+			<item fromid="779" toid="783"/>
+			<item fromid="794" toid="798"/>
+			<item fromid="660" toid="664"/>
+			<item fromid="679" toid="683"/>
+			<!-- Clubs -->
+			<item fromid="789" toid="793"/>
+			<item fromid="806" toid="810"/>
+			<item fromid="670" toid="674"/>
+			<item fromid="689" toid="693"/>
+			<!-- Axes -->
+			<item fromid="784" toid="788"/>
+			<item fromid="801" toid="805"/>
+			<item fromid="665" toid="669"/>
+			<item fromid="684" toid="688"/>
+			<!-- Ammo -->
+			<item fromid="774"/>
+			<item fromid="761" toid="763"/>
+			<!-- New -->
+			<item fromid="25915" toid="25974"/>
+		</items>
+	</tileset>
+</materials>
