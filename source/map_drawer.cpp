@@ -1686,7 +1686,7 @@ void MapDrawer::DrawTooltips()
 					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '.');
 					if(char_count >= (MapTooltip::MAX_CHARS + 2))
 						break;
-				} else {
+				} else if (!iscntrl(*c)) {
 					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
 				}
 			}
