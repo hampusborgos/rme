@@ -100,6 +100,10 @@ CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warn
 		ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
 	}
 
+	if ((attribute = node.attribute("lookmount"))) {
+		ct->outfit.lookMount = pugi::cast<int32_t>(attribute.value());
+	}
+
 	if((attribute = node.attribute("lookaddon"))) {
 		ct->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
 	}
@@ -162,6 +166,10 @@ CreatureType* CreatureType::loadFromOTXML(const FileName& filename, pugi::xml_do
 
 		if((attribute = optionNode.attribute("item")) || (attribute = optionNode.attribute("lookex")) || (attribute = optionNode.attribute("typeex"))) {
 			ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
+		}
+
+		if ((attribute = optionNode.attribute("mount"))) {
+			ct->outfit.lookMount = pugi::cast<int32_t>(attribute.value());
 		}
 
 		if((attribute = optionNode.attribute("addon"))) {
@@ -393,6 +401,7 @@ bool CreatureDatabase::saveToXML(const FileName& filename)
 			const Outfit& outfit = creatureType->outfit;
 			creatureNode.append_attribute("looktype") = outfit.lookType;
 			creatureNode.append_attribute("lookitem") = outfit.lookItem;
+			creatureNode.append_attribute("lookmount") = outfit.lookMount;
 			creatureNode.append_attribute("lookaddon") = outfit.lookAddon;
 			creatureNode.append_attribute("lookhead") = outfit.lookHead;
 			creatureNode.append_attribute("lookbody") = outfit.lookBody;
