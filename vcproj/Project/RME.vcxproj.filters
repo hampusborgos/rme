@@ -352,7 +352,6 @@
     <ClInclude Include="..\..\source\extension.h">
       <Filter>editor</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\source\pugicast.h" />
     <ClInclude Include="..\..\source\browse_tile_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>

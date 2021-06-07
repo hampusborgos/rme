@@ -340,7 +340,7 @@ public:
 	bool hasElevation;
 
 	int alwaysOnTopOrder;
-	int rotateTo;
+	uint16_t rotateTo;
 	BorderType border_alignment;
 };
 

@@ -3288,6 +3288,17 @@ PUGI__NS_BEGIN
 	}
 
 	// get value with conversion functions
+	PUGI__FN unsigned short get_value_ushort(const char_t* value, unsigned short def)
+	{
+		if (!value) return def;
+
+	#ifdef PUGIXML_WCHAR_MODE
+		return static_cast<unsigned short>(wcstoul(value, 0, 10));
+	#else
+		return static_cast<unsigned short>(strtoul(value, 0, 10));
+	#endif
+	}
+
 	PUGI__FN int get_value_int(const char_t* value, int def)
 	{
 		if (!value) return def;
@@ -3778,6 +3789,11 @@ namespace pugi
 	PUGI__FN const char_t* xml_attribute::as_string(const char_t* def) const
 	{
 		return (_attr && _attr->value) ? _attr->value : def;
+	}
+
+	PUGI__FN unsigned short xml_attribute::as_ushort(unsigned short def) const
+	{
+		return impl::get_value_ushort(_attr ? _attr->value : 0, def);
 	}
 
 	PUGI__FN int xml_attribute::as_int(int def) const

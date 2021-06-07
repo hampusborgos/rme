@@ -41,7 +41,6 @@
 #include "map.h"
 
 #include "gui.h"
-#include "pugicast.h"
 
 Brushes g_brushes;
 
@@ -178,7 +177,7 @@ bool Brushes::unserializeBorder(pugi::xml_node node, wxArrayString& warnings)
 		return false;
 	}
 
-	int32_t id = pugi::cast<int32_t>(attribute.value());
+	uint32_t id = attribute.as_uint();
 	if(borders[id]) {
 		warnings.push_back("Border ID " + std::to_string(id) + " already exists");
 		return false;
