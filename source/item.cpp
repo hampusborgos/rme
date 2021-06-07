@@ -29,7 +29,6 @@
 #include "carpet_brush.h"
 #include "table_brush.h"
 #include "wall_brush.h"
-#include "pugicast.h"
 
 Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 {
@@ -423,6 +422,9 @@ std::string Item::LiquidID2Name(uint16_t id)
 		case LIQUID_LAVA: return "Lava";
 		case LIQUID_RUM: return "Rum";
 		case LIQUID_SWAMP: return "Swamp";
+		case LIQUID_INK: return "Ink";
+		case LIQUID_TEA: return "Tea";
+		case LIQUID_MEAD: return "Mead";
 		default: return "Unknown";
 	}
 }
@@ -448,6 +450,9 @@ uint16_t Item::LiquidName2ID(std::string liquid)
 	if(liquid == "lava") return LIQUID_LAVA;
 	if(liquid == "rum") return LIQUID_RUM;
 	if(liquid == "swamp") return LIQUID_SWAMP;
+	if(liquid == "ink") return LIQUID_INK;
+	if(liquid == "tea") return LIQUID_TEA;
+	if(liquid == "mead") return LIQUID_MEAD;
 	return LIQUID_NONE;
 }
 
@@ -458,14 +463,14 @@ Item* Item::Create(pugi::xml_node xml)
 {
 	pugi::xml_attribute attribute;
 
-	int32_t id = 0;
+	int16_t id = 0;
 	if((attribute = xml.attribute("id"))) {
-		id = pugi::cast<int32_t>(attribute.value());
+		id = attribute.as_ushort();
 	}
 
-	int32_t count = 1;
+	int16_t count = 1;
 	if((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
-		count = pugi::cast<int32_t>(attribute.value());
+		count = attribute.as_ushort();
 	}
 
 	return Create(id, count);

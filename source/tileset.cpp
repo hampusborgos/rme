@@ -22,7 +22,6 @@
 #include "creature_brush.h"
 #include "items.h"
 #include "raw_brush.h"
-#include "pugicast.h"
 
 Tileset::Tileset(Brushes& brushes, const std::string& name) :
 	name(name),
@@ -177,7 +176,7 @@ void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 
 	std::string brushName = node.attribute("after").as_string();
 	if((attribute = node.attribute("afteritem"))) {
-		ItemType& it = g_items[pugi::cast<int32_t>(attribute.value())];
+		ItemType& it = g_items[attribute.as_ushort()];
 		if(it.id != 0) {
 			brushName = it.raw_brush ? it.raw_brush->getName() : std::string();
 		}
@@ -206,19 +205,19 @@ void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 			warnings.push_back("Brush \"" + wxString(attribute.as_string(), wxConvUTF8) + "\" doesn't exist.");
 		}
 	} else if(nodeName == "item") {
-		int32_t fromId = 0, toId = 0;
+		int16_t fromId = 0, toId = 0;
 		if(!(attribute = node.attribute("id"))) {
 			if(!(attribute = node.attribute("fromid"))) {
 				warnings.push_back("Couldn't read raw ids.");
 			}
-			toId = pugi::cast<int32_t>(node.attribute("toid").value());
+			toId = node.attribute("toid").as_ushort();
 		}
 
-		fromId = pugi::cast<int32_t>(attribute.value());
-		toId = std::max<int32_t>(fromId, toId);
+		fromId = attribute.as_ushort();
+		toId = std::max<int16_t>(fromId, toId);
 
 		std::vector<Brush*> tempBrushVector;
-		for(int32_t id = fromId; id <= toId; ++id) {
+		for(int16_t id = fromId; id <= toId; ++id) {
 			ItemType& it = g_items[id];
 			if(it.id == 0) {
 				warnings.push_back(wxString::Format("Brush: %s, From: %d, To: %d", wxstr(brushName), fromId, toId));

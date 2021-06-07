@@ -1297,11 +1297,34 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 			 */
 		}
 
+		// mount and addon drawing thanks to otc code
+		int pattern_z = 0;
+		if (outfit.lookMount != 0) {
+			if (GameSprite* mountSpr = g_gui.gfx.getCreatureSprite(outfit.lookMount)) {
+				for (int cx = 0; cx != mountSpr->width; ++cx) {
+					for (int cy = 0; cy != mountSpr->height; ++cy) {
+						int texnum = mountSpr->getHardwareID(cx, cy, 0, 0, (int)dir, 0, 0, 0);
+						glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
+					}
+				}
+				pattern_z = std::min<int>(1, spr->pattern_z - 1);
+			}
+		}
+
 		int tme = 0; //GetTime() % itype->FPA;
-		for(int cx = 0; cx != spr->width; ++cx) {
-			for(int cy = 0; cy != spr->height; ++cy) {
-				int texnum = spr->getHardwareID(cx,cy,(int)dir,outfit,tme);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
+
+		// pattern_y => creature addon
+		for (int pattern_y = 0; pattern_y < spr->pattern_y; pattern_y++) {
+
+			// continue if we dont have this addon
+			if (pattern_y > 0 && !(outfit.lookAddon & (1 << (pattern_y - 1))))
+				continue;
+
+			for (int cx = 0; cx != spr->width; ++cx) {
+				for (int cy = 0; cy != spr->height; ++cy) {
+					int texnum = spr->getHardwareID(cx, cy, (int)dir, pattern_y, pattern_z, outfit, tme);
+					glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
+				}
 			}
 		}
 	}
@@ -1686,7 +1709,7 @@ void MapDrawer::DrawTooltips()
 					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '.');
 					if(char_count >= (MapTooltip::MAX_CHARS + 2))
 						break;
-				} else {
+				} else if (!iscntrl(*c)) {
 					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
 				}
 			}

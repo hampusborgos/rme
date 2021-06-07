@@ -21,7 +21,6 @@
 
 #include "items.h"
 #include "basemap.h"
-#include "pugicast.h"
 
 uint32_t TableBrush::table_types[256];
 
@@ -41,9 +40,11 @@ TableBrush::~TableBrush()
 
 bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
-	look_id = g_items[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].clientID;
+	if(const pugi::xml_attribute attribute = node.attribute("server_lookid"))
+		look_id = g_items[attribute.as_ushort()].clientID;
+
 	if(look_id == 0) {
-		look_id = pugi::cast<uint16_t>(node.attribute("lookid").value());
+		look_id = node.attribute("lookid").as_ushort();
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -82,7 +83,7 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				continue;
 			}
 
-			uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
+			uint16_t id = subChildNode.attribute("id").as_ushort();
 			if(id == 0) {
 				warnings.push_back("Could not read id tag of item node\n");
 				break;
@@ -102,7 +103,7 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 			TableType tt;
 			tt.item_id = id;
-			tt.chance = pugi::cast<int32_t>(subChildNode.attribute("chance").value());
+			tt.chance = subChildNode.attribute("chance").as_int();
 
 			table_items[alignment].total_chance += tt.chance;
 			table_items[alignment].items.push_back(tt);

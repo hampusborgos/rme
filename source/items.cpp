@@ -23,7 +23,6 @@
 
 #include "items.h"
 #include "item.h"
-#include "pugicast.h"
 
 ItemDatabase g_items;
 
@@ -829,23 +828,23 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			}*/
 		} else if(key == "weight") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.weight = pugi::cast<int32_t>(attribute.value()) / 100.f;
+				item.weight = attribute.as_int() / 100.f;
 			}
 		} else if(key == "armor") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.armor = pugi::cast<int32_t>(attribute.value());
+				item.armor = attribute.as_int();
 			}
 		} else if(key == "defense") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.defense = pugi::cast<int32_t>(attribute.value());
+				item.defense = attribute.as_int();
 			}
 		} else if(key == "rotateto") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.rotateTo = pugi::cast<uint16_t>(attribute.value());
+				item.rotateTo = attribute.as_ushort();
 			}
 		} else if(key == "containersize") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.volume = pugi::cast<uint16_t>(attribute.value());
+				item.volume = attribute.as_ushort();
 			}
 		} else if(key == "readable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
@@ -859,7 +858,7 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			item.decays = true;
 		} else if(key == "maxtextlen" || key == "maxtextlength") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.maxTextLen = pugi::cast<uint16_t>(attribute.value());
+				item.maxTextLen = attribute.as_ushort();
 				item.canReadText = item.maxTextLen > 0;
 			}
 		} else if(key == "writeonceitemid") {
@@ -872,7 +871,7 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			}
 		} else if(key == "charges") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.charges = pugi::cast<uint16_t>(attribute.value());
+				item.charges = attribute.as_uint();
 				item.extra_chargeable = true;
 			}
 		} else if(key == "floorchange") {
@@ -927,14 +926,17 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 	}
 
 	for(pugi::xml_node itemNode = node.first_child(); itemNode; itemNode = itemNode.next_sibling()) {
-		if(as_lower_str(itemNode.name()) != "item") {
+		if(itemNode.name() != "item") {
 			continue;
 		}
 
-		int32_t fromId = pugi::cast<int32_t>(itemNode.attribute("fromid").value());
-		int32_t toId = pugi::cast<int32_t>(itemNode.attribute("toid").value());
-		if(pugi::xml_attribute attribute = itemNode.attribute("id")) {
-			fromId = toId = pugi::cast<int32_t>(attribute.value());
+		uint16_t fromId = 0;
+		uint16_t toId = 0;
+		if(const pugi::xml_attribute attribute = itemNode.attribute("id")) {
+			fromId = toId = attribute.as_ushort();
+		} else {
+			fromId = itemNode.attribute("fromid").as_ushort();
+			toId = itemNode.attribute("toid").as_ushort();
 		}
 
 		if(fromId == 0 || toId == 0) {
@@ -942,7 +944,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 			return false;
 		}
 
-		for(int32_t id = fromId; id <= toId; ++id) {
+		for(uint16_t id = fromId; id <= toId; ++id) {
 			if(!loadItemFromGameXml(itemNode, id)) {
 				return false;
 			}
@@ -953,19 +955,17 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 
 bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 {
-	if(pugi::xml_attribute attribute = node.attribute("id")) {
-		uint16_t id = pugi::cast<uint16_t>(attribute.value());
-		if(items[id]) {
-			//std::cout << "Occupied ID " << id << " : " << items[id]->id << ":" << items[id]->name << std::endl;
+	if(const pugi::xml_attribute attribute = node.attribute("id")) {
+		const uint16_t id = attribute.as_ushort();
+		if(id == 0 || items[id]) {
 			return false;
 		}
 		items.set(id, newd ItemType());
 		items[id]->is_metaitem = true;
 		items[id]->id = id;
-	} else {
-		return false;
+		return true;
 	}
-	return true;
+	return false;
 }
 
 ItemType& ItemDatabase::getItemType(uint16_t id)

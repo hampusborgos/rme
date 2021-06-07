@@ -23,7 +23,6 @@
 #include "gui.h"
 
 #include "client_version.h"
-#include "pugicast.h"
 #include "otml.h"
 #include <wx/dir.h>
 
@@ -170,13 +169,13 @@ void ClientVersion::loadOTBInfo(pugi::xml_node otbNode)
 		return;
 	}
 
-	otb.id = pugi::cast<int32_t>(attribute.value());
+	otb.id = static_cast<ClientVersionID>(attribute.as_int());
 	if(!(attribute = otbNode.attribute("version"))) {
 		wxLogError("Node 'otb' must contain 'version' tag.");
 		return;
 	}
 
-	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(pugi::cast<uint32_t>(attribute.value()));
+	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(attribute.as_uint());
 	if(versionId < OTB_VERSION_1 || versionId > OTB_VERSION_3) {
 		wxLogError("Node 'otb' unrecognized format version (version 1..3 supported).");
 		return;
@@ -225,7 +224,7 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 				continue;
 			}
 
-			int32_t otbmVersion = pugi::cast<int32_t>(attribute.value()) - 1;
+			int32_t otbmVersion = attribute.as_int() - 1;
 			if(otbmVersion < MAP_OTBM_1 || otbmVersion > MAP_OTBM_4) {
 				wxLogError("Node 'otbm' unsupported version.");
 				continue;

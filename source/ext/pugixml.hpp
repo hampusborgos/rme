@@ -312,6 +312,7 @@ namespace pugi
 		const char_t* as_string(const char_t* def = PUGIXML_TEXT("")) const;
 
 		// Get attribute value as a number, or the default value if conversion did not succeed or attribute is empty
+		unsigned short as_ushort(unsigned short def = 0) const;
 		int as_int(int def = 0) const;
 		unsigned int as_uint(unsigned int def = 0) const;
 		double as_double(double def = 0) const;

@@ -968,10 +968,9 @@ GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const 
 	return img;
 }
 
-GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame)
+GLuint GameSprite::getHardwareID(int _x, int _y, int _dir, int _addon, int _pattern_z, const Outfit& _outfit, int _frame)
 {
-	uint32_t v;
-	v = ((((_dir) * layers) * height+_y) * width+_x);
+	uint32_t v = getIndex(_x, _y, 0, _dir, _addon, _pattern_z, _frame);
 	if(v >= numsprites) {
 		if(numsprites == 1) {
 			v = 0;
