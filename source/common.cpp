@@ -238,13 +238,7 @@ bool posFromClipboard(int& x, int& y, int& z)
 	return done;
 }
 
-wxString b2yn(bool v)
+wxString b2yn(bool value)
 {
-	wxString s;
-	if(v)
-		s << "yes";
-	else
-		s << "no";
-
-	return s;
+	return value ? "Yes" : "No";
 }
