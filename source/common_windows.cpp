@@ -70,7 +70,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	version_choice->Append("OTServ 0.5.0");
 	version_choice->Append("OTServ 0.6.0");
 	version_choice->Append("OTServ 0.6.1");
-	version_choice->Append("OTServ 0.7.0 (revscriptsys)");
+	/*version_choice->Append("OTServ 0.7.0 (revscriptsys)");*/
 
 	switch(map.getVersion().otbm) {
 		case MAP_OTBM_1:
@@ -82,9 +82,9 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 		case MAP_OTBM_3:
 			version_choice->SetSelection(2);
 			break;
-		case MAP_OTBM_4:
+		/*case MAP_OTBM_4:
 			version_choice->SetSelection(3);
-			break;
+			break;*/
 		default:
 			version_choice->SetSelection(0);
 	}
@@ -168,8 +168,8 @@ void MapPropertiesWindow::UpdateProtocolList()
 			map_version = MAP_OTBM_2;
 		else if(ver.Contains("0.6.1"))
 			map_version = MAP_OTBM_3;
-		else if(ver.Contains("0.7.0"))
-			map_version = MAP_OTBM_4;
+		/*else if(ver.Contains("0.7.0"))
+			map_version = MAP_OTBM_4;*/
 
 		ClientVersionList protocols = ClientVersion::getAllForOTBMVersion(map_version);
 		for(ClientVersionList::const_iterator p = protocols.begin(); p != protocols.end(); ++p)
@@ -227,9 +227,9 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		new_ver.otbm = MAP_OTBM_2;
 	} else if(ver.Contains("0.6.1")) {
 		new_ver.otbm = MAP_OTBM_3;
-	} else if(ver.Contains("0.7.0")) {
+	}/* else if(ver.Contains("0.7.0")) {
 		new_ver.otbm = MAP_OTBM_4;
-	}
+	}*/
 
 	if(new_ver.client != old_ver.client) {
 		if(g_gui.GetOpenMapCount() > 1) {
