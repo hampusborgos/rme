@@ -1,0 +1,163 @@
+<materials>
+	<tileset name="Grounds - Nature">
+		<terrain>
+			<brush name="cave"/>
+			<brush name="earth"/>
+			<brush name="grass"/>
+			<brush name="grass (dark)"/>
+			<brush name="grass (dried)"/>
+			<brush name="grass (jungle)"/>
+			<brush name="grass (krailos)"/>
+			<brush name="grass (lush)"/>
+			<brush name="green tree floor"/>
+			<brush name="sand dune"/>
+			<brush name="snow"/>
+
+			<brush name="clear water"/>
+			<brush name="sea"/>
+			<brush name="walkable sea"/>
+			<brush name="small brook"/>
+			<brush name="shallow water"/>
+			<brush name="dirty water"/>
+			<brush name="blood water"/>
+			<brush name="blood water (walkable)"/>
+			<brush name="white gravel"/>
+			<brush name="grass"/>
+			<brush name="mossy floor"/>
+			<brush name="forest floor"/>
+			<brush name="reed"/>
+			<brush name="lush meadow"/>
+			<brush name="lush meadow 2"/>
+			<brush name="tree leaves"/>
+			<brush name="teal leaves"/>
+			<brush name="yellow leaves"/>
+			<brush name="green leaves"/>
+			<brush name="new green leaves"/>
+			<brush name="dirt"/>
+			<brush name="earth ground"/>
+			<brush name="jungle dirt"/>
+			<brush name="dark dirt"/>
+			<brush name="melting ground"/>
+			<brush name="lava"/>
+			<brush name="lava (rock soil & cave ground)"/>
+			<brush name="tar pit"/>
+			<brush name="brown sand"/>
+			<brush name="dirt mud"/>
+			<brush name="muddy sand"/>
+			<brush name="unknown2"/>
+			<brush name="crystal dirt"/>
+			<brush name="light dirt"/>
+			<brush name="cake tile"/>
+			<brush name="krailos dirt"/>
+			<brush name="sand"/>
+			<brush name="pink sand"/>
+			<brush name="dark sand"/>
+			<brush name="dry earth"/>
+			<brush name="mud sand"/>
+			<brush name="sand gravel"/>
+			<brush name="loose gravel"/>
+			<brush name="gravel"/>
+			<brush name="ice floe"/>
+			<brush name="ice"/>
+			<brush name="light swampdirt"/>
+			<brush name="swamp"/>
+			<brush name="dark swamp"/>
+			<brush name="walkable swamp"/>
+			<brush name="venore swamp"/>
+			<brush name="muddy water"/>
+			<brush name="acid"/>
+			<brush name="muddy floor"/>
+			<brush name="venore muddy floor"/>
+			<brush name="unknown5"/>
+			<brush name="unknown6"/>
+			<brush name="fog"/>
+			<brush name="hive structure"/>
+			<brush name="red hive structure"/>
+			<brush name="dark hive structure"/>
+			<brush name="colourful honeycomb floor"/>
+			<brush name="bland honeycomb floor"/>
+			<brush name="big bland honeycomb floor"/>
+			<brush name="big colourful honeycomb floor"/>
+			<brush name="mountain ground"/>
+			<brush name="rock soil"/>
+			<brush name="rocky ground"/>
+			<brush name="frozen mud"/>
+			<brush name="darkest mud"/>
+			<brush name="purple mud"/>
+			<brush name="earth floor"/>
+			<brush name="dirt mountain ground"/>
+			<brush name="mysterious ground"/>
+			<brush name="dark spikes"/>
+			<brush name="red spikes"/>
+			<brush name="dark scaled ground"/>
+			<brush name="dark scaled ground (colours)"/>
+			<brush name="new dark sand floor"/>
+			<brush name="slime fungus"/>
+			<brush name="rocky red floor"/>
+			<brush name="deepling spawn"/>
+			<brush name="blue sea floor"/>
+			<brush name="brown sea floor"/>
+			<brush name="unknowndeepling"/>
+			<brush name="crystal floor"/>
+			<brush name="scattered crystals"/>
+			<brush name="basalt floor"/>
+			<brush name="mold floor"/>
+			<brush name="mushroom sponge"/>
+			<brush name="salt floor"/>
+			<brush name="cookie floor"/>
+			<brush name="branch floor"/>
+			<brush name="unknown4"/>
+			<brush name="unknown7"/>
+			<brush name="ocean floor"/>
+			<brush name="serpent seacrest ground"/>
+			<brush name="krailos orange"/>
+			<brush name="krailos yellow"/>
+			<brush name="krailos purple"/>
+			<brush name="vortex floor1"/>
+			<brush name="vortex floor2"/>
+			<brush name="vortex floor3"/>
+			<brush name="vortex floor4"/>
+			<brush name="void"/>
+		</terrain>
+		<raw>
+			<item id="372"/>
+			<item id="727"/>
+			<item fromid="4654" toid="4655"/>
+			<item id="5730"/>
+			<item id="6838"/>
+			<item fromid="7738" toid="7740"/>
+			<item fromid="7747" toid="7748"/>
+			<item id="7756"/>
+			<item id="8770"/>
+			<item id="8969"/>
+			<item id="9174"/>
+			<item fromid="9257" toid="9258"/>
+			<item id="10197"/>
+			<item id="10480"/>
+			<item id="12274"/>
+			<item id="12236"/>
+			<item id="12516"/>
+			<item fromid="12564" toid="12569"/>
+			<item fromid="12700" toid="12710"/>
+			<item id="12712"/>
+			<item fromid="14133" toid="14140"/>
+			<item id="15717"/>
+			<item id="17950"/>
+			<item id="17968"/>
+			<item id="19099"/>
+			<item id="19145"/>
+			<item id="19147"/>
+			<item fromid="19550" toid="19577"/>
+			<item id="20125"/>
+			<item fromid="20136" toid="20137"/>
+			<item fromid="19401" toid="19404"/>
+			<item id="20324"/>
+			<item fromid="21302" toid="21307"/>
+			<item fromid="21311" toid="21322"/>
+			<item id="21414"/>
+			<item fromid="21477" toid="21482"/>
+			<item fromid="21484" toid="21499"/>
+			<item fromid="21575" toid="21585"/>
+		</raw>
+	</tileset>
+</materials>

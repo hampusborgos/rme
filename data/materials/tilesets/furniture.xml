@@ -1,0 +1,26 @@
+<materials>
+	<tileset name="Furniture">
+		<items>
+			<item id="397"/>
+			<item id="306"/>
+			<item id="316"/>
+			<item id="321"/>
+			<item fromid="831" toid="834"/>
+			<item fromid="2775" toid="2812"/>
+			<item fromid="5086" toid="5088"/>
+			<item fromid="6114" toid="6115"/>
+			<item fromid="6371" toid="6372"/>
+			<item fromid="7864" toid="7865"/>
+			<item id="9061"/>
+			<item id="10207"/>
+			<item id="10209"/>
+			<item id="10216"/>
+			<item id="10288"/>
+			<item id="14741"/>
+			<item id="14756"/>
+			<item id="17972"/>
+			<item fromid="17974" toid="17975"/>
+			<item id="17977"/>
+		</items>
+	</tileset>
+</materials>

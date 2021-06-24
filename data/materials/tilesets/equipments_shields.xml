@@ -1,0 +1,41 @@
+<materials>
+	<tileset name="Equipment - Shields">
+		<items>
+			<item fromid="3409" toid="3442"/>
+			<item fromid="3443" toid="3445"/>
+			<item id="6131"/>
+			<item id="6390"/>
+			<item id="6432"/>
+			<item id="7460"/>
+			<item fromid="8077" toid="8081"/>
+			<item fromid="8900" toid="8902"/>
+			<item id="9401"/>
+			<item id="11688"/>
+			<item id="13998"/>
+			<item id="14000"/>
+			<item id="14042"/>
+			<item id="14088"/>
+			<item fromid="14760" toid="14761"/>
+			<item fromid="14766" toid="14767"/>
+			<item id="16116"/>
+			<item id="17810"/>
+			<item id="19363"/>
+			<item id="19373"/>
+			<item id="19363"/>
+			<item id="21175"/>
+			<item id="21401"/>
+			<item id="22726"/>
+			<item id="22758"/>
+			<item fromid="22889" toid="22890"/>
+			<item id="27650"/>
+			<item id="25982"/>
+			<item fromid="28721" toid="28722"/>
+			<item fromid="28915" toid="28918"/>
+			<item id="29420"/>
+			<item fromid="29430" toid="29431"/>
+			<item fromid="30181" toid="30182"/>
+			<item id="34099"/>
+			<item fromid="34153" toid="34154"/>
+		</items>
+	</tileset>
+</materials>

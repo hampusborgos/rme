@@ -1,0 +1,65 @@
+<materials>
+	<tileset name="Signs">
+		<doodad>
+			<brush name="blackboard (writeable by players)"/>
+			<brush name="blackboard (not writeable by players)"/>
+			<brush name="fluid shop sign"/>
+			<brush name="archer's shop sign"/>
+			<brush name="armor shop sign"/>
+			<brush name="weapon shop sign"/>
+			<brush name="tool shop sign"/>
+			<brush name="food shop sign"/>
+			<brush name="furniture shop sign"/>
+			<brush name="grape shop sign"/>
+			<brush name="banana shop sign"/>
+			<brush name="depot sign"/>
+			<brush name="post sign"/>
+			<brush name="gem shop sign"/>
+			<brush name="tavern sign"/>
+			<brush name="book shop sign"/>
+			<brush name="large potion shop sign"/>
+			<brush name="large shop sign"/>
+			<brush name="large archer's shop sign"/>
+			<brush name="large armor shop sign"/>
+			<brush name="large weapon shop sign"/>
+			<brush name="large tool shop sign"/>
+			<brush name="large food shop sign"/>
+			<brush name="large furniture shop sign"/>
+			<brush name="large grape shop sign"/>
+			<brush name="large banana shop sign"/>
+			<brush name="large depot sign"/>
+			<brush name="large post sign"/>
+			<brush name="large gem shop sign"/>
+			<brush name="large tavern sign"/>
+			<brush name="large library sign"/>
+			<brush name="rectangle sign"/>
+			<brush name="pointing sign"/>
+			<brush name="street sign"/>
+			<brush name="wall sign"/>
+			<brush name="warning sign"/>
+			<brush name="venore potion shop sign"/>
+			<brush name="venore archer's shop sign"/>
+			<brush name="venore armor shop sign"/>
+			<brush name="venore weapon shop sign"/>
+			<brush name="venore tool shop sign"/>
+			<brush name="venore food shop sign"/>
+			<brush name="venore furniture shop sign"/>
+			<brush name="venore fruit shop sign"/>
+			<brush name="venore depot sign"/>
+			<brush name="venore post sign"/>
+			<brush name="venore gem shop sign"/>
+			<brush name="venore tavern sign"/>
+			<brush name="venore library sign"/>
+			<brush name="venore coin sign"/>
+			<brush name="venore dock sign"/>
+			<brush name="venore magic carpet sign"/>
+			<brush name="venore steamboat sign"/>
+			<brush name="venore mine cart sign"/>
+			<brush name="small venore coin sign"/>
+			<brush name="small venore dock sign"/>
+			<brush name="small venore magic carpet sign"/>
+			<brush name="small venore steamboat sign"/>
+			<brush name="small venore mine cart sign"/>
+		</doodad>
+	</tileset>
+</materials>

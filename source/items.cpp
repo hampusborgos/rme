@@ -938,7 +938,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 		}
 
 		if(fromId == 0 || toId == 0) {
-			error = "Could not read item id from item node.";
+			error = "Could not read item id from item node, fromid "+ std::to_string(fromId) +", toid "+ std::to_string(toId) +".";
 			return false;
 		}
 

@@ -1,0 +1,81 @@
+<materials>
+	<tileset name="Equipment - Helmets">
+		<items>
+			<item id="3011"/>
+			<item id="3022"/>
+			<item fromid="3229" toid="3230"/>
+			<item id="3351"/>
+			<item fromid="3351" toid="3356"/>
+			<item id="3365"/>
+			<item fromid="3367" toid="3369"/>
+			<item fromid="3373" toid="3376"/>
+			<item fromid="3384" toid="3385"/>
+			<item id="3387"/>
+			<item fromid="3390" toid="3393"/>
+			<item fromid="3395" toid="3396"/>
+			<item id="3400"/>
+			<item id="3210"/>
+			<item fromid="3573" toid="3574"/>
+			<item id="3576"/>
+			<item id="3403"/>
+			<item fromid="3405" toid="3408"/>
+			<item id="5460"/>
+			<item id="6531"/>
+			<item id="5741"/>
+			<item id="6096"/>
+			<item fromid="7461" toid="7462"/>
+			<item id="7458"/>
+			<item id="7459"/>
+			<item id="830"/>
+			<item id="828"/>
+			<item id="829"/>
+			<item id="827"/>
+			<item id="875"/>
+			<item id="894"/>
+			<item id="5917"/>
+			<item id="6578"/>
+			<item id="7992"/>
+			<item id="3573"/>
+			<item id="8864"/>
+			<item fromid="8906" toid="8908"/>
+			<item id="9013"/>
+			<item id="139"/>
+			<item id="8820"/>
+			<item id="9103"/>
+			<item fromid="9127" toid="9129"/>
+			<item fromid="9381" toid="9382"/>
+			<item id="9399"/>
+			<item id="10385"/>
+			<item id="5924"/>
+			<item id="11674"/>
+			<item id="11689"/>
+			<item id="11700"/>
+			<item id="12599"/>
+			<item id="13995"/>
+			<item id="14258"/>
+			<item id="16104"/>
+			<item id="16109"/>
+			<item id="21165"/>
+			<item id="21892"/>
+			<item fromid="26187" toid="26190"/>
+			<item id="22062"/>
+			<item id="22088"/>
+			<item fromid="22113" toid="22116"/>
+			<item fromid="22127" toid="22130"/>
+			<item id="22132"/>
+			<item fromid="22153" toid="22154"/>
+			<item id="22754"/>
+			<item id="22757"/>
+			<item id="24397"/>
+			<item id="27647"/>
+			<item fromid="28714" toid="28715"/>
+			<item id="32925"/>
+			<item id="31324"/>
+			<item fromid="31369" toid="31372"/>
+			<item id="31577"/>
+			<item id="31582"/>
+			<item id="32100"/>
+			<item id="34156"/>
+		</items>
+	</tileset>
+</materials>

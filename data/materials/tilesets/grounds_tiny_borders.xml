@@ -1,0 +1,52 @@
+<materials>
+	<tileset name="Grounds - Tiny Borders">
+		<terrain>
+			<brush name="jade floor ornaments"/>
+			<brush name="zao floor ornaments"/>
+			<brush name="deepling floor ornaments"/>
+			<brush name="dark cobblestone (tiny)"/>
+			<brush name="ugly cobblestone (tiny)"/>
+			<brush name="yellow pavement (tiny)"/>
+			<brush name="dark pavement (tiny)"/>
+			<brush name="venore cobblestone (tiny)"/>
+			<brush name="venore plaster (tiny)"/>
+			<brush name="roshamuul pavement (tiny)"/>
+			<brush name="unknown1 (tiny)"/>
+			<brush name="oramond pavement (tiny)"/>
+			<brush name="wooden floor (tiny)"/>
+			<brush name="carlin wooden floor (tiny)"/>
+			<brush name="timber floor (tiny)"/>
+			<brush name="venore wooden floor (tiny)"/>
+			<brush name="grimy wooden floor horizontal (tiny)"/>
+			<brush name="grimy wooden floor vertical (tiny)"/>
+			<brush name="broken blue marble floor (tiny)"/>
+			<brush name="broken deepling marble floor (tiny)"/>
+			<brush name="dark ice stone floor (tiny)"/>
+			<brush name="broken stone tile (tiny)"/>
+			<brush name="serpent ground (tiny)"/>
+			<brush name="terracota (tiny)"/>
+			<brush name="oramond other pavement (tiny)"/>
+			<brush name="oramond other pavement broken (tiny)"/>
+			<brush name="oramond other pavement alternate (tiny)"/>
+			<brush name="cobblestone fittings (tiny)"/>
+			<brush name="yellow cobblestone fittings (tiny)"/>
+			<brush name="yellow cobblestone fittings broken (tiny)"/>
+			<brush name="light brick fittings (tiny)"/>
+			<brush name="dark brick fittings (tiny)"/>
+			<brush name="ornamented border 3 (tiny)"/>
+			<brush name="ornamented border 4 (tiny)"/>
+			<brush name="overgrown rift floor (tiny)"/>
+			<brush name="overgrown rift floor 2 (tiny)"/>
+			<brush name="tessellated floor (tiny)"/>
+			<brush name="Ice floor (tiny)"/>
+			<brush name="Frozen floor (tiny)"/>
+			<brush name="stone floor (tiny)"/>
+			<brush name="ornamented floor (tiny)"/>
+			<brush name="ancient paving (tiny)"/>
+			<brush name="fitting floor 1 (tiny)"/>
+			<brush name="fitting floor 2 (tiny)"/>
+			<brush name="shallow water (tiny) 2"/>
+			<brush name="squareblocks floor (tiny)"/>
+		</terrain>
+	</tileset>
+</materials>

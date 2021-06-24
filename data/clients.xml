@@ -40,7 +40,7 @@
 -->
 		<client name="Client 11" otb="11" default="true" visible="true" data_directory="materials">
 			<otbm version="3"/>
-			<data format="10.57" dat="0x4A10" spr="0x59E48E02"/>
+			<data format="11" dat="0x4A10" spr="0x59E48E02"/>
 		</client>
 	</clients>
 

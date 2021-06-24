@@ -1,0 +1,8 @@
+<materials>
+	<brush name="firefly" type="doodad" lookid="6490" draggable="true" on_blocking="true" thickness="10/10">
+		<item id="6490" chance="10"/>
+		<item id="6493" chance="10"/>
+		<item id="6494" chance="10"/>
+		<item id="6497" chance="10"/>
+	</brush>
+</materials>

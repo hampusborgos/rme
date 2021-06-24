@@ -1,0 +1,7 @@
+<materials>
+	<tileset name="Weapons - Replica">
+		<items>
+			<item fromid="25915" toid="25974"/>
+		</items>
+	</tileset>
+</materials>

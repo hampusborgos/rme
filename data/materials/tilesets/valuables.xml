@@ -1,0 +1,32 @@
+<materials>
+	<tileset name="Valuables">
+		<items>
+			<item fromid="281" toid="282"/>
+			<item fromid="675" toid="678"/>
+			<item id="3017"/>
+			<item id="3023"/>
+			<item fromid="3026" toid="3033"/>
+			<item fromid="3035" toid="3043"/>
+			<item id="5021"/>
+			<item id="6526"/>
+			<item id="8828"/>
+			<item id="9057"/>
+			<item id="14751"/>
+			<item id="22118"/>
+			<item id="22516"/>
+			<item fromid="22720" toid="22724"/>
+			<item id="22763"/>
+			<item fromid="22769" toid="22770"/>
+			<item id="23682"/>
+			<item fromid="24390" toid="24392"/>
+			<item id="25737"/>
+			<item id="27654"/>
+			<item fromid="29345" toid="29347"/>
+			<item fromid="30059" toid="30061"/>
+			<item id="30180"/>
+			<item id="31265"/>
+			<item fromid="32622" toid="32626"/>
+			<item fromid="32769" toid="32771"/>
+		</items>
+	</tileset>
+</materials>

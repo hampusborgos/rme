@@ -1,0 +1,12 @@
+<materials>
+	<tileset name="Magical Items">
+		<items>
+			<item id="943"/>
+			<item id="3024"/>
+			<item id="3034"/>
+			<item fromid="3060" toid="3062"/>
+			<item fromid="3076" toid="3077"/>
+			<item id="3206"/>
+		</items>
+	</tileset>
+</materials>

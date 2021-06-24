@@ -1,0 +1,534 @@
+<materials>
+	<tileset name="Hangables">
+		<doodad>
+			<!-- Light -->
+			<brush name="wall lamp"/>
+			<brush name="wall lamp - lit"/>
+			<brush name="wall torch"/>
+			<brush name="wall torch - lit"/>
+			<brush name="wall candle"/>
+			<brush name="wall candle - lit"/>
+			<brush name="bambu wall torch"/>
+			<brush name="bambu wall torch - lit"/>
+			<brush name="cage wall lamp"/>
+			<brush name="cage wall lamp - lit"/>
+			<brush name="walled candle"/>
+			<brush name="purple energy wall lamp"/>
+			<brush name="purple energy wall lamp - lit"/>
+			<brush name="blue energy wall lamp"/>
+			<brush name="blue energy wall lamp - lit"/>
+			<brush name="yalahar wall candle"/>
+			<brush name="yalahar wall candle - lit"/>
+			<brush name="dragon wall candle"/>
+			<brush name="dragon wall candle - lit"/>
+			<brush name="zao wall candle"/>
+			<brush name="zao wall candle - lit"/>
+			<brush name="skull torch"/>
+			<brush name="zao torch1"/>
+			<brush name="zao torch1 - lit"/>
+			<brush name="zao torch2"/>
+			<brush name="zao torch2 - lit"/>
+			<brush name="wall lamp2"/>
+			<brush name="wall lamp2 - lit"/>
+			<brush name="wall candle2"/>
+			<brush name="wall candle2 - lit"/>
+			<brush name="wall dual lamp"/>
+			<brush name="wall dual lamp - lit"/>
+			<brush name="sun lamp"/>
+			<brush name="magic sphere lamp"/>
+			<brush name="magic sphere lamp 2"/>
+			<brush name="great wall lamp"/>
+			<!-- Tapestry -->
+			<brush name="tapestry king"/>
+			<item id="2644"/>
+			<item id="2647"/>
+			<item id="2650"/>
+			<item id="2653"/>
+			<item id="2656"/>
+			<item id="2659"/>
+			<item id="2667"/>
+			<brush name="pirate flag"/>
+			<brush name="yalahar tapestry"/>
+			<brush name="torn yalahar tapestry"/>
+			<brush name="long yalahar tapestry (normal)"/>
+			<brush name="long yalahar tapestry (royal)1"/>
+			<brush name="long yalahar tapestry (royal)2"/>
+			<brush name="long yalahar tapestry (torn)"/>
+			<brush name="long yalahar tapestry (sides)"/>
+			<!-- Banner -->
+			<item fromid="33729" toid="33732"/>
+			<item fromid="34171" toid="34172"/>
+			<brush name="new green banner"/>
+			<brush name="new blue banner"/>
+			<brush name="new bird simbol banner"/>
+			<brush name="new purple curtain"/>
+			<item fromid="2606" toid="2611"/>
+			<brush name="banner1"/>
+			<brush name="banner2"/>
+			<brush name="banner3"/>
+			<brush name="banner4"/>
+			<brush name="banner5"/>
+			<brush name="banner6"/>
+			<brush name="banner7"/>
+			<brush name="banner8"/>
+			<brush name="banner9"/>
+			<brush name="banner10"/>
+			<brush name="banner11"/>
+			<brush name="banner12"/>
+			<brush name="banner13"/>
+			<brush name="banner14"/>
+			<brush name="zao banner"/>
+			<brush name="zao banner - dragon"/>
+			<brush name="orange black tapestry"/>
+			<brush name="orange black tapestry - swords"/>
+			<brush name="tattered banner1"/>
+			<brush name="tattered banner2"/>
+			<brush name="tattered banner3"/>
+			<brush name="tattered curtain"/>
+			<brush name="torn tattered curtain"/>
+			<brush name="hieroglyph banner"/>
+			<brush name="pharaoh banner"/>
+			<brush name="small buttons painel"/>
+			<brush name="new colored flags"/>
+			<!-- Nature -->
+			<brush name="hangable moss"/>
+			<brush name="dark hangable moss"/>
+			<brush name="burnt wall"/>
+			<brush name="animated bat"/>
+			<brush name="slime"/>
+			<brush name="water trinkle"/>
+			<brush name="hanging acid"/>
+			<brush name="flowery garland1"/>
+			<brush name="flowery garland2"/>
+			<brush name="flowery garland3"/>
+			<brush name="leaf wreath1"/>
+			<brush name="leaf wreath2"/>
+			<brush name="leaf wreath3"/>
+			<brush name="leaf wreath4"/>
+			<brush name="zao hangable1"/>
+			<brush name="zao hangable2"/>
+			<brush name="zao hangable3"/>
+			<brush name="zao gem1"/>
+			<brush name="zao gem2"/>
+			<brush name="zao gem3"/>
+			<brush name="zao crystal1"/>
+			<brush name="zao crystal2"/>
+			<brush name="zao crystal3"/>
+			<brush name="zao crystal4"/>
+			<brush name="zao crystal5"/>
+			<brush name="x mark"/>
+			<brush name="dark spikes (hangable)"/>
+			<brush name="colorful hanging honey"/>
+			<brush name="bland hanging honey"/>
+			<brush name="unknown hanging1"/>
+			<brush name="unknown hanging2"/>
+			<brush name="unknown hanging3"/>
+			<brush name="hanging slime fungus"/>
+			<brush name="bearded hedgehog moss"/>
+			<brush name="barnacles"/>
+			<brush name="swamp lichen"/>
+			<brush name="cult simbol splash"/>
+			<brush name="oramond sludge"/>
+			<brush name="oramond dripping sludge"/>
+			<brush name="blue sludge"/>
+			<brush name="unknown hanging4"/>
+			<brush name="unknown hanging5"/>
+			<brush name="unknown hanging6"/>
+			<brush name="unknown hanging7"/>
+			<brush name="unknown hanging8"/>
+			<brush name="unknown hanging9"/>
+			<brush name="unknown hanging10"/>
+			<brush name="transition unknown hanging 8 to 9"/>
+			<brush name="transition unknown hanging 9 to 8"/>
+			<brush name="transition unknown hanging 9 to 10"/>
+			<brush name="transition unknown hanging 10 to 9"/>
+			<brush name="transition unknown hanging 8 to 10"/>
+			<brush name="transition unknown hanging 10 to 8"/>
+			<!-- Signs -->
+			<brush name="archer's shop sign"/>
+			<brush name="armor shop sign"/>
+			<brush name="weapon shop sign"/>
+			<brush name="tool shop sign"/>
+			<brush name="food shop sign"/>
+			<brush name="furniture shop sign"/>
+			<brush name="grape shop sign"/>
+			<brush name="banana shop sign"/>
+			<brush name="depot sign"/>
+			<brush name="post sign"/>
+			<brush name="gem shop sign"/>
+			<!-- Trophies -->
+			<brush name="demon trophy"/>
+			<brush name="wolf trophy"/>
+			<brush name="orc trophy"/>
+			<brush name="behemoth trophy"/>
+			<brush name="deer trophy"/>
+			<brush name="cyclops trophy"/>
+			<brush name="dragon trophy"/>
+			<brush name="lion trophy"/>
+			<brush name="minotaur trophy"/>
+			<brush name="orc trophy2"/>
+			<brush name="fish trophy"/>
+			<brush name="strange trophy"/>
+			<brush name="trophy of obujos"/>
+			<brush name="trophy of tanjis"/>
+			<brush name="trophy of jaul"/>
+			<brush name="werebadger trophy"/>
+			<brush name="wereboar trophy"/>
+			<brush name="werewolf trophy"/>
+			<brush name="werebear trophy"/>
+			<item fromid="7369" toid="7371"/>
+			<item id="872"/>
+			<item id="31266"/>
+			<item id="32751"/>
+			<item id="32753"/>
+			<item id="34219"/>
+			<!-- Architecture -->
+			<brush name="palisade hangable"/>
+			<brush name="wooden dragon"/>
+			<brush name="wooden bull"/>
+			<brush name="wooden yeti"/>
+			<brush name="spikes"/>
+			<brush name="stone gargoyle1"/>
+			<brush name="stone gargoyle2"/>
+			<brush name="stone gargoyle3"/>
+			<brush name="stone gargoyle4"/>
+			<brush name="goddess statue"/>
+			<brush name="sun emblem"/>
+			<brush name="defensive construction1"/>
+			<brush name="defensive construction2"/>
+			<brush name="serpent construction1"/>
+			<brush name="serpent construction2"/>
+			<brush name="serpent construction3"/>
+			<brush name="serpent construction4"/>
+			<brush name="skull decoration"/>
+			<brush name="zaoan decoration1"/>
+			<brush name="zaoan decoration2"/>
+			<brush name="zaoan decoration3"/>
+			<brush name="zaoan decoration4"/>
+			<brush name="zao arch1"/>
+			<brush name="zao arch2"/>
+			<brush name="zao arch3"/>
+			<brush name="zao arch4"/>
+			<brush name="zao arch5"/>
+			<item id="11081"/>
+			<item id="31951"/>
+			<item fromid="33782" toid="33785"/>
+			<item id="2664"/>
+			<item id="2668"/>
+			<item id="2632"/>
+			<item id="2635"/>
+			<item id="2638"/>
+			<brush name="wall mirror"/>
+			<brush name="vengoth wall mirror"/>
+			<brush name="broken vengoth wall mirror"/>
+			<brush name="mirror"/>
+			<item id="2639"/>
+			<item id="2640"/>
+			<item id="2641"/>
+			<brush name="large painting1"/>
+			<brush name="large painting2"/>
+			<brush name="large painting3"/>
+			<brush name="portrait"/>
+			<brush name="rafzan painting"/>
+			<brush name="large rafzan painting"/>
+			<brush name="pirate emblem"/>
+			<brush name="hanging swords"/>
+			<brush name="wall chain"/>
+			<brush name="hanging skull"/>
+			<brush name="hanging triple skull"/>
+			<brush name="cobra wall statue"/>
+			<brush name="head stone cobra"/>
+			<brush name="head stone cobra with fumes"/>
+			<brush name="large map"/>
+			<brush name="celestial map"/>
+			<brush name="chalk board"/>
+			<brush name="pinned note"/>
+			<brush name="balloons"/>
+			<brush name="shield and sword"/>
+			<brush name="shield1"/>
+			<brush name="shield2"/>
+			<brush name="shield3"/>
+			<brush name="shield4"/>
+			<brush name="shield5"/>
+			<brush name="shield6"/>
+			<brush name="shield7"/>
+			<brush name="feather decoration"/>
+			<brush name="white dried fur"/>
+			<brush name="brown dried fur"/>
+			<brush name="tiger fur"/>
+			<brush name="mammoth fur"/>
+			<brush name="fish"/>
+			<brush name="bat"/>
+			<brush name="wooden planks (hangable)"/>
+			<brush name="viking shield1"/>
+			<brush name="viking shield2"/>
+			<brush name="viking shield3"/>
+			<brush name="sacrophagus - closed"/>
+			<brush name="sacrophagus - open"/>
+			<brush name="skeleton niche (skeleton)"/>
+			<brush name="skeleton niche (niche)"/>
+			<brush name="small window"/>
+			<brush name="decorative spear"/>
+			<brush name="hanging shield"/>
+			<brush name="hanging sabre"/>
+			<brush name="horn decoration (hanging)"/>
+			<brush name="iron case"/>
+			<brush name="deer antlers"/>
+			<brush name="wolf hide"/>
+			<brush name="hanging wolf"/>
+			<brush name="hanging deer"/>
+			<brush name="hanging fur"/>
+			<brush name="cutlery"/>
+			<brush name="ornate wall (hangable)"/>
+			<brush name="hanging cord"/>
+			<brush name="lampions"/>
+			<brush name="flitter"/>
+			<brush name="party snake"/>
+			<brush name="hanging drinks"/>
+			<brush name="royal emblems"/>
+			<brush name="short lampions"/>
+			<brush name="short flitter"/>
+			<brush name="short party snake"/>
+			<brush name="short emblems1"/>
+			<brush name="short emblems2"/>
+			<brush name="triangle flags - south"/>
+			<brush name="triangle flags - east"/>
+			<brush name="sun emblem cloth"/>
+			<brush name="red white flag"/>
+			<brush name="cave painting1"/>
+			<brush name="cave painting2"/>
+			<brush name="cave painting3"/>
+			<brush name="cave painting4"/>
+			<brush name="orange long glow"/>
+			<brush name="orange short glow"/>
+			<brush name="blue ornament"/>
+			<brush name="blue white drape"/>
+			<brush name="gold lion ornament"/>
+			<brush name="gold yakhal ornament"/>
+			<brush name="gold head ornament"/>
+			<brush name="gold head ornament - horns"/>
+			<brush name="gold railing ornament"/>
+			<brush name="gold handle ornament"/>
+			<brush name="gold window ornament"/>
+			<brush name="clay window ornament"/>
+			<brush name="venorean ornament1"/>
+			<brush name="venorean ornament2"/>
+			<brush name="venorean ornament3"/>
+			<brush name="venorean ornament4"/>
+			<brush name="oramond hangable - full"/>
+			<brush name="oramond hangable - empty"/>
+			<brush name="wanted note"/>
+			<brush name="red gem"/>
+			<brush name="green gem"/>
+			<brush name="purple gem"/>
+			<brush name="blue gem"/>
+			<brush name="luminescent crystal"/>
+			<brush name="ink falling 1"/>
+			<brush name="ink falling 2"/>
+			<brush name="wall symbol"/>
+			<brush name="wall sign (nort)"/>
+			<brush name="wall symbol (east)"/>
+			<brush name="gold wall ornament"/>
+			<brush name="scarab ornament"/>
+			<brush name="gold claw ornament"/>
+			<brush name="scorpion ornament"/>
+			<brush name="hieroglyphs"/>
+			<brush name="niche"/>
+			<brush name="carving of a scorpion"/>
+			<brush name="strange carving"/>
+			<brush name="carving of a battle"/>
+			<brush name="strange carving 2"/>
+			<brush name="strange carving 3"/>
+			<brush name="carving of a creature"/>
+			<brush name="wall carving of a lion"/>
+			<brush name="inscription"/>
+			<brush name="grey mosaic"/>
+			<brush name="colored mosaic"/>
+			<brush name="sun ornament"/>
+			<brush name="paint of a werewolf"/>
+			<brush name="mysterious paint"/>
+			<brush name="paint of a map"/>
+			<brush name="mysterious paint"/>
+		</doodad>
+		<raw>
+			<!-- Light Sources -->
+			<item fromid="2907" toid="2910"/>
+			<item fromid="2928" toid="2931"/>
+			<item fromid="2936" toid="2939"/>
+			<item fromid="2940" toid="2947"/>
+			<item fromid="8595" toid="8596"/>
+			<item fromid="8924" toid="8931"/>
+			<item fromid="8832" toid="8835"/>
+			<item fromid="10054" toid="10057"/>
+			<item fromid="11039" toid="11042"/>
+			<item fromid="11054" toid="11055"/>
+			<item fromid="11235" toid="11236"/>
+			<item fromid="11244" toid="11245"/>
+			<item fromid="11252" toid="11255"/>
+			<item fromid="12431" toid="12434"/>
+			<item fromid="13651" toid="13666"/>
+			<item fromid="15528" toid="15531"/>
+			<item fromid="17415" toid="17418"/>
+			<item fromid="20095" toid="20098"/>
+			<item id="20126"/>
+			<item id="20130"/>
+			<item fromid="20497" toid="20504"/>
+			<!-- Tapestry -->
+			<item fromid="2599" toid="2600"/>
+			<item fromid="2642" toid="2659"/>
+			<item id="6433"/>
+			<item fromid="2665" toid="2667"/>
+			<item fromid="5613" toid="5614"/>
+			<item fromid="8508" toid="8517"/>
+			<item fromid="8533" toid="8543"/>
+			<item fromid="8921" toid="8922"/>
+			<item fromid="17346" toid="17352"/>
+			<!-- Decoration/Inside Wall Decoration -->
+			<item fromid="17951" toid="17956"/>
+			<item id="2596"/>
+			<item id="2601"/>
+			<item fromid="2614" toid="2615"/>
+			<item fromid="2612" toid="2613"/>
+			<item fromid="2618" toid="2629"/>
+			<item fromid="2639" toid="2641"/>
+			<item fromid="8668" toid="8669"/>
+			<item fromid="2603" toid="2604"/>
+			<item fromid="2630" toid="2638"/>
+			<item id="8667"/>
+			<item id="8689"/>
+			<item id="8740"/>
+			<item fromid="8721" toid="8722"/>
+			<item fromid="8753" toid="8754"/>
+			<item fromid="5654" toid="5657"/>
+			<item fromid="5482" toid="5483"/>
+			<item fromid="5595" toid="5596"/>
+			<item fromid="2660" toid="2664"/>
+			<item id="6434"/>
+			<item fromid="2669" toid="2695"/>
+			<item fromid="7137" toid="7139"/>
+			<item fromid="8816" toid="8817"/>
+			<item fromid="8587" toid="8592"/>
+			<item fromid="14002" toid="14007"/>
+			<item fromid="8597" toid="8604"/>
+			<item fromid="6121" toid="6122"/>
+			<item fromid="6512" toid="6518"/>
+			<item fromid="752" toid="755"/>
+			<item fromid="7877" toid="7878"/>
+			<item fromid="9512" toid="9515"/>
+			<item fromid="10245" toid="10246"/>
+			<item fromid="10965" toid="10970"/>
+			<item fromid="11062" toid="11066"/>
+			<item fromid="11069" toid="11082"/>
+			<item id="11085"/>
+			<item fromid="11098" toid="11105"/>
+			<item id="11107"/>
+			<item fromid="11109" toid="11113"/>
+			<item fromid="11124" toid="11135"/>
+			<item fromid="11250" toid="11251"/>
+			<item fromid="11819" toid="11820"/>
+			<item fromid="12507" toid="12508"/>
+			<item fromid="13682" toid="13687"/>
+			<item fromid="14177" toid="14206"/>
+			<item fromid="17330" toid="17335"/>
+			<item fromid="17525" toid="17526"/>
+			<!-- Outside Cave Dungeon Wall Decoration -->
+			<item fromid="2687" toid="2692"/>
+			<item fromid="2745" toid="2752"/>
+			<item fromid="2769" toid="2770"/>
+			<item fromid="5057" toid="5060"/>
+			<item fromid="1612" toid="1613"/>
+			<item fromid="6473" toid="6474"/>
+			<item fromid="12176" toid="12177"/>
+			<item id="6492"/>
+			<item id="6495"/>
+			<item fromid="6978" toid="6979"/>
+			<item fromid="6984" toid="6985"/>
+			<item fromid="6987" toid="6992"/>
+			<item fromid="7232" toid="7235"/>
+			<item fromid="7238" toid="7241"/>
+			<item fromid="205" toid="206"/>
+			<item fromid="209" toid="210"/>
+			<item fromid="212" toid="219"/>
+			<item fromid="8814" toid="8815"/>
+			<item fromid="9448" toid="9455"/>
+			<item fromid="11789" toid="11790"/>
+			<item fromid="11823" toid="11824"/>
+			<item fromid="11831" toid="11836"/>
+			<item fromid="8793" toid="8798"/>
+			<item fromid="12183" toid="12185"/>
+			<item fromid="13895" toid="13920"/>
+			<item fromid="17836" toid="17845"/>
+			<item fromid="15518" toid="15527"/>
+			<item fromid="17626" toid="17629"/>
+			<!-- Nature Wall Decoration -->
+			<item fromid="2702" toid="2737"/>
+			<item id="7890"/>
+			<item fromid="6219" toid="6224"/>
+			<item id="9844"/>
+			<item fromid="8499" toid="8500"/>
+			<item fromid="8593" toid="8594"/>
+			<item fromid="8417" toid="8418"/>
+			<item fromid="8670" toid="8671"/>
+			<item fromid="8785" toid="8792"/>
+			<item fromid="9669" toid="9682"/>
+			<item fromid="21851" toid="21852"/>
+			<item fromid="21854" toid="21855"/>
+			<item fromid="10462" toid="10467"/>
+			<item fromid="10749" toid="10765"/>
+			<item fromid="10805" toid="10816"/>
+			<item id="12067"/>
+			<item fromid="12073" toid="12076"/>
+			<item fromid="12886" toid="12893"/>
+			<item fromid="13312" toid="13323"/>
+			<item fromid="15116" toid="15117"/>
+			<item id="16587"/>
+			<item fromid="16616" toid="16621"/>
+			<item fromid="16655" toid="16662"/>
+			<item fromid="17881" toid="17883"/>
+			<item fromid="19315" toid="19325"/>
+			<item fromid="19338" toid="19350"/>
+			<item fromid="20624" toid="20628"/>
+			<item fromid="20635" toid="20640"/>
+			<item fromid="20652" toid="20657"/>
+			<item fromid="28431" toid="28436"/>
+			<item fromid="20897" toid="20904"/>
+			<item fromid="20917" toid="20920"/>
+			<item fromid="20907" toid="20916"/>
+			<item fromid="20923" toid="20928"/>
+			<item fromid="21064" toid="21087"/>
+			<item fromid="22585" toid="22618"/>
+			<item fromid="22732" toid="22733"/>
+			<item fromid="24108" toid="24131"/>
+			<item fromid="24193" toid="24224"/>
+			<item fromid="25654" toid="25659"/>
+			<item fromid="25682" toid="25683"/>
+			<item fromid="25769" toid="25772"/>
+			<item fromid="27277" toid="27300"/>
+			<item fromid="28892" toid="28893"/>
+			<item fromid="27935" toid="27944"/>
+			<item fromid="28169" toid="28176"/>
+			<item fromid="28652" toid="28653"/>
+			<item fromid="28205" toid="28206"/>
+			<item id="28208"/>
+			<item fromid="28220" toid="28226"/>
+			<item fromid="28249" toid="28267"/>
+			<item fromid="28431" toid="28432"/>
+			<item fromid="28573" toid="28574"/>
+			<item fromid="29319" toid="29322"/>
+			<item fromid="29996" toid="29997"/>
+			<item fromid="30655" toid="30660"/>
+			<item fromid="30662" toid="30667"/>
+			<item fromid="30670" toid="30673"/>
+			<item fromid="30960" toid="30965"/>
+			<item fromid="30966" toid="30972"/>
+			<item fromid="31073" toid="31096"/>
+			<item fromid="31151" toid="31158"/>
+			<item fromid="32537" toid="32538"/>
+			<item id="32996"/>
+			<item fromid="32998" toid="32999"/>
+			<item id="33001"/>
+			<item fromid="33142" toid="33148"/>
+			<item fromid="33276" toid="33279"/>
+		</raw>
+	</tileset>
+</materials>

@@ -1,0 +1,14 @@
+<materials>
+	<tileset name="Fields">
+		<doodad>
+			<brush name="fogfall"/>
+			<brush name="lavafall"/>
+			<brush name="waterfall"/>
+		</doodad>
+		<raw>
+			<item fromid="1716" toid="1721"/>
+			<item fromid="14144" toid="14146"/>
+			<item fromid="19237" toid="19242"/>
+		</raw>
+	</tileset>
+</materials>

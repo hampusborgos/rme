@@ -1,0 +1,61 @@
+<materials>
+	<tileset name="Equipment - Amulets">
+		<items>
+			<item id="3045"/>
+			<item id="3054"/>
+			<item id="3055"/>
+			<item id="3056"/>
+			<item id="3057"/>
+			<item id="3058"/>
+			<item fromid="3080" toid="3085"/>
+			<item id="3102"/>
+			<item id="3008"/>
+			<item id="3009"/>
+			<item id="3012"/>
+			<item id="3013"/>
+			<item id="3014"/>
+			<item id="3015"/>
+			<item id="3016"/>
+			<item id="3018"/>
+			<item id="3019"/>
+			<item id="3021"/>
+			<item id="3025"/>
+			<item id="3572"/>
+			<item id="5785"/>
+			<item fromid="814" toid="817"/>
+			<item fromid="9301" toid="9304"/>
+			<item id="10345"/>
+			<item id="10457"/>
+			<item id="13990"/>
+			<item id="16108"/>
+			<item id="16113"/>
+			<item id="19153"/>
+			<item id="19357"/>
+			<item id="21170"/>
+			<item id="21183"/>
+			<item fromid="22060" toid="22061"/>
+			<item id="22134"/>
+			<item id="22195"/>
+			<item id="22746"/>
+			<item fromid="22767" toid="22768"/>
+			<item fromid="23474" toid="23475"/>
+			<item fromid="23526" toid="23528"/>
+			<item fromid="23542" toid="23544"/>
+			<item id="29428"/>
+			<item id="29429"/>
+			<item id="30342"/>
+			<item id="30343"/>
+			<item id="30344"/>
+			<item id="30345"/>
+			<item id="30323"/>
+			<item fromid="30401" toid="30403"/>
+			<item id="31267"/>
+			<item id="31268"/>
+			<item id="31556"/>
+			<item id="31591"/>
+			<item id="31595"/>
+			<item id="31631"/>
+			<item id="34158"/>
+		</items>
+	</tileset>
+</materials>

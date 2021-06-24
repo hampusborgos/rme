@@ -245,25 +245,11 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 			}
 
 			const std::string& format = attribute.as_string();
-			ClientData client_data = { DAT_FORMAT_74, 0, 0 };
-			if(format == "7.4") {
-				client_data.datFormat = DAT_FORMAT_74;
-			} else if(format == "7.55") {
-				client_data.datFormat = DAT_FORMAT_755;
-			} else if(format == "7.8") {
-				client_data.datFormat = DAT_FORMAT_78;
-			} else if(format == "8.6") {
-				client_data.datFormat = DAT_FORMAT_86;
-			} else if(format == "9.6") {
-				client_data.datFormat = DAT_FORMAT_96;
-			} else if(format == "10.10") {
-				client_data.datFormat = DAT_FORMAT_1010;
-			} else if(format == "10.50") {
-				client_data.datFormat = DAT_FORMAT_1050;
-			} else if(format == "10.57") {
-				client_data.datFormat = DAT_FORMAT_1057;
+			ClientData client_data = { DAT_FORMAT_11, 0, 0 };
+			if(format == "11") {
+				client_data.datFormat = DAT_FORMAT_11;
 			} else {
-				wxLogError("Node 'data' 'format' is invalid (7.4, 7.55, 7.8, 8.6, 9.6, 10.10, 10.50, 10.57 are supported)");
+				wxLogError("Node 'data' 'format' is invalid (only 11.00 are supported)");
 				continue;
 			}
 

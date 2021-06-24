@@ -1,0 +1,10 @@
+<materials>
+	<tileset name="Constructions">
+		<doodad>
+			<brush name="monster nest"/>
+		</doodad>
+		<items>
+			<item fromid="19209" toid="19210"/>
+		</items>
+	</tileset>
+</materials>

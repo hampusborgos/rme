@@ -1,0 +1,54 @@
+<materials>
+	<tileset name="Railings">
+		<terrain>
+			<brush name="stone railing"/>
+			<brush name="sandstone railing"/>
+			<brush name="sandy stone railing"/>
+			<brush name="white stone railing1"/>
+			<brush name="white stone railing2"/>
+			<brush name="white stone railing3"/>
+			<brush name="bamboo palisade"/>
+			<brush name="stone railing2"/>
+			<brush name="palisade railing"/>
+			<brush name="bone railing"/>
+			<brush name="icy bone railing"/>
+			<brush name="tendrils"/>
+			<brush name="stone railing3"/>
+			<brush name="limestone railing"/>
+			<brush name="blue palisade railing"/>
+			<brush name="corrupted railing1"/>
+			<brush name="corrupted railing2"/>
+			<brush name="stony railing"/>
+			<brush name="timber railing"/>
+			<brush name="rocky railing"/>
+			<brush name="moist railing1"/>
+			<brush name="moist railing2"/>
+			<brush name="small basalt wall"/>
+			<brush name="mossy railing"/>
+			<brush name="mushroom railing"/>
+			<brush name="small wooden fence"/>
+			<brush name="cord"/>
+			<brush name="pillar railing"/>
+			<brush name="low stone wall"/>
+			<brush name="roshamuul railing"/>
+			<brush name="oramond railing1"/>
+			<brush name="oramond railing2"/>
+			<brush name="oramond railing3"/>
+			<brush name="oramond railing4"/>
+			<brush name="oramond railing5"/>
+			<brush name="oramond railing6"/>
+			<brush name="oramond railing7"/>
+			<brush name="krailos spikes1"/>
+			<brush name="krailos spikes2"/>
+			<brush name="light stones with grass railing"/>
+			<brush name="white stone railing"/>
+			<brush name="white blocks railing"/>
+			<brush name="blue blocks railing"/>
+			<brush name="blue blocks railing 2"/>
+			<brush name="orange blocks railing"/>
+			<brush name="heavy stones railing"/>
+			<brush name="earth elf railing"/>
+			<brush name="snow elf railing"/>
+		</terrain>
+	</tileset>
+</materials>

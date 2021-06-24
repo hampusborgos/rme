@@ -1,0 +1,250 @@
+<materials>
+	<tileset name="Stairs / Ramps / Ladders">
+		<terrain>
+			<item id="469"/>
+			<brush name="ramp"/>
+			<!-- Ramp -->
+			<brush name="snowy ramp"/>
+			<brush name="earth ramp"/>
+			<brush name="grotto ramp"/>
+			<brush name="purple grotto ramp"/>
+			<brush name="basalt ramp"/>
+			<brush name="mossy ramp"/>
+			<brush name="muddy ramp"/>
+			<brush name="swamp clay ramp"/>
+			<brush name="sandstone ramp"/>
+			<brush name="dark stone ramp"/>
+			<brush name="ornamented ramp"/>
+			<brush name="new blue spikes"/>
+			<brush name="cracked ramp"/>
+			<brush name="messy ramp"/>
+			<brush name="hands ramp"/>
+			<brush name="plants ramp"/>
+			<brush name="new elf grey ramp"/>
+			<brush name="new elf blue ramp"/>
+			<brush name="heavy stone ramp"/>
+			<brush name="desert stone ramp clean"/>
+			<brush name="desert stone ramp blue"/>
+			<brush name="desert stone ramp orange"/>
+			<brush name="mountain hole - filled"/>
+			<brush name="mountain hole - empty"/>
+			<brush name="snow hole - filled"/>
+			<brush name="snow hole - empty"/>
+			<brush name="earth hole - filled"/>
+			<brush name="earth hole - empty"/>
+			<brush name="basalt hole"/>
+			<brush name="mossy hole"/>
+			<brush name="muddy hole - filled"/>
+			<brush name="muddy hole - empty"/>
+			<brush name="swamp clay hole - filled"/>
+			<brush name="swamp clay hole - empty"/>
+			<brush name="sandstone hole - filled"/>
+			<brush name="sandstone hole - empty"/>
+			<brush name="dark sand hole"/>
+			<brush name="pyramid ramp"/>
+			<brush name="bamboo ramp"/>
+			<brush name="white stairs"/>
+			<!-- City Stairs -->
+			<brush name="brown stairs"/>
+			<brush name="stone stairs1"/>
+			<brush name="wooden stairs"/>
+			<item id="8657"/>
+			<brush name="hand made stairs"/>
+			<brush name="deepling stairs"/>
+			<item id="15144"/>
+			<brush name="venorean stairs"/>
+			<brush name="roshamuul stairs"/>
+			<brush name="ruined stairs1"/>
+			<brush name="ruined stairs2"/>
+			<item id="31907"/>
+			<brush name="oramond stairs1"/>
+			<brush name="oramond stairs2"/>
+			<brush name="stone stairs2"/>
+			<brush name="box ramp"/>
+			<brush name="stone stairway"/>
+			<!-- City Stairs Hole -->
+			<brush name="black stone stairs"/>
+			<brush name="black stone trapdoor"/>
+			<brush name="gray stone stairs"/>
+			<brush name="gray stone trapdoor"/>
+			<item fromid="437" toid="438"/>
+			<item id="8658"/>
+			<item id="8932"/>
+			<brush name="deepling stairhole"/>
+			<brush name="mushroom corkscrew hole"/>
+			<brush name="roshamuul hole"/>
+			<item id="20259"/>
+			<brush name="oramond hole1"/>
+			<item id="20469"/>
+			<brush name="oramond hole2"/>
+			<item id="1948"/>
+			<!-- Ladder -->
+			<item id="1968"/>
+			<item id="5542"/>
+			<item id="7771"/>
+			<brush name="ladder"/>
+			<brush name="wooden ladder hole"/>
+			<!-- Ladder Hole -->
+			<brush name="wooden trapdoor"/>
+			<brush name="stairs down"/>
+			<brush name="trapdoor down"/>
+			<brush name="trapdoor ladder down"/>
+			<brush name="trapdoor ladder down"/>
+			<brush name="open coffin stairs"/>
+			<!-- Random Entrances -->
+			<item id="7526"/>
+			<brush name="cave entrance1"/>
+			<brush name="cave entrance2"/>
+			<brush name="cave entrance3"/>
+			<item id="385"/>
+			<!-- Cave Hole -->
+			<brush name="grass stone pile"/>
+			<brush name="sand stone pile"/>
+			<brush name="ice stone pile"/>
+			<brush name="large hole"/>
+			<brush name="large hole tops"/>
+			<brush name="tunnel entrance"/>
+			<item id="12203"/>
+			<item id="17239"/>
+			<item id="23364"/>
+			<item id="386"/>
+			<!-- Rope Spot -->
+			<item id="421"/>
+			<item id="12202"/>
+			<item id="17238"/>
+			<item id="23363"/>
+			<item id="24358"/>
+			<item id="31168"/>
+			<item id="33770"/>
+			<item id="34165" toid="34166"/>
+			<item id="34243"/>
+			<item id="34255"/>
+			<item id="34335"/>
+		</terrain>
+		<raw>
+			<!-- Stairs -->
+			<item id="1947"/>
+			<item id="5257"/>
+			<item id="1958"/>
+			<item id="7881"/>
+			<item fromid="1977" toid="1978"/>
+			<item fromid="855" toid="856"/>
+			<item fromid="5258" toid="5259"/>
+			<item fromid="8657" toid="8658"/>
+			<item id="11707"/>
+			<item id="11709"/>
+			<item id="15144"/>
+			<item fromid="17394" toid="17395"/>
+			<item fromid="20253" toid="20256"/>
+			<item fromid="19590" toid="19591"/>
+			<item fromid="20142" toid="20143"/>
+			<item fromid="20224" toid="20225"/>
+			<item fromid="20491" toid="20496"/>
+			<item fromid="20750" toid="20755"/>
+			<item fromid="22565" toid="22566"/>
+			<!-- Ladders -->
+			<item id="1948"/>
+			<item id="1968"/>
+			<item id="5542"/>
+			<item id="7771"/>
+			<item fromid="20474" toid="20475"/>
+			<!-- Ramps -->
+			<item fromid="8830" toid="8831"/>
+			<item fromid="1950" toid="1957"/>
+			<item fromid="6909" toid="6916"/>
+			<item fromid="7542" toid="7549"/>
+			<item fromid="14932" toid="14939"/>
+			<item fromid="15108" toid="15115"/>
+			<item fromid="16680" toid="16695"/>
+			<item fromid="18650" toid="18657"/>
+			<item fromid="13716" toid="13723"/>
+			<item fromid="21564" toid="21571"/>
+			<item fromid="1960" toid="1967"/>
+			<item fromid="1969" toid="1976"/>
+			<item fromid="13558" toid="13593"/>
+			<item fromid="14133" toid="14136"/>
+			<item fromid="1950" toid="1958"/>
+			<item fromid="1960" toid="1978"/>
+			<!-- Holes -->
+			<item fromid="385" toid="387"/>
+			<item id="394"/>
+			<item id="421"/>
+			<item fromid="593" toid="595"/>
+			<item fromid="606" toid="610"/>
+			<item id="615"/>
+			<item id="5731"/>
+			<item fromid="867" toid="868"/>
+			<item id="874"/>
+			<item fromid="7515" toid="7518"/>
+			<item fromid="7520" toid="7525"/>
+			<item fromid="7550" toid="7555"/>
+			<item fromid="12202" toid="12203"/>
+			<item fromid="17238" toid="17239"/>
+			<item fromid="23363" toid="23364"/>
+			<item fromid="604" toid="605"/>
+			<!-- Stairs / Ladder Down -->
+			<item fromid="369" toid="370"/>
+			<item id="411"/>
+			<item id="412"/>
+			<item fromid="413" toid="414"/>
+			<item id="428"/>
+			<item fromid="432" toid="434"/>
+			<item fromid="437" toid="438"/>
+			<item fromid="482" toid="485"/>
+			<item fromid="566" toid="567"/>
+			<item fromid="4823" toid="4826"/>
+			<item fromid="369" toid="370"/>
+			<item fromid="411" toid="414"/>
+			<item fromid="7767" toid="7768"/>
+			<item id="7771"/>
+			<item id="8658"/>
+			<item id="8690"/>
+			<item id="8932"/>
+			<item fromid="15146" toid="15150"/>
+			<item fromid="20259" toid="20263"/>
+			<item id="20423"/>
+			<item fromid="20469" toid="20473"/>
+			<item fromid="20488" toid="20490"/>
+			<item id="21034"/>
+			<item id="21139"/>
+			<!-- Other -->
+			<item id="435"/>
+			<item fromid="475" toid="476"/>
+			<item fromid="8708" toid="8709"/>
+			<item fromid="601" toid="600"/>
+			<item id="1156"/>
+			<item id="5081"/>
+			<item fromid="6172" toid="6173"/>
+			<item fromid="6127" toid="6130"/>
+			<item fromid="604" toid="605"/>
+			<item fromid="6917" toid="6924"/>
+			<item fromid="7729" toid="7736"/>
+			<item fromid="166" toid="167"/>
+			<item id="7526"/>
+			<item fromid="7181" toid="7182"/>
+			<item fromid="7476" toid="7479"/>
+			<item fromid="16265" toid="16272"/>
+			<item fromid="16696" toid="16703"/>
+			<item fromid="16785" toid="16792"/>
+			<item fromid="18642" toid="18657"/>
+			<item fromid="23857" toid="23864"/>
+			<item fromid="25015" toid="25022"/>
+			<item fromid="28356" toid="28363"/>
+			<item fromid="29108" toid="29115"/>
+			<item fromid="29136" toid="29143"/>
+			<item fromid="30756" toid="30763"/>
+			<item fromid="30819" toid="30826"/>
+			<item fromid="30903" toid="30918"/>
+			<item fromid="31129" toid="31130"/>
+			<item fromid="33174" toid="33181"/>
+			<!-- cracked  stairs -->
+			<item fromid="33203" toid="33210"/>
+			<!-- messy stairs -->
+			<item fromid="33232" toid="33239"/>
+			<!-- hands  stairs -->
+			<item fromid="33255" toid="33262"/>
+			<!-- plants  stairs -->
+			<item fromid="25177" toid="25180"/>
+		</raw>
+	</tileset>
+</materials>

@@ -1,0 +1,47 @@
+<materials>
+	<tileset name="Equipment - Boots">
+		<items>
+			<item id="3079"/>
+			<item id="3246"/>
+			<item id="3123"/>
+			<item id="6529"/>
+			<item id="3246"/>
+			<item fromid="3549" toid="3555"/>
+			<item id="3556"/>
+			<item id="5461"/>
+			<item id="7457"/>
+			<item id="813"/>
+			<item id="818"/>
+			<item id="819"/>
+			<item id="820"/>
+			<item fromid="8903" toid="8905"/>
+			<item fromid="9016" toid="9019"/>
+			<item fromid="6529" toid="6530"/>
+			<item fromid="9017" toid="9020"/>
+			<item id="3123"/>
+			<item id="9131"/>
+			<item fromid="10200" toid="10201"/>
+			<item id="10323"/>
+			<item id="10386"/>
+			<item id="4033"/>
+			<item id="11690"/>
+			<item id="13997"/>
+			<item id="16112"/>
+			<item id="19374"/>
+			<item id="21169"/>
+			<item id="21981"/>
+			<item id="22086"/>
+			<item id="22756"/>
+			<item fromid="22773" toid="22774"/>
+			<item fromid="23476" toid="23477"/>
+			<item id="29424"/>
+			<item id="30196"/>
+			<item id="30394"/>
+			<item id="31617"/>
+			<item id="32098"/>
+			<item id="32619"/>
+			<item id="34097"/>
+			<item id="34098"/>
+		</items>
+	</tileset>
+</materials>

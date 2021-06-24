@@ -1,0 +1,7 @@
+<materials>
+	<tileset name="Creature Outfits">
+		<items>
+			<item fromid="30340" toid="30341"/>
+		</items>
+	</tileset>
+</materials>

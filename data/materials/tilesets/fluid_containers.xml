@@ -1,0 +1,17 @@
+<materials>
+	<tileset name="Fluid Containers">
+		<items>
+			<item id="2873"/>
+			<item id="2885"/>
+			<item id="2893"/>
+			<item id="2901"/>
+			<item id="2904"/>
+			<item id="11588"/>
+			<item id="22058"/>
+			<item id="30927"/>
+
+			<item fromid="31296" toid="31297"/>
+			<item id="31350"/>
+		</items>
+	</tileset>
+</materials>

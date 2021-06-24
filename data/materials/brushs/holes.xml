@@ -1,0 +1,28 @@
+<materials>
+	<brush name="sand hole" type="ground" lookid="967" z-order="3000">
+		<item id="967" chance="1"/>
+		
+		<border align="outer" id="16"/>
+		<border align="inner" to="none" id="1"/>
+		
+		<friend name="sand"/>
+		<friend name="sand open stone pile"/>
+		<friend name="sand closed stone pile"/>
+		<friend name="sand scarab hole"/>
+	</brush>
+
+	<brush name="hole 1" type="doodad" lookid="7515" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/10">
+		<item id="7515" chance="10"/>
+		<item id="7516" chance="10"/>
+	</brush>
+
+	<brush name="hole 2" type="doodad" lookid="7517" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/10">
+		<item id="7517" chance="10"/>
+		<item id="7518" chance="10"/>
+	</brush>
+
+	<brush name="hole 3" type="doodad" lookid="7520" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/10">
+		<item id="7520" chance="10"/>
+		<item id="7521" chance="10"/>
+	</brush>
+</materials>

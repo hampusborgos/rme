@@ -1,0 +1,19 @@
+<materials>
+	<tileset name="Pipes">
+		<raw>
+			<item fromid="8427" toid="8436"/>
+			<item fromid="20505" toid="20508"/>
+			<item fromid="20518" toid="20532"/>
+			<item fromid="20670" toid="20711"/>
+			<item fromid="20772" toid="20788"/>
+			<item fromid="20890" toid="20894"/>
+			<item fromid="21008" toid="21033"/>
+			<item fromid="21036" toid="21049"/>
+			<item id="21148"/>
+			<item id="21151"/>
+			<item id="21185"/>
+			<item fromid="21208" toid="21211"/>
+			<item id="21792"/>
+		</raw>
+	</tileset>
+</materials>

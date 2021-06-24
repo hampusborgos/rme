@@ -1,0 +1,7 @@
+<materials>
+	<tileset name="Kitchen">
+		<items>
+			<item fromid="2880" toid="2884"/>
+		</items>
+	</tileset>
+</materials>

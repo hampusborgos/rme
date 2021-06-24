@@ -1,0 +1,15 @@
+<materials>
+	<tileset name="Nature - Brushes">
+		<doodad>
+			<brush name="brushes"/>
+			<brush name="brushes (blueberry)"/>
+			<brush name="brushes (dead)"/>
+		</doodad>
+		<raw>
+			<item fromid="3681" toid="3683"/>
+			<item id="3684"/>
+			<item fromid="3698" toid="3700"/>
+			<item fromid="6430" toid="6431"/>
+		</raw>
+	</tileset>
+</materials>

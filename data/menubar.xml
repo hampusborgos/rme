@@ -123,9 +123,9 @@
         <item name="H$ighlight items" hotkey="V" action="HIGHLIGHT_ITEMS" help="Highlight tiles with items on them."/>
         <separator/>
         <item name="Show monsters" hotkey="F" action="SHOW_MONSTERS" help="Show monsters on the map."/>
-        <item name="Show spawns" hotkey="S" action="SHOW_SPAWNS" help="Show spawns on the map."/>
-        <item name="Show npcs" hotkey="X" action="SHOW_NPCS" help="Show monsters on the map."/>
-        <item name="Show spawns" hotkey="U" action="SHOW_SPAWNS_NPC" help="Show spawns on the map."/>
+        <item name="Show monsters spawns" hotkey="S" action="SHOW_SPAWNS_MONSTER" help="Show monsters spawns on the map."/>
+        <item name="Show npcs" hotkey="X" action="SHOW_NPCS" help="Show npcs on the map."/>
+        <item name="Show npcs spawns" hotkey="U" action="SHOW_SPAWNS_NPC" help="Show npcs spawns on the map."/>
         <item name="Sho$w special" hotkey="E" action="SHOW_SPECIAL" help="Show special tiles on the map, like PZ."/>
         <item name="Show as minimap" hotkey="Shift+E" action="SHOW_AS_MINIMAP" help="Show only the tile minimap colors."/>
         <item name="Only show $colors" hotkey="Ctrl+E" action="SHOW_ONLY_COLORS" help="Show only the special tiles on the map."/>

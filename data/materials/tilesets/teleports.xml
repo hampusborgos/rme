@@ -1,0 +1,28 @@
+<materials>
+	<tileset name="Teleports">
+		<items>
+			<item id="775"/>
+			<item fromid="1756" toid="1758"/>
+			<item id="1949"/>
+			<item id="1959"/>
+			<item id="7804"/>
+			<item id="10840"/>
+			<item id="10842"/>
+			<item id="21741"/>
+			<item id="21739"/>
+			<item id="22761"/>
+			<item fromid="23482" toid="23484"/>
+			<item fromid="25047" toid="25058"/>
+			<item id="25717"/>
+			<item fromid="27527" toid="27529"/>
+			<item fromid="27589" toid="27590"/>
+			<item id="25717"/>
+			<item id="25778"/>
+			<item id="27658"/>
+			<item id="28673"/>
+			<item fromid="29979" toid="29980"/>
+			<item id="33790"/>
+			<item id="34111"/>
+		</items>
+	</tileset>
+</materials>

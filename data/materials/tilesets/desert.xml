@@ -1,0 +1,58 @@
+<materials>
+	<tileset name="Desert">
+		<raw>
+			<!-- Pyramid -->
+			<item fromid="2191" toid="2198"/>
+			<item fromid="2218" toid="2221"/>
+			<item fromid="1960" toid="1967"/>
+			<!-- Statues Pillars -->
+			<item id="2189"/>
+			<item fromid="2199" toid="2200"/>
+			<item id="2188"/>
+			<item id="2190"/>
+			<item id="477"/>
+			<item id="2115"/>
+			<item fromid="2033" toid="2034"/>
+			<item id="21390"/>
+			<item fromid="11861" toid="11867"/>
+			<item id="11869"/>
+			<item fromid="11883" toid="11884"/>
+			<item fromid="11885" toid="11890"/>
+			<item id="11892"/>
+			<item id="11868"/>
+			<item id="11891"/>
+			<item id="11897"/>
+			<item id="12476"/>
+			<item id="34227"/>
+			<item fromid="19198" toid="19199"/>
+			<item fromid="34228" toid="34231"/>
+			<!-- Furniture -->
+			<item fromid="1992" toid="1995"/>
+			<item fromid="7361" toid="7362"/>
+			<item fromid="7474" toid="7475"/>
+			<item fromid="11959" toid="11970"/>
+			<item id="12491"/>
+			<item id="12474"/>
+			<item id="12492"/>
+			<item id="12475"/>
+			<item id="12473"/>
+			<item id="12493"/>
+			<item id="12472"/>
+			<item id="12469"/>
+			<item fromid="12461" toid="12468"/>
+			<item fromid="12470" toid="12471"/>
+			<item fromid="12477" toid="12481"/>
+			<!-- Hangables -->
+			<item fromid="2616" toid="2617"/>
+			<item fromid="12439" toid="12460"/>
+			<!-- Nature -->
+			<item fromid="968" toid="969"/>
+			<item fromid="7586" toid="7587"/>
+			<item fromid="12212" toid="12213"/>
+			<item fromid="18609" toid="18614"/>
+			<item fromid="18621" toid="18625"/>
+			<item id="18629"/>
+			<item fromid="19784" toid="19789"/>
+		</raw>
+	</tileset>
+</materials>

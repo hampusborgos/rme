@@ -1,0 +1,74 @@
+<materials>
+	<brush name="flowers (moon)" type="doodad" lookid="3654" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="3654" chance="10"/>
+		<item id="3655" chance="10"/>
+	</brush>
+
+	<brush name="sunflowers" type="doodad" lookid="3667" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="3666" chance="15"/>
+		<item id="3667" chance="10"/>
+	</brush>
+
+	<brush name="lilypads" type="doodad" lookid="3672" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="3669" chance="20"/>
+		<item id="3670" chance="10"/>
+		<item id="3671" chance="15"/>
+		<item id="3672" chance="10"/>
+	</brush>
+
+	<brush name="flowers (yellow)" type="doodad" lookid="3889" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="3888" chance="10"/>
+		<item id="3889" chance="10"/>
+		<item id="3890" chance="10"/>
+	</brush>
+	
+	<brush name="flowers (white)" type="doodad" lookid="3893" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="3656" chance="10"/>
+		<item id="3892" chance="10"/>
+		<item id="3893" chance="10"/>
+		<item id="3894" chance="10"/>
+		<item id="22643" chance="10"/>
+	</brush>
+	
+	<brush name="flowers (yellow hanging)" type="doodad" lookid="6225" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/100">
+		<alternate>
+			<item id="6225" chance="10"/>
+			<item id="6228" chance="10"/>
+		</alternate>
+	</brush>
+	
+	<brush name="flowers (white hanging)" type="doodad" lookid="6226" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/100">
+		<alternate>
+			<item id="6226" chance="10"/>
+			<item id="6229" chance="10"/>
+		</alternate>
+	</brush>
+	
+	<brush name="flowers (red hanging)" type="doodad" lookid="6227" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/100">
+		<alternate>
+			<item id="6227" chance="10"/>
+			<item id="6230" chance="10"/>
+		</alternate>
+	</brush>
+	
+	<brush name="flowers (evil)" type="doodad" lookid="10864" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="10720" chance="10"/>
+		<item id="10721" chance="10"/>
+		<item id="10722" chance="10"/>
+		<item id="10723" chance="10"/>
+		<item id="10860" chance="10"/>
+		<item id="10861" chance="10"/>
+		<item id="10862" chance="10"/>
+		<item id="10863" chance="10"/>
+		<item id="10864" chance="10"/>
+		<item id="10865" chance="10"/>
+		<item id="22648" chance="10"/>
+	</brush>
+
+	<brush name="flowers (ice)" type="doodad" lookid="29971" draggable="true" on_blocking="true" thickness="12/100">
+		<item id="29971" chance="15"/>
+		<item id="29972" chance="10"/>
+		<item id="29973" chance="10"/>
+		<item id="29974" chance="10"/>
+	</brush>
+</materials>

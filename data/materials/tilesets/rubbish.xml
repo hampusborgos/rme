@@ -1,0 +1,9 @@
+<materials>
+	<tileset name="Rubbish">
+		<items>
+			<item id="2892"/>
+			<item id="2894"/>
+			<item id="4849"/>
+		</items>
+	</tileset>
+</materials>

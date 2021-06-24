@@ -1,0 +1,46 @@
+<materials>
+	<tileset name="Tools">
+		<items>
+			<item id="127"/>
+			<item id="646"/>
+			<item id="650"/>
+			<item id="3003"/>
+			<item id="3064"/>
+			<item fromid="3451" toid="3483"/>
+			<item fromid="4049" toid="4051"/>
+			<item id="5710"/>
+			<item id="6391"/>
+			<item id="8615"/>
+			<item id="8618"/>
+			<item fromid="17513" toid="17514"/>
+			<item fromid="19063" toid="19066"/>
+			<item id="21186"/>
+			<item id="21192"/>
+			<item id="21755"/>
+			<item fromid="21757" toid="21759"/>
+			<item id="21761"/>
+			<item id="21767"/>
+			<item fromid="21901" toid="21902"/>
+			<item fromid="21905" toid="21906"/>
+			<item fromid="23812" toid="23813"/>
+			<item id="24969"/>
+			<item fromid="25305" toid="25306"/>
+			<item fromid="25718" toid="25719"/>
+			<item fromid="25729" toid="25730"/>
+			<item fromid="25733" toid="25734"/>
+			<item id="27498"/>
+			<item fromid="27522" toid="27526"/>
+			<item id="28525"/>
+			<item id="28526"/>
+			<item fromid="28540" toid="28545"/>
+			<item fromid="28552" toid="28557"/>
+			<item fromid="28920" toid="28923"/>
+			<item id="31264"/>
+			<item fromid="31327" toid="31328"/>
+			<item id="32711"/>
+		</items>
+		<items>
+			<brush name="toolbox"/>
+		</items>
+	</tileset>
+</materials>

@@ -1,0 +1,157 @@
+<materials>
+	<tileset name="Writeables">
+		<items_and_raw>
+			<!-- Books -->
+			<item fromid="2813" toid="2852"/>
+			<item id="3232"/>
+			<item id="3234"/>
+			<item id="3505"/>
+			<item id="3212"/>
+			<item id="3220"/>
+			<item id="3216"/>
+			<item id="6386"/>
+			<item id="6387"/>
+			<item id="3506"/>
+			<item id="3507"/>
+			<item id="3059"/>
+			<item id="6533"/>
+			<item id="3101"/>
+			<item id="4842"/>
+			<item id="12204"/>
+			<item id="6118"/>
+			<item id="347"/>
+			<item id="7533"/>
+			<item id="4843"/>
+			<item id="4844"/>
+			<item id="5956"/>
+			<item id="5090"/>
+			<item id="5090"/>
+			<item id="5958"/>
+			<item id="5956"/>
+			<item id="6086"/>
+			<item id="21378"/>
+			<item fromid="399" toid="403"/>
+			<item fromid="635" toid="642"/>
+			<item fromid="768" toid="770"/>
+			<item fromid="172" toid="174"/>
+			<item id="6108"/>
+			<item id="6538"/>
+			<item id="648"/>
+			<item id="7874"/>
+			<item id="7879"/>
+			<item id="3212"/>
+			<item id="8275"/>
+			<item id="9093"/>
+			<item id="9143"/>
+			<item id="9193"/>
+			<item id="10025"/>
+			<item fromid="11440" toid="11442"/>
+			<item id="11541"/>
+			<item id="11699"/>
+			<item id="12205"/>
+			<item id="12276"/>
+			<item id="12675"/>
+			<item id="6124"/>
+			<item id="8117"/>
+			<item fromid="14014" toid="14016"/>
+			<item fromid="14072" toid="14073"/>
+			<item fromid="14173" toid="14175"/>
+			<item fromid="18343" toid="18344"/>
+			<item id="20050"/>
+			<item id="20140"/>
+			<item id="21410"/>
+			<item fromid="21419" toid="21424"/>
+			<item fromid="23985" toid="23986"/>
+			<item id="24396"/>
+			<item id="24971"/>
+			<item id="25699"/>
+			<item id="28702"/>
+			<item id="28792"/>
+			<item id="28820"/>
+			<item fromid="27908" toid="27911"/>
+			<item fromid="27924" toid="27934"/>
+			<item id="28572"/>
+			<item id="28853"/>
+			<item id="23678"/>
+			<item id="29954"/>
+			<item id="29991"/>
+			<item id="28865"/>
+			<item id="31908"/>
+			<item fromid="31707" toid="31711"/>
+			<!-- Scrolls -->
+			<item id="173"/>
+			<item id="174"/>
+			<item fromid="128" toid="129"/>
+			<item id="7866"/>
+			<item id="7873"/>
+			<item fromid="8747" toid="8752"/>
+			<item id="175"/>
+			<item id="8818"/>
+			<item id="9171"/>
+			<item fromid="9181" toid="9186"/>
+			<item fromid="9204" toid="9205"/>
+			<item id="9247"/>
+			<item id="9308"/>
+			<item id="9391"/>
+			<item id="9696"/>
+			<item id="10011"/>
+			<item id="10028"/>
+			<item id="637"/>
+			<item id="11426"/>
+			<item id="11544"/>
+			<item id="12540"/>
+			<item fromid="5952" toid="348"/>
+			<item fromid="4846" toid="5706"/>
+			<item id="6522"/>
+			<item id="8764"/>
+			<item id="10184"/>
+			<item id="14176"/>
+			<item id="14758"/>
+			<item fromid="16252" toid="16257"/>
+			<item id="19132"/>
+			<item id="19146"/>
+			<item id="19158"/>
+			<item fromid="21932" toid="21933"/>
+			<item id="23731"/>
+			<item id="28518"/>
+			<item id="21301"/>
+			<item id="21393"/>
+			<item id="21413"/>
+			<item id="21425"/>
+			<item fromid="21467" toid="21468"/>
+			<item fromid="22771" toid="22772"/>
+			<item fromid="24943" toid="24947"/>
+			<item fromid="27912" toid="27923"/>
+			<item id="28461"/>
+			<item id="22865"/>
+			<item fromid="30146" toid="30147"/>
+			<item id="31364"/>
+			<item fromid="31433" toid="31436"/>
+			<item fromid="31562" toid="31566"/>
+			<item fromid="31714" toid="31717"/>
+			<item id="31720"/>
+			<item fromid="32914" toid="32917"/>
+			<!-- Signs -->
+			<item fromid="2012" toid="2017"/>
+			<item fromid="2021" toid="2024"/>
+			<item fromid="5331" toid="5388"/>
+			<item fromid="11257" toid="11258"/>
+			<item fromid="11318" toid="11315"/>
+			<item id="11318"/>
+			<item fromid="12782" toid="12783"/>
+			<item id="17668"/>
+			<item fromid="17725" toid="17800"/>
+			<item fromid="17862" toid="17867"/>
+			<!-- Others -->
+			<item fromid="2597" toid="2598"/>
+			<item id="2602"/>
+			<item id="2605"/>
+			<item fromid="851" toid="854"/>
+			<item fromid="8070" toid="8071"/>
+			<item id="25687"/>
+			<item id="28515"/>
+			<item id="34238"/>
+			<item fromid="34264" toid="34267"/>
+		</items_and_raw>
+	</tileset>
+</materials>

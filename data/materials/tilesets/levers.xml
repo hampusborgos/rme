@@ -1,0 +1,10 @@
+<materials>
+	<tileset name="Levers">
+		<doodad>
+			<brush name="colored levers"/>
+			<item fromid="2772" toid="2773"/>
+			<item fromid="8911" toid="8914"/>
+			<item fromid="30408" toid="30415"/>
+		</doodad>
+	</tileset>
+</materials>

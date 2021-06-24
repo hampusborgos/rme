@@ -1,0 +1,20 @@
+<materials>
+	<!-- Brushs -->
+	<include file="brushs/animals.xml"/>
+	<include file="brushs/brushes.xml"/>
+	<include file="brushs/constructions.xml"/>
+	<include file="brushs/decorations.xml"/>
+	<include file="brushs/doodads.xml"/>
+	<include file="brushs/fields.xml"/>
+	<include file="brushs/flowers.xml"/>
+	<include file="brushs/grass.xml"/>
+	<include file="brushs/grounds.xml"/>
+	<include file="brushs/holes.xml"/>
+	<include file="brushs/natural_products.xml"/>
+	<include file="brushs/plants.xml"/>
+	<include file="brushs/statues.xml"/>
+	<include file="brushs/stones.xml"/>
+	<include file="brushs/trees.xml"/>
+	<include file="brushs/tiny_borders.xml"/>
+	<include file="brushs/walls.xml"/>
+</materials>

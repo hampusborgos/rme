@@ -1,0 +1,42 @@
+<materials>
+	<tileset name="Equipment - Rings">
+		<items>
+			<item fromid="3091" toid="3093"/>
+			<item id="3097"/>
+			<item id="3098"/>
+			<item id="3004"/>
+			<item id="3005"/>
+			<item id="3006"/>
+			<item id="3007"/>
+			<item id="3010"/>
+			<item id="3063"/>
+			<item fromid="3048" toid="3053"/>
+			<item fromid="3086" toid="3090"/>
+			<item fromid="3094" toid="3100"/>
+			<item id="3245"/>
+			<item id="6093"/>
+			<item fromid="6299" toid="6300"/>
+			<item id="7924"/>
+			<item fromid="12669" toid="12670"/>
+			<item id="12737"/>
+			<item id="18935"/>
+			<item id="20209"/>
+			<item id="20182"/>
+			<item id="16114"/>
+			<item id="16264"/>
+			<item id="19359"/>
+			<item id="22170"/>
+			<item fromid="23529" toid="23534"/>
+			<item id="25698"/>
+			<item id="31263"/>
+			<item id="31306"/>
+			<item id="31557"/>
+			<item id="31592"/>
+			<item id="31616"/>
+			<item id="31621"/>
+			<item id="32621"/>
+			<item fromid="32635" toid="32636"/>
+			<item id="34080"/>
+		</items>
+	</tileset>
+</materials>

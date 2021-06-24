@@ -1,0 +1,25 @@
+<materials>
+	<tileset name="Full Grounds">
+		<doodad>
+			<brush name="carving of a lion"/>
+		</doodad>
+		<raw>
+			<item fromid="356" toid="367"/>
+			<item id="479"/>
+			<item id="481"/>
+			<item id="486"/>
+			<item fromid="880" toid="891"/>
+			<item id="1197"/>
+			<item id="4427"/>
+			<item fromid="4515" toid="4530"/>
+			<item id="4555"/>
+			<item fromid="4559" toid="4568"/>
+			<item id="6967"/>
+			<item fromid="7187" toid="7188"/>
+			<item fromid="7190" toid="7200"/>
+			<item id="7272"/>
+			<item id="7348"/>
+			<item fromid="7593" toid="7604"/>
+		</raw>
+	</tileset>
+</materials>

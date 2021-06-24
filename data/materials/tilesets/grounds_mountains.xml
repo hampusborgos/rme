@@ -1,0 +1,21 @@
+<materials>
+	<tileset name="Grounds - Mountains">
+		<terrain>
+			<brush name="short stone mountain"/>
+			<brush name="grass stone mountain"/>
+			<brush name="mountain"/>
+			<brush name="snowy mountain"/>
+			<brush name="ice mountain"/>
+			<brush name="earth mountain"/>
+			<brush name="grotto"/>
+			<brush name="crystal wall"/>
+			<brush name="basalt"/>
+			<brush name="mossy wall mountain"/>
+			<brush name="muddy mountain"/>
+			<brush name="swamp clay mountain"/>
+			<brush name="purple crystal mountain"/>
+			<brush name="sandstone mountain"/>
+			<brush name="seacrest mountain"/>
+		</terrain>
+	</tileset>
+</materials>

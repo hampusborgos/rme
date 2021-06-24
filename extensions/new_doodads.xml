@@ -1,0 +1,368 @@
+<materialsextension
+	name="New Doodads"
+	author="Uforoid"
+	description="Adds the missing beds to the editor."
+	client="8.10;8.20 - 8.31">
+
+	<brush name="pirate statue" type="doodad" server_lookid="5670" draggable="true" on_blocking="true" thickness="10/10">
+		<alternate> <item id="5670" chance="30"/> </alternate> <!-- south -->
+		<alternate> <item id="5673" chance="30"/> </alternate> <!-- east -->
+		<alternate> <item id="5672" chance="30"/> </alternate> <!-- north -->
+		<alternate> <item id="5671" chance="30"/> </alternate> <!-- west -->
+	</brush>
+
+	<tileset name="Statues">
+		<doodad>
+			<brush name="pirate statue"/>
+		</doodad>
+	</tileset>
+
+	<tileset name="Nature">
+		<doodad>
+			<brush name="cane stufts"/>
+		</doodad>
+	</tileset>
+
+	<brush name="female golden bed" type="doodad" server_lookid="714" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="714"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="715"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="732"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="733"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="golden bed" type="doodad" server_lookid="742" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="742"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="743"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="744"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="745"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="male golden bed" type="doodad" server_lookid="714" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="714"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="715"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="716"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="717"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="male green bed" type="doodad" server_lookid="706" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="706"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="707"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="708"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="709"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="female green bed" type="doodad" server_lookid="718" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="718"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="719"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="720"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="721"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="green bed" type="doodad" server_lookid="734" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="734"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="735"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="736"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="737"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="female red bed" type="doodad" server_lookid="722" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="722"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="723"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="724"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="725"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="male red bed" type="doodad" server_lookid="710" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="710"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="711"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="712"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="713"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="red bed" type="doodad" server_lookid="738" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="738"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="739"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="740"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="741"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="female hay bed" type="doodad" server_lookid="764" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="764"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="765"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="766"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="802"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="female bed" type="doodad" server_lookid="694" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+		<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="694"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="2496"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="696"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="697"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="female cot bed" type="doodad" server_lookid="698" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="698"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="699"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="700"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="701"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="female hammock bed" type="doodad" server_lookid="702" draggable="true" on_blocking="true" thickness="100/100">
+		<alternate>
+			<!-- south -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="702"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="2508"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<!-- east -->
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="704"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="2510"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<tileset name="Beds">
+		<doodad>
+			<brush name="golden bed"/>
+			<brush name="male golden bed"/>
+			<brush name="female golden bed"/>
+			<brush name="green bed"/>
+			<brush name="male green bed"/>
+			<brush name="female green bed"/>
+			<brush name="red bed"/>
+			<brush name="male red bed"/>
+			<brush name="female red bed"/>
+			<brush name="female hay bed" after="hay bed with sleeper"/>
+			<brush name="female bed" after="normal bed with sleeper"/>
+			<brush name="female cot bed" after="cot with sleeper"/>
+			<brush name="female hammock bed" after="hammock with sleeper"/>
+		</doodad>
+	</tileset>
+</materialsextension>

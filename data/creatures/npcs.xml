@@ -1,0 +1,974 @@
+<?xml version="1.0"?>
+<npcs>
+	<npc name="..." looktype="294" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Bearded Woman" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="22" looklegs="24" lookfeet="32" />
+	<npc name="A Beautiful Girl" looktype="140" lookitem="0" lookaddon="0" lookhead="77" lookbody="81" looklegs="79" lookfeet="95" />
+	<npc name="A Beggar" looktype="153" lookitem="0" lookaddon="0" lookhead="39" lookbody="39" looklegs="39" lookfeet="76" />
+	<npc name="A Behemoth" looktype="55" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Confused Frog" looktype="224" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dark Priestess" looktype="58" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dead Bureaucrat1" looktype="33" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dead Bureaucrat2" looktype="33" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dead Bureaucrat3" looktype="33" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dead Bureaucrat4" looktype="33" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dragon Lord" looktype="39" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dragon Mother" looktype="39" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Drillworm" looktype="527" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Dwarven Ghost" looktype="69" lookitem="0" lookaddon="0" lookhead="28" lookbody="85" looklegs="104" lookfeet="66" />
+	<npc name="A Fading Memory" looktype="138" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Fluffy Squirrel" looktype="274" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Frog" looktype="224" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Ghostly Guardian" looktype="131" lookitem="0" lookaddon="0" lookhead="38" lookbody="85" looklegs="9" lookfeet="85" />
+	<npc name="A Ghostly Knight" looktype="134" lookitem="0" lookaddon="0" lookhead="0" lookbody="66" looklegs="0" lookfeet="66" />
+	<npc name="A Ghostly Sage" looktype="130" lookitem="0" lookaddon="0" lookhead="9" lookbody="85" looklegs="9" lookfeet="85" />
+	<npc name="A Ghostly Woman" looktype="140" lookitem="0" lookaddon="0" lookhead="9" lookbody="85" looklegs="10" lookfeet="85" />
+	<npc name="A Ghostly Woman Ghostland" looktype="136" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Goblin Exile" looktype="61" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Grumpy Cyclops" looktype="277" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="A Lost Basher" looktype="538" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Lost Husher" looktype="537" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Lost Soul" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Lost Thrower" looktype="539" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Majestic Warwolf" looktype="3" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Nightmare Scion" looktype="321" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Prisoner" looktype="130" lookitem="0" lookaddon="0" lookhead="81" lookbody="21" looklegs="54" lookfeet="94" />
+	<npc name="A Restless Soul" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Sleeping Dragon" looktype="0" lookitem="12358" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Starving Dog" looktype="258" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Strange Chalice" looktype="0" lookitem="26405" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Strange Fellow" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="118" looklegs="57" lookfeet="95" />
+	<npc name="A Swan" looktype="0" lookitem="28804" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Sweaty Cyclops" looktype="22" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Tainted Soul" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Tortured Soul" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Vulcongra" looktype="509" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Weakened Forest Fury" looktype="569" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Wrinkled Bonelord" looktype="17" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="A Wyrm" looktype="291" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Abran Ironeye" looktype="73" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Admiral Wyrmslicer" looktype="132" lookitem="0" lookaddon="0" lookhead="19" lookbody="113" looklegs="112" lookfeet="114" />
+	<npc name="Adrenius" looktype="9" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ahmet" looktype="130" lookitem="0" lookaddon="0" lookhead="57" lookbody="116" looklegs="97" lookfeet="114" />
+	<npc name="Ajax" looktype="143" lookitem="0" lookaddon="0" lookhead="78" lookbody="101" looklegs="120" lookfeet="94" />
+	<npc name="Al Dee" looktype="129" lookitem="0" lookaddon="0" lookhead="97" lookbody="77" looklegs="87" lookfeet="115" />
+	<npc name="Alaistar" looktype="133" lookitem="0" lookaddon="0" lookhead="19" lookbody="76" looklegs="60" lookfeet="1" />
+	<npc name="Albert" looktype="130" lookitem="0" lookaddon="0" lookhead="78" lookbody="0" looklegs="49" lookfeet="95" />
+	<npc name="Albinius" looktype="634" lookitem="0" lookaddon="0" lookhead="0" lookbody="19" looklegs="86" lookfeet="60" />
+	<npc name="Aldo" looktype="128" lookitem="0" lookaddon="0" lookhead="40" lookbody="37" looklegs="116" lookfeet="95" />
+	<npc name="Alesar" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Alexander" looktype="130" lookitem="0" lookaddon="0" lookhead="96" lookbody="71" looklegs="63" lookfeet="97" />
+	<npc name="Alia" looktype="138" lookitem="0" lookaddon="0" lookhead="96" lookbody="95" looklegs="0" lookfeet="95" />
+	<npc name="Alissa" looktype="140" lookitem="0" lookaddon="0" lookhead="114" lookbody="3" looklegs="72" lookfeet="16" />
+	<npc name="Alkestios" looktype="400" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Allen" looktype="128" lookitem="0" lookaddon="0" lookhead="76" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Alternative Rock" looktype="0" lookitem="14888" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Alwin" looktype="131" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Alyxo" looktype="330" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Amanda" looktype="138" lookitem="0" lookaddon="0" lookhead="96" lookbody="95" looklegs="0" lookfeet="114" />
+	<npc name="Amarie" looktype="159" lookitem="0" lookaddon="0" lookhead="128" lookbody="34" looklegs="28" lookfeet="116" />
+	<npc name="Ambassador Of Rathleton" looktype="472" lookitem="0" lookaddon="0" lookhead="19" lookbody="53" looklegs="61" lookfeet="3" />
+	<npc name="Amber" looktype="136" lookitem="0" lookaddon="0" lookhead="59" lookbody="113" looklegs="132" lookfeet="76" />
+	<npc name="An Ancient Priest" looktype="65" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="An Apparition" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="An Imprisoned Goblin" looktype="61" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="An Old Dragon Lord" looktype="39" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="An Orc Guard" looktype="7" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Anderson" looktype="129" lookitem="0" lookaddon="0" lookhead="79" lookbody="113" looklegs="105" lookfeet="86" />
+	<npc name="Andrew Lyze" looktype="130" lookitem="0" lookaddon="0" lookhead="81" lookbody="21" looklegs="54" lookfeet="94" />
+	<npc name="Anerui" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Aneus" looktype="129" lookitem="0" lookaddon="0" lookhead="38" lookbody="50" looklegs="58" lookfeet="116" />
+	<npc name="Angelina" looktype="136" lookitem="0" lookaddon="0" lookhead="57" lookbody="117" looklegs="118" lookfeet="114" />
+	<npc name="Angelo" looktype="145" lookitem="0" lookaddon="0" lookhead="96" lookbody="114" looklegs="120" lookfeet="101" />
+	<npc name="Angus" looktype="128" lookitem="0" lookaddon="0" lookhead="57" lookbody="132" looklegs="114" lookfeet="113" />
+	<npc name="Appaloosa" looktype="140" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="114" lookfeet="0" />
+	<npc name="Archery" looktype="683" lookitem="0" lookaddon="0" lookhead="97" lookbody="0" looklegs="96" lookfeet="114" />
+	<npc name="Archery Rook" looktype="683" lookitem="0" lookaddon="0" lookhead="97" lookbody="0" looklegs="96" lookfeet="114" />
+	<npc name="Ariella" looktype="155" lookitem="0" lookaddon="0" lookhead="115" lookbody="3" looklegs="1" lookfeet="76" />
+	<npc name="Arito" looktype="132" lookitem="0" lookaddon="0" lookhead="59" lookbody="111" looklegs="99" lookfeet="115" />
+	<npc name="Arkarra" looktype="381" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Arkhothep" looktype="87" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Arkulius" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="79" looklegs="90" lookfeet="117" />
+	<npc name="Armenius Npc" looktype="132" lookitem="0" lookaddon="0" lookhead="114" lookbody="78" looklegs="113" lookfeet="115" />
+	<npc name="Arnold" looktype="131" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Aruda" looktype="140" lookitem="0" lookaddon="0" lookhead="77" lookbody="81" looklegs="79" lookfeet="95" />
+	<npc name="Ashari" looktype="159" lookitem="0" lookaddon="0" lookhead="38" lookbody="117" looklegs="117" lookfeet="116" />
+	<npc name="Ashtamor" looktype="130" lookitem="0" lookaddon="0" lookhead="19" lookbody="114" looklegs="76" lookfeet="114" />
+	<npc name="Asima" looktype="138" lookitem="0" lookaddon="0" lookhead="59" lookbody="70" looklegs="93" lookfeet="76" />
+	<npc name="Asnarus" looktype="104" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Asrak" looktype="29" lookitem="0" lookaddon="0" lookhead="10" lookbody="20" looklegs="30" lookfeet="40" />
+	<npc name="Asralius" looktype="194" lookitem="0" lookaddon="0" lookhead="114" lookbody="85" looklegs="113" lookfeet="114" />
+	<npc name="Atrad" looktype="152" lookitem="0" lookaddon="0" lookhead="77" lookbody="113" looklegs="132" lookfeet="94" />
+	<npc name="Atur" looktype="1200" lookitem="0" lookaddon="0" lookhead="114" lookbody="78" looklegs="0" lookfeet="3" />
+	<npc name="Aurita" looktype="0" lookitem="5811" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Auron" looktype="508" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Avar Tar" looktype="73" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Awarness Of The Emperor" looktype="231" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Azalea" looktype="433" lookitem="0" lookaddon="0" lookhead="0" lookbody="24" looklegs="27" lookfeet="40" />
+	<npc name="Azil" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="9" looklegs="12" lookfeet="123" />
+	<npc name="Baa Leal" looktype="51" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Baltim" looktype="129" lookitem="0" lookaddon="0" lookhead="97" lookbody="97" looklegs="39" lookfeet="20" />
+	<npc name="Bambi Bonecrusher" looktype="139" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="68" lookfeet="95" />
+	<npc name="Barazbaz" looktype="132" lookitem="0" lookaddon="0" lookhead="76" lookbody="55" looklegs="49" lookfeet="95" />
+	<npc name="Barbara" looktype="139" lookitem="0" lookaddon="0" lookhead="78" lookbody="71" looklegs="100" lookfeet="115" />
+	<npc name="Barnabas Dee" looktype="432" lookitem="0" lookaddon="0" lookhead="0" lookbody="95" looklegs="117" lookfeet="98" />
+	<npc name="Barney" looktype="128" lookitem="0" lookaddon="0" lookhead="20" lookbody="39" looklegs="115" lookfeet="114" />
+	<npc name="Barry" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Bashira" looktype="159" lookitem="0" lookaddon="0" lookhead="78" lookbody="63" looklegs="97" lookfeet="76" />
+	<npc name="Basilisk" looktype="28" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Baxter" looktype="131" lookitem="0" lookaddon="0" lookhead="77" lookbody="29" looklegs="29" lookfeet="115" />
+	<npc name="Beatrice" looktype="136" lookitem="0" lookaddon="0" lookhead="96" lookbody="103" looklegs="69" lookfeet="95" />
+	<npc name="Benevola" looktype="158" lookitem="0" lookaddon="0" lookhead="81" lookbody="120" looklegs="15" lookfeet="94" />
+	<npc name="Benjamin" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="79" looklegs="117" lookfeet="76" />
+	<npc name="Berenice" looktype="140" lookitem="0" lookaddon="0" lookhead="5" lookbody="87" looklegs="104" lookfeet="106" />
+	<npc name="Bertha" looktype="140" lookitem="0" lookaddon="0" lookhead="57" lookbody="97" looklegs="116" lookfeet="99" />
+	<npc name="Bertram" looktype="132" lookitem="0" lookaddon="0" lookhead="57" lookbody="114" looklegs="0" lookfeet="114" />
+	<npc name="Bezil" looktype="160" lookitem="0" lookaddon="0" lookhead="116" lookbody="60" looklegs="76" lookfeet="95" />
+	<npc name="Bigfoot Soldier" looktype="514" lookitem="0" lookaddon="0" lookhead="78" lookbody="120" looklegs="58" lookfeet="15" />
+	<npc name="Bill The Worker" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="21" looklegs="86" lookfeet="116" />
+	<npc name="Billy" looktype="153" lookitem="0" lookaddon="0" lookhead="78" lookbody="63" looklegs="58" lookfeet="115" />
+	<npc name="Black Bert" looktype="151" lookitem="0" lookaddon="0" lookhead="0" lookbody="38" looklegs="19" lookfeet="76" />
+	<npc name="Blind Orc" looktype="5" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Blossom Bonecrusher" looktype="139" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="100" lookfeet="95" />
+	<npc name="Bo Ques" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Bob The Worker" looktype="128" lookitem="0" lookaddon="0" lookhead="40" lookbody="63" looklegs="87" lookfeet="114" />
+	<npc name="Bolfona" looktype="160" lookitem="0" lookaddon="0" lookhead="37" lookbody="16" looklegs="54" lookfeet="114" />
+	<npc name="Bonifacius" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="82" looklegs="97" lookfeet="95" />
+	<npc name="Boozer" looktype="128" lookitem="0" lookaddon="0" lookhead="76" lookbody="20" looklegs="116" lookfeet="76" />
+	<npc name="Borkas" looktype="128" lookitem="0" lookaddon="0" lookhead="77" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Boveas" looktype="25" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Bozarn" looktype="128" lookitem="0" lookaddon="0" lookhead="39" lookbody="38" looklegs="95" lookfeet="115" />
+	<npc name="Bozo" looktype="273" lookitem="0" lookaddon="0" lookhead="0" lookbody="77" looklegs="80" lookfeet="79" />
+	<npc name="Braden" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="20" looklegs="116" lookfeet="95" />
+	<npc name="Bradford" looktype="128" lookitem="0" lookaddon="0" lookhead="38" lookbody="93" looklegs="82" lookfeet="116" />
+	<npc name="Brasith" looktype="159" lookitem="0" lookaddon="0" lookhead="41" lookbody="94" looklegs="97" lookfeet="76" />
+	<npc name="Brengus" looktype="132" lookitem="0" lookaddon="0" lookhead="79" lookbody="76" looklegs="76" lookfeet="114" />
+	<npc name="Brewster" looktype="128" lookitem="0" lookaddon="0" lookhead="57" lookbody="131" looklegs="132" lookfeet="114" />
+	<npc name="Briasol" looktype="159" lookitem="0" lookaddon="0" lookhead="3" lookbody="86" looklegs="87" lookfeet="76" />
+	<npc name="Bright Percht Sleigh" looktype="1164" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Brodrosch" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Broken Servant Sentry" looktype="395" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Brom" looktype="69" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Bron" looktype="143" lookitem="0" lookaddon="0" lookhead="95" lookbody="94" looklegs="132" lookfeet="86" />
+	<npc name="Bruce" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Bruno" looktype="128" lookitem="0" lookaddon="0" lookhead="94" lookbody="66" looklegs="114" lookfeet="95" />
+	<npc name="Brutus" looktype="143" lookitem="0" lookaddon="0" lookhead="97" lookbody="77" looklegs="78" lookfeet="116" />
+	<npc name="Buddel" looktype="143" lookitem="0" lookaddon="0" lookhead="19" lookbody="57" looklegs="22" lookfeet="20" />
+	<npc name="Buddel Helheim" looktype="143" lookitem="0" lookaddon="0" lookhead="19" lookbody="57" looklegs="22" lookfeet="20" />
+	<npc name="Buddel Okolnir" looktype="143" lookitem="0" lookaddon="0" lookhead="19" lookbody="57" looklegs="22" lookfeet="20" />
+	<npc name="Buddel Raider Camp" looktype="143" lookitem="0" lookaddon="0" lookhead="19" lookbody="57" looklegs="22" lookfeet="20" />
+	<npc name="Buddel Tyrsung" looktype="143" lookitem="0" lookaddon="0" lookhead="19" lookbody="57" looklegs="22" lookfeet="20" />
+	<npc name="Budrik" looktype="160" lookitem="0" lookaddon="0" lookhead="94" lookbody="95" looklegs="58" lookfeet="114" />
+	<npc name="Bunny Bonecrusher" looktype="139" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="79" lookfeet="115" />
+	<npc name="Busty Bonecrusher" looktype="139" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="66" lookfeet="95" />
+	<npc name="Cael" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Cameron" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="37" looklegs="115" lookfeet="95" />
+	<npc name="Captain Bluebear" looktype="129" lookitem="0" lookaddon="0" lookhead="19" lookbody="69" looklegs="125" lookfeet="50" />
+	<npc name="Captain Breezelda" looktype="142" lookitem="0" lookaddon="0" lookhead="97" lookbody="23" looklegs="28" lookfeet="76" />
+	<npc name="Captain Chelop" looktype="289" lookitem="0" lookaddon="0" lookhead="2" lookbody="67" looklegs="39" lookfeet="76" />
+	<npc name="Captain Cookie" looktype="96" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Captain Dreadnought" looktype="155" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="78" lookfeet="96" />
+	<npc name="Captain Fearless" looktype="129" lookitem="0" lookaddon="0" lookhead="19" lookbody="113" looklegs="95" lookfeet="115" />
+	<npc name="Captain Greyhound" looktype="129" lookitem="0" lookaddon="0" lookhead="96" lookbody="113" looklegs="95" lookfeet="115" />
+	<npc name="Captain Gulliver" looktype="472" lookitem="0" lookaddon="0" lookhead="0" lookbody="57" looklegs="20" lookfeet="39" />
+	<npc name="Captain Haba" looktype="98" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Captain Haba Open Sea" looktype="98" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Captain Harava" looktype="1200" lookitem="0" lookaddon="0" lookhead="77" lookbody="101" looklegs="3" lookfeet="0" />
+	<npc name="Captain Jack" looktype="132" lookitem="0" lookaddon="0" lookhead="0" lookbody="128" looklegs="95" lookfeet="115" />
+	<npc name="Captain Kurt" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Captain Max" looktype="134" lookitem="0" lookaddon="0" lookhead="95" lookbody="10" looklegs="56" lookfeet="77" />
+	<npc name="Captain Max Calassa" looktype="134" lookitem="0" lookaddon="0" lookhead="95" lookbody="10" looklegs="56" lookfeet="77" />
+	<npc name="Captain Pelagia" looktype="155" lookitem="0" lookaddon="0" lookhead="94" lookbody="0" looklegs="114" lookfeet="85" />
+	<npc name="Captain Seagull" looktype="129" lookitem="0" lookaddon="0" lookhead="60" lookbody="113" looklegs="95" lookfeet="115" />
+	<npc name="Captain Seahorse" looktype="129" lookitem="0" lookaddon="0" lookhead="19" lookbody="113" looklegs="95" lookfeet="115" />
+	<npc name="Captain Sinbeard" looktype="134" lookitem="0" lookaddon="0" lookhead="95" lookbody="10" looklegs="56" lookfeet="77" />
+	<npc name="Captain Tiberius" looktype="134" lookitem="0" lookaddon="0" lookhead="97" lookbody="79" looklegs="95" lookfeet="116" />
+	<npc name="Captain Waverider" looktype="96" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Captain Waverider Island" looktype="96" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Caramellia" looktype="140" lookitem="0" lookaddon="0" lookhead="96" lookbody="34" looklegs="34" lookfeet="34" />
+	<npc name="Carina" looktype="138" lookitem="0" lookaddon="0" lookhead="97" lookbody="70" looklegs="94" lookfeet="76" />
+	<npc name="Carlos" looktype="132" lookitem="0" lookaddon="0" lookhead="114" lookbody="94" looklegs="86" lookfeet="114" />
+	<npc name="Carlson" looktype="129" lookitem="0" lookaddon="0" lookhead="38" lookbody="113" looklegs="105" lookfeet="86" />
+	<npc name="Cassino" looktype="132" lookitem="0" lookaddon="0" lookhead="60" lookbody="22" looklegs="24" lookfeet="32" />
+	<npc name="Cedrik" looktype="134" lookitem="0" lookaddon="0" lookhead="116" lookbody="57" looklegs="97" lookfeet="59" />
+	<npc name="Ceiron" looktype="144" lookitem="0" lookaddon="0" lookhead="78" lookbody="100" looklegs="119" lookfeet="116" />
+	<npc name="Cerdras" looktype="144" lookitem="0" lookaddon="0" lookhead="20" lookbody="96" looklegs="41" lookfeet="22" />
+	<npc name="Cerebrir" looktype="1067" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Chantalle" looktype="140" lookitem="0" lookaddon="0" lookhead="79" lookbody="37" looklegs="71" lookfeet="70" />
+	<npc name="Charles" looktype="134" lookitem="0" lookaddon="0" lookhead="57" lookbody="67" looklegs="95" lookfeet="60" />
+	<npc name="Charlotta" looktype="157" lookitem="0" lookaddon="0" lookhead="38" lookbody="97" looklegs="115" lookfeet="95" />
+	<npc name="Charos" looktype="133" lookitem="0" lookaddon="0" lookhead="60" lookbody="94" looklegs="114" lookfeet="115" />
+	<npc name="Chartan" looktype="338" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Chatterbone" looktype="18" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Chavis" looktype="128" lookitem="0" lookaddon="0" lookhead="96" lookbody="43" looklegs="20" lookfeet="76" />
+	<npc name="Chemar" looktype="130" lookitem="0" lookaddon="0" lookhead="95" lookbody="3" looklegs="14" lookfeet="76" />
+	<npc name="Chephan" looktype="128" lookitem="0" lookaddon="0" lookhead="2" lookbody="26" looklegs="115" lookfeet="76" />
+	<npc name="Chester Kahs" looktype="131" lookitem="0" lookaddon="0" lookhead="9" lookbody="28" looklegs="47" lookfeet="95" />
+	<npc name="Chief Grarkharok" looktype="281" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Chondur" looktype="154" lookitem="0" lookaddon="0" lookhead="38" lookbody="113" looklegs="119" lookfeet="116" />
+	<npc name="Chrak" looktype="115" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Chraknpc" looktype="115" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Christine" looktype="140" lookitem="0" lookaddon="0" lookhead="2" lookbody="23" looklegs="2" lookfeet="115" />
+	<npc name="Christoph" looktype="131" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Chrystal" looktype="136" lookitem="0" lookaddon="0" lookhead="116" lookbody="79" looklegs="117" lookfeet="76" />
+	<npc name="Chuck The Worker" looktype="128" lookitem="0" lookaddon="0" lookhead="96" lookbody="97" looklegs="67" lookfeet="61" />
+	<npc name="Chuckles" looktype="99" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Cillia" looktype="137" lookitem="0" lookaddon="0" lookhead="115" lookbody="94" looklegs="78" lookfeet="114" />
+	<npc name="Cipfried" looktype="57" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Clark" looktype="129" lookitem="0" lookaddon="0" lookhead="2" lookbody="79" looklegs="98" lookfeet="114" />
+	<npc name="Cledwyn" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="76" lookfeet="94" />
+	<npc name="Clyde" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="59" looklegs="47" lookfeet="114" />
+	<npc name="Cobranpc" looktype="0" lookitem="1471" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Cold Percht Sleigh" looktype="1163" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Coltrayne" looktype="134" lookitem="0" lookaddon="0" lookhead="114" lookbody="38" looklegs="124" lookfeet="78" />
+	<npc name="Commander Stone" looktype="512" lookitem="0" lookaddon="0" lookhead="85" lookbody="9" looklegs="9" lookfeet="9" />
+	<npc name="Cornelia" looktype="139" lookitem="0" lookaddon="0" lookhead="95" lookbody="76" looklegs="100" lookfeet="115" />
+	<npc name="Cornell" looktype="129" lookitem="0" lookaddon="0" lookhead="114" lookbody="99" looklegs="40" lookfeet="115" />
+	<npc name="Corym Ratter" looktype="533" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="115" lookfeet="0" />
+	<npc name="Corym Servant" looktype="533" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="115" lookfeet="0" />
+	<npc name="Costello" looktype="57" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Cranky Lizard Crone" looktype="339" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Crowned Tree" looktype="0" lookitem="2720" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Cruleo" looktype="254" lookitem="0" lookaddon="0" lookhead="94" lookbody="115" looklegs="97" lookfeet="97" />
+	<npc name="Curos" looktype="29" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dabui" looktype="129" lookitem="0" lookaddon="0" lookhead="95" lookbody="9" looklegs="27" lookfeet="76" />
+	<npc name="Dagomir" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="2" looklegs="4" lookfeet="76" />
+	<npc name="Dalbrect" looktype="129" lookitem="0" lookaddon="0" lookhead="76" lookbody="97" looklegs="67" lookfeet="76" />
+	<npc name="Dallheim" looktype="268" lookitem="0" lookaddon="0" lookhead="76" lookbody="38" looklegs="76" lookfeet="95" />
+	<npc name="Dane" looktype="136" lookitem="0" lookaddon="0" lookhead="79" lookbody="97" looklegs="86" lookfeet="96" />
+	<npc name="Daniel Steelsoul" looktype="73" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dankwart" looktype="128" lookitem="0" lookaddon="0" lookhead="39" lookbody="58" looklegs="58" lookfeet="115" />
+	<npc name="Danlon" looktype="146" lookitem="0" lookaddon="0" lookhead="114" lookbody="42" looklegs="40" lookfeet="116" />
+	<npc name="Dario" looktype="159" lookitem="0" lookaddon="0" lookhead="3" lookbody="58" looklegs="41" lookfeet="115" />
+	<npc name="Dark Percht Sleigh" looktype="1165" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dedoras" looktype="146" lookitem="0" lookaddon="0" lookhead="76" lookbody="57" looklegs="78" lookfeet="77" />
+	<npc name="Demon Skeleton Npc" looktype="37" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Demonguard" looktype="131" lookitem="0" lookaddon="0" lookhead="97" lookbody="94" looklegs="94" lookfeet="94" />
+	<npc name="Denominator" looktype="0" lookitem="1442" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dermot" looktype="129" lookitem="0" lookaddon="0" lookhead="57" lookbody="49" looklegs="19" lookfeet="95" />
+	<npc name="Digger" looktype="9" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dixi" looktype="136" lookitem="0" lookaddon="0" lookhead="96" lookbody="99" looklegs="76" lookfeet="115" />
+	<npc name="Djema" looktype="136" lookitem="0" lookaddon="0" lookhead="77" lookbody="8" looklegs="86" lookfeet="115" />
+	<npc name="Doctor Gnomedix" looktype="493" lookitem="0" lookaddon="0" lookhead="85" lookbody="85" looklegs="85" lookfeet="85" />
+	<npc name="Donald Mcronald" looktype="128" lookitem="0" lookaddon="0" lookhead="22" lookbody="94" looklegs="79" lookfeet="117" />
+	<npc name="Dorbin" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="61" looklegs="39" lookfeet="115" />
+	<npc name="Dorian" looktype="151" lookitem="0" lookaddon="0" lookhead="22" lookbody="58" looklegs="77" lookfeet="21" />
+	<npc name="Doubleday" looktype="132" lookitem="0" lookaddon="0" lookhead="20" lookbody="57" looklegs="39" lookfeet="20" />
+	<npc name="Doug" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="37" looklegs="116" lookfeet="116" />
+	<npc name="Dove" looktype="136" lookitem="0" lookaddon="0" lookhead="59" lookbody="86" looklegs="106" lookfeet="115" />
+	<npc name="Dr Merlay" looktype="285" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dreadeye" looktype="256" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dream Butterfly" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Dregor" looktype="128" lookitem="0" lookaddon="0" lookhead="97" lookbody="0" looklegs="38" lookfeet="57" />
+	<npc name="Drog" looktype="160" lookitem="0" lookaddon="0" lookhead="114" lookbody="39" looklegs="119" lookfeet="113" />
+	<npc name="Dronk" looktype="130" lookitem="0" lookaddon="0" lookhead="9" lookbody="85" looklegs="9" lookfeet="85" />
+	<npc name="Druid Yandur" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Drystan Wildweed" looktype="144" lookitem="0" lookaddon="0" lookhead="79" lookbody="62" looklegs="97" lookfeet="118" />
+	<npc name="Dukosch" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Duncan" looktype="151" lookitem="0" lookaddon="0" lookhead="38" lookbody="23" looklegs="0" lookfeet="116" />
+	<npc name="Duria" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Dustrunner" looktype="32" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Eathar" looktype="131" lookitem="0" lookaddon="0" lookhead="104" lookbody="104" looklegs="104" lookfeet="104" />
+	<npc name="Ebenizer" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="95" looklegs="87" lookfeet="76" />
+	<npc name="Eclesius" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="91" looklegs="12" lookfeet="95" />
+	<npc name="Edala" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Eddy" looktype="128" lookitem="0" lookaddon="0" lookhead="22" lookbody="63" looklegs="19" lookfeet="95" />
+	<npc name="Edgar-Ellen" looktype="132" lookitem="0" lookaddon="0" lookhead="0" lookbody="39" looklegs="99" lookfeet="116" />
+	<npc name="Edmund" looktype="472" lookitem="0" lookaddon="0" lookhead="116" lookbody="114" looklegs="95" lookfeet="78" />
+	<npc name="Edoch" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="0" looklegs="40" lookfeet="116" />
+	<npc name="Edowir" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="58" looklegs="96" lookfeet="95" />
+	<npc name="Edron Guardsman" looktype="131" lookitem="0" lookaddon="0" lookhead="38" lookbody="19" looklegs="57" lookfeet="95" />
+	<npc name="Edvard" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="115" looklegs="96" lookfeet="95" />
+	<npc name="Eighty" looktype="0" lookitem="13573" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Eirik" looktype="251" lookitem="0" lookaddon="0" lookhead="79" lookbody="116" looklegs="116" lookfeet="116" />
+	<npc name="Elane" looktype="137" lookitem="0" lookaddon="0" lookhead="96" lookbody="101" looklegs="120" lookfeet="120" />
+	<npc name="Elathriel" looktype="64" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Elbert" looktype="153" lookitem="0" lookaddon="0" lookhead="58" lookbody="119" looklegs="120" lookfeet="121" />
+	<npc name="Eleonore" looktype="140" lookitem="0" lookaddon="0" lookhead="114" lookbody="66" looklegs="34" lookfeet="53" />
+	<npc name="Elf Guard" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Elgar" looktype="160" lookitem="0" lookaddon="0" lookhead="77" lookbody="113" looklegs="116" lookfeet="95" />
+	<npc name="Eliyas" looktype="146" lookitem="0" lookaddon="0" lookhead="114" lookbody="78" looklegs="0" lookfeet="0" />
+	<npc name="Eliza" looktype="58" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Elliott" looktype="574" lookitem="0" lookaddon="0" lookhead="114" lookbody="114" looklegs="114" lookfeet="114" />
+	<npc name="Elvith" looktype="159" lookitem="0" lookaddon="0" lookhead="76" lookbody="3" looklegs="0" lookfeet="76" />
+	<npc name="Elyen Ravenlock" looktype="58" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Emberwing" looktype="992" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Emily" looktype="140" lookitem="0" lookaddon="0" lookhead="2" lookbody="114" looklegs="76" lookfeet="38" />
+	<npc name="Emma" looktype="139" lookitem="0" lookaddon="0" lookhead="79" lookbody="90" looklegs="52" lookfeet="15" />
+	<npc name="Emperor Kruzak" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Emperor Rehal" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Eranth" looktype="129" lookitem="0" lookaddon="0" lookhead="97" lookbody="98" looklegs="97" lookfeet="75" />
+	<npc name="Erayo" looktype="152" lookitem="0" lookaddon="0" lookhead="86" lookbody="125" looklegs="86" lookfeet="87" />
+	<npc name="Eremo" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="109" looklegs="128" lookfeet="128" />
+	<npc name="Eroth" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Eruaran" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Eshaya" looktype="1200" lookitem="0" lookaddon="0" lookhead="95" lookbody="86" looklegs="79" lookfeet="0" />
+	<npc name="Esrik" looktype="71" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ethan" looktype="153" lookitem="0" lookaddon="0" lookhead="19" lookbody="41" looklegs="60" lookfeet="41" />
+	<npc name="Etzel" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Eva" looktype="136" lookitem="0" lookaddon="0" lookhead="96" lookbody="98" looklegs="95" lookfeet="0" />
+	<npc name="Evan" looktype="132" lookitem="0" lookaddon="0" lookhead="115" lookbody="107" looklegs="63" lookfeet="114" />
+	<npc name="Ezean" looktype="339" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ezebeth" looktype="140" lookitem="0" lookaddon="0" lookhead="96" lookbody="31" looklegs="34" lookfeet="94" />
+	<npc name="Fa Hradin" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Fadil" looktype="146" lookitem="0" lookaddon="0" lookhead="114" lookbody="94" looklegs="0" lookfeet="94" />
+	<npc name="Falk" looktype="131" lookitem="0" lookaddon="0" lookhead="76" lookbody="11" looklegs="11" lookfeet="76" />
+	<npc name="Falonzo" looktype="130" lookitem="0" lookaddon="0" lookhead="39" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Faloriel" looktype="159" lookitem="0" lookaddon="0" lookhead="113" lookbody="100" looklegs="29" lookfeet="97" />
+	<npc name="Faluae" looktype="62" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Fayla" looktype="140" lookitem="0" lookaddon="0" lookhead="78" lookbody="117" looklegs="113" lookfeet="2" />
+	<npc name="Feizuhl" looktype="133" lookitem="0" lookaddon="0" lookhead="60" lookbody="116" looklegs="62" lookfeet="95" />
+	<npc name="Fenbala" looktype="139" lookitem="0" lookaddon="0" lookhead="77" lookbody="71" looklegs="100" lookfeet="115" />
+	<npc name="Fenech" looktype="132" lookitem="0" lookaddon="0" lookhead="76" lookbody="40" looklegs="49" lookfeet="117" />
+	<npc name="Fergus" looktype="128" lookitem="0" lookaddon="0" lookhead="19" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Ferks" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="71" looklegs="119" lookfeet="116" />
+	<npc name="Ferryman Kamil" looktype="132" lookitem="0" lookaddon="0" lookhead="0" lookbody="71" looklegs="76" lookfeet="115" />
+	<npc name="Ferryman Kamilmeluna" looktype="132" lookitem="0" lookaddon="0" lookhead="0" lookbody="71" looklegs="76" lookfeet="115" />
+	<npc name="Ferus" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Fillias" looktype="130" lookitem="0" lookaddon="0" lookhead="59" lookbody="57" looklegs="49" lookfeet="95" />
+	<npc name="Finarfin" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Fiona" looktype="137" lookitem="0" lookaddon="0" lookhead="115" lookbody="100" looklegs="95" lookfeet="38" />
+	<npc name="Flint" looktype="134" lookitem="0" lookaddon="0" lookhead="95" lookbody="57" looklegs="76" lookfeet="39" />
+	<npc name="Flora" looktype="148" lookitem="0" lookaddon="0" lookhead="114" lookbody="81" looklegs="20" lookfeet="3" />
+	<npc name="Florentine" looktype="140" lookitem="0" lookaddon="0" lookhead="2" lookbody="91" looklegs="77" lookfeet="2" />
+	<npc name="Frafnar" looktype="160" lookitem="0" lookaddon="0" lookhead="58" lookbody="119" looklegs="81" lookfeet="114" />
+	<npc name="Frank The Plank" looktype="128" lookitem="0" lookaddon="0" lookhead="0" lookbody="87" looklegs="108" lookfeet="0" />
+	<npc name="Frans" looktype="0" lookitem="2229" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Frederik" looktype="128" lookitem="0" lookaddon="0" lookhead="76" lookbody="85" looklegs="96" lookfeet="91" />
+	<npc name="Freezhild" looktype="149" lookitem="0" lookaddon="0" lookhead="0" lookbody="47" looklegs="105" lookfeet="105" />
+	<npc name="Frodo" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="68" looklegs="109" lookfeet="115" />
+	<npc name="Frok The Guard" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Frosty" looktype="1159" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Fynn" looktype="251" lookitem="0" lookaddon="0" lookhead="79" lookbody="116" looklegs="116" lookfeet="116" />
+	<npc name="Fyodor" looktype="132" lookitem="0" lookaddon="0" lookhead="40" lookbody="114" looklegs="60" lookfeet="78" />
+	<npc name="Gabel" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gail" looktype="140" lookitem="0" lookaddon="0" lookhead="77" lookbody="82" looklegs="71" lookfeet="114" />
+	<npc name="Galuna" looktype="137" lookitem="0" lookaddon="0" lookhead="40" lookbody="96" looklegs="95" lookfeet="96" />
+	<npc name="Gamel" looktype="129" lookitem="0" lookaddon="0" lookhead="79" lookbody="115" looklegs="115" lookfeet="116" />
+	<npc name="Gamon" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="58" looklegs="67" lookfeet="120" />
+	<npc name="Garamond" looktype="432" lookitem="0" lookaddon="0" lookhead="0" lookbody="113" looklegs="109" lookfeet="107" />
+	<npc name="Gareth" looktype="132" lookitem="0" lookaddon="0" lookhead="82" lookbody="0" looklegs="120" lookfeet="38" />
+	<npc name="Gate Guardian" looktype="334" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gederas" looktype="289" lookitem="0" lookaddon="0" lookhead="40" lookbody="57" looklegs="21" lookfeet="20" />
+	<npc name="Gelagos" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="91" looklegs="85" lookfeet="0" />
+	<npc name="Gelidrazahs Thirst" looktype="0" lookitem="10948" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="George The Boyscout" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="21" looklegs="118" lookfeet="114" />
+	<npc name="Gerimor" looktype="144" lookitem="0" lookaddon="0" lookhead="60" lookbody="22" looklegs="24" lookfeet="32" />
+	<npc name="Gewen" looktype="139" lookitem="0" lookaddon="0" lookhead="132" lookbody="0" looklegs="86" lookfeet="95" />
+	<npc name="Ghorza" looktype="859" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ghost Of A Priest" looktype="355" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ghostly Wolf" looktype="730" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gladys" looktype="148" lookitem="0" lookaddon="0" lookhead="57" lookbody="94" looklegs="78" lookfeet="114" />
+	<npc name="Gnomad" looktype="493" lookitem="0" lookaddon="0" lookhead="78" lookbody="94" looklegs="94" lookfeet="114" />
+	<npc name="Gnomailion" looktype="493" lookitem="0" lookaddon="0" lookhead="94" lookbody="88" looklegs="88" lookfeet="114" />
+	<npc name="Gnomally" looktype="507" lookitem="0" lookaddon="0" lookhead="52" lookbody="90" looklegs="90" lookfeet="90" />
+	<npc name="Gnomargery" looktype="507" lookitem="0" lookaddon="0" lookhead="96" lookbody="92" looklegs="96" lookfeet="114" />
+	<npc name="Gnomaticus" looktype="493" lookitem="0" lookaddon="0" lookhead="1" lookbody="86" looklegs="1" lookfeet="95" />
+	<npc name="Gnombold" looktype="493" lookitem="0" lookaddon="0" lookhead="40" lookbody="81" looklegs="101" lookfeet="57" />
+	<npc name="Gnome" looktype="493" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gnome Trooper" looktype="493" lookitem="0" lookaddon="0" lookhead="59" lookbody="20" looklegs="39" lookfeet="95" />
+	<npc name="Gnomegica" looktype="507" lookitem="0" lookaddon="0" lookhead="79" lookbody="94" looklegs="94" lookfeet="52" />
+	<npc name="Gnomejam" looktype="493" lookitem="0" lookaddon="0" lookhead="3" lookbody="58" looklegs="58" lookfeet="95" />
+	<npc name="Gnomelvis" looktype="493" lookitem="0" lookaddon="0" lookhead="67" lookbody="76" looklegs="105" lookfeet="95" />
+	<npc name="Gnomenursey" looktype="507" lookitem="0" lookaddon="0" lookhead="66" lookbody="47" looklegs="66" lookfeet="46" />
+	<npc name="Gnomeral" looktype="493" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gnomercy" looktype="507" lookitem="0" lookaddon="0" lookhead="94" lookbody="114" looklegs="98" lookfeet="115" />
+	<npc name="Gnomerik" looktype="493" lookitem="0" lookaddon="0" lookhead="3" lookbody="60" looklegs="3" lookfeet="95" />
+	<npc name="Gnomerrow" looktype="493" lookitem="0" lookaddon="0" lookhead="131" lookbody="131" looklegs="131" lookfeet="132" />
+	<npc name="Gnomespector" looktype="493" lookitem="0" lookaddon="0" lookhead="59" lookbody="59" looklegs="59" lookfeet="58" />
+	<npc name="Gnomette" looktype="507" lookitem="0" lookaddon="0" lookhead="94" lookbody="72" looklegs="115" lookfeet="115" />
+	<npc name="Gnomewart" looktype="493" lookitem="0" lookaddon="0" lookhead="41" lookbody="100" looklegs="100" lookfeet="95" />
+	<npc name="Gnomillion" looktype="493" lookitem="0" lookaddon="0" lookhead="78" lookbody="98" looklegs="98" lookfeet="60" />
+	<npc name="Gnomilly" looktype="507" lookitem="0" lookaddon="0" lookhead="14" lookbody="15" looklegs="91" lookfeet="92" />
+	<npc name="Gnomincia" looktype="507" lookitem="0" lookaddon="0" lookhead="79" lookbody="94" looklegs="94" lookfeet="52" />
+	<npc name="Gnominus" looktype="493" lookitem="0" lookaddon="0" lookhead="0" lookbody="85" looklegs="85" lookfeet="0" />
+	<npc name="Gnomission" looktype="493" lookitem="0" lookaddon="0" lookhead="41" lookbody="115" looklegs="100" lookfeet="95" />
+	<npc name="Gnommander" looktype="493" lookitem="0" lookaddon="0" lookhead="59" lookbody="57" looklegs="39" lookfeet="38" />
+	<npc name="Gnomole" looktype="493" lookitem="0" lookaddon="0" lookhead="95" lookbody="57" looklegs="57" lookfeet="114" />
+	<npc name="Gnomus" looktype="493" lookitem="0" lookaddon="0" lookhead="67" lookbody="67" looklegs="67" lookfeet="76" />
+	<npc name="Gnomux" looktype="493" lookitem="0" lookaddon="0" lookhead="12" lookbody="82" looklegs="39" lookfeet="114" />
+	<npc name="Golem Guardian" looktype="326" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gordon" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="36" looklegs="116" lookfeet="76" />
+	<npc name="Gorn" looktype="129" lookitem="0" lookaddon="0" lookhead="58" lookbody="68" looklegs="101" lookfeet="95" />
+	<npc name="Graham" looktype="131" lookitem="0" lookaddon="0" lookhead="97" lookbody="0" looklegs="60" lookfeet="78" />
+	<npc name="Graubart" looktype="128" lookitem="0" lookaddon="0" lookhead="25" lookbody="107" looklegs="57" lookfeet="114" />
+	<npc name="Gree Dee" looktype="129" lookitem="0" lookaddon="0" lookhead="97" lookbody="77" looklegs="87" lookfeet="115" />
+	<npc name="Gregor" looktype="131" lookitem="0" lookaddon="0" lookhead="38" lookbody="38" looklegs="38" lookfeet="38" />
+	<npc name="Grizzly Adams" looktype="144" lookitem="0" lookaddon="0" lookhead="116" lookbody="78" looklegs="94" lookfeet="78" />
+	<npc name="Grodrik" looktype="160" lookitem="0" lookaddon="0" lookhead="96" lookbody="120" looklegs="60" lookfeet="116" />
+	<npc name="Grof The Guard" looktype="131" lookitem="0" lookaddon="0" lookhead="0" lookbody="19" looklegs="19" lookfeet="19" />
+	<npc name="Grombur" looktype="160" lookitem="0" lookaddon="0" lookhead="114" lookbody="77" looklegs="79" lookfeet="114" />
+	<npc name="Grubokk" looktype="857" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Grumpy Stone" looktype="0" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Guard Bazaya" looktype="1200" lookitem="0" lookaddon="0" lookhead="76" lookbody="0" looklegs="3" lookfeet="105" />
+	<npc name="Guard Inurta" looktype="1199" lookitem="0" lookaddon="0" lookhead="114" lookbody="29" looklegs="68" lookfeet="78" />
+	<npc name="Guard Saros" looktype="25" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Guard Senet" looktype="1200" lookitem="0" lookaddon="0" lookhead="76" lookbody="0" looklegs="3" lookfeet="105" />
+	<npc name="Guardian Of The Deep Seas" looktype="383" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Guide Alexena" looktype="137" lookitem="0" lookaddon="0" lookhead="115" lookbody="94" looklegs="78" lookfeet="114" />
+	<npc name="Guide Behil" looktype="146" lookitem="0" lookaddon="0" lookhead="114" lookbody="87" looklegs="85" lookfeet="126" />
+	<npc name="Guide Davina" looktype="157" lookitem="0" lookaddon="0" lookhead="113" lookbody="97" looklegs="116" lookfeet="114" />
+	<npc name="Guide Edna" looktype="276" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Guide Elena" looktype="140" lookitem="0" lookaddon="0" lookhead="38" lookbody="8" looklegs="13" lookfeet="58" />
+	<npc name="Guide Jonathan" looktype="134" lookitem="0" lookaddon="0" lookhead="116" lookbody="3" looklegs="0" lookfeet="117" />
+	<npc name="Guide Kroak" looktype="132" lookitem="0" lookaddon="0" lookhead="38" lookbody="46" looklegs="68" lookfeet="29" />
+	<npc name="Guide Kunibert" looktype="132" lookitem="0" lookaddon="0" lookhead="38" lookbody="46" looklegs="68" lookfeet="29" />
+	<npc name="Guide Luke" looktype="131" lookitem="0" lookaddon="0" lookhead="132" lookbody="39" looklegs="38" lookfeet="114" />
+	<npc name="Guide Meruka" looktype="1199" lookitem="0" lookaddon="0" lookhead="95" lookbody="10" looklegs="74" lookfeet="3" />
+	<npc name="Guide Rahlkora" looktype="150" lookitem="0" lookaddon="0" lookhead="79" lookbody="97" looklegs="78" lookfeet="96" />
+	<npc name="Guide Thelandil" looktype="159" lookitem="0" lookaddon="0" lookhead="78" lookbody="80" looklegs="101" lookfeet="96" />
+	<npc name="Guide Tiko" looktype="133" lookitem="0" lookaddon="0" lookhead="96" lookbody="78" looklegs="101" lookfeet="116" />
+	<npc name="Gundralph" looktype="9" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Gurbasch" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="H.L." looktype="131" lookitem="0" lookaddon="0" lookhead="31" lookbody="114" looklegs="19" lookfeet="114" />
+	<npc name="Habdel" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="1" looklegs="0" lookfeet="58" />
+	<npc name="Hagor" looktype="129" lookitem="0" lookaddon="0" lookhead="57" lookbody="116" looklegs="63" lookfeet="1156" />
+	<npc name="Hairycles" looktype="117" lookitem="0" lookaddon="0" lookhead="10" lookbody="20" looklegs="30" lookfeet="40" />
+	<npc name="Hal" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Halif" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="3" looklegs="9" lookfeet="115" />
+	<npc name="Halvar" looktype="143" lookitem="0" lookaddon="0" lookhead="3" lookbody="77" looklegs="78" lookfeet="39" />
+	<npc name="Hamilton" looktype="128" lookitem="0" lookaddon="0" lookhead="22" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Hamish" looktype="133" lookitem="0" lookaddon="0" lookhead="19" lookbody="95" looklegs="87" lookfeet="128" />
+	<npc name="Hanna" looktype="136" lookitem="0" lookaddon="0" lookhead="96" lookbody="65" looklegs="0" lookfeet="96" />
+	<npc name="Hardek" looktype="129" lookitem="0" lookaddon="0" lookhead="96" lookbody="86" looklegs="101" lookfeet="115" />
+	<npc name="Harkath Bloodblade" looktype="131" lookitem="0" lookaddon="0" lookhead="76" lookbody="38" looklegs="38" lookfeet="76" />
+	<npc name="Harlow" looktype="151" lookitem="0" lookaddon="0" lookhead="116" lookbody="77" looklegs="113" lookfeet="0" />
+	<npc name="Harlow Vengoth" looktype="151" lookitem="0" lookaddon="0" lookhead="116" lookbody="77" looklegs="94" lookfeet="97" />
+	<npc name="Harlowtrade" looktype="151" lookitem="0" lookaddon="0" lookhead="116" lookbody="77" looklegs="94" lookfeet="97" />
+	<npc name="Harog" looktype="160" lookitem="0" lookaddon="0" lookhead="37" lookbody="16" looklegs="54" lookfeet="114" />
+	<npc name="Haroun" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Harsky" looktype="131" lookitem="0" lookaddon="0" lookhead="79" lookbody="79" looklegs="79" lookfeet="79" />
+	<npc name="Hawkyr" looktype="143" lookitem="0" lookaddon="0" lookhead="97" lookbody="116" looklegs="82" lookfeet="121" />
+	<npc name="Heavenly Messenger" looktype="70" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Helor" looktype="134" lookitem="0" lookaddon="0" lookhead="76" lookbody="60" looklegs="114" lookfeet="41" />
+	<npc name="Hemor The Guard" looktype="70" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Henricus" looktype="132" lookitem="0" lookaddon="0" lookhead="79" lookbody="0" looklegs="96" lookfeet="0" />
+	<npc name="Herbert" looktype="132" lookitem="0" lookaddon="0" lookhead="97" lookbody="93" looklegs="36" lookfeet="93" />
+	<npc name="Hexel" looktype="128" lookitem="0" lookaddon="0" lookhead="97" lookbody="0" looklegs="38" lookfeet="76" />
+	<npc name="Hireling" looktype="136" lookitem="0" lookaddon="0" lookhead="97" lookbody="34" looklegs="3" lookfeet="116" />
+	<npc name="Hjaern" looktype="154" lookitem="0" lookaddon="0" lookhead="0" lookbody="94" looklegs="95" lookfeet="114" />
+	<npc name="Hofech" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="2" looklegs="2" lookfeet="57" />
+	<npc name="Hoggle" looktype="128" lookitem="0" lookaddon="0" lookhead="21" lookbody="46" looklegs="88" lookfeet="94" />
+	<npc name="Hugo" looktype="130" lookitem="0" lookaddon="0" lookhead="14" lookbody="81" looklegs="80" lookfeet="0" />
+	<npc name="Humgolf" looktype="69" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Humnog The Guard" looktype="70" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Humphrey" looktype="133" lookitem="0" lookaddon="0" lookhead="0" lookbody="115" looklegs="102" lookfeet="95" />
+	<npc name="Huntsman" looktype="129" lookitem="0" lookaddon="0" lookhead="95" lookbody="40" looklegs="40" lookfeet="57" />
+	<npc name="Hyacinth" looktype="130" lookitem="0" lookaddon="0" lookhead="11" lookbody="123" looklegs="123" lookfeet="94" />
+	<npc name="Ikassis" looktype="28" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Imalas" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="9" looklegs="39" lookfeet="114" />
+	<npc name="Imbul" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="2" looklegs="63" lookfeet="115" />
+	<npc name="Inigo" looktype="472" lookitem="0" lookaddon="0" lookhead="59" lookbody="114" looklegs="0" lookfeet="94" />
+	<npc name="Inkaef" looktype="146" lookitem="0" lookaddon="0" lookhead="114" lookbody="86" looklegs="0" lookfeet="86" />
+	<npc name="Iptar-Sin" looktype="1200" lookitem="0" lookaddon="0" lookhead="114" lookbody="94" looklegs="3" lookfeet="79" />
+	<npc name="Irea" looktype="64" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Iriana" looktype="264" lookitem="0" lookaddon="0" lookhead="78" lookbody="116" looklegs="95" lookfeet="121" />
+	<npc name="Irmana" looktype="140" lookitem="0" lookaddon="0" lookhead="78" lookbody="90" looklegs="13" lookfeet="14" />
+	<npc name="Irvin" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Ishebad" looktype="65" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ishina" looktype="150" lookitem="0" lookaddon="0" lookhead="95" lookbody="9" looklegs="87" lookfeet="95" />
+	<npc name="Isimov" looktype="160" lookitem="0" lookaddon="0" lookhead="116" lookbody="38" looklegs="19" lookfeet="95" />
+	<npc name="Iskan" looktype="143" lookitem="0" lookaddon="0" lookhead="38" lookbody="116" looklegs="38" lookfeet="19" />
+	<npc name="Isolde" looktype="139" lookitem="0" lookaddon="0" lookhead="19" lookbody="33" looklegs="109" lookfeet="128" />
+	<npc name="Ivalisse" looktype="138" lookitem="0" lookaddon="0" lookhead="2" lookbody="19" looklegs="28" lookfeet="76" />
+	<npc name="Iwan" looktype="128" lookitem="0" lookaddon="0" lookhead="0" lookbody="112" looklegs="107" lookfeet="113" />
+	<npc name="Iwar" looktype="160" lookitem="0" lookaddon="0" lookhead="115" lookbody="127" looklegs="123" lookfeet="76" />
+	<npc name="Iyad" looktype="146" lookitem="0" lookaddon="0" lookhead="75" lookbody="94" looklegs="106" lookfeet="76" />
+	<npc name="Izsh" looktype="338" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Jack" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="96" looklegs="115" lookfeet="114" />
+	<npc name="Jack Drone" looktype="93" lookitem="0" lookaddon="0" lookhead="19" lookbody="69" looklegs="125" lookfeet="50" />
+	<npc name="Jack Fate" looktype="129" lookitem="0" lookaddon="0" lookhead="19" lookbody="69" looklegs="107" lookfeet="50" />
+	<npc name="Jack Fate Goroma" looktype="129" lookitem="0" lookaddon="0" lookhead="19" lookbody="69" looklegs="88" lookfeet="69" />
+	<npc name="Jack The Worker" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="60" looklegs="67" lookfeet="96" />
+	<npc name="Jacob" looktype="574" lookitem="0" lookaddon="0" lookhead="114" lookbody="114" looklegs="114" lookfeet="114" />
+	<npc name="Jagran" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Jakahr" looktype="133" lookitem="0" lookaddon="0" lookhead="95" lookbody="36" looklegs="33" lookfeet="59" />
+	<npc name="James" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="60" looklegs="44" lookfeet="118" />
+	<npc name="Jamesfrancis" looktype="574" lookitem="0" lookaddon="0" lookhead="96" lookbody="57" looklegs="38" lookfeet="76" />
+	<npc name="Janz" looktype="143" lookitem="0" lookaddon="0" lookhead="58" lookbody="119" looklegs="118" lookfeet="120" />
+	<npc name="Jason" looktype="134" lookitem="0" lookaddon="0" lookhead="39" lookbody="86" looklegs="126" lookfeet="95" />
+	<npc name="Jean Claude" looktype="131" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Jean Pierre" looktype="104" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Jefrey" looktype="132" lookitem="0" lookaddon="0" lookhead="95" lookbody="63" looklegs="38" lookfeet="82" />
+	<npc name="Jerom" looktype="132" lookitem="0" lookaddon="0" lookhead="76" lookbody="78" looklegs="78" lookfeet="114" />
+	<npc name="Jeronimo" looktype="132" lookitem="0" lookaddon="0" lookhead="57" lookbody="59" looklegs="3" lookfeet="1" />
+	<npc name="Jessica" looktype="140" lookitem="0" lookaddon="0" lookhead="114" lookbody="16" looklegs="18" lookfeet="33" />
+	<npc name="Jezzara" looktype="138" lookitem="0" lookaddon="0" lookhead="3" lookbody="44" looklegs="91" lookfeet="97" />
+	<npc name="Jimbin" looktype="160" lookitem="0" lookaddon="0" lookhead="97" lookbody="127" looklegs="97" lookfeet="76" />
+	<npc name="Jimmy" looktype="152" lookitem="0" lookaddon="0" lookhead="0" lookbody="19" looklegs="38" lookfeet="0" />
+	<npc name="John" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="68" looklegs="38" lookfeet="114" />
+	<npc name="Jondrin" looktype="132" lookitem="0" lookaddon="0" lookhead="78" lookbody="25" looklegs="30" lookfeet="97" />
+	<npc name="Jorge" looktype="159" lookitem="0" lookaddon="0" lookhead="38" lookbody="77" looklegs="78" lookfeet="94" />
+	<npc name="Jossel" looktype="131" lookitem="0" lookaddon="0" lookhead="104" lookbody="104" looklegs="104" lookfeet="104" />
+	<npc name="Julian" looktype="128" lookitem="0" lookaddon="0" lookhead="55" lookbody="30" looklegs="23" lookfeet="115" />
+	<npc name="Julius" looktype="289" lookitem="0" lookaddon="0" lookhead="114" lookbody="114" looklegs="114" lookfeet="113" />
+	<npc name="Junkar Mines" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Junkar Robsons" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Junkar Thais" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Kais" looktype="103" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Kallimae" looktype="1199" lookitem="0" lookaddon="0" lookhead="95" lookbody="52" looklegs="0" lookfeet="71" />
+	<npc name="Kalvin" looktype="132" lookitem="0" lookaddon="0" lookhead="115" lookbody="117" looklegs="120" lookfeet="126" />
+	<npc name="Karith" looktype="159" lookitem="0" lookaddon="0" lookhead="79" lookbody="3" looklegs="93" lookfeet="12" />
+	<npc name="Karl" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="49" looklegs="70" lookfeet="115" />
+	<npc name="Kasmir" looktype="130" lookitem="0" lookaddon="0" lookhead="76" lookbody="0" looklegs="38" lookfeet="114" />
+	<npc name="Kawill" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Kaya" looktype="140" lookitem="0" lookaddon="0" lookhead="79" lookbody="53" looklegs="53" lookfeet="0" />
+	<npc name="Kazzan" looktype="130" lookitem="0" lookaddon="0" lookhead="95" lookbody="13" looklegs="14" lookfeet="76" />
+	<npc name="Kendra" looktype="155" lookitem="0" lookaddon="0" lookhead="77" lookbody="0" looklegs="76" lookfeet="132" />
+	<npc name="Kendra Thais" looktype="155" lookitem="0" lookaddon="0" lookhead="77" lookbody="0" looklegs="76" lookfeet="132" />
+	<npc name="Kepar" looktype="151" lookitem="0" lookaddon="0" lookhead="114" lookbody="77" looklegs="110" lookfeet="131" />
+	<npc name="Kevin" looktype="128" lookitem="0" lookaddon="0" lookhead="76" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Khanna" looktype="138" lookitem="0" lookaddon="0" lookhead="59" lookbody="70" looklegs="93" lookfeet="76" />
+	<npc name="Kihil The Guard" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="King Tibianus" looktype="332" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Kjesse" looktype="154" lookitem="0" lookaddon="0" lookhead="0" lookbody="94" looklegs="95" lookfeet="114" />
+	<npc name="Klaus" looktype="96" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Klesar" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="0" looklegs="38" lookfeet="76" />
+	<npc name="Klom Stonecutter" looktype="160" lookitem="0" lookaddon="0" lookhead="3" lookbody="77" looklegs="68" lookfeet="76" />
+	<npc name="Knight Hykrion" looktype="131" lookitem="0" lookaddon="0" lookhead="95" lookbody="78" looklegs="78" lookfeet="95" />
+	<npc name="Kratos" looktype="471" lookitem="0" lookaddon="0" lookhead="77" lookbody="101" looklegs="97" lookfeet="115" />
+	<npc name="Kromrek" looktype="131" lookitem="0" lookaddon="0" lookhead="104" lookbody="104" looklegs="104" lookfeet="104" />
+	<npc name="Kroox" looktype="160" lookitem="0" lookaddon="0" lookhead="0" lookbody="120" looklegs="82" lookfeet="95" />
+	<npc name="Kulag The Guard" looktype="131" lookitem="0" lookaddon="0" lookhead="0" lookbody="19" looklegs="19" lookfeet="19" />
+	<npc name="Lailene" looktype="279" lookitem="0" lookaddon="0" lookhead="114" lookbody="94" looklegs="113" lookfeet="114" />
+	<npc name="Lardoc Bashsmite" looktype="160" lookitem="0" lookaddon="0" lookhead="57" lookbody="47" looklegs="47" lookfeet="76" />
+	<npc name="Larek" looktype="472" lookitem="0" lookaddon="0" lookhead="19" lookbody="50" looklegs="10" lookfeet="3" />
+	<npc name="Larfion The Shaman" looktype="159" lookitem="0" lookaddon="0" lookhead="79" lookbody="78" looklegs="77" lookfeet="94" />
+	<npc name="Lavirias" looktype="159" lookitem="0" lookaddon="0" lookhead="19" lookbody="41" looklegs="117" lookfeet="116" />
+	<npc name="Lazaran" looktype="143" lookitem="0" lookaddon="0" lookhead="57" lookbody="57" looklegs="57" lookfeet="57" />
+	<npc name="Lea" looktype="138" lookitem="0" lookaddon="0" lookhead="59" lookbody="95" looklegs="113" lookfeet="113" />
+	<npc name="Lector" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="38" looklegs="0" lookfeet="68" />
+	<npc name="Lee Delle" looktype="140" lookitem="0" lookaddon="0" lookhead="78" lookbody="76" looklegs="72" lookfeet="96" />
+	<npc name="Leeland" looktype="130" lookitem="0" lookaddon="0" lookhead="19" lookbody="53" looklegs="15" lookfeet="95" />
+	<npc name="Legola" looktype="137" lookitem="0" lookaddon="0" lookhead="72" lookbody="68" looklegs="68" lookfeet="95" />
+	<npc name="Lesser Messenger Of Heaven" looktype="714" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Liane" looktype="136" lookitem="0" lookaddon="0" lookhead="77" lookbody="98" looklegs="79" lookfeet="114" />
+	<npc name="Lightfoot" looktype="32" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Lily" looktype="138" lookitem="0" lookaddon="0" lookhead="78" lookbody="101" looklegs="86" lookfeet="115" />
+	<npc name="Lisander" looktype="146" lookitem="0" lookaddon="0" lookhead="94" lookbody="100" looklegs="117" lookfeet="115" />
+	<npc name="Livielle" looktype="138" lookitem="0" lookaddon="0" lookhead="114" lookbody="94" looklegs="132" lookfeet="132" />
+	<npc name="Lizard Tunnel Guard" looktype="338" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Llathriel" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Lokur" looktype="160" lookitem="0" lookaddon="0" lookhead="57" lookbody="79" looklegs="79" lookfeet="95" />
+	<npc name="Lora" looktype="140" lookitem="0" lookaddon="0" lookhead="114" lookbody="70" looklegs="0" lookfeet="19" />
+	<npc name="Lorbas" looktype="57" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Lorek" looktype="132" lookitem="0" lookaddon="0" lookhead="19" lookbody="10" looklegs="38" lookfeet="95" />
+	<npc name="Loria" looktype="138" lookitem="0" lookaddon="0" lookhead="96" lookbody="118" looklegs="81" lookfeet="95" />
+	<npc name="Lorietta" looktype="270" lookitem="0" lookaddon="0" lookhead="78" lookbody="79" looklegs="80" lookfeet="77" />
+	<npc name="Lothar" looktype="153" lookitem="0" lookaddon="0" lookhead="114" lookbody="113" looklegs="132" lookfeet="132" />
+	<npc name="Lou Toose" looktype="133" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="0" lookfeet="114" />
+	<npc name="Loui" looktype="57" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Lubo" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="39" looklegs="96" lookfeet="118" />
+	<npc name="Lucius" looktype="325" lookitem="0" lookaddon="0" lookhead="76" lookbody="79" looklegs="117" lookfeet="114" />
+	<npc name="Lugri" looktype="145" lookitem="0" lookaddon="0" lookhead="132" lookbody="114" looklegs="0" lookfeet="38" />
+	<npc name="Lukosch" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Luna" looktype="137" lookitem="0" lookaddon="0" lookhead="0" lookbody="100" looklegs="100" lookfeet="115" />
+	<npc name="Lunch" looktype="297" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Lungelen" looktype="138" lookitem="0" lookaddon="0" lookhead="77" lookbody="19" looklegs="95" lookfeet="115" />
+	<npc name="Lurik" looktype="133" lookitem="0" lookaddon="0" lookhead="38" lookbody="94" looklegs="96" lookfeet="116" />
+	<npc name="Lynda" looktype="138" lookitem="0" lookaddon="0" lookhead="79" lookbody="81" looklegs="67" lookfeet="95" />
+	<npc name="Lyonel" looktype="151" lookitem="0" lookaddon="0" lookhead="57" lookbody="58" looklegs="21" lookfeet="114" />
+	<npc name="Maealil" looktype="63" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Maelyrra" looktype="989" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Maeryn" looktype="683" lookitem="0" lookaddon="0" lookhead="94" lookbody="101" looklegs="97" lookfeet="116" />
+	<npc name="Malor" looktype="103" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Malunga" looktype="149" lookitem="0" lookaddon="0" lookhead="95" lookbody="78" looklegs="19" lookfeet="0" />
+	<npc name="Marcus" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="59" looklegs="97" lookfeet="38" />
+	<npc name="Maria" looktype="136" lookitem="0" lookaddon="0" lookhead="77" lookbody="41" looklegs="62" lookfeet="116" />
+	<npc name="Marina" looktype="0" lookitem="5811" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Maris" looktype="151" lookitem="0" lookaddon="0" lookhead="78" lookbody="51" looklegs="85" lookfeet="126" />
+	<npc name="Maris Fenrock" looktype="151" lookitem="0" lookaddon="0" lookhead="78" lookbody="51" looklegs="85" lookfeet="126" />
+	<npc name="Maris Mistrock" looktype="151" lookitem="0" lookaddon="0" lookhead="78" lookbody="51" looklegs="85" lookfeet="126" />
+	<npc name="Maritima" looktype="0" lookitem="5811" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Markwin" looktype="23" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Marlene" looktype="136" lookitem="0" lookaddon="0" lookhead="75" lookbody="56" looklegs="54" lookfeet="37" />
+	<npc name="Maro" looktype="25" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Marvik" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="101" looklegs="120" lookfeet="95" />
+	<npc name="Marvin" looktype="132" lookitem="0" lookaddon="0" lookhead="38" lookbody="109" looklegs="14" lookfeet="57" />
+	<npc name="Maryza" looktype="160" lookitem="0" lookaddon="0" lookhead="41" lookbody="51" looklegs="70" lookfeet="95" />
+	<npc name="Maun" looktype="289" lookitem="0" lookaddon="0" lookhead="38" lookbody="19" looklegs="21" lookfeet="20" />
+	<npc name="Mazarius" looktype="130" lookitem="0" lookaddon="0" lookhead="78" lookbody="76" looklegs="19" lookfeet="38" />
+	<npc name="Mehkesh" looktype="130" lookitem="0" lookaddon="0" lookhead="19" lookbody="92" looklegs="113" lookfeet="20" />
+	<npc name="Melchior" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="25" looklegs="59" lookfeet="115" />
+	<npc name="Melfar" looktype="69" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Melian" looktype="146" lookitem="0" lookaddon="0" lookhead="97" lookbody="22" looklegs="45" lookfeet="57" />
+	<npc name="Memech" looktype="131" lookitem="0" lookaddon="0" lookhead="21" lookbody="21" looklegs="21" lookfeet="116" />
+	<npc name="Menacing Mummy" looktype="90" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Menesto" looktype="131" lookitem="0" lookaddon="0" lookhead="114" lookbody="38" looklegs="78" lookfeet="114" />
+	<npc name="Meraya" looktype="142" lookitem="0" lookaddon="0" lookhead="79" lookbody="121" looklegs="81" lookfeet="116" />
+	<npc name="Messenger Of Heaven" looktype="714" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Messenger Of Santa" looktype="159" lookitem="0" lookaddon="0" lookhead="39" lookbody="99" looklegs="60" lookfeet="117" />
+	<npc name="Miles The Guard" looktype="131" lookitem="0" lookaddon="0" lookhead="0" lookbody="19" looklegs="19" lookfeet="19" />
+	<npc name="Milos" looktype="130" lookitem="0" lookaddon="0" lookhead="19" lookbody="3" looklegs="3" lookfeet="2" />
+	<npc name="Mirabell" looktype="136" lookitem="0" lookaddon="0" lookhead="96" lookbody="12" looklegs="87" lookfeet="77" />
+	<npc name="Miraia" looktype="150" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="7" lookfeet="132" />
+	<npc name="Moe" looktype="118" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Morax" looktype="289" lookitem="0" lookaddon="0" lookhead="0" lookbody="95" looklegs="0" lookfeet="113" />
+	<npc name="Mordecai" looktype="130" lookitem="0" lookaddon="0" lookhead="38" lookbody="132" looklegs="117" lookfeet="3" />
+	<npc name="Morgan" looktype="134" lookitem="0" lookaddon="0" lookhead="78" lookbody="120" looklegs="122" lookfeet="132" />
+	<npc name="Morpel" looktype="160" lookitem="0" lookaddon="0" lookhead="58" lookbody="119" looklegs="57" lookfeet="96" />
+	<npc name="Mortimer" looktype="133" lookitem="0" lookaddon="0" lookhead="0" lookbody="115" looklegs="102" lookfeet="95" />
+	<npc name="Mortis" looktype="289" lookitem="0" lookaddon="0" lookhead="38" lookbody="19" looklegs="21" lookfeet="20" />
+	<npc name="Morun" looktype="146" lookitem="0" lookaddon="0" lookhead="4" lookbody="5" looklegs="26" lookfeet="76" />
+	<npc name="Mother Of Jack" looktype="140" lookitem="0" lookaddon="0" lookhead="57" lookbody="60" looklegs="117" lookfeet="115" />
+	<npc name="Mr. West" looktype="151" lookitem="0" lookaddon="0" lookhead="58" lookbody="25" looklegs="29" lookfeet="114" />
+	<npc name="Mr Brandon" looktype="311" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Mr Morris" looktype="289" lookitem="0" lookaddon="0" lookhead="115" lookbody="114" looklegs="0" lookfeet="0" />
+	<npc name="Mugluf" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="0" looklegs="0" lookfeet="113" />
+	<npc name="Mugruu" looktype="858" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Muhad" looktype="146" lookitem="0" lookaddon="0" lookhead="116" lookbody="116" looklegs="78" lookfeet="114" />
+	<npc name="Muriel" looktype="130" lookitem="0" lookaddon="0" lookhead="115" lookbody="94" looklegs="97" lookfeet="76" />
+	<npc name="Murim" looktype="160" lookitem="0" lookaddon="0" lookhead="116" lookbody="24" looklegs="21" lookfeet="39" />
+	<npc name="Muzir" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="4" looklegs="11" lookfeet="76" />
+	<npc name="Myra" looktype="138" lookitem="0" lookaddon="0" lookhead="58" lookbody="19" looklegs="0" lookfeet="132" />
+	<npc name="Mysterious Ornate Chest" looktype="0" lookitem="21385" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Nah Bob" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Naji" looktype="129" lookitem="0" lookaddon="0" lookhead="57" lookbody="113" looklegs="95" lookfeet="113" />
+	<npc name="Narsai" looktype="1199" lookitem="0" lookaddon="0" lookhead="114" lookbody="74" looklegs="10" lookfeet="79" />
+	<npc name="Navigator" looktype="463" lookitem="0" lookaddon="0" lookhead="94" lookbody="123" looklegs="116" lookfeet="123" />
+	<npc name="Neill" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Nelliem" looktype="160" lookitem="0" lookaddon="0" lookhead="115" lookbody="100" looklegs="105" lookfeet="76" />
+	<npc name="Nelly" looktype="138" lookitem="0" lookaddon="0" lookhead="59" lookbody="5" looklegs="4" lookfeet="19" />
+	<npc name="Nemal" looktype="129" lookitem="0" lookaddon="0" lookhead="38" lookbody="116" looklegs="63" lookfeet="114" />
+	<npc name="Nezil" looktype="160" lookitem="0" lookaddon="0" lookhead="116" lookbody="58" looklegs="97" lookfeet="95" />
+	<npc name="Nibble" looktype="61" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Nicholas" looktype="132" lookitem="0" lookaddon="0" lookhead="2" lookbody="6" looklegs="95" lookfeet="2" />
+	<npc name="Nielson" looktype="129" lookitem="0" lookaddon="0" lookhead="114" lookbody="113" looklegs="68" lookfeet="67" />
+	<npc name="Nienna" looktype="159" lookitem="0" lookaddon="0" lookhead="78" lookbody="85" looklegs="58" lookfeet="76" />
+	<npc name="Nilsor" looktype="154" lookitem="0" lookaddon="0" lookhead="41" lookbody="116" looklegs="95" lookfeet="114" />
+	<npc name="Nina" looktype="152" lookitem="0" lookaddon="0" lookhead="114" lookbody="95" looklegs="95" lookfeet="95" />
+	<npc name="Ninev" looktype="1199" lookitem="0" lookaddon="0" lookhead="114" lookbody="86" looklegs="68" lookfeet="9" />
+	<npc name="Ninos" looktype="1200" lookitem="0" lookaddon="0" lookhead="95" lookbody="86" looklegs="0" lookfeet="0" />
+	<npc name="Nokmir" looktype="160" lookitem="0" lookaddon="0" lookhead="57" lookbody="87" looklegs="59" lookfeet="114" />
+	<npc name="Nomadnpc" looktype="143" lookitem="0" lookaddon="0" lookhead="115" lookbody="116" looklegs="59" lookfeet="116" />
+	<npc name="Noodles" looktype="32" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Noozer" looktype="430" lookitem="0" lookaddon="0" lookhead="39" lookbody="39" looklegs="39" lookfeet="19" />
+	<npc name="Nor" looktype="143" lookitem="0" lookaddon="0" lookhead="77" lookbody="113" looklegs="19" lookfeet="116" />
+	<npc name="Norbert" looktype="128" lookitem="0" lookaddon="0" lookhead="6" lookbody="79" looklegs="93" lookfeet="13" />
+	<npc name="Norf" looktype="57" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Norma" looktype="136" lookitem="0" lookaddon="0" lookhead="78" lookbody="76" looklegs="72" lookfeet="96" />
+	<npc name="Norman The Foreman" looktype="128" lookitem="0" lookaddon="0" lookhead="59" lookbody="98" looklegs="96" lookfeet="114" />
+	<npc name="Normod" looktype="128" lookitem="0" lookaddon="0" lookhead="19" lookbody="86" looklegs="86" lookfeet="76" />
+	<npc name="Norris" looktype="128" lookitem="0" lookaddon="0" lookhead="57" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Nurik" looktype="132" lookitem="0" lookaddon="0" lookhead="79" lookbody="85" looklegs="86" lookfeet="90" />
+	<npc name="Nydala" looktype="136" lookitem="0" lookaddon="0" lookhead="76" lookbody="86" looklegs="86" lookfeet="96" />
+	<npc name="Nymph Challenging" looktype="989" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Oberon'S Bile" looktype="0" lookitem="26659" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Oberon'S Hate" looktype="0" lookitem="26659" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Oberon'S Ire" looktype="0" lookitem="26659" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Oberon'S Spite" looktype="0" lookitem="26659" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Obi" looktype="131" lookitem="0" lookaddon="0" lookhead="19" lookbody="63" looklegs="96" lookfeet="38" />
+	<npc name="Oblivion" looktype="552" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ocelus" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Odemara" looktype="138" lookitem="0" lookaddon="0" lookhead="22" lookbody="99" looklegs="5" lookfeet="76" />
+	<npc name="Oiriz" looktype="66" lookitem="0" lookaddon="0" lookhead="60" lookbody="100" looklegs="82" lookfeet="114" />
+	<npc name="Old Adall" looktype="130" lookitem="0" lookaddon="0" lookhead="95" lookbody="26" looklegs="115" lookfeet="76" />
+	<npc name="Old Rock Boy" looktype="0" lookitem="14889" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Oldrak" looktype="57" lookitem="0" lookaddon="0" lookhead="115" lookbody="113" looklegs="31" lookfeet="38" />
+	<npc name="Oliver" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Olrik" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="79" looklegs="117" lookfeet="76" />
+	<npc name="Omrabas" looktype="0" lookitem="2229" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Omur" looktype="146" lookitem="0" lookaddon="0" lookhead="95" lookbody="0" looklegs="6" lookfeet="116" />
+	<npc name="One Eyed Joe" looktype="155" lookitem="0" lookaddon="0" lookhead="94" lookbody="114" looklegs="105" lookfeet="97" />
+	<npc name="Ongulf" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Orc Berserker Npc" looktype="8" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Oressa" looktype="148" lookitem="0" lookaddon="0" lookhead="114" lookbody="78" looklegs="96" lookfeet="114" />
+	<npc name="Ormuhn" looktype="18" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Orockle" looktype="0" lookitem="14892" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ortheus" looktype="153" lookitem="0" lookaddon="0" lookhead="40" lookbody="121" looklegs="121" lookfeet="116" />
+	<npc name="Oswald" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="0" looklegs="67" lookfeet="114" />
+	<npc name="Ottokar" looktype="153" lookitem="0" lookaddon="0" lookhead="132" lookbody="121" looklegs="120" lookfeet="114" />
+	<npc name="Padreia" looktype="138" lookitem="0" lookaddon="0" lookhead="0" lookbody="87" looklegs="85" lookfeet="95" />
+	<npc name="Paladin Narai" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Palimuth" looktype="325" lookitem="0" lookaddon="0" lookhead="97" lookbody="0" looklegs="79" lookfeet="98" />
+	<npc name="Palomino" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="39" looklegs="12" lookfeet="97" />
+	<npc name="Paolo" looktype="160" lookitem="0" lookaddon="0" lookhead="77" lookbody="44" looklegs="76" lookfeet="95" />
+	<npc name="Parlan" looktype="128" lookitem="0" lookaddon="0" lookhead="132" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Partos" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="56" looklegs="95" lookfeet="121" />
+	<npc name="Pat The Worker" looktype="128" lookitem="0" lookaddon="0" lookhead="57" lookbody="40" looklegs="78" lookfeet="96" />
+	<npc name="Paulie" looktype="128" lookitem="0" lookaddon="0" lookhead="78" lookbody="86" looklegs="114" lookfeet="116" />
+	<npc name="Peaceful Pooka" looktype="977" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Peggy" looktype="136" lookitem="0" lookaddon="0" lookhead="38" lookbody="36" looklegs="48" lookfeet="38" />
+	<npc name="Pemaret" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="10" looklegs="126" lookfeet="126" />
+	<npc name="Penny" looktype="137" lookitem="0" lookaddon="0" lookhead="58" lookbody="116" looklegs="117" lookfeet="59" />
+	<npc name="Perac" looktype="129" lookitem="0" lookaddon="0" lookhead="78" lookbody="90" looklegs="68" lookfeet="114" />
+	<npc name="Percy Silverhand" looktype="132" lookitem="0" lookaddon="0" lookhead="19" lookbody="131" looklegs="35" lookfeet="128" />
+	<npc name="Percybald" looktype="131" lookitem="0" lookaddon="0" lookhead="3" lookbody="21" looklegs="21" lookfeet="38" />
+	<npc name="Peremin" looktype="128" lookitem="0" lookaddon="0" lookhead="19" lookbody="86" looklegs="86" lookfeet="76" />
+	<npc name="Perod" looktype="128" lookitem="0" lookaddon="0" lookhead="39" lookbody="125" looklegs="29" lookfeet="114" />
+	<npc name="Peter" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Petros" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="10" looklegs="127" lookfeet="127" />
+	<npc name="Phillip" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="54" looklegs="68" lookfeet="76" />
+	<npc name="Pig Npc" looktype="60" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Pino" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="0" looklegs="67" lookfeet="114" />
+	<npc name="Plunderpurse" looktype="151" lookitem="0" lookaddon="0" lookhead="114" lookbody="131" looklegs="0" lookfeet="20" />
+	<npc name="Polly" looktype="217" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Pompan" looktype="132" lookitem="0" lookaddon="0" lookhead="78" lookbody="13" looklegs="32" lookfeet="108" />
+	<npc name="Prezil" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Prisoner" looktype="128" lookitem="0" lookaddon="0" lookhead="19" lookbody="57" looklegs="76" lookfeet="38" />
+	<npc name="Puffels" looktype="21" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Pugwah" looktype="214" lookitem="0" lookaddon="0" lookhead="78" lookbody="86" looklegs="114" lookfeet="116" />
+	<npc name="Pukosch" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Pydar" looktype="160" lookitem="0" lookaddon="0" lookhead="95" lookbody="94" looklegs="132" lookfeet="118" />
+	<npc name="Pyro Peter" looktype="128" lookitem="0" lookaddon="0" lookhead="94" lookbody="96" looklegs="78" lookfeet="79" />
+	<npc name="Pyromental" looktype="242" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Pythius The Rottennpc" looktype="231" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Quandons Ghost" looktype="128" lookitem="0" lookaddon="0" lookhead="85" lookbody="9" looklegs="85" lookfeet="9" />
+	<npc name="Queen Eloise" looktype="331" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Quentin" looktype="57" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Quero" looktype="128" lookitem="0" lookaddon="0" lookhead="55" lookbody="30" looklegs="24" lookfeet="115" />
+	<npc name="Rabaz" looktype="130" lookitem="0" lookaddon="0" lookhead="39" lookbody="38" looklegs="1" lookfeet="1" />
+	<npc name="Rachel" looktype="136" lookitem="0" lookaddon="0" lookhead="58" lookbody="84" looklegs="86" lookfeet="114" />
+	<npc name="Raffael" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Rafzan" looktype="540" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Rahkem" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="77" looklegs="87" lookfeet="116" />
+	<npc name="Ramina" looktype="1199" lookitem="0" lookaddon="0" lookhead="114" lookbody="0" looklegs="15" lookfeet="79" />
+	<npc name="Rapanaio" looktype="160" lookitem="0" lookaddon="0" lookhead="0" lookbody="21" looklegs="20" lookfeet="39" />
+	<npc name="Rapanaioboat" looktype="160" lookitem="0" lookaddon="0" lookhead="0" lookbody="21" looklegs="20" lookfeet="39" />
+	<npc name="Rapanaioisleofevil" looktype="160" lookitem="0" lookaddon="0" lookhead="0" lookbody="21" looklegs="20" lookfeet="39" />
+	<npc name="Rashid" looktype="146" lookitem="0" lookaddon="0" lookhead="100" lookbody="100" looklegs="119" lookfeet="115" />
+	<npc name="Rashid Custom" looktype="146" lookitem="0" lookaddon="0" lookhead="100" lookbody="100" looklegs="119" lookfeet="115" />
+	<npc name="Rata Mari" looktype="21" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ray" looktype="128" lookitem="0" lookaddon="0" lookhead="19" lookbody="115" looklegs="126" lookfeet="58" />
+	<npc name="Raymond Striker" looktype="151" lookitem="0" lookaddon="0" lookhead="39" lookbody="77" looklegs="98" lookfeet="95" />
+	<npc name="Razan" looktype="146" lookitem="0" lookaddon="0" lookhead="19" lookbody="19" looklegs="9" lookfeet="58" />
+	<npc name="Rebel" looktype="114" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Red Lilly" looktype="136" lookitem="0" lookaddon="0" lookhead="96" lookbody="57" looklegs="28" lookfeet="47" />
+	<npc name="Redward" looktype="237" lookitem="0" lookaddon="0" lookhead="20" lookbody="39" looklegs="45" lookfeet="7" />
+	<npc name="Reed" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Rehon" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Repenter" looktype="159" lookitem="0" lookaddon="0" lookhead="95" lookbody="23" looklegs="22" lookfeet="20" />
+	<npc name="Richard" looktype="472" lookitem="0" lookaddon="0" lookhead="97" lookbody="38" looklegs="41" lookfeet="0" />
+	<npc name="Riddler" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Robert" looktype="133" lookitem="0" lookaddon="0" lookhead="59" lookbody="0" looklegs="19" lookfeet="95" />
+	<npc name="Robin" looktype="129" lookitem="0" lookaddon="0" lookhead="77" lookbody="118" looklegs="118" lookfeet="115" />
+	<npc name="Robson" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Rock In A Hard Place" looktype="0" lookitem="14898" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Rock Steady" looktype="0" lookitem="14898" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Rock With A Soft Spot" looktype="0" lookitem="14896" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Roderick" looktype="130" lookitem="0" lookaddon="0" lookhead="38" lookbody="109" looklegs="109" lookfeet="19" />
+	<npc name="Rodney" looktype="128" lookitem="0" lookaddon="0" lookhead="95" lookbody="100" looklegs="116" lookfeet="76" />
+	<npc name="Roger The Worker" looktype="128" lookitem="0" lookaddon="0" lookhead="77" lookbody="40" looklegs="115" lookfeet="114" />
+	<npc name="Rokyn" looktype="160" lookitem="0" lookaddon="0" lookhead="58" lookbody="87" looklegs="57" lookfeet="114" />
+	<npc name="Romella" looktype="139" lookitem="0" lookaddon="0" lookhead="79" lookbody="39" looklegs="77" lookfeet="115" />
+	<npc name="Romir" looktype="153" lookitem="0" lookaddon="0" lookhead="19" lookbody="48" looklegs="67" lookfeet="126" />
+	<npc name="Rose" looktype="136" lookitem="0" lookaddon="0" lookhead="79" lookbody="77" looklegs="112" lookfeet="116" />
+	<npc name="Rosemarie" looktype="137" lookitem="0" lookaddon="0" lookhead="63" lookbody="119" looklegs="102" lookfeet="82" />
+	<npc name="Ross" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Roswitha" looktype="138" lookitem="0" lookaddon="0" lookhead="114" lookbody="118" looklegs="113" lookfeet="3" />
+	<npc name="Rotem Valos" looktype="335" lookitem="0" lookaddon="0" lookhead="79" lookbody="77" looklegs="79" lookfeet="94" />
+	<npc name="Rottin Wood" looktype="129" lookitem="0" lookaddon="0" lookhead="114" lookbody="118" looklegs="116" lookfeet="97" />
+	<npc name="Roughington" looktype="132" lookitem="0" lookaddon="0" lookhead="21" lookbody="57" looklegs="99" lookfeet="57" />
+	<npc name="Rowenna" looktype="139" lookitem="0" lookaddon="0" lookhead="115" lookbody="38" looklegs="76" lookfeet="38" />
+	<npc name="Rudolph" looktype="128" lookitem="0" lookaddon="0" lookhead="41" lookbody="29" looklegs="78" lookfeet="76" />
+	<npc name="Runtel Blackspark" looktype="472" lookitem="0" lookaddon="0" lookhead="59" lookbody="114" looklegs="0" lookfeet="94" />
+	<npc name="Ruprecht" looktype="153" lookitem="0" lookaddon="0" lookhead="59" lookbody="115" looklegs="115" lookfeet="38" />
+	<npc name="Saideh" looktype="330" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Salbra" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Sam" looktype="131" lookitem="0" lookaddon="0" lookhead="38" lookbody="113" looklegs="67" lookfeet="95" />
+	<npc name="Samir" looktype="153" lookitem="0" lookaddon="0" lookhead="57" lookbody="59" looklegs="114" lookfeet="114" />
+	<npc name="Sandomo" looktype="289" lookitem="0" lookaddon="0" lookhead="38" lookbody="113" looklegs="2" lookfeet="20" />
+	<npc name="Sandra" looktype="140" lookitem="0" lookaddon="0" lookhead="115" lookbody="95" looklegs="125" lookfeet="57" />
+	<npc name="Sane Mage" looktype="394" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Santa Claus" looktype="160" lookitem="0" lookaddon="0" lookhead="0" lookbody="112" looklegs="93" lookfeet="95" />
+	<npc name="Santiago" looktype="151" lookitem="0" lookaddon="0" lookhead="38" lookbody="115" looklegs="87" lookfeet="114" />
+	<npc name="Sarina" looktype="136" lookitem="0" lookaddon="0" lookhead="41" lookbody="72" looklegs="95" lookfeet="96" />
+	<npc name="Satsu" looktype="158" lookitem="0" lookaddon="0" lookhead="78" lookbody="96" looklegs="118" lookfeet="96" />
+	<npc name="Scott" looktype="131" lookitem="0" lookaddon="0" lookhead="75" lookbody="38" looklegs="77" lookfeet="116" />
+	<npc name="Scott The Scout" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="81" looklegs="93" lookfeet="0" />
+	<npc name="Scrutinon" looktype="0" lookitem="7825" lookaddon="0" lookhead="7825" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Scutty" looktype="160" lookitem="0" lookaddon="0" lookhead="76" lookbody="0" looklegs="19" lookfeet="114" />
+	<npc name="Sebastian" looktype="151" lookitem="0" lookaddon="0" lookhead="57" lookbody="52" looklegs="109" lookfeet="115" />
+	<npc name="Sebastian Nargor" looktype="151" lookitem="0" lookaddon="0" lookhead="57" lookbody="52" looklegs="109" lookfeet="115" />
+	<npc name="Ser Tybald" looktype="134" lookitem="0" lookaddon="0" lookhead="97" lookbody="19" looklegs="60" lookfeet="115" />
+	<npc name="Serafin" looktype="129" lookitem="0" lookaddon="0" lookhead="96" lookbody="123" looklegs="86" lookfeet="98" />
+	<npc name="Servant Sentry" looktype="396" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Seymour" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="69" looklegs="87" lookfeet="116" />
+	<npc name="Shadowpunch" looktype="152" lookitem="0" lookaddon="0" lookhead="91" lookbody="91" looklegs="93" lookfeet="91" />
+	<npc name="Shalmar" looktype="130" lookitem="0" lookaddon="0" lookhead="95" lookbody="7" looklegs="65" lookfeet="0" />
+	<npc name="Shanar" looktype="159" lookitem="0" lookaddon="0" lookhead="0" lookbody="94" looklegs="105" lookfeet="76" />
+	<npc name="Shanoya" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Sharon" looktype="324" lookitem="0" lookaddon="0" lookhead="114" lookbody="103" looklegs="8" lookfeet="78" />
+	<npc name="Shauna" looktype="139" lookitem="0" lookaddon="0" lookhead="78" lookbody="95" looklegs="38" lookfeet="58" />
+	<npc name="Sherry Mcronald" looktype="136" lookitem="0" lookaddon="0" lookhead="78" lookbody="94" looklegs="19" lookfeet="97" />
+	<npc name="Shiantis" looktype="136" lookitem="0" lookaddon="0" lookhead="0" lookbody="36" looklegs="13" lookfeet="76" />
+	<npc name="Shimun" looktype="1199" lookitem="0" lookaddon="0" lookhead="114" lookbody="74" looklegs="10" lookfeet="79" />
+	<npc name="Shiriel" looktype="159" lookitem="0" lookaddon="0" lookhead="1" lookbody="103" looklegs="0" lookfeet="95" />
+	<npc name="Shirith" looktype="159" lookitem="0" lookaddon="0" lookhead="59" lookbody="39" looklegs="58" lookfeet="76" />
+	<npc name="Shoddy Beggar" looktype="153" lookitem="0" lookaddon="0" lookhead="20" lookbody="39" looklegs="39" lookfeet="116" />
+	<npc name="Sholley" looktype="140" lookitem="0" lookaddon="0" lookhead="79" lookbody="86" looklegs="12" lookfeet="92" />
+	<npc name="Shortsighted Dwarf" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Siestaar" looktype="288" lookitem="0" lookaddon="0" lookhead="129" lookbody="128" looklegs="72" lookfeet="94" />
+	<npc name="Siflind" looktype="158" lookitem="0" lookaddon="0" lookhead="76" lookbody="81" looklegs="95" lookfeet="114" />
+	<npc name="Sigurd" looktype="69" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Silas" looktype="129" lookitem="0" lookaddon="0" lookhead="97" lookbody="118" looklegs="117" lookfeet="97" />
+	<npc name="Simon The Beggar" looktype="153" lookitem="0" lookaddon="0" lookhead="116" lookbody="123" looklegs="123" lookfeet="40" />
+	<npc name="Sinatuki" looktype="260" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Sinclair" looktype="133" lookitem="0" lookaddon="0" lookhead="21" lookbody="38" looklegs="19" lookfeet="95" />
+	<npc name="Sirik" looktype="251" lookitem="0" lookaddon="0" lookhead="79" lookbody="116" looklegs="116" lookfeet="116" />
+	<npc name="Sister Of Jack" looktype="136" lookitem="0" lookaddon="0" lookhead="77" lookbody="128" looklegs="110" lookfeet="115" />
+	<npc name="Skeleton Guard" looktype="37" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Skip" looktype="217" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Skjaar" looktype="9" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Smiley" looktype="37" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Snake Eye" looktype="73" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Soilance" looktype="128" lookitem="0" lookaddon="0" lookhead="79" lookbody="48" looklegs="57" lookfeet="76" />
+	<npc name="Sorcerer Estrella" looktype="149" lookitem="0" lookaddon="0" lookhead="59" lookbody="132" looklegs="94" lookfeet="114" />
+	<npc name="Spectulus" looktype="130" lookitem="0" lookaddon="0" lookhead="0" lookbody="77" looklegs="78" lookfeet="97" />
+	<npc name="Stan" looktype="12" lookitem="0" lookaddon="0" lookhead="94" lookbody="128" looklegs="81" lookfeet="128" />
+	<npc name="Storkus" looktype="69" lookitem="0" lookaddon="0" lookhead="57" lookbody="59" looklegs="118" lookfeet="114" />
+	<npc name="Strange Pipe" looktype="668" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Strange Pipe1" looktype="668" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Strange Pipe2" looktype="668" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Strange Pipe3" looktype="668" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Stricken Soul" looktype="48" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Stutch" looktype="131" lookitem="0" lookaddon="0" lookhead="79" lookbody="79" looklegs="79" lookfeet="79" />
+	<npc name="Suzy" looktype="136" lookitem="0" lookaddon="0" lookhead="78" lookbody="10" looklegs="115" lookfeet="95" />
+	<npc name="Sven" looktype="143" lookitem="0" lookaddon="0" lookhead="76" lookbody="57" looklegs="115" lookfeet="40" />
+	<npc name="Svenson" looktype="129" lookitem="0" lookaddon="0" lookhead="77" lookbody="113" looklegs="105" lookfeet="86" />
+	<npc name="Swolt" looktype="160" lookitem="0" lookaddon="0" lookhead="77" lookbody="80" looklegs="79" lookfeet="97" />
+	<npc name="Sylvester" looktype="131" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Taegen" looktype="980" lookitem="0" lookaddon="0" lookhead="100" lookbody="41" looklegs="94" lookfeet="41" />
+	<npc name="Talesia" looktype="138" lookitem="0" lookaddon="0" lookhead="114" lookbody="97" looklegs="58" lookfeet="116" />
+	<npc name="Talila" looktype="982" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Talphion" looktype="160" lookitem="0" lookaddon="0" lookhead="27" lookbody="86" looklegs="126" lookfeet="127" />
+	<npc name="Tamara" looktype="149" lookitem="0" lookaddon="0" lookhead="0" lookbody="47" looklegs="105" lookfeet="105" />
+	<npc name="Tamed Lion" looktype="571" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Tamerin" looktype="153" lookitem="0" lookaddon="0" lookhead="58" lookbody="119" looklegs="120" lookfeet="121" />
+	<npc name="Tamoril" looktype="39" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Tanaro" looktype="144" lookitem="0" lookaddon="0" lookhead="113" lookbody="0" looklegs="97" lookfeet="115" />
+	<npc name="Tandros" looktype="132" lookitem="0" lookaddon="0" lookhead="97" lookbody="79" looklegs="113" lookfeet="114" />
+	<npc name="Tanyt" looktype="1199" lookitem="0" lookaddon="0" lookhead="76" lookbody="0" looklegs="45" lookfeet="3" />
+	<npc name="Tarak Inner" looktype="153" lookitem="0" lookaddon="0" lookhead="115" lookbody="31" looklegs="66" lookfeet="97" />
+	<npc name="Tarak Sunken" looktype="153" lookitem="0" lookaddon="0" lookhead="115" lookbody="31" looklegs="66" lookfeet="97" />
+	<npc name="Tarun" looktype="146" lookitem="0" lookaddon="0" lookhead="0" lookbody="67" looklegs="0" lookfeet="67" />
+	<npc name="Tefrit" looktype="1199" lookitem="0" lookaddon="0" lookhead="114" lookbody="74" looklegs="10" lookfeet="79" />
+	<npc name="Tehlim" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Telas" looktype="133" lookitem="0" lookaddon="0" lookhead="39" lookbody="0" looklegs="0" lookfeet="76" />
+	<npc name="Telas Golem" looktype="304" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Tereban" looktype="132" lookitem="0" lookaddon="0" lookhead="38" lookbody="48" looklegs="20" lookfeet="76" />
+	<npc name="Terrence" looktype="131" lookitem="0" lookaddon="0" lookhead="57" lookbody="28" looklegs="28" lookfeet="51" />
+	<npc name="Tesha" looktype="140" lookitem="0" lookaddon="0" lookhead="77" lookbody="32" looklegs="81" lookfeet="94" />
+	<npc name="Testserver Assistant" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Tezila" looktype="160" lookitem="0" lookaddon="0" lookhead="3" lookbody="92" looklegs="91" lookfeet="128" />
+	<npc name="Thanita" looktype="139" lookitem="0" lookaddon="0" lookhead="77" lookbody="71" looklegs="82" lookfeet="71" />
+	<npc name="The Beggar King" looktype="153" lookitem="0" lookaddon="0" lookhead="0" lookbody="114" looklegs="94" lookfeet="78" />
+	<npc name="The Blind Prophet" looktype="117" lookitem="0" lookaddon="0" lookhead="10" lookbody="20" looklegs="30" lookfeet="40" />
+	<npc name="The Bone Master" looktype="145" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="The Crone" looktype="78" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="The Destiny Seer" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="The Dream Master" looktype="130" lookitem="0" lookaddon="0" lookhead="19" lookbody="39" looklegs="20" lookfeet="58" />
+	<npc name="The Empress" looktype="1188" lookitem="0" lookaddon="0" lookhead="79" lookbody="0" looklegs="0" lookfeet="3" />
+	<npc name="The First Dragon" looktype="947" lookitem="0" lookaddon="0" lookhead="113" lookbody="117" looklegs="119" lookfeet="80" />
+	<npc name="The Gate Keeper" looktype="551" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="The Librarian" looktype="1065" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="The Oracle" looktype="0" lookitem="1448" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="The Orc King" looktype="238" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="The Queen Of The Banshees" looktype="78" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Theodore Loveless" looktype="132" lookitem="0" lookaddon="0" lookhead="19" lookbody="95" looklegs="76" lookfeet="114" />
+	<npc name="Thomas" looktype="128" lookitem="0" lookaddon="0" lookhead="116" lookbody="11" looklegs="100" lookfeet="76" />
+	<npc name="Thorgrin" looktype="66" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Thorwulf" looktype="143" lookitem="0" lookaddon="0" lookhead="3" lookbody="58" looklegs="97" lookfeet="116" />
+	<npc name="Tibra" looktype="138" lookitem="0" lookaddon="0" lookhead="41" lookbody="92" looklegs="90" lookfeet="95" />
+	<npc name="Tigo" looktype="159" lookitem="0" lookaddon="0" lookhead="78" lookbody="6" looklegs="121" lookfeet="120" />
+	<npc name="Tim The Guard" looktype="131" lookitem="0" lookaddon="0" lookhead="0" lookbody="19" looklegs="19" lookfeet="19" />
+	<npc name="Timothy" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="61" looklegs="25" lookfeet="57" />
+	<npc name="Timur" looktype="128" lookitem="0" lookaddon="0" lookhead="0" lookbody="116" looklegs="63" lookfeet="95" />
+	<npc name="Tired Tree" looktype="0" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Todd" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="0" looklegs="67" lookfeet="114" />
+	<npc name="Tokel" looktype="128" lookitem="0" lookaddon="0" lookhead="78" lookbody="96" looklegs="30" lookfeet="114" />
+	<npc name="Tom" looktype="144" lookitem="0" lookaddon="0" lookhead="113" lookbody="115" looklegs="58" lookfeet="115" />
+	<npc name="Tomruk The Ruddy" looktype="553" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Tony" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Tooth Fairy" looktype="223" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Toothless Tim" looktype="128" lookitem="0" lookaddon="0" lookhead="76" lookbody="20" looklegs="116" lookfeet="95" />
+	<npc name="Topsy" looktype="139" lookitem="0" lookaddon="0" lookhead="78" lookbody="52" looklegs="100" lookfeet="115" />
+	<npc name="Torence" looktype="128" lookitem="0" lookaddon="0" lookhead="98" lookbody="36" looklegs="116" lookfeet="95" />
+	<npc name="Tothdral" looktype="65" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Towncryer" looktype="131" lookitem="0" lookaddon="0" lookhead="95" lookbody="86" looklegs="10" lookfeet="114" />
+	<npc name="Trimegis" looktype="130" lookitem="0" lookaddon="0" lookhead="57" lookbody="109" looklegs="94" lookfeet="0" />
+	<npc name="Trisha" looktype="142" lookitem="0" lookaddon="0" lookhead="94" lookbody="67" looklegs="38" lookfeet="95" />
+	<npc name="Tristan" looktype="131" lookitem="0" lookaddon="0" lookhead="79" lookbody="47" looklegs="48" lookfeet="38" />
+	<npc name="Tulf" looktype="71" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Turvy" looktype="139" lookitem="0" lookaddon="0" lookhead="78" lookbody="52" looklegs="100" lookfeet="115" />
+	<npc name="Tylius" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Tyrias" looktype="133" lookitem="0" lookaddon="0" lookhead="57" lookbody="113" looklegs="95" lookfeet="113" />
+	<npc name="Ubaid" looktype="51" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Ukea" looktype="159" lookitem="0" lookaddon="0" lookhead="78" lookbody="39" looklegs="101" lookfeet="58" />
+	<npc name="Ula" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Ulala" looktype="154" lookitem="0" lookaddon="0" lookhead="57" lookbody="57" looklegs="57" lookfeet="57" />
+	<npc name="Ulrik" looktype="131" lookitem="0" lookaddon="0" lookhead="41" lookbody="70" looklegs="97" lookfeet="95" />
+	<npc name="Umar" looktype="80" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Uncle" looktype="151" lookitem="0" lookaddon="0" lookhead="38" lookbody="19" looklegs="20" lookfeet="95" />
+	<npc name="Undal" looktype="1137" lookitem="0" lookaddon="0" lookhead="0" lookbody="87" looklegs="49" lookfeet="87" />
+	<npc name="Urkalio" looktype="128" lookitem="0" lookaddon="0" lookhead="97" lookbody="59" looklegs="120" lookfeet="114" />
+	<npc name="Ursula" looktype="54" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Uso" looktype="69" lookitem="0" lookaddon="0" lookhead="98" lookbody="59" looklegs="96" lookfeet="115" />
+	<npc name="Ustan" looktype="144" lookitem="0" lookaddon="0" lookhead="0" lookbody="38" looklegs="76" lookfeet="95" />
+	<npc name="Uzgod" looktype="160" lookitem="0" lookaddon="0" lookhead="96" lookbody="60" looklegs="97" lookfeet="116" />
+	<npc name="Uzon" looktype="130" lookitem="0" lookaddon="0" lookhead="95" lookbody="4" looklegs="17" lookfeet="95" />
+	<npc name="Vad Inchi" looktype="133" lookitem="0" lookaddon="0" lookhead="96" lookbody="0" looklegs="0" lookfeet="114" />
+	<npc name="Valentina" looktype="157" lookitem="0" lookaddon="0" lookhead="116" lookbody="116" looklegs="98" lookfeet="45" />
+	<npc name="Valindara" looktype="138" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="114" lookfeet="97" />
+	<npc name="Vanys" looktype="1137" lookitem="0" lookaddon="0" lookhead="0" lookbody="38" looklegs="34" lookfeet="73" />
+	<npc name="Vascalir" looktype="131" lookitem="0" lookaddon="0" lookhead="96" lookbody="121" looklegs="79" lookfeet="116" />
+	<npc name="Velvet" looktype="136" lookitem="0" lookaddon="0" lookhead="59" lookbody="96" looklegs="115" lookfeet="95" />
+	<npc name="Vera" looktype="136" lookitem="0" lookaddon="0" lookhead="97" lookbody="116" looklegs="115" lookfeet="114" />
+	<npc name="Vescu" looktype="152" lookitem="0" lookaddon="0" lookhead="119" lookbody="120" looklegs="119" lookfeet="101" />
+	<npc name="Victor" looktype="134" lookitem="0" lookaddon="0" lookhead="21" lookbody="78" looklegs="38" lookfeet="95" />
+	<npc name="Vigintius" looktype="273" lookitem="0" lookaddon="0" lookhead="94" lookbody="94" looklegs="88" lookfeet="61" />
+	<npc name="Vincent" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="61" looklegs="25" lookfeet="57" />
+	<npc name="Virgil" looktype="328" lookitem="0" lookaddon="0" lookhead="95" lookbody="114" looklegs="98" lookfeet="97" />
+	<npc name="Vladruc" looktype="68" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Vulturenose" looktype="96" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Vuzrog" looktype="857" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Wally" looktype="129" lookitem="0" lookaddon="0" lookhead="96" lookbody="113" looklegs="95" lookfeet="115" />
+	<npc name="Walter The Guard" looktype="131" lookitem="0" lookaddon="0" lookhead="19" lookbody="19" looklegs="38" lookfeet="38" />
+	<npc name="Warbert" looktype="131" lookitem="0" lookaddon="0" lookhead="113" lookbody="113" looklegs="113" lookfeet="115" />
+	<npc name="Weaponmaster" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Wentworth" looktype="151" lookitem="0" lookaddon="0" lookhead="97" lookbody="19" looklegs="124" lookfeet="115" />
+	<npc name="Wesley" looktype="153" lookitem="0" lookaddon="0" lookhead="58" lookbody="119" looklegs="120" lookfeet="121" />
+	<npc name="Willard" looktype="131" lookitem="0" lookaddon="0" lookhead="58" lookbody="104" looklegs="0" lookfeet="116" />
+	<npc name="Willem" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="William" looktype="128" lookitem="0" lookaddon="0" lookhead="115" lookbody="0" looklegs="67" lookfeet="114" />
+	<npc name="Willie" looktype="153" lookitem="0" lookaddon="0" lookhead="77" lookbody="63" looklegs="58" lookfeet="115" />
+	<npc name="Willow" looktype="140" lookitem="0" lookaddon="0" lookhead="60" lookbody="24" looklegs="38" lookfeet="0" />
+	<npc name="Woblin" looktype="297" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Wyat" looktype="129" lookitem="0" lookaddon="0" lookhead="98" lookbody="96" looklegs="95" lookfeet="116" />
+	<npc name="Wyda" looktype="54" lookitem="0" lookaddon="0" lookhead="0" lookbody="119" looklegs="119" lookfeet="126" />
+	<npc name="Wyrdin" looktype="130" lookitem="0" lookaddon="0" lookhead="76" lookbody="77" looklegs="79" lookfeet="115" />
+	<npc name="Xed" looktype="129" lookitem="0" lookaddon="0" lookhead="78" lookbody="36" looklegs="57" lookfeet="97" />
+	<npc name="Xelvar" looktype="70" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Xodet" looktype="130" lookitem="0" lookaddon="0" lookhead="19" lookbody="86" looklegs="87" lookfeet="95" />
+	<npc name="Xorlosh" looktype="160" lookitem="0" lookaddon="0" lookhead="41" lookbody="95" looklegs="75" lookfeet="95" />
+	<npc name="Yalahari Npc" looktype="309" lookitem="0" lookaddon="0" lookhead="38" lookbody="88" looklegs="88" lookfeet="115" />
+	<npc name="Yaman" looktype="103" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Yana" looktype="471" lookitem="0" lookaddon="0" lookhead="0" lookbody="57" looklegs="0" lookfeet="68" />
+	<npc name="Yanni" looktype="131" lookitem="0" lookaddon="0" lookhead="22" lookbody="22" looklegs="22" lookfeet="57" />
+	<npc name="Yasir" looktype="146" lookitem="0" lookaddon="0" lookhead="85" lookbody="7" looklegs="12" lookfeet="19" />
+	<npc name="Yawno" looktype="0" lookitem="3058" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Yberius" looktype="225" lookitem="0" lookaddon="0" lookhead="20" lookbody="30" looklegs="40" lookfeet="50" />
+	<npc name="Yoem" looktype="128" lookitem="0" lookaddon="0" lookhead="22" lookbody="113" looklegs="105" lookfeet="113" />
+	<npc name="Yonan" looktype="1200" lookitem="0" lookaddon="0" lookhead="76" lookbody="49" looklegs="10" lookfeet="0" />
+	<npc name="Yulas" looktype="128" lookitem="0" lookaddon="0" lookhead="58" lookbody="43" looklegs="38" lookfeet="76" />
+	<npc name="Zaidal" looktype="128" lookitem="0" lookaddon="0" lookhead="76" lookbody="44" looklegs="77" lookfeet="95" />
+	<npc name="Zalamon" looktype="115" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zarak" looktype="113" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zarifan" looktype="560" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zebron" looktype="128" lookitem="0" lookaddon="0" lookhead="114" lookbody="18" looklegs="71" lookfeet="128" />
+	<npc name="Zedrulon The Fallen" looktype="289" lookitem="0" lookaddon="0" lookhead="2" lookbody="114" looklegs="75" lookfeet="97" />
+	<npc name="Zerbrus" looktype="268" lookitem="0" lookaddon="0" lookhead="76" lookbody="38" looklegs="76" lookfeet="95" />
+	<npc name="Zeronex" looktype="133" lookitem="0" lookaddon="0" lookhead="95" lookbody="116" looklegs="3" lookfeet="38" />
+	<npc name="Zethra" looktype="471" lookitem="0" lookaddon="0" lookhead="79" lookbody="45" looklegs="12" lookfeet="94" />
+	<npc name="Zirella" looktype="157" lookitem="0" lookaddon="0" lookhead="57" lookbody="111" looklegs="67" lookfeet="95" />
+	<npc name="Zirkon" looktype="285" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zizzle" looktype="114" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zlak" looktype="339" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Znozel" looktype="297" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zoltan" looktype="130" lookitem="0" lookaddon="0" lookhead="95" lookbody="94" looklegs="95" lookfeet="76" />
+	<npc name="Zora" looktype="155" lookitem="0" lookaddon="0" lookhead="95" lookbody="21" looklegs="23" lookfeet="114" />
+	<npc name="Ztiss" looktype="340" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zuma Magehide" looktype="138" lookitem="0" lookaddon="0" lookhead="58" lookbody="19" looklegs="0" lookfeet="132" />
+	<npc name="Zumtah" looktype="51" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zurak" looktype="114" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+	<npc name="Zurakarena" looktype="114" lookitem="0" lookaddon="0" lookhead="0" lookbody="0" looklegs="0" lookfeet="0" />
+</npcs>

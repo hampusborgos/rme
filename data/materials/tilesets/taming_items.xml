@@ -1,0 +1,34 @@
+<materials>
+	<tileset name="Taming Items">
+		<items>
+			<item id="5907"/>
+			<item id="12260"/>
+			<item fromid="12304" toid="12308"/>
+			<item id="12311"/>
+			<item id="12318"/>
+			<item id="12320"/>
+			<item id="12509"/>
+			<item id="12519"/>
+			<item fromid="12546" toid="12550"/>
+			<item fromid="12801" toid="12802"/>
+			<item fromid="14142" toid="14143"/>
+			<item fromid="16153" toid="16155"/>
+			<item id="16244"/>
+			<item id="16251"/>
+			<item id="17858"/>
+			<item id="19136"/>
+			<item id="20274"/>
+			<item id="20355"/>
+			<item id="21439"/>
+			<item id="23538"/>
+			<item fromid="23684" toid="23685"/>
+			<item id="12319"/>
+			<item id="12800"/>
+			<item id="23677"/>
+			<item fromid="30170" toid="30171"/>
+			<item id="30192"/>
+			<item id="31576"/>
+			<item id="34258"/>
+		</items>
+	</tileset>
+</materials>

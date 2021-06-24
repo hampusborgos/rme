@@ -1,0 +1,18 @@
+<materials>
+	<tileset name="Bridges">
+		<raw>
+			<item id="5769"/>
+			<item id="1771"/>
+			<item id="5768"/>
+			<item id="5770"/>
+			<item fromid="1595" toid="1596"/>
+			<item fromid="2253" toid="2254"/>
+			<item fromid="2259" toid="2262"/>
+			<item fromid="26182" toid="26185"/>
+			<item fromid="2255" toid="2258"/>
+			<item fromid="2265" toid="2288"/>
+			<item fromid="6209" toid="6214"/>
+			<item fromid="10900" toid="10951"/>
+		</raw>
+	</tileset>
+</materials>

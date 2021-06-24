@@ -1,0 +1,116 @@
+<materials>
+	<tileset name="Nature - Trees">
+		<doodad>
+			<brush name="alternate trees"/>
+			<brush name="ab'dendriel trees"/>
+			<brush name="banana trees"/>
+			<brush name="birch trees"/>
+			<brush name="broken palm trees"/>
+			<brush name="cactus trees"/>
+			<brush name="cactus (large)"/>
+			<brush name="cactus (small)"/>
+			<brush name="cherry blossom trees"/>
+			<brush name="cypress"/>
+			<brush name="dark cypress trees"/>
+			<brush name="dead trees"/>
+			<brush name="dead trees (faces)"/>
+			<brush name="dead trees (no faces)"/>
+			<brush name="dusky cypress trees"/>
+			<brush name="dragonbone trees"/>
+			<brush name="dwelling in a log"/>
+			<brush name="enormous tree"/>
+			<brush name="fairy tree"/>
+			<brush name="festive tree (on)"/>
+			<brush name="festive tree (off)"/>
+			<brush name="flower trees"/>
+			<brush name="gloomy cy press trees"/>
+			<brush name="giant tree"/>
+			<brush name="giant tree crown"/>
+			<brush name="green trees"/>
+			<brush name="green zao trees"/>
+			<brush name="jade plant trees"/>
+			<brush name="jungle trees"/>
+			<brush name="juniper trees"/>
+			<brush name="large branch (east)"/>
+			<brush name="large branch (south)"/>
+			<brush name="mango tree"/>
+			<brush name="magical tree (colours)"/>
+			<brush name="lampion tree"/>
+			<brush name="mangrove tree"/>
+			<brush name="mangrove tree (dead)"/>
+			<brush name="mangrove tree (on water)"/>
+			<brush name="mangrove tree (dead on water)"/>
+			<brush name="palm trees"/>
+			<brush name="sequoia trunk"/>
+			<brush name="sentient oak"/>
+			<brush name="sun fruit plants"/>
+			<brush name="snowy dead trees"/>
+			<brush name="solstice trees"/>
+			<brush name="sleepless twine tree"/>
+			<brush name="small plant house"/>
+			<brush name="tree (trimmed)"/>
+			<brush name="tree (untended trimmed)"/>
+			<brush name="tree (beech)"/>
+			<brush name="tree (windroot)"/>
+			<brush name="tree (arching)"/>
+			<brush name="tree (night plants)"/>
+			<brush name="tree (bird plant)"/>
+			<brush name="tree (dream bird)"/>
+			<brush name="tuft palm trees"/>
+			<brush name="tree stubs"/>
+			<brush name="tree stump"/>
+			<brush name="tree with blue leaves"/>
+			<brush name="twines"/>
+			<brush name="whispering willow"/>
+
+		</doodad>
+		<raw>
+			<item fromid="957" toid="958"/>
+			<item fromid="3608" toid="3609"/>
+			<item fromid="3613" toid="3634"/>
+			<item fromid="3636" toid="3650"/>
+			<item fromid="3742" toid="3803"/>
+			<item fromid="3849" toid="3921"/>
+			<item fromid="5091" toid="5094"/>
+			<item fromid="5155" toid="5156"/>
+			<item fromid="5389" toid="5398"/>
+			<item id="6094"/>
+			<item fromid="6219" toid="6224"/>
+			<item fromid="7020" toid="7024"/>
+			<item fromid="7957" toid="7990"/>
+			<item fromid="8838" toid="8843"/>
+			<item id="9225"/>
+			<item id="9584"/>
+			<item fromid="9587" toid="9589"/>
+			<item fromid="9811" toid="9819"/>
+			<item fromid="9824" toid="9826"/>
+			<item fromid="9995" toid="10000"/>
+			<item fromid="16377" toid="16378"/>
+			<item fromid="18442" toid="18445"/>
+			<item fromid="18578" toid="18590"/>
+			<item id="19671"/>
+			<item fromid="19675" toid="19677"/>
+			<item id="19692"/>
+			<item id="19716"/>
+			<item id="19729"/>
+			<item id="19737"/>
+			<item id="19739"/>
+			<item id="19741"/>
+			<item fromid="19919" toid="19924"/>
+			<item fromid="20101" toid="20117"/>
+			<item fromid="22290" toid="22297"/>
+			<item id="22885"/>
+			<item fromid="24017" toid="24036"/>
+			<item fromid="25307" toid="25332"/>
+			<item fromid="25362" toid="25367"/>
+			<item fromid="25397" toid="25409"/>
+			<item fromid="25466" toid="25494"/>
+			<item fromid="29332" toid="29333"/>
+			<item fromid="29968" toid="29970"/>
+			<item fromid="30237" toid="30238"/>
+			<item id="30407"/>
+			<item fromid="30416" toid="30417"/>
+			<item fromid="30419" toid="30427"/>
+		</raw>
+	</tileset>
+</materials>

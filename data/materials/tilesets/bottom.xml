@@ -1,0 +1,12 @@
+<materials>
+	<tileset name="Bottom">
+		<raw>
+			<item fromid="5630" toid="5653"/>
+			<item fromid="5676" toid="5677"/>
+			<item fromid="5683" toid="5686"/>
+			<item id="6085"/>
+			<item fromid="6822" toid="6837"/>
+			<item fromid="7102" toid="7105"/>
+		</raw>
+	</tileset>
+</materials>

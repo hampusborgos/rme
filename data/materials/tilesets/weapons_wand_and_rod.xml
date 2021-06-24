@@ -1,0 +1,29 @@
+<materials>
+	<tileset name="Weapons - Wands and Rods">
+		<items>
+			<!-- Wands -->
+			<item fromid="3065" toid="3070"/>
+			<item fromid="3071" toid="3075"/>
+			<item id="3321"/>
+			<item fromid="8082" toid="8084"/>
+			<item fromid="8092" toid="8094"/>
+			<item id="9187"/>
+			<item id="12603"/>
+			<item id="12732"/>
+			<item id="12741"/>
+			<item id="16096"/>
+			<item id="16115"/>
+			<item fromid="16117" toid="16118"/>
+			<item id="17111"/>
+			<item fromid="22764" toid="22766"/>
+			<item id="25700"/>
+			<item id="25760"/>
+			<item fromid="28716" toid="28717"/>
+			<item id="29425"/>
+			<item fromid="30399" toid="30400"/>
+			<item id="34090"/>
+			<item id="34091"/>
+			<item fromid="34151" toid="34152"/>
+		</items>
+	</tileset>
+</materials>

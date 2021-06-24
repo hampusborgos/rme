@@ -1,0 +1,18 @@
+<materials>
+	<brush name="brushes" type="doodad" lookid="3681" draggable="true" on_blocking="true" thickness="15/100">
+		<item id="3681" chance="10"/>
+		<item id="3682" chance="10"/>
+	</brush>
+
+	<brush name="brushes (dead)" type="doodad" server_lookid="3698" draggable="true" on_blocking="true" thickness="10/100">
+		<item id="3684" chance="10"/>
+		<item id="3698" chance="10"/>
+		<item id="6430" chance="10"/>
+		<item id="6431" chance="10"/>
+	</brush>
+	
+	<brush name="brushes (blueberry)" type="doodad" lookid="3699" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="3699" chance="10"/>
+		<item id="3700" chance="10"/>
+	</brush>
+</materials>

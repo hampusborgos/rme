@@ -1,0 +1,6 @@
+<materials>
+	<brush name="monster nest" type="doodad" lookid="19209" draggable="true" on_blocking="true" thickness="10/10">
+		<item id="19209" chance="10"/>
+		<item id="19210" chance="10"/>
+	</brush>
+</materials>

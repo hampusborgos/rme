@@ -1,0 +1,25 @@
+<materials>
+	<tileset name="Trophies">
+		<items>
+			<item fromid="7393" toid="7401"/>
+			<item fromid="9206" toid="9224"/>
+			<item id="9538"/>
+			<item fromid="9613" toid="9614"/>
+			<item fromid="9626" toid="9627"/>
+			<item id="10398"/>
+			<item id="10421"/>
+			<item id="11679"/>
+			<item fromid="11694" toid="9634"/>
+			<item id="4065"/>
+			<item fromid="14222" toid="14224"/>
+			<item fromid="16275" toid="16276"/>
+			<item id="18936"/>
+			<item fromid="22026" toid="22028"/>
+			<item fromid="22093" toid="22104"/>
+			<item fromid="27462" toid="27463"/>
+			<item id="27591"/>
+			<item id="27706"/>
+			<item fromid="27704" toid="27705"/>
+		</items>
+	</tileset>
+</materials>

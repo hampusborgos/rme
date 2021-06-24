@@ -1,0 +1,7 @@
+<materials>
+	<tileset name="Rocks">
+		<items>
+			<item id="7106"/>
+		</items>
+	</tileset>
+</materials>

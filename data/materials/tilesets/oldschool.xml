@@ -1,0 +1,7 @@
+<materials>
+	<tileset name="Oldschool">
+		<raw>
+			<item fromid="24442" toid="24872"/>
+		</raw>
+	</tileset>
+</materials>

@@ -1,0 +1,47 @@
+<materials>
+	<tileset name="Nature - Stones (Crystals)">
+		<doodad>
+			<brush name="crystals cave (blue)"/>
+			<brush name="crystals cave (green)"/>
+			<brush name="crystals cave (light blue)"/>
+			<brush name="crystals cave (red)"/>
+			<brush name="crystals cave (prism)"/>
+
+			<brush name="crystals cave (white)"/>
+			<brush name="crystals large (white)"/>
+			<brush name="crystals small (white)"/>
+			<brush name="crystals (white)"/>
+			<brush name="crystals large (blue)"/>
+			<brush name="crystals (purple)"/>
+
+			<brush name="huge red crystals"/>
+			<brush name="large fallen crystal"/>
+			<brush name="green crystal stalagmite"/>
+			<brush name="green crystal wall"/>
+			<brush name="green crystal rods"/>
+			<brush name="blue crystal wall"/>
+			<brush name="blue crystal rods"/>
+			<brush name="red crystal wall"/>
+			<brush name="red crystal rods"/>
+			<brush name="red crystal geode"/>
+			<brush name="harverstable crystal"/>
+			<brush name="crystal resonator"/>
+		</doodad>
+		<raw>
+			<item fromid="7805" toid="7812"/>
+			<item id="10870"/>
+			<item fromid="11427" toid="11428"/>
+			<item id="14949"/>
+			<item id="14952"/>
+			<item id="14955"/>
+			<item id="14958"/>
+			<item id="14961"/>
+			<item id="14964"/>
+			<item id="14967"/>
+			<item id="14974"/>
+			<item fromid="16169" toid="16171"/>
+			<item fromid="19303" toid="19313"/>
+			<item fromid="25356" toid="25359"/>
+		</raw>
+	</tileset>
+</materials>

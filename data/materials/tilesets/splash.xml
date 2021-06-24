@@ -1,0 +1,36 @@
+<materials>
+	<tileset name="Splash">
+		<doodad>
+			<item id="17610"/>
+			<item id="34260"/>
+			<item fromid="34006" toid="34007"/>
+			<item id="33854"/>
+			<brush name="blood"/>
+			<brush name="bloodwall"/>
+			<item id="2886"/>
+			<item id="2887"/>
+			<item id="2888"/>
+			<item id="2889"/>
+			<item id="2890"/>
+			<item id="2891"/>
+			<brush name="new splash 1"/>
+			<item id="2696"/>
+			<item id="2697"/>
+			<item id="2698"/>
+			<item id="21152"/>
+			<item fromid="21190" toid="21191"/>
+		</doodad>
+		<raw>
+			<item id="2886"/>
+			<item id="2887"/>
+			<item id="2888"/>
+			<item id="2889"/>
+			<item id="2890"/>
+			<item id="2891"/>
+			<item id="2696"/>
+			<item id="2697"/>
+			<item id="2698"/>
+			<item fromid="2895" toid="2900"/>
+		</raw>
+	</tileset>
+</materials>

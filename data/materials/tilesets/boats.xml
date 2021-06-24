@@ -1,0 +1,20 @@
+<materials>
+	<tileset name="Boats">
+		<raw>
+			<item id="1748"/>
+			<item fromid="1751" toid="1771"/>
+			<item fromid="4881" toid="4990"/>
+			<item fromid="4929" toid="4946"/>
+			<item fromid="4997" toid="5007"/>
+			<item fromid="5082" toid="5085"/>
+			<item fromid="5745" toid="5746"/>
+			<item fromid="5748" toid="5749"/>
+			<item fromid="7213" toid="7231"/>
+			<item fromid="7262" toid="7263"/>
+			<item fromid="12037" toid="12038"/>
+			<item fromid="12054" toid="12055"/>
+			<item id="31948"/>
+			<item fromid="31931" toid="31946"/>
+		</raw>
+	</tileset>
+</materials>

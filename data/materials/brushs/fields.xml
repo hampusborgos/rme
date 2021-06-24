@@ -1,0 +1,40 @@
+<materials>
+	<brush name="waterfall" type="doodad" lookid="1716" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<composite chance="10">
+			<tile x="0" y="0" z="0">  <item id="1716" chance="10"/> </tile>
+			<tile x="0" y="1" z="0">  <item id="1720" chance="10"/> </tile>
+			<tile x="0" y="0" z="-1"> <item id="1718" chance="10"/> </tile>
+		</composite>
+		<composite chance="10">
+			<tile x="0" y="0" z="0">  <item id="1717" chance="10"/> </tile>
+			<tile x="1" y="0" z="0">  <item id="1721" chance="10"/> </tile>
+			<tile x="0" y="0" z="-1"> <item id="1719" chance="10"/> </tile>
+		</composite>
+	</brush>
+
+	<brush name="lavafall" type="doodad" lookid="14144" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<composite chance="10">
+			<tile x="0" y="0" z="0">  <item id="14144" chance="10"/> </tile>
+			<tile x="0" y="1" z="0">  <item id="14146" chance="10"/> </tile>
+			<tile x="1" y="1" z="-1"> <item id="14148" chance="10"/> </tile>
+		</composite>
+		<composite chance="10">
+			<tile x="0" y="0" z="0">  <item id="14145" chance="10"/> </tile>
+			<tile x="1" y="0" z="0">  <item id="14147" chance="10"/> </tile>
+			<tile x="1" y="1" z="-1"> <item id="14149" chance="10"/> </tile>
+		</composite>
+	</brush>
+
+	<brush name="fogfall" type="doodad" lookid="19237" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<composite chance="10">
+			<tile x="0" y="0" z="0">  <item id="19237" chance="10"/> </tile>
+			<tile x="0" y="1" z="0">  <item id="19240" chance="10"/> </tile>
+			<tile x="1" y="1" z="-1"> <item id="19239" chance="10"/> </tile>
+		</composite>
+		<composite chance="10">
+			<tile x="0" y="0" z="0">  <item id="19238" chance="10"/> </tile>
+			<tile x="1" y="0" z="0">  <item id="19242" chance="10"/> </tile>
+			<tile x="1" y="1" z="-1"> <item id="19241" chance="10"/> </tile>
+		</composite>
+	</brush>
+</materials>

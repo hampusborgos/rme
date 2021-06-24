@@ -1,0 +1,32 @@
+<materials>
+	<tileset name="Food">
+		<items>
+			<item id="229"/>
+			<item fromid="836" toid1="841"/>
+			<item id="904"/>
+			<item fromid="3577" toid="3607"/>
+			<item fromid="3723" toid="3732"/>
+			<item id="5096"/>
+			<item id="6125"/>
+			<item fromid="6276" toid="6279"/>
+			<item fromid="6392" toid="6393"/>
+			<item fromid="6541" toid="6545"/>
+			<item id="6569"/>
+			<item id="6574"/>
+			<item fromid="7158" toid="7159"/>
+			<item fromid="7372" toid="7377"/>
+			<item fromid="8010" toid="8019"/>
+			<item id="8197"/>
+			<item id="24948"/>
+			<item fromid="28484" toid="28486"/>
+			<item fromid="29408" toid="29416"/>
+			<item id="29995"/>
+			<item id="30009"/>
+			<item id="30193"/>
+			<item fromid="32170" toid="32172"/>
+			<item id="31961"/>
+			<item fromid="32066" toid="32067"/>
+			<item fromid="32043" toid="32045"/>
+		</items>
+	</tileset>
+</materials>

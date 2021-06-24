@@ -1,0 +1,12 @@
+<materials>
+	<tileset name="Store">
+		<raw>
+			<item fromid="27673" toid="27675"/>
+			<item fromid="27679" toid="27689"/>
+			<item fromid="27691" toid="27700"/>
+			<item fromid="27702" toid="27703"/>
+			<item fromid="27876" toid="27895"/>
+			<item id="29432"/>
+		</raw>
+	</tileset>
+</materials>

@@ -1,0 +1,17 @@
+<materials>
+	<tileset name="Potions">
+		<items>
+			<item fromid="236" toid="239"/>
+			<item id="266"/>
+			<item id="268"/>
+			<item fromid="283" toid="285"/>
+			<item id="2874"/>
+			<item id="6558"/>
+			<item fromid="7439" toid="7440"/>
+			<item id="7443"/>
+			<item fromid="7642" toid="7644"/>
+			<item id="7876"/>
+			<item fromid="23373" toid="23375"/>
+		</items>
+	</tileset>
+</materials>

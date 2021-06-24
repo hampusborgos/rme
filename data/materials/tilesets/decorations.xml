@@ -1,0 +1,21 @@
+<materials>
+	<tileset name="Decorations">
+		<doodad>
+			<brush name="vase plant"/>
+		</doodad>
+		<items>
+			<item id="895"/>
+			<item id="2393"/>
+			<item id="3247"/>
+			<item fromid="5928" toid="5929"/>
+			<item id="8923"/>
+			<item fromid="25216" toid="25220"/>
+			<item fromid="27691" toid="27696"/>
+			<item fromid="27702" toid="27703"/>
+			<item fromid="28697" toid="28699"/>
+			<item fromid="28688" toid="28689"/>
+			<item fromid="32919" toid="32921"/>
+			<item id="34332"/>
+		</items>
+	</tileset>
+</materials>

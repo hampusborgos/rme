@@ -1,0 +1,70 @@
+<materials>
+	<tileset name="Sea">
+		<!-- Doodad -->
+		<doodad>
+			<brush name="buoy line"/>
+			<brush name="boat template"/>
+			<brush name="small boat"/>
+			<brush name="fossil volute"/>
+			<brush name="moist stones"/>
+			<brush name="small moist stones"/>
+			<brush name="deepling spawnlings"/>
+			<brush name="bubbles"/>
+			<brush name="deepling bubbles"/>
+			<brush name="deepling shrubbery"/>
+			<brush name="deepling plants"/>
+			<brush name="deepling flower"/>
+			<brush name="deepling fumers"/>
+			<brush name="deepling lamp"/>
+			<brush name="closed deepling shell"/>
+			<brush name="open deepling shell"/>
+			<brush name="deepling pillar1"/>
+			<brush name="deepling pillar2"/>
+			<brush name="deepling pillar3"/>
+			<brush name="dark rockboy"/>
+			<brush name="light rockboy"/>
+			<brush name="strange idol"/>
+			<brush name="broken idol"/>
+			<brush name="strange head"/>
+			<brush name="strange pedestal"/>
+			<brush name="strange deepling thing"/>
+			<brush name="laminaria"/>
+			<brush name="deepling lamp1 (on)"/>
+			<brush name="deepling lamp1 (off)"/>
+			<brush name="deepling lamp2 (on)"/>
+			<brush name="deepling lamp2 (off)"/>
+			<brush name="deepling lamp3 (on)"/>
+			<brush name="deepling lamp3 (off)"/>
+			<brush name="deepling lamp4 (on)"/>
+			<brush name="deepling lamp4 (off)"/>
+			<brush name="seashell bookcase"/>
+			<brush name="coral"/>
+			<brush name="sea animals"/>
+			<brush name="sea shells"/>
+			<brush name="enormous deepling statue (non elevated)"/>
+			<brush name="enormous deepling statue (elevated)"/>
+			<brush name="enormous deepling statue (non elevated) - red gem"/>
+		</doodad>
+		<!-- Raw -->
+		<raw>
+			<item fromid="1851" toid="1860"/>
+			<item id="3111"/>
+			<item id="3125"/>
+			<item fromid="5404" toid="5459"/>
+			<item id="5553"/>
+			<item fromid="5630" toid="5653"/>
+			<item fromid="5678" toid="5682"/>
+			<item fromid="5704" toid="5705"/>
+			<item fromid="5743" toid="5744"/>
+			<item id="5738"/>
+			<item fromid="5763" toid="5764"/>
+			<item id="5811"/>
+			<item id="9291"/>
+			<item fromid="11516" toid="11538"/>
+			<item fromid="11542" toid="11543"/>
+			<item id="14240"/>
+			<item id="21159"/>
+			<item id="28912"/>
+		</raw>
+	</tileset>
+</materials>

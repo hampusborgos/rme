@@ -1,0 +1,56 @@
+<materials>
+	<tileset name="Weapons - Axe">
+		<items>
+			<item fromid="665" toid="669"/>
+			<item fromid="684" toid="688"/>
+			<item fromid="784" toid="788"/>
+			<item fromid="801" toid="805"/>
+			<item id="919"/>
+			<item id="3266"/>
+			<item fromid="3268" toid="3269"/>
+			<item fromid="3274" toid="3276"/>
+			<item fromid="3302" toid="3303"/>
+			<item fromid="3313" toid="3320"/>
+			<item id="3323"/>
+			<item fromid="3328" toid="3329"/>
+			<item id="3331"/>
+			<item id="3335"/>
+			<item id="3342"/>
+			<item id="3344"/>
+			<item id="3346"/>
+			<item id="6553"/>
+			<item id="7380"/>
+			<item fromid="7388" toid="7389"/>
+			<item fromid="7411" toid="7413"/>
+			<item fromid="7453" toid="7456"/>
+			<item fromid="7433" toid="7436"/>
+			<item id="7773"/>
+			<item fromid="8096" toid="8098"/>
+			<item id="9132"/>
+			<item id="9384"/>
+			<item id="9386"/>
+			<item id="10388"/>
+			<item id="10406"/>
+			<item id="12683"/>
+			<item id="13991"/>
+			<item id="14040"/>
+			<item id="14043"/>
+			<item id="14089"/>
+			<item id="16161"/>
+			<item fromid="20070" toid="20075"/>
+			<item id="21174"/>
+			<item id="21176"/>
+			<item id="21180"/>
+			<item id="22172"/>
+			<item id="22727"/>
+			<item id="22759"/>
+			<item id="28724"/>
+			<item id="29286"/>
+			<item id="30396"/>
+			<item id="32616"/>
+			<item id="34084"/>
+			<item id="34085"/>
+			<item id="34253"/>
+		</items>
+	</tileset>
+</materials>

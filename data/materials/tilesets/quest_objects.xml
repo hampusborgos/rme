@@ -1,0 +1,10 @@
+<materials>
+	<tileset name="Quest Objects">
+		<items>
+			<item id="2130"/>
+			<item id="5658"/>
+			<item id="7261"/>
+			<item id="22645"/>
+		</items>
+	</tileset>
+</materials>

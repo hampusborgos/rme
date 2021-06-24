@@ -1,0 +1,9 @@
+<materials>
+	<brush name="vase plant" type="doodad" lookid="25216" draggable="false" on_duplicate="true" thickness="10/10">
+		<item id="25216" chance="10"/>
+		<item id="25217" chance="10"/>
+		<item id="25218" chance="10"/>
+		<item id="25219" chance="10"/>
+		<item id="25220" chance="10"/>
+	</brush>
+</materials>

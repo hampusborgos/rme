@@ -1,0 +1,65 @@
+<materials>
+	<tileset name="Equipment - Armors">
+		<items>
+			<item fromid="3357" toid="3361"/>
+			<item id="3366"/>
+			<item id="3370"/>
+			<item fromid="3377" toid="3381"/>
+			<item id="3383"/>
+			<item id="3386"/>
+			<item id="3388"/>
+			<item id="3394"/>
+			<item id="3397"/>
+			<item id="3399"/>
+			<item id="3402"/>
+			<item id="4836"/>
+			<item fromid="3561" toid="3571"/>
+			<item id="3575"/>
+			<item id="3404"/>
+			<item id="6095"/>
+			<item id="7463"/>
+			<item id="811"/>
+			<item id="824"/>
+			<item id="825"/>
+			<item id="826"/>
+			<item fromid="8037" toid="8064"/>
+			<item id="7991"/>
+			<item id="7993"/>
+			<item id="8862"/>
+			<item fromid="8894" toid="8896"/>
+			<item id="9014"/>
+			<item id="9379"/>
+			<item id="9400"/>
+			<item id="10384"/>
+			<item fromid="10438" toid="10439"/>
+			<item id="11651"/>
+			<item fromid="11686" toid="11687"/>
+			<item id="11701"/>
+			<item fromid="13993" toid="13994"/>
+			<item id="14086"/>
+			<item id="16105"/>
+			<item id="16110"/>
+			<item id="17829"/>
+			<item id="19358"/>
+			<item id="19372"/>
+			<item id="19391"/>
+			<item id="21164"/>
+			<item fromid="21166" toid="21167"/>
+			<item id="22085"/>
+			<item fromid="22518" toid="22537"/>
+			<item id="25779"/>
+			<item id="27648"/>
+			<item id="28719"/>
+			<item id="29418"/>
+			<item id="31578"/>
+			<item id="31579"/>
+			<item id="31583"/>
+			<item id="32099"/>
+			<item id="32628"/>
+			<item id="34094"/>
+			<item id="34095"/>
+			<item id="34096"/>
+			<item id="34157"/>
+		</items>
+	</tileset>
+</materials>

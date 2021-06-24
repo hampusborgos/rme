@@ -1,0 +1,18 @@
+<materials>
+	<brush name="carrot sprouts" type="doodad" lookid="15637" draggable="true" on_blocking="true" thickness="10/10">
+		<item id="15637" chance="10"/>
+		<item id="15638" chance="10"/>
+	</brush>
+
+	<brush name="sand trickle (east)" type="doodad" lookid="18609" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/10">
+		<item id="18612" chance="10"/>
+		<item id="18613" chance="10"/>
+		<item id="18614" chance="10"/>
+	</brush>
+
+	<brush name="sand trickle (south)" type="doodad" lookid="18609" draggable="true" on_blocking="true" on_duplicate="true" thickness="10/10">
+		<item id="18609" chance="10"/>
+		<item id="18610" chance="10"/>
+		<item id="18611" chance="10"/>
+	</brush>
+</materials>

@@ -1,0 +1,8 @@
+<materials>
+	<tileset name="Common">
+		<raw>
+			<item id="611"/>
+			<item id="33948"/>
+		</raw>
+	</tileset>
+</materials>

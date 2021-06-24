@@ -1,0 +1,64 @@
+<materials>
+	<tileset name="Weapons - Club">
+		<items>
+			<item fromid="789" toid="793"/>
+			<item fromid="806" toid="810"/>
+			<item fromid="670" toid="674"/>
+			<item fromid="689" toid="693"/>
+			<item id="3270"/>
+			<item id="3279"/>
+			<item id="3282"/>
+			<item id="3286"/>
+			<item id="3289"/>
+			<item fromid="3304" toid="3305"/>
+			<item id="12510"/>
+			<item fromid="3309" toid="3312"/>
+			<item id="3322"/>
+			<item fromid="3324" toid="3325"/>
+			<item id="3327"/>
+			<item fromid="3332" toid="3333"/>
+			<item fromid="3336" toid="3337"/>
+			<item fromid="3340" toid="3341"/>
+			<item id="3343"/>
+			<item id="3348"/>
+			<item id="7379"/>
+			<item id="7381"/>
+			<item id="7387"/>
+			<item id="7392"/>
+			<item id="7409"/>
+			<item id="7437"/>
+			<item fromid="7450" toid="7452"/>
+			<item id="7410"/>
+			<item id="7414"/>
+			<item id="7415"/>
+			<item fromid="7421" toid="7432"/>
+			<item fromid="8099" toid="8101"/>
+			<item id="9373"/>
+			<item id="9385"/>
+			<item id="10391"/>
+			<item id="11692"/>
+			<item id="3208"/>
+			<item id="13987"/>
+			<item id="14001"/>
+			<item id="14250"/>
+			<item id="16162"/>
+			<item id="17813"/>
+			<item id="17828"/>
+			<item id="17859"/>
+			<item fromid="20076" toid="20081"/>
+			<item id="19400"/>
+			<item fromid="21171" toid="21173"/>
+			<item id="21178"/>
+			<item id="21219"/>
+			<item id="22171"/>
+			<item id="22762"/>
+			<item id="28725"/>
+			<item id="29419"/>
+			<item id="30395"/>
+			<item id="31580"/>
+			<item id="34086"/>
+			<item id="34087"/>
+			<item id="34254"/>
+		</items>
+	</tileset>
+</materials>

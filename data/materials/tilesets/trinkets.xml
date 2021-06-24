@@ -1,0 +1,109 @@
+<materials>
+	<tileset name="Trinkets">
+		<items>
+			<item id="34079"/>
+			<item id="2906"/>
+			<item fromid="5792" toid="5797"/>
+			<item id="8156"/>
+			<item id="869"/>
+			<item id="871"/>
+			<item id="873"/>
+			<!-- Trinkets -->
+			<item id="3231"/>
+			<item id="3232"/>
+			<item id="6577"/>
+			<item id="3233"/>
+			<item fromid="3248" toid="3252"/>
+			<item id="3509"/>
+			<item id="3078"/>
+			<item id="3020"/>
+			<item id="3509"/>
+			<item id="132"/>
+			<item id="10289"/>
+			<item id="6092"/>
+			<item id="5946"/>
+			<item id="5865"/>
+			<item id="6556" toid="6557"/>
+			<!-- Instruments -->
+			<item id="3252"/>
+			<item fromid="3254" toid="3262"/>
+			<item id="3263"/>
+			<item id="2951"/>
+			<item id="2965"/>
+			<item id="2966"/>
+			<item id="3103"/>
+			<item id="6572"/>
+			<item id="3219"/>
+			<item id="5786"/>
+			<item id="6123"/>
+			<item id="34210"/>
+			<!-- Lights -->
+			<item id="2911" toid="2919"/>
+			<item id="2921"/>
+			<item id="2920"/>
+			<item id="2923"/>
+			<item id="2922"/>
+			<item id="2925"/>
+			<item id="2924"/>
+			<item id="2926"/>
+			<item id="2932"/>
+			<item id="2932"/>
+			<item id="2933"/>
+			<item id="5852"/>
+			<item id="5853"/>
+			<item fromid="2912" toid="2919"/>
+			<item id="2927"/>
+			<item fromid="3046" toid="3047"/>
+			<!-- Random -->
+			<item id="3263"/>
+			<item id="4845"/>
+			<item fromid="3505" toid="3506"/>
+			<item id="3507"/>
+			<item id="3059"/>
+			<item fromid="3077" toid="3078"/>
+			<item fromid="3101" toid="3102"/>
+			<item id="3243"/>
+			<item id="3247"/>
+			<item id="3020"/>
+			<item fromid="2902" toid="2903"/>
+			<item id="4840"/>
+			<item id="7281"/>
+			<item id="7315"/>
+			<item id="3214"/>
+			<item fromid="7441" toid="7442"/>
+			<item fromid="7444" toid="7448"/>
+			<item id="33313"/>
+			<!-- Food -->
+			<item id="2903"/>
+			<item id="2905"/>
+			<item id="2903"/>
+			<!-- Keys -->
+			<item fromid="2967" toid="2973"/>
+			<item fromid="20270" toid="20273"/>
+			<!-- Game pieces -->
+			<item id="3534"/>
+			<item fromid="3535" toid="3540"/>
+			<item id="3533"/>
+			<item fromid="3541" toid="3546"/>
+			<item id="3547"/>
+			<item id="3548"/>
+			<item id="6092"/>
+			<item id="6091"/>
+			<item fromid="18327" toid="18338"/>
+			<item fromid="20311" toid="20314"/>
+			<item id="12811"/>
+			<item id="25782"/>
+			<item fromid="28464" toid="28466"/>
+			<item fromid="28475" toid="28479"/>
+			<item id="12813"/>
+			<item id="23681"/>
+			<item id="23683"/>
+			<item fromid="29291" toid="29294"/>
+			<item id="29994"/>
+			<item id="30056"/>
+			<item id="30195"/>
+			<item fromid="30318" toid="30321"/>
+			<item fromid="31270" toid="31281"/>
+		</items>
+	</tileset>
+</materials>

@@ -376,7 +376,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(20, "Loading items.otb file...");
-	if(!g_items.loadFromOtb(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "items.otb"), error, warnings)) {
+	if(!g_items.loadFromOtb(wxString("data/items/items.otb"), error, warnings)) {
 		error = "Couldn't load items.otb: " + error;
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
@@ -384,12 +384,12 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(30, "Loading items.xml ...");
-	if(!g_items.loadFromGameXml(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "items.xml"), error, warnings)) {
+	if(!g_items.loadFromGameXml(wxString("data/items/items.xml"), error, warnings)) {
 		warnings.push_back("Couldn't load items.xml: " + error);
 	}
 
 	g_gui.SetLoadDone(45, "Loading monsters.xml ...");
-	if(!g_monsters.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "monsters.xml"), true, error, warnings)) {
+	if(!g_monsters.loadFromXML(wxString("data/creatures/monsters.xml"), true, error, warnings)) {
 		warnings.push_back("Couldn't load monsters.xml: " + error);
 	}
 
@@ -403,7 +403,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	}
 
 	g_gui.SetLoadDone(45, "Loading npcs.xml ...");
-	if(!g_npcs.loadFromXML(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "npcs.xml"), true, error, warnings)) {
+	if(!g_npcs.loadFromXML(wxString("data/creatures/npcs.xml"), true, error, warnings)) {
 		warnings.push_back("Couldn't load npcs.xml: " + error);
 	}
 

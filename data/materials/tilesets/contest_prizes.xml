@@ -1,0 +1,10 @@
+<materials>
+	<tileset name="Contest Prizes">
+		<items>
+			<item id="8737"/>
+			<item id="16262"/>
+			<item id="21445"/>
+			<item fromid="30183" toid="30184"/>
+		</items>
+	</tileset>
+</materials>

@@ -1,0 +1,54 @@
+<materials>
+	<brush name="grass drift (horizontal)" type="doodad" lookid="2511" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<composite chance="100">
+			<tile x="0" y="0"> <item id="2511"/> </tile>
+			<tile x="1" y="0"> <item id="2512"/> </tile>
+		</composite>
+	</brush>
+
+	<brush name="grass drift (vertical)" type="doodad" lookid="2513" draggable="true" on_blocking="true" on_duplicate="true" thickness="100/100">
+		<composite chance="100">
+			<tile x="0" y="0"> <item id="2513"/> </tile>
+			<tile x="0" y="1"> <item id="2514"/> </tile>
+		</composite>
+	</brush>
+
+	<brush name="cane stufts" type="doodad" lookid="5470">
+		<item id="5462" chance="10"/>
+		<item id="5463" chance="10"/>
+		<item id="5465" chance="10"/>
+		<item id="5470" chance="10"/>
+	</brush>
+
+	<brush name="grass tufts" type="doodad" lookid="6215" draggable="true" on_blocking="true" thickness="25/100">
+		<item id="6215" chance="10"/>
+		<item id="6216" chance="8"/>
+		<item id="6217" chance="12"/>
+		<item id="6218" chance="60"/>
+	</brush>
+	
+	<brush name="dry grass tufts" type="doodad" lookid="9820" draggable="true" on_blocking="true" thickness="25/100">
+		<item id="9820" chance="1"/>
+		<item id="9821" chance="5"/>
+		<item id="9822" chance="12"/>
+		<item id="9823" chance="60"/>
+	</brush>
+	
+	<brush name="grassy tufts" type="doodad" lookid="13374" draggable="true" on_blocking="true" thickness="25/100">
+		<item id="13368" chance="5"/>
+		<item id="13369" chance="7"/>
+		<item id="13370" chance="10"/>
+		<item id="13371" chance="7"/>
+		<item id="13372" chance="5"/>
+		<item id="13373" chance="5"/>
+		<item id="13374" chance="10"/>
+		<item id="13375" chance="10"/>
+	</brush>
+
+	<brush name="venorean grass tufts" type="doodad" lookid="17897" draggable="true" on_blocking="true" thickness="10/10">
+		<item id="17897" chance="10"/>
+		<item id="17898" chance="10"/>
+		<item id="17983" chance="10"/>
+		<item id="17984" chance="10"/>
+	</brush>
+</materials>

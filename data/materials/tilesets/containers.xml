@@ -1,0 +1,43 @@
+<materials>
+	<tileset name="Containers">
+		<items>
+			<item fromid="2853" toid="2872"/>
+			<item id="3253"/>
+			<item fromid="3503" toid="3504"/>
+			<item id="5801"/>
+			<item id="5927"/>
+			<item fromid="5926" toid="5927"/>
+			<item fromid="5949" toid="5950"/>
+			<item id="6104"/>
+			<item fromid="6109" toid="6112"/>
+			<item id="6505"/>
+			<item fromid="6509" toid="6510"/>
+			<item fromid="7342" toid="7343"/>
+			<item fromid="8860" toid="8861"/>
+			<item fromid="9601" toid="9605"/>
+			<item id="10202"/>
+			<item fromid="10324" toid="10327"/>
+			<item id="10346"/>
+			<item id="11698"/>
+			<item fromid="14248" toid="14249"/>
+			<item id="14674"/>
+			<item fromid="16099" toid="16100"/>
+			<item id="18339"/>
+			<item id="19159"/>
+			<item id="20347"/>
+			<item id="21292"/>
+			<item id="21295"/>
+			<item id="21411"/>
+			<item id="22084"/>
+			<item id="23525"/>
+			<item id="24393"/>
+			<item id="24395"/>
+			<item id="25780"/>
+			<item id="28571"/>
+			<item id="30197"/>
+			<item id="31282"/>
+			<item id="31625"/>
+			<item id="32620"/>
+		</items>
+	</tileset>
+</materials>

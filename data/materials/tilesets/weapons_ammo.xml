@@ -1,0 +1,24 @@
+<materials>
+	<tileset name="Weapons - Ammo">
+		<items>
+			<item fromid="761" toid="763"/>
+			<item id="774"/>
+			<item id="3287"/>
+			<item fromid="3446" toid="3450"/>
+			<item id="6528"/>
+			<item fromid="7363" toid="7368"/>
+			<item fromid="14251" toid="14252"/>
+			<item id="15793"/>
+			<item fromid="16141" toid="16143"/>
+			<item id="21470"/>
+			<item fromid="23223" toid="23342"/>
+			<item fromid="23577" toid="23602"/>
+			<item fromid="23604" toid="23667"/>
+			<item fromid="26014" toid="26073"/>
+			<item fromid="25983" toid="26012"/>
+			<item id="25735"/>
+			<item fromid="25757" toid="25759"/>
+			<item fromid="27449" toid="27458"/>
+		</items>
+	</tileset>
+</materials>

@@ -1,0 +1,16 @@
+<materials>
+	<brush name="tree leaves (tiny)" type="carpet" lookid="18532">
+		<carpet align="n" id="18525"/>
+		<carpet align="e" id="18527"/>
+		<carpet align="s" id="18522"/>
+		<carpet align="w" id="18528"/>
+		<carpet align="cnw" id="18526"/>
+		<carpet align="cne" id="18524"/>
+		<carpet align="cse" id="18521"/>
+		<carpet align="csw" id="18523"/>
+		<carpet align="dnw" id="18532"/>
+		<carpet align="dne" id="18531"/>
+		<carpet align="dse" id="18529"/>
+		<carpet align="dsw" id="18530"/>
+	</brush>
+</materials>

@@ -1,0 +1,2283 @@
+<materialsextension
+	name="8.4 additions"
+	author="Xenios"
+	authorurl="https://otland.net/members/xenios.13/"
+	description="8.4 additions"
+	client="8.40">
+
+	<brush name="Yalahar wall" type="wall" server_lookid="8454">
+		<wall type="horizontal">
+			<item id="8457" chance="300"/>
+			<item id="8454" chance="200"/>
+			<door id="8607" type="normal" open="true"/>
+			<door id="8607" type="normal" open="true"/>
+			<door id="8607" type="locked" open="false"/>
+			<door id="8607" type="locked" open="true"/>
+			<door id="8607" type="quest" open="false"/>
+			<door id="8607" type="quest" open="true"/>
+			<door id="8607" type="magic" open="false"/>
+			<door id="8607" type="magic" open="true"/>
+			<door id="8466" type="hatch_window" open="false"/>
+			<door id="8467" type="hatch_window" open="true"/>
+			<door id="8467" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="8461" chance="300"/>
+			<item id="8455" chance="200"/>
+			<door id="8611" type="normal" open="false"/>
+			<door id="8611" type="normal" open="true"/>
+			<door id="8611" type="locked" open="false"/>
+			<door id="8611" type="locked" open="true"/>
+			<door id="8611" type="quest" open="false"/>
+			<door id="8611" type="quest" open="true"/>
+			<door id="8611" type="magic" open="false"/>
+			<door id="8611" type="magic" open="true"/>
+			<door id="8469" type="hatch_window" open="false"/>
+			<door id="8470" type="hatch_window" open="true"/>
+			<door id="8470" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="8460" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="8456" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="Yalahar mines wall" type="wall" server_lookid="8298">
+		<wall type="horizontal">
+			<item id="8298" chance="200"/>
+			<item id="8294" chance="100"/>
+			<item id="8304" chance="100"/>
+			<item id="8307" chance="100"/>
+			<item id="8295" chance="100"/>
+			<item id="8296" chance="100"/>
+			<door id="8356" type="normal" open="true"/>
+			<door id="8354" type="normal" open="false"/>
+			<door id="8359" type="locked" open="false"/>
+			<door id="8360" type="locked" open="true"/>
+			<door id="8363" type="quest" open="false"/>
+			<door id="8364" type="quest" open="true"/>
+			<door id="8367" type="magic" open="false"/>
+			<door id="8368" type="magic" open="true"/>
+			<door id="8349" type="hatch_window" open="false"/>
+			<door id="8369" type="hatch_window" open="true"/>
+			<door id="8350" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="8291" chance="100"/>
+			<item id="8302" chance="100"/>
+			<item id="8292" chance="100"/>
+			<item id="8306" chance="100"/>
+			<item id="8300" chance="200"/>
+			<item id="8293" chance="100"/>
+			<door id="8351" type="normal" open="false"/>
+			<door id="8353" type="normal" open="true"/>
+			<door id="8357" type="locked" open="false"/>
+			<door id="8358" type="locked" open="true"/>
+			<door id="8361" type="quest" open="false"/>
+			<door id="8362" type="quest" open="true"/>
+			<door id="8365" type="magic" open="false"/>
+			<door id="8366" type="magic" open="true"/>
+			<door id="8347" type="hatch_window" open="false"/>
+			<door id="8407" type="hatch_window" open="true"/>
+			<door id="8348" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="8301" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="8297" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="Yalahar black wall" type="wall" server_lookid="8202" on_blocking="true">
+		<wall type="horizontal">
+			<item id="8202" chance="100"/>
+			<door id="8254" type="normal" open="true"/>
+			<door id="8252" type="normal" open="false"/>
+			<door id="8257" type="locked" open="false"/>
+			<door id="8258" type="locked" open="true"/>
+			<door id="8261" type="quest" open="false"/>
+			<door id="8262" type="quest" open="true"/>
+			<door id="8265" type="magic" open="false"/>
+			<door id="8266" type="magic" open="true"/>
+			<door id="8273" type="hatch_window" open="false"/>
+			<door id="8273" type="hatch_window" open="true"/>
+			<door id="8273" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="8201" chance="100"/>
+			<door id="8249" type="normal" open="false"/>
+			<door id="8251" type="normal" open="true"/>
+			<door id="8255" type="locked" open="false"/>
+			<door id="8256" type="locked" open="true"/>
+			<door id="8259" type="quest" open="false"/>
+			<door id="8260" type="quest" open="true"/>
+			<door id="8263" type="magic" open="false"/>
+			<door id="8264" type="magic" open="true"/>
+			<door id="8274" type="hatch_window" open="false"/>
+			<door id="8274" type="hatch_window" open="true"/>
+			<door id="8274" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="8207" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="8203" chance="1000"/>
+		</wall>
+	</brush>
+	<brush name="Yalahar black wall railing" type="wall" server_lookid="8384" on_blocking="true">
+		<wall type="horizontal">
+			<item id="8384" chance="100"/>
+		</wall>
+		<wall type="vertical">
+			<item id="8385" chance="100"/>
+		</wall>
+		<wall type="corner">
+			<item id="8386" chance="1000"/>
+		</wall>
+		<wall type="pole">
+			<item id="8387" chance="1000"/>
+		</wall>
+	</brush>
+<!--<brush name="yalahar wall railing" type="wall" server_lookid="8472">
+		<wall type="pole">               <item id="220" chance="1"/> </wall>
+		<wall type="horizontal">         <item id="2253" chance="1"/> </wall>
+		<wall type="vertical">           <item id="2254" chance="1"/> </wall>
+		<wall type="northeast diagonal"> <item id="225" chance="1"/> </wall>
+		<wall type="northwest diagonal"> <item id="226" chance="1"/> </wall>
+		<wall type="southeast diagonal"> <item id="223" chance="1"/> </wall>
+		<wall type="southwest diagonal"> <item id="224" chance="1"/> </wall>
+		<wall type="intersection">       <item id="220" chance="1"/> </wall>
+		<wall type="north T">            <item id="220" chance="1"/> </wall>
+		<wall type="south T">            <item id="220" chance="1"/> </wall>
+		<wall type="east T">             <item id="220" chance="1"/> </wall>
+		<wall type="west T">             <item id="220" chance="1"/> </wall>
+		<wall type="north end">          <item id="220" chance="1"/> </wall>
+		<wall type="south end">          <item id="220" chance="1"/> </wall>
+		<wall type="east end">           <item id="220" chance="1"/> </wall>
+		<wall type="west end">           <item id="220" chance="1"/> </wall>
+	</brush> -->
+
+	<border id="3761"> -- Flat roof border down --
+		<borderitem edge="n"   item="8625"/>
+		<borderitem edge="w"   item="8628"/>
+		<borderitem edge="s"   item="8622"/>
+		<borderitem edge="e"   item="8627"/>
+		<borderitem edge="cnw" item="8626"/>
+		<borderitem edge="cne" item="8624"/>
+		<borderitem edge="csw" item="8623"/>
+		<borderitem edge="cse" item="8621"/>
+		<borderitem edge="dnw" item="8632"/>
+		<borderitem edge="dne" item="8631"/>
+		<borderitem edge="dsw" item="8630"/>
+		<borderitem edge="dse" item="8629"/>
+	</border>
+
+	<border id="3762"> -- Flat roof border right --
+		<borderitem edge="n"   item="8637"/>
+		<borderitem edge="w"   item="8640"/>
+		<borderitem edge="s"   item="8634"/>
+		<borderitem edge="e"   item="8639"/>
+		<borderitem edge="cnw" item="8638"/>
+		<borderitem edge="cne" item="8636"/>
+		<borderitem edge="csw" item="8635"/>
+		<borderitem edge="cse" item="8633"/>
+		<borderitem edge="dnw" item="8644"/>
+		<borderitem edge="dne" item="8643"/>
+		<borderitem edge="dsw" item="8642"/>
+		<borderitem edge="dse" item="8641"/>
+	</border>
+
+	<brush name="yalahar roof down" type="ground" server_lookid="8619" z-order="8000">
+		<item id="8619" chance="1"/>
+
+		<border align="outer" to="none" id="3761"/>
+	</brush>
+
+	<brush name="yalahar roof right" type="ground" server_lookid="8620" z-order="8000">
+		<item id="8620" chance="1"/>
+
+		<border align="outer" to="none" id="3762"/>
+	</brush>
+
+	<brush name="yalahar roof ramp" type="doodad" server_lookid="5038" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="5037"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="5038"/>
+				</tile>
+				<tile x="0" y= "2">
+					<item id="8637"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- west --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="5033"/>
+				</tile>
+				<tile x="-1" y="0">
+					<item id="5034"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- north --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="5039"/>
+				</tile>
+				<tile x="0" y="-1">
+					<item id="5040"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="5035"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="5036"/>
+				</tile>
+				<tile x= "2" y="0">
+					<item id="8628"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="Yalahar marble floor I" type="ground" server_lookid="8230" z-order="1">
+		<item id="8230" chance="1"/>
+	</brush>
+
+	<brush name="Yalahar marble floor II" type="ground" server_lookid="8228" z-order="1">
+		<item id="8228" chance="1"/>
+	</brush>
+
+	<brush name="Yalahar marble floor III" type="ground" server_lookid="8229" z-order="1">
+		<item id="8229" chance="1"/>
+	</brush>
+
+	<brush name="Crystal pillar" type="doodad" server_lookid="8870" draggable="true" on_blocking="true" thickness=" 0/0">
+		<item id="8870" chance="100"/>
+		<item id="8871" chance="100"/>
+		<item id="8872" chance="100"/>
+		<item id="8873" chance="100"/>
+	</brush>
+
+	<brush name="yalahar pillar 2" type="doodad" server_lookid="8483" draggable="true" on_blocking="true" thickness=" 0/0">
+		<item id="8483" chance="100"/>
+	</brush>
+
+	<brush name="Wall Lamp on (Gold)" type="doodad" server_lookid="8834" draggable="true" on_blocking="true" thickness="100/100" z-order="10109">
+		<alternate> -- south --
+			<item id="8834" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8832" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="Wall Lamp off (Gold)" type="doodad" server_lookid="8835" draggable="true" on_blocking="true" thickness="100/100" z-order="11200">
+		<alternate> -- south --
+			<item id="8835" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8833" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="street lamp off (Gold)" type="doodad" server_lookid="8855" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8855" chance="10"/>
+		</alternate>
+		<alternate> -- north --
+			<item id="8659" chance="10"/>
+		</alternate>
+		<alternate> -- west --
+			<item id="8665" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8661" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar statue" type="doodad" server_lookid="8836" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8836" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8837" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="vampire statue 2" type="doodad" server_lookid="8323" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8323" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8324" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue II" type="doodad" server_lookid="9034" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="9034" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="9039" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue I" type="doodad" server_lookid="9035" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="9035" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="9040" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue III" type="doodad" server_lookid="8327" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8327" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8328" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue IV" type="doodad" server_lookid="8572" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8572" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8576" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue V" type="doodad" server_lookid="8573" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8573" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8578" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue VI" type="doodad" server_lookid="8575" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8575" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8571" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="demonic gargoyle statue VII" type="doodad" server_lookid="8574" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8574" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8577" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="hand statue" type="doodad" server_lookid="8656" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8656" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8655" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="vampire statue" type="doodad" server_lookid="8390" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8390" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="chained skeleton" type="doodad" server_lookid="8606" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8606" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8605" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine I" type="doodad" server_lookid="8997" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8997" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8998" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine II" type="doodad" server_lookid="8995" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8995" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8996" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine III" type="doodad" server_lookid="8993" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8993" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8994" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine IV" type="doodad" server_lookid="8977" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8977" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8980" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine V" type="doodad" server_lookid="8988" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8988" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8991" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine VI" type="doodad" server_lookid="8975" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8975" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8978" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine VII" type="doodad" server_lookid="8976" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8976" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8979" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine VIII" type="doodad" server_lookid="8971" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8971" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8974" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine IX" type="doodad" server_lookid="8970" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8970" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8973" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine X" type="doodad" server_lookid="8976" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8976" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8979" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine on" type="doodad" server_lookid="8982" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8982" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8985" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar machine off" type="doodad" server_lookid="8981" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8981" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8984" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="broken yalahar machine I" type="doodad" server_lookid="8983" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8983" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8986" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="broken yalahar machine II" type="doodad" server_lookid="8989" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8989" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8992" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="water barrel" type="doodad" server_lookid="8550" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8550" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8551" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="closed water barrel" type="doodad" server_lookid="8552" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8552" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8553" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar lever I" type="doodad" server_lookid="8911" draggable="true" on_blocking="true" thickness="100/100" z-order="199150">
+		<alternate> -- east --
+			<item id="8911" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8912" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar lever II" type="doodad" server_lookid="8913" draggable="true" on_blocking="true" thickness="100/100" z-order="199100">
+		<alternate> -- east --
+			<item id="8913" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8914" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar throne I" type="doodad" server_lookid="8326" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate> -- east --
+			<item id="8326" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8325" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar throne II" type="doodad" server_lookid="8529" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate> -- east --
+			<item id="8529" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8530" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar throne III" type="doodad" server_lookid="8520" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate> -- north --
+			<item id="8522" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8519" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8520" chance="10"/>
+		</alternate>
+		<alternate> -- west --
+			<item id="8521" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="antique clock" type="doodad" server_lookid="8527" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8527" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8528" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="art painting" type="doodad" server_lookid="8668" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- east --
+			<item id="8668" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8669" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar banner flag I" type="doodad" server_lookid="8579" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8579" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8583" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar banner flag II" type="doodad" server_lookid="8580" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8580" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8584" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar banner flag III" type="doodad" server_lookid="8581" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8581" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8585" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar banner flag IV" type="doodad" server_lookid="8582" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8582" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8586" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="monster trophy" type="doodad" server_lookid="8587" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8587" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8588" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="shark trophy" type="doodad" server_lookid="8589" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8589" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8590" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="animal trophy I" type="doodad" server_lookid="8591" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8591" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8592" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="animal trophy II" type="doodad" server_lookid="8594" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8594" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8593" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="shield I" type="doodad" server_lookid="8597" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8597" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8598" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="shield II" type="doodad" server_lookid="8599" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8599" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8600" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="shield III" type="doodad" server_lookid="8601" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8601" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8602" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="shield IV" type="doodad" server_lookid="8603" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8603" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8604" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="street lamp on (Gold)" type="doodad" server_lookid="8664" draggable="true" on_blocking="true" thickness="100/100" z-order="110">
+		<alternate> -- south --
+			<item id="8664" chance="10"/>
+		</alternate>
+		<alternate> -- north --
+			<item id="8660" chance="10"/>
+		</alternate>
+		<alternate> -- west --
+			<item id="8666" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8662" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="Ice pillar" type="doodad" server_lookid="8865" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="8865" chance="100"/>
+	</brush>
+
+	<brush name="Yalahar mines pillar I" type="doodad" server_lookid="5026" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="5026" chance="100"/>
+	</brush>
+
+	<brush name="Yalahar mines pillar II" type="doodad" server_lookid="5025" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="5025" chance="100"/>
+	</brush>
+
+	<brush name="Yalahar mines pillar III" type="doodad" server_lookid="8518" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="8518" chance="100"/>
+	</brush>
+
+	<brush name="yalahar black pillar" type="doodad" server_lookid="8388" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="8388" chance="100"/>
+		</brush>
+	<brush name="broken yalahar black pillar" type="doodad" server_lookid="8389" draggable="true" on_blocking="true" thickness="100/100">
+		<item id="8389" chance="100"/>
+	</brush>
+
+	<brush name="Yalahar coal basin" type="doodad" server_lookid="9043" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- south --
+			<item id="9043" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="Yalahar wall torch" type="doodad" server_lookid="8595" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- east --
+			<item id="8595" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8596" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="Yalahar small lamp" type="doodad" server_lookid="9060" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- east --
+			<item id="9060" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="9059" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="electric on" type="doodad" server_lookid="8931" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- east --
+			<item id="8931" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8929" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="electric off" type="doodad" server_lookid="8930" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- east --
+			<item id="8930" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8928" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="wall lamp on (red)" type="doodad" server_lookid="8927" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- east --
+			<item id="8927" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8925" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="wall lamp off (red)" type="doodad" server_lookid="8926" draggable="true" on_blocking="true" thickness="100/100" z-order="500000">
+		<alternate> -- east --
+			<item id="8926" chance="10"/>
+		</alternate>
+		<alternate> -- south --
+			<item id="8924" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="Yalahar green carpet" type="carpet" server_lookid="8919" on_blocking="true">
+		<carpet align="n"      id="8702"/>
+		<carpet align="e"      id="8710"/>
+		<carpet align="s"      id="8698"/>
+		<carpet align="w"      id="8700"/>
+		<carpet align="cnw"    id="8701"/>
+		<carpet align="cne"    id="8703"/>
+		<carpet align="cse"    id="8697"/>
+		<carpet align="csw"    id="8699"/>
+		<carpet align="center" id="8919"/>
+	</brush>
+
+	<brush name="Oriental carpet" type="carpet" server_lookid="2582" on_blocking="true">
+		<carpet align="n"      id="2585"/>
+		<carpet align="s"      id="2582"/>
+		<carpet align="cnw"    id="2586"/>
+		<carpet align="cne"    id="2584"/>
+		<carpet align="cse"    id="2581"/>
+		<carpet align="csw"    id="2583"/>
+	</brush>
+
+	<brush name="small carpet" type="doodad" server_lookid="8704" z-order="50000" on_blocking="true">
+		<alternate> -- south --
+			<item id="8706" chance="10"/>
+		</alternate>
+		<alternate> -- east --
+			<item id="8704" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="fountain pillar" type="doodad" server_lookid="8680" z-order="10" on_blocking="true" thickness="100/100">
+		<alternate> -- south --
+			<item id="8680" chance="10"/>
+		</alternate>
+	</brush>
+
+	<brush name="rope brigde" type="doodad" server_lookid="2254" on_blocking="true" z-order="170001">
+		<alternate>
+			-- rope brigde east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2253"/>
+				</tile>
+				<tile x="" y="1">
+					<item id="2281"/>
+				</tile>
+				<tile x="" y="-1">
+					<item id="2282"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- rope brigde south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2254"/>
+				</tile>
+				<tile x="-1" y="0">
+					<item id="2286"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="2287"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<border id="471"> -- rope brigde border --
+
+	</border>
+
+	<brush name="12 books" type="doodad" server_lookid="2821" on_blocking="true" z-order="170001">
+		<alternate>
+			-- 12 books --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2821"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2824"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2825"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2826"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2827"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2828"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2829"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2830"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2831"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2832"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2836"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2837"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2842"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="10 special books" type="doodad" server_lookid="8174" on_blocking="true" z-order="80000">
+		<alternate>
+			-- 9 special books --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2848"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2849"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2850"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2851"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2852"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8155"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8174"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="6103"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="6120"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="3234"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<border id="451"> -- Yalahar wooden border --
+		<borderitem edge="n"   item="8654"/>
+		<borderitem edge="s"   item="8653"/>
+	</border>
+
+	<brush name="Yalahar iron floor" type="ground" server_lookid="8278" z-order="110">
+		<item id="8276" chance="400"/>
+		<item id="8287" chance="200"/>
+		<item id="8285" chance="10"/>
+		<item id="8283" chance="50"/>
+		<item id="8279" chance="45"/>
+		<item id="8286" chance="40"/>
+		<item id="8281" chance="5"/>
+		<item id="8277" chance="40"/>
+		<item id="8289" chance="30"/>
+		<item id="8288" chance="20"/>
+		<item id="8278" chance="40"/>
+		<item id="8280" chance="20"/>
+		<item id="8282" chance="8"/>
+		<item id="8284" chance="30"/>
+		<item id="8290" chance="10"/>
+	</brush>
+
+	<brush name="Yalahar wooden floor" type="ground" server_lookid="8308" z-order="110">
+		<item id="8308" chance="800"/>
+		<item id="8309" chance="200"/>
+		<item id="8310" chance="10"/>
+		<item id="8315" chance="50"/>
+		<item id="8312" chance="50"/>
+		<item id="8311" chance="50"/>
+		<item id="8316" chance="10"/>
+		<item id="8313" chance="50"/>
+		<item id="8314" chance="50"/>
+
+		<border id="451" align="outer"/>
+		<border id="451" to="none" align="outer"/>
+	</brush>
+
+	<border id="465"> -- raft border --
+		<borderitem edge="n"   item="7205"/>
+		<borderitem edge="e"   item="7202"/>
+		<borderitem edge="s"   item="7204"/>
+		<borderitem edge="w"   item="7207"/>
+		<borderitem edge="cnw" item="7208"/>
+		<borderitem edge="cne" item="7203"/>
+		<borderitem edge="csw" item="7206"/>
+		<borderitem edge="cse" item="7201"/>
+		<borderitem edge="dnw" item="7212"/>
+		<borderitem edge="dne" item="7210"/>
+		<borderitem edge="dsw" item="7211"/>
+		<borderitem edge="dse" item="7209"/>
+	</border>
+
+	<brush name="Raft without water" type="ground" server_lookid="7272" z-order="110">
+		<item id="7272" chance="10"/>
+
+		<border id="465" align="outer"/>
+		<border id="465" to="none" align="outer"/>
+
+		<border align="inner" to="sea" id="465"/>
+		<border align="inner" to="walkable sea" id="465"/>
+		<border align="outer" id="465">
+			-- snow vs. grass/whatever with normal sea border --
+			<specific>
+				<conditions>
+					<match_border id="465" edge="s"/>
+					<match_border id="5" edge="e"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="e" with="7207"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="n"/>
+					<match_border id="5" edge="e"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="e" with="7207"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="s"/>
+					<match_border id="5" edge="w"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="w" with="7207"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="n"/>
+					<match_border id="5" edge="w"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="w" with="7202"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="e"/>
+					<match_border id="5" edge="s"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="s" with="6653"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="w"/>
+					<match_border id="5" edge="s"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="s" with="7205"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="e"/>
+					<match_border id="5" edge="n"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="n" with="7204"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="w"/>
+					<match_border id="5" edge="n"/>
+				</conditions>
+				<actions>
+					<replace_border id="5" edge="n" with="7204"/>
+				</actions>
+			</specific>
+
+			-- snow vs. frozen mud border --
+			<specific>
+				<conditions>
+					<match_border id="465" edge="s"/>
+					<match_border id="47" edge="e"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="e" with="7202"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="n"/>
+					<match_border id="47" edge="e"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="e" with="7207"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="s"/>
+					<match_border id="47" edge="w"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="w" with="7202"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="n"/>
+					<match_border id="47" edge="w"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="w" with="7202"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="e"/>
+					<match_border id="47" edge="s"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="s" with="7205"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="w"/>
+					<match_border id="47" edge="s"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="s" with="7205"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="e"/>
+					<match_border id="47" edge="n"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="n" with="7204"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="w"/>
+					<match_border id="47" edge="n"/>
+				</conditions>
+				<actions>
+					<replace_border id="47" edge="n" with="7204"/>
+				</actions>
+			</specific>
+		</border>
+
+		<border align="inner" to="ice" id="50">
+			-- West --
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dsw"/>
+					<match_border id="50" edge="cnw"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dsw" with="7205"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dnw"/>
+					<match_border id="50" edge="csw"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dnw" with="7204"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="csw"/>
+					<match_border id="465" edge="cnw"/>
+					<match_border id="50" edge="w"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cnw"/>
+					<match_border id="50" edge="w"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="csw"/>
+					<match_border id="50" edge="w"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			-- East --
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dse"/>
+					<match_border id="50" edge="cne"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dse" with="7205"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dne"/>
+					<match_border id="50" edge="cse"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dne" with="7204"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cse"/>
+					<match_border id="465" edge="cne"/>
+					<match_border id="50" edge="e"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cne"/>
+					<match_border id="50" edge="e"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cse"/>
+					<match_border id="50" edge="e"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			-- North --
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dnw"/>
+					<match_border id="50" edge="cne"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dnw" with="7202"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dne"/>
+					<match_border id="50" edge="cnw"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dne" with="7207"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cnw"/>
+					<match_border id="465" edge="cne"/>
+					<match_border id="50" edge="n"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cne"/>
+					<match_border id="50" edge="n"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cnw"/>
+					<match_border id="50" edge="n"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			-- South --
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dsw"/>
+					<match_border id="50" edge="cse"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dsw" with="7202"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="dse"/>
+					<match_border id="50" edge="csw"/>
+				</conditions>
+				<actions>
+					<replace_border id="465" edge="dse" with="7207"/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="csw"/>
+					<match_border id="465" edge="cse"/>
+					<match_border id="50" edge="s"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="cse"/>
+					<match_border id="50" edge="s"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+
+			<specific>
+				<conditions>
+					<match_border id="465" edge="csw"/>
+					<match_border id="50" edge="s"/>
+				</conditions>
+				<actions>
+					<delete_borders/>
+				</actions>
+			</specific>
+		</border>
+	</brush>
+
+	<brush name="Corkscrew stairs I" type="doodad" server_lookid="8657" on_blocking="true">
+		<alternate>
+			-- Corkscrew stairs --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8657"/>
+				</tile>
+				<tile x="0" y="0" z="-1">
+					<item id="8658"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="Corkscrew stairs II" type="doodad" server_lookid="8657" on_blocking="true">
+		<alternate>
+			-- Corkscrew stairs --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8657"/>
+				</tile>
+				<tile x="0" y="0" z="-1">
+					<item id="8932"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations I" type="doodad" server_lookid="8438" draggable="true" on_blocking="true" thickness="100/100" z-order="1010">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8451"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8452"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8438"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8439"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations II" type="doodad" server_lookid="8424" draggable="true" on_blocking="true" thickness="100/100" z-order="1010">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8448"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8449"/>
+				</tile>
+				<tile x="0" y="2">
+					<item id="8450"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8423"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8424"/>
+				</tile>
+				<tile x="2" y="0">
+					<item id="8437"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="sun clock" type="doodad" server_lookid="8319" draggable="true" on_blocking="true" thickness="100/100" z-order="1010">
+		<alternate>
+			-- lol --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8319"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8320"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8321"/>
+				</tile>
+				<tile x="1" y="1">
+					<item id="8322"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations III" type="doodad" server_lookid="8421" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8446"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8447"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8421"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8422"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations IV" type="doodad" server_lookid="8393" draggable="true" on_blocking="true" thickness="100/100" z-order="1000">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8443"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8444"/>
+				</tile>
+				<tile x="0" y="2">
+					<item id="8445"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8392"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8393"/>
+				</tile>
+				<tile x="2" y="0">
+					<item id="8394"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations V" type="doodad" server_lookid="8334" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8440"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8441"/>
+				</tile>
+				<tile x="0" y="2">
+					<item id="8442"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8333"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8334"/>
+				</tile>
+				<tile x="2" y="0">
+					<item id="8391"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations VI" type="doodad" server_lookid="8939" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8949"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8950"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8939"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8940"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations VII" type="doodad" server_lookid="8933" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8943"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8944"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8933"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8934"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations VIII" type="doodad" server_lookid="8935" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8945"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8946"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8935"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8936"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations IX" type="doodad" server_lookid="8941" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8951"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8952"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8941"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8942"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="marble wall decorations X" type="doodad" server_lookid="8937" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8947"/>
+				</tile>
+				<tile x="0" y="1">
+					<item id="8948"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8937"/>
+				</tile>
+				<tile x="1" y="0">
+					<item id="8938"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar fountain" type="carpet" server_lookid="8672" on_blocking="true">
+		<carpet align="n"      id="8677"/>
+		<carpet align="s"      id="8673"/>
+		<carpet align="e"      id="8679"/>
+		<carpet align="w"      id="8675"/>
+		<carpet align="cnw"    id="8676"/>
+		<carpet align="cne"    id="8678"/>
+		<carpet align="cse"    id="8672"/>
+		<carpet align="csw"    id="8674"/>
+	</brush>
+
+	<brush name="yalahar tapestry I" type="doodad" server_lookid="8508" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8508"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8534"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry II" type="doodad" server_lookid="8509" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8509"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8535"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry III" type="doodad" server_lookid="8510" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8510"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8536"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry IV" type="doodad" server_lookid="8511" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8511"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry V" type="doodad" server_lookid="8512" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8512"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8537"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry VI" type="doodad" server_lookid="8513" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8513"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8538"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry VII" type="doodad" server_lookid="8514" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8514"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8539"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry VIII" type="doodad" server_lookid="8515" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8515"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8540"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry IX" type="doodad" server_lookid="8516" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8516"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8541"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry X" type="doodad" server_lookid="8517" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8517"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8542"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="yalahar tapestry XI" type="doodad" server_lookid="8533" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8533"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8543"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="fountain statue I" type="doodad" server_lookid="8682" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8682"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8683"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="fountain statue II" type="doodad" server_lookid="8681" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8681"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="fountain statue III" type="doodad" server_lookid="8680" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8680"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="fountain statue IV" type="doodad" server_lookid="8684" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="8684"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="lizard statue II" type="doodad" server_lookid="2079" draggable="true" on_blocking="true" thickness="100/100" z-order="1100">
+		<alternate>
+			-- south --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2078"/>
+				</tile>
+				<tile x="-1" y="1">
+					<item id="2079"/>
+				</tile>
+			</composite>
+		</alternate>
+		<alternate>
+			-- east --
+			<composite chance="10">
+				<tile x="0" y="0">
+					<item id="2076"/>
+				</tile>
+				<tile x="1" y="-1">
+					<item id="2077"/>
+				</tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<tileset name="Town">
+		<terrain>
+			-- 8.40 walls/grounds --
+			<brush name="Yalahar wall" after="marble wall"/>
+			<brush name="Yalahar mines wall" after="Yalahar wall"/>
+			<brush name="Yalahar black wall" after="Yalahar mines wall"/>
+			<brush name="Yalahar black wall railing" after="Yalahar wall railing"/>
+			<brush name="Yalahar marble floor I" after="white marble floor"/>
+			<brush name="Yalahar marble floor II" after="white marble floor"/>
+			<brush name="Yalahar marble floor III" after="white marble floor"/>
+			<brush name="Yalahar wooden floor" after="dark wooden floor"/>
+			<brush name="Yalahar iron floor" after="black marble floor"/>
+		</terrain>
+	</tileset>
+
+	<tileset name="Roofs">
+		<terrain>
+			-- 8.40 roof --
+			<brush name="yalahar roof down" after="flat roof"/>
+			<brush name="yalahar roof right" after="yalahar roof down"/>
+			<brush name="yalahar roof ramp" after="yalahar roof right"/>
+
+		</terrain>
+	</tileset>
+
+	<tileset name="Architecture">
+		<doodad>
+			-- 8.40 pilars --
+			<brush name="Crystal pillar" after="stone pillar"/>
+			<brush name="Ice pillar" after="stone pilar"/>
+			<brush name="Yalahar mines pillar I" after="stone pillar"/>
+			<brush name="Yalahar mines pillar II" after="stone pillar"/>
+			<brush name="Yalahar mines pillar III" after="stone pillar"/>
+			<brush name="yalahar black pillar" after="stone pillar"/>
+			<brush name="broken yalahar black pillar" after="stone pillar"/>
+			<brush name="fountain pillar" after="Yalahar mines pillar III"/>
+			<brush name="yalahar pillar 2" after="Ice pillar"/>
+		</doodad>
+	</tileset>
+
+	<tileset name="Interior">
+		<doodad>
+			-- Interior --
+			<brush name="12 books" after="bookcase"/>
+			<brush name="10 special books" after="12 books"/>
+			<brush name="Yalahar green carpet" after="brown carpet"/>
+			<brush name="Oriental carpet" after="Yalahar green carpet"/> -- Note that it can not go to the south or north --
+			<brush name="small carpet" after="Yalahar green carpet"/>
+			<brush name="water barrel" after="barrel:1774"/>
+			<brush name="closed water barrel" after="water barrel"/>
+			<brush name="yalahar throne I" after="large throne"/>
+			<brush name="yalahar throne II" after="large throne"/>
+			<brush name="yalahar throne III" after="large throne"/>
+		</doodad>
+	</tileset>
+
+	<tileset name="Exterior">
+		<doodad>
+			-- Exterior --
+			<brush name="Yalahar coal basin" after="large cauldron with fire"/>
+			<brush name="street lamp on (Gold)" after="Yalahar coal basin"/>
+			<brush name="street lamp off (Gold)" after="street lamp on (Gold)"/>
+			<brush name="chained skeleton" after="skeletal remains"/>
+			<brush name="sun clock" after="normal fountain - off"/>
+			<brush name="yalahar machine I" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine II" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine III" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine IV" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine V" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine VI" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine VIII" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine IX" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine X" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine on" after="street lamp off (Gold)"/>
+			<brush name="yalahar machine off" after="street lamp off (Gold)"/>
+			<brush name="broken yalahar machine I" after="street lamp off (Gold)"/>
+			<brush name="broken yalahar machine II" after="street lamp off (Gold)"/>
+			<brush name="Yalahar small lamp" after="street lamp off (Gold)"/>
+			<brush name="yalahar lever I" after="switch:1945"/>
+			<brush name="yalahar lever II" after="yalahar lever I"/>
+			<brush name="yalahar fountain" after="normal fountain - off"/>
+			<brush name="fountain statue I" after="yalahar fountain"/>
+			<brush name="fountain statue II" after="yalahar fountain"/>
+			<brush name="fountain statue III" after="yalahar fountain"/>
+			<brush name="fountain statue IV" after="yalahar fountain"/>
+		</doodad>
+	</tileset>
+
+	<tileset name="Hangables">
+		<doodad>
+			-- 8.40 wall decorations --
+			<brush name="marble wall decorations I" after="white tapestry"/>
+			<brush name="marble wall decorations II" after="white tapestry"/>
+			<brush name="marble wall decorations III" after="white tapestry"/>
+			<brush name="marble wall decorations IV" after="white tapestry"/>
+			<brush name="marble wall decorations V" after="white tapestry"/>
+			<brush name="marble wall decorations VI" after="white tapestry"/>
+			<brush name="marble wall decorations VII" after="white tapestry"/>
+			<brush name="marble wall decorations VIII" after="white tapestry"/>
+			<brush name="marble wall decorations IX" after="white tapestry"/>
+			<brush name="marble wall decorations X" after="white tapestry"/>
+			<brush name="Wall Lamp on (Gold)" after="cage wall lamp - lit"/>
+			<brush name="Wall Lamp off (Gold)" after="cage wall lamp - lit"/>
+			<brush name="antique clock" after="Wall Lamp on (Gold)"/>
+			<brush name="art painting" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar banner flag I" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar banner flag II" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar banner flag III" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar banner flag IV" after="Wall Lamp on (Gold)"/>
+			<brush name="monster trophy" after="Wall Lamp on (Gold)"/>
+			<brush name="shark trophy" after="Wall Lamp on (Gold)"/>
+			<brush name="animal trophy I" after="Wall Lamp on (Gold)"/>
+			<brush name="animal trophy II" after="Wall Lamp on (Gold)"/>
+			<brush name="shield I" after="Wall Lamp on (Gold)"/>
+			<brush name="shield II" after="Wall Lamp on (Gold)"/>
+			<brush name="shield III" after="Wall Lamp on (Gold)"/>
+			<brush name="shield IV" after="Wall Lamp on (Gold)"/>
+			<brush name="Yalahar wall torch" after="Wall Lamp on (Gold)"/>
+			<brush name="electric on" after="Wall Lamp on (Gold)"/>
+			<brush name="electric off" after="Wall Lamp on (Gold)"/>
+			<brush name="wall lamp on (red)" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry I" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry II" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry III" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry IV" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry V" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry VI" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry VII" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry VIII" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry IX" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry X" after="Wall Lamp on (Gold)"/>
+			<brush name="yalahar tapestry XI" after="Wall Lamp on (Gold)"/>
+		</doodad>
+	</tileset>
+
+	<tileset name="Stairs">
+		<terrain>
+			-- 8.40 Stairs --
+			<brush name="Corkscrew stairs I" after="stairs"/>
+			<brush name="Corkscrew stairs II" after="stairs"/>
+		</terrain>
+	</tileset>
+
+	<tileset name="Statues">
+		<doodad>
+			-- 8.40 statues --
+			<brush name="yalahar statue" after="stone monkey"/>
+			<brush name="vampire statue 2" after="stone monkey"/>
+			<brush name="vampire statue" after="stone monkey"/>
+			<brush name="demonic gargoyle statue II" after="stone monkey"/>
+			<brush name="demonic gargoyle statue I" after="stone monkey"/>
+			<brush name="demonic gargoyle statue III" after="stone monkey"/>
+			<brush name="demonic gargoyle statue IV" after="stone monkey"/>
+			<brush name="demonic gargoyle statue V" after="stone monkey"/>
+			<brush name="demonic gargoyle statue VI" after="stone monkey"/>
+			<brush name="demonic gargoyle statue VII" after="stone monkey"/>
+			<brush name="hand statue" after="stone monkey"/>
+			<brush name="lizard statue II" after="stone monkey"/>
+		</doodad>
+	</tileset>
+</materialsextension>

@@ -1,0 +1,12 @@
+<materials>
+	<tileset name="Animals">
+		<doodad>
+			<brush name="firefly"/>
+		</doodad>
+		<items>
+			<item id="6490"/>
+			<item fromid="6493" toid="6494"/>
+			<item id="6497"/>
+		</items>
+	</tileset>
+</materials>

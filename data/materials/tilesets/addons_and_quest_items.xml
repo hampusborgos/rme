@@ -1,0 +1,149 @@
+<materials>
+	<tileset name="Addon and Quest Items">
+		<items>
+			<item fromid="125" toid="126"/>
+			<item fromid="130" toid="145"/>
+			<item id="235"/>
+			<item fromid="897" toid="899"/>
+			<item id="948"/>
+			<item id="3205"/>
+			<item id="3217"/>
+			<item id="3218"/>
+			<item fromid="3222" toid="3228"/>
+			<item fromid="3231" toid="3237"/>
+			<item id="3241"/>
+			<item fromid="3243" toid="3244"/>
+			<item id="3456"/>
+			<item id="3606"/>
+			<item id="4828"/>
+			<item fromid="4831" toid="4832"/>
+			<item fromid="4834" toid="4847"/>
+			<item fromid="4852" toid="4853"/>
+			<item fromid="4863" toid="4872"/>
+			<item id="5089"/>
+			<item fromid="5875" toid="5906"/>
+			<item fromid="5919" toid="5922"/>
+			<item id="5925"/>
+			<item id="5930"/>
+			<item fromid="6097" toid="6102"/>
+			<item id="7314"/>
+			<item fromid="7140" toid="7142"/>
+			<item id="5467"/>
+			<item fromid="5909" toid="5914"/>
+			<item fromid="5941" toid="5945"/>
+			<item fromid="5947" toid="5954"/>
+			<item fromid="5956" toid="5958"/>
+			<item id="6103"/>
+			<item id="6107"/>
+			<item id="6125"/>
+			<item id="4839"/>
+			<item id="4841"/>
+			<item fromid="6087" toid="6090"/>
+			<item id="6499"/>
+			<item fromid="6546" toid="6552"/>
+			<item id="6561"/>
+			<item fromid="7527" toid="7532"/>
+			<item id="5791"/>
+			<item fromid="5799" toid="5800"/>
+			<item id="5802"/>
+			<item id="5804" toid="5810"/>
+			<item id="5937"/>
+			<item id="5940"/>
+			<item id="6120"/>
+			<item id="6496"/>
+			<item fromid="8148" toid="8157"/>
+			<item fromid="8174" toid="8176"/>
+			<item fromid="8194" toid="8196"/>
+			<item id="8829"/>
+			<item id="9058"/>
+			<item id="9173"/>
+			<item id="9191"/>
+			<item id="9697"/>
+			<item id="9699"/>
+			<item id="10187"/>
+			<item id="12413"/>
+			<item fromid="12784" toid="12785"/>
+			<item id="13429"/>
+			<item fromid="16229" toid="16240"/>
+			<item fromid="18991" toid="18992"/>
+			<item fromid="19107" toid="19109"/>
+			<item id="19133"/>
+			<item fromid="20138" toid="20139"/>
+			<item fromid="21333" toid="21334"/>
+			<item id="21746"/>
+			<item fromid="21743" toid="21744"/>
+			<item id="21748"/>
+			<item fromid="21752" toid="21754"/>
+			<item id="21766"/>
+			<item fromid="21768" toid="21769"/>
+			<item fromid="21798" toid="21801"/>
+			<item fromid="21803" toid="21806"/>
+			<item fromid="21812" toid="21816"/>
+			<item fromid="21819" toid="21820"/>
+			<item fromid="22174" toid="22180"/>
+			<item id="22182"/>
+			<item id="22739"/>
+			<item fromid="24929" toid="24930"/>
+			<item fromid="24954" toid="24960"/>
+			<item id="24970"/>
+			<item fromid="24972" toid="24978"/>
+			<item id="25304"/>
+			<item fromid="25360" toid="25361"/>
+			<item id="27509"/>
+			<item fromid="25729" toid="25734"/>
+			<item fromid="27261" toid="27264"/>
+			<item fromid="27266" toid="27270"/>
+			<item id="27301"/>
+			<item fromid="27369" toid="27372"/>
+			<item fromid="27443" toid="27447"/>
+			<item fromid="27460" toid="27461"/>
+			<item id="27464"/>
+			<item id="27499"/>
+			<item id="27511"/>
+			<item id="27653"/>
+			<item fromid="27655" toid="27657"/>
+			<item id="21467"/>
+			<item fromid="27867" toid="27869"/>
+			<item id="28495"/>
+			<item fromid="28535" toid="28538"/>
+			<item id="29276"/>
+			<item fromid="29286" toid="29289"/>
+			<item fromid="29299" toid="29300"/>
+			<item id="29348"/>
+			<item id="29351"/>
+			<item id="29992"/>
+			<item fromid="30003" toid="30004"/>
+			<item fromid="30006" toid="30009"/>
+			<item fromid="30131" toid="30132"/>
+			<item fromid="30168" toid="30169"/>
+			<item id="31164"/>
+			<item fromid="31198" toid="31206"/>
+			<item fromid="31354" toid="31356"/>
+			<item id="31489"/>
+			<item fromid="31572" toid="31576"/>
+			<item id="31612"/>
+			<item fromid="31632" toid="31634"/>
+			<item id="31676"/>
+			<item id="31414"/>
+			<item id="31381"/>
+			<item id="31339"/>
+			<item fromid="32096" toid="32114"/>
+			<item id="32567"/>
+			<item id="32757"/>
+			<item id="33793"/>
+			<item id="33982"/>
+			<item id="33891"/>
+			<item id="33916"/>
+			<item fromid="33939" toid="33942"/>
+			<item id="33984"/>
+			<item id="34109"/>
+			<item id="34161"/>
+			<item id="34005"/>
+			<item id="34008"/>
+			<item id="34014"/>
+			<item fromid="34016" toid="34017"/>
+			<item id="34078"/>
+			<item id="34209"/>
+		</items>
+	</tileset>
+</materials>

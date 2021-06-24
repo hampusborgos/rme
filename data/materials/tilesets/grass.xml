@@ -1,0 +1,12 @@
+<materials>
+	<tileset name="Grass">
+		<doodad>
+			<brush name ="cane stufts"/>
+		</doodad>
+		<raw>
+			<item fromid="3651"	toid="3653"/>
+			<item fromid="5462" toid="5465"/>
+			<item id="5470"/>
+		</raw>
+	</tileset>
+</materials>

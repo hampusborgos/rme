@@ -1,0 +1,18 @@
+<materials>
+	<tileset name="Nature - Holes">
+		<doodad>
+			<brush name="hole 1"/>
+			<brush name="hole 2"/>
+			<brush name="hole 3"/>
+			<brush name="sand hole"/>
+		</doodad>
+		<raw>
+			<item id="967"/>
+			<item fromid="7515" toid="7518"/>
+			<item fromid="7520" toid="7524"/>
+			<item id="7737"/>
+			<item id="7749"/>
+			<item id="7762"/>
+		</raw>
+	</tileset>
+</materials>

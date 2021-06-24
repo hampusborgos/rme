@@ -1,0 +1,14 @@
+<materials>
+	<tileset name="Weapons - Spellbook">
+		<items>
+			<item fromid="8072" toid="8076"/>
+			<item id="8090"/>
+			<item id="11691"/>
+			<item id="16107"/>
+			<item id="14769"/>
+			<item fromid="20088" toid="20090"/>
+			<item id="21400"/>
+			<item id="22755"/>
+		</items>
+	</tileset>
+</materials>

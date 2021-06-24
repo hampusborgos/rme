@@ -1,0 +1,16 @@
+<materials>
+	<tileset name="Natural Products">
+		<doodad>
+			<brush name="carrot sprouts"/>
+			<brush name="sand trickle (east)"/>
+			<brush name="sand trickle (south)"/>
+		</doodad>
+		<items>
+			<item id="181"/>
+			<item id="211"/>
+			<item fromid="5676" toid="5677"/>
+			<item fromid="15637" toid="15638"/>
+			<item fromid="18609" toid="18614"/>
+		</items>
+	</tileset>
+</materials>

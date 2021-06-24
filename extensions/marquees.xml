@@ -1,152 +1,152 @@
 <materialsextension name="Marquees" author="Remere" description="This adds all the roof marquees" client="8.00;8.10;8.20 - 8.31">
 
 	<border id="88400"> <!-- red striped marquee horizontal border -->
-		<borderitem edge="n"   item="5166"/>
-		<borderitem edge="w"   item="5167"/>
-		<borderitem edge="e"   item="5158"/>
-		<borderitem edge="s"   item="5165"/>
-		<borderitem edge="cnw" item="5163"/>
-		<borderitem edge="cne" item="5164"/>
-		<borderitem edge="cse" item="5161"/>
-		<borderitem edge="csw" item="5162"/>
+		<borderitem edge="n"   item="5165"/>
+		<borderitem edge="w"   item="5166"/>
+		<borderitem edge="e"   item="5157"/>
+		<borderitem edge="s"   item="5164"/>
+		<borderitem edge="cnw" item="5162"/>
+		<borderitem edge="cne" item="5163"/>
+		<borderitem edge="cse" item="5160"/>
+		<borderitem edge="csw" item="5161"/>
 	</border>
 
 	<border id="88401"> <!-- red striped marquee vertical border -->
-		<borderitem edge="n"   item="5192"/>
-		<borderitem edge="w"   item="5190"/>
-		<borderitem edge="e"   item="5188"/>
-		<borderitem edge="s"   item="5183"/>
-		<borderitem edge="cnw" item="5193"/>
-		<borderitem edge="cne" item="5191"/>
-		<borderitem edge="cse" item="5182"/>
-		<borderitem edge="csw" item="5184"/>
+		<borderitem edge="n"   item="5191"/>
+		<borderitem edge="w"   item="5189"/>
+		<borderitem edge="e"   item="5187"/>
+		<borderitem edge="s"   item="5182"/>
+		<borderitem edge="cnw" item="5192"/>
+		<borderitem edge="cne" item="5190"/>
+		<borderitem edge="cse" item="5181"/>
+		<borderitem edge="csw" item="5183"/>
 	</border>
 
 	<border id="88402"> <!-- blue/yellow striped marquee horizontal border -->
-		<borderitem edge="n"   item="5175"/>
-		<borderitem edge="w"   item="5180"/>
-		<borderitem edge="e"   item="5171"/>
-		<borderitem edge="s"   item="5173"/>
-		<borderitem edge="cnw" item="5181"/>
-		<borderitem edge="cne" item="5172"/>
-		<borderitem edge="cse" item="5170"/>
-		<borderitem edge="csw" item="5179"/>
+		<borderitem edge="n"   item="5174"/>
+		<borderitem edge="w"   item="5179"/>
+		<borderitem edge="e"   item="5170"/>
+		<borderitem edge="s"   item="5172"/>
+		<borderitem edge="cnw" item="5180"/>
+		<borderitem edge="cne" item="5171"/>
+		<borderitem edge="cse" item="5169"/>
+		<borderitem edge="csw" item="5178"/>
 	</border>
 
 	<border id="88403"> <!-- blue/yellow striped marquee vertical border -->
-		<borderitem edge="n"   item="5201"/>
-		<borderitem edge="w"   item="5204"/>
-		<borderitem edge="e"   item="5196"/>
-		<borderitem edge="s"   item="5198"/>
-		<borderitem edge="cnw" item="5205"/>
-		<borderitem edge="cne" item="5197"/>
-		<borderitem edge="cse" item="5194"/>
-		<borderitem edge="csw" item="5202"/>
+		<borderitem edge="n"   item="5200"/>
+		<borderitem edge="w"   item="5203"/>
+		<borderitem edge="e"   item="5195"/>
+		<borderitem edge="s"   item="5197"/>
+		<borderitem edge="cnw" item="5204"/>
+		<borderitem edge="cne" item="5196"/>
+		<borderitem edge="cse" item="5193"/>
+		<borderitem edge="csw" item="5201"/>
 	</border>
 
 	<border id="88404"> <!-- green marquee horizontal border -->
-		<borderitem edge="n"   item="5214"/>
-		<borderitem edge="w"   item="5216"/>
-		<borderitem edge="e"   item="5207"/>
-		<borderitem edge="s"   item="5212"/>
-		<borderitem edge="cnw" item="5217"/>
-		<borderitem edge="cne" item="5208"/>
-		<borderitem edge="cse" item="5206"/>
-		<borderitem edge="csw" item="5215"/>
+		<borderitem edge="n"   item="5213"/>
+		<borderitem edge="w"   item="5215"/>
+		<borderitem edge="e"   item="5206"/>
+		<borderitem edge="s"   item="5211"/>
+		<borderitem edge="cnw" item="5216"/>
+		<borderitem edge="cne" item="5207"/>
+		<borderitem edge="cse" item="5205"/>
+		<borderitem edge="csw" item="5214"/>
 	</border>
 
 	<border id="88405"> <!-- green marquee vertical border -->
-		<borderitem edge="n"   item="5225"/>
-		<borderitem edge="w"   item="5228"/>
-		<borderitem edge="e"   item="5220"/>
-		<borderitem edge="s"   item="5222"/>
-		<borderitem edge="cnw" item="5229"/>
-		<borderitem edge="cne" item="5221"/>
-		<borderitem edge="cse" item="5218"/>
-		<borderitem edge="csw" item="5226"/>
+		<borderitem edge="n"   item="5224"/>
+		<borderitem edge="w"   item="5227"/>
+		<borderitem edge="e"   item="5219"/>
+		<borderitem edge="s"   item="5221"/>
+		<borderitem edge="cnw" item="5228"/>
+		<borderitem edge="cne" item="5220"/>
+		<borderitem edge="cse" item="5217"/>
+		<borderitem edge="csw" item="5225"/>
 	</border>
 
 	<border id="88406"> <!-- blue marquee horizontal border -->
-		<borderitem edge="n"   item="5238"/>
-		<borderitem edge="w"   item="5240"/>
-		<borderitem edge="e"   item="5231"/>
-		<borderitem edge="s"   item="5236"/>
-		<borderitem edge="cnw" item="5241"/>
-		<borderitem edge="cne" item="5232"/>
-		<borderitem edge="cse" item="5230"/>
-		<borderitem edge="csw" item="5239"/>
+		<borderitem edge="n"   item="5237"/>
+		<borderitem edge="w"   item="5239"/>
+		<borderitem edge="e"   item="5230"/>
+		<borderitem edge="s"   item="5235"/>
+		<borderitem edge="cnw" item="5240"/>
+		<borderitem edge="cne" item="5231"/>
+		<borderitem edge="cse" item="5229"/>
+		<borderitem edge="csw" item="5238"/>
 	</border>
 
 	<border id="88407"> <!-- blue marquee vertical border -->
-		<borderitem edge="n"   item="5249"/>
-		<borderitem edge="w"   item="5252"/>
-		<borderitem edge="e"   item="5244"/>
-		<borderitem edge="s"   item="5246"/>
-		<borderitem edge="cnw" item="5253"/>
-		<borderitem edge="cne" item="5245"/>
-		<borderitem edge="cse" item="5242"/>
-		<borderitem edge="csw" item="5250"/>
+		<borderitem edge="n"   item="5248"/>
+		<borderitem edge="w"   item="5251"/>
+		<borderitem edge="e"   item="5243"/>
+		<borderitem edge="s"   item="5245"/>
+		<borderitem edge="cnw" item="5252"/>
+		<borderitem edge="cne" item="5244"/>
+		<borderitem edge="cse" item="5241"/>
+		<borderitem edge="csw" item="5249"/>
 	</border>
 
-	<brush name="red striped marquee horizontal" type="ground" server_lookid="5160" z-order="15501">
-		<item id="5160" chance="1"/>
-		<item id="5159" chance="0"/>
+	<brush name="red striped marquee horizontal" type="ground" server_lookid="5159" z-order="15501">
+		<item id="5159" chance="1"/>
+		<item id="5158" chance="0"/>
 
 		<border align="outer" id="88400"/>
 		<border align="outer" id="88400" to="none"/>
 	</brush>
 
-	<brush name="red striped marquee vertical" type="ground" server_lookid="5189" z-order="15501">
-		<item id="5189" chance="1"/>
-		<item id="5186" chance="0"/>
+	<brush name="red striped marquee vertical" type="ground" server_lookid="5188" z-order="15501">
+		<item id="5188" chance="1"/>
+		<item id="5185" chance="0"/>
 
 		<border align="outer" id="88401"/>
 		<border align="outer" id="88401" to="none"/>
 	</brush>
 
-	<brush name="yellow striped marquee horizontal" type="ground" server_lookid="5174" z-order="15502">
-		<item id="5174" chance="1"/>
-		<item id="5177" chance="0"/>
+	<brush name="yellow striped marquee horizontal" type="ground" server_lookid="5173" z-order="15502">
+		<item id="5173" chance="1"/>
+		<item id="5176" chance="0"/>
 
 		<border align="outer" id="88402"/>
 		<border align="outer" id="88402" to="none"/>
 	</brush>
 
-	<brush name="yellow striped marquee vertical" type="ground" server_lookid="5200" z-order="15502">
-		<item id="5200" chance="1"/>
-		<item id="5199" chance="0"/>
+	<brush name="yellow striped marquee vertical" type="ground" server_lookid="5199" z-order="15502">
+		<item id="5199" chance="1"/>
+		<item id="5198" chance="0"/>
 
 		<border align="outer" id="88403"/>
 		<border align="outer" id="88403" to="none"/>
 	</brush>
 
-	<brush name="green marquee horizontal" type="ground" server_lookid="5213" z-order="15503">
-		<item id="5213" chance="1"/>
-		<item id="5210" chance="0"/>
+	<brush name="green marquee horizontal" type="ground" server_lookid="5212" z-order="15503">
+		<item id="5212" chance="1"/>
+		<item id="5209" chance="0"/>
 
 		<border align="outer" id="88404"/>
 		<border align="outer" id="88404" to="none"/>
 	</brush>
 
-	<brush name="green marquee vertical" type="ground" server_lookid="5224" z-order="15503">
-		<item id="5224" chance="1"/>
-		<item id="5223" chance="0"/>
+	<brush name="green marquee vertical" type="ground" server_lookid="5223" z-order="15503">
+		<item id="5223" chance="1"/>
+		<item id="5222" chance="0"/>
 
 		<border align="outer" id="88405"/>
 		<border align="outer" id="88405" to="none"/>
 	</brush>
 
-	<brush name="blue marquee horizontal" type="ground" server_lookid="5237" z-order="15504">
-		<item id="5237" chance="1"/>
-		<item id="5234" chance="0"/>
+	<brush name="blue marquee horizontal" type="ground" server_lookid="5236" z-order="15504">
+		<item id="5236" chance="1"/>
+		<item id="5233" chance="0"/>
 
 		<border align="outer" id="88406"/>
 		<border align="outer" id="88406" to="none"/>
 	</brush>
 
-	<brush name="blue marquee vertical" type="ground" server_lookid="5248" z-order="15504">
-		<item id="5248" chance="1"/>
-		<item id="5247" chance="0"/>
+	<brush name="blue marquee vertical" type="ground" server_lookid="5247" z-order="15504">
+		<item id="5247" chance="1"/>
+		<item id="5246" chance="0"/>
 
 		<border align="outer" id="88407"/>
 		<border align="outer" id="88407" to="none"/>

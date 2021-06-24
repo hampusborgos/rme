@@ -1,0 +1,34 @@
+<materials>
+	<tileset name="Weapons - Distance">
+		<items>
+			<item id="3239"/>
+			<item id="3298"/>
+			<item id="3277"/>
+			<item id="3347"/>
+			<item fromid="3349" toid="3350"/>
+			<item id="5803"/>
+			<item id="5947"/>
+			<item id="7378"/>
+			<item id="7438"/>
+			<item fromid="8021" toid="8030"/>
+			<item id="9148"/>
+			<item id="12733"/>
+			<item fromid="14246" toid="14247"/>
+			<item id="14768"/>
+			<item fromid="16163" toid="16164"/>
+			<item id="17110"/>
+			<item id="19356"/>
+			<item id="19362"/>
+			<item fromid="20082" toid="20087"/>
+			<item id="21158"/>
+			<item fromid="22866" toid="22867"/>
+			<item id="28718"/>
+			<item id="29417"/>
+			<item id="30393"/>
+			<item id="31581"/>
+			<item id="34088"/>
+			<item id="34089"/>
+			<item id="34150"/>
+		</items>
+	</tileset>
+</materials>

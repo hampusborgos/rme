@@ -1,0 +1,38 @@
+<materials>
+	<tileset name="Equipment - Legs">
+		<items>
+			<item id="645"/>
+			<item id="812"/>
+			<item fromid="821" toid="823"/>
+			<item fromid="3362" toid="3364"/>
+			<item fromid="3371" toid="3372"/>
+			<item id="3382"/>
+			<item id="3389"/>
+			<item id="3398"/>
+			<item id="3401"/>
+			<item fromid="3557" toid="3559"/>
+			<item id="7464"/>
+			<item id="5918"/>
+			<item id="3560"/>
+			<item id="8095"/>
+			<item id="8863"/>
+			<item fromid="8897" toid="8899"/>
+			<item id="9015"/>
+			<item id="9383"/>
+			<item id="10387"/>
+			<item id="13996"/>
+			<item id="13999"/>
+			<item id="14087"/>
+			<item id="16106"/>
+			<item id="16111"/>
+			<item id="19366"/>
+			<item id="21168"/>
+			<item id="22087"/>
+			<item id="27649"/>
+			<item id="28720"/>
+			<item id="32097"/>
+			<item fromid="32617" toid="32618"/>
+			<item fromid="34092" toid="34093"/>
+		</items>
+	</tileset>
+</materials>

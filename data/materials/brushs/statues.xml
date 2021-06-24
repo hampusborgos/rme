@@ -1,0 +1,8 @@
+<materials>
+	<brush name="moon sculpture" type="doodad" lookid="25495" draggable="false" on_duplicate="true" thickness="10/10">
+		<item id="25495" chance="10"/>
+		<item id="25496" chance="10"/>
+		<item id="25497" chance="10"/>
+		<item id="25498" chance="10"/>
+	</brush>
+</materials>

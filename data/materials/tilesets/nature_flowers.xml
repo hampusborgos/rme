@@ -1,0 +1,27 @@
+<materials>
+	<tileset name="Nature - Flowers">
+		<doodad>
+			<brush name="flowers (evil)"/>
+			<brush name="flowers (ice)"/>
+			<brush name="flowers (moon)"/>
+			<brush name="flowers (red hanging)"/>
+			<brush name="flowers (yellow)"/>
+			<brush name="flowers (yellow hanging)"/>
+			<brush name="flowers (white)"/>
+			<brush name="flowers (white hanging)"/>
+			<brush name="sunflowers"/>
+		</doodad>
+		<items>
+			<item fromid="3654" toid="3657"/>
+			<item fromid="3666" toid="3667"/>
+			<item fromid="3669" toid="3672"/>
+			<item fromid="3888" toid="3890"/>
+			<item fromid="3892" toid="3894"/>
+			<item fromid="6225" toid="6230"/>
+			<item fromid="10720" toid="10723"/>
+			<item fromid="10860" toid="10865"/>
+			<item fromid="22643" toid="22648"/>
+			<item fromid="29971" toid="29974"/>
+		</items>
+	</tileset>
+</materials>
