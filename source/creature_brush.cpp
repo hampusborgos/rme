@@ -18,6 +18,7 @@
 #include "main.h"
 
 #include "creature_brush.h"
+#include "gui.h"
 #include "settings.h"
 #include "tile.h"
 #include "creature.h"
@@ -79,15 +80,20 @@ void CreatureBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 {
 	ASSERT(tile);
 	ASSERT(parameter);
-	if(canDraw(map, tile->getPosition())) {
+	draw_creature(map, tile);
+}
+
+void CreatureBrush::draw_creature(BaseMap* map, Tile* tile)
+{
+	if (canDraw(map, tile->getPosition())) {
 		undraw(map, tile);
-		if(creature_type) {
-			if(tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
+		if (creature_type) {
+			if (tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
 				// manually place spawn on location
 				tile->spawn = newd Spawn(1);
 			}
 			tile->creature = newd Creature(creature_type);
-			tile->creature->setSpawnTime(*(int*)parameter);
+			tile->creature->setSpawnTime(g_gui.GetSpawnTime());
 		}
 	}
 }
