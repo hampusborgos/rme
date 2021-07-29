@@ -87,8 +87,8 @@ void CreatureBrush::draw_creature(BaseMap* map, Tile* tile)
 {
 	if (canDraw(map, tile->getPosition())) {
 		undraw(map, tile);
-		if (creature_type) {
-			if (tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
+		if(creature_type) {
+			if(tile->spawn == nullptr && tile->getLocation()->getSpawnCount() == 0) {
 				// manually place spawn on location
 				tile->spawn = newd Spawn(1);
 			}
