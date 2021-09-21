@@ -926,7 +926,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 	}
 
 	for(pugi::xml_node itemNode = node.first_child(); itemNode; itemNode = itemNode.next_sibling()) {
-		if(itemNode.name() != "item") {
+		if(as_lower_str(itemNode.name()) != "item") {
 			continue;
 		}
 
