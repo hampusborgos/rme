@@ -69,7 +69,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(REDO, wxITEM_NORMAL, OnRedo);
 
 	MAKE_ACTION(FIND_ITEM, wxITEM_NORMAL, OnSearchForItem);
-	MAKE_ACTION(REPLACE_ITEM, wxITEM_NORMAL, OnReplaceItem);
+	MAKE_ACTION(REPLACE_ITEMS, wxITEM_NORMAL, OnReplaceItems);
 	MAKE_ACTION(SEARCH_ON_MAP_EVERYTHING, wxITEM_NORMAL, OnSearchForStuffOnMap);
 	MAKE_ACTION(SEARCH_ON_MAP_UNIQUE, wxITEM_NORMAL, OnSearchForUniqueOnMap);
 	MAKE_ACTION(SEARCH_ON_MAP_ACTION, wxITEM_NORMAL, OnSearchForActionOnMap);
@@ -81,7 +81,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SEARCH_ON_SELECTION_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_ITEM, wxITEM_NORMAL, OnSearchForItemOnSelection);
-	MAKE_ACTION(REPLACE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnReplaceItemOnSelection);
+	MAKE_ACTION(REPLACE_ON_SELECTION_ITEMS, wxITEM_NORMAL, OnReplaceItemsOnSelection);
 	MAKE_ACTION(REMOVE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnRemoveItemOnSelection);
 	MAKE_ACTION(SELECT_MODE_COMPENSATE, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_LOWER, wxITEM_RADIO, OnSelectionTypeChange);
@@ -322,7 +322,7 @@ void MainMenuBar::Update()
 	EnableItem(EXPORT_MINIMAP, is_local);
 
 	EnableItem(FIND_ITEM, is_host);
-	EnableItem(REPLACE_ITEM, is_local);
+	EnableItem(REPLACE_ITEMS, is_local);
 	EnableItem(SEARCH_ON_MAP_EVERYTHING, is_host);
 	EnableItem(SEARCH_ON_MAP_UNIQUE, is_host);
 	EnableItem(SEARCH_ON_MAP_ACTION, is_host);
@@ -334,7 +334,7 @@ void MainMenuBar::Update()
 	EnableItem(SEARCH_ON_SELECTION_CONTAINER, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_WRITEABLE, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_ITEM, has_selection && is_host);
-	EnableItem(REPLACE_ON_SELECTION_ITEM, has_selection && is_host);
+	EnableItem(REPLACE_ON_SELECTION_ITEMS, has_selection && is_host);
 	EnableItem(REMOVE_ON_SELECTION_ITEM, has_selection && is_host);
 
 	EnableItem(CUT, has_map);
@@ -888,41 +888,15 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 	dialog.Destroy();
 }
 
-void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnReplaceItems(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
+	if(!g_gui.IsVersionLoaded())
 		return;
 
-	ReplaceItemDialog dialog(frame);
-
-	if(dialog.ShowModal() == wxID_OK) {
-		uint16_t find_id = dialog.GetResultFindID();
-		uint16_t with_id = dialog.GetResultWithID();
-		if(find_id == 0 || with_id == 0 || find_id == with_id)
-			return;
-
-		g_gui.GetCurrentEditor()->actionQueue->clear();
-		g_gui.CreateLoadBar("Searching & replacing item...");
-
-		OnSearchForItem::Finder finder(find_id, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
-
-		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
-		for(auto it = result.begin(); it != result.end(); ++it)
-			transformItem(it->second, with_id, it->first);
-
-		g_gui.DestroyLoadBar();
-
-		if(finder.limitReached()) {
-			wxString msg;
-			msg << "The configured limit has been reached. Only " << finder.maxCount << " items were replaced.";
-			g_gui.PopupDialog("Notice", msg, wxOK);
+	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
+		if (MapWindow* window = tab->GetView()) {
+			window->ShowReplaceItemsDialog(false);
 		}
-
-		wxString msg;
-		msg << "Replaced " << result.size() << " items.";
-		g_gui.SetStatusText(msg);
-		g_gui.RefreshView();
 	}
 }
 
@@ -1083,40 +1057,15 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 	dialog.Destroy();
 }
 
-void MainMenuBar::OnReplaceItemOnSelection(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnReplaceItemsOnSelection(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
+	if(!g_gui.IsVersionLoaded())
 		return;
 
-	ReplaceItemDialog dialog(frame);
-
-	if(dialog.ShowModal() == wxID_OK) {
-		uint16_t find_id = dialog.GetResultFindID();
-		uint16_t with_id = dialog.GetResultWithID();
-		if(find_id == 0 || with_id == 0 || find_id == with_id)
-			return;
-
-		g_gui.CreateLoadBar("Searching & replacing item...");
-
-		OnSearchForItem::Finder finder(find_id, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, true);
-
-		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
-		for(auto it = result.begin(); it != result.end(); ++it)
-			transformItem(it->second, with_id, it->first);
-
-		g_gui.DestroyLoadBar();
-
-		if(finder.limitReached()) {
-			wxString msg;
-			msg << "The configured limit has been reached. Only " << finder.maxCount << " items were replaced.";
-			g_gui.PopupDialog("Notice", msg, wxOK);
+	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
+		if(MapWindow* window = tab->GetView()) {
+			window->ShowReplaceItemsDialog(true);
 		}
-
-		wxString msg;
-		msg << "Replaced " << result.size() << " items.";
-		g_gui.SetStatusText(msg);
-		g_gui.RefreshView();
 	}
 }
 
