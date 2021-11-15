@@ -68,18 +68,18 @@ CreatureType::~CreatureType()
 CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
-	if(!(attribute = node.attribute("type"))) {
+	if (!(attribute = node.attribute("type"))) {
 		warnings.push_back("Couldn't read type tag of creature node.");
 		return nullptr;
 	}
 
 	const std::string& tmpType = attribute.as_string();
-	if(tmpType != "monster" && tmpType != "npc") {
+	if (tmpType != "monster" && tmpType != "npc") {
 		warnings.push_back("Invalid type tag of creature node \"" + wxstr(tmpType) + "\"");
 		return nullptr;
 	}
 
-	if(!(attribute = node.attribute("name"))) {
+	if (!(attribute = node.attribute("name"))) {
 		warnings.push_back("Couldn't read name tag of creature node.");
 		return nullptr;
 	}
@@ -88,14 +88,14 @@ CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warn
 	ct->name = attribute.as_string();
 	ct->isNpc = tmpType == "npc";
 
-	if((attribute = node.attribute("looktype"))) {
+	if ((attribute = node.attribute("looktype"))) {
 		ct->outfit.lookType = attribute.as_int();
 		if(g_gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
 			warnings.push_back("Invalid creature \"" + wxstr(ct->name) + "\" look type #" + std::to_string(ct->outfit.lookType));
 		}
 	}
 
-	if((attribute = node.attribute("lookitem"))) {
+	if ((attribute = node.attribute("lookitem"))) {
 		ct->outfit.lookItem = attribute.as_int();
 	}
 
@@ -103,25 +103,42 @@ CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warn
 		ct->outfit.lookMount = attribute.as_int();
 	}
 
-	if((attribute = node.attribute("lookaddon"))) {
+	if ((attribute = node.attribute("lookaddon"))) {
 		ct->outfit.lookAddon = attribute.as_int();
 	}
 
-	if((attribute = node.attribute("lookhead"))) {
+	if ((attribute = node.attribute("lookhead"))) {
 		ct->outfit.lookHead = attribute.as_int();
 	}
 
-	if((attribute = node.attribute("lookbody"))) {
+	if ((attribute = node.attribute("lookbody"))) {
 		ct->outfit.lookBody = attribute.as_int();
 	}
 
-	if((attribute = node.attribute("looklegs"))) {
+	if ((attribute = node.attribute("looklegs"))) {
 		ct->outfit.lookLegs = attribute.as_int();
 	}
 
-	if((attribute = node.attribute("lookfeet"))) {
+	if ((attribute = node.attribute("lookfeet"))) {
 		ct->outfit.lookFeet = attribute.as_int();
 	}
+
+	if ((attribute = node.attribute("lookmounthead"))) {
+		ct->outfit.lookMountHead = attribute.as_int();
+	}
+
+	if ((attribute = node.attribute("lookmountbody"))) {
+		ct->outfit.lookMountBody = attribute.as_int();
+	}
+
+	if ((attribute = node.attribute("lookmountlegs"))) {
+		ct->outfit.lookMountLegs = attribute.as_int();
+	}
+
+	if ((attribute = node.attribute("lookmountfeet"))) {
+		ct->outfit.lookMountFeet = attribute.as_int();
+	}
+
 	return ct;
 }
 
@@ -189,6 +206,22 @@ CreatureType* CreatureType::loadFromOTXML(const FileName& filename, pugi::xml_do
 
 		if((attribute = optionNode.attribute("feet"))) {
 			ct->outfit.lookFeet = attribute.as_int();
+		}
+
+		if ((attribute = optionNode.attribute("mounthead"))) {
+			ct->outfit.lookMountHead = attribute.as_int();
+		}
+
+		if ((attribute = optionNode.attribute("mountbody"))) {
+			ct->outfit.lookMountBody = attribute.as_int();
+		}
+
+		if ((attribute = optionNode.attribute("mountlegs"))) {
+			ct->outfit.lookMountLegs = attribute.as_int();
+		}
+
+		if ((attribute = optionNode.attribute("mountfeet"))) {
+			ct->outfit.lookMountFeet = attribute.as_int();
 		}
 	}
 	return ct;
@@ -406,6 +439,10 @@ bool CreatureDatabase::saveToXML(const FileName& filename)
 			creatureNode.append_attribute("lookbody") = outfit.lookBody;
 			creatureNode.append_attribute("looklegs") = outfit.lookLegs;
 			creatureNode.append_attribute("lookfeet") = outfit.lookFeet;
+			creatureNode.append_attribute("lookmounthead") = outfit.lookMountHead;
+			creatureNode.append_attribute("lookmountbody") = outfit.lookMountBody;
+			creatureNode.append_attribute("lookmountlegs") = outfit.lookMountLegs;
+			creatureNode.append_attribute("lookmountfeet") = outfit.lookMountFeet;
 		}
 	}
 	return doc.save_file(filename.GetFullPath().mb_str(), "\t", pugi::format_default, pugi::encoding_utf8);

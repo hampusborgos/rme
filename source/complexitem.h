@@ -136,8 +136,8 @@ class Podium : public Item
 		const uint8_t getDirection() { return direction; }
 		void setDirection(uint8_t newDirection) { direction = newDirection; }
 
-		bool hasShowOutfit() { return showOutfit; }
-		bool hasShowMount() { return showMount; }
+		bool hasShowOutfit() { return showOutfit && outfit.lookType != 0; }
+		bool hasShowMount() { return showMount && outfit.lookMount != 0; }
 		bool hasShowPlatform() { return showPlatform; }
 
 		void setShowOutfit(bool newState) { showOutfit = newState; }
@@ -150,8 +150,8 @@ class Podium : public Item
 	protected:
 		Outfit outfit;
 		uint8_t direction;
-		bool showOutfit;
-		bool showMount;
+		bool showOutfit = true;
+		bool showMount = true;
 		bool showPlatform = true;
 };
 #endif

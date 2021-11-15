@@ -1062,20 +1062,18 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, Item* it
 		return;
 
 	// Red invisible walkable tile
-	}
- else if (it.clientID == 470 && !options.ingame) {
- glDisable(GL_TEXTURE_2D);
- glBlitSquare(draw_x, draw_y, red, 0, 0, alpha / 3 * 2);
- glEnable(GL_TEXTURE_2D);
- return;
+	} else if (it.clientID == 470 && !options.ingame) {
+		glDisable(GL_TEXTURE_2D);
+		glBlitSquare(draw_x, draw_y, red, 0, 0, alpha / 3 * 2);
+		glEnable(GL_TEXTURE_2D);
+		return;
 
- // Cyan invisible wall
-	}
- else if (it.clientID == 2187 && !options.ingame) {
- glDisable(GL_TEXTURE_2D);
- glBlitSquare(draw_x, draw_y, 0, green, blue, 80);
- glEnable(GL_TEXTURE_2D);
- return;
+	// Cyan invisible wall
+	} else if (it.clientID == 2187 && !options.ingame) {
+		glDisable(GL_TEXTURE_2D);
+		glBlitSquare(draw_x, draw_y, 0, green, blue, 80);
+		glEnable(GL_TEXTURE_2D);
+		return;
 	}
 
 	GameSprite* spr = it.sprite;
@@ -1102,19 +1100,16 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, Item* it
 
 	if (it.isSplash() || it.isFluidContainer()) {
 		subtype = item->getSubtype();
-	}
-	else if (it.isHangable) {
+	} else if (it.isHangable) {
 		if (tile && tile->hasProperty(HOOK_SOUTH)) {
 			pattern_x = 1;
-		}
-		else if (tile && tile->hasProperty(HOOK_EAST)) {
+		} else if (tile && tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 2;
 		}
 		else {
 			pattern_x = 0;
 		}
-	}
-	else if (it.stackable) {
+	} else if (it.stackable) {
 		if (item->getSubtype() <= 1)
 			subtype = 0;
 		else if (item->getSubtype() <= 2)
@@ -1171,6 +1166,12 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, Item* it
 		if (!podium->hasShowOutfit()) {
 			if (podium->hasShowMount()) {
 				outfit.lookType = outfit.lookMount;
+				outfit.lookHead = outfit.lookMountHead;
+				outfit.lookBody = outfit.lookMountBody;
+				outfit.lookLegs = outfit.lookMountLegs;
+				outfit.lookFeet = outfit.lookMountFeet;
+				outfit.lookAddon = 0;
+				outfit.lookMount = 0;
 			} else {
 				outfit.lookType = 0;
 			}
@@ -1225,31 +1226,37 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		ItemType& it = g_items[outfit.lookItem];
 		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
 	} else {
+		// get outfit sprite
 		GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
 		if(!spr || outfit.lookType == 0) {
 			return;
-			/*
-			spr = g_gui.gfx.getCreatureSprite(138);
-			if(!spr)
-				return;
-			 */
-		}
-
-		// mount and addon drawing thanks to otc code
-		int pattern_z = 0;
-		if (outfit.lookMount != 0) {
-			if (GameSprite* mountSpr = g_gui.gfx.getCreatureSprite(outfit.lookMount)) {
-				for (int cx = 0; cx != mountSpr->width; ++cx) {
-					for (int cy = 0; cy != mountSpr->height; ++cy) {
-						int texnum = mountSpr->getHardwareID(cx, cy, 0, 0, (int)dir, 0, 0, 0);
-						glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
-					}
-				}
-				pattern_z = std::min<int>(1, spr->pattern_z - 1);
-			}
 		}
 
 		int tme = 0; //GetTime() % itype->FPA;
+
+		// mount and addon drawing thanks to otc code
+		// mount colors by Zbizu
+		int pattern_z = 0;
+		if (outfit.lookMount != 0) {
+			if (GameSprite* mountSpr = g_gui.gfx.getCreatureSprite(outfit.lookMount)) {
+				// generate mount colors
+				Outfit mountOutfit;
+				mountOutfit.lookType = outfit.lookMount;
+				mountOutfit.lookHead = outfit.lookMountHead;
+				mountOutfit.lookBody = outfit.lookMountBody;
+				mountOutfit.lookLegs = outfit.lookMountLegs;
+				mountOutfit.lookFeet = outfit.lookMountFeet;
+
+				for (int cx = 0; cx != mountSpr->width; ++cx) {
+					for (int cy = 0; cy != mountSpr->height; ++cy) {
+						int texnum = mountSpr->getHardwareID(cx, cy, (int)dir, 0, 0, mountOutfit, tme);
+						glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
+					}
+				}
+
+				pattern_z = std::min<int>(1, spr->pattern_z - 1);
+			}
+		}
 
 		// pattern_y => creature addon
 		for (int pattern_y = 0; pattern_y < spr->pattern_y; pattern_y++) {

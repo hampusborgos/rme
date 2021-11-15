@@ -67,6 +67,10 @@ protected:
 	wxSpinCtrl* look_feet;
 	wxSpinCtrl* look_addon;
 	wxSpinCtrl* look_mount;
+	wxSpinCtrl* look_mounthead;
+	wxSpinCtrl* look_mountbody;
+	wxSpinCtrl* look_mountlegs;
+	wxSpinCtrl* look_mountfeet;
 
 	// podium and creature
 	wxChoice* direction_field;

@@ -403,8 +403,6 @@ bool Podium::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute a
 		uint8_t lookAddon;
 
 		uint16_t lookMount;
-
-		// version 12 mount colors (not implemented)
 		uint8_t lookMountHead;
 		uint8_t lookMountBody;
 		uint8_t lookMountLegs;
@@ -438,6 +436,10 @@ bool Podium::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute a
 			newOutfit.lookFeet = static_cast<int>(lookFeet);
 			newOutfit.lookAddon = static_cast<int>(lookAddon);
 			newOutfit.lookMount = static_cast<int>(lookMount);
+			newOutfit.lookMountHead = static_cast<int>(lookMountHead);
+			newOutfit.lookMountBody = static_cast<int>(lookMountBody);
+			newOutfit.lookMountLegs = static_cast<int>(lookMountLegs);
+			newOutfit.lookMountFeet = static_cast<int>(lookMountFeet);
 			setOutfit(newOutfit);
 			return true;
 		}
@@ -463,13 +465,12 @@ void Podium::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteH
 	stream.addU8(outfit.lookLegs);
 	stream.addU8(outfit.lookFeet);
 	stream.addU8(outfit.lookAddon);
-	stream.addU16(outfit.lookMount);
 
-	// version 12 mount colors (not implemented)
-	stream.addU8(0);
-	stream.addU8(0);
-	stream.addU8(0);
-	stream.addU8(0);
+	stream.addU16(outfit.lookMount);
+	stream.addU8(outfit.lookMountHead);
+	stream.addU8(outfit.lookMountBody);
+	stream.addU8(outfit.lookMountLegs);
+	stream.addU8(outfit.lookMountFeet);
 }
 
 /*
