@@ -103,3 +103,21 @@ Item* Depot::deepCopy() const
 	}
 	return copy;
 }
+
+// Podium
+Podium::Podium(const uint16_t type) : Item(type, 0),
+outfit(Outfit()), showOutfit(false), showMount(false), showPlatform(true), direction(0)
+{
+	////
+}
+
+Item* Podium::deepCopy() const
+{
+	Podium* copy = static_cast<Podium*>(Item::deepCopy());
+	copy->outfit = outfit;
+	copy->showOutfit = showOutfit;
+	copy->showMount = showMount;
+	copy->showPlatform = showPlatform;
+	copy->direction = direction;
+	return copy;
+}

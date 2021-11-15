@@ -1,0 +1,1968 @@
+<materials>
+	<brush name="stone wall" type="wall" server_lookid="1050">
+		<wall type="horizontal">
+			<item id="1050" chance="500"/>
+			<item id="1052" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1058" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<door id="6252" type="normal" open="false"/>
+			<door id="6253" type="normal" open="false"/>
+			<door id="6254" type="normal" open="true"/>
+			<door id="6257" type="locked" open="false"/>
+			<door id="6258" type="locked" open="true"/>
+			<door id="6261" type="quest" open="false"/>
+			<door id="6262" type="quest" open="true"/>
+			<door id="6265" type="magic" open="false"/>
+			<door id="6266" type="magic" open="true"/>
+			<door id="6444" type="hatch_window" open="false"/>
+			<door id="6446" type="hatch_window" open="true"/>
+			<door id="1267" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1049" chance="400"/>
+			<item id="1054" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1056" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<door id="6249" type="normal" open="false"/>
+			<door id="6250" type="normal" open="false"/>
+			<door id="6251" type="normal" open="true"/>
+			<door id="6255" type="locked" open="false"/>
+			<door id="6256" type="locked" open="true"/>
+			<door id="6259" type="quest" open="false"/>
+			<door id="6260" type="quest" open="true"/>
+			<door id="6263" type="magic" open="false"/>
+			<door id="6264" type="magic" open="true"/>
+			<door id="6445" type="hatch_window" open="false"/>
+			<door id="6447" type="hatch_window" open="true"/>
+			<door id="1268" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="1053" chance="1000"/>
+			<item id="1055" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1057" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1059" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="1051" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="broken wall" type="wall" server_lookid="6281" draggable="true" on_blocking="false" thickness="100/100">
+		<alternate>
+			<item id="6281" chance="10"/>
+			<item id="6282" chance="10"/>
+		</alternate>
+
+	</brush>
+	<brush name="broken wall 2" type="wall" server_lookid="6283" draggable="true" on_blocking="false" thickness="100/100">
+		<alternate>
+			<item id="6283" chance="10"/>
+			<item id="6284" chance="10"/>
+		</alternate>
+
+	</brush>
+
+	<brush name="plaster wall" type="wall" server_lookid="1037">
+		<wall type="horizontal">
+			<item id="1037" chance="500"/>
+			<item id="1039" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1045" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5152" chance="150"/>
+			<item id="5153" chance="150"/>
+			<door id="1215" type="archway" open="false"/>
+			<door id="1216" type="archway" open="false"/>
+			<door id="1212" type="normal" open="false"/>
+			<door id="1213" type="normal" open="false"/>
+			<door id="1214" type="normal" open="true"/>
+			<door id="1221" type="locked" open="false"/>
+			<door id="1222" type="locked" open="true"/>
+			<door id="1225" type="quest" open="false"/>
+			<door id="1226" type="quest" open="true"/>
+			<door id="1229" type="magic" open="false"/>
+			<door id="1230" type="magic" open="true"/>
+			<door id="6436" type="hatch_window" open="false"/>
+			<door id="6438" type="hatch_window" open="true"/>
+			<door id="1263" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1036" chance="400"/>
+			<item id="1041" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1043" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5154" chance="150"/>
+			<item id="5155" chance="150"/>
+			<door id="1217" type="archway" open="false"/>
+			<door id="1218" type="archway" open="false"/>
+			<door id="1210" type="normal" open="false"/>
+			<door id="1209" type="normal" open="false"/>
+			<door id="1211" type="normal" open="true"/>
+			<door id="1219" type="locked" open="false"/>
+			<door id="1220" type="locked" open="true"/>
+			<door id="1223" type="quest" open="false"/>
+			<door id="1224" type="quest" open="true"/>
+			<door id="1227" type="magic" open="false"/>
+			<door id="1228" type="magic" open="true"/>
+			<door id="6437" type="hatch_window" open="false"/>
+			<door id="6439" type="hatch_window" open="true"/>
+			<door id="1264" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="1042" chance="1000"/>
+			<item id="1040" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1044" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1046" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1047" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1048" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="1038" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="damaged plaster wall" type="wall" server_lookid="5146">
+		<wall type="horizontal">
+			<item id="5146" chance="500"/>
+			<item id="5147" chance="500"/>
+			<item id="5148" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="5149" chance="400"/>
+			<item id="5150" chance="400"/>
+			<item id="5151" chance="400"/>
+		</wall>
+		<wall type="pole">
+			<item id="9061" chance="1000"/>
+		</wall>
+
+		<friend name="plaster wall" redirect="true"/>
+	</brush>
+
+	<brush name="brick wall" type="wall" server_lookid="1026">
+		<wall type="horizontal">
+			<item id="1026" chance="1"/>
+			<item id="1028" chance="0"/>
+			<item id="1034" chance="0"/>
+			<door id="1207" type="archway" open="false"/>
+			<door id="1208" type="archway" open="false"/>
+			<door id="5098" type="normal" open="false"/>
+			<door id="5099" type="normal" open="false"/>
+			<door id="5100" type="normal" open="true"/>
+			<door id="5101" type="locked" open="false"/>
+			<door id="5102" type="locked" open="true"/>
+			<door id="5105" type="quest" open="false"/>
+			<door id="5106" type="quest" open="true"/>
+			<door id="5103" type="magic" open="false"/>
+			<door id="5104" type="magic" open="true"/>
+			<door id="6440" type="hatch_window" open="false"/>
+			<door id="6442" type="hatch_window" open="true"/>
+			<door id="1265" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1025" chance="1"/>
+			<item id="1030" chance="0"/>
+			<item id="1032" chance="0"/>
+			<door id="1205" type="archway" open="false"/>
+			<door id="1206" type="archway" open="false"/>
+			<door id="5107" type="normal" open="false"/>
+			<door id="5108" type="normal" open="false"/>
+			<door id="5109" type="normal" open="true"/>
+			<door id="5110" type="locked" open="false"/>
+			<door id="5111" type="locked" open="true"/>
+			<door id="5114" type="quest" open="false"/>
+			<door id="5115" type="quest" open="true"/>
+			<door id="5112" type="magic" open="false"/>
+			<door id="5113" type="magic" open="true"/>
+			<door id="6441" type="hatch_window" open="false"/>
+			<door id="6443" type="hatch_window" open="true"/>
+			<door id="1266" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="1029" chance="1"/>
+			<item id="1031" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1033" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1035" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="1027" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="egypt wall" type="wall" server_lookid="1061">
+		<wall type="horizontal">
+			<item id="1061" chance="1"/>
+			<item id="1063" chance="0"/>
+			<item id="1069" chance="0"/>
+			<door id="1234" type="normal" open="false"/>
+			<door id="1235" type="normal" open="false"/>
+			<door id="1236" type="normal" open="true"/>
+			<door id="1239" type="locked" open="false"/>
+			<door id="1240" type="locked" open="true"/>
+			<door id="1243" type="quest" open="false"/>
+			<door id="1244" type="quest" open="true"/>
+			<door id="1247" type="magic" open="false"/>
+			<door id="1248" type="magic" open="true"/>
+			<door id="6454" type="hatch_window" open="false"/>
+			<door id="6456" type="hatch_window" open="true"/>
+			<door id="1273" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1060" chance="1"/>
+			<item id="1065" chance="0"/>
+			<item id="1067" chance="0"/>
+			<door id="1231" type="normal" open="false"/>
+			<door id="1232" type="normal" open="false"/>
+			<door id="1233" type="normal" open="true"/>
+			<door id="1237" type="locked" open="false"/>
+			<door id="1238" type="locked" open="true"/>
+			<door id="1241" type="quest" open="false"/>
+			<door id="1242" type="quest" open="true"/>
+			<door id="1245" type="magic" open="false"/>
+			<door id="1246" type="magic" open="true"/>
+			<door id="6455" type="hatch_window" open="false"/>
+			<door id="6457" type="hatch_window" open="true"/>
+			<door id="1274" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="1064" chance="1"/>
+			<item id="1066" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1068" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1070" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="1062" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="egypt stone wall" type="wall" server_lookid="1101">
+		<wall type="horizontal">
+			<item id="1101" chance="1"/>
+			<item id="1103" chance="0"/>
+			<item id="1109" chance="0"/>
+			<door id="6462" type="hatch_window" open="false"/>
+			<door id="6464" type="hatch_window" open="true"/>
+			<door id="1275" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1100" chance="1"/>
+			<item id="1105" chance="0"/>
+			<item id="1107" chance="0"/>
+			<door id="6463" type="hatch_window" open="false"/>
+			<door id="6465" type="hatch_window" open="true"/>
+			<door id="1276" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="1104" chance="1"/>
+			<item id="1106" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1108" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1110" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="1102" chance="1"/>
+		</wall>
+
+		<friend name="egypt wall" redirect="true"/> <!-- There can only be one redirection! -->
+	</brush>
+
+	<brush name="ruin wall" type="wall" server_lookid="3362">
+		<wall type="horizontal">
+			<item id="3362" chance="1"/>
+			<item id="3364" chance="0"/>
+			<item id="3368" chance="0"/>
+
+			<item id="3372" chance="0"/>
+			<item id="3373" chance="0"/>
+			<item id="3391" chance="0"/>
+			<item id="3404" chance="0"/>
+			<item id="3405" chance="0"/>
+			<item id="3406" chance="0"/>
+			<item id="3407" chance="0"/>
+			<item id="3408" chance="0"/>
+			<item id="3409" chance="0"/>
+			<item id="3410" chance="0"/>
+			<item id="3411" chance="0"/>
+			<item id="3414" chance="0"/>
+			<item id="3415" chance="0"/>
+			<item id="3416" chance="0"/>
+			<item id="3417" chance="0"/>
+			<item id="3418" chance="0"/>
+			<item id="3419" chance="0"/>
+			<item id="3420" chance="0"/>
+			<item id="3421" chance="0"/>
+			<item id="3422" chance="0"/>
+
+			<door id="5116" type="normal" open="false"/>
+			<door id="5117" type="normal" open="false"/>
+			<door id="5118" type="normal" open="true"/>
+			<door id="5119" type="locked" open="false"/>
+			<door id="5120" type="locked" open="true"/>
+			<door id="5121" type="quest" open="false"/>
+			<door id="5122" type="quest" open="true"/>
+			<door id="5123" type="magic" open="false"/>
+			<door id="5124" type="magic" open="true"/>
+			<door id="3393" type="normal" open="false"/>
+			<door id="3394" type="normal" open="true"/>
+			<door id="5478" type="hatch window" open="false"/>
+			<door id="5400" type="hatch window" open="true"/>
+			<door id="3392" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3361" chance="1"/>
+			<item id="3366" chance="0"/>
+			<item id="5519" chance="0"/>
+
+			<item id="3370" chance="0"/>
+			<item id="3371" chance="0"/>
+			<item id="3373" chance="0"/>
+			<item id="3374" chance="0"/>
+			<item id="3375" chance="0"/>
+			<item id="3377" chance="0"/>
+			<item id="3378" chance="0"/>
+			<item id="3379" chance="0"/>
+			<item id="3380" chance="0"/>
+			<item id="3381" chance="0"/>
+			<item id="3382" chance="0"/>
+			<item id="3383" chance="0"/>
+			<item id="3384" chance="0"/>
+			<item id="3385" chance="0"/>
+			<item id="3386" chance="0"/>
+			<item id="3390" chance="0"/>
+			<item id="3397" chance="0"/>
+			<item id="3398" chance="0"/>
+			<item id="3412" chance="0"/>
+			<item id="3413" chance="0"/>
+
+			<door id="5125" type="normal" open="false"/>
+			<door id="5126" type="normal" open="false"/>
+			<door id="5127" type="normal" open="true"/>
+			<door id="5128" type="locked" open="false"/>
+			<door id="5129" type="locked" open="true"/>
+			<door id="5130" type="quest" open="false"/>
+			<door id="5131" type="quest" open="true"/>
+			<door id="5132" type="magic" open="false"/>
+			<door id="5133" type="magic" open="true"/>
+			<door id="5134" type="normal" open="false"/>
+			<door id="5135" type="normal" open="true"/>
+			<door id="5479" type="hatch window" open="false"/>
+			<door id="5401" type="hatch window" open="true"/>
+			<door id="3376" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3365" chance="1"/>
+			<item id="3367" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="3369" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5520" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="3363" chance="1"/>
+		</wall>
+
+		<friend name="plaster wall" redirect="true"/> <!-- There can only be one redirection! -->
+	</brush>
+
+	<brush name="marble wall" type="wall" server_lookid="1112">
+		<wall type="horizontal">
+			<item id="1112" chance="4"/>
+
+			<item id="1154" chance="0"/>
+			<item id="1156" chance="0"/>
+
+			<item id="1128" chance="0"/>
+			<item id="1129" chance="0"/>
+			<item id="1132" chance="0"/>
+			<item id="1133" chance="0"/>
+			<item id="1136" chance="0"/>
+			<item id="1138" chance="0"/>
+			<item id="1140" chance="0"/>
+			<item id="1142" chance="0"/>
+			<item id="1144" chance="0"/>
+			<item id="1146" chance="0"/>
+			<item id="1148" chance="0"/>
+			<item id="1150" chance="0"/>
+			<item id="1152" chance="0"/>
+			<item id="1164" chance="0"/>
+			<item id="1166" chance="0"/>
+			<item id="1168" chance="0"/>
+
+			<item id="1120" chance="0"/>
+			<item id="1121" chance="0"/>
+			<item id="1124" chance="0"/>
+			<item id="1125" chance="0"/>
+
+			<item id="1114" chance="0"/>
+			<item id="1118" chance="0"/>
+
+			<door id="1252" type="normal" open="false"/>
+			<door id="1253" type="normal" open="false"/>
+			<door id="1254" type="normal" open="true"/>
+			<!--<door id="6200" type="locked" open="false"/>-->
+			<!--<door id="6201" type="locked" open="true"/>-->
+			<door id="1257" type="quest" open="false"/>
+			<door id="1258" type="quest" open="true"/>
+			<door id="1261" type="magic" open="false"/>
+			<door id="1262" type="magic" open="true"/>
+			<door id="5303" type="hatch_window" open="false"/>
+			<door id="6448" type="hatch_window" open="true"/>
+			<door id="1269" type="window"/>
+			<door id="1271" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1111" chance="4"/>
+
+			<item id="1155" chance="0"/>
+			<item id="1157" chance="0"/>
+
+			<item id="1130" chance="0"/>
+			<item id="1131" chance="0"/>
+			<item id="1134" chance="0"/>
+			<item id="1135" chance="0"/>
+			<item id="1137" chance="0"/>
+			<item id="1139" chance="0"/>
+			<item id="1141" chance="0"/>
+			<item id="1143" chance="0"/>
+			<item id="1145" chance="0"/>
+			<item id="1147" chance="0"/>
+			<item id="1149" chance="0"/>
+			<item id="1151" chance="0"/>
+			<item id="1153" chance="0"/>
+			<item id="1167" chance="0"/>
+			<item id="1169" chance="0"/>
+
+			<item id="1122" chance="0"/>
+			<item id="1123" chance="0"/>
+			<item id="1126" chance="0"/>
+			<item id="1127" chance="0"/>
+
+			<item id="1116" chance="0"/>
+			<item id="5010" chance="0"/>
+
+			<door id="1249" type="normal" open="false"/>
+			<door id="1250" type="normal" open="false"/>
+			<door id="1251" type="normal" open="true"/>
+			<!--<door id="6198" type="locked" open="false"/>-->
+			<!--<door id="6199" type="locked" open="true"/>-->
+			<door id="1255" type="quest" open="false"/>
+			<door id="1256" type="quest" open="true"/>
+			<door id="1259" type="magic" open="false"/>
+			<door id="1260" type="magic" open="true"/>
+			<door id="5304" type="hatch_window" open="false"/>
+			<door id="6449" type="hatch_window" open="true"/>
+			<door id="1270" type="window"/>
+			<door id="1272" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="1115" chance="1"/>
+			<item id="1117" chance="0"/>
+			<item id="5011" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="1119" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="1113" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="rock wall" type="wall" server_lookid="904">
+		<wall type="horizontal">
+			<item id="904" chance="500"/>
+			<item id="906" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="912" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="vertical">
+			<item id="903" chance="400"/>
+			<item id="908" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="910" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="corner">
+			<item id="907" chance="1000"/>
+			<item id="909" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="911" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="913" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="905" chance="1000"/>
+		</wall>
+
+		<friend id="plaster wall" redirect="true"/>
+	</brush>
+
+	<brush name="wooden wall" type="wall" server_lookid="6840">
+		<wall type="horizontal">
+			<item id="6840" chance="500"/>
+			<item id="6842" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6848" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<door id="6882" type="archway" open="false"/>
+			<door id="6884" type="archway" open="false"/>
+			<door id="6891" type="normal" open="false"/>
+			<door id="6892" type="normal" open="false"/>
+			<door id="6893" type="normal" open="true"/>
+			<door id="6894" type="locked" open="false"/>
+			<door id="6895" type="locked" open="true"/>
+			<door id="6898" type="quest" open="false"/>
+			<door id="6899" type="quest" open="true"/>
+			<door id="6896" type="magic" open="false"/>
+			<door id="6897" type="magic" open="true"/>
+			<door id="7025" type="hatch_window" open="false"/>
+			<door id="7027" type="hatch_window" open="true"/>
+			<door id="7027" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6839" chance="400"/>
+			<item id="6844" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6846" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6846" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<door id="6883" type="archway" open="false"/>
+			<door id="6885" type="archway" open="false"/>
+			<door id="6900" type="normal" open="false"/>
+			<door id="6901" type="normal" open="false"/>
+			<door id="6902" type="normal" open="true"/>
+			<door id="6903" type="locked" open="false"/>
+			<door id="6904" type="locked" open="true"/>
+			<door id="6907" type="quest" open="false"/>
+			<door id="6908" type="quest" open="true"/>
+			<door id="6905" type="magic" open="false"/>
+			<door id="6906" type="magic" open="true"/>
+			<door id="7026" type="hatch_window" open="false"/>
+			<door id="7028" type="hatch_window" open="true"/>
+			<door id="7028" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="6843" chance="1000"/>
+			<item id="6845" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6847" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6849" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="6841" chance="1000"/>
+		</wall>
+	</brush>
+
+	<brush name="ornamented wooden wall" type="wall" server_lookid="6853">
+		<wall type="horizontal">
+			<item id="6853" chance="50"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6850" chance="50"/>
+		</wall>
+		<wall type="pole">
+			<item id="9062" chance="1000"/>
+		</wall>
+
+		<friend name="wooden wall" redirect="true"/>
+	</brush>
+
+	<brush name="low stone-wooden wall" type="wall" server_lookid="6858">
+		<wall type="horizontal">
+			<item id="6858" chance="500"/>
+			<item id="6860" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6866" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="vertical">
+			<item id="6857" chance="400"/>
+			<item id="6862" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6864" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="corner">
+			<item id="6861" chance="1000"/>
+			<item id="6863" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6865" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6867" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="9063" chance="1000"/>
+		</wall>
+
+		<friend name="wooden wall" redirect="true"/>
+		<friend name="ornamented wooden wall"/>
+	</brush>
+
+	<brush name="ornamented low stone-wooden wall" type="wall" server_lookid="6854">
+		<wall type="horizontal">
+			<item id="6854" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6851" chance="400"/>
+		</wall>
+		<wall type="pole">
+			<item id="9064" chance="1000"/>
+		</wall>
+
+		<friend name="wooden wall"/>
+		<friend name="low stone-wooden wall" redirect="true"/>
+		<friend name="ornamented wooden wall"/>
+	</brush>
+
+	<brush name="high stone-wooden wall" type="wall" server_lookid="6859">
+		<wall type="horizontal">
+			<item id="6859" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6856" chance="400"/>
+		</wall>
+		<wall type="pole">
+			<item id="9065" chance="1000"/>
+		</wall>
+
+		<friend name="wooden wall"/>
+		<friend name="low stone-wooden wall" redirect="true"/>
+		<friend name="ornamented wooden wall"/>
+		<friend name="ornamented low stone-wooden wall"/>
+	</brush>
+
+	<brush name="ornamented high stone-wooden wall" type="wall" server_lookid="6855">
+		<wall type="horizontal">
+			<item id="6855" chance="500"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6852" chance="400"/>
+		</wall>
+		<wall type="pole">
+			<item id="9066" chance="1000"/>
+		</wall>
+
+		<friend name="wooden wall"/>
+		<friend name="low stone-wooden wall"/>
+		<friend name="ornamented wooden wall"/>
+		<friend name="ornamented low stone-wooden wall" redirect="true"/>
+		<friend name="high stone-wooden wall"/>
+	</brush>
+
+	<brush name="rope wall" type="wall" server_lookid="6983">
+		<wall type="horizontal">
+			<item id="6981" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6982" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="6983" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="6986" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="wood wall" type="wall" server_lookid="6136">
+		<wall type="horizontal">
+			<item id="6140" chance="4"/>
+			<item id="6136" chance="1"/>
+			<item id="6152" chance="0"/>
+			<item id="6148" chance="0"/>
+			<item id="6134" chance="0"/>
+			<item id="6146" chance="0"/>
+			<door id="6195" type="normal" open="false"/>
+			<door id="6196" type="normal" open="false"/>
+			<door id="6197" type="normal" open="true"/>
+			<door id="6200" type="locked" open="false"/>
+			<door id="6201" type="locked" open="true"/>
+			<door id="6204" type="quest" open="false"/>
+			<door id="6205" type="quest" open="true"/>
+			<door id="6208" type="magic" open="false"/>
+			<door id="6209" type="magic" open="true"/>
+			<door id="6450" type="hatch_window" open="false"/>
+			<door id="6452" type="hatch_window" open="true"/>
+			<door id="6178" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6142" chance="4"/>
+			<item id="6133" chance="1"/>
+			<item id="6149" chance="0"/>
+			<item id="6151" chance="0"/>
+			<item id="6144" chance="0"/>
+			<door id="6192" type="normal" open="false"/>
+			<door id="6193" type="normal" open="false"/>
+			<door id="6194" type="normal" open="true"/>
+			<door id="6198" type="locked" open="false"/>
+			<door id="6199" type="locked" open="true"/>
+			<door id="6202" type="quest" open="false"/>
+			<door id="6203" type="quest" open="true"/>
+			<door id="6206" type="magic" open="false"/>
+			<door id="6207" type="magic" open="true"/>
+			<door id="6451" type="hatch_window" open="false"/>
+			<door id="6453" type="hatch_window" open="true"/>
+			<door id="6179" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="6141" chance="1"/>
+			<item id="6150" chance="0"/>
+			<item id="6143" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6145" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6147" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="6139" chance="1"/>
+			<item id="6135" chance="0"/>
+		</wall>
+	</brush>
+
+	<brush name="plant wall" type="wall decoration" server_lookid="6239">
+		<wall type="horizontal">
+			<item id="6239" chance="1"/>
+			<item id="6241" chance="0"/>
+			<item id="6247" chance="0"/>
+			<door id="6236" type="archway" open="false"/>
+			<door id="6234" type="any door" open="false"/>
+			<door id="6236" type="any window" open="false"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6238" chance="1"/>
+			<item id="6243" chance="0"/>
+			<item id="6245" chance="0"/>
+			<door id="6237" type="archway" open="false"/>
+			<door id="6235" type="any door" open="false"/>
+			<door id="6237" type="any window" open="false"/>
+		</wall>
+		<wall type="corner">
+			<item id="6242" chance="1"/>
+			<item id="6244" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6246" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="6248" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="6240" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="plant wall2" type="wall" server_lookid="5558">
+		<wall type="horizontal">
+			<item id="5558" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="5557" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="5559" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="5560" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="brick wall arch" type="doodad" server_lookid="1208" draggable="true" on_blocking="true" redo_borders="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0" z="0">  <item id="1207" chance="10"/> </tile>
+				<tile x="1" y="0" z="0">  <item id="1208" chance="10"/> </tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0" z="0">  <item id="1205" chance="10"/> </tile>
+				<tile x="0" y="1" z="0">  <item id="1206" chance="10"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="plaster wall arch" type="doodad" server_lookid="1216" draggable="true" on_blocking="true" redo_borders="true" thickness="100/100">
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0" z="0">  <item id="1215" chance="10"/> </tile>
+				<tile x="1" y="0" z="0">  <item id="1216" chance="10"/> </tile>
+			</composite>
+		</alternate>
+		<alternate>
+			<composite chance="10">
+				<tile x="0" y="0" z="0">  <item id="1217" chance="10"/> </tile>
+				<tile x="0" y="1" z="0">  <item id="1218" chance="10"/> </tile>
+			</composite>
+		</alternate>
+	</brush>
+
+	<brush name="croft wall" type="wall" server_lookid="5265">
+		<wall type="horizontal">
+			<item id="5270" chance="5"/>
+			<item id="5272" chance="1"/>
+			<item id="5273" chance="1"/>
+			<item id="5262" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5262" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5264" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<door id="5278" type="normal" open="false"/> --
+			<door id="5279" type="normal" open="false"/> --
+			<door id="5280" type="normal" open="true"/> --
+			<door id="5286" type="locked" open="false"/> --
+			<door id="5287" type="locked" open="true"/> --
+			<door id="5290" type="quest" open="false"/>
+			<door id="5291" type="quest" open="true"/>
+			<door id="5294" type="magic" open="false"/>
+			<door id="5295" type="magic" open="true"/>
+			<door id="6470" type="hatch_window" open="false"/>
+			<door id="6472" type="hatch_window" open="true"/>
+			<door id="5276" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="5268" chance="5"/>
+			<item id="5274" chance="1"/>
+			<item id="5275" chance="1"/>
+			<door id="5281" type="normal" open="false"/>
+			<door id="5282" type="normal" open="false"/>
+			<door id="5283" type="normal" open="true"/>
+			<door id="5284" type="locked" open="false"/>
+			<door id="5285" type="locked" open="true"/>
+			<door id="5288" type="quest" open="false"/>
+			<door id="5289" type="quest" open="true"/>
+			<door id="5292" type="magic" open="false"/>
+			<door id="5293" type="magic" open="true"/>
+			<door id="6471" type="hatch_window" open="false"/>
+			<door id="6473" type="hatch_window" open="true"/>
+			<door id="5277" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="5265" chance="10"/>
+			<item id="5267" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5269" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+			<item id="5271" chance="0"/> <!-- This needs to be here for backwards compatibility -->
+		</wall>
+		<wall type="pole">
+			<item id="5263" chance="10"/>
+		</wall>
+	</brush>
+
+	<brush name="bridge" type="wall" server_lookid="3756">
+		<wall type="horizontal">
+			<item id="3756" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3757" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="alabaster wall" type="wall" server_lookid="8476">
+		<wall type="horizontal">
+			<item id="8476" chance="1"/>
+			<item id="8478" chance="0"/>
+			<item id="8484" chance="0"/>
+			<door id="8544" type="normal" open="false"/>
+			<door id="8545" type="normal" open="false"/>
+			<door id="8546" type="normal" open="true"/>
+			<door id="8549" type="locked" open="false"/>
+			<door id="8550" type="locked" open="true"/>
+			<door id="8553" type="quest" open="false"/>
+			<door id="8554" type="quest" open="true"/>
+			<door id="8557" type="magic" open="false"/>
+			<door id="8558" type="magic" open="true"/>
+		</wall>
+		<wall type="vertical">
+			<item id="8475" chance="1"/>
+			<item id="8480" chance="0"/>
+			<item id="8482" chance="0"/>
+			<door id="8541" type="normal" open="false"/>
+			<door id="8542" type="normal" open="false"/>
+			<door id="8543" type="normal" open="true"/>
+			<door id="8547" type="locked" open="false"/>
+			<door id="8548" type="locked" open="true"/>
+			<door id="8551" type="quest" open="false"/>
+			<door id="8552" type="quest" open="true"/>
+			<door id="8555" type="magic" open="false"/>
+			<door id="8556" type="magic" open="true"/>
+		</wall>
+		<wall type="corner">
+			<item id="8479" chance="1"/>
+			<item id="8481" chance="0"/>
+			<item id="8483" chance="0"/>
+			<item id="8485" chance="0"/>
+		</wall>
+		<wall type="pole">
+			<item id="8477" chance="1"/>
+		</wall>
+	</brush>
+	<brush name="stone wall2" type="wall" server_lookid="3458">
+		<wall type="horizontal">
+			<item id="3458" chance="1"/>
+			<door id="3471" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3460" chance="1"/>
+			<door id="3467" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3461" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="3462" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="metal wall" type="wall" server_lookid="1090">
+		<wall type="horizontal">
+			<item id="1090" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1089" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="1093" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="1091" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="paravent" type="wall" server_lookid="1171">
+		<wall type="horizontal">
+			<item id="1171" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1170" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="1173" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="1172" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="lava wall" type="wall" server_lookid="1197">
+		<wall type="horizontal">
+			<item id="1197" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="1196" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="1200" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="1198" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="bamboo wall" type="wall" server_lookid="3424">
+		<wall type="horizontal">
+			<item id="3424" chance="1"/>
+			<door id="3535" type="normal" open="false"/>
+			<door id="3536" type="normal" open="false"/>
+			<door id="3537" type="normal" open="true"/>
+			<door id="3538" type="locked" open="false"/>
+			<door id="3539" type="locked" open="true"/>
+			<door id="3540" type="quest" open="false"/>
+			<door id="3541" type="quest" open="true"/>
+			<door id="3542" type="magic" open="false"/>
+			<door id="3543" type="magic" open="true"/>
+			<door id="6458" type="hatch_window" open="false"/>
+			<door id="6460" type="hatch_window" open="true"/>
+			<door id="3449" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3423" chance="1"/>
+			<door id="3544" type="normal" open="false"/>
+			<door id="3545" type="normal" open="false"/>
+			<door id="3546" type="normal" open="true"/>
+			<door id="3547" type="locked" open="false"/>
+			<door id="3548" type="locked" open="true"/>
+			<door id="3549" type="quest" open="false"/>
+			<door id="3550" type="quest" open="true"/>
+			<door id="3551" type="magic" open="false"/>
+			<door id="3552" type="magic" open="true"/>
+			<door id="6459" type="hatch_window" open="false"/>
+			<door id="6461" type="hatch_window" open="true"/>
+			<door id="3452" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3427" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="3425" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="grass wall" type="wall" server_lookid="3497">
+		<wall type="horizontal">
+			<item id="3497" chance="10"/>
+			<item id="3498" chance="10"/>
+			<door id="3499" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3500" chance="10"/>
+			<item id="3501" chance="10"/>
+			<door id="3502" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="3503" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="3496" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="palisade" type="wall" server_lookid="3509">
+		<wall type="horizontal">
+			<item id="3509" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="3517" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="3530" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="3511" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="bone wall" type="wall" server_lookid="6396">
+		<wall type="horizontal">
+			<item id="6396" chance="10"/>
+			<item id="6421" chance="10"/>
+			<door id="6414" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6395" chance="10"/>
+			<item id="6420" chance="10"/>
+			<door id="6415" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="6399" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="6397" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="frozen wall" type="wall" server_lookid="6740">
+		<wall type="horizontal">
+			<item id="6740" chance="1"/>
+			<door id="7033" type="normal" open="false"/>
+			<door id="7034" type="normal" open="false"/>
+			<door id="7035" type="normal" open="true"/>
+			<door id="7036" type="locked" open="false"/>
+			<door id="7037" type="locked" open="true"/>
+			<door id="7038" type="quest" open="false"/>
+			<door id="7039" type="quest" open="true"/>
+			<door id="7040" type="magic" open="false"/>
+			<door id="7041" type="magic" open="true"/>
+			<door id="7029" type="hatch_window" open="false"/>
+			<door id="7031" type="hatch_window" open="true"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6739" chance="1"/>
+			<door id="7042" type="normal" open="false"/>
+			<door id="7043" type="normal" open="false"/>
+			<door id="7044" type="normal" open="true"/>
+			<door id="7045" type="locked" open="false"/>
+			<door id="7046" type="locked" open="true"/>
+			<door id="7047" type="quest" open="false"/>
+			<door id="7048" type="quest" open="true"/>
+			<door id="7049" type="magic" open="false"/>
+			<door id="7050" type="magic" open="true"/>
+			<door id="7030" type="hatch_window" open="false"/>
+			<door id="7032" type="hatch_window" open="true"/>
+		</wall>
+		<wall type="corner">
+			<item id="6743" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="6741" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="fur wall" type="wall" server_lookid="6774">
+		<wall type="horizontal">
+			<item id="6774" chance="10"/>
+			<item id="6786" chance="2"/>
+			<door id="6795" type="normal" open="false"/>
+			<door id="6799" type="normal" open="false"/>
+			<door id="6796" type="normal" open="true"/>
+			<door id="7056" type="locked" open="false"/>
+			<door id="7057" type="locked" open="true"/>
+			<door id="6788" type="hatch_window" open="false"/>
+			<door id="6790" type="hatch_window" open="true"/>
+		</wall>
+		<wall type="vertical">
+			<item id="6773" chance="10"/>
+			<item id="6784" chance="2"/>
+			<door id="6797" type="normal" open="false"/>
+			<door id="6801" type="normal" open="false"/>
+			<door id="6798" type="normal" open="true"/>
+			<door id="7054" type="locked" open="false"/>
+			<door id="7055" type="locked" open="true"/>
+			<door id="6789" type="hatch_window" open="false"/>
+			<door id="6791" type="hatch_window" open="true"/>
+		</wall>
+		<wall type="corner">
+			<item id="6777" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="6775" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="stone wall3" type="wall" server_lookid="9119">
+		<wall type="horizontal">
+			<item id="9119" chance="1"/>
+			<door id="9168" type="normal" open="false"/>
+			<door id="9169" type="normal" open="false"/>
+			<door id="9170" type="normal" open="true"/>
+			<door id="9173" type="locked" open="false"/>
+			<door id="9174" type="locked" open="true"/>
+			<door id="9181" type="quest" open="false"/>
+			<door id="9182" type="quest" open="true"/>
+			<door id="9177" type="magic" open="false"/>
+			<door id="9178" type="magic" open="true"/>
+			<door id="9189" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="9118" chance="1"/>
+			<door id="9165" type="normal" open="false"/>
+			<door id="9166" type="normal" open="false"/>
+			<door id="9167" type="normal" open="true"/>
+			<door id="9171" type="locked" open="false"/>
+			<door id="9172" type="locked" open="true"/>
+			<door id="9179" type="quest" open="false"/>
+			<door id="9180" type="quest" open="true"/>
+			<door id="9175" type="magic" open="false"/>
+			<door id="9176" type="magic" open="true"/>
+			<door id="9190" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="9122" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="9120" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="iron wall" type="wall" server_lookid="9210">
+		<wall type="horizontal">
+			<item id="9210" chance="10"/>
+			<item id="9211" chance="5"/>
+			<item id="9212" chance="5"/>
+			<item id="9223" chance="2"/>
+			<door id="9270" type="normal" open="false"/>
+			<door id="9271" type="normal" open="false"/>
+			<door id="9272" type="normal" open="true"/>
+			<door id="9275" type="locked" open="false"/>
+			<door id="9276" type="locked" open="true"/>
+			<door id="9283" type="quest" open="false"/>
+			<door id="9284" type="quest" open="true"/>
+			<door id="9279" type="magic" open="false"/>
+			<door id="9280" type="magic" open="true"/>
+		</wall>
+		<wall type="vertical">
+			<item id="9207" chance="10"/>
+			<item id="9208" chance="5"/>
+			<item id="9209" chance="5"/>
+			<item id="9222" chance="2"/>
+			<door id="9267" type="normal" open="false"/>
+			<door id="9268" type="normal" open="false"/>
+			<door id="9269" type="normal" open="true"/>
+			<door id="9273" type="locked" open="false"/>
+			<door id="9274" type="locked" open="true"/>
+			<door id="9281" type="quest" open="false"/>
+			<door id="9282" type="quest" open="true"/>
+			<door id="9277" type="magic" open="false"/>
+			<door id="9278" type="magic" open="true"/>
+		</wall>
+		<wall type="corner">
+			<item id="9215" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="9213" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="stone wall4" type="wall" server_lookid="9370">
+		<wall type="horizontal">
+			<item id="9370" chance="1"/>
+			<door id="9383" type="hatch_window" open="false"/>
+			<door id="9382" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="9371" chance="1"/>
+			<door id="9386" type="hatch_window" open="false"/>
+			<door id="9385" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="9374" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="9372" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="limestone wall" type="wall" server_lookid="10178">
+		<wall type="horizontal">
+			<item id="10178" chance="1"/>
+			<door id="10468" type="normal" open="false"/>
+			<door id="10469" type="normal" open="false"/>
+			<door id="10470" type="normal" open="true"/>
+			<door id="10471" type="locked" open="false"/>
+			<door id="10472" type="locked" open="true"/>
+			<door id="10473" type="quest" open="false"/>
+			<door id="10474" type="quest" open="true"/>
+			<door id="10475" type="magic" open="false"/>
+			<door id="10476" type="magic" open="true"/>
+			<door id="10488" type="hatch_window" open="false"/>
+			<door id="10490" type="hatch_window" open="true"/>
+			<door id="10486" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10177" chance="1"/>
+			<door id="10477" type="normal" open="false"/>
+			<door id="10478" type="normal" open="false"/>
+			<door id="10479" type="normal" open="true"/>
+			<door id="10480" type="locked" open="false"/>
+			<door id="10481" type="locked" open="true"/>
+			<door id="10482" type="quest" open="false"/>
+			<door id="10483" type="quest" open="true"/>
+			<door id="10484" type="magic" open="false"/>
+			<door id="10485" type="magic" open="true"/>
+			<door id="10489" type="hatch_window" open="false"/>
+			<door id="10491" type="hatch_window" open="true"/>
+			<door id="10487" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10181" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="10179" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="limestone wall" type="wall" server_lookid="10178">
+		<wall type="horizontal">
+			<item id="10178" chance="1"/>
+			<door id="10468" type="normal" open="false"/>
+			<door id="10469" type="normal" open="false"/>
+			<door id="10470" type="normal" open="true"/>
+			<door id="10471" type="locked" open="false"/>
+			<door id="10472" type="locked" open="true"/>
+			<door id="10473" type="quest" open="false"/>
+			<door id="10474" type="quest" open="true"/>
+			<door id="10475" type="magic" open="false"/>
+			<door id="10476" type="magic" open="true"/>
+			<door id="10488" type="hatch_window" open="false"/>
+			<door id="10490" type="hatch_window" open="true"/>
+			<door id="10486" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10177" chance="1"/>
+			<door id="10477" type="normal" open="false"/>
+			<door id="10478" type="normal" open="false"/>
+			<door id="10479" type="normal" open="true"/>
+			<door id="10480" type="locked" open="false"/>
+			<door id="10481" type="locked" open="true"/>
+			<door id="10482" type="quest" open="false"/>
+			<door id="10483" type="quest" open="true"/>
+			<door id="10484" type="magic" open="false"/>
+			<door id="10485" type="magic" open="true"/>
+			<door id="10489" type="hatch_window" open="false"/>
+			<door id="10491" type="hatch_window" open="true"/>
+			<door id="10487" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10181" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="10179" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="dark framework wall" type="wall" server_lookid="10227">
+		<wall type="horizontal">
+			<item id="10227" chance="10"/>
+			<item id="10245" chance="6"/>
+			<item id="10246" chance="2"/>
+			<door id="10271" type="normal" open="false"/>
+			<door id="10272" type="normal" open="false"/>
+			<door id="10273" type="normal" open="true"/>
+			<door id="10276" type="locked" open="false"/>
+			<door id="10277" type="locked" open="true"/>
+			<door id="10284" type="quest" open="false"/>
+			<door id="10285" type="quest" open="true"/>
+			<door id="10280" type="magic" open="false"/>
+			<door id="10281" type="magic" open="true"/>
+			<door id="10264" type="hatch_window" open="false"/>
+			<door id="10266" type="hatch_window" open="true"/>
+			<door id="10262" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10226" chance="10"/>
+			<item id="10247" chance="6"/>
+			<item id="10248" chance="2"/>
+			<door id="10268" type="normal" open="false"/>
+			<door id="10269" type="normal" open="false"/>
+			<door id="10270" type="normal" open="true"/>
+			<door id="10274" type="locked" open="false"/>
+			<door id="10275" type="locked" open="true"/>
+			<door id="10282" type="quest" open="false"/>
+			<door id="10283" type="quest" open="true"/>
+			<door id="10278" type="magic" open="false"/>
+			<door id="10279" type="magic" open="true"/>
+			<door id="10265" type="hatch_window" open="false"/>
+			<door id="10267" type="hatch_window" open="true"/>
+			<door id="10263" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10230" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="10228" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="stone wall5" type="wall" server_lookid="10250">
+		<wall type="horizontal">
+			<item id="10250" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10249" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="10253" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="10251" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="blue palisade" type="wall" server_lookid="12512">
+		<wall type="horizontal">
+			<item id="12512" chance="10"/>
+			<item id="12511" chance="4"/>
+		</wall>
+		<wall type="vertical">
+			<item id="12520" chance="10"/>
+			<item id="12519" chance="4"/>
+		</wall>
+		<wall type="corner">
+			<item id="12534" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="12514" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="stone" type="wall" server_lookid="12959">
+		<wall type="horizontal">
+			<item id="12959" chance="1"/>
+			<door id="18208" type="locked" open="false"/>
+			<door id="18209" type="locked" open="true"/>
+			<door id="12978" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="12958" chance="1"/>
+			<door id="12977" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="12962" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="12960" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="timber wall" type="wall" server_lookid="11545">
+		<wall type="horizontal">
+			<item id="11545" chance="1"/>
+			<door id="12701" type="normal" open="false"/>
+			<door id="12703" type="normal" open="true"/>
+			<door id="13022" type="locked" open="false"/>
+			<door id="13023" type="locked" open="true"/>
+			<door id="12689" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="11547" chance="1"/>
+			<door id="12692" type="normal" open="false"/>
+			<door id="12695" type="normal" open="true"/>
+			<door id="13020" type="locked" open="false"/>
+			<door id="13021" type="locked" open="true"/>
+			<door id="12302" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="11546" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="11544" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="light desert wall" type="wall" server_lookid="12847">
+		<wall type="horizontal">
+			<item id="12847" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="12846" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="12885" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="13143" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="dark desert wall" type="wall" server_lookid="12890">
+		<wall type="horizontal">
+			<item id="12890" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="12889" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="12908" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="13144" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="rocky wall" type="wall" server_lookid="13645">
+		<wall type="horizontal">
+			<item id="13645" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="13644" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="13648" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="13646" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="glass wall" type="wall" server_lookid="15562">
+		<wall type="horizontal">
+			<item id="15562" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="15563" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="15561" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="15564" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="icy bones" type="wall" server_lookid="18238">
+		<wall type="horizontal">
+			<item id="18238" chance="10"/>
+			<item id="18239" chance="2"/>
+			<door id="18250" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="18235" chance="10"/>
+			<item id="18236" chance="2"/>
+			<door id="18251" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="18243" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="18241" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="muddy stone wall" type="wall" server_lookid="18614">
+		<wall type="horizontal">
+			<item id="18614" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="18613" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="18617" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="18615" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="muddy stone wall2" type="wall" server_lookid="18631">
+		<wall type="horizontal">
+			<item id="18631" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="18630" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="18634" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="18632" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="brown stone wall" type="wall" server_lookid="19333">
+		<wall type="horizontal">
+			<item id="19333" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="19332" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="19336" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="19334" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="red stone wall" type="wall" server_lookid="19344">
+		<wall type="horizontal">
+			<item id="19344" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="19343" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="19347" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="19345" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="ornate wall" type="wall" server_lookid="19355">
+		<wall type="horizontal">
+			<item id="19355" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="19354" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="19358" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="19356" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="ornate wall2" type="wall" server_lookid="19366">
+		<wall type="horizontal">
+			<item id="19366" chance="1"/>
+		</wall>
+		<wall type="vertical">
+			<item id="19365" chance="1"/>
+		</wall>
+		<wall type="corner">
+			<item id="19369" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="19367" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="venore wall" type="wall" server_lookid="19410">
+		<wall type="horizontal">
+			<item id="19410" chance="1"/>
+			<door id="19840" type="normal" open="false"/>
+			<door id="19841" type="normal" open="false"/>
+			<door id="19842" type="normal" open="true"/>
+			<door id="19843" type="locked" open="false"/>
+			<door id="19844" type="locked" open="true"/>
+			<door id="19845" type="quest" open="false"/>
+			<door id="19846" type="quest" open="true"/>
+			<door id="19847" type="magic" open="false"/>
+			<door id="19848" type="magic" open="true"/>
+			<door id="19974" type="hatch_window" open="false"/>
+			<door id="20182" type="hatch_window" open="true"/>
+			<door id="19444" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="19405" chance="1"/>
+			<door id="19849" type="normal" open="false"/>
+			<door id="19850" type="normal" open="false"/>
+			<door id="19851" type="normal" open="true"/>
+			<door id="19852" type="locked" open="false"/>
+			<door id="19853" type="locked" open="true"/>
+			<door id="19854" type="quest" open="false"/>
+			<door id="19855" type="quest" open="true"/>
+			<door id="19856" type="magic" open="false"/>
+			<door id="19857" type="magic" open="true"/>
+			<door id="19975" type="hatch_window" open="false"/>
+			<door id="20185" type="hatch_window" open="true"/>
+			<door id="19446" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="19380" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="19378" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="venore brick wall" type="wall" server_lookid="19485">
+		<wall type="horizontal">
+			<item id="19485" chance="1"/>
+			<door id="19980" type="normal" open="false"/>
+			<door id="19981" type="normal" open="false"/>
+			<door id="19982" type="normal" open="true"/>
+			<door id="19983" type="locked" open="false"/>
+			<door id="19984" type="locked" open="true"/>
+			<door id="19985" type="quest" open="false"/>
+			<door id="19986" type="quest" open="true"/>
+			<door id="19987" type="magic" open="false"/>
+			<door id="19988" type="magic" open="true"/>
+			<door id="19809" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="19481" chance="1"/>
+			<door id="19989" type="normal" open="false"/>
+			<door id="19990" type="normal" open="false"/>
+			<door id="19991" type="normal" open="true"/>
+			<door id="19992" type="locked" open="false"/>
+			<door id="19993" type="locked" open="true"/>
+			<door id="19994" type="quest" open="false"/>
+			<door id="19995" type="quest" open="true"/>
+			<door id="19996" type="magic" open="false"/>
+			<door id="19997" type="magic" open="true"/>
+			<door id="19808" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="19495" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="roshamuul wall" type="wall" server_lookid="21790">
+		<wall type="horizontal">
+			<item id="21790" chance="1"/>
+			<door id="21796" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="21787" chance="1"/>
+			<door id="21795" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="21791" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="21783" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="oramond wall" type="wall" server_lookid="22768">
+		<wall type="horizontal">
+			<item id="22768" chance="10"/>
+			<item id="22765" chance="2"/>
+			<door id="22814" type="normal" open="false"/>
+			<door id="22815" type="locked" open="false"/>
+			<door id="22813" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="22769" chance="10"/>
+			<item id="22763" chance="2"/>
+			<door id="22823" type="normal" open="false"/>
+			<door id="22824" type="locked" open="false"/>
+			<door id="22812" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="22770" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="22767" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="oramond wall2" type="wall" server_lookid="22947">
+		<wall type="horizontal">
+			<item id="22947" chance="10"/>
+			<item id="22948" chance="2"/>
+		</wall>
+		<wall type="vertical">
+			<item id="22941" chance="10"/>
+			<item id="22942" chance="2"/>
+		</wall>
+		<wall type="corner">
+			<item id="22956" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="22994" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="oramond wall3" type="wall" server_lookid="23595">
+		<wall type="horizontal">
+			<item id="23595" chance="10"/>
+			<item id="23596" chance="2"/>
+		</wall>
+		<wall type="vertical">
+			<item id="23600" chance="10"/>
+			<item id="23601" chance="2"/>
+		</wall>
+		<wall type="corner">
+			<item id="23597" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="23604" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall2" type="wall" server_lookid="10651">
+		<wall type="horizontal">
+			<item id="10651" chance="1"/>
+			<door id="11064" type="window"/>
+			<door id="11065" type="hatch_window" open="true"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10650" chance="1"/>
+			<door id="11070" type="window"/>
+			<door id="11071" type="hatch_window" open="true"/>
+		</wall>
+		<wall type="corner">
+			<item id="10654" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="11201" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall1" type="wall" server_lookid="10666">
+		<wall type="horizontal">
+			<item id="10666" chance="1"/>
+			<door id="11069" type="hatch_window" open="false"/>
+			<door id="11068" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10662" chance="1"/>
+			<door id="11075" type="hatch_window" open="false"/>
+			<door id="11074" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10658" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="10652" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall3" type="wall" server_lookid="10663">
+		<wall type="horizontal">
+			<item id="10663" chance="1"/>
+			<door id="10775" type="normal" open="false"/>
+			<door id="10776" type="normal" open="false"/>
+			<door id="10777" type="normal" open="true"/>
+			<door id="10780" type="quest" open="false"/>
+			<door id="10781" type="quest" open="true"/>
+			<door id="10782" type="magic" open="false"/>
+			<door id="10783" type="magic" open="true"/>
+			<door id="11067" type="hatch_window" open="false"/>
+			<door id="11066" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="10661" chance="1"/>
+			<door id="10784" type="normal" open="false"/>
+			<door id="10785" type="normal" open="false"/>
+			<door id="10786" type="normal" open="true"/>
+			<door id="10789" type="quest" open="false"/>
+			<door id="10790" type="quest" open="true"/>
+			<door id="10791" type="magic" open="false"/>
+			<door id="10792" type="magic" open="true"/>
+			<door id="11073" type="hatch_window" open="false"/>
+			<door id="11072" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="10667" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="11202" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall4" type="wall" server_lookid="17266">
+		<wall type="horizontal">
+			<item id="17266" chance="1"/>
+			<door id="17345" type="hatch_window" open="false"/>
+			<door id="17344" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17262" chance="1"/>
+			<door id="17351" type="hatch_window" open="false"/>
+			<door id="17350" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="17277" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="17267" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall5" type="wall" server_lookid="17264">
+		<wall type="horizontal">
+			<item id="17264" chance="1"/>
+			<door id="17341" type="hatch_window" open="false"/>
+			<door id="17340" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17260" chance="1"/>
+			<door id="17347" type="hatch_window" open="false"/>
+			<door id="17346" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="17275" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="17268" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall6" type="wall" server_lookid="17265">
+		<wall type="horizontal">
+			<item id="17265" chance="1"/>
+			<door id="17343" type="hatch_window" open="false"/>
+			<door id="17342" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17261" chance="1"/>
+			<door id="17349" type="hatch_window" open="false"/>
+			<door id="17348" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="17276" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="17269" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall7" type="wall" server_lookid="17359">
+		<wall type="horizontal">
+			<item id="17359" chance="1"/>
+			<door id="17400" type="hatch_window" open="false"/>
+			<door id="17399" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17355" chance="1"/>
+			<door id="17406" type="hatch_window" open="false"/>
+			<door id="17405" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="17370" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="17360" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall8" type="wall" server_lookid="17358">
+		<wall type="horizontal">
+			<item id="17358" chance="1"/>
+			<door id="17398" type="hatch_window" open="false"/>
+			<door id="17397" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17354" chance="1"/>
+			<door id="17404" type="hatch_window" open="false"/>
+			<door id="17403" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="17369" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="17361" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="zaoan wall9" type="wall" server_lookid="17357">
+		<wall type="horizontal">
+			<item id="17357" chance="1"/>
+			<door id="17396" type="hatch_window" open="false"/>
+			<door id="17395" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="17353" chance="1"/>
+			<door id="17402" type="hatch_window" open="false"/>
+			<door id="17401" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="17368" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="17362" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="corrupted wall1" type="wall" server_lookid="11834">
+		<wall type="horizontal">
+			<item id="11834" chance="10"/>
+			<item id="11847" chance="4"/>
+			<item id="11848" chance="6"/>
+			<item id="11849" chance="2"/>
+			<door id="12092" type="normal" open="false"/>
+			<door id="12093" type="normal" open="false"/>
+			<door id="12094" type="normal" open="true"/>
+			<door id="12095" type="quest" open="false"/>
+			<door id="12096" type="quest" open="true"/>
+			<door id="12097" type="magic" open="false"/>
+			<door id="12098" type="magic" open="true"/>
+			<door id="11908" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="11833" chance="10"/>
+			<item id="11850" chance="4"/>
+			<item id="11851" chance="6"/>
+			<item id="11852" chance="2"/>
+			<door id="12099" type="normal" open="false"/>
+			<door id="12100" type="normal" open="false"/>
+			<door id="12101" type="normal" open="true"/>
+			<door id="12102" type="quest" open="false"/>
+			<door id="12103" type="quest" open="true"/>
+			<door id="12104" type="magic" open="false"/>
+			<door id="12105" type="magic" open="true"/>
+			<door id="11909" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="11837" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="11835" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="corrupted wall2" type="wall" server_lookid="11938">
+		<wall type="horizontal">
+			<item id="11938" chance="1"/>
+			<door id="12188" type="normal" open="false"/>
+			<door id="12189" type="normal" open="false"/>
+			<door id="12190" type="normal" open="true"/>
+			<door id="12195" type="locked" open="false"/>
+			<door id="12196" type="locked" open="true"/>
+			<door id="12193" type="quest" open="false"/>
+			<door id="12194" type="quest" open="true"/>
+			<door id="12228" type="window"/>
+		</wall>
+		<wall type="vertical">
+			<item id="11937" chance="1"/>
+			<door id="12917" type="normal" open="false"/>
+			<door id="12918" type="normal" open="false"/>
+			<door id="12919" type="normal" open="true"/>
+			<door id="12204" type="locked" open="false"/>
+			<door id="12205" type="locked" open="true"/>
+			<door id="12202" type="quest" open="false"/>
+			<door id="12203" type="quest" open="true"/>
+			<door id="11948" type="window"/>
+		</wall>
+		<wall type="corner">
+			<item id="11941" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="11939" chance="1"/>
+		</wall>
+	</brush>
+
+	<brush name="dark stone wall" type="wall" server_lookid="25201">
+		<wall type="horizontal">
+			<item id="25201" chance="10"/>
+			<item id="25203" chance="10"/>
+			<door id="25283" type="normal" open="false"/>
+			<door id="25284" type="normal" open="false"/>
+			<door id="25285" type="normal" open="true"/>
+			<door id="25286" type="quest" open="false"/>
+			<door id="25287" type="quest" open="true"/>
+		</wall>
+		<wall type="vertical">
+			<item id="25200" chance="10"/>
+			<item id="25205" chance="10"/>
+			<door id="25290" type="normal" open="false"/>
+			<door id="25291" type="normal" open="false"/>
+			<door id="25292" type="normal" open="true"/>
+			<door id="25293" type="quest" open="false"/>
+			<door id="25294" type="quest" open="true"/>
+		</wall>
+		<wall type="corner">
+			<item id="25204" chance="1"/>
+		</wall>
+		<wall type="pole">
+			<item id="25202" chance="1"/>
+		</wall>
+	</brush>
+</materials>

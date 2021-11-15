@@ -95,7 +95,8 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 								 "Magic Field",
 								 "Teleport",
 								 "Bed",
-								 "Key" };
+								 "Key",
+								 "Podium" };
 
 	int types_choices_count = sizeof(types_choices) / sizeof(wxString);
 	types_radio_box = newd wxRadioBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, types_choices_count, types_choices, 1, wxRA_SPECIFY_COLS);
@@ -364,7 +365,8 @@ void FindItemDialog::RefreshContentsInternal()
 				(selection == SearchItemType::MagicField && !item.isMagicField()) ||
 				(selection == SearchItemType::Teleport && !item.isTeleport()) ||
 				(selection == SearchItemType::Bed && !item.isBed()) ||
-				(selection == SearchItemType::Key && !item.isKey())) {
+				(selection == SearchItemType::Key && !item.isKey()) ||
+				(selection == SearchItemType::Podium && !item.isPodium())) {
 				continue;
 			}
 

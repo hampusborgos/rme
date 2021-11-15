@@ -49,7 +49,8 @@ public:
 		MagicField,
 		Teleport,
 		Bed,
-		Key
+		Key,
+		Podium
 	};
 
 	FindItemDialog(wxWindow* parent, const wxString& title, bool onlyPickupables = false);

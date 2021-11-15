@@ -41,20 +41,37 @@ public:
 	void Update();
 
 protected:
-
-protected:
+	// item
 	wxSpinCtrl* count_field;
-	wxChoice* direction_field;
 	wxSpinCtrl* action_id_field;
 	wxSpinCtrl* unique_id_field;
 	wxSpinCtrl* door_id_field;
 	wxChoice* depot_id_field;
-	wxSpinCtrl* x_field;
-	wxSpinCtrl* y_field;
-	wxSpinCtrl* z_field;
 	wxChoice* splash_type_field;
 	wxTextCtrl* text_field;
 	wxTextCtrl* description_field;
+
+	// teleport
+	wxSpinCtrl* x_field;
+	wxSpinCtrl* y_field;
+	wxSpinCtrl* z_field;
+
+	// podium
+	wxCheckBox* show_outfit;
+	wxCheckBox* show_mount;
+	wxCheckBox* show_platform;
+	wxSpinCtrl* look_type;
+	wxSpinCtrl* look_head;
+	wxSpinCtrl* look_body;
+	wxSpinCtrl* look_legs;
+	wxSpinCtrl* look_feet;
+	wxSpinCtrl* look_addon;
+	wxSpinCtrl* look_mount;
+
+	// podium and creature
+	wxChoice* direction_field;
+
+	// container
 	std::vector<ContainerItemButton*> container_items;
 
 	friend class ContainerItemButton;

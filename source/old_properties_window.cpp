@@ -244,6 +244,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		// Normal item
 		Door* door = dynamic_cast<Door*>(edit_item);
 		Teleport* teleport = dynamic_cast<Teleport*>(edit_item);
+		Podium* podium = dynamic_cast<Podium*>(edit_item);
 
 		wxString description;
 		if(door) {
@@ -251,16 +252,21 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 			description = "Door Properties";
 		} else if(teleport) {
 			description = "Teleport Properties";
+		} else if(podium) {
+			description = "Podium Properties";
 		} else {
 			description = "Item Properties";
 		}
 
 		wxSizer* boxsizer = newd wxStaticBoxSizer(wxVERTICAL, this, description);
 
+		// unused(?)
+		/*
 		int num_items = 4;
 		//if(item->canHoldDescription()) num_items += 1;
 		if(door) num_items += 1;
 		if(teleport) num_items += 1;
+		*/
 
 		wxFlexGridSizer* subsizer = newd wxFlexGridSizer(2, 10, 10);
 		subsizer->AddGrowableCol(1);
@@ -317,11 +323,87 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 			subsizer->Add(possizer, wxSizerFlags(1).Expand());
 		}
 
-		boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
+		if (podium) {
+			// direction
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, "Direction"));
+			direction_field = newd wxChoice(this, wxID_ANY);
+
+			for (Direction dir = DIRECTION_FIRST; dir <= DIRECTION_LAST; ++dir) {
+				direction_field->Append(wxstr(Creature::DirID2Name(dir)), newd int32_t(dir));
+			}
+			direction_field->SetSelection(static_cast<Direction>(podium->getDirection()));
+			subsizer->Add(direction_field, wxSizerFlags(1).Expand());
+
+			// checkboxes
+			show_outfit = newd wxCheckBox(this, wxID_ANY, "Show outfit");
+			show_outfit->SetValue(podium->hasShowOutfit());
+			show_outfit->SetToolTip("Display outfit on the podium.");
+			subsizer->Add(show_outfit, 0, wxLEFT | wxTOP, 5);
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, "")); // filler for checkboxes
+
+			show_mount = newd wxCheckBox(this, wxID_ANY, "Show mount");
+			show_mount->SetValue(podium->hasShowMount());
+			show_mount->SetToolTip("Display mount on the podium.");
+			subsizer->Add(show_mount, 0, wxLEFT | wxTOP, 5);
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, ""));
+
+			show_platform = newd wxCheckBox(this, wxID_ANY, "Show platform");
+			show_platform->SetValue(podium->hasShowPlatform());
+			show_platform->SetToolTip("Display the podium platform.");
+			subsizer->Add(show_platform, 0, wxLEFT | wxTOP, 5);
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, ""));
+
+			wxFlexGridSizer* outfitContainer = newd wxFlexGridSizer(2, 10, 10);
+
+			// outfit dialog
+			const Outfit& outfit = podium->getOutfit();
+
+			// filler above "lookType"
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, ""));
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, ""));
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "LookType"));
+			look_type = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookType), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, std::numeric_limits<uint16_t>::max(), outfit.lookType);
+			outfitContainer->Add(look_type, wxSizerFlags(3).Expand());
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "Head"));
+			look_head = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookHead), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, std::numeric_limits<uint8_t>::max(), outfit.lookHead);
+			outfitContainer->Add(look_head, wxSizerFlags(3).Expand());
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "Body"));
+			look_body = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookBody), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, std::numeric_limits<uint8_t>::max(), outfit.lookBody);
+			outfitContainer->Add(look_body, wxSizerFlags(3).Expand());
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "Legs"));
+			look_legs = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookLegs), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, std::numeric_limits<uint8_t>::max(), outfit.lookLegs);
+			outfitContainer->Add(look_legs , wxSizerFlags(3).Expand());
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "Feet"));
+			look_feet = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookFeet), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, std::numeric_limits<uint8_t>::max(), outfit.lookFeet);
+			outfitContainer->Add(look_feet, wxSizerFlags(3).Expand());
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "Addons"));
+			look_addon = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookAddon), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 3, outfit.lookAddon);
+			outfitContainer->Add(look_addon, wxSizerFlags(3).Expand());
+
+			outfitContainer->Add(newd wxStaticText(this, wxID_ANY, "Mount"));
+			look_mount = newd wxSpinCtrl(this, wxID_ANY, i2ws(outfit.lookMount), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, std::numeric_limits<uint16_t>::max(), outfit.lookMount);
+			outfitContainer->Add(look_mount, wxSizerFlags(3).Expand());
+
+			wxFlexGridSizer* propertiesContainer = newd wxFlexGridSizer(2, 10, 10);
+			propertiesContainer->Add(subsizer, wxSizerFlags(1).Expand());
+			propertiesContainer->Add(outfitContainer, wxSizerFlags(1).Expand());
+			boxsizer->Add(propertiesContainer, wxSizerFlags(1).Expand());
+		} else {
+			boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
+		}
+
 		topsizer->Add(boxsizer, wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT, 20));
 	}
 
 	// Others attributes
+	// should have an option to turn it off
+	/*
 	const ItemType& type = g_items.getItemType(edit_item->getID());
 	wxStaticBoxSizer* others_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Others");
 	wxFlexGridSizer* others_subsizer = newd wxFlexGridSizer(2, 5, 10);
@@ -342,11 +424,12 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.hasElevation)));
 	others_sizer->Add(others_subsizer, wxSizerFlags(1).Expand());
 	topsizer->Add(others_sizer, wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
+	*/
 
 	wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
-	subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
-	subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
-	topsizer->Add(subsizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
+	subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center().Border(wxTOP | wxBOTTOM, 10));
+	subsizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center().Border(wxTOP | wxBOTTOM, 10));
+	topsizer->Add(subsizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT, 20));
 
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
@@ -395,9 +478,9 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	//SetSize(220, 0);
 
 	wxSizer* std_sizer = newd wxBoxSizer(wxHORIZONTAL);
-	std_sizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
-	std_sizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
-	topsizer->Add(std_sizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
+	std_sizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center().Border(wxTOP | wxBOTTOM, 10));
+	std_sizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center().Border(wxTOP | wxBOTTOM, 10));
+	topsizer->Add(std_sizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT, 20));
 
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
@@ -435,9 +518,9 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	topsizer->Add(boxsizer, wxSizerFlags(3).Expand().Border(wxALL, 20));
 
 	wxSizer* std_sizer = newd wxBoxSizer(wxHORIZONTAL);
-	std_sizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());
-	std_sizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center());
-	topsizer->Add(std_sizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
+	std_sizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center().Border(wxTOP | wxBOTTOM, 10));
+	std_sizer->Add(newd wxButton(this, wxID_CANCEL, "Cancel"), wxSizerFlags(1).Center().Border(wxTOP | wxBOTTOM, 10));
+	topsizer->Add(std_sizer, wxSizerFlags(0).Center().Border(wxLEFT | wxRIGHT, 20));
 
 	SetSizerAndFit(topsizer);
 	Centre(wxBOTH);
@@ -561,6 +644,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			// Normal item
 			Door* door = dynamic_cast<Door*>(edit_item);
 			Teleport* teleport = dynamic_cast<Teleport*>(edit_item);
+			Podium* podium = dynamic_cast<Podium*>(edit_item);
 
 			int new_uid = unique_id_field->GetValue();
 			int new_aid = action_id_field->GetValue();
@@ -626,6 +710,44 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				}
 			}
 
+			Outfit& newOutfit = Outfit();
+			if (podium) {
+				int newLookType = look_type->GetValue();
+				int newMount = look_mount->GetValue();
+
+				if (newLookType < 0 || newLookType > 0xFFFF || newMount < 0 || newMount > 0xFFFF) {
+					g_gui.PopupDialog(this, "Error", "LookType and Mount must be between 0 and 65535.", wxOK);
+					return;
+				}
+
+				int newHead = look_head->GetValue();
+				int newBody = look_body->GetValue();
+				int newLegs = look_legs->GetValue();
+				int newFeet = look_feet->GetValue();
+
+				if (newHead < 0 || newHead > 0xFF ||
+					newBody < 0 || newBody > 0xFF ||
+					newLegs < 0 || newLegs > 0xFF ||
+					newFeet < 0 || newFeet > 0xFF) {
+					g_gui.PopupDialog(this, "Error", "Outfit colors must be between 0 and 255.", wxOK);
+					return;
+				}
+
+				int newAddon = look_addon->GetValue();
+				if (newAddon < 0 || newAddon > 3) {
+					g_gui.PopupDialog(this, "Error", "Addons value must be between 0 and 3.", wxOK);
+					return;
+				}
+
+				newOutfit.lookType = newLookType;
+				newOutfit.lookHead = newHead;
+				newOutfit.lookBody = newBody;
+				newOutfit.lookLegs = newLegs;
+				newOutfit.lookFeet = newFeet;
+				newOutfit.lookAddon = newAddon;
+				newOutfit.lookMount = newMount;
+			}
+
 			// Done validating, set the values.
 			if(edit_item->canHoldDescription()) {
 				edit_item->setText(new_desc);
@@ -639,7 +761,18 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			if(teleport) {
 				teleport->setDestination(new_dest);
 			}
+			if(podium) {
+				podium->setShowOutfit(show_outfit->GetValue());
+				podium->setShowMount(show_mount->GetValue());
+				podium->setShowPlatform(show_platform->GetValue());
 
+				int* new_dir = reinterpret_cast<int*>(direction_field->GetClientData(direction_field->GetSelection()));
+				if (new_dir) {
+					podium->setDirection((Direction)*new_dir);
+				}
+
+				podium->setOutfit(newOutfit);
+			}
 			edit_item->setUniqueID(new_uid);
 			edit_item->setActionID(new_aid);
 		}

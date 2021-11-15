@@ -147,6 +147,7 @@ bool Item::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute att
 		case OTBM_ATTR_DEPOT_ID: return stream->skip(2);
 		case OTBM_ATTR_HOUSEDOORID: return stream->skip(1);
 		case OTBM_ATTR_TELE_DEST: return stream->skip(5);
+		case OTBM_ATTR_PODIUMOUTFIT: return stream->skip(15);
 		default: return false;
 	}
 	return true;
@@ -383,6 +384,92 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 	file.endNode();
 	return true;
+}
+
+// ============================================================================
+// Podium
+
+bool Podium::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attribute, BinaryNode* stream)
+{
+	if (OTBM_ATTR_PODIUMOUTFIT == attribute) {
+		uint8_t flags;
+		uint8_t direction;
+
+		uint16_t lookType;
+		uint8_t lookHead;
+		uint8_t lookBody;
+		uint8_t lookLegs;
+		uint8_t lookFeet;
+		uint8_t lookAddon;
+
+		uint16_t lookMount;
+
+		// version 12 mount colors (not implemented)
+		uint8_t lookMountHead;
+		uint8_t lookMountBody;
+		uint8_t lookMountLegs;
+		uint8_t lookMountFeet;
+
+		if (
+			// podium settings
+			stream->getU8(flags) &&
+			stream->getU8(direction) &&
+
+			// outfit
+			stream->getU16(lookType) &&
+			stream->getU8(lookHead) && stream->getU8(lookBody) && stream->getU8(lookLegs) && stream->getU8(lookFeet) && stream->getU8(lookAddon) &&
+
+			// mount
+			stream->getU16(lookMount) &&
+			stream->getU8(lookMountHead) && stream->getU8(lookMountBody) && stream->getU8(lookMountLegs) && stream->getU8(lookMountFeet)
+		) { //"if" condition ends here
+
+			setShowOutfit((flags & PODIUM_SHOW_OUTFIT) != 0);
+			setShowMount((flags & PODIUM_SHOW_MOUNT) != 0);
+			setShowPlatform((flags & PODIUM_SHOW_PLATFORM) != 0);
+
+			setDirection(static_cast<Direction>(direction));
+
+			struct Outfit newOutfit = Outfit();
+			newOutfit.lookType = static_cast<int>(lookType);
+			newOutfit.lookHead = static_cast<int>(lookHead);
+			newOutfit.lookBody = static_cast<int>(lookBody);
+			newOutfit.lookLegs = static_cast<int>(lookLegs);
+			newOutfit.lookFeet = static_cast<int>(lookFeet);
+			newOutfit.lookAddon = static_cast<int>(lookAddon);
+			newOutfit.lookMount = static_cast<int>(lookMount);
+			setOutfit(newOutfit);
+			return true;
+		}
+		return false;
+	} else {
+		return Item::readItemAttribute_OTBM(maphandle, attribute, stream);
+	}
+}
+
+void Podium::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& stream) const
+{
+	Item::serializeItemAttributes_OTBM(maphandle, stream);
+
+	uint8_t flags = PODIUM_SHOW_OUTFIT * static_cast<uint8_t>(showOutfit) + PODIUM_SHOW_MOUNT * static_cast<uint8_t>(showMount) + PODIUM_SHOW_PLATFORM * static_cast<uint8_t>(showPlatform);
+
+	stream.addByte(OTBM_ATTR_PODIUMOUTFIT);
+	stream.addU8(flags);
+	stream.addU8(direction);
+
+	stream.addU16(outfit.lookType);
+	stream.addU8(outfit.lookHead);
+	stream.addU8(outfit.lookBody);
+	stream.addU8(outfit.lookLegs);
+	stream.addU8(outfit.lookFeet);
+	stream.addU8(outfit.lookAddon);
+	stream.addU16(outfit.lookMount);
+
+	// version 12 mount colors (not implemented)
+	stream.addU8(0);
+	stream.addU8(0);
+	stream.addU8(0);
+	stream.addU8(0);
 }
 
 /*

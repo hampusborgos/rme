@@ -62,6 +62,7 @@ enum ItemGroup_t {
 	ITEM_GROUP_FLUID,
 	ITEM_GROUP_DOOR,
 	ITEM_GROUP_DEPRECATED,
+	ITEM_GROUP_PODIUM,
 	ITEM_GROUP_LAST
 };
 
@@ -76,6 +77,7 @@ enum ItemTypes_t {
 	ITEM_TYPE_TELEPORT,
 	ITEM_TYPE_BED,
 	ITEM_TYPE_KEY,
+	ITEM_TYPE_PODIUM,
 	ITEM_TYPE_LAST
 };
 
@@ -260,6 +262,7 @@ public:
 	bool isTeleport() const { return (type == ITEM_TYPE_TELEPORT); }
 	bool isBed() const { return (type == ITEM_TYPE_BED); }
 	bool isKey() const { return (type == ITEM_TYPE_KEY); }
+	bool isPodium() const { return (type == ITEM_TYPE_PODIUM); }
 
 	bool isStackable() const { return stackable; }
 	bool isMetaItem() const { return is_metaitem; }

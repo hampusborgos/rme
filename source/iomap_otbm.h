@@ -47,6 +47,7 @@ enum OTBM_ItemAttribute
 	OTBM_ATTR_SLEEPERGUID = 20,
 	OTBM_ATTR_SLEEPSTART = 21,
 	OTBM_ATTR_CHARGES = 22,
+	OTBM_ATTR_PODIUMOUTFIT = 23,
 
 	OTBM_ATTR_ATTRIBUTE_MAP = 128
 };
@@ -69,6 +70,12 @@ enum OTBM_NodeTypes_t
 	OTBM_HOUSETILE = 14,
 	OTBM_WAYPOINTS = 15,
 	OTBM_WAYPOINT = 16,
+};
+
+enum PodiumFlags : uint8_t {
+	PODIUM_SHOW_PLATFORM = 1 << 0, // show the platform below the outfit
+	PODIUM_SHOW_OUTFIT = 1 << 1, // show outfit
+	PODIUM_SHOW_MOUNT = 1 << 2 // show mount
 };
 
 struct OTBM_root_header

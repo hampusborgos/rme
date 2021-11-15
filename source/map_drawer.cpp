@@ -1030,7 +1030,12 @@ void MapDrawer::DrawBrush()
 	}
 }
 
-void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
+void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
+	const Position& pos = tile->getPosition();
+	BlitItem(draw_x, draw_y, pos, item, ephemeral, red, green, blue, alpha, tile);
+}
+
+void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, Item* item, bool ephemeral, int red, int green, int blue, int alpha, const Tile* tile) {
 	ItemType& it = g_items[item->getID()];
 
 	if(!options.ingame && !ephemeral && item->isSelected()) {
@@ -1039,38 +1044,51 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		green /= 2;
 	}
 
+	// Display invisible and invalid items
 	// Ugly hacks. :)
-	if(it.id == 0) {
+
+	// Red invalid client id
+	if (it.id == 0) {
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, 255, 0, 0, alpha);
 		glEnable(GL_TEXTURE_2D);
 		return;
-	} else if(it.id == 459 && !options.ingame) {
-		glDisable(GL_TEXTURE_2D);
-		glBlitSquare(draw_x, draw_y, red, green, 0, alpha/3*2);
-		glEnable(GL_TEXTURE_2D);
-		return;
-	} else if(it.id == 460 && !options.ingame) {
-		glDisable(GL_TEXTURE_2D);
-		glBlitSquare(draw_x, draw_y, red, 0, 0, alpha/3*2);
-		glEnable(GL_TEXTURE_2D);
-		return;
-	}
 
+	// Yellow invisible stairs tile
+	} else if (it.clientID == 469 && !options.ingame) {
+		glDisable(GL_TEXTURE_2D);
+		glBlitSquare(draw_x, draw_y, red, green, 0, alpha / 3 * 2);
+		glEnable(GL_TEXTURE_2D);
+		return;
+
+	// Red invisible walkable tile
+	}
+ else if (it.clientID == 470 && !options.ingame) {
+ glDisable(GL_TEXTURE_2D);
+ glBlitSquare(draw_x, draw_y, red, 0, 0, alpha / 3 * 2);
+ glEnable(GL_TEXTURE_2D);
+ return;
+
+ // Cyan invisible wall
+	}
+ else if (it.clientID == 2187 && !options.ingame) {
+ glDisable(GL_TEXTURE_2D);
+ glBlitSquare(draw_x, draw_y, 0, green, blue, 80);
+ glEnable(GL_TEXTURE_2D);
+ return;
+	}
 
 	GameSprite* spr = it.sprite;
 
-	if(it.isMetaItem())
+	if (it.isMetaItem())
 		return;
-	if(spr == nullptr)
+	if (spr == nullptr)
 		return;
-	if(!ephemeral && it.pickupable && !options.show_items)
+	if (!ephemeral && it.pickupable && !options.show_items)
 		return;
 
 	int screenx = draw_x - spr->getDrawOffset().first;
 	int screeny = draw_y - spr->getDrawOffset().second;
-
-	const Position& pos = tile->getPosition();
 
 	// Set the newd drawing height accordingly
 	draw_x -= spr->getDrawHeight();
@@ -1082,49 +1100,58 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 	int pattern_y = pos.y % spr->pattern_y;
 	int pattern_z = pos.z % spr->pattern_z;
 
-	if(it.isSplash() || it.isFluidContainer()) {
+	if (it.isSplash() || it.isFluidContainer()) {
 		subtype = item->getSubtype();
-	} else if(it.isHangable) {
-		if(tile->hasProperty(HOOK_SOUTH)) {
+	}
+	else if (it.isHangable) {
+		if (tile && tile->hasProperty(HOOK_SOUTH)) {
 			pattern_x = 1;
-		} else if(tile->hasProperty(HOOK_EAST)) {
+		}
+		else if (tile && tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 2;
-		} else {
+		}
+		else {
 			pattern_x = 0;
 		}
-	} else if(it.stackable) {
-		if(item->getSubtype() <= 1)
+	}
+	else if (it.stackable) {
+		if (item->getSubtype() <= 1)
 			subtype = 0;
-		else if(item->getSubtype() <= 2)
+		else if (item->getSubtype() <= 2)
 			subtype = 1;
-		else if(item->getSubtype() <= 3)
+		else if (item->getSubtype() <= 3)
 			subtype = 2;
-		else if(item->getSubtype() <= 4)
+		else if (item->getSubtype() <= 4)
 			subtype = 3;
-		else if(item->getSubtype() < 10)
+		else if (item->getSubtype() < 10)
 			subtype = 4;
-		else if(item->getSubtype() < 25)
+		else if (item->getSubtype() < 25)
 			subtype = 5;
-		else if(item->getSubtype() < 50)
+		else if (item->getSubtype() < 50)
 			subtype = 6;
 		else
 			subtype = 7;
 	}
 
-	if(!ephemeral && options.transparent_items &&
-			(!it.isGroundTile() || spr->width > 1 || spr->height > 1) &&
-			!it.isSplash() &&
-			(!it.isBorder || spr->width > 1 || spr->height > 1)
-	  )
+	if (!ephemeral && options.transparent_items &&
+		(!it.isGroundTile() || spr->width > 1 || spr->height > 1) &&
+		!it.isSplash() &&
+		(!it.isBorder || spr->width > 1 || spr->height > 1)
+		)
 	{
 		alpha /= 2;
 	}
 
+	Podium* podium = dynamic_cast<Podium*>(item);
+	if (it.isPodium() && !podium->hasShowPlatform()) {
+		alpha /= 2;
+	}
+
 	int frame = item->getFrame();
-	for(int cx = 0; cx != spr->width; cx++) {
-		for(int cy = 0; cy != spr->height; cy++) {
-			for(int cf = 0; cf != spr->layers; cf++) {
-				int texnum = spr->getHardwareID(cx,cy,cf,
+	for (int cx = 0; cx != spr->width; cx++) {
+		for (int cy = 0; cy != spr->height; cy++) {
+			for (int cf = 0; cf != spr->layers; cf++) {
+				int texnum = spr->getHardwareID(cx, cy, cf,
 					subtype,
 					pattern_x,
 					pattern_y,
@@ -1136,112 +1163,23 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		}
 	}
 
-	if(options.show_hooks && (it.hookSouth || it.hookEast))
+	if (options.show_hooks && (it.hookSouth || it.hookEast) && zoom <= 3.0)
 		DrawHookIndicator(draw_x, draw_y, it);
-}
 
-void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const Item* item, bool ephemeral, int red, int green, int blue, int alpha) {
-	ItemType& it = g_items[item->getID()];
-
-	if(!options.ingame && !ephemeral && item->isSelected()) {
-		red /= 2;
-		blue /= 2;
-		green /= 2;
-	}
-
-	if(it.id == 459 && !options.ingame) { // Ugly hack yes?
-		glDisable(GL_TEXTURE_2D);
-		glBlitSquare(draw_x, draw_y, red, green, 0, alpha/3*2);
-		glEnable(GL_TEXTURE_2D);
-		return;
-	} else if(it.id == 460 && !options.ingame) { // Ugly hack yes?
-		glDisable(GL_TEXTURE_2D);
-		glBlitSquare(draw_x, draw_y, red, 0, 0, alpha/3*2);
-		glEnable(GL_TEXTURE_2D);
-		return;
-	}
-
-	GameSprite* spr = it.sprite;
-
-	if(it.isMetaItem())
-		return;
-	if(spr == nullptr)
-		return;
-	if(!ephemeral && it.pickupable && options.show_items)
-		return;
-
-	int screenx = draw_x - spr->getDrawOffset().first;
-	int screeny = draw_y - spr->getDrawOffset().second;
-
-	// Set the newd drawing height accordingly
-	draw_x -= spr->getDrawHeight();
-	draw_y -= spr->getDrawHeight();
-
-	int subtype = -1;
-
-	int pattern_x = pos.x % spr->pattern_x;
-	int pattern_y = pos.y % spr->pattern_y;
-	int pattern_z = pos.z % spr->pattern_z;
-
-	if(it.isSplash() || it.isFluidContainer()) {
-		subtype = item->getSubtype();
-	} else if(it.isHangable) {
-		pattern_x = 0;
-		/*
-		if(tile->hasProperty(HOOK_SOUTH)) {
-			pattern_x = 2;
-		} else if(tile->hasProperty(HOOK_EAST)) {
-			pattern_x = 1;
-		} else {
-			pattern_x = -0;
-		}
-		*/
-	} else if(it.stackable) {
-		if(item->getSubtype() <= 1)
-			subtype = 0;
-		else if(item->getSubtype() <= 2)
-			subtype = 1;
-		else if(item->getSubtype() <= 3)
-			subtype = 2;
-		else if(item->getSubtype() <= 4)
-			subtype = 3;
-		else if(item->getSubtype() < 10)
-			subtype = 4;
-		else if(item->getSubtype() < 25)
-			subtype = 5;
-		else if(item->getSubtype() < 50)
-			subtype = 6;
-		else
-			subtype = 7;
-	}
-
-	if(!ephemeral && options.transparent_items &&
-			(!it.isGroundTile() || spr->width > 1 || spr->height > 1) &&
-			!it.isSplash() &&
-			(!it.isBorder || spr->width > 1 || spr->height > 1)
-	  )
-	{
-		alpha /= 2;
-	}
-
-	int frame = item->getFrame();
-	for(int cx = 0; cx != spr->width; ++cx) {
-		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->layers; ++cf) {
-				int texnum = spr->getHardwareID(cx,cy,cf,
-					subtype,
-					pattern_x,
-					pattern_y,
-					pattern_z,
-					frame
-				);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
+	if (it.isPodium()) {
+		Outfit outfit = podium->getOutfit();
+		if (!podium->hasShowOutfit()) {
+			if (podium->hasShowMount()) {
+				outfit.lookType = outfit.lookMount;
+			} else {
+				outfit.lookType = 0;
 			}
 		}
+		if (!podium->hasShowMount()) {
+			outfit.lookMount = 0;
+		}
+		BlitCreature(draw_x, draw_y, outfit, static_cast<Direction>(podium->getDirection()), 255, 255, 255, 255);
 	}
-
-	if(options.show_hooks && (it.hookSouth || it.hookEast) && zoom <= 3.0)
-		DrawHookIndicator(draw_x, draw_y, it);
 }
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha)

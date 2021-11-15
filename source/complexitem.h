@@ -20,6 +20,7 @@
 
 #include "position.h"
 #include "item.h"
+#include "outfit.h"
 
 #pragma pack(1)
 
@@ -122,4 +123,35 @@ class Depot : public Item
 		uint8_t depotId;
 };
 
+class Podium : public Item
+{
+	public:
+		Podium(const uint16_t _type);
+
+		Item* deepCopy() const;
+
+		const Outfit& getOutfit() const { return outfit; }
+		void setOutfit(Outfit& newOutfit) { outfit = newOutfit; }
+
+		const uint8_t getDirection() { return direction; }
+		void setDirection(uint8_t newDirection) { direction = newDirection; }
+
+		bool hasShowOutfit() { return showOutfit; }
+		bool hasShowMount() { return showMount; }
+		bool hasShowPlatform() { return showPlatform; }
+
+		void setShowOutfit(bool newState) { showOutfit = newState; }
+		void setShowMount(bool newState) { showMount = newState; }
+		void setShowPlatform(bool newState) { showPlatform = newState; }
+
+		virtual void serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+		virtual bool readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attr, BinaryNode* node);
+
+	protected:
+		Outfit outfit;
+		uint8_t direction;
+		bool showOutfit;
+		bool showMount;
+		bool showPlatform = true;
+};
 #endif

@@ -567,12 +567,16 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 		t->group = ItemGroup_t(u8);
 
 		switch(t->group) {
-			case  ITEM_GROUP_NONE:
+			case ITEM_GROUP_NONE:
 			case ITEM_GROUP_GROUND:
 			case ITEM_GROUP_SPLASH:
 			case ITEM_GROUP_FLUID:
 				break;
-			case ITEM_GROUP_CONTAINER: t->type = ITEM_TYPE_CONTAINER; break;
+			case ITEM_GROUP_CONTAINER:
+				t->type = ITEM_TYPE_CONTAINER;
+				break;
+			case ITEM_GROUP_PODIUM:
+				t->type = ITEM_TYPE_PODIUM;
 				break;
 			default:
 				warnings.push_back("Unknown item group declaration");
@@ -813,6 +817,8 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 				it.type = ITEM_TYPE_BED;
 			} else if (typeValue == "key") {
 				it.type = ITEM_TYPE_KEY;
+			} else if (typeValue == "podium") {
+				it.type = ITEM_TYPE_PODIUM;
 			}
 		} else if(key == "name") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
