@@ -1179,7 +1179,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, Item* it
 		if (!podium->hasShowMount()) {
 			outfit.lookMount = 0;
 		}
-		BlitCreature(draw_x, draw_y, outfit, static_cast<Direction>(podium->getDirection()), 255, 255, 255, 255);
+		BlitCreature(draw_x, draw_y, outfit, static_cast<Direction>(podium->getDirection()), red, green, blue, 255);
 	}
 }
 
