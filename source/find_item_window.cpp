@@ -310,7 +310,7 @@ void FindItemDialog::RefreshContentsInternal()
 			}
 		}
 
-		if (invalid_item) {
+		if (invalid_item->GetValue()) {
 			found_search_results = true;
 		}
 	} else if(selection == SearchMode::ClientIDs) {
@@ -479,7 +479,7 @@ void FindItemDialog::OnInputTimer(wxTimerEvent& WXUNUSED(event))
 
 void FindItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
-	if (invalid_item && (SearchMode)options_radio_box->GetSelection() == SearchMode::ServerIDs && result_id != 0) {
+	if (invalid_item->GetValue() && (SearchMode)options_radio_box->GetSelection() == SearchMode::ServerIDs && result_id != 0) {
 		EndModal(wxID_OK);
 		return;
 	}
