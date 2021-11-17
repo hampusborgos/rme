@@ -109,6 +109,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(CLEAR_INVALID_HOUSES, wxITEM_NORMAL, OnClearHouseTiles);
 	MAKE_ACTION(CLEAR_MODIFIED_STATE, wxITEM_NORMAL, OnClearModifiedState);
 	MAKE_ACTION(MAP_REMOVE_ITEMS, wxITEM_NORMAL, OnMapRemoveItems);
+	MAKE_ACTION(MAP_REMOVE_INVALID_ITEMS, wxITEM_NORMAL, OnMapRemoveInvalidItems);
 	MAKE_ACTION(MAP_REMOVE_CORPSES, wxITEM_NORMAL, OnMapRemoveCorpses);
 	MAKE_ACTION(MAP_REMOVE_UNREACHABLE_TILES, wxITEM_NORMAL, OnMapRemoveUnreachable);
 	MAKE_ACTION(MAP_CLEANUP, wxITEM_NORMAL, OnMapCleanup);
@@ -1251,6 +1252,46 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 		g_gui.RefreshView();
 	}
 	dialog.Destroy();
+}
+
+namespace OnMapRemoveInvalidItems
+{
+	struct condition
+	{
+		condition() {}
+
+		bool operator()(Map& map, Item* item, long long removed, long long done) {
+			if (done % 0x800 == 0)
+				g_gui.SetLoadDone((unsigned int)(100 * done / map.getTileCount()));
+
+			return !item->isMetaItem() && item->getClientID() == 0;
+		}
+	};
+}
+
+void MainMenuBar::OnMapRemoveInvalidItems(wxCommandEvent& WXUNUSED(event))
+{
+	if (!g_gui.IsEditorOpen())
+		return;
+
+	int ok = g_gui.PopupDialog("Remove Invalid Items", "Do you want to remove all invalid items from the map?", wxYES | wxNO);
+
+	if (ok == wxID_YES) {
+		g_gui.GetCurrentEditor()->selection.clear();
+		g_gui.GetCurrentEditor()->actionQueue->clear();
+
+		OnMapRemoveInvalidItems::condition func;
+		g_gui.CreateLoadBar("Searching map for items to remove...");
+
+		int64_t count = RemoveItemOnMap(g_gui.GetCurrentMap(), func, false);
+
+		g_gui.DestroyLoadBar();
+
+		wxString msg;
+		msg << count << " items deleted.";
+		g_gui.PopupDialog("Search completed", msg, wxOK);
+		g_gui.GetCurrentMap().doChange();
+	}
 }
 
 namespace OnMapRemoveCorpses

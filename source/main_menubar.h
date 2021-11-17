@@ -80,6 +80,7 @@ namespace MenuBar
 		EDIT_MONSTERS,
 		MAP_CLEANUP,
 		MAP_REMOVE_ITEMS,
+		MAP_REMOVE_INVALID_ITEMS,
 		MAP_REMOVE_CORPSES,
 		MAP_REMOVE_UNREACHABLE_TILES,
 		MAP_CLEAN_HOUSE_ITEMS,
@@ -206,6 +207,7 @@ public:
 	void OnGotoPreviousPosition(wxCommandEvent& event);
 	void OnGotoPosition(wxCommandEvent& event);
 	void OnMapRemoveItems(wxCommandEvent& event);
+	void OnMapRemoveInvalidItems(wxCommandEvent& event);
 	void OnMapRemoveCorpses(wxCommandEvent& event);
 	void OnMapRemoveUnreachable(wxCommandEvent& event);
 	void OnClearHouseTiles(wxCommandEvent& event);

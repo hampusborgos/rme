@@ -56,6 +56,11 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	wxStaticBoxSizer* server_id_box_sizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Server ID"), wxVERTICAL);
 	server_id_spin = newd wxSpinCtrl(server_id_box_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 100, g_items.getMaxID(), 100);
 	server_id_box_sizer->Add(server_id_spin, 0, wxALL | wxEXPAND, 5);
+
+	invalid_item = newd wxCheckBox(server_id_box_sizer->GetStaticBox(), wxID_ANY, "Force select", wxDefaultPosition, wxDefaultSize, 0);
+	invalid_item->SetToolTip("Force choose item ID that does not appear on the list.");
+	server_id_box_sizer->Add(invalid_item, 1, wxALL | wxEXPAND, 5);
+
 	options_box_sizer->Add(server_id_box_sizer, 1, wxALL | wxEXPAND, 5);
 
 	wxStaticBoxSizer* client_id_box_sizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Client ID"), wxVERTICAL);
@@ -198,6 +203,7 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	has_elevation->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	ignore_look->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 	floor_change->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
+	invalid_item->Connect(wxEVT_COMMAND_CHECKBOX_CLICKED, wxCommandEventHandler(FindItemDialog::OnPropertyChange), NULL, this);
 }
 
 FindItemDialog::~FindItemDialog()
@@ -240,6 +246,7 @@ void FindItemDialog::setSearchMode(FindItemDialog::SearchMode mode)
 		options_radio_box->SetSelection(mode);
 
 	server_id_spin->Enable(mode == SearchMode::ServerIDs);
+	invalid_item->Enable(mode == SearchMode::ServerIDs);
 	client_id_spin->Enable(mode == SearchMode::ClientIDs);
 	name_text_input->Enable(mode == SearchMode::Names);
 	types_radio_box->Enable(mode == SearchMode::Types);
@@ -285,24 +292,28 @@ void FindItemDialog::RefreshContentsInternal()
 	bool found_search_results = false;
 
 	if(selection == SearchMode::ServerIDs) {
-		uint16_t serverID = (uint16_t)server_id_spin->GetValue();
-		for(int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
-			if(item.id != serverID)
-				continue;
-
+		result_id = std::min(server_id_spin->GetValue(), 0xFFFF);
+		uint16_t serverID = static_cast<uint16_t>(result_id);
+		if (serverID <= g_items.getMaxID()) {
+			ItemType& item = g_items.getItemType(serverID);
 			RAWBrush* raw_brush = item.raw_brush;
-			if (!raw_brush)
-				continue;
-
-			if(only_pickupables && !item.pickupable)
-				continue;
-
-			found_search_results = true;
-			items_list->AddBrush(raw_brush);
+			if (raw_brush) {
+				if (only_pickupables) {
+					if (item.pickupable) {
+						found_search_results = true;
+						items_list->AddBrush(raw_brush);
+					}
+				} else {
+					found_search_results = true;
+					items_list->AddBrush(raw_brush);
+				}
+			}
 		}
-	}
-	else if(selection == SearchMode::ClientIDs) {
+
+		if (invalid_item) {
+			found_search_results = true;
+		}
+	} else if(selection == SearchMode::ClientIDs) {
 		uint16_t clientID = (uint16_t)client_id_spin->GetValue();
 		for (int id = 100; id <= g_items.getMaxID(); ++id) {
 			ItemType& item = g_items.getItemType(id);
@@ -319,8 +330,7 @@ void FindItemDialog::RefreshContentsInternal()
 			found_search_results = true;
 			items_list->AddBrush(raw_brush);
 		}
-	}
-	else if(selection == SearchMode::Names) {
+	} else if(selection == SearchMode::Names) {
 		std::string search_string = as_lower_str(nstr(name_text_input->GetValue()));
 		if(search_string.size() >= 2) {
 			for(int id = 100; id <= g_items.getMaxID(); ++id) {
@@ -342,8 +352,7 @@ void FindItemDialog::RefreshContentsInternal()
 				items_list->AddBrush(raw_brush);
 			}
 		}
-	}
-	else if(selection == SearchMode::Types) {
+	} else if(selection == SearchMode::Types) {
 		for(int id = 100; id <= g_items.getMaxID(); ++id) {
 			ItemType& item = g_items.getItemType(id);
 			if (item.id == 0)
@@ -373,8 +382,7 @@ void FindItemDialog::RefreshContentsInternal()
 			found_search_results = true;
 			items_list->AddBrush(raw_brush);
 		}
-	}
-	else if(selection == SearchMode::Properties) {
+	} else if(selection == SearchMode::Properties) {
 		bool has_selected = (unpassable->GetValue() ||
 			unmovable->GetValue() ||
 			block_missiles->GetValue() ||
@@ -471,6 +479,11 @@ void FindItemDialog::OnInputTimer(wxTimerEvent& WXUNUSED(event))
 
 void FindItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
+	if (invalid_item && (SearchMode)options_radio_box->GetSelection() == SearchMode::ServerIDs && result_id != 0) {
+		EndModal(wxID_OK);
+		return;
+	}
+
 	if(items_list->GetItemCount() != 0) {
 		Brush* brush = items_list->GetSelectedBrush();
 		if(brush) {
