@@ -286,9 +286,9 @@
             <data format="10.57" dat="0x44BA" spr="0x585138E5"/>
 		</client>
 		
-		<client name="12.71" otb="12.71" visible="true" data_directory="1271">
+		<client name="12.71 - 12.72" otb="12.71" visible="true" data_directory="1271">
             <otbm version="3"/>
-            <extensions from="8.20 - 8.31" to="12.71"/>
+            <extensions from="8.20 - 8.31" to="12.71 - 12.72"/>
             <data format="10.57" dat="0x4A10" spr="0x59E48E02"/>
 		</client>
 	</clients>
