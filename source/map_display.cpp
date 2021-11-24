@@ -2308,10 +2308,10 @@ void MapPopupMenu::Update()
 				Teleport* teleport = dynamic_cast<Teleport*>(topSelectedItem);
 				if(topSelectedItem && (topSelectedItem->isBrushDoor() || topSelectedItem->isRoteable() || teleport)) {
 
-					if(topSelectedItem->isRoteable()) 
+					if(topSelectedItem->isRoteable())
 						Append(MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 
-					if(teleport && teleport->hasDestination()) 
+					if(teleport && teleport->hasDestination())
 						Append(MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 
 					if(topSelectedItem->isDoor())

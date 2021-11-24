@@ -7764,13 +7764,13 @@
 	<item id="3307" name="jungle grass"/>
 	<item id="3308" name="jungle grass"/>
 	<item id="3309" name="jungle grass"/>
-    <item id="3310" article="a" name="pitfall"> 	 
-		<attribute key="floorchange" value="down"/> 	 
-	</item> 	 
-	<item id="3311" article="a" name="pitfall"> 	 
-		<attribute key="floorchange" value="down"/> 	 
-		<attribute key="decayTo" value="3310"/> 	 
-		<attribute key="duration" value="60"/> 	 
+    <item id="3310" article="a" name="pitfall">
+		<attribute key="floorchange" value="down"/>
+	</item>
+	<item id="3311" article="a" name="pitfall">
+		<attribute key="floorchange" value="down"/>
+		<attribute key="decayTo" value="3310"/>
+		<attribute key="duration" value="60"/>
 	</item>
 	<item id="3312" article="an" name="ant trail"/>
 	<item id="3313" article="an" name="ant trail"/>
@@ -7784,8 +7784,8 @@
 	<item id="3321" article="an" name="ant trail"/>
 	<item id="3322" article="an" name="ant trail"/>
 	<item id="3323" article="an" name="anthill"/>
-	<item id="3324" article="an" name="earth hole"> 	 
-		<attribute key="floorchange" value="down"/> 	 
+	<item id="3324" article="an" name="earth hole">
+		<attribute key="floorchange" value="down"/>
 	</item>
 	<item id="3325" article="a" name="rock"/>
 	<item id="3326" article="a" name="rock"/>
@@ -24995,7 +24995,7 @@
 		<attribute key="description" value="This bowl was coated with sacred clay and can be used to purify small amounts of corrupted water."/>
 		<attribute key="weight" value="1000"/>
 	</item>
- 
+
 	<item id="12318" article="a" name="replica of the sceptre">
 		<attribute key="weight" value="1400"/>
 	</item>
@@ -25003,7 +25003,7 @@
 		<attribute key="weight" value="180"/>
 		<attribute key="description" value="This plant poison is meant to destroy the growths near the Keeper's lair deep beneath the gardens."/>
 	</item>
- 
+
 	<item id="12323" article="a" name="the tail of the keeper">
 		<attribute key="weight" value="450"/>
 	</item>
@@ -25023,12 +25023,12 @@
 		<attribute key="weight" value="180"/>
 		<attribute key="description" value="This potion will help you enter the dreams of any lifeform."/>
 	</item>
- 
+
 	<item id="12382" article="a" name="scribbled sheet of paper">
 		<attribute key="weight" value="250"/>
 		<attribute key="description" value="Only a single word is scribbled on the sheet: SOLOSARASATIQUARIUM."/>
 	</item>
- 
+
 	<item id="12399" article="a" name="girlish hair decoration">
 		<attribute key="weight" value="50"/>
 	</item>
@@ -25191,7 +25191,7 @@
 	<item id="12449" article="a" name="safety pin">
 		<attribute key="weight" value="50"/>
 	</item>
- 
+
 	<item id="12466" article="a" name="scroll of heroic deeds" plural="scrolls of heroic deeds">
 		<attribute key="weight" value="79"/>
 	</item>
@@ -25211,7 +25211,7 @@
 		<attribute key="description" value="Distinctive shape and flavour."/>
 		<attribute key="weight" value="140"/>
 	</item>
- 
+
 	<item id="12495" article="a" name="goblin ear">
 		<attribute key="weight" value="75"/>
 	</item>
@@ -25220,7 +25220,7 @@
 		<attribute key="weight" value="1500"/>
 		<attribute key="description" value="It was given to you by the djinn maitre and contains new recipes you cooked."/>
 	</item>
- 
+
 	<item id="12500" article="a" name="faded last will">
 		<attribute key="description" value="Supposedly the last will of someone. Whatever may have been written on it is long vanished."/>
 		<attribute key="weight" value="200"/>
@@ -25249,7 +25249,7 @@
 	<item id="12508" article="a" name="magic crystal">
 		<attribute key="weight" value="140"/>
 	</item>
- 
+
 	<item id="12527" article="a" name="dead brimstone bug" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10"/>
 		<attribute key="decayTo" value="12528"/>
@@ -25264,7 +25264,7 @@
 		<attribute key="corpseType" value="venom"/>
 		<attribute key="fluidSource" value="slime"/>
 	</item>
- 
+
 	<item id="12538" article="a" name="dead brimstone bug">
 		<attribute key="decayTo" value="12539"/>
 		<attribute key="duration" value="300"/>
@@ -25298,7 +25298,7 @@
 		<attribute key="description" value="It's said to have incredible effects if you drink it while wearing a magical ring with time limit."/>
 		<attribute key="weight" value="300"/>
 	</item>
- 
+
 	<item id="12559" article="a" name="silver rune emblem">
 		<attribute key="description" value="It's an adorned ultimate healing rune."/>
 		<attribute key="weight" value="120"/>
@@ -25545,7 +25545,7 @@
 	<item id="12617" article="a" name="broken slicer">
 		<attribute key="weight" value="140"/>
 	</item>
- 
+
 	<item id="12622" article="a" name="tentacle piece">
 		<attribute key="weight" value="300"/>
 	</item>

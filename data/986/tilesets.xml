@@ -1,6 +1,6 @@
 <materials>
 	<!-- TILESETS -->
-	
+
 	<tileset name="Grounds">
 		<raw>
 			<item id="100"/>
@@ -147,7 +147,7 @@
 			<item fromid="9833" toid="9834"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Nature">
 		<terrain>
 			<brush name="sea"/>
@@ -286,7 +286,7 @@
 			<brush name="mossy rocks"/>
 			<brush name="rubles"/>
 			<brush name="plant wall2"/>
-			
+
 			<brush name="demon oak"/>
 			<item fromid="8289" toid="8290"/>
 		</doodad>
@@ -345,7 +345,7 @@
 			<item fromid="8214" toid="8240"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
@@ -363,7 +363,7 @@
 			<brush name="void"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Snow">
 		<terrain>
 			<brush name="sea"/>
@@ -399,7 +399,7 @@
 			<brush name="floating ice"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Town">
 		<terrain>
 			<brush name="stone floor"/>
@@ -453,14 +453,14 @@
 			<brush name="ornamented low stone-wooden wall"/>
 			<brush name="high stone-wooden wall"/>
 			<brush name="ornamented high stone-wooden wall"/>
-			
+
 			<brush name="fence"/>
 			<brush name="dark fence"/>
 			<brush name="steel bars"/>
 			<brush name="steel rebar"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Roofs">
 		<terrain>
 			<brush name="flat roof"/>
@@ -489,7 +489,7 @@
 			<item fromid="9759" toid="9766"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Stairs">
 		<terrain>
 			<brush name="snowy ramp"/>
@@ -517,7 +517,7 @@
 			<brush name="gray stone trapdoor"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Boats">
 		<raw>
 			<item fromid="4883" toid="4947"/>
@@ -530,7 +530,7 @@
 			<item fromid="3587" toid="3600"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Sea">
 		<raw>
 			<item fromid="2226"/>
@@ -616,7 +616,7 @@
 			<item fromid="9838" toid="9845"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Interior">
 		<doodad>
 			<brush name="depot"/>
@@ -738,7 +738,7 @@
 			<item fromid="9982" toid="9991"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Beds">
 		<doodad>
 			-- beds --
@@ -752,7 +752,7 @@
 			<brush name="hay bed with sleeper"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Statues">
 		<doodad>
 			<item fromid="1444" toid="1445"/>
@@ -775,7 +775,7 @@
 			<brush name="hunter statue"/>
 			<brush name="hydra fight statue"/>
 			<brush name="snake charmer statue"/>
-			
+
 			<brush name="lizard statue"/>
 			<brush name="broken lizard statue"/>
 			<brush name="giant snake head statue"/>
@@ -787,7 +787,7 @@
 			<brush name="stone monkey"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Exterior">
 		<doodad>
 			<item id="1387"/>
@@ -817,7 +817,7 @@
 			<brush name="lumberjack stuff"/>
 			<brush name="leaning planks"/>
 			<brush name="planks"/>
-			
+
 			<brush name="ballista"/>
 			<brush name="catapult"/>
 			<brush name="torture machine"/>
@@ -828,10 +828,10 @@
 			<brush name="stuck arrow"/>
 			<brush name="stuck axe"/>
 			<brush name="pillory"/>
-			
+
 			-- graves --
 			<item fromid="1406"	toid="1409"/>
-			
+
 			-- coffins --
 			<brush name="stone coffin (no rose)"/>
 			<brush name="stone coffin (yellow rose)"/>
@@ -839,37 +839,37 @@
 			<brush name="stone coffin (red rose)"/>
 			<brush name="buried stone coffin"/>
 			<brush name="sarcophagus"/>
-			
+
 			-- Campfires --
 			<item fromid="1421" toid="1428"/>
 			<item fromid="1481" toid="1486"/>
 			<item fromid="2601" toid="2605"/>
 			<brush name="large cauldron"/>
 			<brush name="large cauldron with fire"/>
-			
+
 			-- fountains --
 			<brush name="ancient fountain - off"/>
 			<brush name="ancient fountain - on"/>
 			<brush name="water well"/>
 			<brush name="lava fountain"/>
-			
+
 			<brush name="marble fountain - on"/>
 			<brush name="marble fountain - off"/>
 			<item id="1378"/>
 			<brush name="normal fountain - on"/>
 			<brush name="normal fountain - off"/>
 			<brush name="wall fountain"/>
-			
+
 			-- tents --
 			<brush name="gray striped tent"/>
 			<brush name="red striped tent"/>
 			<brush name="garish striped tent"/>
-			
+
 			-- misc --
 			<brush name="white caravan wagon"/>
 			<brush name="caravan wagon chassis"/>
 			<brush name="orc wagon"/>
-			
+
 			-- uber skeleton --
 			<item fromid="8388" toid="8415"/>
 		</doodad>
@@ -954,7 +954,7 @@
 			<item fromid="9304" toid="9306"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Signs">
 		<doodad>
 			-- Signs --
@@ -1109,7 +1109,7 @@
 			<item fromid="9930" toid="9933"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Ornaments">
 		<items_and_raw>
 			-- Amulets --
@@ -1147,14 +1147,14 @@
 			<item fromid="6093"/>
 			<item fromid="6300" toid="6301"/>
 			<item fromid="8752"/>
-			
+
 			<item fromid="2164" toid="2169"/>
 			<item fromid="2179"/>
 			<item fromid="2202" toid="2206"/>
 			<item fromid="2210" toid="2216"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Tools">
 		<items_and_raw>
 			<item id="5710"/>
@@ -1307,7 +1307,7 @@
 			<item fromid="7838" toid="7840"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Weapons (Magic)">
 		<items>
 			-- Wands --
@@ -1344,7 +1344,7 @@
 			<item fromid="7838" toid="7840"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Shields">
 		<items_and_raw>
 			<item fromid="2509" toid="2542"/>
@@ -1357,7 +1357,7 @@
 			<item fromid="9814" toid="9816"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Trinkets">
 		<items_and_raw>
 			-- Some random stuff --
@@ -1432,10 +1432,10 @@
 			<item fromid="2042" toid="2049"/>
 			<item fromid="2057"/>
 			<item fromid="2162" toid="2163"/>
-			
+
 			-- Instruments --
 			<item fromid="2366" toid="2374"/>
-			
+
 			-- Random --
 			<item id="2375"/>
 			<item id="4874"/>
@@ -1475,7 +1475,7 @@
 			<item id="6092"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Fluid Containers">
 		<items_and_raw>
 			<item fromid="3941" toid="3942"/>
@@ -1496,7 +1496,7 @@
 			<item id="7636"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Jewelry">
 		<items_and_raw>
 			<item fromid="2143" toid="2160"/>
@@ -1506,7 +1506,7 @@
 			<item fromid="2139" toid="2141"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Magic Fields">
 		<doodad>
 			<item id="1387"/> -- magic forcefield --
@@ -1531,7 +1531,7 @@
 			<item fromid="8753" toid="8759"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Containers">
 		<items_and_raw>
 	        <item fromid="1987" toid="1989"/>
@@ -1561,7 +1561,7 @@
 			<item fromid="9774" toid="9775"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Writeables">
 		<items_and_raw>
 			<item fromid="1947" toid="1986"/>
@@ -1598,7 +1598,7 @@
 			<item fromid="7528" toid="7535"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Food">
 		<items_and_raw>
 			<item fromid="2666" toid="2696"/>
@@ -1619,7 +1619,7 @@
 			<item fromid="8838" toid="8848"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Trash">
 		<doodad>
 			<brush name="broken bottles"/>
@@ -1703,14 +1703,14 @@
 			<item fromid="9823" toid="9824"/>
 			<item fromid="9829" toid="9832"/>
 			<item fromid="9867" toid="9882"/>
-			<item fromid="9909" toid="9926"/>	
+			<item fromid="9909" toid="9926"/>
 			<item fromid="9935" toid="9938"/>
 			<item fromid="9960" toid="9968"/>
 			<item fromid="10002" toid="10005"/>
 			<item fromid="10007" toid="10009"/>
 		</doodad_and_raw>
 	</tileset>
-	
+
 	<tileset name="Stairs / Ramps / Ladders">
 		<raw>
 			<!-- Holes -->
@@ -1721,7 +1721,7 @@
 			<item fromid="481" toid="485"/>
 			<item fromid="489"/>
 			<item fromid="5731"/>
-			
+
 			<!-- Stairs / Ladder Down -->
 			<item fromid="369" toid="370"/>
 			<item fromid="408"/>
@@ -1738,7 +1738,7 @@
 			<item fromid="9574"/>
 			<item fromid="9606"/>
 			<item fromid="9846"/>
-			
+
 			<!-- Other -->
 			<item fromid="430"/>
 			<item fromid="461" toid="462"/>
@@ -1751,13 +1751,13 @@
 			<item fromid="6917" toid="6924"/>
 			<item fromid="8559" toid="8566"/>
 			<item fromid="8288"/>
-			
+
 			<!-- Ladders -->
 			<item fromid="1386"/>
 			<item fromid="3678"/>
 			<item fromid="5543"/>
 			<item fromid="8599"/>
-			
+
 			<!-- Stairs -->
 			<item fromid="1385"/>
 			<item fromid="1396"/>
@@ -1765,7 +1765,7 @@
 			<item fromid="5258" toid="5260"/>
 			<item fromid="3687" toid="3688"/>
 			<item fromid="9573"/>
-			
+
 			<!-- Ramps -->
 			<item fromid="1388" toid="1395"/>
 			<item fromid="1398" toid="1405"/>
@@ -1774,7 +1774,7 @@
 			<item fromid="8372" toid="8379"/>
 		</raw>
 	</tileset>
-	
+
 	<!--
 	<tileset name="Pillars">
 		<terrain_and_raw>
@@ -1790,7 +1790,7 @@
 		</terrain_and_raw>
 	</tileset>
 	-->
-	
+
 	<tileset name="Addon and Quest Items">
 		<items_and_raw>
 			<item fromid="2344" toid="2349"/>
@@ -1838,7 +1838,7 @@
 			<item fromid="5940"/>
 		</items_and_raw>
 	</tileset>
-	
+
 	<tileset name="Architecture">
 		<doodad>
 			<item id="1514"/>
@@ -1894,7 +1894,7 @@
 			<item fromid="9784" toid="9791"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Walls">
 		<raw>
 	        <item fromid="1205" toid="1208"/>
@@ -2145,7 +2145,7 @@
 			<item fromid="9792" toid="9799"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Blank">
 		<raw>
 			<item fromid="1934"/>
