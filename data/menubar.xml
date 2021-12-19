@@ -50,7 +50,6 @@
         <menu name="$Other Options">
             <item name="$Remove Items by ID..." action="MAP_REMOVE_ITEMS" help="Removes all items with the selected ID from the map."/>
             <item name="Remove $all corpses..." action="MAP_REMOVE_CORPSES" help="Removes all corpses from the map."/>
-            <item name="Remove all invalid items..." action="MAP_REMOVE_INVALID_ITEMS" help="Removes all items that do not exist in OTB file."/>
             <item name="Remove all $unreachable tiles..." action="MAP_REMOVE_UNREACHABLE_TILES" help="Removes all tiles that cannot be reached (or seen) by the player from the map."/>
             <item name="$Clear Invalid Houses" action="CLEAR_INVALID_HOUSES" help="Clears house tiles not belonging to any house."/>
             <item name="Clear $Modified State" action="CLEAR_MODIFIED_STATE" help="Clears the modified state from all tiles."/>
@@ -70,7 +69,7 @@
         <item name="Edit $Items" hotkey="Ctrl+I" action="EDIT_ITEMS" help="Edit items."/>
         <item name="Edit $Monsters" action="EDIT_MONSTERS" help="Edit monsters."/>
         <separator/>
-        <item name="$Cleanup..." action="MAP_CLEANUP" help="Removes all unknown items from the map."/>
+        <item name="$Cleanup..." action="MAP_CLEANUP" help="Removes all items that do not exist in the OTB file (red tiles the server can't load)."/>
         <item name="$Properties..." hotkey="Ctrl+P" action="MAP_PROPERTIES" help="Show and change the map properties."/>
         <item name="$Statistics" hotkey="F8" action="MAP_STATISTICS" help="Show map statistics."/>
     </menu>
