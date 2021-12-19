@@ -81,6 +81,34 @@ enum ItemTypes_t {
 	ITEM_TYPE_LAST
 };
 
+enum SlotPositionBits : uint32_t {
+	SLOTP_WHEREEVER = 0xFFFFFFFF,
+	SLOTP_HEAD = 1 << 0,
+	SLOTP_NECKLACE = 1 << 1,
+	SLOTP_BACKPACK = 1 << 2,
+	SLOTP_ARMOR = 1 << 3,
+	SLOTP_RIGHT = 1 << 4,
+	SLOTP_LEFT = 1 << 5,
+	SLOTP_LEGS = 1 << 6,
+	SLOTP_FEET = 1 << 7,
+	SLOTP_RING = 1 << 8,
+	SLOTP_AMMO = 1 << 9,
+	SLOTP_DEPOT = 1 << 10,
+	SLOTP_TWO_HAND = 1 << 11,
+	SLOTP_HAND = (SLOTP_LEFT | SLOTP_RIGHT)
+};
+
+enum WeaponType_t : uint8_t {
+	WEAPON_NONE,
+	WEAPON_SWORD,
+	WEAPON_CLUB,
+	WEAPON_AXE,
+	WEAPON_SHIELD,
+	WEAPON_DISTANCE,
+	WEAPON_WAND,
+	WEAPON_AMMO,
+};
+
 /////////OTB specific//////////////
 
 enum rootattrib_t{
@@ -118,10 +146,11 @@ enum itemattrib_t {
 	ITEM_ATTR_ARMOR2,
 	ITEM_ATTR_WRITEABLE2,
 	ITEM_ATTR_LIGHT2,
-
 	ITEM_ATTR_TOPORDER,
-
 	ITEM_ATTR_WRITEABLE3,
+
+	ITEM_ATTR_WAREID,
+	ITEM_ATTR_CLASSIFICATION,
 
 	ITEM_ATTR_LAST
 };
@@ -288,6 +317,9 @@ public:
 	uint16_t volume;
 	uint16_t maxTextLen;
 	//uint16_t writeOnceItemId;
+	uint16_t slot_position;
+	uint8_t weapon_type;
+	uint8_t classification; // 12.81
 	uint16_t ground_equivalent;
 	uint32_t border_group;
 	bool has_equivalent; // True if any item has this as ground_equivalent

@@ -268,6 +268,11 @@ void Item::setDescription(const std::string& str)
 	setAttribute("desc", str);
 }
 
+void Item::setTier(unsigned short n)
+{
+	setAttribute("tier", n);
+}
+
 double Item::getWeight()
 {
 	ItemType& it = g_items[id];

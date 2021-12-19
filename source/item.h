@@ -152,7 +152,9 @@ public:
 	int getAttack() const {return g_items[id].attack;}
 	int getArmor() const {return g_items[id].armor;}
 	int getDefense() const {return g_items[id].defense;}
-	//int getSlotPosition() const {return g_items[id].slot_position;}
+	uint16_t getSlotPosition() const {return g_items[id].slot_position;}
+	uint8_t getWeaponType() const {return g_items[id].weapon_type;}
+	uint8_t getClassification() const {return g_items[id].classification;} // 12.81
 
 	// Item g_settings
 	bool canHoldText() const;
@@ -209,6 +211,26 @@ public:
 	bool isCarpet() const {return g_items[id].isCarpet;}
 	bool isMetaItem() const {return g_items[id].isMetaItem();}
 
+	// Slot-based Item Types
+	bool isWeapon() const {
+		uint8_t weaponType = g_items[id].weapon_type;
+		return weaponType != WEAPON_NONE && weaponType != WEAPON_AMMO;
+	}
+	bool isAmmunition() const {return g_items[id].weapon_type == WEAPON_AMMO;}
+	bool isWearableEquipment() const {	// Determine if the item is wearable piece of armor
+		uint16_t slotPosition = g_items[id].slot_position;
+		return
+			slotPosition & SLOTP_HEAD ||
+			slotPosition & SLOTP_NECKLACE ||
+			//slotPosition & SLOTP_BACKPACK || // handled as container in properties window
+			slotPosition & SLOTP_ARMOR ||
+			slotPosition & SLOTP_LEGS ||
+			slotPosition & SLOTP_FEET ||
+			slotPosition & SLOTP_RING ||
+			(slotPosition & SLOTP_AMMO && !isAmmunition()); // light sources that give stats
+	}
+
+
 	// Wall alignment (vertical, horizontal, pole, corner)
 	BorderType getWallAlignment() const;
 	// Border aligment (south, west etc.)
@@ -237,15 +259,23 @@ public:
 	void setSubtype(uint16_t n);
 	bool hasSubtype() const;
 
+	// Unique ID
 	void setUniqueID(uint16_t n);
 	uint16_t getUniqueID() const;
 
+	// Action ID
 	void setActionID(uint16_t n);
 	uint16_t getActionID() const;
 
+	// Tier (12.81)
+	void setTier(uint16_t n);
+	uint16_t getTier() const;
+
+	// Text
 	void setText(const std::string& str);
 	std::string getText() const;
 
+	// Description
 	void setDescription(const std::string& str);
 	std::string getDescription() const;
 
@@ -288,6 +318,13 @@ inline uint16_t Item::getUniqueID() const {
 inline uint16_t Item::getActionID() const {
 	const int32_t* a = getIntegerAttribute("aid");
 	if(a)
+		return *a;
+	return 0;
+}
+
+inline uint16_t Item::getTier() const {
+	const int32_t* a = getIntegerAttribute("tier");
+	if (a)
 		return *a;
 	return 0;
 }

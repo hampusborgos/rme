@@ -46,6 +46,7 @@ protected:
 	wxSpinCtrl* action_id_field;
 	wxSpinCtrl* unique_id_field;
 	wxSpinCtrl* door_id_field;
+	wxSpinCtrl* tier_field;
 	wxChoice* depot_id_field;
 	wxChoice* splash_type_field;
 	wxTextCtrl* text_field;

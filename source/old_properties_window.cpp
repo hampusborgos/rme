@@ -51,6 +51,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
+	tier_field(nullptr),
 	depot_id_field(nullptr),
 	splash_type_field(nullptr),
 	text_field(nullptr),
@@ -153,7 +154,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		topsizer->Add(boxsizer, wxSizerFlags(0).Expand().Border(wxALL, 20));
 
 		//SetSize(220, 310);
-	} else if(edit_item->isSplash() || edit_item->isFluidContainer()) {
+	} else if (edit_item->isSplash() || edit_item->isFluidContainer()) {
 		// Splash
 		wxSizer* boxsizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Splash Properties");
 
@@ -167,17 +168,17 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 
 		// Splash types
 		splash_type_field = newd wxChoice(this, wxID_ANY);
-		if(edit_item->isFluidContainer()) {
+		if (edit_item->isFluidContainer()) {
 			splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int32_t(LIQUID_NONE));
 		}
 
-		for(SplashType splashType = LIQUID_FIRST; splashType != LIQUID_LAST; ++splashType) {
+		for (SplashType splashType = LIQUID_FIRST; splashType != LIQUID_LAST; ++splashType) {
 			splash_type_field->Append(wxstr(Item::LiquidID2Name(splashType)), newd int32_t(splashType));
 		}
 
-		if(item->getSubtype()) {
+		if (item->getSubtype()) {
 			const std::string& what = Item::LiquidID2Name(item->getSubtype());
-			if(what == "Unknown") {
+			if (what == "Unknown") {
 				splash_type_field->Append(wxstr(Item::LiquidID2Name(LIQUID_NONE)), newd int32_t(LIQUID_NONE));
 			}
 			splash_type_field->SetStringSelection(wxstr(what));
@@ -293,6 +294,18 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, "Unique ID"));
 		unique_id_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
 		subsizer->Add(unique_id_field, wxSizerFlags(1).Expand());
+
+
+		// item classification (12.81+)
+		if (g_items.MajorVersion >= 3 && g_items.MinorVersion >= 60 && (edit_item->getClassification() > 0 || edit_item->isWeapon() || edit_item->isWearableEquipment())) {
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, "Classification"));
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, i2ws(item->getClassification())));
+
+			// item iter
+			subsizer->Add(newd wxStaticText(this, wxID_ANY, "Tier"));
+			tier_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(edit_item->getTier()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFF, edit_item->getTier());
+			subsizer->Add(tier_field, wxSizerFlags(1).Expand());
+		}
 
 		/*
 		if(item->canHoldDescription()) {
@@ -465,6 +478,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
+	tier_field(nullptr),
 	depot_id_field(nullptr),
 	splash_type_field(nullptr),
 	text_field(nullptr),
@@ -516,6 +530,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	action_id_field(nullptr),
 	unique_id_field(nullptr),
 	door_id_field(nullptr),
+	tier_field(nullptr),
 	depot_id_field(nullptr),
 	splash_type_field(nullptr),
 	text_field(nullptr),
@@ -671,7 +686,9 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			int new_uid = unique_id_field->GetValue();
 			int new_aid = action_id_field->GetValue();
-			int new_count = count_field? count_field->GetValue() : 1;
+			int new_count = count_field ? count_field->GetValue() : 1;
+			int new_tier = tier_field ? tier_field->GetValue() : 0;
+
 			std::string new_desc;
 			if(edit_item->canHoldDescription() && description_field) {
 				description_field->GetValue();
@@ -695,6 +712,10 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
 				g_gui.PopupDialog(this, "Error", "Action ID must be between 100 and 65535.", wxOK);
+				return;
+			}
+			if (new_tier < 0 || new_tier > 0xFF) {
+				g_gui.PopupDialog(this, "Error", "Item tier must be between 0 and 255.", wxOK);
 				return;
 			}
 
@@ -813,6 +834,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 			edit_item->setUniqueID(new_uid);
 			edit_item->setActionID(new_aid);
+			edit_item->setTier(new_tier);
 		}
 	} else if(edit_creature) {
 		int new_spawntime = count_field->GetValue();

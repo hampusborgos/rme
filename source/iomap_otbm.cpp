@@ -140,6 +140,14 @@ bool Item::readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute att
 			setSubtype(subtype);
 			break;
 		}
+		case OTBM_ATTR_TIER: {
+			uint8_t tier;
+			if (!stream->getU8(tier)) {
+				return false;
+			}
+			setTier(static_cast<uint16_t>(tier));
+			break;
+		}
 
 		// The following *should* be handled in the derived classes
 		// However, we still need to handle them here since otherwise things
@@ -216,6 +224,12 @@ void Item::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHan
 		if(!description.empty()) {
 			stream.addU8(OTBM_ATTR_DESC);
 			stream.addString(description);
+		}
+
+		uint16_t tier = getTier();
+		if (tier > 0) {
+			stream.addU8(OTBM_ATTR_TIER);
+			stream.addU8(static_cast<uint8_t>(tier));
 		}
 	}
 }
