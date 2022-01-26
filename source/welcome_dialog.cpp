@@ -35,7 +35,7 @@ WelcomeDialog::WelcomeDialog(const wxString& title_text,
                                                      title_text,
                                                      version_text,
                                                      base_colour,
-                                                     wxBitmap(rme_logo.ConvertToImage().Scale(FromDIP(48), FromDIP(48))),
+                                                     wxBitmap(rme_logo.ConvertToImage().Scale(FROM_DIP(this, 48), FROM_DIP(this, 48))),
                                                      recent_files);
 }
 
@@ -104,7 +104,7 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     recent_maps_panel->SetMaxSize(wxSize(size.x / 2, size.y));
     recent_maps_panel->SetBackgroundColour(base_colour.ChangeLightness(98));
 
-    wxSize button_size = FromDIP(wxSize(150, 35));
+    wxSize button_size = FROM_DIP(this, wxSize(150, 35));
     wxColour button_base_colour = base_colour.ChangeLightness(90);
 
     int button_pos_center_x = size.x / 4 - button_size.x / 2;
@@ -139,9 +139,9 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     wxSizer *rootSizer = newd wxBoxSizer(wxHORIZONTAL);
     wxSizer *buttons_sizer = newd wxBoxSizer(wxVERTICAL);
     buttons_sizer->AddSpacer(size.y / 2);
-    buttons_sizer->Add(new_map_button, 0, wxALIGN_CENTER | wxTOP, FromDIP(10));
-    buttons_sizer->Add(open_map_button, 0, wxALIGN_CENTER | wxTOP, FromDIP(10));
-    buttons_sizer->Add(preferences_button, 0, wxALIGN_CENTER | wxTOP, FromDIP(10));
+    buttons_sizer->Add(new_map_button, 0, wxALIGN_CENTER | wxTOP, FROM_DIP(this, 10));
+    buttons_sizer->Add(open_map_button, 0, wxALIGN_CENTER | wxTOP, FROM_DIP(this, 10));
+    buttons_sizer->Add(preferences_button, 0, wxALIGN_CENTER | wxTOP, FROM_DIP(this, 10));
 
     wxSizer *vertical_sizer = newd wxBoxSizer(wxVERTICAL);
     wxSizer *horizontal_sizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -150,7 +150,7 @@ WelcomeDialogPanel::WelcomeDialogPanel(WelcomeDialog *dialog,
     m_show_welcome_dialog_checkbox->SetValue(g_settings.getInteger(Config::WELCOME_DIALOG) == 1);
     m_show_welcome_dialog_checkbox->Bind(wxEVT_CHECKBOX, &WelcomeDialog::OnCheckboxClicked, dialog);
     m_show_welcome_dialog_checkbox->SetBackgroundColour(m_background_colour);
-    horizontal_sizer->Add(m_show_welcome_dialog_checkbox, 0, wxALIGN_BOTTOM | wxALL, FromDIP(10));
+    horizontal_sizer->Add(m_show_welcome_dialog_checkbox, 0, wxALIGN_BOTTOM | wxALL, FROM_DIP(this, 10));
     vertical_sizer->Add(buttons_sizer, 1, wxEXPAND);
     vertical_sizer->Add(horizontal_sizer, 1, wxEXPAND);
 
@@ -170,7 +170,7 @@ void WelcomeDialogPanel::OnPaint(const wxPaintEvent &event) {
     dc.SetPen(wxPen(m_background_colour));
     dc.DrawRectangle(wxRect(wxPoint(0, 0), GetClientSize()));
 
-    dc.DrawBitmap(m_rme_logo, wxPoint(GetSize().x / 4 - m_rme_logo.GetWidth() / 2, FromDIP(40)), true);
+    dc.DrawBitmap(m_rme_logo, wxPoint(GetSize().x / 4 - m_rme_logo.GetWidth() / 2, FROM_DIP(this, 40)), true);
 
     wxFont font = GetFont();
     font.SetPointSize(18);
@@ -260,8 +260,8 @@ RecentItem::RecentItem(wxWindow *parent,
     wxBoxSizer *mainSizer = newd wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer *sizer = newd wxBoxSizer(wxVERTICAL);
     sizer->Add(m_title);
-    sizer->Add(m_file_path, 1, wxTOP, FromDIP(2));
-    mainSizer->Add(sizer, 0, wxEXPAND | wxALL, FromDIP(8));
+    sizer->Add(m_file_path, 1, wxTOP, FROM_DIP(this, 2));
+    mainSizer->Add(sizer, 0, wxEXPAND | wxALL, FROM_DIP(this, 8));
     Bind(wxEVT_ENTER_WINDOW, &RecentItem::OnMouseEnter, this);
     Bind(wxEVT_LEAVE_WINDOW, &RecentItem::OnMouseLeave, this);
     m_title->Bind(wxEVT_LEFT_UP, &RecentItem::PropagateItemClicked, this);
