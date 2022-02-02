@@ -139,7 +139,7 @@ wxString GUI::GetDataDirectory()
 	{
 		exec_directory = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetExecutablePath();
 	}
-	catch(std::bad_cast)
+	catch(const std::bad_cast&)
 	{
 		throw; // Crash application (this should never happend anyways...)
 	}
@@ -156,7 +156,7 @@ wxString GUI::GetExecDirectory()
 	{
 		exec_directory = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetExecutablePath();
 	}
-	catch(std::bad_cast)
+	catch(const std::bad_cast&)
 	{
 		wxLogError("Could not fetch executable directory.");
 	}
@@ -1183,7 +1183,7 @@ void GUI::DestroyLoadBar()
 
 void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
     std::vector<wxString> recent_files = root->GetRecentFiles();
-    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, root->FromDIP(wxSize(800, 480)), icon, recent_files);
+    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, FROM_DIP(root, wxSize(800, 480)), icon, recent_files);
     welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
     welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
     welcomeDialog->Show();

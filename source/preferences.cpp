@@ -515,7 +515,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	topsizer->AddSpacer(10);
 
 	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	client_list_window->SetMinSize(FromDIP(wxSize(450, 450)));
+	client_list_window->SetMinSize(FROM_DIP(this, wxSize(450, 450)));
     auto * client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
 
