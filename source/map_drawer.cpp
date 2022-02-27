@@ -1074,12 +1074,12 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		glBlitSquare(draw_x, draw_y, 255, 0, 0, alpha);
 		glEnable(GL_TEXTURE_2D);
 		return;
-	} else if(it.id == 459 && !options.ingame) {
+	} else if(it.id == ITEM_STAIRS && !options.ingame) {
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, red, green, 0, alpha/3*2);
 		glEnable(GL_TEXTURE_2D);
 		return;
-	} else if(it.id == 460 && !options.ingame) {
+	} else if(it.id == ITEM_NOTHING_SPECIAL && !options.ingame) {
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, red, 0, 0, alpha/3*2);
 		glEnable(GL_TEXTURE_2D);
@@ -1178,12 +1178,12 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 		green /= 2;
 	}
 
-	if(it.id == 459 && !options.ingame) { // Ugly hack yes?
+	if(it.id == ITEM_STAIRS && !options.ingame) { // Ugly hack yes?
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, red, green, 0, alpha/3*2);
 		glEnable(GL_TEXTURE_2D);
 		return;
-	} else if(it.id == 460 && !options.ingame) { // Ugly hack yes?
+	} else if(it.id == ITEM_NOTHING_SPECIAL && !options.ingame) { // Ugly hack yes?
 		glDisable(GL_TEXTURE_2D);
 		glBlitSquare(draw_x, draw_y, red, 0, 0, alpha/3*2);
 		glEnable(GL_TEXTURE_2D);

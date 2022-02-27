@@ -29,6 +29,14 @@ enum Direction
 	DIRECTION_LAST = WEST
 };
 
+enum Item_t : uint16_t {
+	ITEM_STAIRS = 469,
+	ITEM_NOTHING_SPECIAL = 470,
+
+	ITEM_FIRST = ITEM_STAIRS,
+	ITEM_LAST = ITEM_NOTHING_SPECIAL
+};
+
 IMPLEMENT_INCREMENT_OP(Direction)
 
 #endif
