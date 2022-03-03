@@ -141,7 +141,7 @@ void ReplaceItemsListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t index)
 			x = rect.GetWidth() - 100;
 			dc.DrawBitmap(m_flag_bitmap, x + 70, y + 10, true);
 			dc.DrawText(wxString::Format("Total: %d", item.total), x, y + 10);
-		}	
+		}
 	}
 
 	if(IsSelected(index)) {

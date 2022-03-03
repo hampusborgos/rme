@@ -1,6 +1,6 @@
 <materials>
 	<!-- TILESETS -->
-	
+
 	<tileset name="Grounds">
 		<raw>
 			<item id="100"/>
@@ -85,7 +85,7 @@
 			<item fromid="4820" toid="4825"/>
 			<item fromid="416" toid="422"/>
 			<item fromid="424" toid="426"/>
-			<item fromid="446" toid="456"/>			
+			<item fromid="446" toid="456"/>
 			<item id="465"/>
 			<item id="467"/>
 			<item fromid="471" toid="474"/>
@@ -122,10 +122,10 @@
 			<item fromid="7350" toid="7358"/>
 			<item id="3258"/>
 			<item id="3263"/>
-			
+
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Nature">
 		<terrain>
 			<brush name="sea"/>
@@ -240,7 +240,7 @@
 			<item fromid="3569" toid="3574"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Cave">
 		<terrain>
 			<brush name="earth"/>
@@ -261,12 +261,12 @@
 		<raw>
 			<item fromid="101"/>
 			<item fromid="351" toid="355"/>
-			
+
 			<item fromid="384"/>
 			<item fromid="383"/>
 			<item fromid="385"/>
 			<item fromid="392"/>
-			
+
 			<item fromid="5631" toid="5632"/>
 			<item fromid="5637" toid="5638"/>
 			<item fromid="5633" toid="5636"/>
@@ -274,7 +274,7 @@
 			<item fromid="5650"/>
 			<item fromid="5649"/>
 			<item fromid="5651"/>
-			
+
 			<item fromid="5639" toid="5642"/>
 			<item fromid="5643" toid="5646"/>
 			<item fromid="5648"/>
@@ -283,7 +283,7 @@
 			<item fromid="5652"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Snow">
 		<terrain>
 			<brush name="sea"/>
@@ -306,7 +306,7 @@
 			<brush name="snowy trees"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Town">
 		<terrain>
 			<brush name="stone floor"/>
@@ -359,7 +359,7 @@
 			<brush name="bamboo wall"/>
 			<brush name="bone wall"/>
 			<brush name="jungle stone wall ornamented"/>
-			
+
 			<brush name="paravent wall" after="rock wall"/>
 			<brush name="fiery wall" after="rock wall"/>
 			<brush name="jungle stone wall" after="rock wall"/>
@@ -377,7 +377,7 @@
 			<brush name="ornamented sandstone railing" after="dark fence"/>
 			<brush name="sandstone railing" after="dark fence"/>
 			<brush name="jungle stone railing" after="dark fence"/>
-			
+
 			<brush name="fence"/>
 			<brush name="dark fence"/>
 			<!-- This does not work 'perfectly yet
@@ -401,7 +401,7 @@
 			<brush name="wooden roof, right"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Stairs">
 		<terrain>
 			<brush name="wooden ladder hole"/>
@@ -417,7 +417,7 @@
 			<brush name="gray stone trapdoor"/>
 		</terrain>
 	</tileset>
-	
+
 	<tileset name="Boats">
 		<raw>
 			<item fromid="4883" toid="4947"/>
@@ -435,7 +435,7 @@
 		<doodad>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Sea">
 		<raw>
 			<item fromid="2226"/>
@@ -502,7 +502,7 @@
 			<brush name="gem shop sign"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Interior">
 		<doodad>
 			<brush name="small drawer"/>
@@ -578,7 +578,7 @@
 			<brush name="brown carpet"/>
 			-- other --
 			<brush name="distillery"/>
-			
+
 		</doodad>
 		<raw>
 			<item fromid="1602" toid="1808"/>
@@ -602,7 +602,7 @@
 			<item fromid="4394" toid="4402"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Statues">
 		<doodad>
 			<item fromid="1444" toid="1445"/>
@@ -617,7 +617,7 @@
 			<brush name="female statue"/>
 			<brush name="female statue with flame"/>
 			<brush name="hunter statue"/>
-			
+
 			<brush name="lizard statue"/>
 			<brush name="broken lizard statue"/>
 			<brush name="giant snake head statue"/>
@@ -626,14 +626,14 @@
 			<item fromid="1450" toid="1451"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Exterior">
 		<doodad>
 			<brush name="stone altar"/>
 			<brush name="decorative altar"/>
 			<brush name="railways"/>
 			<brush name="railway cart"/>
-			
+
 			-- coffins --
 			<brush name="stone coffin (no rose)"/>
 			<brush name="stone coffin (yellow rose)"/>
@@ -641,24 +641,24 @@
 			<brush name="stone coffin (red rose)"/>
 			<brush name="buried stone coffin"/>
 			<brush name="sarcophagus"/>
-			
+
 			-- Campfires --
 			<item fromid="1421" toid="1428"/>
 			<item fromid="1481" toid="1486"/>
 			<item fromid="2601" toid="2605"/>
-			
+
 			-- fountains --
 			<brush name="ancient fountain - off"/>
 			<brush name="ancient fountain - on"/>
 			<brush name="water well"/>
 			<brush name="lava fountain"/>
-			
+
 			<brush name="marble fountain - on"/>
 			<brush name="marble fountain - off"/>
 			<item id="1378"/>
 			<brush name="normal fountain - on"/>
 			<brush name="normal fountain - off"/>
-			
+
 			-- Signs --
 			<brush name="tavern sign"/>
 			<brush name="large shop sign"/>
@@ -806,7 +806,7 @@
 			<item fromid="7457"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Ornaments">
 		<items>
 			-- Amulets --
@@ -841,7 +841,7 @@
 			<item fromid="2127"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Tools">
 		<items>
 			<item id="5710"/>
@@ -932,7 +932,7 @@
 			<item fromid="2187" toid="2191"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Shields">
 		<items>
 			<item fromid="2509" toid="2542"/>
@@ -942,7 +942,7 @@
 			<item fromid="6433"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Trinkets">
 		<items>
 			-- Some random stuff --
@@ -1001,7 +1001,7 @@
 			<item id="5853"/>
 			<item id="6489"/>
 			<item id="6490"/>
-			
+
 			<item fromid="2366" toid="2375"/>
 			<item id="4874"/>
 			<item fromid="2597" toid="2598"/>
@@ -1041,7 +1041,7 @@
 			<item id="2639"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Creature products">
 		<items>
 	        <item fromid="5808" toid="5810"/>
@@ -1050,10 +1050,10 @@
 	        <item fromid="5925"/>
 	        <item fromid="5930"/>
 	        <item fromid="5937" toid="5946"/>
-		
+
 		</items>
 	</tileset>
-	
+
 	<tileset name="Magic Fields">
 		<doodad>
 			<brush name="fire field (not decaying)"/>
@@ -1078,12 +1078,12 @@
 	        <item fromid="1500" toid="1508"/>
 	        <item fromid="5023" toid="5024"/>
 	        <item fromid="7359" toid="7360"/>
-	        <item fromid="7465" toid="7473"/>		
+	        <item fromid="7465" toid="7473"/>
 		</raw>
-		
-		
+
+
 	</tileset>
-	
+
 	<tileset name="Containers">
 		<items>
 	        <item fromid="1987" toid="1989"/>
@@ -1118,7 +1118,7 @@
 	        <item fromid="6506" toid="6511"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Writables">
 		<items>
 			<item fromid="1947" toid="1986"/>
@@ -1138,7 +1138,7 @@
 			<item id="5706"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Food">
 		<items>
 			<item id="2666"/>
@@ -1150,7 +1150,7 @@
 			<item fromid="7372" toid="7377"/>
 		</items>
 	</tileset>
-	
+
 	<tileset name="Trash">
 		<doodad>
 			<brush name="broken bottles"/>
@@ -1203,7 +1203,7 @@
 			<item fromid="7344" toid="7347"/>
 		</doodad>
 	</tileset>
-	
+
 	<tileset name="Stairs / Ramps / Ladders">
 		<raw>
 			<!-- Holes -->
@@ -1215,7 +1215,7 @@
 			<item fromid="481" toid="485"/>
 			<item fromid="489"/>
 			<item fromid="5731"/>
-			
+
 			<!-- Stairs / Ladder Down -->
 			<item fromid="369" toid="370"/>
 			<item fromid="408"/>
@@ -1227,7 +1227,7 @@
 			<item fromid="3135" toid="3138"/>
 			<item fromid="3219" toid="3220"/>
 			<item fromid="4834" toid="4837"/>
-			
+
 			<!-- Other -->
 			<item fromid="430"/>
 			<item fromid="461" toid="462"/>
@@ -1238,12 +1238,12 @@
 			<item fromid="6127" toid="6130"/>
 			<item fromid="6173" toid="6174"/>
 			<item fromid="6917" toid="6924"/>
-			
+
 			<!-- Ladders -->
 			<item fromid="1386"/>
 			<item fromid="3678"/>
 			<item fromid="5543"/>
-			
+
 			<!-- Stairs -->
 			<item fromid="1385"/>
 			<item fromid="1396"/>
@@ -1258,7 +1258,7 @@
 			<item fromid="7053"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Buildings">
 		<raw>
 			<!-- Walls -->
@@ -1305,10 +1305,10 @@
 			<item fromid="7143" toid="7144"/>
 			<item fromid="7291" toid="7302"/>
 
-			
+
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Doors">
 		<raw>
 			<item fromid="1209" toid="1214"/>
@@ -1325,10 +1325,10 @@
 			<item fromid="6795" toid="6802"/>
 			<item fromid="6891" toid="6908"/>
 			<item fromid="7033" toid="7050"/>
-			<item fromid="7054" toid="7057"/>			
+			<item fromid="7054" toid="7057"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Borders (full)">
 		<raw>
 			<item fromid="110" toid="279"/>
@@ -1357,41 +1357,41 @@
 			<item fromid="4632" toid="4643"/>
 			<item fromid="6612" toid="6626"/>
 			<item fromid="7187" toid="7188"/>
-			<item fromid="7190" toid="7199"/>			
+			<item fromid="7190" toid="7199"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Borders (transparent)">
 		<raw>
-			<item fromid="434" toid="445"/>	
-			<item fromid="477" toid="478"/>	
-			<item fromid="487" toid="488"/>	
-			<item fromid="891" toid="902"/>	
-			<item fromid="921" toid="923"/>	
-			<item fromid="925"/>	
-			<item fromid="928"/>	
-			<item fromid="930" toid="935"/>	
-			<item fromid="938" />	
-			<item fromid="940" toid="945"/>	
-			<item fromid="949" toid="955"/>	
-			<item fromid="959" toid="964"/>	
+			<item fromid="434" toid="445"/>
+			<item fromid="477" toid="478"/>
+			<item fromid="487" toid="488"/>
+			<item fromid="891" toid="902"/>
+			<item fromid="921" toid="923"/>
+			<item fromid="925"/>
+			<item fromid="928"/>
+			<item fromid="930" toid="935"/>
+			<item fromid="938" />
+			<item fromid="940" toid="945"/>
+			<item fromid="949" toid="955"/>
+			<item fromid="959" toid="964"/>
 			<item fromid="1072" toid="1083"/>
 			<item fromid="3140" toid="3151"/>
 			<item fromid="3188" toid="3189"/>
-			<item fromid="3218"/>	
+			<item fromid="3218"/>
 			<item fromid="3221" toid="3245"/>
 			<item fromid="3298" toid="3309"/>
-			<item fromid="3349" toid="3360"/>	
-			<item fromid="4456" toid="4467"/>	
-			<item fromid="4514" toid="4525"/>	
-			<item fromid="4542" toid="4565"/>	
-			<item fromid="4596" toid="4607"/>	
-			<item fromid="4644" toid="4663"/>	
+			<item fromid="3349" toid="3360"/>
+			<item fromid="4456" toid="4467"/>
+			<item fromid="4514" toid="4525"/>
+			<item fromid="4542" toid="4565"/>
+			<item fromid="4596" toid="4607"/>
+			<item fromid="4644" toid="4663"/>
 			<item fromid="4667" toid="4690"/>
 			<item fromid="4713" toid="4748"/>
 			<item fromid="4760" toid="4819"/>
 			<item fromid="4828" toid="4831"/>
-			<item fromid="5045"/>		
+			<item fromid="5045"/>
 			<item fromid="5047" toid="5054"/>
 			<item fromid="5683" toid="5686"/>
 			<item fromid="5771" toid="5774"/>
@@ -1407,14 +1407,14 @@
 			<item fromid="6939" toid="6950"/>
 			<item fromid="7067" toid="7090"/>
 			<item fromid="7102" toid="7105"/>
-			<item fromid="7107" />	
+			<item fromid="7107" />
 			<item fromid="7110" toid="7120"/>
-			<item fromid="7201" toid="7212"/>			
+			<item fromid="7201" toid="7212"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Hangables">
-		<raw>		
+		<raw>
 			<item fromid="1809" toid="1850"/>
 			<item fromid="1855" toid="1856"/>
 			<item fromid="1858" toid="1859"/>
@@ -1460,46 +1460,46 @@
 			<item fromid="6435"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Traps">
 		<raw>
-			<item fromid="1510" toid="1513"/>		
+			<item fromid="1510" toid="1513"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Furniture(Packed)">
 		<raw>
-			<item fromid="3901" toid="3938"/>	
-			<item fromid="6114" toid="6115"/>	
-			<item fromid="6372" toid="6373"/>	
-			<item fromid="5086" toid="5088"/>				
+			<item fromid="3901" toid="3938"/>
+			<item fromid="6114" toid="6115"/>
+			<item fromid="6372" toid="6373"/>
+			<item fromid="5086" toid="5088"/>
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Food">
 		<raw>
 			<item fromid="2667" toid="2696"/>
 			<item fromid="2787" toid="2797"/>
-			<item fromid="4849" />		
-			<item fromid="5553" />	
+			<item fromid="4849" />
+			<item fromid="5553" />
 			<item fromid="6277" toid="6280"/>
 			<item fromid="6569" />
-			<item fromid="6574" />	
-			<item fromid="7245" />	
+			<item fromid="6574" />
+			<item fromid="7245" />
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Mountains">
 		<raw>
-			<item fromid="873" toid="878"/>	
-			<item fromid="919" />	
+			<item fromid="873" toid="878"/>
+			<item fromid="919" />
 			<item fromid="4468" toid="4513"/>
 			<item fromid="4580" toid="4594"/>
 			<item fromid="4826" toid="4827"/>
-		
+
 		</raw>
 	</tileset>
-	
+
 	<tileset name="Carpetbrushes">
 		<raw>
 			<item fromid="5485" toid="5495"/>
@@ -1508,7 +1508,7 @@
 			<item fromid="6374" toid="6386"/>
 			<item fromid="6476" toid="6488"/>
 			<item fromid="7145" toid="7157"/>
-		
+
 		</raw>
 	</tileset>
 </materials>
