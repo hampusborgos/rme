@@ -239,44 +239,6 @@ public:
 };
 
 /**
- * Select two items
- * Will return the two selected items through GetResultFindID() and GetResultWithID()
- */
-class ReplaceItemDialog : public wxDialog
-{
-public:
-	ReplaceItemDialog(wxWindow* parent, wxString title = "Replace Item");
-	virtual ~ReplaceItemDialog();
-
-	void OnKeyDown(wxKeyEvent&);
-	void OnTextChange(wxCommandEvent&);
-	void OnTextIdle(wxTimerEvent&);
-	void OnClickList(wxCommandEvent&);
-	void OnClickOK(wxCommandEvent&);
-	void OnClickCancel(wxCommandEvent&);
-
-	uint16_t GetResultFindID() const;
-	uint16_t GetResultWithID() const;
-
-protected:
-	void RefreshContents(FindDialogListBox *whichList);
-
-	KeyForwardingTextCtrl* find_item_field;
-	FindDialogListBox *find_item_list;
-	KeyForwardingTextCtrl* with_item_field;
-	FindDialogListBox *with_item_list;
-
-	wxTimer find_idle_input_timer;
-	wxTimer with_idle_input_timer;
-
-	wxStdDialogButtonSizer* buttons_box_sizer;
-	wxButton* ok_button;
-	wxButton* cancel_button;
-
-	DECLARE_EVENT_TABLE();
-};
-
-/**
  * Go to position dialog
  * Allows entry of 3 coordinates and goes there instantly
  */

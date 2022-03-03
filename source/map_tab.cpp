@@ -98,6 +98,13 @@ Map* MapTab::GetMap() const
 	return &editor.map;
 }
 
+void MapTab::VisibilityCheck()
+{
+	EditorTab* editorTab = aui->GetCurrentTab();
+	MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+	UpdateDialogs(mapTab && HasSameReference(mapTab));
+}
+
 void MapTab::OnSwitchEditorMode(EditorMode mode)
 {
 	gem->SetSprite(mode == DRAWING_MODE? EDITOR_SPRITE_DRAWING_GEM : EDITOR_SPRITE_SELECTION_GEM);

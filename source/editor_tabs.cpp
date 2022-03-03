@@ -119,13 +119,17 @@ void MapTabbook::OnNotebookPageChanged(wxAuiNotebookEvent& evt)
 		newMapTab = nullptr;
 	}
 
-	// std::cout << oldSelection << " " << newSelection;
 	if(!newMapTab) {
 		g_gui.RefreshPalettes(nullptr);
 	} else if(!oldMapTab || !oldMapTab->HasSameReference(newMapTab)) {
 		g_gui.RefreshPalettes(newMapTab->GetMap());
 		g_gui.UpdateMenus();
 	}
+
+	if(oldMapTab)
+		oldMapTab->VisibilityCheck();
+	if(newMapTab)
+		newMapTab->VisibilityCheck();
 }
 
 void MapTabbook::OnAllowNotebookDND(wxAuiNotebookEvent& evt)

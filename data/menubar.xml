@@ -29,7 +29,7 @@
         <item name="$Redo" hotkey="Ctrl+Shift+Z" action="REDO" help="Redo last undid action."/>
         <separator/>
         <item name="Find $Item..." hotkey="Ctrl+F" action="FIND_ITEM" help="Find all instances of an item type the map."/>
-        <item name="R$eplace Item..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEM" help="Replaces all occurrences of one item with another."/>
+        <item name="R$eplace Items..." hotkey="Ctrl+Shift+F" action="REPLACE_ITEMS" help="Replaces all occurrences of one item with another."/>
         <menu name="$Find on Map">
             <item name="Find $Everything" action="SEARCH_ON_MAP_EVERYTHING" help="Find all unique/action/text/container items."/>
             <separator/>
@@ -74,7 +74,7 @@
         <item name="$Statistics" hotkey="F8" action="MAP_STATISTICS" help="Show map statistics."/>
     </menu>
     <menu name="$Select">
-        <item name="Replace Item on Selection" action="REPLACE_ON_SELECTION_ITEM" help="Replace item on selected area."/>
+        <item name="Replace Items on Selection" action="REPLACE_ON_SELECTION_ITEMS" help="Replace items on selected area."/>
         <item name="Find Item on Selection" action="SEARCH_ON_SELECTION_ITEM" help="Find items on selected area."/>
         <item name="Remove Item on Selection" action="REMOVE_ON_SELECTION_ITEM" help="Remove item on selected area."/>
         <separator/>

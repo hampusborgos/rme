@@ -25,7 +25,8 @@
 
 MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
 	wxPanel(parent, PANE_MAIN),
-	editor(editor)
+	editor(editor),
+	replaceItemsDialog(nullptr)
 {
 	int GL_settings[3];
 	GL_settings[0] = WX_GL_RGBA;
@@ -56,6 +57,31 @@ MapWindow::~MapWindow()
 	////
 }
 
+void MapWindow::ShowReplaceItemsDialog(bool selectionOnly)
+{
+	if(replaceItemsDialog)
+		return;
+
+	replaceItemsDialog = new ReplaceItemsDialog(this, selectionOnly);
+	replaceItemsDialog->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MapWindow::OnReplaceItemsDialogClose), NULL, this);
+	replaceItemsDialog->Show();
+}
+
+void MapWindow::CloseReplaceItemsDialog()
+{
+	if(replaceItemsDialog)
+		replaceItemsDialog->Close();
+}
+
+void MapWindow::OnReplaceItemsDialogClose(wxCloseEvent& event)
+{
+	if(replaceItemsDialog) {
+		replaceItemsDialog->Disconnect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MapWindow::OnReplaceItemsDialogClose), NULL, this);
+		replaceItemsDialog->Destroy();
+		replaceItemsDialog = nullptr;
+	}
+}
+
 void MapWindow::SetSize(int x, int y, bool center)
 {
 	if(x == 0 || y == 0) return;
@@ -75,6 +101,12 @@ void MapWindow::UpdateScrollbars(int nx, int ny)
 	// nx and ny are size of this window
 	hScroll->SetScrollbar(hScroll->GetThumbPosition(), nx / max(1, hScroll->GetRange()),  max(1, hScroll->GetRange()), 96);
 	vScroll->SetScrollbar(vScroll->GetThumbPosition(), ny / max(1, vScroll->GetRange()),  max(1, vScroll->GetRange()), 96);
+}
+
+void MapWindow::UpdateDialogs(bool show)
+{
+	if(replaceItemsDialog)
+		replaceItemsDialog->Show(show);
 }
 
 void MapWindow::GetViewStart(int* x, int* y)

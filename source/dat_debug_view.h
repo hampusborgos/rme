@@ -20,7 +20,7 @@
 
 class DatDebugViewListBox;
 
-class DatDebugView : wxPanel
+class DatDebugView : public wxPanel
 {
 public:
 	DatDebugView(wxWindow* parent);

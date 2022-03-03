@@ -1428,9 +1428,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 			new_tile = map.allocator(map.createTileL(offset));
 		}
 		int param;
-		if(brush->isCreature()) {
-			param = g_gui.GetSpawnTime();
-		} else {
+		if(!brush->isCreature()) {
 			param = g_gui.GetBrushSize();
 		}
 		if(dodraw) {

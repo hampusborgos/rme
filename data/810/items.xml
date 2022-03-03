@@ -6378,7 +6378,7 @@
 		<attribute key="weight" value="4600"/>
 		<attribute key="containerSize" value="5"/>
 		<attribute key="decayTo" value="3068"/>
-		<attribute key="duration" value="10"/>	
+		<attribute key="duration" value="10"/>
 		<attribute key="corpseType" value="venom"/>
 		<attribute key="fluidSource" value="slime"/>
 	</item>
@@ -6398,14 +6398,14 @@
 	</item>
 	<item id="2810" article="a" name="dead troll">
 		<attribute key="weight" value="50000"/>
-		<attribute key="containerSize" value="10"/>	
+		<attribute key="containerSize" value="10"/>
 		<attribute key="decayTo" value="2811"/>
 		<attribute key="duration" value="900"/>
 		<attribute key="corpseType" value="blood"/>
 	</item>
 	<item id="2811" article="a" name="dead troll">
 		<attribute key="weight" value="30000"/>
-		<attribute key="containerSize" value="10"/>	
+		<attribute key="containerSize" value="10"/>
 		<attribute key="decayTo" value="0"/>
 		<attribute key="duration" value="900"/>
 		<attribute key="corpseType" value="blood"/>
@@ -6424,7 +6424,7 @@
 	</item>
 	<item id="2814" article="a" name="dead rat">
 		<attribute key="weight" value="4400"/>
-		<attribute key="containerSize" value="5"/>	
+		<attribute key="containerSize" value="5"/>
 		<attribute key="decayTo" value="2815"/>
 		<attribute key="duration" value="600"/>
 		<attribute key="corpseType" value="blood"/>
@@ -16660,7 +16660,7 @@
 	<item id="6430" article="a" name="tree">
 	</item>
 	<item id="6431" article="a" name="branch">
-	</item>                                                                 
+	</item>
 	<item id="6432" article="a" name="branch">
 	</item>
 	<item id="6433" article="a" name="necromancer shield">
@@ -17513,7 +17513,7 @@
 	<item id="6786" article="a" name="fur wall">
 	</item>
 	<item id="6787" article="a" name="fur wall">
-	</item>	
+	</item>
 	<item id="6788" article="a" name="fur wall window">
 	</item>
 	<item id="6789" article="a" name="fur wall window">
@@ -19205,7 +19205,7 @@
 		<attribute key="attack" value="40"/>
 		<attribute key="weaponType" value="club"/>
 		<attribute key="slotType" value="two-handed"/>
-	</item>	
+	</item>
 	<item id="7425" article="a" name="taurus mace">
 		<attribute key="weight" value="5100"/>
 		<attribute key="defense" value="18"/>
@@ -19284,7 +19284,7 @@
 	</item>
 	<item id="7438" article="a" name="golden bow">
 		<attribute key="weight" value="0"/>
-		<attribute key="slotType" value="two-handed"/>	
+		<attribute key="slotType" value="two-handed"/>
 		<attribute key="weaponType" value="distance"/>
 		<attribute key="ammoType" value="arrow"/>
 		<attribute key="range" value="5"/>

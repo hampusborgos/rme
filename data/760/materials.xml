@@ -3,7 +3,7 @@
 	<!-- Metaitems
 	   Items that only exist in the editor
 	 -->
-	 
+
 	<metaitem id="80"/>
 	<metaitem id="81"/>
 	<metaitem id="82"/>
@@ -14,7 +14,7 @@
 	<metaitem id="87"/>
 	<metaitem id="88"/> <!-- Steel rebar pole -->
 	<metaitem id="89"/> <!-- Steel bar pole -->
-	
+
 	<include file="borders.xml"/>
 	<include file="grounds.xml"/>
 	<include file="walls.xml"/>

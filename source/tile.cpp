@@ -179,12 +179,49 @@ bool Tile::hasProperty(enum ITEMPROPERTY prop) const
 	return false;
 }
 
-Item* Tile::getTopItem()
+int Tile::getIndexOf(Item* item) const
 {
-	if(items.size() > 0 && !items.back()->isMetaItem())
+	if(!item)
+		return wxNOT_FOUND;
+
+	int index = 0;
+	if(ground) {
+		if(ground == item)
+			return index;
+		index++;
+	}
+
+	if(!items.empty()) {
+		auto it = std::find(items.begin(), items.end(), item);
+		if(it != items.end()) {
+			index += (it - items.begin());
+			return index;
+		}
+	}
+	return wxNOT_FOUND;
+}
+
+Item* Tile::getTopItem() const
+{
+	if(!items.empty() && !items.back()->isMetaItem())
 		return items.back();
 	if(ground && !ground->isMetaItem()) {
 		return ground;
+	}
+	return nullptr;
+}
+
+Item* Tile::getItemAt(int index) const
+{
+	if(index < 0)
+		return nullptr;
+	if(ground) {
+		if(index == 0)
+			return ground;
+		index--;
+	}
+	if(index >= 0 && index < items.size()) {
+		return items.at(index);
 	}
 	return nullptr;
 }
