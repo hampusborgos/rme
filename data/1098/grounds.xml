@@ -2097,10 +2097,10 @@
 		<friend name="mountain"/>
 	</brush>
 
-	<brush name="stone stairway (ground)" type="ground" server_lookid="3219" z-order="7900">
+	<!--<brush name="stone stairway (ground)" type="ground" server_lookid="3219" z-order="7900">
 		<item id="3219" chance="10"/>
 		<item id="3220" chance="10"/>
-	</brush>
+	</brush>-->
 
 	<brush name="stone stairway" type="doodad" server_lookid="3219" draggable="true" on_blocking="true" redo_borders="true" one_size="true" thickness="100/100">
 		<alternate> <item id="3219" chance="10"/> </alternate>
