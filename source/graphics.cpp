@@ -401,6 +401,11 @@ bool GraphicManager::loadSpriteMetadata(const FileName& datafile, wxString& erro
 
 	dat_format = client_version->getDatFormatForSignature(datSignature);
 
+	if(dat_format == DAT_FORMAT_UNKNOWN) {
+		error += "Failed to open " + datafile.GetFullPath() + " for reading\nCould not locate datSignature (0x" << wxString::Format(wxT("%02x"), datSignature) << ") compatible with client version " << client_version->getName();
+		return false;
+	}
+
 	if(!otfi_found) {
 		is_extended = dat_format >= DAT_FORMAT_96;
 		has_frame_durations = dat_format >= DAT_FORMAT_1050;
