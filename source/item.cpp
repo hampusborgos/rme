@@ -463,12 +463,12 @@ Item* Item::Create(pugi::xml_node xml)
 {
 	pugi::xml_attribute attribute;
 
-	int16_t id = 0;
+	uint16_t id = 0;
 	if((attribute = xml.attribute("id"))) {
 		id = attribute.as_ushort();
 	}
 
-	int16_t count = 1;
+	uint16_t count = 1;
 	if((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
 		count = attribute.as_ushort();
 	}
