@@ -98,6 +98,7 @@ protected:
 	wxTextCtrl* file_text_field;
 	wxSpinCtrl* x_offset_ctrl;
 	wxSpinCtrl* y_offset_ctrl;
+	wxSpinCtrl* z_offset_ctrl;
 
 	wxChoice* house_options;
 	wxChoice* spawn_options;
