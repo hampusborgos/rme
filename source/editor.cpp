@@ -450,7 +450,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 	return true;
 }
 
-bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, ImportType house_import_type, ImportType spawn_import_type)
+bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset, ImportType house_import_type, ImportType spawn_import_type)
 {
 	selection.clear();
 	actionQueue->clear();
@@ -464,7 +464,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 	}
 	g_gui.ListDialog("Warning", imported_map.getWarnings());
 
-	Position offset(import_x_offset, import_y_offset, 0);
+	Position offset(import_x_offset, import_y_offset, import_z_offset);
 
 	bool resizemap = false;
 	bool resize_asked = false;
