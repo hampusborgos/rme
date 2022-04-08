@@ -33,8 +33,7 @@ class FindItemDialog : public wxDialog
 {
 public:
 	enum SearchMode {
-		ServerIDs = 0,
-		ClientIDs,
+		ItemIDs = 0,
 		Names,
 		Types,
 		Properties,
@@ -66,8 +65,7 @@ private:
 	void RefreshContentsInternal();
 
 	void OnOptionChange(wxCommandEvent& event);
-	void OnServerIdChange(wxCommandEvent& event);
-	void OnClientIdChange(wxCommandEvent& event);
+	void OnItemIdChange(wxCommandEvent& event);
 	void OnText(wxCommandEvent& event);
 	void OnTypeChange(wxCommandEvent& event);
 	void OnPropertyChange(wxCommandEvent& event);
@@ -79,11 +77,10 @@ private:
 
 	wxRadioBox* types_radio_box;
 
-	wxSpinCtrl* server_id_spin;
-	wxSpinCtrl* client_id_spin;
+	wxSpinCtrl* item_id_spin;
 	wxTextCtrl* name_text_input;
 	wxTimer input_timer;
-	wxCheckBox* unpassable;
+	wxCheckBox* blockSolid;
 	wxCheckBox* unmovable;
 	wxCheckBox* block_missiles;
 	wxCheckBox* block_pathfinder;

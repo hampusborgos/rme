@@ -141,7 +141,6 @@ public:
 
 	// IDs
 	uint16_t getID() const {return id;}
-	uint16_t getClientID() const {return g_items[id].clientID;}
 	// NOTE: This is very volatile, do NOT use this unless you know exactly what you're doing
 	// which you probably don't so avoid it like the plague!
 	void setID(uint16_t id);
@@ -180,7 +179,7 @@ public:
 
 	// Item types
 	bool hasProperty(enum ITEMPROPERTY prop) const;
-	bool isBlocking() const {return g_items[id].unpassable;}
+	bool isBlocking() const {return g_items[id].blockSolid;}
 	bool isStackable() const {return g_items[id].stackable;}
 	bool isClientCharged() const {return g_items[id].isClientCharged();}
 	bool isExtraCharged() const {return g_items[id].isExtraCharged();}

@@ -18,6 +18,7 @@
 #include "main.h"
 
 #include <wx/dir.h>
+#include <spdlog/spdlog.h>
 
 #include "editor.h"
 #include "items.h"
@@ -72,22 +73,26 @@ MaterialsExtensionList Materials::getExtensionsByVersion(uint16_t version_id)
 	return ret_list;
 }
 
-bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings)
+bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings, bool loadInclude)
 {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(identifier.GetFullPath().mb_str());
 	if(!result) {
 		warnings.push_back("Could not open " + identifier.GetFullName() + " (file not found or syntax error)");
+		spdlog::error("[Materials::loadMaterials] - Could not open {} (file not found or syntax error)", identifier.GetFullName());
 		return false;
 	}
 
 	pugi::xml_node node = doc.child("materials");
 	if(!node) {
 		warnings.push_back(identifier.GetFullName() + ": Invalid rootheader.");
+		spdlog::error("[Materials::loadMaterials] - {} : Invalid rootheader", identifier.GetFullName());
 		return false;
 	}
 
-	unserializeMaterials(identifier, node, error, warnings);
+	if (!loadInclude) {
+		unserializeMaterials(identifier, node, error, warnings);
+	}
 	return true;
 }
 
@@ -97,6 +102,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 
 	wxDir ext_dir(directoryName.GetPath());
 	if(!ext_dir.IsOpened()) {
+		spdlog::error("[Materials::loadExtensions] - Could not open extensions directory");
 		error = "Could not open extensions directory.";
 		return false;
 	}
@@ -104,6 +110,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 	wxString filename;
 	if(!ext_dir.GetFirst(&filename)) {
 		// No extensions found
+		spdlog::warn("[Materials::loadExtensions] - No extensions found");
 		return true;
 	}
 
@@ -113,42 +120,49 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 		fn.SetPath(directoryName.GetPath());
 		fn.SetFullName(filename);
 		if(fn.GetExt() != "xml") {
+			spdlog::warn("[Materials::loadExtensions] - Invalid extension {}", fn.GetExt());
 			continue;
 		}
 
 		pugi::xml_document doc;
 		pugi::xml_parse_result result = doc.load_file(fn.GetFullPath().mb_str());
 		if(!result) {
+			spdlog::error("[Materials::loadExtensions] - Could not open {} (file not found or syntax error)", filename);
 			warnings.push_back("Could not open " + filename + " (file not found or syntax error)");
 			continue;
 		}
 
 		pugi::xml_node extensionNode = doc.child("materialsextension");
 		if(!extensionNode) {
+			spdlog::error("[Materials::loadExtensions] - Invalid rootheader {}", filename);
 			warnings.push_back(filename + ": Invalid rootheader.");
 			continue;
 		}
 
 		pugi::xml_attribute attribute;
 		if(!(attribute = extensionNode.attribute("name"))) {
+			spdlog::error("[Materials::loadExtensions] - Couldn't read extension name {}", filename);
 			warnings.push_back(filename + ": Couldn't read extension name.");
 			continue;
 		}
 
 		const std::string& extensionName = attribute.as_string();
 		if(!(attribute = extensionNode.attribute("author"))) {
+			spdlog::error("[Materials::loadExtensions] - Couldn't read extension name {}", filename);
 			warnings.push_back(filename + ": Couldn't read extension name.");
 			continue;
 		}
 
 		const std::string& extensionAuthor = attribute.as_string();
 		if(!(attribute = extensionNode.attribute("description"))) {
+			spdlog::info("[Materials::loadExtensions] - Couldn't read extension name {}", filename);
 			warnings.push_back(filename + ": Couldn't read extension name.");
 			continue;
 		}
 
 		const std::string& extensionDescription = attribute.as_string();
 		if(extensionName.empty() || extensionAuthor.empty() || extensionDescription.empty()) {
+			spdlog::error("[Materials::loadExtensions] - Couldn't read extension attributes (name, author, description) {}", filename);
 			warnings.push_back(filename + ": Couldn't read extension attributes (name, author, description).");
 			continue;
 		}
@@ -188,12 +202,16 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 				duplicate = std::unique(materialExtension->version_list.begin(), materialExtension->version_list.end());
 			}
 		} else {
+			spdlog::warn("[Materials::loadExtensions] - Extension is not available for any version {}", filename);
 			warnings.push_back(filename + ": Extension is not available for any version.");
 		}
 
 		extensions.push_back(materialExtension);
 		if(materialExtension->isForVersion(g_gui.GetCurrentVersionID())) {
 			unserializeMaterials(filename, extensionNode, error, warnings);
+			spdlog::warn("[Materials::loadExtensions] - Extension '{}' unserialized", extensionName);
+		} else {
+			spdlog::warn("[Materials::loadExtensions] - Extension '{}' not loaded due to different version", extensionName);
 		}
 	} while(ext_dir.GetNext(&filename));
 
@@ -216,8 +234,9 @@ bool Materials::unserializeMaterials(const FileName& filename, pugi::xml_node no
 			includeName.SetName(wxString(attribute.as_string(), wxConvUTF8));
 
 			wxString subError;
-			if(!loadMaterials(includeName, subError, warnings)) {
+			if(!loadMaterials(includeName, subError, warnings, true)) {
 				warnings.push_back("Error while loading file \"" + includeName.GetFullName() + "\": " + subError);
+				spdlog::warn("[Materials::unserializeMaterials] - Error while loading file {}", includeName.GetFullName());
 			}
 		} else if(childName == "metaitem") {
 			g_items.loadMetaItem(childNode);

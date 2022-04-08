@@ -23,6 +23,8 @@
 #include <deque>
 
 #include "client_version.h"
+#include "sprite_appearances.h"
+#include "protobuf/appearances.pb.h"
 
 enum SpriteSize {
 	SPRITE_SIZE_16x16,
@@ -69,14 +71,14 @@ protected:
 };
 
 
-class GameSprite : public Sprite{
+class GameSprite : public Sprite {
 public:
 	GameSprite();
 	~GameSprite();
 
 	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
-	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
-	GLuint getHardwareID(int _x, int _y, int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
+	GLuint getHardwareID(int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
+	GLuint getHardwareID(int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 
 	virtual void unloadDC();
@@ -84,7 +86,7 @@ public:
 	void clean(int time);
 
 	int getDrawHeight() const;
-	std::pair<int, int> getDrawOffset() const;
+	std::pair<int, int> getDrawOffset();
 	uint8_t getMiniMapColor() const;
 
 protected:
@@ -163,6 +165,15 @@ protected:
 	wxMemoryDC* dc[SPRITE_SIZE_COUNT];
 
 public:
+	uint32_t getID() const {
+		return id;
+	}
+
+	bool isDrawOffsetLoaded = false;
+
+	uint8_t getWidth();
+	uint8_t getHeight();
+
 	// GameSprite info
 	uint8_t height;
 	uint8_t width;
@@ -170,7 +181,7 @@ public:
 	uint8_t pattern_x;
 	uint8_t pattern_y;
 	uint8_t pattern_z;
-	uint8_t frames;
+	uint8_t sprite_phase_size;
 	uint32_t numsprites;
 
 	Animator* animator;
@@ -186,6 +197,8 @@ public:
 
 	friend class GraphicManager;
 };
+
+extern GameSprite g_gameSprite;
 
 struct FrameDuration
 {
@@ -272,8 +285,9 @@ public:
 	// Metadata should be loaded first
 	// This fills the item / creature adress space
 	bool loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadata(const FileName& datafile, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* sType, wxString& error, wxArrayString& warnings);
+	bool loadItemSpriteMetadata(ItemType* t, wxString& error, wxArrayString& warnings);
+	bool loadOutfitSpriteMetadata(remeres::protobuf::appearances::Appearance outfit, wxString& error, wxArrayString& warnings);
+	bool loadSpriteMetadataFlags(const ItemType* t, GameSprite* sType, wxString& error, wxArrayString& warnings);
 	bool loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings);
 
 	// Cleans old & unused textures according to config settings
@@ -405,5 +419,7 @@ static RGBQuad minimap_color[256] = {
 	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       // 248
 	RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0),       RGBQuad(0, 0, 0)        // 252
 };
+
+extern GraphicManager g_graphics;
 
 #endif

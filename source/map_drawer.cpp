@@ -1086,13 +1086,14 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		return;
 	}
 
-
 	GameSprite* spr = it.sprite;
 
 	if(it.isMetaItem())
 		return;
+	
 	if(spr == nullptr)
 		return;
+
 	if(!ephemeral && it.pickupable && !options.show_items)
 		return;
 
@@ -1141,29 +1142,23 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 	}
 
 	if(!ephemeral && options.transparent_items &&
-			(!it.isGroundTile() || spr->width > 1 || spr->height > 1) &&
+			(!it.isGroundTile() || spr->getWidth() > 1 || spr->getHeight() > 1) &&
 			!it.isSplash() &&
-			(!it.isBorder || spr->width > 1 || spr->height > 1)
+			(!it.isBorder || spr->getWidth() > 1 || spr->getHeight() > 1)
 	  )
 	{
 		alpha /= 2;
 	}
 
 	int frame = item->getFrame();
-	for(int cx = 0; cx != spr->width; cx++) {
-		for(int cy = 0; cy != spr->height; cy++) {
-			for(int cf = 0; cf != spr->layers; cf++) {
-				int texnum = spr->getHardwareID(cx,cy,cf,
-					subtype,
-					pattern_x,
-					pattern_y,
-					pattern_z,
-					frame
-				);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
-			}
-		}
-	}
+	int texnum = spr->getHardwareID(0,
+		subtype,
+		pattern_x,
+		pattern_y,
+		pattern_z,
+		frame
+	);
+	glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 
 	if(options.show_hooks && (it.hookSouth || it.hookEast))
 		DrawHookIndicator(draw_x, draw_y, it);
@@ -1194,8 +1189,10 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 
 	if(it.isMetaItem())
 		return;
+
 	if(spr == nullptr)
 		return;
+
 	if(!ephemeral && it.pickupable && options.show_items)
 		return;
 
@@ -1245,29 +1242,23 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 	}
 
 	if(!ephemeral && options.transparent_items &&
-			(!it.isGroundTile() || spr->width > 1 || spr->height > 1) &&
+			(!it.isGroundTile() || spr->getWidth() > 1 || spr->height > 1) &&
 			!it.isSplash() &&
-			(!it.isBorder || spr->width > 1 || spr->height > 1)
+			(!it.isBorder || spr->getWidth() > 1 || spr->getHeight() > 1)
 	  )
 	{
 		alpha /= 2;
 	}
 
 	int frame = item->getFrame();
-	for(int cx = 0; cx != spr->width; ++cx) {
-		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->layers; ++cf) {
-				int texnum = spr->getHardwareID(cx,cy,cf,
-					subtype,
-					pattern_x,
-					pattern_y,
-					pattern_z,
-					frame
-				);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
-			}
-		}
-	}
+	int texnum = spr->getHardwareID(0,
+		subtype,
+		pattern_x,
+		pattern_y,
+		pattern_z,
+		frame
+	);
+	glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 
 	if(options.show_hooks && (it.hookSouth || it.hookEast) && zoom <= 3.0)
 		DrawHookIndicator(draw_x, draw_y, it);
@@ -1281,15 +1272,9 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int 
 	screeny -= spr->getDrawOffset().second;
 
 	int tme = 0; //GetTime() % itype->FPA;
-	for(int cx = 0; cx != spr->width; ++cx) {
-		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->layers; ++cf) {
-				int texnum = spr->getHardwareID(cx,cy,cf,-1,0,0,0,tme);
-				//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
-			}
-		}
-	}
+	int texnum = spr->getHardwareID(0,-1,0,0,0,tme);
+	//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
+	glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 }
 
 void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int red, int green, int blue, int alpha)
@@ -1299,15 +1284,9 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int re
 	screeny -= spr->getDrawOffset().second;
 
 	int tme = 0; //GetTime() % itype->FPA;
-	for(int cx = 0; cx != spr->width; ++cx) {
-		for(int cy = 0; cy != spr->height; ++cy) {
-			for(int cf = 0; cf != spr->layers; ++cf) {
-				int texnum = spr->getHardwareID(cx,cy,cf,-1,0,0,0,tme);
-				//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
-			}
-		}
-	}
+	int texnum = spr->getHardwareID(0,-1,0,0,0,tme);
+	//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
+	glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 }
 
 void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Direction dir, int red, int green, int blue, int alpha)
@@ -1317,22 +1296,11 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
 	} else {
 		GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
-		if(!spr || outfit.lookType == 0) {
+		if(!spr || outfit.lookType == 0)
 			return;
-			/*
-			spr = g_gui.gfx.getCreatureSprite(138);
-			if(!spr)
-				return;
-			 */
-		}
 
-		int tme = 0; //GetTime() % itype->FPA;
-		for(int cx = 0; cx != spr->width; ++cx) {
-			for(int cy = 0; cy != spr->height; ++cy) {
-				int texnum = spr->getHardwareID(cx,cy,(int)dir,outfit,tme);
-				glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
-			}
-		}
+		int texnum = spr->getHardwareID((int)dir,outfit,0);
+		glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 	}
 }
 
@@ -1393,15 +1361,18 @@ void MapDrawer::WriteTooltip(Waypoint* waypoint, std::ostringstream& stream)
 
 void MapDrawer::DrawTile(TileLocation* location)
 {
-	if(!location)
+	if(!location) {
 		return;
+	}
 	Tile* tile = location->get();
 
-	if(!tile)
+	if(!tile) {
 		return;
+	}
 
-	if(options.show_only_modified && !tile->isModified())
+	if(options.show_only_modified && !tile->isModified()) {
 		return;
+	}
 
 	int map_x = location->getX();
 	int map_y = location->getY();
@@ -1789,13 +1760,17 @@ void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
 void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha)
 {
 	if(texture_number != 0) {
+		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(texture_number);
+		if (!sheet)
+			return;
+
 		glBindTexture(GL_TEXTURE_2D, texture_number);
 		glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.f, 0.f); glVertex2f(sx, sy);
-			glTexCoord2f(1.f, 0.f); glVertex2f(sx + TILE_SIZE, sy);
-			glTexCoord2f(1.f, 1.f); glVertex2f(sx + TILE_SIZE, sy + TILE_SIZE);
-			glTexCoord2f(0.f, 1.f); glVertex2f(sx, sy + TILE_SIZE);
+			glTexCoord2f(1.f, 0.f); glVertex2f(sx + sheet->getSpriteSize().width, sy);
+			glTexCoord2f(1.f, 1.f); glVertex2f(sx + sheet->getSpriteSize().width, sy + sheet->getSpriteSize().height);
+			glTexCoord2f(0.f, 1.f); glVertex2f(sx, sy + sheet->getSpriteSize().height);
 		glEnd();
 	}
 }

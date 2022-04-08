@@ -459,7 +459,7 @@ void Tile::update()
 		}
 
 		ItemType& it = g_items[i->getID()];
-		if(it.unpassable) {
+		if(it.blockSolid) {
 			statflags |= TILESTATE_BLOCKING;
 		}
 		if(it.isOptionalBorder) {

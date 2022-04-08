@@ -121,7 +121,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <stdexcept>
 #include <time.h>
 #include <fstream>
-
+#include <spdlog/spdlog.h>
 
 typedef std::vector<std::string> StringVector;
 typedef wxFileName FileName;
@@ -131,7 +131,10 @@ typedef wxFileName FileName;
 #include "con_vector.h"
 #include "common.h"
 #include "threads.h"
-
+#include "graphics/libbmp.h"
 #include "rme_forward_declarations.h"
 
+using BmpImgPtr = std::shared_ptr<BmpImg>;
+
 #endif
+

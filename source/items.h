@@ -20,6 +20,8 @@
 
 #include "filehandle.h"
 #include "brush_enums.h"
+#include "sprite_appearances.h"
+#include "protobuf/appearances.pb.h"
 
 class Brush;
 class GroundBrush;
@@ -268,8 +270,13 @@ public:
 	bool isFloorChange() const;
 
 	GameSprite* sprite;
+	SpritesSize m_size;
+	std::vector<std::pair<int, int>> m_animationPhases;
+	int m_numPatternX{ 0 }, m_numPatternY{ 0 }, m_numPatternZ{ 0 };
+	int m_layers{ 0 };
+	std::vector<int> m_sprites;
+
 	uint16_t id;
-	uint16_t clientID;
 	Brush* brush;
 	Brush* doodad_brush;
 	RAWBrush* raw_brush;
@@ -279,15 +286,27 @@ public:
 	// flag set to false)
 	bool has_raw;
 	bool in_other_tileset;
+	bool async_animation;
 
 	ItemGroup_t group;
 	ItemTypes_t type;
+
+	uint32_t border_group;
+	uint32_t pattern_width;
+	uint32_t pattern_height;
+	uint32_t pattern_depth;
+	uint32_t layers;
+	uint8_t sprite_phase_size;
+	uint32_t width;
+	uint32_t height;
+	uint32_t sprite_id;
+	uint32_t loop_count;
+	uint32_t start_frame;
 
 	uint16_t volume;
 	uint16_t maxTextLen;
 	//uint16_t writeOnceItemId;
 	uint16_t ground_equivalent;
-	uint32_t border_group;
 	bool has_equivalent; // True if any item has this as ground_equivalent
 	bool wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
 
@@ -295,17 +314,23 @@ public:
 	std::string editorsuffix;
 	std::string description;
 
+	uint32_t patternWidth;
+	uint32_t charges;
+	
 	float weight;
 	// It might be useful to be able to extrapolate this information in the future
 	int attack;
 	int defense;
 	int armor;
-	uint32_t charges;
 	bool client_chargeable;
 	bool extra_chargeable;
 	bool ignoreLook;
 
 	bool isHangable;
+	bool isCorpse;
+	bool isVertical;
+	bool isHorizontal;
+	bool isPodium;
 	bool hookEast;
 	bool hookSouth;
 	bool canReadText;
@@ -334,11 +359,18 @@ public:
 	bool floorChangeWest;
 	bool floorChange;
 
-	bool unpassable;
+	bool blockSolid;
 	bool blockPickupable;
-	bool blockMissiles;
-	bool blockPathfinder;
+	bool blockProjectile;
+	bool blockPathFind;
 	bool hasElevation;
+	bool forceUse;
+	bool hasHeight;
+	bool walkStack;
+
+	bool spriteInfo = false;
+
+	bool noMoveAnimation = false;
 
 	int alwaysOnTopOrder;
 	int rotateTo;
@@ -358,9 +390,8 @@ public:
 
 	bool typeExists(int id) const;
 	ItemType& getItemType(int id);
-	ItemType& getItemIdByClientID(int spriteId);
 
-	bool loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings);
+	bool loadFromProtobuf(wxString& error, wxArrayString& warnings, remeres::protobuf::appearances::Appearances appearances);
 	bool loadFromGameXml(const FileName& datafile, wxString& error, wxArrayString& warnings);
 	bool loadItemFromGameXml(pugi::xml_node itemNode, int id);
 	bool loadMetaItem(pugi::xml_node node);
@@ -376,19 +407,12 @@ public:
 	uint32_t BuildNumber;
 
 protected:
-	bool loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArrayString& warnings);
-	bool loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArrayString& warnings);
-	bool loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArrayString& warnings);
-
-protected:
 	// Count of GameSprite types
 	uint16_t item_count;
 	uint16_t effect_count;
 	uint16_t monster_count;
 	uint16_t distance_count;
 
-	uint16_t minclientID;
-	uint16_t maxclientID;
 	uint16_t max_item_id;
 
 	friend class GameSprite;

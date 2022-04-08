@@ -41,7 +41,7 @@ TableBrush::~TableBrush()
 
 bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
-	look_id = g_items[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].clientID;
+	look_id = g_items[pugi::cast<uint16_t>(node.attribute("server_lookid").value())].id;
 	if(look_id == 0) {
 		look_id = pugi::cast<uint16_t>(node.attribute("lookid").value());
 	}

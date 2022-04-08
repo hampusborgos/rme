@@ -5,7 +5,6 @@
 	<include file="tilesets/architecture.xml"/>
 	<include file="tilesets/archway.xml"/>
 	<include file="tilesets/banners.xml"/>
-	<include file="tilesets/blank.xml"/>
 	<include file="tilesets/boats.xml"/>
 	<include file="tilesets/borders.xml"/>
 	<include file="tilesets/bottom.xml"/>

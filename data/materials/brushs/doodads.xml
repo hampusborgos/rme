@@ -7044,12 +7044,10 @@
 	<brush name="mossy wall" type="wall decoration" on_blocking="true" server_lookid="2726">
 		<wall type="horizontal">
 			<item id="2726" chance="3"/>
-			<item id="371" chance="0"/>
 			<door id="2734" type="any window" open="false"/>
 		</wall>
 		<wall type="vertical">
 			<item id="2730" chance="3"/>
-			<item id="168" chance="0"/>
 			<door id="2737" type="any window" open="false"/>
 		</wall>
 		<wall type="corner">

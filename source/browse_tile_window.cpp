@@ -63,7 +63,7 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	ItemsMap::const_iterator item_iterator = items.find(int(n));
 	Item* item = item_iterator->second;
 
-	Sprite* sprite = g_gui.gfx.getSprite(item->getClientID());
+	Sprite* sprite = g_gui.gfx.getSprite(item->getID());
 	if(sprite)
 		sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 

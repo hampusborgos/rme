@@ -41,10 +41,12 @@ class Application : public wxApp
 public:
 	~Application();
 	virtual bool OnInit();
-    virtual void OnEventLoopEnter(wxEventLoopBase* loop);
+	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
 	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
+
+	bool openConsole();
 
 private:
     bool m_startup;

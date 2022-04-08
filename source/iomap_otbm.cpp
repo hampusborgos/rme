@@ -477,9 +477,6 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 	root->getU16(u16);
 	root->getU32(u32);
 
-	if(!root->getU32(u32)) // OTB minor version
-		return false;
-
 	out_ver.client = ClientVersionID(u32);
 	return true;
 }
@@ -643,14 +640,17 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 
 	// Read auxilliary files
 	if(!loadHouses(map, filename)) {
+		spdlog::error("[IOMapOTBM::loadMap] - Failed to load houses");
 		warning("Failed to load houses.");
 		map.housefile = nstr(filename.GetName()) + "-house.xml";
 	}
 	if(!loadSpawnsMonster(map, filename)) {
+		spdlog::error("[IOMapOTBM::loadMap] - Failed to monsters spawns");
 		warning("Failed to load monsters spawns.");
 		map.spawnmonsterfile = nstr(filename.GetName()) + "-monster.xml";
 	}
 	if(!loadSpawnsNpc(map, filename)) {
+		spdlog::error("[IOMapOTBM::loadMap] - Failed to npcs spawns");
 		warning("Failed to load npcs spawns.");
 		map.spawnnpcfile = nstr(filename.GetName()) + "-npc.xml";
 	}
@@ -661,6 +661,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 {
 	BinaryNode* root = f.getRootNode();
 	if(!root) {
+		spdlog::error("[IOMapOTBM::loadMap] - Could not read root node");
 		error("Could not read root node.");
 		return false;
 	}
@@ -681,8 +682,10 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 			"The loaded map appears to be a OTBM format that is not supported by the editor."
 			"Do you still want to attempt to load the map?", wxYES | wxNO) == wxID_YES)
 		{
+			spdlog::error("[IOMapOTBM::loadMap] - Unsupported or damaged map version");
 			warning("Unsupported or damaged map version");
 		} else {
+			spdlog::error("[IOMapOTBM::loadMap] - Unsupported OTBM version, could not load map");
 			error("Unsupported OTBM version, could not load map");
 			return false;
 		}
@@ -697,25 +700,11 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 	map.height = u16;
 
-	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MajorVersion) { // OTB major version
-		if(g_gui.PopupDialog("Map error",
-			"The loaded map appears to be a items.otb format that deviates from the "
-			"items.otb loaded by the editor. Do you still want to attempt to load the map?", wxYES | wxNO) == wxID_YES)
-		{
-			warning("Unsupported or damaged map version");
-		} else {
-			error("Outdated items.otb, could not load map");
-			return false;
-		}
-	}
-
-	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MinorVersion) { // OTB minor version
-		warning("This editor needs an updated items.otb version");
-	}
 	version.client = (ClientVersionID)u32;
 
 	BinaryNode* mapHeaderNode = root->getChild();
 	if(mapHeaderNode == nullptr || !mapHeaderNode->getByte(u8) || u8 != OTBM_MAP_DATA) {
+					spdlog::error("[IOMapOTBM::loadMap] - Could not get root child node. Cannot recover from fatal error!");
 		error("Could not get root child node. Cannot recover from fatal error!");
 		return false;
 	}
@@ -725,6 +714,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 		switch(attribute) {
 			case OTBM_ATTR_DESCRIPTION: {
 				if(!mapHeaderNode->getString(map.description)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid map description tag");
 					warning("Invalid map description tag");
 				}
 				//std::cout << "Map description: " << mapDescription << std::endl;
@@ -732,23 +722,27 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 			}
 			case OTBM_ATTR_EXT_SPAWN_MONSTER_FILE: {
 				if(!mapHeaderNode->getString(map.spawnmonsterfile)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid map spawnmonsterfile tag");
 					warning("Invalid map spawnmonsterfile tag");
 				}
 				break;
 			}
 			case OTBM_ATTR_EXT_HOUSE_FILE: {
 				if(!mapHeaderNode->getString(map.housefile)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid map housefile tag");
 					warning("Invalid map housefile tag");
 				}
 				break;
 			}
 			case OTBM_ATTR_EXT_SPAWN_NPC_FILE: {
 				if(!mapHeaderNode->getString(map.spawnnpcfile)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid map spawnnpcfile tag");
 					warning("Invalid map spawnnpcfile tag");
 				}
 				break;
 			}
 			default: {
+				spdlog::error("[IOMapOTBM::loadMap] - Unknown header node");
 				warning("Unknown header node.");
 				break;
 			}
@@ -765,6 +759,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 		uint8_t node_type;
 		if(!mapNode->getByte(node_type)) {
+			spdlog::error("[IOMapOTBM::loadMap] - Invalid map node");
 			warning("Invalid map node");
 			continue;
 		}
@@ -772,6 +767,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 			uint16_t base_x, base_y;
 			uint8_t base_z;
 			if(!mapNode->getU16(base_x) || !mapNode->getU16(base_y) || !mapNode->getU8(base_z)) {
+				spdlog::error("[IOMapOTBM::loadMap] - Invalid map node, no base coordinate");
 				warning("Invalid map node, no base coordinate");
 				continue;
 			}
@@ -780,6 +776,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				Tile* tile = nullptr;
 				uint8_t tile_type;
 				if(!tileNode->getByte(tile_type)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid tile type");
 					warning("Invalid tile type");
 					continue;
 				}
@@ -787,12 +784,14 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					//printf("Start\n");
 					uint8_t x_offset, y_offset;
 					if(!tileNode->getU8(x_offset) || !tileNode->getU8(y_offset)) {
+						spdlog::error("[IOMapOTBM::loadMap] - Could not read position of tile");
 						warning("Could not read position of tile");
 						continue;
 					}
 					const Position pos(base_x + x_offset, base_y + y_offset, base_z);
 
 					if(map.getTile(pos)) {
+						spdlog::error("[IOMapOTBM::loadMap] - Duplicate tile at x: {}, y: {}, z: {}, discarding duplicate", pos.x, pos.y, pos.z);
 						warning("Duplicate tile at %d:%d:%d, discarding duplicate", pos.x, pos.y, pos.z);
 						continue;
 					}
@@ -802,6 +801,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					if(tile_type == OTBM_HOUSETILE) {
 						uint32_t house_id;
 						if(!tileNode->getU32(house_id)) {
+							spdlog::error("[IOMapOTBM::loadMap] - House tile without house data, discarding tile");
 							warning("House tile without house data, discarding tile");
 							continue;
 						}
@@ -813,6 +813,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 								map.houses.addHouse(house);
 							}
 						} else {
+							spdlog::error("[IOMapOTBM::loadMap] - Invalid house id from tile x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 							warning("Invalid house id from tile %d:%d:%d", pos.x, pos.y, pos.z);
 						}
 					}
@@ -825,6 +826,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							case OTBM_ATTR_TILE_FLAGS: {
 								uint32_t flags = 0;
 								if(!tileNode->getU32(flags)) {
+									spdlog::error("[IOMapOTBM::loadMap] - Invalid tile flags of tile on x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 									warning("Invalid tile flags of tile on %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								tile->setMapFlags(flags);
@@ -833,13 +835,15 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							case OTBM_ATTR_ITEM: {
 								Item* item = Item::Create_OTBM(*this, tileNode);
 								if(item == nullptr)
-								{
+								{ 
+									spdlog::error("[IOMapOTBM::loadMap] - Invalid item at tile x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 									warning("Invalid item at tile %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								tile->addItem(item);
 								break;
 							}
 							default: {
+								spdlog::error("[IOMapOTBM::loadMap] - Unknown tile attribute at x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 								warning("Unknown tile attribute at %d:%d:%d", pos.x, pos.y, pos.z);
 								break;
 							}
@@ -852,6 +856,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 						Item* item = nullptr;
 						uint8_t item_type;
 						if(!itemNode->getByte(item_type)) {
+							spdlog::error("[IOMapOTBM::loadMap] - Unknown item type x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 							warning("Unknown item type %d:%d:%d", pos.x, pos.y, pos.z);
 							continue;
 						}
@@ -859,12 +864,14 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							item = Item::Create_OTBM(*this, itemNode);
 							if(item) {
 								if(!item->unserializeItemNode_OTBM(*this, itemNode)) {
+									spdlog::error("[IOMapOTBM::loadMap] - Couldn't unserialize item attributes at x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 									warning("Couldn't unserialize item attributes at %d:%d:%d", pos.x, pos.y, pos.z);
 								}
 								//reform(&map, tile, item);
 								tile->addItem(item);
 							}
 						} else {
+							spdlog::error("[IOMapOTBM::loadMap] - Unknown type of tile child node");
 							warning("Unknown type of tile child node");
 						}
 					}
@@ -875,6 +882,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 					map.setTile(pos.x, pos.y, pos.z, tile);
 				} else {
+					spdlog::error("[IOMapOTBM::loadMap] - Unknown type of tile node");
 					warning("Unknown type of tile node");
 				}
 			}
@@ -883,21 +891,25 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				Town* town = nullptr;
 				uint8_t town_type;
 				if(!townNode->getByte(town_type)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid town type (1)");
 					warning("Invalid town type (1)");
 					continue;
 				}
 				if(town_type != OTBM_TOWN) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid town type (2)");
 					warning("Invalid town type (2)");
 					continue;
 				}
 				uint32_t town_id;
 				if(!townNode->getU32(town_id)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid town id");
 					warning("Invalid town id");
 					continue;
 				}
 
 				town = map.towns.getTown(town_id);
 				if(town) {
+					spdlog::error("[IOMapOTBM::loadMap] - Duplicate town id {}, discarding duplicate", town_id);
 					warning("Duplicate town id %d, discarding duplicate", town_id);
 					continue;
 				} else {
@@ -909,6 +921,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				}
 				std::string town_name;
 				if(!townNode->getString(town_name)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid town name");
 					warning("Invalid town name");
 					continue;
 				}
@@ -918,6 +931,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				uint16_t y;
 				uint8_t z;
 				if(!townNode->getU16(x) || !townNode->getU16(y) || !townNode->getU8(z)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid town temple position");
 					warning("Invalid town temple position");
 					continue;
 				}
@@ -930,10 +944,12 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 			for(BinaryNode* waypointNode = mapNode->getChild(); waypointNode != nullptr; waypointNode = waypointNode->advance()) {
 				uint8_t waypoint_type;
 				if(!waypointNode->getByte(waypoint_type)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid waypoint type (1)");
 					warning("Invalid waypoint type (1)");
 					continue;
 				}
 				if(waypoint_type != OTBM_WAYPOINT) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid waypoint type (2)");
 					warning("Invalid waypoint type (2)");
 					continue;
 				}
@@ -941,6 +957,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				Waypoint wp;
 
 				if(!waypointNode->getString(wp.name)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid waypoint name");
 					warning("Invalid waypoint name");
 					continue;
 				}
@@ -948,6 +965,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				uint16_t y;
 				uint8_t z;
 				if(!waypointNode->getU16(x) || !waypointNode->getU16(y) || !waypointNode->getU8(z)) {
+					spdlog::error("[IOMapOTBM::loadMap] - Invalid waypoint position");
 					warning("Invalid waypoint position");
 					continue;
 				}

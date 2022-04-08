@@ -24,6 +24,7 @@ data/user
 *.obj
 *.db
 *.opendb
+.vs/
 
 vcproj/ipch/
 vcproj/Beta Release/
@@ -52,3 +53,5 @@ cmake-build-debug/
 *.exe
 *.pdb
 *.rar
+*.lzma
+*.dat

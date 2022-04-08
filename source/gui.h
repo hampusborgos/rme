@@ -29,6 +29,7 @@
 #include "map_tab.h"
 #include "palette_window.h"
 #include "client_version.h"
+#include "protobuf/appearances.pb.h"
 
 class BaseMap;
 class Map;
@@ -264,6 +265,9 @@ public:
 	void discoverDataDirectory(const wxString& existentFile);
 	wxString getFoundDataDirectory() { return m_dataDirectory; }
 
+	// Load protobuf appearance file and catalog-content json with sprites
+	bool loadAppearanceProtobuf(wxString& error, wxArrayString& warnings);
+
 	// Load/unload a client version (takes care of dialogs aswell)
 	void UnloadVersion();
 	bool LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force = false);
@@ -374,6 +378,8 @@ public:
 
 	BaseMap* secondary_map; // A buffer map
 	BaseMap* doodad_buffer_map; // The map in which doodads are temporarily stored
+
+	remeres::protobuf::appearances::Appearances appearances; // Protobuf appearances file parsed
 
 	//=========================================================================
 	// Brush references

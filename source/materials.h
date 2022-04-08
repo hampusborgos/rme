@@ -32,7 +32,7 @@ public:
 
 	TilesetContainer tilesets;
 
-	bool loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings);
+	bool loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings, bool loadInclude = false);
 	bool loadExtensions(FileName identifier, wxString& error, wxArrayString& warnings);
 	void createOtherTileset();
 	void createNpcTileset();
