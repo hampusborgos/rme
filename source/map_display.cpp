@@ -789,18 +789,8 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 						drag_start_x = mouse_map_x;
 						drag_start_y = mouse_map_y;
 						drag_start_z = floor;
-					} else {
-						Item* item = tile->getTopItem();
-						if(item) {
-							editor.selection.add(tile, item);
-							dragging = true;
-							drag_start_x = mouse_map_x;
-							drag_start_y = mouse_map_y;
-							drag_start_z = floor;
-						}
-					}
 					// Show npc spawns
-					if(tile->spawnNpc && g_settings.getInteger(Config::SHOW_SPAWNS_NPC)) {
+					} else if(tile->spawnNpc && g_settings.getInteger(Config::SHOW_SPAWNS_NPC)) {
 						editor.selection.add(tile, tile->spawnNpc);
 						dragging = true;
 						drag_start_x = mouse_map_x;
@@ -2470,10 +2460,10 @@ void MapPopupMenu::Update()
 				Teleport* teleport = dynamic_cast<Teleport*>(topSelectedItem);
 				if(topSelectedItem && (topSelectedItem->isBrushDoor() || topSelectedItem->isRoteable() || teleport)) {
 
-					if(topSelectedItem->isRoteable()) 
+					if(topSelectedItem->isRoteable())
 						Append(MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 
-					if(teleport && teleport->hasDestination()) 
+					if(teleport && teleport->hasDestination())
 						Append(MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 
 					if(topSelectedItem->isDoor())
@@ -2492,7 +2482,7 @@ void MapPopupMenu::Update()
 
 				if(topSpawnMonster)
 					Append( MAP_POPUP_MENU_SELECT_SPAWN_BRUSH, "Select Npc", "Select the npc brush");
-				
+
 				if(topNpc)
 					Append( MAP_POPUP_MENU_SELECT_NPC_BRUSH, "Select Npc", "Uses the current npc as a npc brush");
 
