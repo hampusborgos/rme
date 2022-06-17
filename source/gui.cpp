@@ -1534,7 +1534,7 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 	use_custom_thickness = on;
 
 	if(x != -1 || y != -1) {
-		custom_thickness_mod = float(max(x, 1)) / float(max(y, 1));
+		custom_thickness_mod = std::max<float>(x, 1.f) / std::max<float>(y, 1.f);
 	}
 
 	if(current_brush && current_brush->isDoodad()) {
@@ -1546,7 +1546,7 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 
 void GUI::SetBrushThickness(int low, int ceil)
 {
-	custom_thickness_mod = float(max(low, 1)) / float(max(ceil, 1));
+	custom_thickness_mod = std::max<float>(low, 1.f) / std::max<float>(ceil, 1.f);
 
 	if(use_custom_thickness && current_brush && current_brush->isDoodad()) {
 		FillDoodadPreviewBuffer();
@@ -1701,7 +1701,7 @@ void GUI::SelectBrushInternal(Brush* brush)
 	if(!current_brush)
 		return;
 
-	brush_variation = min(brush_variation, brush->getMaxVariation());
+	brush_variation = std::min(brush_variation, brush->getMaxVariation());
 	FillDoodadPreviewBuffer();
 	if(brush->isDoodad())
 		secondary_map = doodad_buffer_map;
@@ -1740,8 +1740,8 @@ void GUI::FillDoodadPreviewBuffer()
 			area = int(0.5 + GetBrushSize() * GetBrushSize() * PI);
 		}
 	}
-	const int object_range = (use_custom_thickness ? int(area*custom_thickness_mod) : brush->getThickness() * area / max(1, brush->getThicknessCeiling()));
-	const int final_object_count = max(1, object_range + random(object_range));
+	const int object_range = (use_custom_thickness ? int(area*custom_thickness_mod) : brush->getThickness() * area / std::max(1, brush->getThicknessCeiling()));
+	const int final_object_count = std::max(1, object_range + random(object_range));
 
 	Position center_pos(0x8000, 0x8000, 0x8);
 

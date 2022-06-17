@@ -176,7 +176,7 @@ int random(int low, int high)
 	int range = high - low;
 
 	double dist = double(mt_randi()) / 0xFFFFFFFF;
-	return low + min(range, int((1 + range) * dist));
+	return low + std::min(range, int((1 + range) * dist));
 }
 
 int random(int high)

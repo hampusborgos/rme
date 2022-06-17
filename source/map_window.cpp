@@ -99,8 +99,8 @@ void MapWindow::SetSize(int x, int y, bool center)
 void MapWindow::UpdateScrollbars(int nx, int ny)
 {
 	// nx and ny are size of this window
-	hScroll->SetScrollbar(hScroll->GetThumbPosition(), nx / max(1, hScroll->GetRange()),  max(1, hScroll->GetRange()), 96);
-	vScroll->SetScrollbar(vScroll->GetThumbPosition(), ny / max(1, vScroll->GetRange()),  max(1, vScroll->GetRange()), 96);
+	hScroll->SetScrollbar(hScroll->GetThumbPosition(), nx / std::max(1, hScroll->GetRange()), std::max(1, hScroll->GetRange()), 96);
+	vScroll->SetScrollbar(vScroll->GetThumbPosition(), ny / std::max(1, vScroll->GetRange()), std::max(1, vScroll->GetRange()), 96);
 }
 
 void MapWindow::UpdateDialogs(bool show)

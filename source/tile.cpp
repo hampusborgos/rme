@@ -220,8 +220,8 @@ Item* Tile::getItemAt(int index) const
 			return ground;
 		index--;
 	}
-	if(index >= 0 && index < items.size()) {
-		return items.at(index);
+	if(index >= 0 && index < static_cast<int>(items.size())) {
+		return items[index];
 	}
 	return nullptr;
 }
