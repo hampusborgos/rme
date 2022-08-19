@@ -22,7 +22,6 @@
 #include "brush.h"
 #include "monsters.h"
 #include "monster_brush.h"
-#include "pugicast.h"
 
 MonsterDatabase g_monsters;
 

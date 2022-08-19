@@ -22,7 +22,6 @@
 #include "brush.h"
 #include "npcs.h"
 #include "npc_brush.h"
-#include "pugicast.h"
 
 NpcDatabase g_npcs;
 
@@ -75,34 +74,34 @@ NpcType* NpcType::loadFromXML(pugi::xml_node node, wxArrayString& warnings)
 	npcType->name = attribute.as_string();
 
 	if((attribute = node.attribute("looktype"))) {
-		npcType->outfit.lookType = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookType = attribute.as_int();
 		if(g_gui.gfx.getCreatureSprite(npcType->outfit.lookType) == nullptr) {
 			warnings.push_back("Invalid npc \"" + wxstr(npcType->name) + "\" look type #" + std::to_string(npcType->outfit.lookType));
 		}
 	}
 
 	if((attribute = node.attribute("lookitem"))) {
-		npcType->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookItem = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookaddon"))) {
-		npcType->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookAddon = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookhead"))) {
-		npcType->outfit.lookHead = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookHead = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookbody"))) {
-		npcType->outfit.lookBody = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookBody = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("looklegs"))) {
-		npcType->outfit.lookLegs = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookLegs = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookfeet"))) {
-		npcType->outfit.lookFeet = pugi::cast<int32_t>(attribute.value());
+		npcType->outfit.lookFeet = attribute.as_int();
 	}
 	return npcType;
 }
@@ -133,31 +132,31 @@ NpcType* NpcType::loadFromOTXML(const FileName& filename, pugi::xml_document& do
 		}
 
 		if((attribute = optionNode.attribute("type"))) {
-			npcType->outfit.lookType = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookType = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("item")) || (attribute = optionNode.attribute("lookex")) || (attribute = optionNode.attribute("typeex"))) {
-			npcType->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookItem = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("addon"))) {
-			npcType->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookAddon = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("head"))) {
-			npcType->outfit.lookHead = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookHead = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("body"))) {
-			npcType->outfit.lookBody = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookBody = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("legs"))) {
-			npcType->outfit.lookLegs = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookLegs = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("feet"))) {
-			npcType->outfit.lookFeet = pugi::cast<int32_t>(attribute.value());
+			npcType->outfit.lookFeet = attribute.as_int();
 		}
 	}
 	return npcType;

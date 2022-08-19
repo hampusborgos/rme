@@ -67,6 +67,6 @@ void SpawnNpcBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 	ASSERT(tile);
 	ASSERT(parameter); // Should contain an int which is the size of the newd spawn npc
 	if(tile->spawnNpc == nullptr) {
-		tile->spawnNpc = newd SpawnNpc(max(1, *(int*)parameter));
+		tile->spawnNpc = newd SpawnNpc(std::max(1, *(int*)parameter));
 	}
 }

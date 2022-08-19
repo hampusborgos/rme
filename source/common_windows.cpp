@@ -499,7 +499,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 		EndModal(1);
 
-		editor.importMap(fn, x_offset_ctrl->GetValue(), y_offset_ctrl->GetValue(), house_import_type, spawn_import_type, spawn_npc_import_type);
+		editor.importMap(fn, x_offset_ctrl->GetValue(), y_offset_ctrl->GetValue(), z_offset_ctrl->GetValue(), house_import_type, spawn_import_type, spawn_npc_import_type);
 	}
 }
 

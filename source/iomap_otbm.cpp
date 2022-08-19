@@ -1213,16 +1213,16 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 		}
 
 		Position spawnPosition;
-		spawnPosition.x = pugi::cast<int32_t>(spawnNpcNode.attribute("centerx").value());
-		spawnPosition.y = pugi::cast<int32_t>(spawnNpcNode.attribute("centery").value());
-		spawnPosition.z = pugi::cast<int32_t>(spawnNpcNode.attribute("centerz").value());
+		spawnPosition.x = spawnNpcNode.attribute("centerx").as_int();
+		spawnPosition.y = spawnNpcNode.attribute("centery").as_int();
+		spawnPosition.z = spawnNpcNode.attribute("centerz").as_int();
 
 		if(spawnPosition.x == 0 || spawnPosition.y == 0) {
 			warning("Bad position data on one npc spawn, discarding...");
 			continue;
 		}
 
-		int32_t radius = pugi::cast<int32_t>(spawnNpcNode.attribute("radius").value());
+		int32_t radius = spawnNpcNode.attribute("radius").as_int();
 		if(radius < 1) {
 			warning("Couldn't read radius of npc spawn.. discarding spawn...");
 			continue;
@@ -1257,7 +1257,7 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			int32_t spawntime = pugi::cast<int32_t>(npcNode.attribute("spawntime").value());
+			int32_t spawntime = npcNode.attribute("spawntime").as_int();
 			if(spawntime == 0) {
 				spawntime = g_settings.getInteger(Config::DEFAULT_SPAWN_NPC_TIME);
 			}
@@ -1279,8 +1279,8 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			npcPosition.x += pugi::cast<int32_t>(xAttribute.value());
-			npcPosition.y += pugi::cast<int32_t>(yAttribute.value());
+			npcPosition.x += xAttribute.as_int();
+			npcPosition.y += yAttribute.as_int();
 
 			radius = std::max<int32_t>(radius, std::abs(npcPosition.x - spawnPosition.x));
 			radius = std::max<int32_t>(radius, std::abs(npcPosition.y - spawnPosition.y));
