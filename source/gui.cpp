@@ -141,7 +141,7 @@ wxString GUI::GetDataDirectory()
 	{
 		exec_directory = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetExecutablePath();
 	}
-	catch(std::bad_cast)
+	catch(const std::bad_cast&)
 	{
 		throw; // Crash application (this should never happend anyways...)
 	}
@@ -158,7 +158,7 @@ wxString GUI::GetExecDirectory()
 	{
 		exec_directory = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetExecutablePath();
 	}
-	catch(std::bad_cast)
+	catch(const std::bad_cast&)
 	{
 		wxLogError("Could not fetch executable directory.");
 	}
@@ -1205,7 +1205,7 @@ void GUI::DestroyLoadBar()
 
 void GUI::ShowWelcomeDialog(const wxBitmap &icon) {
     std::vector<wxString> recent_files = root->GetRecentFiles();
-    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, root->FromDIP(wxSize(800, 480)), icon, recent_files);
+    welcomeDialog = newd WelcomeDialog(__W_RME_APPLICATION_NAME__, "Version " + __W_RME_VERSION__, FROM_DIP(root, wxSize(800, 480)), icon, recent_files);
     welcomeDialog->Bind(wxEVT_CLOSE_WINDOW, &GUI::OnWelcomeDialogClosed, this);
     welcomeDialog->Bind(WELCOME_DIALOG_ACTION, &GUI::OnWelcomeDialogAction, this);
     welcomeDialog->Show();
@@ -1556,7 +1556,7 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 	use_custom_thickness = on;
 
 	if(x != -1 || y != -1) {
-		custom_thickness_mod = float(max(x, 1)) / float(max(y, 1));
+		custom_thickness_mod = std::max<float>(x, 1.f) / std::max<float>(y, 1.f);
 	}
 
 	if(current_brush && current_brush->isDoodad()) {
@@ -1568,7 +1568,7 @@ void GUI::SetBrushThickness(bool on, int x, int y)
 
 void GUI::SetBrushThickness(int low, int ceil)
 {
-	custom_thickness_mod = float(max(low, 1)) / float(max(ceil, 1));
+	custom_thickness_mod = std::max<float>(low, 1.f) / std::max<float>(ceil, 1.f);
 
 	if(use_custom_thickness && current_brush && current_brush->isDoodad()) {
 		FillDoodadPreviewBuffer();
@@ -1731,7 +1731,7 @@ void GUI::SelectBrushInternal(Brush* brush)
 	if(!current_brush)
 		return;
 
-	brush_variation = min(brush_variation, brush->getMaxVariation());
+	brush_variation = std::min(brush_variation, brush->getMaxVariation());
 	FillDoodadPreviewBuffer();
 	if(brush->isDoodad())
 		secondary_map = doodad_buffer_map;
@@ -1770,8 +1770,8 @@ void GUI::FillDoodadPreviewBuffer()
 			area = int(0.5 + GetBrushSize() * GetBrushSize() * PI);
 		}
 	}
-	const int object_range = (use_custom_thickness ? int(area*custom_thickness_mod) : brush->getThickness() * area / max(1, brush->getThicknessCeiling()));
-	const int final_object_count = max(1, object_range + random(object_range));
+	const int object_range = (use_custom_thickness ? int(area*custom_thickness_mod) : brush->getThickness() * area / std::max(1, brush->getThicknessCeiling()));
+	const int final_object_count = std::max(1, object_range + random(object_range));
 
 	Position center_pos(0x8000, 0x8000, 0x8);
 

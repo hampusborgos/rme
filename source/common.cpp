@@ -176,7 +176,7 @@ int random(int low, int high)
 	int range = high - low;
 
 	double dist = double(mt_randi()) / 0xFFFFFFFF;
-	return low + min(range, int((1 + range) * dist));
+	return low + std::min(range, int((1 + range) * dist));
 }
 
 int random(int high)
@@ -238,13 +238,7 @@ bool posFromClipboard(int& x, int& y, int& z)
 	return done;
 }
 
-wxString b2yn(bool v)
+wxString b2yn(bool value)
 {
-	wxString s;
-	if(v)
-		s << "yes";
-	else
-		s << "no";
-
-	return s;
+	return value ? "Yes" : "No";
 }

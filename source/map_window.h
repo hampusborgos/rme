@@ -19,6 +19,7 @@
 #define RME_MAP_WINDOW_H_
 
 #include "position.h"
+#include "replace_items_window.h"
 
 class MapCanvas;
 class DCButton;
@@ -70,12 +71,17 @@ public:
 	void GoToPreviousCenterPosition();
 
 	// Return the containing canvas
-	MapCanvas* GetCanvas() {return canvas;}
+	MapCanvas* GetCanvas() const { return canvas; }
+
+	void ShowReplaceItemsDialog(bool selectionOnly);
+	void CloseReplaceItemsDialog();
+	void OnReplaceItemsDialogClose(wxCloseEvent& event);
 
 protected:
 	// For internal use, call to resize the scrollbars with
 	// the newd dimensions of *this* window
 	void UpdateScrollbars(int nx, int ny);
+	void UpdateDialogs(bool show);
 
 protected:
 	Editor& editor;
@@ -85,6 +91,7 @@ protected:
 	wxScrollBar* vScroll;
 
 private:
+	ReplaceItemsDialog* replaceItemsDialog;
 	Position previous_position;
 
 	friend class MainFrame;

@@ -20,7 +20,6 @@
 #include "ground_brush.h"
 #include "items.h"
 #include "basemap.h"
-#include "pugicast.h"
 
 uint32_t GroundBrush::border_types[256];
 
@@ -68,7 +67,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 	}
 
 	if((attribute = node.attribute("group"))) {
-		group = pugi::cast<uint16_t>(attribute.value());
+		group = attribute.as_ushort();
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -76,7 +75,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 			continue;
 		}
 
-		int32_t itemid = pugi::cast<int32_t>(attribute.value());
+		uint16_t itemid = attribute.as_ushort();
 		if(!(attribute = childNode.attribute("edge"))) {
 			continue;
 		}
@@ -151,11 +150,11 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if((attribute = node.attribute("lookid"))) {
-		look_id = pugi::cast<uint16_t>(attribute.value());
+		look_id = attribute.as_ushort();
 	}
 
 	if((attribute = node.attribute("z-order"))) {
-		z_order = pugi::cast<int32_t>(attribute.value());
+		z_order = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("solo_optional"))) {
@@ -169,8 +168,8 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
 		const std::string& childName = as_lower_str(childNode.name());
 		if(childName == "item") {
-			uint16_t itemId = pugi::cast<uint16_t>(childNode.attribute("id").value());
-			int32_t chance = pugi::cast<int32_t>(childNode.attribute("chance").value());
+			uint16_t itemId = childNode.attribute("id").as_ushort();
+			int32_t chance = childNode.attribute("chance").as_int();
 
 			ItemType& it = g_items[itemId];
 			if(it.id == 0) {
@@ -203,7 +202,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			}
 
 			if((attribute = childNode.attribute("ground_equivalent"))) {
-				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
+				uint16_t ground_equivalent = attribute.as_ushort();
 
 				// Load from inline definition
 				ItemType& it = g_items[ground_equivalent];
@@ -228,7 +227,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					continue;
 				}
 
-				uint16_t id = pugi::cast<uint16_t>(attribute.value());
+				uint16_t id = attribute.as_ushort();
 				auto it = g_brushes.borders.find(id);
 				if(it == g_brushes.borders.end() || !it->second) {
 					warnings.push_back("\nCould not find border id " + std::to_string(id));
@@ -244,7 +243,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					continue;
 				}
 
-				uint16_t ground_equivalent = pugi::cast<uint16_t>(attribute.value());
+				uint16_t ground_equivalent = attribute.as_ushort();
 				ItemType& it = g_items[ground_equivalent];
 				if(it.id == 0) {
 					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
@@ -261,7 +260,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				autoBorder = newd AutoBorder(0); // Empty id basically
 				autoBorder->load(childNode, warnings, this, ground_equivalent);
 			} else {
-				int32_t id = pugi::cast<int32_t>(attribute.value());
+				int32_t id = attribute.as_int();
 				if(id == 0) {
 					autoBorder = nullptr;
 				} else {
@@ -341,7 +340,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								int32_t border_id = pugi::cast<int32_t>(attribute.value());
+								int32_t border_id = attribute.as_int();
 								if(!(attribute = conditionChild.attribute("edge"))) {
 									continue;
 								}
@@ -366,7 +365,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								uint16_t group = pugi::cast<uint16_t>(attribute.value());
+								uint16_t group = attribute.as_ushort();
 								if(!(attribute = conditionChild.attribute("edge"))) {
 									continue;
 								}
@@ -384,7 +383,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								int32_t match_itemid = pugi::cast<int32_t>(attribute.value());
+								int32_t match_itemid = attribute.as_int();
 								if(!specificCaseBlock) {
 									specificCaseBlock = newd SpecificCaseBlock();
 								}
@@ -401,7 +400,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								int32_t border_id = pugi::cast<int32_t>(attribute.value());
+								int32_t border_id = attribute.as_int();
 								if(!(attribute = actionChild.attribute("edge"))) {
 									continue;
 								}
@@ -411,7 +410,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								int32_t with_id = pugi::cast<int32_t>(attribute.value());
+								int32_t with_id = attribute.as_int();
 								auto itt = g_brushes.borders.find(border_id);
 								if(itt == g_brushes.borders.end()) {
 									warnings.push_back("Unknown border id in specific case match block " + std::to_string(border_id));
@@ -438,12 +437,12 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								int32_t to_replace_id = pugi::cast<int32_t>(attribute.value());
+								int32_t to_replace_id = attribute.as_int();
 								if(!(attribute = actionChild.attribute("with"))) {
 									continue;
 								}
 
-								int32_t with_id = pugi::cast<int32_t>(attribute.value());
+								int32_t with_id = attribute.as_int();
 								ItemType& it = g_items[with_id];
 								if(it.id == 0) {
 									return false;

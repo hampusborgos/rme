@@ -134,4 +134,10 @@ typedef wxFileName FileName;
 
 #include "rme_forward_declarations.h"
 
+#if wxCHECK_VERSION(3, 1, 0)
+        #define FROM_DIP(widget, size) widget->FromDIP(size)
+#else
+        #define FROM_DIP(widget, size) size
+#endif
+
 #endif

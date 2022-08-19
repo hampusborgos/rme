@@ -43,7 +43,7 @@ inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
 
 MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 {
-	wxSize icon_size = parent->FromDIP(wxSize(16, 16));
+	wxSize icon_size = FROM_DIP(parent, wxSize(16, 16));
 	wxBitmap new_bitmap = wxArtProvider::GetBitmap(wxART_NEW, wxART_TOOLBAR, icon_size);
 	wxBitmap open_bitmap = wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_TOOLBAR, icon_size);
 	wxBitmap save_bitmap = wxArtProvider::GetBitmap(wxART_FILE_SAVE, wxART_TOOLBAR, icon_size);
@@ -104,13 +104,13 @@ MainToolBar::MainToolBar(wxWindow* parent, wxAuiManager* manager)
 
 	position_toolbar = newd wxAuiToolBar(parent, TOOLBAR_POSITION, wxDefaultPosition, wxDefaultSize, wxAUI_TB_DEFAULT_STYLE | wxAUI_TB_HORZ_TEXT);
 	position_toolbar->SetToolBitmapSize(icon_size);
-	x_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_WIDTH, wxTE_PROCESS_ENTER, "X", wxDefaultPosition, parent->FromDIP(wxSize(60, 20)));
+	x_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_WIDTH, wxTE_PROCESS_ENTER, "X", wxDefaultPosition, FROM_DIP(parent, wxSize(60, 20)));
 	x_control->SetToolTip("X Coordinate");
-	y_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_HEIGHT, wxTE_PROCESS_ENTER, "Y", wxDefaultPosition, parent->FromDIP(wxSize(60, 20)));
+	y_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_HEIGHT, wxTE_PROCESS_ENTER, "Y", wxDefaultPosition, FROM_DIP(parent, wxSize(60, 20)));
 	y_control->SetToolTip("Y Coordinate");
-	z_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_LAYER, wxTE_PROCESS_ENTER, "Z", wxDefaultPosition, parent->FromDIP(wxSize(35, 20)));
+	z_control = newd NumberTextCtrl(position_toolbar, wxID_ANY, 0, 0, MAP_MAX_LAYER, wxTE_PROCESS_ENTER, "Z", wxDefaultPosition, FROM_DIP(parent, wxSize(35, 20)));
 	z_control->SetToolTip("Z Coordinate");
-	go_button = newd wxButton(position_toolbar, TOOLBAR_POSITION_GO, wxEmptyString, wxDefaultPosition, parent->FromDIP(wxSize(22, 20)));
+	go_button = newd wxButton(position_toolbar, TOOLBAR_POSITION_GO, wxEmptyString, wxDefaultPosition, FROM_DIP(parent, wxSize(22, 20)));
 	go_button->SetBitmap(go_bitmap);
 	go_button->SetToolTip("Go To Position");
 	position_toolbar->AddControl(x_control);

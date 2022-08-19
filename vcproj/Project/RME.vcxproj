@@ -213,6 +213,7 @@
     <ClCompile Include="..\..\source\brush_tables.cpp" />
     <ClCompile Include="..\..\source\container_properties_window.cpp" />
     <ClCompile Include="..\..\source\find_item_window.cpp" />
+    <ClCompile Include="..\..\source\replace_items_window.cpp" />
     <ClCompile Include="..\..\source\welcome_dialog.cpp" />
     <ClInclude Include="..\..\source\artprovider.h" />
     <ClInclude Include="..\..\source\main_toolbar.h" />
@@ -276,11 +277,11 @@
     <ClCompile Include="..\..\source\npcs.cpp" />
     <ClInclude Include="..\..\source\numbertextctrl.h" />
     <ClInclude Include="..\..\source\properties_window.h" />
-    <ClInclude Include="..\..\source\pugicast.h" />
     <ClInclude Include="..\..\source\raw_brush.h" />
     <ClCompile Include="..\..\source\numbertextctrl.cpp" />
     <ClCompile Include="..\..\source\properties_window.cpp" />
     <ClCompile Include="..\..\source\raw_brush.cpp" />
+    <ClInclude Include="..\..\source\replace_items_window.h" />
     <ClInclude Include="..\..\source\rme_forward_declarations.h" />
     <ClInclude Include="..\..\source\rme_net.h" />
     <ClCompile Include="..\..\source\rme_net.cpp" />
