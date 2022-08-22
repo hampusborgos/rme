@@ -207,7 +207,7 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, "ID " + i2ws(item->getID())));
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, "\"" + wxstr(item->getName()) + "\""));
 
-		const Towns& towns = map->towns;
+		const Towns& towns = map->getTowns();
 		subsizer->Add(newd wxStaticText(this, wxID_ANY, "Depot ID"));
 		depot_id_field = newd wxChoice(this, wxID_ANY);
 		int to_select_index = 0;
@@ -602,7 +602,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 			if(door && g_settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
 				if(edit_tile && edit_tile->isHouseTile()) {
-					const House* house = edit_map->houses.getHouse(edit_tile->getHouseID());
+					const House* house = edit_map->getHouses().getHouse(edit_tile->getHouseID());
 					if(house) {
 						Position pos = house->getDoorPositionByID(new_door_id);
 						if(pos == Position()) {

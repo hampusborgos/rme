@@ -24,17 +24,17 @@
 #include <sstream>
 
 Map::Map() : BaseMap(),
-	width(512),
-	height(512),
-	houses(*this),
-	has_changed(false),
-	unnamed(false),
-	waypoints(*this)
+	m_width(512),
+	m_height(512),
+	m_houses(*this),
+	m_hasChanged(false),
+	m_unnamed(false),
+	m_waypoints(*this)
 {
 	// Earliest version possible
 	// Caller is responsible for converting us to proper version
-	mapVersion.otbm = MAP_OTBM_1;
-	mapVersion.client = CLIENT_VERSION_NONE;
+	m_version.otbm = MAP_OTBM_1;
+	m_version.client = CLIENT_VERSION_NONE;
 }
 
 Map::~Map()
@@ -44,29 +44,28 @@ Map::~Map()
 
 bool Map::open(const std::string file)
 {
-	if(file == filename)
+	if(file == m_filename)
 		return true; // Do not reopen ourselves!
 
-	tilecount = 0;
+	m_tileCount = 0;
 
 	IOMapOTBM maploader(getVersion());
 
 	bool success = maploader.loadMap(*this, wxstr(file));
 
-	mapVersion = maploader.version;
-
-	warnings = maploader.getWarnings();
+	m_version = maploader.version;
+	m_warnings = maploader.getWarnings();
 
 	if(!success) {
-		error = maploader.getError();
+		m_error = maploader.getError();
 		return false;
 	}
 
-	has_changed = false;
+	m_hasChanged = false;
 
 	wxFileName fn = wxstr(file);
-	filename = fn.GetFullPath().mb_str(wxConvUTF8);
-	name = fn.GetFullName().mb_str(wxConvUTF8);
+	m_filename = fn.GetFullPath().mb_str(wxConvUTF8);
+	m_name = fn.GetFullName().mb_str(wxConvUTF8);
 
 	// convert(getReplacementMapClassic(), true);
 
@@ -117,10 +116,10 @@ bool Map::open(const std::string file)
 
 bool Map::convert(MapVersion to, bool showdialog)
 {
-	if(mapVersion.client == to.client) {
+	if(m_version.client == to.client) {
 		// Only OTBM version differs
 		// No changes necessary
-		mapVersion = to;
+		m_version = to;
 		return true;
 	}
 
@@ -138,8 +137,7 @@ bool Map::convert(MapVersion to, bool showdialog)
 	if(mapVersion.client == CLIENT_VERSION_854_BAD && to.client >= CLIENT_VERSION_854)
 		convert(getReplacementMapFrom854To854(), showdialog);
 	*/
-	mapVersion = to;
-
+	m_version = to;
 	return true;
 }
 
@@ -303,69 +301,44 @@ void Map::cleanInvalidTiles(bool showdialog)
 		g_gui.DestroyLoadBar();
 }
 
-MapVersion Map::getVersion() const
-{
-	return mapVersion;
-}
-
-bool Map::hasChanged() const
-{
-	return has_changed;
-}
-
 bool Map::doChange()
 {
-	bool doupdate = !has_changed;
-	has_changed = true;
-	return doupdate;
+	bool updated = !m_hasChanged;
+	m_hasChanged = true;
+	return updated;
 }
 
 bool Map::clearChanges()
 {
-	bool doupdate = has_changed;
-	has_changed = false;
-	return doupdate;
+	bool updated = m_hasChanged;
+	m_hasChanged = false;
+	return updated;
 }
 
-bool Map::hasFile() const
+void Map::setWidth(int width)
 {
-	return filename != "";
+	m_width = std::clamp<uint16_t>(width, 64, 65000);
 }
 
-void Map::setWidth(int new_width)
+void Map::setHeight(int height)
 {
-	if(new_width > 65000)
-		width = 65000;
-	else if(new_width < 64)
-		width = 64;
-	else
-		width = new_width;
+	m_height = std::clamp<uint16_t>(height, 64, 65000);
+}
+void Map::setDescription(const std::string& description)
+{
+	m_description = description;
 }
 
-void Map::setHeight(int new_height)
+void Map::setHouseFile(const std::string& file)
 {
-	if(new_height > 65000)
-		height = 65000;
-	else if(new_height < 64)
-		height = 64;
-	else
-		height = new_height;
-}
-void Map::setMapDescription(const std::string& new_description)
-{
-	description = new_description;
+	m_housefile = file;
+	m_unnamed = false;
 }
 
-void Map::setHouseFilename(const std::string&  new_housefile)
+void Map::setSpawnFile(const std::string& file)
 {
-	housefile = new_housefile;
-	unnamed = false;
-}
-
-void Map::setSpawnFilename(const std::string&  new_spawnfile)
-{
-	spawnfile = new_spawnfile;
-	unnamed = false;
+	m_spawnfile = file;
+	m_unnamed = false;
 }
 
 bool Map::addSpawn(Tile* tile)
@@ -384,7 +357,7 @@ bool Map::addSpawn(Tile* tile)
 				ctile_loc->increaseSpawnCount();
 			}
 		}
-		spawns.addSpawn(tile);
+		m_spawns.addSpawn(tile);
 		return true;
 	}
 	return false;
@@ -414,7 +387,7 @@ void Map::removeSpawn(Tile* tile)
 {
 	if(tile->spawn) {
 		removeSpawnInternal(tile);
-		spawns.removeSpawn(tile);
+		m_spawns.removeSpawn(tile);
 	}
 }
 
@@ -512,7 +485,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 			Tile* tile = (*mit)->get();
 			++tiles_iterated;
 			if(tiles_iterated % 8192 == 0 && displaydialog)
-				g_gui.SetLoadDone(int(tiles_iterated / double(tilecount) * 90.0));
+				g_gui.SetLoadDone(int(tiles_iterated / double(m_tileCount) * 90.0));
 
 			if(tile->empty() || tile->getZ() != floor)
 				continue;
@@ -549,7 +522,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 					14 // header
 					+40 // image data header
 					+256*4 // color palette
-					+((minimap_width + 3) / 4 * 4) * height; // pixels
+					+((minimap_width + 3) / 4 * 4) * m_height; // pixels
 		fh.addU32(file_size);
 
 		// Two values reserved, must always be 0.

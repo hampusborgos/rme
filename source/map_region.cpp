@@ -243,9 +243,9 @@ Tile* QTreeNode::setTile(int x, int y, int z, Tile* newtile)
 	tmp->tile = newtile;
 
 	if(newtile && !oldtile)
-		++map.tilecount;
+		++map.m_tileCount;
 	else if(oldtile && !newtile)
-		--map.tilecount;
+		--map.m_tileCount;
 
 	return oldtile;
 }

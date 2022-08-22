@@ -22,8 +22,8 @@
 
 BaseMap::BaseMap() :
 	allocator(),
-	tilecount(0),
-	root(*this)
+	m_tileCount(0),
+	m_root(*this)
 {
 	////
 }
@@ -47,13 +47,13 @@ void BaseMap::clear(bool del)
 
 void BaseMap::clearVisible(uint32_t mask)
 {
-	root.clearVisible(mask);
+	m_root.clearVisible(mask);
 }
 
 Tile* BaseMap::createTile(int x, int y, int z)
 {
 	ASSERT(z < MAP_LAYERS);
-	QTreeNode* leaf = root.getLeafForce(x, y);
+	QTreeNode* leaf = m_root.getLeafForce(x, y);
 	TileLocation* loc = leaf->createTile(x, y, z);
 	if(loc->get())
 		return loc->get();
@@ -65,7 +65,7 @@ Tile* BaseMap::createTile(int x, int y, int z)
 TileLocation* BaseMap::getTileL(int x, int y, int z)
 {
 	ASSERT(z < MAP_LAYERS);
-	QTreeNode* leaf = root.getLeaf(x, y);
+	QTreeNode* leaf = m_root.getLeaf(x, y);
 	if(leaf) {
 		Floor* floor = leaf->getFloor(z);
 		if(floor)
@@ -95,7 +95,7 @@ TileLocation* BaseMap::createTileL(int x, int y, int z)
 {
 	ASSERT(z < MAP_LAYERS);
 
-	QTreeNode* leaf = root.getLeafForce(x, y);
+	QTreeNode* leaf = m_root.getLeafForce(x, y);
 	Floor* floor = leaf->createFloor(x, y, z);
 	uint32_t offsetX = x & 3;
 	uint32_t offsetY = y & 3;
@@ -114,7 +114,7 @@ void BaseMap::setTile(int x, int y, int z, Tile* newtile, bool remove)
 	ASSERT(!newtile || newtile->getY() == int(y));
 	ASSERT(!newtile || newtile->getZ() == int(z));
 
-	QTreeNode* leaf = root.getLeafForce(x, y);
+	QTreeNode* leaf = m_root.getLeafForce(x, y);
 	Tile* old = leaf->setTile(x, y, z, newtile);
 	if(remove)
 		delete old;
@@ -127,7 +127,7 @@ Tile* BaseMap::swapTile(int x, int y, int z, Tile* newtile)
 	ASSERT(!newtile || newtile->getY() == int(y));
 	ASSERT(!newtile || newtile->getZ() == int(z));
 
-	QTreeNode* leaf = root.getLeafForce(x, y);
+	QTreeNode* leaf = m_root.getLeafForce(x, y);
 	return leaf->setTile(x, y, z, newtile);
 }
 
@@ -161,7 +161,7 @@ MapIterator::MapIterator(const MapIterator& other)
 MapIterator BaseMap::begin()
 {
 	MapIterator it(this);
-	it.nodestack.push_back(MapIterator::NodeIndex(&root));
+	it.nodestack.push_back(MapIterator::NodeIndex(&m_root));
 
 	while(true) {
 		MapIterator::NodeIndex& current = it.nodestack.back();

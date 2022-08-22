@@ -613,11 +613,11 @@ bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 	// Read auxilliary files
 	if(!loadHouses(map, filename)) {
 		warning("Failed to load houses.");
-		map.housefile = nstr(filename.GetName()) + "-house.xml";
+		map.setHouseFile(nstr(filename.GetName()) + "-house.xml");
 	}
 	if(!loadSpawns(map, filename)) {
 		warning("Failed to load spawns.");
-		map.spawnfile = nstr(filename.GetName()) + "-spawn.xml";
+		map.setSpawnFile(nstr(filename.GetName()) + "-spawn.xml");
 	}
 	return true;
 }
@@ -656,11 +656,11 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	if(!root->getU16(u16))
 		return false;
 
-	map.width = u16;
+	map.setWidth(u16);
 	if(!root->getU16(u16))
 		return false;
 
-	map.height = u16;
+	map.setHeight(u16);
 
 	if(!root->getU32(u32) || u32 > (unsigned long)g_items.MajorVersion) { // OTB major version
 		if(g_gui.PopupDialog("Map error",
@@ -689,20 +689,28 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 	while(mapHeaderNode->getU8(attribute)) {
 		switch(attribute) {
 			case OTBM_ATTR_DESCRIPTION: {
-				if(!mapHeaderNode->getString(map.description)) {
+				std::string description;
+				if (mapHeaderNode->getString(description)) {
+					map.setDescription(description);
+				} else {
 					warning("Invalid map description tag");
 				}
-				//std::cout << "Map description: " << mapDescription << std::endl;
 				break;
 			}
 			case OTBM_ATTR_EXT_SPAWN_FILE: {
-				if(!mapHeaderNode->getString(map.spawnfile)) {
+				std::string spawn;
+				if (mapHeaderNode->getString(spawn)) {
+					map.setSpawnFile(spawn);
+				} else {
 					warning("Invalid map spawnfile tag");
 				}
 				break;
 			}
 			case OTBM_ATTR_EXT_HOUSE_FILE: {
-				if(!mapHeaderNode->getString(map.housefile)) {
+				std::string house;
+				if (mapHeaderNode->getString(house)) {
+					map.setHouseFile(house);
+				} else {
 					warning("Invalid map housefile tag");
 				}
 				break;
@@ -765,11 +773,11 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							continue;
 						}
 						if(house_id) {
-							house = map.houses.getHouse(house_id);
+							house = map.getHouses().getHouse(house_id);
 							if(!house) {
 								house = newd House(map);
 								house->id = house_id;
-								map.houses.addHouse(house);
+								map.getHouses().addHouse(house);
 							}
 						} else {
 							warning("Invalid house id from tile %d:%d:%d", pos.x, pos.y, pos.z);
@@ -855,13 +863,13 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 					continue;
 				}
 
-				town = map.towns.getTown(town_id);
+				town = map.getTowns().getTown(town_id);
 				if(town) {
 					warning("Duplicate town id %d, discarding duplicate", town_id);
 					continue;
 				} else {
 					town = newd Town(town_id);
-					if(!map.towns.addTown(town)) {
+					if(!map.getTowns().addTown(town)) {
 						delete town;
 						continue;
 					}
@@ -914,7 +922,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 				wp.pos.y = y;
 				wp.pos.z = z;
 
-				map.waypoints.addWaypoint(newd Waypoint(wp));
+				map.getWaypoints().addWaypoint(newd Waypoint(wp));
 			}
 		}
 	}
@@ -927,7 +935,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 bool IOMapOTBM::loadSpawns(Map& map, const FileName& dir)
 {
 	std::string fn = (const char*)(dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME).mb_str(wxConvUTF8));
-	fn += map.spawnfile;
+	fn += map.getSpawnFile();
 
 	FileName filename(wxstr(fn));
 	if(!filename.FileExists())
@@ -1075,7 +1083,7 @@ bool IOMapOTBM::loadSpawns(Map& map, pugi::xml_document& doc)
 bool IOMapOTBM::loadHouses(Map& map, const FileName& dir)
 {
 	std::string fn = (const char*)(dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME).mb_str(wxConvUTF8));
-	fn += map.housefile;
+	fn += map.getHouseFile();
 	FileName filename(wxstr(fn));
 	if(!filename.FileExists())
 		return false;
@@ -1104,7 +1112,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 
 		House* house = nullptr;
 		if((attribute = houseNode.attribute("houseid"))) {
-			house = map.houses.getHouse(attribute.as_uint());
+			house = map.getHouses().getHouse(attribute.as_uint());
 			if(!house) {
 				break;
 			}
@@ -1137,7 +1145,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 			house->townid = attribute.as_uint();
 		} else {
 			warning("House %d has no town! House was removed.", house->id);
-			map.houses.removeHouse(house);
+			map.getHouses().removeHouse(house);
 		}
 	}
 	return true;
@@ -1279,8 +1287,8 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 	{
 		f.addU32(mapVersion.otbm); // Version
 
-		f.addU16(map.width);
-		f.addU16(map.height);
+		f.addU16(map.getWidth());
+		f.addU16(map.getHeight());
 
 		f.addU32(g_items.MajorVersion);
 		f.addU32(g_items.MinorVersion);
@@ -1292,13 +1300,13 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 			f.addString("Saved with Remere's Map Editor " + __RME_VERSION__);
 
 			f.addU8(OTBM_ATTR_DESCRIPTION);
-			f.addString(map.description);
+			f.addString(map.getDescription());
 
-			tmpName.Assign(wxstr(map.spawnfile));
+			tmpName.Assign(wxstr(map.getSpawnFile()));
 			f.addU8(OTBM_ATTR_EXT_SPAWN_FILE);
 			f.addString(nstr(tmpName.GetFullName()));
 
-			tmpName.Assign(wxstr(map.housefile));
+			tmpName.Assign(wxstr(map.getHouseFile()));
 			f.addU8(OTBM_ATTR_EXT_HOUSE_FILE);
 			f.addString(nstr(tmpName.GetFullName()));
 
@@ -1396,7 +1404,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 			}
 
 			f.addNode(OTBM_TOWNS);
-			for(const auto& townEntry : map.towns) {
+			for(const auto& townEntry : map.getTowns()) {
 				Town* town = townEntry.second;
 				const Position& townPosition = town->getTemplePosition();
 				f.addNode(OTBM_TOWN);
@@ -1411,7 +1419,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 
 			if(version.otbm >= MAP_OTBM_3) {
 				f.addNode(OTBM_WAYPOINTS);
-				for(const auto& waypointEntry : map.waypoints) {
+				for(const auto& waypointEntry : map.getWaypoints()) {
 					Waypoint* waypoint = waypointEntry.second;
 					f.addNode(OTBM_WAYPOINT);
 						f.addString(waypoint->name);
@@ -1432,7 +1440,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 bool IOMapOTBM::saveSpawns(Map& map, const FileName& dir)
 {
 	wxString filepath = dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME);
-	filepath += wxString(map.spawnfile.c_str(), wxConvUTF8);
+	filepath += wxString(map.getSpawnFile().c_str(), wxConvUTF8);
 
 	// Create the XML file
 	pugi::xml_document doc;
@@ -1454,7 +1462,7 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 	CreatureList creatureList;
 
 	pugi::xml_node spawnNodes = doc.append_child("spawns");
-	for(const auto& spawnPosition : map.spawns) {
+	for(const auto& spawnPosition : map.getSpawns()) {
 		Tile *tile = map.getTile(spawnPosition);
 		if (tile == nullptr)
 			continue;
@@ -1506,7 +1514,7 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 bool IOMapOTBM::saveHouses(Map& map, const FileName& dir)
 {
 	wxString filepath = dir.GetPath(wxPATH_GET_SEPARATOR | wxPATH_GET_VOLUME);
-	filepath += wxString(map.housefile.c_str(), wxConvUTF8);
+	filepath += wxString(map.getHouseFile().c_str(), wxConvUTF8);
 
 	// Create the XML file
 	pugi::xml_document doc;
@@ -1526,7 +1534,7 @@ bool IOMapOTBM::saveHouses(Map& map, pugi::xml_document& doc)
 	decl.append_attribute("version") = "1.0";
 
 	pugi::xml_node houseNodes = doc.append_child("houses");
-	for(const auto& houseEntry : map.houses) {
+	for(const auto& houseEntry : map.getHouses()) {
 		const House* house = houseEntry.second;
 		pugi::xml_node houseNode = houseNodes.append_child("house");
 

@@ -295,8 +295,8 @@ void MainMenuBar::Update()
 
 	Editor* editor = g_gui.GetCurrentEditor();
 	if(editor) {
-		EnableItem(UNDO, editor->actionQueue->canUndo());
-		EnableItem(REDO, editor->actionQueue->canRedo());
+		EnableItem(UNDO, editor->getHistoryActions()->canUndo());
+		EnableItem(REDO, editor->getHistoryActions()->canRedo());
 		EnableItem(PASTE, editor->copybuffer.canPaste());
 	} else {
 		EnableItem(UNDO, false);
@@ -1076,7 +1076,7 @@ void MainMenuBar::OnRemoveItemOnSelection(wxCommandEvent& WXUNUSED(event))
 
 	FindItemDialog dialog(frame, "Remove Item on Selection");
 	if(dialog.ShowModal() == wxID_OK) {
-		g_gui.GetCurrentEditor()->actionQueue->clear();
+		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
 		g_gui.CreateLoadBar("Searching item on selection to remove...");
 		OnMapRemoveItems::RemoveItemCondition condition(dialog.getResultID());
 		int64_t count = RemoveItemOnMap(g_gui.GetCurrentMap(), condition, true);
@@ -1233,8 +1233,8 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 	if(dialog.ShowModal() == wxID_OK) {
 		uint16_t itemid = dialog.getResultID();
 
-		g_gui.GetCurrentEditor()->selection.clear();
-		g_gui.GetCurrentEditor()->actionQueue->clear();
+		g_gui.GetCurrentEditor()->getSelection().clear();
+		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
 
 		OnMapRemoveItems::RemoveItemCondition condition(itemid);
 		g_gui.CreateLoadBar("Searching map for items to remove...");
@@ -1276,8 +1276,8 @@ void MainMenuBar::OnMapRemoveCorpses(wxCommandEvent& WXUNUSED(event))
 	int ok = g_gui.PopupDialog("Remove Corpses", "Do you want to remove all corpses from the map?", wxYES | wxNO);
 
 	if(ok == wxID_YES) {
-		g_gui.GetCurrentEditor()->selection.clear();
-		g_gui.GetCurrentEditor()->actionQueue->clear();
+		g_gui.GetCurrentEditor()->getSelection().clear();
+		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
 
 		OnMapRemoveCorpses::condition func;
 		g_gui.CreateLoadBar("Searching map for items to remove...");
@@ -1350,8 +1350,8 @@ void MainMenuBar::OnMapRemoveUnreachable(wxCommandEvent& WXUNUSED(event))
 	int ok = g_gui.PopupDialog("Remove Unreachable Tiles", "Do you want to remove all unreachable items from the map?", wxYES | wxNO);
 
 	if(ok == wxID_YES) {
-		g_gui.GetCurrentEditor()->selection.clear();
-		g_gui.GetCurrentEditor()->actionQueue->clear();
+		g_gui.GetCurrentEditor()->getSelection().clear();
+		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
 
 		OnMapRemoveUnreachable::condition func;
 		g_gui.CreateLoadBar("Searching map for tiles to remove...");
@@ -1476,8 +1476,8 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	uint64_t unique_item_count = 0;
 	uint64_t container_count = 0; // Only includes containers containing more than 1 item
 
-	int town_count = map->towns.count();
-	int house_count = map->houses.count();
+	int town_count = map->getTowns().count();
+	int house_count = map->getHouses().count();
 	std::map<uint32_t, uint32_t> town_sqm_count;
 	const Town* largest_town = nullptr;
 	uint64_t largest_town_size = 0;
@@ -1557,7 +1557,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	percent_detailed    = 100.0*(tile_count != 0?  double(detailed_tile_count) / double(tile_count) : -1.0);
 
 	load_counter = 0;
-	Houses& houses = map->houses;
+	Houses& houses = map->getHouses();
 	for(HouseMap::const_iterator hit = houses.begin(); hit != houses.end(); ++hit) {
 		const House* house = hit->second;
 
@@ -1576,7 +1576,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	sqm_per_house   = (house_count != 0? double(total_house_sqm) / double(house_count) : -1.0);
 	sqm_per_town    = (town_count != 0?  double(total_house_sqm) / double(town_count)  : -1.0);
 
-	Towns& towns = map->towns;
+	Towns& towns = map->getTowns();
 	for(std::map<uint32_t, uint32_t>::iterator town_iter = town_sqm_count.begin();
 			town_iter != town_sqm_count.end();
 			++town_iter)
@@ -1598,7 +1598,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	std::ostringstream os;
 	os.setf(std::ios::fixed, std::ios::floatfield);
 	os.precision(2);
-	os << "Map statistics for the map \"" << map->getMapDescription() << "\"\n";
+	os << "Map statistics for the map \"" << map->getDescription() << "\"\n";
 	os << "\tTile data:\n";
 	os << "\t\tTotal number of tiles: " << tile_count << "\n";
 	os << "\t\tNumber of pathable tiles: " << walkable_tile_count << "\n";

@@ -461,7 +461,7 @@ void GUI::SaveCurrentMap(FileName filename, bool showdialog)
 		if(editor) {
 			editor->saveMap(filename, showdialog);
 
-			const std::string& filename = editor->map.getFilename();
+			const std::string& filename = editor->getMap().getFile();
 			const Position& position = mapTab->GetScreenCenterPosition();
 			std::ostringstream stream;
 			stream << position;
@@ -532,7 +532,7 @@ bool GUI::NewMap()
 
 	auto *mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
-    editor->map.clearChanges();
+    editor->getMap().clearChanges();
 
 	SetStatusText("Created new map");
 	UpdateTitle();
@@ -665,7 +665,7 @@ Map& GUI::GetCurrentMap()
 {
 	Editor* editor = GetCurrentEditor();
 	ASSERT(editor);
-	return editor->map;
+	return editor->getMap();
 }
 
 int GUI::GetOpenMapCount()
@@ -689,7 +689,7 @@ bool GUI::ShouldSave()
 		if(map.getTileCount() == 0) {
 			Editor* editor = GetCurrentEditor();
 			ASSERT(editor);
-			return editor->actionQueue->canUndo();
+			return editor->getHistoryActions()->canUndo();
 		}
 		return true;
 	}
@@ -1270,9 +1270,9 @@ void GUI::PreparePaste()
 	Editor* editor = GetCurrentEditor();
 	if (editor) {
 		SetSelectionMode();
-		editor->selection.start();
-		editor->selection.clear();
-		editor->selection.finish();
+		editor->getSelection().start();
+		editor->getSelection().clear();
+		editor->getSelection().finish();
 		StartPasting();
 		RefreshView();
 	}
@@ -1297,21 +1297,21 @@ void GUI::EndPasting()
 bool GUI::CanUndo()
 {
 	Editor* editor = GetCurrentEditor();
-	return (editor && editor->actionQueue->canUndo());
+	return (editor && editor->getHistoryActions()->canUndo());
 }
 
 bool GUI::CanRedo()
 {
 	Editor* editor = GetCurrentEditor();
-	return (editor && editor->actionQueue->canRedo());
+	return (editor && editor->getHistoryActions()->canRedo());
 }
 
 bool GUI::DoUndo()
 {
 	Editor* editor = GetCurrentEditor();
-	if(editor && editor->actionQueue->canUndo()) {
-		editor->actionQueue->undo();
-		if(editor->selection.size() > 0)
+	if(editor && editor->getHistoryActions()->canUndo()) {
+		editor->getHistoryActions()->undo();
+		if(editor->getSelection().size() > 0)
 			SetSelectionMode();
 		SetStatusText("Undo action");
 		UpdateMinimap();
@@ -1325,9 +1325,9 @@ bool GUI::DoUndo()
 bool GUI::DoRedo()
 {
 	Editor* editor = GetCurrentEditor();
-	if(editor && editor->actionQueue->canRedo()) {
-		editor->actionQueue->redo();
-		if(editor->selection.size() > 0)
+	if(editor && editor->getHistoryActions()->canRedo()) {
+		editor->getHistoryActions()->redo();
+		if(editor->getSelection().size() > 0)
 			SetSelectionMode();
 		SetStatusText("Redo action");
 		UpdateMinimap();
@@ -1463,9 +1463,9 @@ void GUI::SetDrawingMode()
 				continue;
 
 			Editor* editor = mapTab->GetEditor();
-			editor->selection.start();
-			editor->selection.clear();
-			editor->selection.finish();
+			editor->getSelection().start();
+			editor->getSelection().clear();
+			editor->getSelection().finish();
 			al.insert(mapTab);
 		}
 	}

@@ -46,11 +46,8 @@ protected:
 
 public:
 	// Public members
-	ActionQueue* actionQueue;
-	Selection selection;
 	CopyBuffer& copybuffer;
 	GroundBrush* replace_brush;
-	Map map; // The map that is being edited
 
 public: // Functions
 	// Live Server handling
@@ -72,14 +69,16 @@ public: // Functions
 	void QueryNode(int ndx, int ndy, bool underground);
 	void SendNodeRequests();
 
-
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 
-	uint16_t getMapWidth() const { return map.width; }
-	uint16_t getMapHeight() const { return map.height; }
+	Map& getMap() { return m_map; }
+	const Map& getMap() const { return m_map; }
+	const std::string& getMapName() const { return m_map.getName(); }
+	uint16_t getMapWidth() const noexcept { return m_map.getWidth(); }
+	uint16_t getMapHeight() const noexcept { return m_map.getHeight(); }
 
-	wxString getLoaderError() const {return map.getError();}
+	wxString getLoaderError() const {return m_map.getError();}
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset, ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);
 	bool exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog);
@@ -87,11 +86,14 @@ public: // Functions
 
 	// Adds an action to the action queue (this allows the user to undo the action)
 	// Invalidates the action pointer
+	ActionQueue* getHistoryActions() const { return m_actionQueue; }
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
 
 	// Selection
-	bool hasSelection() const { return selection.size() != 0; }
+	Selection& getSelection() { return m_selection; }
+	const Selection& getSelection() const { return m_selection; }
+	bool hasSelection() const { return m_selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
 	void moveSelection(Position offset);
@@ -126,6 +128,11 @@ protected:
 
 	Editor(const Editor&);
 	Editor& operator=(const Editor&);
+
+private:
+	Map m_map;
+	Selection m_selection;
+	ActionQueue* m_actionQueue;
 };
 
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }

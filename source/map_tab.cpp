@@ -84,7 +84,7 @@ MapWindow* MapTab::GetView() const
 wxString MapTab::GetTitle() const
 {
 	wxString ss;
-	ss << wxstr(iref->editor->map.getName()) << (iref->editor->map.hasChanged()? "*": "");
+	ss << wxstr(iref->editor->getMapName()) << (iref->editor->getMap().hasChanged()? "*": "");
 	return ss;
 }
 
@@ -95,7 +95,7 @@ Editor* MapTab::GetEditor() const
 
 Map* MapTab::GetMap() const
 {
-	return &editor.map;
+	return &editor.getMap();
 }
 
 void MapTab::VisibilityCheck()

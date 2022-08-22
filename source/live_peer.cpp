@@ -254,7 +254,7 @@ void LivePeer::parseReady(NetworkMessage& message)
 	NetworkMessage outMessage;
 	outMessage.write<uint8_t>(PACKET_HELLO_FROM_SERVER);
 
-	Map& map = server->getEditor()->map;
+	const Map& map = server->getEditor()->getMap();
 	outMessage.write<std::string>(map.getName());
 	outMessage.write<uint16_t>(map.getWidth());
 	outMessage.write<uint16_t>(map.getHeight());
@@ -264,7 +264,7 @@ void LivePeer::parseReady(NetworkMessage& message)
 
 void LivePeer::parseNodeRequest(NetworkMessage& message)
 {
-	Map& map = server->getEditor()->map;
+	Map& map = server->getEditor()->getMap();
 	for(uint32_t nodes = message.read<uint32_t>(); nodes != 0; --nodes) {
 		uint32_t ind = message.read<uint32_t>();
 
@@ -290,7 +290,7 @@ void LivePeer::parseReceiveChanges(NetworkMessage& message)
 	BinaryNode* rootNode = mapReader.getRootNode();
 	BinaryNode* tileNode = rootNode->getChild();
 
-	NetworkedAction* action = static_cast<NetworkedAction*>(editor.actionQueue->createAction(ACTION_REMOTE));
+	NetworkedAction* action = static_cast<NetworkedAction*>(editor.getHistoryActions()->createAction(ACTION_REMOTE));
 	action->owner = clientId;
 
 	if(tileNode) do {
@@ -301,7 +301,7 @@ void LivePeer::parseReceiveChanges(NetworkMessage& message)
 	} while(tileNode->advance());
 	mapReader.close();
 
-	editor.actionQueue->addAction(action);
+	editor.getHistoryActions()->addAction(action);
 
 	g_gui.RefreshView();
 	g_gui.UpdateMinimap();

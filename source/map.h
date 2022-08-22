@@ -30,7 +30,6 @@
 class Map : public BaseMap
 {
 public:
-	// ctor and dtor
 	Map();
 	virtual ~Map();
 
@@ -42,22 +41,21 @@ public:
 	bool convert(MapVersion to, bool showdialog = false);
 	bool convert(const ConversionMap& cm, bool showdialog = false);
 
-
 	// Query information about the map
 
-	MapVersion getVersion() const;
+	const MapVersion& getVersion() const { return m_version; }
 	// Returns true if any change has been done since last save
-	bool hasChanged() const;
+	bool hasChanged() const { return m_hasChanged; }
 	// Makes a change, doesn't matter what. Just so that it asks when saving (Also adds a * to the window title)
 	bool doChange();
 	// Clears any changes
 	bool clearChanges();
 
 	// Errors/warnings
-	bool hasWarnings() const {return warnings.size() != 0;}
-	const wxArrayString& getWarnings() const {return warnings;}
-	bool hasError() const {return error.size() != 0;}
-	wxString getError() const {return error;}
+	bool hasWarnings() const { return !m_warnings.empty(); }
+	const wxArrayString& getWarnings() const noexcept { return m_warnings; }
+	bool hasError() const { return !m_error.empty(); }
+	const wxString& getError() const noexcept { return m_error; }
 
 	// Mess with spawns
 	bool addSpawn(Tile* spawn);
@@ -71,26 +69,37 @@ public:
 
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to
-	bool hasFile() const;
-	std::string getFilename() const {return filename;}
-	std::string getName() const {return name;}
-	void setName(const std::string& n) {name = n;}
+	bool hasFile() const { return !m_filename.empty(); }
+	const std::string& getFile() const noexcept { return m_filename; }
+	const std::string& getName() const noexcept { return m_name; }
+	void setName(const std::string& name) { m_name = name; }
+	void setFile(const std::string& file) { m_filename = file; }
 
 	// Get map data
-	int getWidth() const {return width;}
-	int getHeight() const {return height;}
-	std::string getMapDescription() const {return description;}
-	std::string getHouseFilename() const {return housefile;}
-	std::string getSpawnFilename() const {return spawnfile;}
+	uint16_t getWidth() const noexcept { return m_width; }
+	uint16_t getHeight() const noexcept { return m_height; }
+	const std::string& getDescription() const noexcept { return m_description; }
+	const std::string& getHouseFile() const noexcept { return m_housefile; }
+	const std::string& getSpawnFile() const noexcept { return m_spawnfile; }
+
+	Towns& getTowns() { return m_towns; }
+	const Towns& getTowns() const { return m_towns; }
+	Houses& getHouses() { return m_houses; }
+	const Houses& getHouses() const { return m_houses; }
+	Spawns& getSpawns() { return m_spawns; }
+	const Spawns& getSpawns() const { return m_spawns; }
+	Waypoints& getWaypoints() { return m_waypoints; }
+	const Waypoints& getWaypoints() const { return m_waypoints; }
 
 	// Set some map data
-	void setWidth(int new_width);
-	void setHeight(int new_height);
-	void setMapDescription(const std::string& new_description);
-	void setHouseFilename(const std::string& new_housefile);
-	void setSpawnFilename(const std::string& new_spawnfile);
+	void setWidth(int width);
+	void setHeight(int height);
+	void setDescription(const std::string& description);
+	void setHouseFile(const std::string& file);
+	void setSpawnFile(const std::string& file);
+	void setUnnamed(bool unnamed) { m_unnamed = unnamed; }
 
-	void flagAsNamed() {unnamed = false;}
+	bool isUnnamed() const noexcept { return m_unnamed; }
 
 protected:
 	// Loads a map
@@ -98,37 +107,34 @@ protected:
 
 protected:
 	void removeSpawnInternal(Tile* tile);
-
-	wxArrayString warnings;
-	wxString error;
-
-	std::string name; // The map name, NOT the same as filename
-	std::string filename; // the maps filename
-	std::string description; // The description of the map
-
-	MapVersion mapVersion;
-
-	// Map Width and Height - for info purposes
-	uint16_t width, height;
-
-	std::string spawnfile; // The maps spawnfile
-	std::string housefile; // The housefile
-
-public:
-	Towns towns;
-	Houses houses;
-	Spawns spawns;
-
-protected:
-	bool has_changed; // If the map has changed
-	bool unnamed; // If the map has yet to receive a name
-
+	
 	friend class IOMapOTBM;
 	friend class IOMapOTMM;
 	friend class Editor;
 
-public:
-	Waypoints waypoints;
+private:
+	std::string m_name; // The map name, NOT the same as filename
+	std::string m_filename; // the maps filename
+	std::string m_description; // The description of the map
+
+	MapVersion m_version;
+
+	// Map Width and Height - for info purposes
+	uint16_t m_width, m_height;
+
+	std::string m_spawnfile; // The maps spawnfile
+	std::string m_housefile; // The housefile
+
+	bool m_hasChanged; // If the map has changed
+	bool m_unnamed; // If the map has yet to receive a name
+
+	Towns m_towns;
+	Houses m_houses;
+	Spawns m_spawns;
+	Waypoints m_waypoints;
+
+	wxArrayString m_warnings;
+	wxString m_error;
 };
 
 template <typename ForeachType>

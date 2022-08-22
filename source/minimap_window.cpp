@@ -102,22 +102,22 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 	if(start_x < 0) {
 		start_x = 0;
 		end_x = window_width;
-	} else if(end_x > editor.map.getWidth()) {
-		start_x = editor.map.getWidth() - window_width;
-		end_x = editor.map.getWidth();
+	} else if(end_x > editor.getMapWidth()) {
+		start_x = editor.getMapWidth() - window_width;
+		end_x = editor.getMapWidth();
 	}
 	if(start_y < 0) {
 		start_y = 0;
 		end_y = window_height;
-	} else if(end_y > editor.map.getHeight()) {
-		start_y = editor.map.getHeight() - window_height;
-		end_y = editor.map.getHeight();
+	} else if(end_y > editor.getMapHeight()) {
+		start_y = editor.getMapHeight() - window_height;
+		end_y = editor.getMapHeight();
 	}
 
 	start_x = std::max(start_x, 0);
 	start_y = std::max(start_y, 0);
-	end_x = std::min(end_x, editor.map.getWidth());
-	end_y = std::min(end_y, editor.map.getHeight());
+	end_x = std::min<int>(end_x, editor.getMapWidth());
+	end_y = std::min<int>(end_y, editor.getMapHeight());
 
 	last_start_x = start_x;
 	last_start_y = start_y;
@@ -129,7 +129,7 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 	if(g_gui.IsRenderingEnabled()) {
 		for(int y = start_y, window_y = 0; y <= end_y; ++y, ++window_y) {
 			for(int x = start_x, window_x = 0; x <= end_x; ++x, ++window_x) {
-				Tile* tile = editor.map.getTile(x, y, floor);
+				Tile* tile = editor.getMap().getTile(x, y, floor);
 				if(tile) {
 					uint8_t color = tile->getMiniMapColor();
 					if(color) {

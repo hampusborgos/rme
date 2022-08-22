@@ -58,7 +58,7 @@ void CopyBuffer::clear()
 
 void CopyBuffer::copy(Editor& editor, int floor)
 {
-	if(editor.selection.size() == 0) {
+	if(editor.getSelection().size() == 0) {
 		g_gui.SetStatusText("No tiles to copy.");
 		return;
 	}
@@ -70,7 +70,7 @@ void CopyBuffer::copy(Editor& editor, int floor)
 	int item_count = 0;
 	copyPos = Position(0xFFFF, 0xFFFF, floor);
 
-	for(TileSet::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
+	for(TileSet::iterator it = editor.getSelection().begin(); it != editor.getSelection().end(); ++it) {
 		++tile_count;
 
 		Tile* tile = *it;
@@ -112,7 +112,7 @@ void CopyBuffer::copy(Editor& editor, int floor)
 
 void CopyBuffer::cut(Editor& editor, int floor)
 {
-	if(editor.selection.size() == 0) {
+	if(editor.getSelection().size() == 0) {
 		g_gui.SetStatusText("No tiles to cut.");
 		return;
 	}
@@ -124,16 +124,16 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	int item_count = 0;
 	copyPos = Position(0xFFFF, 0xFFFF, floor);
 
-	BatchAction* batch = editor.actionQueue->createBatch(ACTION_CUT_TILES);
-	Action* action = editor.actionQueue->createAction(batch);
+	BatchAction* batch = editor.getHistoryActions()->createBatch(ACTION_CUT_TILES);
+	Action* action = editor.getHistoryActions()->createAction(batch);
 
 	PositionList tilestoborder;
 
-	for(TileSet::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
+	for(TileSet::iterator it = editor.getSelection().begin(); it != editor.getSelection().end(); ++it) {
 		tile_count++;
 
 		Tile* tile = *it;
-		Tile* newtile = tile->deepCopy(editor.map);
+		Tile* newtile = tile->deepCopy(editor.getMap());
 		Tile* copied_tile = tiles->allocator(tile->getLocation());
 
 		if(tile->ground && tile->ground->isSelected()) {
@@ -185,17 +185,17 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	tilestoborder.unique();
 
 	if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
-		action = editor.actionQueue->createAction(batch);
+		action = editor.getHistoryActions()->createAction(batch);
 		for(PositionList::iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
-			TileLocation* location = editor.map.createTileL(*it);
+			TileLocation* location = editor.getMap().createTileL(*it);
 			if(location->get()) {
-				Tile* new_tile = location->get()->deepCopy(editor.map);
-				new_tile->borderize(&editor.map);
-				new_tile->wallize(&editor.map);
+				Tile* new_tile = location->get()->deepCopy(editor.getMap());
+				new_tile->borderize(&editor.getMap());
+				new_tile->wallize(&editor.getMap());
 				action->addChange(newd Change(new_tile));
 			} else {
-				Tile* new_tile = editor.map.allocator(location);
-				new_tile->borderize(&editor.map);
+				Tile* new_tile = editor.getMap().allocator(location);
+				new_tile->borderize(&editor.getMap());
 				if(new_tile->size()) {
 					action->addChange(newd Change(new_tile));
 				} else {
@@ -219,8 +219,10 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 		return;
 	}
 
-	BatchAction* batchAction = editor.actionQueue->createBatch(ACTION_PASTE_TILES);
-	Action* action = editor.actionQueue->createAction(batchAction);
+	Map& map = editor.getMap();
+
+	BatchAction* batchAction = editor.getHistoryActions()->createBatch(ACTION_PASTE_TILES);
+	Action* action = editor.getHistoryActions()->createAction(batchAction);
 	for(MapIterator it = tiles->begin(); it != tiles->end(); ++it) {
 		Tile* buffer_tile = (*it)->get();
 		Position pos = buffer_tile->getPosition() - copyPos + toPosition;
@@ -228,17 +230,17 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 		if(!pos.isValid())
 			continue;
 
-		TileLocation* location = editor.map.createTileL(pos);
-		Tile* copy_tile = buffer_tile->deepCopy(editor.map);
+		TileLocation* location = map.createTileL(pos);
+		Tile* copy_tile = buffer_tile->deepCopy(map);
 		Tile* old_dest_tile = location->get();
 		Tile* new_dest_tile = nullptr;
 		copy_tile->setLocation(location);
 
 		if(g_settings.getInteger(Config::MERGE_PASTE) || !copy_tile->ground) {
 			if(old_dest_tile)
-				new_dest_tile = old_dest_tile->deepCopy(editor.map);
+				new_dest_tile = old_dest_tile->deepCopy(map);
 			else
-				new_dest_tile = editor.map.allocator(location);
+				new_dest_tile = map.allocator(location);
 			new_dest_tile->merge(copy_tile);
 			delete copy_tile;
 		} else {
@@ -247,23 +249,22 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 		}
 
 		// Add all surrounding tiles to the map, so they get borders
-		editor.map.createTile(pos.x-1, pos.y-1, pos.z);
-		editor.map.createTile(pos.x  , pos.y-1, pos.z);
-		editor.map.createTile(pos.x+1, pos.y-1, pos.z);
-		editor.map.createTile(pos.x-1, pos.y  , pos.z);
-		editor.map.createTile(pos.x+1, pos.y  , pos.z);
-		editor.map.createTile(pos.x-1, pos.y+1, pos.z);
-		editor.map.createTile(pos.x  , pos.y+1, pos.z);
-		editor.map.createTile(pos.x+1, pos.y+1, pos.z);
+		map.createTile(pos.x-1, pos.y-1, pos.z);
+		map.createTile(pos.x  , pos.y-1, pos.z);
+		map.createTile(pos.x+1, pos.y-1, pos.z);
+		map.createTile(pos.x-1, pos.y  , pos.z);
+		map.createTile(pos.x+1, pos.y  , pos.z);
+		map.createTile(pos.x-1, pos.y+1, pos.z);
+		map.createTile(pos.x  , pos.y+1, pos.z);
+		map.createTile(pos.x+1, pos.y+1, pos.z);
 
 		action->addChange(newd Change(new_dest_tile));
 	}
 	batchAction->addAndCommitAction(action);
 
 	if(g_settings.getInteger(Config::USE_AUTOMAGIC) && g_settings.getInteger(Config::BORDERIZE_PASTE)) {
-		action = editor.actionQueue->createAction(batchAction);
+		action = editor.getHistoryActions()->createAction(batchAction);
 		TileList borderize_tiles;
-		Map& map = editor.map;
 
 		// Go through all modified (selected) tiles (might be slow)
 		for(MapIterator it = tiles->begin(); it != tiles->end(); ++it) {
@@ -290,7 +291,7 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 
 		for(Tile* tile : borderize_tiles) {
 			if(tile) {
-				Tile* newTile = tile->deepCopy(editor.map);
+				Tile* newTile = tile->deepCopy(map);
 				newTile->borderize(&map);
 
 				if(tile->ground && tile->ground->isSelected()) {

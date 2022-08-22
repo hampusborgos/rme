@@ -159,7 +159,7 @@ bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
 
 	if(whatbrush->isHouse() && map) {
 		const HouseBrush* house_brush = static_cast<const HouseBrush*>(whatbrush);
-		for(HouseMap::iterator house_iter = map->houses.begin(); house_iter != map->houses.end(); ++house_iter) {
+		for(HouseMap::iterator house_iter = map->getHouses().begin(); house_iter != map->getHouses().end(); ++house_iter) {
 			if(house_iter->second->id == house_brush->getHouseID()) {
 				for(uint32_t i = 0; i < town_choice->GetCount(); ++i) {
 					Town* town = reinterpret_cast<Town*>(town_choice->GetClientData(i));
@@ -206,14 +206,14 @@ void HousePalettePanel::SelectTown(size_t index)
 		// Clear the old houselist
 		house_list->Clear();
 
-		for(HouseMap::iterator house_iter = map->houses.begin(); house_iter != map->houses.end(); ++house_iter) {
+		for(HouseMap::iterator house_iter = map->getHouses().begin(); house_iter != map->getHouses().end(); ++house_iter) {
 			if(what_town) {
 				if(house_iter->second->townid == what_town->getID()) {
 					house_list->Append(wxstr(house_iter->second->getDescription()), house_iter->second);
 				}
 			} else {
 				// "No Town" selected!
-				if(map->towns.getTown(house_iter->second->townid) == nullptr) {
+				if(map->getTowns().getTown(house_iter->second->townid) == nullptr) {
 					// The town doesn't exist
 					house_list->Append(wxstr(house_iter->second->getDescription()), house_iter->second);
 				}
@@ -291,9 +291,9 @@ void HousePalettePanel::OnUpdate()
 	if(map == nullptr)
 		return;
 
-	if(map->towns.count() != 0) {
+	if(map->getTowns().count() != 0) {
 		// Create choice control
-		for(TownMap::iterator town_iter = map->towns.begin(); town_iter != map->towns.end(); ++town_iter) {
+		for(TownMap::iterator town_iter = map->getTowns().begin(); town_iter != map->getTowns().end(); ++town_iter) {
 			town_choice->Append(wxstr(town_iter->second->getName()), town_iter->second);
 		}
 		town_choice->Append("No Town", (void*)(nullptr));
@@ -358,7 +358,7 @@ void HousePalettePanel::OnClickAddHouse(wxCommandEvent& event)
 		return;
 
 	House* new_house = newd House(*map);
-	new_house->id = map->houses.getEmptyID();
+	new_house->id = map->getHouses().getEmptyID();
 
 	std::ostringstream os;
 	os << "Unnamed House #" << new_house->id;
@@ -368,7 +368,7 @@ void HousePalettePanel::OnClickAddHouse(wxCommandEvent& event)
 	ASSERT(town);
 	new_house->townid = town->getID();
 
-	map->houses.addHouse(new_house);
+	map->getHouses().addHouse(new_house);
 	house_list->Append(wxstr(new_house->getDescription()), new_house);
 	SelectHouse(house_list->FindString(wxstr(new_house->getDescription())));
 	g_gui.SelectBrush();
@@ -400,7 +400,7 @@ void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 	int selection = house_list->GetSelection();
 	if(selection != wxNOT_FOUND) {
 		House* house = reinterpret_cast<House*>(house_list->GetClientData(selection));
-		map->houses.removeHouse(house);
+		map->getHouses().removeHouse(house);
 		house_list->Delete(selection);
 		refresh_timer.Start(300, true);
 
@@ -517,7 +517,7 @@ void EditHouseDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		}
 
 		if(g_settings.getInteger(Config::WARN_FOR_DUPLICATE_ID)) {
-			Houses& houses = map->houses;
+			Houses& houses = map->getHouses();
 			for(HouseMap::const_iterator house_iter = houses.begin(); house_iter != houses.end(); ++house_iter) {
 				House* house = house_iter->second;
 				ASSERT(house);

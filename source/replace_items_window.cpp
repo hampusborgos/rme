@@ -343,15 +343,15 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 		ItemFinder finder(info.replaceId, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
 
 		// search on map
-		foreach_ItemOnMap(editor->map, finder, selectionOnly);
+		foreach_ItemOnMap(editor->getMap(), finder, selectionOnly);
 
 		uint32_t total = 0;
 		std::vector<std::pair<Tile*, Item*>>& result = finder.result;
 
 		if(!result.empty()) {
-			Action* action = editor->actionQueue->createAction(ACTION_REPLACE_ITEMS);
+			Action* action = editor->getHistoryActions()->createAction(ACTION_REPLACE_ITEMS);
 			for(std::vector<std::pair<Tile*, Item*>>::const_iterator rit = result.begin(); rit != result.end(); ++rit) {
-				Tile* new_tile = rit->first->deepCopy(editor->map);
+				Tile* new_tile = rit->first->deepCopy(editor->getMap());
 				int index = rit->first->getIndexOf(rit->second);
 				ASSERT(index != wxNOT_FOUND);
 				Item* item = new_tile->getItemAt(index);
@@ -360,7 +360,7 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 				action->addChange(new Change(new_tile));
 				total++;
 			}
-			editor->actionQueue->addAction(action);
+			editor->getHistoryActions()->addAction(action);
 		}
 
 		done++;
