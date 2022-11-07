@@ -1640,7 +1640,7 @@ void MapDrawer::DrawIndicator(int x, int y, int indicator, uint8_t r, uint8_t g,
 		return;
 
 	int textureId = sprite->getHardwareID(0,0,0,-1,0,0,0,0);
-	glBlitTexture(x, y, textureId, r, g, b, a);
+	glBlitTexture(x, y, textureId, r, g, b, a, true);
 }
 
 void MapDrawer::DrawTooltips()
@@ -1780,18 +1780,40 @@ void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
 		glReadPixels(0, screensize_y - i, screensize_x, 1, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*)(screenshot_buffer) + 3*screensize_x*i);
 }
 
-void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha)
+void MapDrawer::glBlitTexture(int x, int y, int textureId, int red, int green, int blue, int alpha, bool adjustZoom)
 {
-	if(texture_number != 0) {
-		glBindTexture(GL_TEXTURE_2D, texture_number);
-		glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));
-		glBegin(GL_QUADS);
-			glTexCoord2f(0.f, 0.f); glVertex2f(sx, sy);
-			glTexCoord2f(1.f, 0.f); glVertex2f(sx + TILE_SIZE, sy);
-			glTexCoord2f(1.f, 1.f); glVertex2f(sx + TILE_SIZE, sy + TILE_SIZE);
-			glTexCoord2f(0.f, 1.f); glVertex2f(sx, sy + TILE_SIZE);
-		glEnd();
+	if (textureId <= 0)
+		return;
+
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));
+	glBegin(GL_QUADS);
+
+	if(adjustZoom) {
+		float size = TILE_SIZE;
+		if (zoom < 1.0f) {
+			float offset = 10 / (10 * zoom);
+			size = std::max<float>(16, TILE_SIZE * zoom);
+			x += offset;
+			y += offset;
+		} else if (zoom > 1.f) {
+			float offset = (10 * zoom);
+			size = TILE_SIZE + offset;
+			x -= offset;
+			y -= offset;
+		}
+		glTexCoord2f(0.f, 0.f); glVertex2f(x, y);
+		glTexCoord2f(1.f, 0.f); glVertex2f(x + size, y);
+		glTexCoord2f(1.f, 1.f); glVertex2f(x + size, y + size);
+		glTexCoord2f(0.f, 1.f); glVertex2f(x, y + size);
+	} else {
+		glTexCoord2f(0.f, 0.f); glVertex2f(x, y);
+		glTexCoord2f(1.f, 0.f); glVertex2f(x + TILE_SIZE, y);
+		glTexCoord2f(1.f, 1.f); glVertex2f(x + TILE_SIZE, y + TILE_SIZE);
+		glTexCoord2f(0.f, 1.f); glVertex2f(x, y + TILE_SIZE);
 	}
+
+	glEnd();
 }
 
 void MapDrawer::glBlitSquare(int sx, int sy, int red, int green, int blue, int alpha)
