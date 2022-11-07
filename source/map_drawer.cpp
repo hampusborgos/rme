@@ -291,6 +291,17 @@ void MapDrawer::DrawMap()
 								DrawTile(nd->getTile(map_x, map_y, map_z));
 							}
 						}
+						if (!options.show_as_minimap && !options.show_only_colors &&
+							(options.show_pickupables
+							|| options.show_moveables
+							|| options.show_houses
+							|| options.show_spawns)) {
+							for(int map_x = 0; map_x < 4; ++map_x) {
+								for(int map_y = 0; map_y < 4; ++map_y) {
+									DrawTileIndicators(nd->getTile(map_x, map_y, map_z));
+								}
+							}
+						}
 					} else {
 						if(!nd->isRequested(map_z > GROUND_LAYER)) {
 							// Request the node
@@ -1143,20 +1154,6 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 
 	if (options.show_hooks && (it.hookSouth || it.hookEast))
 		DrawHookIndicator(draw_x, draw_y, it);
-
-	if ((it.pickupable && options.show_pickupables) || (it.moveable && options.show_moveables)) {
-		uint8_t red = 0xFF, green = 0xFF, blue = 0xFF;
-		if (tile->isHouseTile()) {
-			green = 0x00;
-			blue = 0x00;
-		}
-		if (it.pickupable && options.show_pickupables && it.moveable && options.show_moveables)
-			DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_PICKUPABLE_MOVEABLE_ITEM, red, green, blue);
-		else if (it.pickupable && options.show_pickupables)
-			DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_PICKUPABLE_ITEM, red, green, blue);
-		else if (it.moveable && options.show_moveables)
-			DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_MOVEABLE_ITEM, red, green, blue);
-	}
 }
 
 void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const Item* item, bool ephemeral, int red, int green, int blue, int alpha)
@@ -1527,27 +1524,6 @@ void MapDrawer::DrawTile(TileLocation* location)
 				BlitCreature(draw_x, draw_y, tile->creature);
 			}
 		}
-		//if(location->getWaypointCount() > 0 && options.show_houses) {
-			//BlitSpriteType(draw_x, draw_y, SPRITE_FLAME_BLUE, 64, 64, 255);
-		//}
-
-		if(tile->isHouseExit() && options.show_houses) {
-			if(tile->hasHouseExit(current_house_id)) {
-				DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_HOUSE_EXIT);
-			} else {
-				DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_HOUSE_EXIT, 64, 64, 255, 128);
-			}
-		}
-		//if(tile->isTownExit()) {
-		//	BlitSpriteType(draw_x, draw_y, SPRITE_FLAG_GREY, 255, 255, 64);
-		//}
-		if(tile->spawn && options.show_spawns) {
-			if(tile->spawn->isSelected()) {
-				DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_SPAWNS, 128, 128, 128);
-			} else {
-				DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_SPAWNS);
-			}
-		}
 	}
 
 	if(options.show_tooltips) {
@@ -1631,6 +1607,65 @@ void MapDrawer::DrawHookIndicator(int x, int y, const ItemType& type)
 	}
 	glEnd();
 	glEnable(GL_TEXTURE_2D);
+}
+
+void MapDrawer::DrawTileIndicators(TileLocation* location)
+{
+	if(!location)
+		return;
+
+	Tile* tile = location->get();
+	if(!tile)
+		return;
+
+	int map_x = location->getX();
+	int map_y = location->getY();
+	int map_z = location->getZ();
+
+	int offset;
+	if (map_z <= GROUND_LAYER)
+		offset = (GROUND_LAYER - map_z) * TILE_SIZE;
+	else
+		offset = TILE_SIZE * (floor - map_z);
+
+	int x = ((map_x * TILE_SIZE) - view_scroll_x) - offset;
+	int y = ((map_y * TILE_SIZE) - view_scroll_y) - offset;
+
+	if(zoom < 10.0 && (options.show_pickupables || options.show_moveables)) {
+		uint8_t red = 0xFF, green = 0xFF, blue = 0xFF;
+		if (tile->isHouseTile()) {
+			green = 0x00;
+			blue = 0x00;
+		}
+		for (ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); it++) {
+			const uint16_t itemId = (*it)->getID();
+			const ItemType& type = g_items[itemId];
+			if ((type.pickupable && options.show_pickupables) || (type.moveable && options.show_moveables)) {
+				if (type.pickupable && options.show_pickupables && type.moveable && options.show_moveables)
+					DrawIndicator(x, y, EDITOR_SPRITE_PICKUPABLE_MOVEABLE_ITEM, red, green, blue);
+				else if (type.pickupable && options.show_pickupables)
+					DrawIndicator(x, y, EDITOR_SPRITE_PICKUPABLE_ITEM, red, green, blue);
+				else if (type.moveable && options.show_moveables)
+					DrawIndicator(x, y, EDITOR_SPRITE_MOVEABLE_ITEM, red, green, blue);
+			}
+		}
+	}
+
+	if(options.show_houses && tile->isHouseExit()) {
+		if(tile->hasHouseExit(current_house_id)) {
+			DrawIndicator(x, y, EDITOR_SPRITE_HOUSE_EXIT);
+		} else {
+			DrawIndicator(x, y, EDITOR_SPRITE_HOUSE_EXIT, 64, 64, 255, 128);
+		}
+	}
+
+	if(options.show_spawns && tile->spawn) {
+		if(tile->spawn->isSelected()) {
+			DrawIndicator(x, y, EDITOR_SPRITE_SPAWNS, 128, 128, 128);
+		} else {
+			DrawIndicator(x, y, EDITOR_SPRITE_SPAWNS);
+		}
+	}
 }
 
 void MapDrawer::DrawIndicator(int x, int y, int indicator, uint8_t r, uint8_t g, uint8_t b, uint8_t a)

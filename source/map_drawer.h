@@ -139,6 +139,7 @@ protected:
 	void DrawTile(TileLocation* tile);
 	void DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_t g, uint8_t b);
 	void DrawHookIndicator(int x, int y, const ItemType& type);
+	void DrawTileIndicators(TileLocation* location);
 	void DrawIndicator(int x, int y, int indicator, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255, uint8_t a = 255);
 	void WriteTooltip(Item* item, std::ostringstream& stream);
 	void WriteTooltip(Waypoint* item, std::ostringstream& stream);
