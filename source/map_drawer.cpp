@@ -1150,11 +1150,11 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 			green = 0x00;
 			blue = 0x00;
 		}
-		if (options.show_pickupables && options.show_moveables)
+		if (it.pickupable && options.show_pickupables && it.moveable && options.show_moveables)
 			DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_PICKUPABLE_MOVEABLE_ITEM, red, green, blue);
-		else if (options.show_pickupables)
+		else if (it.pickupable && options.show_pickupables)
 			DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_PICKUPABLE_ITEM, red, green, blue);
-		else if  (options.show_moveables)
+		else if (it.moveable && options.show_moveables)
 			DrawIndicator(draw_x, draw_y, EDITOR_SPRITE_MOVEABLE_ITEM, red, green, blue);
 	}
 }
