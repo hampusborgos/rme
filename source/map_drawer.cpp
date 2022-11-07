@@ -1144,7 +1144,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 	if (options.show_hooks && (it.hookSouth || it.hookEast))
 		DrawHookIndicator(draw_x, draw_y, it);
 
-	if (it.pickupable || it.moveable) {
+	if ((it.pickupable && options.show_pickupables) || (it.moveable && options.show_moveables)) {
 		uint8_t red = 0xFF, green = 0xFF, blue = 0xFF;
 		if (tile->isHouseTile()) {
 			green = 0x00;
