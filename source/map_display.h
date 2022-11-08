@@ -120,16 +120,17 @@ protected:
 
 private:
 	enum {
-		BLOCK_SIZE = 64
+		BLOCK_SIZE = 100
 	};
 
-	inline int getFillIndex(int x, int y) const noexcept { return ((y % BLOCK_SIZE) * BLOCK_SIZE) + (x % BLOCK_SIZE); }
+	inline int getFillIndex(int x, int y) const { return x + BLOCK_SIZE * y; }
 
 	static bool processed[BLOCK_SIZE*BLOCK_SIZE];
 
 	Editor& editor;
 	MapDrawer *drawer;
 	int keyCode;
+	int countMaxFills = 0;
 
 // View related
 	int floor;
