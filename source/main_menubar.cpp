@@ -119,6 +119,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(VIEW_TOOLBARS_BRUSHES, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_POSITION, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_SIZES, wxITEM_CHECK, OnToolbars);
+	MAKE_ACTION(VIEW_TOOLBARS_INDICATORS, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_STANDARD, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
@@ -186,7 +187,6 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(EXTENSIONS, wxITEM_NORMAL, OnListExtensions);
 	MAKE_ACTION(GOTO_WEBSITE, wxITEM_NORMAL, OnGotoWebsite);
 	MAKE_ACTION(ABOUT, wxITEM_NORMAL, OnAbout);
-
 
 	// A deleter, this way the frame does not need
 	// to bother deleting us.
@@ -391,6 +391,7 @@ void MainMenuBar::Update()
 	EnableItem(DEBUG_VIEW_DAT, loaded);
 
 	UpdateFloorMenu();
+	UpdateIndicatorsMenu();
 }
 
 void MainMenuBar::LoadValues()
@@ -400,6 +401,7 @@ void MainMenuBar::LoadValues()
 	CheckItem(VIEW_TOOLBARS_BRUSHES, g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES));
 	CheckItem(VIEW_TOOLBARS_POSITION, g_settings.getBoolean(Config::SHOW_TOOLBAR_POSITION));
 	CheckItem(VIEW_TOOLBARS_SIZES, g_settings.getBoolean(Config::SHOW_TOOLBAR_SIZES));
+	CheckItem(VIEW_TOOLBARS_INDICATORS, g_settings.getBoolean(Config::SHOW_TOOLBAR_INDICATORS));
 	CheckItem(VIEW_TOOLBARS_STANDARD, g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD));
 
 	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
@@ -475,11 +477,29 @@ std::vector<wxString> MainMenuBar::GetRecentFiles()
 
 void MainMenuBar::UpdateFloorMenu()
 {
-	if(g_gui.IsEditorOpen()) {
-		for(int i = 0; i < MAP_LAYERS; ++i)
-			CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + i), false);
-		CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
+	using namespace MenuBar;
+
+	if(!g_gui.IsEditorOpen()) {
+		return;
 	}
+
+	for (int i = 0; i < MAP_LAYERS; ++i)
+		CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + i), false);
+
+	CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
+}
+
+void MainMenuBar::UpdateIndicatorsMenu()
+{
+	using namespace MenuBar;
+
+	if(!g_gui.IsEditorOpen()) {
+		return;
+	}
+
+	CheckItem(SHOW_WALL_HOOKS, g_settings.getBoolean(Config::SHOW_WALL_HOOKS));
+	CheckItem(SHOW_PICKUPABLES, g_settings.getBoolean(Config::SHOW_PICKUPABLES));
+	CheckItem(SHOW_MOVEABLES, g_settings.getBoolean(Config::SHOW_MOVEABLES));
 }
 
 bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& error)
@@ -1710,6 +1730,10 @@ void MainMenuBar::OnToolbars(wxCommandEvent& event)
 		case VIEW_TOOLBARS_SIZES:
 			g_gui.ShowToolbar(TOOLBAR_SIZES, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_SIZES, event.IsChecked());
+			break;
+		case VIEW_TOOLBARS_INDICATORS:
+			g_gui.ShowToolbar(TOOLBAR_INDICATORS, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_INDICATORS, event.IsChecked());
 			break;
 		case VIEW_TOOLBARS_STANDARD:
 			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());

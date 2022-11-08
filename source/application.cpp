@@ -574,6 +574,11 @@ void MainFrame::UpdateFloorMenu()
 	menu_bar->UpdateFloorMenu();
 }
 
+void MainFrame::UpdateIndicatorsMenu()
+{
+	menu_bar->UpdateIndicatorsMenu();
+}
+
 bool MainFrame::LoadMap(FileName name)
 {
 	return g_gui.LoadMap(name);

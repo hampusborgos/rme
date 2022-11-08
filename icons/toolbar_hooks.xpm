@@ -1,0 +1,25 @@
+/* XPM */
+static const char *toolbar_hooks_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c white",
+/* pixels */
+"   .........    ",
+"   .XXXXXXX.    ",
+"   .XXXXXXX.    ",
+"   .XX...XX.    ",
+"   .XXX.XXX.    ",
+"    .XXXXX.     ",
+"     .XXX.      ",
+"     .XXXX.     ",
+"      .XXXX.    ",
+"   ..  ..XXX.   ",
+"  .XX.  .XXX.   ",
+"  .XXX...XXX.   ",
+"   .XXXXXXXX.   ",
+"   .XXXXXXX.    ",
+"    .XXXXX.     ",
+"     .....      "
+};
