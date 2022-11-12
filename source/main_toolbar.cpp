@@ -611,14 +611,17 @@ void MainToolBar::OnIndicatorsButtonClick(wxCommandEvent& event)
 		case TOOLBAR_HOOKS:
 			g_settings.setInteger(Config::SHOW_WALL_HOOKS, toggled);
 			g_gui.root->UpdateIndicatorsMenu();
+			g_gui.RefreshView();
 			break;
 		case TOOLBAR_PICKUPABLES:
 			g_settings.setInteger(Config::SHOW_PICKUPABLES, toggled);
 			g_gui.root->UpdateIndicatorsMenu();
+			g_gui.RefreshView();
 			break;
 		case TOOLBAR_MOVEABLES:
 			g_settings.setInteger(Config::SHOW_MOVEABLES, toggled);
 			g_gui.root->UpdateIndicatorsMenu();
+			g_gui.RefreshView();
 			break;
 		default:
 			break;

@@ -1821,6 +1821,7 @@ void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)
 	g_settings.setInteger(Config::SHOW_MOVEABLES, IsItemChecked(MenuBar::SHOW_MOVEABLES));
 
 	g_gui.RefreshView();
+	g_gui.root->GetAuiToolBar()->UpdateIndicators();
 }
 
 void MainMenuBar::OnChangeFloor(wxCommandEvent& event)
