@@ -103,6 +103,7 @@
             <item name="Brushes" action="VIEW_TOOLBARS_BRUSHES" help="Show or hide the Brushes toolbar."/>
             <item name="Position" action="VIEW_TOOLBARS_POSITION" help="Show or hide the Position toolbar."/>
             <item name="Sizes" action="VIEW_TOOLBARS_SIZES" help="Show or hide the Sizes toolbar."/>
+            <item name="Indicators" action="VIEW_TOOLBARS_INDICATORS" help="Show or hide the Indicators toolbar."/>
             <item name="Standard" action="VIEW_TOOLBARS_STANDARD" help="Show or hide the Standard toolbar."/>
         </menu>
         <item name="$New View" hotkey="Ctrl+Shift+N" action="NEW_VIEW" help="Creates a new view of the current map."/>
@@ -131,7 +132,11 @@
         <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
         <item name="Show T$ooltips" hotkey="Y" action="SHOW_TOOLTIPS" help="Show tooltips."/>
         <item name="Show Previe$w" hotkey="L" action="SHOW_PREVIEW" help="Show animations and lights preview."/>
-        <item name="Show Wall Hoo$ks" hotkey="K" action="SHOW_WALL_HOOKS" help="Show indicators for wall hooks."/>
+        <menu name="Show Indicators">
+            <item name="Show Wall Hoo$ks" hotkey="K" action="SHOW_WALL_HOOKS" help="Show indicators for wall hooks."/>
+            <item name="Show Pickupables" action="SHOW_PICKUPABLES" help="Show indicators for pickupable items."/>
+            <item name="Show Moveables" action="SHOW_MOVEABLES" help="Show indicators for moveable items."/>
+        </menu>
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>

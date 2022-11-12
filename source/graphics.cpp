@@ -20,6 +20,7 @@
 
 #include "sprites.h"
 #include "graphics.h"
+#include "artprovider.h"
 #include "filehandle.h"
 #include "settings.h"
 #include "gui.h"
@@ -28,6 +29,7 @@
 #include <wx/mstream.h>
 #include <wx/stopwatch.h>
 #include <wx/dir.h>
+#include <wx/rawbmp.h>
 #include "pngfiles.h"
 
 // All 133 template colors
@@ -161,6 +163,18 @@ GameSprite* GraphicManager::getCreatureSprite(int id)
 	return nullptr;
 }
 
+GameSprite* GraphicManager::getEditorSprite(int id)
+{
+	if(id >= 0) {
+		return nullptr;
+	}
+
+	SpriteMap::iterator it = sprite_space.find(id);
+	if(it != sprite_space.end()) {
+		return dynamic_cast<GameSprite*>(it->second);
+	}
+	return nullptr;
+}
 
 uint16_t GraphicManager::getItemSpriteMaxID() const
 {
@@ -332,6 +346,12 @@ bool GraphicManager::loadEditorSprites()
 			loadPNGFile(gem_move_png),
 			nullptr
 		);
+
+	sprite_space[EDITOR_SPRITE_SPAWNS] = GameSprite::createFromBitmap(ART_SPAWNS);
+	sprite_space[EDITOR_SPRITE_HOUSE_EXIT] = GameSprite::createFromBitmap(ART_HOUSE_EXIT);
+	sprite_space[EDITOR_SPRITE_PICKUPABLE_ITEM] = GameSprite::createFromBitmap(ART_PICKUPABLE);
+	sprite_space[EDITOR_SPRITE_MOVEABLE_ITEM] = GameSprite::createFromBitmap(ART_MOVEABLE);
+	sprite_space[EDITOR_SPRITE_PICKUPABLE_MOVEABLE_ITEM] = GameSprite::createFromBitmap(ART_PICKUPABLE_MOVEABLE);
 
 	return true;
 }
@@ -1059,7 +1079,7 @@ GameSprite::Image::~Image()
 	unloadGLTexture(0);
 }
 
-void GameSprite::Image::createGLTexture(GLuint whatid)
+void GameSprite::Image::createGLTexture(GLuint textureId)
 {
 	ASSERT(!isGLLoaded);
 
@@ -1071,7 +1091,7 @@ void GameSprite::Image::createGLTexture(GLuint whatid)
 	isGLLoaded = true;
 	g_gui.gfx.loaded_textures += 1;
 
-	glBindTexture(GL_TEXTURE_2D, whatid);
+	glBindTexture(GL_TEXTURE_2D, textureId);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
@@ -1079,14 +1099,13 @@ void GameSprite::Image::createGLTexture(GLuint whatid)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPRITE_PIXELS, SPRITE_PIXELS, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba);
 
 	delete[] rgba;
-	#undef SPRITE_SIZE
 }
 
-void GameSprite::Image::unloadGLTexture(GLuint whatid)
+void GameSprite::Image::unloadGLTexture(GLuint textureId)
 {
 	isGLLoaded = false;
 	g_gui.gfx.loaded_textures -= 1;
-	glDeleteTextures(1, &whatid);
+	glDeleteTextures(1, &textureId);
 }
 
 void GameSprite::Image::visit()
@@ -1173,7 +1192,6 @@ uint8_t* GameSprite::NormalImage::getRGBData()
 	return data;
 }
 
-
 uint8_t* GameSprite::NormalImage::getRGBAData()
 {
 	if(!dump) {
@@ -1239,12 +1257,75 @@ GLuint GameSprite::NormalImage::getHardwareID()
 	return id;
 }
 
-void GameSprite::NormalImage::createGLTexture(GLuint ignored)
+void GameSprite::NormalImage::createGLTexture(GLuint textureId)
 {
 	Image::createGLTexture(id);
 }
 
-void GameSprite::NormalImage::unloadGLTexture(GLuint ignored)
+void GameSprite::NormalImage::unloadGLTexture(GLuint textureId)
+{
+	Image::unloadGLTexture(id);
+}
+
+GameSprite::EditorImage::EditorImage(const wxArtID& bitmapId) :
+	NormalImage(),
+	bitmapId(bitmapId)
+{ }
+
+void GameSprite::EditorImage::createGLTexture(GLuint textureId)
+{
+	ASSERT(!isGLLoaded);
+
+	wxSize size(SPRITE_PIXELS, SPRITE_PIXELS);
+	wxBitmap bitmap = wxArtProvider::GetBitmap(bitmapId, wxART_OTHER, size);
+
+	wxNativePixelData data(bitmap);
+	if (!data) return;
+
+	const int imageSize = SPRITE_PIXELS_SIZE * 4;
+	GLubyte *imageData = new GLubyte[imageSize];
+	int write = 0;
+
+	wxNativePixelData::Iterator it(data);
+	it.Offset(data, 0, 0);
+
+	for (size_t y = 0; y < SPRITE_PIXELS; ++y)
+	{
+		wxNativePixelData::Iterator row_start = it;
+
+		for(size_t x = 0; x < SPRITE_PIXELS; ++x, it++)
+		{
+			uint8_t red = it.Red();
+			uint8_t green = it.Green();
+			uint8_t blue = it.Blue();
+			bool transparent = red == 0xFF && green == 0x00 && blue == 0xFF;
+
+			imageData[write + 0] = red;
+			imageData[write + 1] = green;
+			imageData[write + 2] = blue;
+			imageData[write + 3] = transparent ? 0x00 : 0xFF;
+			write += 4;
+		}
+
+		it = row_start;
+		it.OffsetY(data, 1);
+	}
+
+	isGLLoaded = true;
+	id = g_gui.gfx.getFreeTextureID();
+	g_gui.gfx.loaded_textures += 1;
+
+	glBindTexture(GL_TEXTURE_2D, id);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, SPRITE_PIXELS, SPRITE_PIXELS, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageData);
+
+	delete[] imageData;
+}
+
+void GameSprite::EditorImage::unloadGLTexture(GLuint textureId)
 {
 	Image::unloadGLTexture(id);
 }
@@ -1403,6 +1484,23 @@ void GameSprite::TemplateImage::createGLTexture(GLuint unused)
 void GameSprite::TemplateImage::unloadGLTexture(GLuint unused)
 {
 	Image::unloadGLTexture(gl_tid);
+}
+
+GameSprite* GameSprite::createFromBitmap(const wxArtID& bitmapId)
+{
+	GameSprite::EditorImage* image = new GameSprite::EditorImage(bitmapId);
+
+	GameSprite* sprite = new GameSprite();
+	sprite->width = 1;
+	sprite->height = 1;
+	sprite->layers = 1;
+	sprite->pattern_x = 1;
+	sprite->pattern_y = 1;
+	sprite->pattern_z = 1;
+	sprite->frames = 1;
+	sprite->numsprites = 1;
+	sprite->spriteList.push_back(image);
+	return sprite;
 }
 
 // ============================================================================

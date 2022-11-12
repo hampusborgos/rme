@@ -1,0 +1,25 @@
+/* XPM */
+static const char *toolbar_moveable_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1 ",
+"  c None",
+". c black",
+"X c white",
+/* pixels */
+"          .     ",
+"         .X.    ",
+"        .XXX.   ",
+"       .XXXXX.  ",
+"      .X.XXX.X. ",
+"      .XX.X.XX. ",
+"     .X.XX.XX.  ",
+"    .XXX.X.X.   ",
+"   . .X. .X.    ",
+"  .X..X..X.     ",
+" .XXXXXXXXX.    ",
+"  .X..X..X.     ",
+"   . .X. .      ",
+"    .XXX.       ",
+"     .X.        ",
+"      .         "
+};

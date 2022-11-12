@@ -84,6 +84,7 @@ public:
 
 	void OnUpdateMenus(wxCommandEvent& event);
 	void UpdateFloorMenu();
+	void UpdateIndicatorsMenu();
 	void OnIdle(wxIdleEvent& event);
 	void OnExit(wxCloseEvent& event);
 

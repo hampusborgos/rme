@@ -24,6 +24,8 @@
 
 #include "client_version.h"
 
+#include <wx/artprov.h>
+
 enum SpriteSize {
 	SPRITE_SIZE_16x16,
 	//SPRITE_SIZE_24x24,
@@ -45,7 +47,8 @@ class GraphicManager;
 class FileReadHandle;
 class Animator;
 
-class Sprite {
+class Sprite
+{
 public:
 	Sprite() {}
 	virtual ~Sprite() {}
@@ -57,7 +60,8 @@ private:
 	Sprite& operator=(const Sprite&);
 };
 
-class EditorSprite : public Sprite {
+class EditorSprite : public Sprite
+{
 public:
 	EditorSprite(wxBitmap* b16x16, wxBitmap* b32x32);
 	virtual ~EditorSprite();
@@ -68,8 +72,8 @@ protected:
 	wxBitmap* bm[SPRITE_SIZE_COUNT];
 };
 
-
-class GameSprite : public Sprite{
+class GameSprite : public Sprite
+{
 public:
 	GameSprite();
 	~GameSprite();
@@ -86,6 +90,8 @@ public:
 	int getDrawHeight() const;
 	std::pair<int, int> getDrawOffset() const;
 	uint8_t getMiniMapColor() const;
+
+	static GameSprite* createFromBitmap(const wxArtID& bitmapId);
 
 protected:
 	class Image;
@@ -109,9 +115,10 @@ protected:
 		virtual GLuint getHardwareID() = 0;
 		virtual uint8_t* getRGBData() = 0;
 		virtual uint8_t* getRGBAData() = 0;
+
 	protected:
-		virtual void createGLTexture(GLuint whatid);
-		virtual void unloadGLTexture(GLuint whatid);
+		virtual void createGLTexture(GLuint textureId);
+		virtual void unloadGLTexture(GLuint textureId);
 	};
 
 	class NormalImage : public Image {
@@ -131,9 +138,20 @@ protected:
 		virtual GLuint getHardwareID();
 		virtual uint8_t* getRGBData();
 		virtual uint8_t* getRGBAData();
+
 	protected:
-		virtual void createGLTexture(GLuint ignored = 0);
-		virtual void unloadGLTexture(GLuint ignored = 0);
+		virtual void createGLTexture(GLuint textureId = 0);
+		virtual void unloadGLTexture(GLuint textureId = 0);
+	};
+
+	class EditorImage : public NormalImage {
+	public:
+		EditorImage(const wxArtID& bitmapId);
+	protected:
+		void createGLTexture(GLuint textureId) override;
+		void unloadGLTexture(GLuint textureId) override;
+	private:
+		wxArtID bitmapId;
 	};
 
 	class TemplateImage : public Image {
@@ -258,6 +276,7 @@ public:
 
 	Sprite* getSprite(int id);
 	GameSprite* getCreatureSprite(int id);
+	GameSprite* getEditorSprite(int id);
 
 	long getElapsedTime() const { return (animation_timer->TimeInMicro() / 1000).ToLong(); }
 
@@ -318,6 +337,7 @@ private:
 
 	friend class GameSprite::Image;
 	friend class GameSprite::NormalImage;
+	friend class GameSprite::EditorImage;
 	friend class GameSprite::TemplateImage;
 };
 
