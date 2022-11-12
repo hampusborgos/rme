@@ -392,9 +392,9 @@ BrushIconBox::BrushIconBox(wxWindow *parent, const TilesetCategory *_tileset, Re
 	ASSERT(tileset->getType() >= TILESET_UNKNOWN && tileset->getType() <= TILESET_HOUSE);
 	int width;
 	if(icon_size == RENDER_SIZE_32x32) {
-		width = max(g_settings.getInteger(Config::PALETTE_COL_COUNT) / 2 + 1, 1);
+		width = std::max(g_settings.getInteger(Config::PALETTE_COL_COUNT) / 2 + 1, 1);
 	} else {
-		width = max(g_settings.getInteger(Config::PALETTE_COL_COUNT) + 1, 1);
+		width = std::max(g_settings.getInteger(Config::PALETTE_COL_COUNT) + 1, 1);
 	}
 
 	// Create buttons

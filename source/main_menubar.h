@@ -43,7 +43,7 @@ namespace MenuBar
 		UNDO,
 		REDO,
 		FIND_ITEM,
-		REPLACE_ITEM,
+		REPLACE_ITEMS,
 		SEARCH_ON_MAP_EVERYTHING,
 		SEARCH_ON_MAP_UNIQUE,
 		SEARCH_ON_MAP_ACTION,
@@ -55,7 +55,7 @@ namespace MenuBar
 		SEARCH_ON_SELECTION_CONTAINER,
 		SEARCH_ON_SELECTION_WRITEABLE,
 		SEARCH_ON_SELECTION_ITEM,
-		REPLACE_ON_SELECTION_ITEM,
+		REPLACE_ON_SELECTION_ITEMS,
 		REMOVE_ON_SELECTION_ITEM,
 		SELECT_MODE_COMPENSATE,
 		SELECT_MODE_CURRENT,
@@ -88,6 +88,7 @@ namespace MenuBar
 		VIEW_TOOLBARS_BRUSHES,
 		VIEW_TOOLBARS_POSITION,
 		VIEW_TOOLBARS_SIZES,
+		VIEW_TOOLBARS_INDICATORS,
 		VIEW_TOOLBARS_STANDARD,
 		NEW_VIEW,
 		TOGGLE_FULLSCREEN,
@@ -113,6 +114,8 @@ namespace MenuBar
 		SHOW_TOOLTIPS,
 		SHOW_PREVIEW,
 		SHOW_WALL_HOOKS,
+		SHOW_PICKUPABLES,
+		SHOW_MOVEABLES,
 		WIN_MINIMAP,
 		NEW_PALETTE,
 		TAKE_SCREENSHOT,
@@ -152,7 +155,7 @@ namespace MenuBar
 
 class MainFrame;
 
-class MainMenuBar : wxEvtHandler
+class MainMenuBar : public wxEvtHandler
 {
 public:
 	MainMenuBar(MainFrame* frame);
@@ -164,6 +167,7 @@ public:
 	// Turn on/off all buttons according to current editor state
 	void Update();
 	void UpdateFloorMenu(); // Only concerns the floor menu
+	void UpdateIndicatorsMenu();
 
 	void AddRecentFile(FileName file);
 	void LoadRecentFiles();
@@ -217,7 +221,7 @@ public:
 	void OnCopy(wxCommandEvent& event);
 	void OnPaste(wxCommandEvent& event);
 	void OnSearchForItem(wxCommandEvent& event);
-	void OnReplaceItem(wxCommandEvent& event);
+	void OnReplaceItems(wxCommandEvent& event);
 	void OnSearchForStuffOnMap(wxCommandEvent& event);
 	void OnSearchForUniqueOnMap(wxCommandEvent& event);
 	void OnSearchForActionOnMap(wxCommandEvent& event);
@@ -231,7 +235,7 @@ public:
 	void OnSearchForContainerOnSelection(wxCommandEvent& event);
 	void OnSearchForWriteableOnSelection(wxCommandEvent& event);
 	void OnSearchForItemOnSelection(wxCommandEvent& event);
-	void OnReplaceItemOnSelection(wxCommandEvent& event);
+	void OnReplaceItemsOnSelection(wxCommandEvent& event);
 	void OnRemoveItemOnSelection(wxCommandEvent& event);
 
 	// Map menu

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <creatures>
   <creature name="Achad" type="monster" looktype="146" lookhead="93" lookbody="93" looklegs="57" lookfeet="97"/>
-  <creature name="Acolyte Of the Cult" type="monster" looktype="194" lookhead="114" lookbody="121" looklegs="121" lookfeet="57"/>
-  <creature name="Adept of the Cult" type="monster" looktype="194" lookhead="114" lookbody="94" looklegs="94" lookfeet="57"/>
+  <creature name="Acolyte Of The Cult" type="monster" looktype="194" lookhead="114" lookbody="121" looklegs="121" lookfeet="57"/>
+  <creature name="Adept Of The Cult" type="monster" looktype="194" lookhead="114" lookbody="94" looklegs="94" lookfeet="57"/>
   <creature name="Amazon" type="monster" looktype="137" lookhead="113" lookbody="120" looklegs="114" lookfeet="132"/>
   <creature name="Ancient Scarab" type="monster" looktype="79" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Apocalypse" type="monster" looktype="12" lookhead="38" lookbody="114" lookfeet="94"/>
@@ -56,13 +56,13 @@
   <creature name="Crab" type="monster" looktype="112" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Crimson Frog" type="monster" looktype="226" lookhead="94" lookbody="78" looklegs="94" lookfeet="78"/>
   <creature name="Crocodile" type="monster" looktype="119" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Crypt shambler" type="monster" looktype="100" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Crypt Shambler" type="monster" looktype="100" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Crystal Spider" type="monster" looktype="263"/>
   <creature name="Cursed Gladiator" type="monster" looktype="100"/>
   <creature name="Cyclops" type="monster" looktype="22"/>
   <creature name="Cyclops Drone" type="monster" looktype="280"/>
   <creature name="Cyclops Smith" type="monster" looktype="277"/>
-  <creature name="Darakan the Executioner" type="monster" looktype="255" lookhead="78" lookbody="114" looklegs="114" lookfeet="114"/>
+  <creature name="Darakan The Executioner" type="monster" looktype="255" lookhead="78" lookbody="114" looklegs="114" lookfeet="114"/>
   <creature name="Dark Monk" type="monster" looktype="225" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Dark Torturer" type="monster" looktype="234"/>
   <creature name="Deadeye Devious" type="monster" looktype="151" lookhead="115" lookbody="76" looklegs="35" lookfeet="117"/>
@@ -97,7 +97,7 @@
   <creature name="Elf" type="monster" looktype="62" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Elf Arcanist" type="monster" looktype="63" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Elf Scout" type="monster" looktype="64" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Enlightened of the Cult" type="monster" looktype="193"/>
+  <creature name="Enlightened Of The Cult" type="monster" looktype="193"/>
   <creature name="Fallen Mooh'tah Master Ghar" type="monster" looktype="29" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Fernfang" type="monster" looktype="206" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Ferumbras" type="monster" looktype="229" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
@@ -127,7 +127,7 @@
   <creature name="Grimgor Guteater" type="monster" looktype="2" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Grorlam" type="monster" looktype="205" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Hacker" type="monster" looktype="8" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Hand of Cursed Fate" type="monster" looktype="230"/>
+  <creature name="Hand Of Cursed Fate" type="monster" looktype="230"/>
   <creature name="Hellfire Fighter" type="monster" looktype="243"/>
   <creature name="Hellhound" type="monster" looktype="240"/>
   <creature name="Hero" type="monster" looktype="73" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
@@ -138,11 +138,11 @@
   <creature name="Ice Golem" type="monster" looktype="261" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Ice Witch" type="monster" looktype="149" lookbody="47" looklegs="105" lookfeet="105"/>
   <creature name="Infernatil" type="monster" looktype="201"/>
-  <creature name="Island troll" type="monster" looktype="15" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Island Troll" type="monster" looktype="15" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Juggernaut" type="monster" looktype="244"/>
   <creature name="Jungle Maw" type="monster" looktype="120"/>
   <creature name="Kongra" type="monster" looktype="116" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Kreebosh the Exile" type="monster" looktype="103"/>
+  <creature name="Kreebosh The Exile" type="monster" looktype="103"/>
   <creature name="Larva" type="monster" looktype="82" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Lavahole" type="monster" lookitem="389"/>
   <creature name="Lethal Lissy" type="monster" looktype="155" lookhead="77" looklegs="76" lookfeet="132"/>
@@ -162,9 +162,9 @@
   <creature name="Mimic" type="monster" looktype="92" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Minishabaal" type="monster" looktype="237"/>
   <creature name="Minotaur" type="monster" looktype="25" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Minotaur archer" type="monster" looktype="24" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Minotaur guard" type="monster" looktype="29" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Minotaur mage" type="monster" looktype="23" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Minotaur Archer" type="monster" looktype="24" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Minotaur Guard" type="monster" looktype="29" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Minotaur Mage" type="monster" looktype="23" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Monk" type="monster" looktype="57" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Morgaroth" type="monster" looktype="12" lookbody="94" looklegs="79" lookfeet="79"/>
   <creature name="Morguthis" type="monster" looktype="90" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
@@ -202,7 +202,7 @@
   <creature name="Pirate Skeleton" type="monster" looktype="195"/>
   <creature name="Plaguesmith" type="monster" looktype="247"/>
   <creature name="Plaguethrower" type="monster"/>
-  <creature name="Poison spider" type="monster" looktype="36"/>
+  <creature name="Poison Spider" type="monster" looktype="36"/>
   <creature name="Poisonthrower" type="monster"/>
   <creature name="Polar Bear" type="monster" looktype="42" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Priestess" type="monster" looktype="58" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
@@ -237,17 +237,17 @@
   <creature name="Slime" type="monster" looktype="19" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>>
   <creature name="Smuggler" type="monster" looktype="134" lookhead="95" looklegs="113" lookfeet="115"/>
   <creature name="Snake" type="monster" looktype="28" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Son of Verminor" type="monster" looktype="19"/>
-  <creature name="Son the Ripper" type="monster" looktype="151" lookhead="95" lookbody="94" looklegs="117" lookfeet="97"/>
+  <creature name="Son Of Verminor" type="monster" looktype="19"/>
+  <creature name="Son The Ripper" type="monster" looktype="151" lookhead="95" lookbody="94" looklegs="117" lookfeet="97"/>
   <creature name="Spectre" type="monster" looktype="235" lookhead="20"/>
-  <creature name="spider" type="monster" looktype="30" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Spirit of Earth" type="monster" looktype="67" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Spirit of Fire" type="monster" looktype="242"/>
-  <creature name="Spirit of Water" type="monster" looktype="11" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Spider" type="monster" looktype="30" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Spirit Of Earth" type="monster" looktype="67" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
+  <creature name="Spirit Of Fire" type="monster" looktype="242"/>
+  <creature name="Spirit Of Water" type="monster" looktype="11" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Spit Nettle" type="monster" looktype="221" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Stalker" type="monster" looktype="128" lookhead="95" lookbody="116" looklegs="95" lookfeet="114"/>
   <creature name="Stone Golem" type="monster" looktype="67" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
-  <creature name="Svoren the Mad" type="monster" looktype="254" lookhead="80" lookbody="99" looklegs="118" lookfeet="38"/>
+  <creature name="Svoren The Mad" type="monster" looktype="254" lookhead="80" lookbody="99" looklegs="118" lookfeet="38"/>
   <creature name="Swamp Troll" type="monster" looktype="76" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Tarantula" type="monster" looktype="219" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>
   <creature name="Terror Bird" type="monster" looktype="218" lookhead="20" lookbody="30" looklegs="40" lookfeet="50"/>

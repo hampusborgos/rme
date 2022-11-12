@@ -110,7 +110,9 @@ public: //Functions
 	bool hasItemId(uint16_t itemId) const;
 	bool hasProperty(enum ITEMPROPERTY prop) const;
 
-	Item* getTopItem(); // Returns the topmost item, or nullptr if the tile is empty
+	int getIndexOf(Item* item) const;
+	Item* getTopItem() const; // Returns the topmost item, or nullptr if the tile is empty
+	Item* getItemAt(int index) const;
 	void addItem(Item* item);
 
 	void select();

@@ -7772,13 +7772,13 @@
 	<item id="3307" name="jungle grass"/>
 	<item id="3308" name="jungle grass"/>
 	<item id="3309" name="jungle grass"/>
-    <item id="3310" article="a" name="pitfall"> 	 
-		<attribute key="floorchange" value="down"/> 	 
-	</item> 	 
-	<item id="3311" article="a" name="pitfall"> 	 
-		<attribute key="floorchange" value="down"/> 	 
-		<attribute key="decayTo" value="3310"/> 	 
-		<attribute key="duration" value="60"/> 	 
+    <item id="3310" article="a" name="pitfall">
+		<attribute key="floorchange" value="down"/>
+	</item>
+	<item id="3311" article="a" name="pitfall">
+		<attribute key="floorchange" value="down"/>
+		<attribute key="decayTo" value="3310"/>
+		<attribute key="duration" value="60"/>
 	</item>
 	<item id="3312" article="an" name="ant trail"/>
 	<item id="3313" article="an" name="ant trail"/>
@@ -7792,8 +7792,8 @@
 	<item id="3321" article="an" name="ant trail"/>
 	<item id="3322" article="an" name="ant trail"/>
 	<item id="3323" article="an" name="anthill"/>
-	<item id="3324" article="an" name="earth hole"> 	 
-		<attribute key="floorchange" value="down"/> 	 
+	<item id="3324" article="an" name="earth hole">
+		<attribute key="floorchange" value="down"/>
 	</item>
 	<item id="3325" article="a" name="rock"/>
 	<item id="3326" article="a" name="rock"/>
@@ -25014,7 +25014,7 @@
 		<attribute key="description" value="This bowl was coated with sacred clay and can be used to purify small amounts of corrupted water."/>
 		<attribute key="weight" value="1000"/>
 	</item>
- 
+
 	<item id="12318" article="a" name="replica of the sceptre">
 		<attribute key="weight" value="1400"/>
 	</item>
@@ -25022,7 +25022,7 @@
 		<attribute key="weight" value="180"/>
 		<attribute key="description" value="This plant poison is meant to destroy the growths near the Keeper's lair deep beneath the gardens."/>
 	</item>
- 
+
 	<item id="12323" article="a" name="the tail of the keeper">
 		<attribute key="weight" value="450"/>
 	</item>
@@ -25042,12 +25042,12 @@
 		<attribute key="weight" value="180"/>
 		<attribute key="description" value="This potion will help you enter the dreams of any lifeform."/>
 	</item>
- 
+
 	<item id="12382" article="a" name="scribbled sheet of paper">
 		<attribute key="weight" value="250"/>
 		<attribute key="description" value="Only a single word is scribbled on the sheet: SOLOSARASATIQUARIUM."/>
 	</item>
- 
+
 	<item id="12399" article="a" name="girlish hair decoration">
 		<attribute key="weight" value="50"/>
 	</item>
@@ -25210,7 +25210,7 @@
 	<item id="12449" article="a" name="safety pin">
 		<attribute key="weight" value="50"/>
 	</item>
- 
+
 	<item id="12466" article="a" name="scroll of heroic deeds" plural="scrolls of heroic deeds">
 		<attribute key="weight" value="79"/>
 	</item>
@@ -25230,7 +25230,7 @@
 		<attribute key="description" value="Distinctive shape and flavour."/>
 		<attribute key="weight" value="140"/>
 	</item>
- 
+
 	<item id="12495" article="a" name="goblin ear">
 		<attribute key="weight" value="75"/>
 	</item>
@@ -25239,7 +25239,7 @@
 		<attribute key="weight" value="1500"/>
 		<attribute key="description" value="It was given to you by the djinn maitre and contains new recipes you cooked."/>
 	</item>
- 
+
 	<item id="12500" article="a" name="faded last will">
 		<attribute key="description" value="Supposedly the last will of someone. Whatever may have been written on it is long vanished."/>
 		<attribute key="weight" value="200"/>
@@ -25268,7 +25268,7 @@
 	<item id="12508" article="a" name="magic crystal">
 		<attribute key="weight" value="140"/>
 	</item>
- 
+
 	<item id="12527" article="a" name="dead brimstone bug" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10"/>
 		<attribute key="decayTo" value="12528"/>
@@ -25283,7 +25283,7 @@
 		<attribute key="corpseType" value="venom"/>
 		<attribute key="fluidSource" value="slime"/>
 	</item>
- 
+
 	<item id="12538" article="a" name="dead brimstone bug">
 		<attribute key="decayTo" value="12539"/>
 		<attribute key="duration" value="300"/>
@@ -25317,7 +25317,7 @@
 		<attribute key="description" value="It's said to have incredible effects if you drink it while wearing a magical ring with time limit."/>
 		<attribute key="weight" value="300"/>
 	</item>
- 
+
 	<item id="12559" article="a" name="silver rune emblem">
 		<attribute key="description" value="It's an adorned ultimate healing rune."/>
 		<attribute key="weight" value="120"/>
@@ -25564,7 +25564,7 @@
 	<item id="12617" article="a" name="broken slicer">
 		<attribute key="weight" value="140"/>
 	</item>
- 
+
 	<item id="12622" article="a" name="tentacle piece">
 		<attribute key="weight" value="300"/>
 	</item>
@@ -25728,8 +25728,8 @@
 		<attribute key="description" value="They will expire within a short time, sell them back to Esrik before they do."/>
 		<attribute key="weight" value="2500"/>
 	</item>
-	
-	
+
+
 	<item id="13247" article="a" name="hunting horn">
 		<attribute key="description" value="A hermit near Carlin might be able to tell you more about it."/>
 		<attribute key="weight" value="200"/>
@@ -25766,7 +25766,7 @@
 		<attribute key="description" value="A hermit near Carlin might be able to tell you more about it."/>
 		<attribute key="weight" value="200"/>
 	</item>
-	
+
 	<item id="13308" article="a" name="dead boar" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13309" />
@@ -25790,7 +25790,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13312" article="a" name="dead stampor">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13313" />
@@ -25803,7 +25803,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	<item id="13314" article="a" name="dead stampor"> 
+	<item id="13314" article="a" name="dead stampor">
 		<attribute key="decayTo" value="0" />
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
@@ -25814,7 +25814,7 @@
 		<attribute key="duration" value="10" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13316" article="a" name="dead draptor" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13317" />
@@ -25839,7 +25839,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13320" article="a" name="dead undead cavebear">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13321" />
@@ -25863,7 +25863,7 @@
 		<attribute key="duration" value="10" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13324" article="a" name="dead midnight panther">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13325" />
@@ -25887,7 +25887,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13328" article="a" name="dead crustacea gigantica">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13329" />
@@ -25911,7 +25911,7 @@
 		<attribute key="duration" value="10" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13484" article="a" name="dead golden servant" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13489" />
@@ -25935,7 +25935,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13485" article="a" name="dead diamond servant" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13492" />
@@ -25959,7 +25959,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13483" article="a" name="dead iron servant" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13486" />
@@ -25988,7 +25988,7 @@
 		<attribute key="description" value="A hermit near Carlin might be able to tell you more about it."/>
 		<attribute key="weight" value="200"/>
 	</item>
-	
+
 	<item id="13501" article="a" name="dead sandstone scorpion" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13502" />
@@ -26012,11 +26012,11 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13506" article="a" name="medicine pouch">
 		<attribute key="weight" value="1200"/>
 	</item>
-	
+
 	<item id="13528" article="a" name="dead dromedary" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13519" />
@@ -26040,7 +26040,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13584" article="a" name="dead crystal wolf" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13595" />
@@ -26064,7 +26064,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13513" article="a" name="dead white deer" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13516" />
@@ -26089,7 +26089,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13509" article="a" name="dead donkey" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13510" />
@@ -26113,7 +26113,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13514" article="a" name="dead insectoid scout" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13525" />
@@ -26137,7 +26137,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13515" article="a" name="dead slug" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13522" />
@@ -26161,7 +26161,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13859" article="a" name="dead thornfire wolf" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13860" />
@@ -26185,7 +26185,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13752" article="a" name="dead yielothax" editorsuffix=" (Unmoveable)">
 		<attribute key="containerSize" value="10" />
 		<attribute key="decayTo" value="13753" />
@@ -26209,7 +26209,7 @@
 		<attribute key="duration" value="600" />
 		<attribute key="corpseType" value="blood" />
 	</item>
-	
+
 	<item id="13508" article="a" name="slug drug">
 		<attribute key="description" value="A hermit near Carlin might be able to tell you more about it."/>
 		<attribute key="weight" value="200"/>
@@ -26242,14 +26242,14 @@
 		<attribute key="description" value="A hermit near Carlin might be able to tell you more about it."/>
 		<attribute key="weight" value="200"/>
 	</item>
-	
+
 	<item id="13941" article="a" name="cup of molten gold">
 		<attribute key="description" value="Be careful, this vessel can hold the molten gold only for a short time."/>
 		<attribute key="decayTo" value="0" />
 		<attribute key="duration" value="14400" />
 		<attribute key="weight" value="500" />
 	</item>
-	
+
 	<item id="20001" name="water"/>
 	<item id="20002" name="blood"/>
 	<item id="20003" name="beer"/>

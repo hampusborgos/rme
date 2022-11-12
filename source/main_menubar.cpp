@@ -70,7 +70,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(REDO, wxITEM_NORMAL, OnRedo);
 
 	MAKE_ACTION(FIND_ITEM, wxITEM_NORMAL, OnSearchForItem);
-	MAKE_ACTION(REPLACE_ITEM, wxITEM_NORMAL, OnReplaceItem);
+	MAKE_ACTION(REPLACE_ITEMS, wxITEM_NORMAL, OnReplaceItems);
 	MAKE_ACTION(SEARCH_ON_MAP_EVERYTHING, wxITEM_NORMAL, OnSearchForStuffOnMap);
 	MAKE_ACTION(SEARCH_ON_MAP_UNIQUE, wxITEM_NORMAL, OnSearchForUniqueOnMap);
 	MAKE_ACTION(SEARCH_ON_MAP_ACTION, wxITEM_NORMAL, OnSearchForActionOnMap);
@@ -82,7 +82,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SEARCH_ON_SELECTION_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_ITEM, wxITEM_NORMAL, OnSearchForItemOnSelection);
-	MAKE_ACTION(REPLACE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnReplaceItemOnSelection);
+	MAKE_ACTION(REPLACE_ON_SELECTION_ITEMS, wxITEM_NORMAL, OnReplaceItemsOnSelection);
 	MAKE_ACTION(REMOVE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnRemoveItemOnSelection);
 	MAKE_ACTION(SELECT_MODE_COMPENSATE, wxITEM_RADIO, OnSelectionTypeChange);
 	MAKE_ACTION(SELECT_MODE_LOWER, wxITEM_RADIO, OnSelectionTypeChange);
@@ -120,6 +120,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(VIEW_TOOLBARS_BRUSHES, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_POSITION, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_SIZES, wxITEM_CHECK, OnToolbars);
+	MAKE_ACTION(VIEW_TOOLBARS_INDICATORS, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_STANDARD, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
@@ -147,6 +148,8 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SHOW_TOOLTIPS, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_PREVIEW, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_WALL_HOOKS, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_PICKUPABLES, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_MOVEABLES, wxITEM_CHECK, OnChangeViewSettings);
 
 	MAKE_ACTION(WIN_MINIMAP, wxITEM_NORMAL, OnMinimapWindow);
 	MAKE_ACTION(NEW_PALETTE, wxITEM_NORMAL, OnNewPalette);
@@ -187,7 +190,6 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(EXTENSIONS, wxITEM_NORMAL, OnListExtensions);
 	MAKE_ACTION(GOTO_WEBSITE, wxITEM_NORMAL, OnGotoWebsite);
 	MAKE_ACTION(ABOUT, wxITEM_NORMAL, OnAbout);
-
 
 	// A deleter, this way the frame does not need
 	// to bother deleting us.
@@ -325,7 +327,7 @@ void MainMenuBar::Update()
 	EnableItem(EXPORT_MINIMAP, is_local);
 
 	EnableItem(FIND_ITEM, is_host);
-	EnableItem(REPLACE_ITEM, is_local);
+	EnableItem(REPLACE_ITEMS, is_local);
 	EnableItem(SEARCH_ON_MAP_EVERYTHING, is_host);
 	EnableItem(SEARCH_ON_MAP_UNIQUE, is_host);
 	EnableItem(SEARCH_ON_MAP_ACTION, is_host);
@@ -337,7 +339,7 @@ void MainMenuBar::Update()
 	EnableItem(SEARCH_ON_SELECTION_CONTAINER, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_WRITEABLE, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_ITEM, has_selection && is_host);
-	EnableItem(REPLACE_ON_SELECTION_ITEM, has_selection && is_host);
+	EnableItem(REPLACE_ON_SELECTION_ITEMS, has_selection && is_host);
 	EnableItem(REMOVE_ON_SELECTION_ITEM, has_selection && is_host);
 
 	EnableItem(CUT, has_map);
@@ -392,6 +394,7 @@ void MainMenuBar::Update()
 	EnableItem(TOOLS_VIEW_DAT, loaded);
 
 	UpdateFloorMenu();
+	UpdateIndicatorsMenu();
 }
 
 void MainMenuBar::LoadValues()
@@ -401,6 +404,7 @@ void MainMenuBar::LoadValues()
 	CheckItem(VIEW_TOOLBARS_BRUSHES, g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES));
 	CheckItem(VIEW_TOOLBARS_POSITION, g_settings.getBoolean(Config::SHOW_TOOLBAR_POSITION));
 	CheckItem(VIEW_TOOLBARS_SIZES, g_settings.getBoolean(Config::SHOW_TOOLBAR_SIZES));
+	CheckItem(VIEW_TOOLBARS_INDICATORS, g_settings.getBoolean(Config::SHOW_TOOLBAR_INDICATORS));
 	CheckItem(VIEW_TOOLBARS_STANDARD, g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD));
 
 	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
@@ -446,6 +450,8 @@ void MainMenuBar::LoadValues()
 	CheckItem(SHOW_TOOLTIPS, g_settings.getBoolean(Config::SHOW_TOOLTIPS));
 	CheckItem(SHOW_PREVIEW, g_settings.getBoolean(Config::SHOW_PREVIEW));
 	CheckItem(SHOW_WALL_HOOKS, g_settings.getBoolean(Config::SHOW_WALL_HOOKS));
+	CheckItem(SHOW_PICKUPABLES, g_settings.getBoolean(Config::SHOW_PICKUPABLES));
+	CheckItem(SHOW_MOVEABLES, g_settings.getBoolean(Config::SHOW_MOVEABLES));
 }
 
 void MainMenuBar::LoadRecentFiles()
@@ -474,11 +480,29 @@ std::vector<wxString> MainMenuBar::GetRecentFiles()
 
 void MainMenuBar::UpdateFloorMenu()
 {
-	if(g_gui.IsEditorOpen()) {
-		for(int i = 0; i < MAP_LAYERS; ++i)
-			CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + i), false);
-		CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
+	using namespace MenuBar;
+
+	if(!g_gui.IsEditorOpen()) {
+		return;
 	}
+
+	for (int i = 0; i < MAP_LAYERS; ++i)
+		CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + i), false);
+
+	CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
+}
+
+void MainMenuBar::UpdateIndicatorsMenu()
+{
+	using namespace MenuBar;
+
+	if(!g_gui.IsEditorOpen()) {
+		return;
+	}
+
+	CheckItem(SHOW_WALL_HOOKS, g_settings.getBoolean(Config::SHOW_WALL_HOOKS));
+	CheckItem(SHOW_PICKUPABLES, g_settings.getBoolean(Config::SHOW_PICKUPABLES));
+	CheckItem(SHOW_MOVEABLES, g_settings.getBoolean(Config::SHOW_MOVEABLES));
 }
 
 bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& error)
@@ -527,7 +551,7 @@ bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& 
 	entries[0].Set(wxACCEL_CTRL, (int)'Z', MAIN_FRAME_MENU + MenuBar::UNDO);
 	entries[1].Set(wxACCEL_CTRL | wxACCEL_SHIFT, (int)'Z', MAIN_FRAME_MENU + MenuBar::REDO);
 	entries[2].Set(wxACCEL_CTRL, (int)'F', MAIN_FRAME_MENU + MenuBar::FIND_ITEM);
-	entries[3].Set(wxACCEL_CTRL | wxACCEL_SHIFT, (int)'F', MAIN_FRAME_MENU + MenuBar::REPLACE_ITEM);
+	entries[3].Set(wxACCEL_CTRL | wxACCEL_SHIFT, (int)'F', MAIN_FRAME_MENU + MenuBar::REPLACE_ITEMS);
 	entries[4].Set(wxACCEL_NORMAL, (int)'A', MAIN_FRAME_MENU + MenuBar::AUTOMAGIC);
 	entries[5].Set(wxACCEL_CTRL, (int)'B', MAIN_FRAME_MENU + MenuBar::BORDERIZE_SELECTION);
 	entries[6].Set(wxACCEL_NORMAL, (int)'P', MAIN_FRAME_MENU + MenuBar::GOTO_PREVIOUS_POSITION);
@@ -896,41 +920,15 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 	dialog.Destroy();
 }
 
-void MainMenuBar::OnReplaceItem(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnReplaceItems(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
+	if(!g_gui.IsVersionLoaded())
 		return;
 
-	ReplaceItemDialog dialog(frame);
-
-	if(dialog.ShowModal() == wxID_OK) {
-		uint16_t find_id = dialog.GetResultFindID();
-		uint16_t with_id = dialog.GetResultWithID();
-		if(find_id == 0 || with_id == 0 || find_id == with_id)
-			return;
-
-		g_gui.GetCurrentEditor()->actionQueue->clear();
-		g_gui.CreateLoadBar("Searching & replacing item...");
-
-		OnSearchForItem::Finder finder(find_id, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, false);
-
-		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
-		for(auto it = result.begin(); it != result.end(); ++it)
-			transformItem(it->second, with_id, it->first);
-
-		g_gui.DestroyLoadBar();
-
-		if(finder.limitReached()) {
-			wxString msg;
-			msg << "The configured limit has been reached. Only " << finder.maxCount << " items were replaced.";
-			g_gui.PopupDialog("Notice", msg, wxOK);
+	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
+		if (MapWindow* window = tab->GetView()) {
+			window->ShowReplaceItemsDialog(false);
 		}
-
-		wxString msg;
-		msg << "Replaced " << result.size() << " items.";
-		g_gui.SetStatusText(msg);
-		g_gui.RefreshView();
 	}
 }
 
@@ -1091,40 +1089,15 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 	dialog.Destroy();
 }
 
-void MainMenuBar::OnReplaceItemOnSelection(wxCommandEvent& WXUNUSED(event))
+void MainMenuBar::OnReplaceItemsOnSelection(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
+	if(!g_gui.IsVersionLoaded())
 		return;
 
-	ReplaceItemDialog dialog(frame);
-
-	if(dialog.ShowModal() == wxID_OK) {
-		uint16_t find_id = dialog.GetResultFindID();
-		uint16_t with_id = dialog.GetResultWithID();
-		if(find_id == 0 || with_id == 0 || find_id == with_id)
-			return;
-
-		g_gui.CreateLoadBar("Searching & replacing item...");
-
-		OnSearchForItem::Finder finder(find_id, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
-		foreach_ItemOnMap(g_gui.GetCurrentMap(), finder, true);
-
-		std::vector< std::pair<Tile*, Item*> >& result = finder.result;
-		for(auto it = result.begin(); it != result.end(); ++it)
-			transformItem(it->second, with_id, it->first);
-
-		g_gui.DestroyLoadBar();
-
-		if(finder.limitReached()) {
-			wxString msg;
-			msg << "The configured limit has been reached. Only " << finder.maxCount << " items were replaced.";
-			g_gui.PopupDialog("Notice", msg, wxOK);
+	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
+		if(MapWindow* window = tab->GetView()) {
+			window->ShowReplaceItemsDialog(true);
 		}
-
-		wxString msg;
-		msg << "Replaced " << result.size() << " items.";
-		g_gui.SetStatusText(msg);
-		g_gui.RefreshView();
 	}
 }
 
@@ -1766,6 +1739,10 @@ void MainMenuBar::OnToolbars(wxCommandEvent& event)
 			g_gui.ShowToolbar(TOOLBAR_SIZES, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_SIZES, event.IsChecked());
 			break;
+		case VIEW_TOOLBARS_INDICATORS:
+			g_gui.ShowToolbar(TOOLBAR_INDICATORS, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_INDICATORS, event.IsChecked());
+			break;
 		case VIEW_TOOLBARS_STANDARD:
 			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_STANDARD, event.IsChecked());
@@ -1848,6 +1825,8 @@ void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)
 	g_settings.setInteger(Config::SHOW_TOOLTIPS, IsItemChecked(MenuBar::SHOW_TOOLTIPS));
 	g_settings.setInteger(Config::SHOW_PREVIEW, IsItemChecked(MenuBar::SHOW_PREVIEW));
 	g_settings.setInteger(Config::SHOW_WALL_HOOKS, IsItemChecked(MenuBar::SHOW_WALL_HOOKS));
+	g_settings.setInteger(Config::SHOW_PICKUPABLES, IsItemChecked(MenuBar::SHOW_PICKUPABLES));
+	g_settings.setInteger(Config::SHOW_MOVEABLES, IsItemChecked(MenuBar::SHOW_MOVEABLES));
 
 	g_gui.RefreshView();
 }

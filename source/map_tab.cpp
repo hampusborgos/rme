@@ -27,7 +27,7 @@
 
 MapTab::MapTab(MapTabbook* aui, Editor* editor) :
 	EditorTab(),
-	MapWindow(aui, *editor),
+	MapWindow(aui->notebook, *editor),
 	aui(aui)
 {
 	iref = newd InternalReference;
@@ -96,6 +96,13 @@ Editor* MapTab::GetEditor() const
 Map* MapTab::GetMap() const
 {
 	return &editor.map;
+}
+
+void MapTab::VisibilityCheck()
+{
+	EditorTab* editorTab = aui->GetCurrentTab();
+	MapTab* mapTab = dynamic_cast<MapTab*>(editorTab);
+	UpdateDialogs(mapTab && HasSameReference(mapTab));
 }
 
 void MapTab::OnSwitchEditorMode(EditorMode mode)

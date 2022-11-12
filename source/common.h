@@ -44,7 +44,6 @@ wxString i2ws(int i);
 wxString f2ws(double i);
 int ws2i(wxString s);
 double ws2f(wxString s);
-double frand();
 
 // replaces all instances of sought in str with replacement
 void replaceString(std::string& str, const std::string sought, const std::string replacement);
@@ -75,39 +74,5 @@ bool posFromClipboard(int& x, int& y, int& z);
 
 // Returns 'yes' if the defined value is true or 'no' if it is false.
 wxString b2yn(bool v);
-
-wxString resolvePath(const wxString& path);
-
-// Standard math functions
-template <class T>
-inline T abs(T t) {
-	return (t < 0? -t : t);
-}
-
-template <class T, class U>
-inline T min(T t, U u) {
-	return (t < u? t : u);
-}
-
-template <class T, class U>
-T max(T t, U u) {
-	return (t > u? t : u);
-}
-
-template <class T, class U, class V>
-inline T min(T t, U u, V v) {
-	int min = t;
-	if ( u < min ) min = u;
-	if ( v < min ) min = v;
-	return min;
-}
-
-template <class T, class U, class V>
-inline T max(T t, U u, V v) {
-	int max = t;
-	if ( u > max ) max = u;
-	if ( v > max ) max = v;
-	return max;
-}
 
 #endif

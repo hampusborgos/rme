@@ -7564,7 +7564,7 @@
 		<attribute key="weight" value="4600"/>
 		<attribute key="containerSize" value="5"/>
 		<attribute key="decayTo" value="2822"/>
-		<attribute key="duration" value="600"/>	
+		<attribute key="duration" value="600"/>
 	</item>
 	<item id="2808" article="a" name="dead cyclops">
 		<attribute key="containerSize" value="10"/>
@@ -7579,13 +7579,13 @@
 	</item>
 	<item id="2810" article="a" name="dead troll">
 		<attribute key="weight" value="50000"/>
-		<attribute key="containerSize" value="10"/>	
+		<attribute key="containerSize" value="10"/>
 		<attribute key="decayTo" value="2811"/>
 		<attribute key="duration" value="900"/>
 	</item>
 	<item id="2811" article="a" name="dead troll">
 		<attribute key="weight" value="30000"/>
-		<attribute key="containerSize" value="10"/>	
+		<attribute key="containerSize" value="10"/>
 		<attribute key="decayTo" value="0"/>
 		<attribute key="duration" value="900"/>
 	</item>
@@ -7600,7 +7600,7 @@
 	</item>
 	<item id="2814" article="a" name="dead rat">
 		<attribute key="weight" value="4400"/>
-		<attribute key="containerSize" value="5"/>	
+		<attribute key="containerSize" value="5"/>
 		<attribute key="decayTo" value="2815"/>
 		<attribute key="duration" value="600"/>
 	</item>
@@ -17244,7 +17244,7 @@
 	<item id="6430" article="a" name="tree">
 	</item>
 	<item id="6431" article="a" name="branch">
-	</item>                                                                 
+	</item>
 	<item id="6432" article="a" name="branch">
 	</item>
 	<item id="6433" article="a" name="necromancer shield">
@@ -18086,7 +18086,7 @@
 	<item id="6786" article="a" name="fur wall">
 	</item>
 	<item id="6787" article="a" name="fur wall">
-	</item>	
+	</item>
 	<item id="6788" article="a" name="fur wall window">
 	</item>
 	<item id="6789" article="a" name="fur wall window">
@@ -19764,7 +19764,7 @@
 	</item>
 	<item id="7438" article="a" name="golden bow">
 		<attribute key="weight" value="0"/>
-		<attribute key="slotType" value="two-handed"/>	
+		<attribute key="slotType" value="two-handed"/>
 		<attribute key="weaponType" value="distance"/>
 		<attribute key="ammoType" value="arrow"/>
 		<attribute key="range" value="5"/>

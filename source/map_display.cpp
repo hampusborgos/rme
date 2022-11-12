@@ -217,6 +217,8 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.show_only_modified = g_settings.getBoolean(Config::SHOW_ONLY_MODIFIED_TILES);
 			options.show_preview = g_settings.getBoolean(Config::SHOW_PREVIEW);
 			options.show_hooks = g_settings.getBoolean(Config::SHOW_WALL_HOOKS);
+			options.show_pickupables = g_settings.getBoolean(Config::SHOW_PICKUPABLES);
+			options.show_moveables = g_settings.getBoolean(Config::SHOW_MOVEABLES);
 			options.hide_items_when_zoomed = g_settings.getBoolean(Config::HIDE_ITEMS_WHEN_ZOOMED);
 		}
 
@@ -1010,7 +1012,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 					// We know it's a square, just split it into several areas
 					int width = end_x - start_x;
 					if(width < threadcount) {
-						threadcount = min(1, width);
+						threadcount = std::min(1, width);
 					}
 					// Let's divide!
 					int remainder = width;
@@ -1090,7 +1092,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 				int map_x = start_map_x + (end_map_x - start_map_x)/2;
 				int map_y = start_map_y + (end_map_y - start_map_y)/2;
 
-				int width = min(g_settings.getInteger(Config::MAX_SPAWN_RADIUS), ((end_map_x - start_map_x)/2 + (end_map_y - start_map_y)/2)/2);
+				int width = std::min(g_settings.getInteger(Config::MAX_SPAWN_RADIUS), ((end_map_x - start_map_x)/2 + (end_map_y - start_map_y)/2)/2);
 				int old = g_gui.GetBrushSize();
 				g_gui.SetBrushSize(width);
 				editor.draw(Position(map_x, map_y, floor), event.AltDown());
@@ -1678,7 +1680,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			int nv = g_gui.GetBrushVariation();
 			--nv;
 			if(nv < 0) {
-				nv = max(0, (g_gui.GetCurrentBrush()? g_gui.GetCurrentBrush()->getMaxVariation() - 1 : 0));
+				nv = std::max(0, (g_gui.GetCurrentBrush()? g_gui.GetCurrentBrush()->getMaxVariation() - 1 : 0));
 			}
 			g_gui.SetBrushVariation(nv);
 			g_gui.RefreshView();
@@ -2308,10 +2310,10 @@ void MapPopupMenu::Update()
 				Teleport* teleport = dynamic_cast<Teleport*>(topSelectedItem);
 				if(topSelectedItem && (topSelectedItem->isBrushDoor() || topSelectedItem->isRoteable() || teleport)) {
 
-					if(topSelectedItem->isRoteable()) 
+					if(topSelectedItem->isRoteable())
 						Append(MAP_POPUP_MENU_ROTATE, "&Rotate item", "Rotate this item");
 
-					if(teleport && teleport->hasDestination()) 
+					if(teleport && teleport->hasDestination())
 						Append(MAP_POPUP_MENU_GOTO, "&Go To Destination", "Go to the destination of this teleport");
 
 					if(topSelectedItem->isDoor())
