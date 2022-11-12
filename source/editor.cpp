@@ -968,40 +968,39 @@ void Editor::clearModifiedTileState(bool showdialog)
 	}
 }
 
-bool Editor::createSelection(Position start, Position end)
+bool Editor::createSelectionArea(Position startArea, Position endArea)
 {
-	if(!g_gui.IsSelectionMode() || start == end)
+	if(!g_gui.IsSelectionMode() || startArea == endArea)
 		return false;
 
-	int tmp = end.x;
-	end.x = std::min<int>(std::max<int>(tmp, start.x), MAP_MAX_WIDTH);
-	start.x = std::max<int>(std::min<int>(tmp, start.x), 0);
+	int tmp = endArea.x;
+	endArea.x = std::min(std::max(tmp, startArea.x), MAP_MAX_WIDTH);
+	startArea.x = std::max(std::min(tmp, startArea.x), 0);
 
-	tmp = end.y;
-	end.y = std::min<int>(std::max<int>(tmp, start.y), MAP_MAX_HEIGHT);
-	start.y = std::max<int>(std::min<int>(tmp, start.y), 0);
+	tmp = endArea.y;
+	endArea.y = std::min(std::max(tmp, startArea.y), MAP_MAX_HEIGHT);
+	startArea.y = std::max(std::min(tmp, startArea.y), 0);
 
-	tmp = start.z;
-	start.z = std::min<int>(std::max<int>(tmp, end.z), MAP_MAX_LAYER);
-	end.z = std::max<int>(std::min<int>(tmp, end.z), 0);
+	tmp = startArea.z;
+	startArea.z = std::min(std::max(tmp, endArea.z), MAP_MAX_LAYER);
+	endArea.z = std::max(std::min(tmp, endArea.z), 0);
 
-	// check equality again
-	if(start == end)
+	if(startArea == endArea)
 		return false;
 
-	int threadcount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
-	int numtiles = (start.z - end.z) * (end.x - start.x) * (end.y - start.y);
+	int threadCount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
+	int tilesCount = (startArea.z - endArea.z) * (endArea.x - startArea.x) * (endArea.y - startArea.y);
 
-	if(numtiles < 500) {
+	if(tilesCount < 500) {
 		// No point in threading for such a small set.
-		threadcount = 1;
+		threadCount = 1;
 	}
 
 	// Subdivide the selection area
 	// We know it's a square, just split it into several areas
-	int width = end.x - start.x;
-	if(width < threadcount) {
-		threadcount = min(1, width);
+	int width = endArea.x - startArea.x;
+	if(width < threadCount) {
+		threadCount = std::min(1, width);
 	}
 
 	// Let's divide!
@@ -1009,17 +1008,21 @@ bool Editor::createSelection(Position start, Position end)
 	int cleared = 0;
 	std::vector<SelectionThread*> threads;
 	if(width == 0) {
-		threads.push_back(newd SelectionThread(*this, Position(start.x, start.y, start.z), Position(start.x, end.y, end.z)));
+		Position start = startArea;
+		Position end(startArea.x, endArea.y, endArea.z);
+		threads.push_back(new SelectionThread(*this, start, end));
 	} else {
-		for(int i = 0; i < threadcount; ++i) {
-			int chunksize = width / threadcount;
+		for(int i = 0; i < threadCount; ++i) {
+			int chunkSize = width / threadCount;
 			// The last threads takes all the remainder
-			if (i == threadcount - 1) {
-				chunksize = remainder;
+			if (i == threadCount - 1) {
+				chunkSize = remainder;
 			}
-			threads.push_back(newd SelectionThread(*this, Position(start.x + cleared, start.y, start.z), Position(start.x + cleared + chunksize, end.y, end.z)));
-			cleared += chunksize;
-			remainder -= chunksize;
+			Position start(startArea.x + cleared, startArea.y, startArea.z);
+			Position end(startArea.x + cleared + chunkSize, endArea.y, endArea.z);
+			threads.push_back(new SelectionThread(*this, start, end));
+			cleared += chunkSize;
+			remainder -= chunkSize;
 		}
 	}
 
@@ -1027,14 +1030,12 @@ bool Editor::createSelection(Position start, Position end)
 	ASSERT(remainder == 0);
 
 	selection.start(); // Start a selection session
-	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
-		(*iter)->Execute();
+	for(SelectionThread* thread : threads) {
+		thread->Execute();
 	}
-
-	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
-		selection.join(*iter);
+	for(SelectionThread* thread : threads) {
+		selection.join(thread);
 	}
-
 	selection.finish(); // Finish the selection session
 	selection.updateSelectionCount();
 	return true;
@@ -1042,35 +1043,33 @@ bool Editor::createSelection(Position start, Position end)
 
 bool Editor::createSelection(const PositionVector& positions)
 {
-	if(!g_gui.IsSelectionMode() || positions.size() == 0)
+	if(!g_gui.IsSelectionMode() || positions.empty())
 		return false;
 
-	int threadcount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
-	int numtiles = positions.size();
+	int threadCount = std::max(g_settings.getInteger(Config::WORKER_THREADS), 1);
+	int tilesCount = positions.size();
 
-	if(numtiles < 500) {
-		threadcount = 1;
+	if(tilesCount < 500) {
+		threadCount = 1;
 	} else {
-		threadcount = std::min<int>(threadcount, std::max<int>(1, numtiles / 500));
+		threadCount = std::min(threadCount, std::max(1, tilesCount / 500));
 	}
 
 	std::vector<SelectionThread*> threads;
-	int amount = std::min(numtiles, numtiles / threadcount);
-	for(int i = 0, a = amount; i < threadcount; i++, a += amount) {
-		a = std::min<int>(numtiles, a);
-		PositionVector* range = newd PositionVector(&positions[0], &positions[0] + a);
-		threads.push_back(newd SelectionThread(*this, range));
+	int amount = std::min(tilesCount, tilesCount / threadCount);
+	for(int i = 0, a = amount; i < threadCount; i++, a += amount) {
+		a = std::min(tilesCount, a);
+		PositionVector* range = new PositionVector(&positions[0], &positions[0] + a);
+		threads.push_back(new SelectionThread(*this, range));
 	}
 
 	selection.start(); // Start a selection session
-	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
-		(*iter)->Execute();
+	for(SelectionThread* thread : threads) {
+		thread->Execute();
 	}
-
-	for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
-		selection.join(*iter);
+	for(SelectionThread* thread : threads) {
+		selection.join(thread);
 	}
-
 	selection.finish(); // Finish the selection session
 	selection.updateSelectionCount();
 	return true;

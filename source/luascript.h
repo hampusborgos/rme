@@ -285,33 +285,6 @@ private:
 
 extern LuaInterface g_lua;
 
-
-
-struct ItemFinder
-{
-	ItemFinder(uint16_t itemid, int32_t limit = -1) : itemid(itemid), limit(limit), exceeded(false) {}
-
-	void operator()(Map& map, Tile* tile, Item* item, long long done) {
-		if(exceeded)
-			return;
-
-		if(item->getID() == itemid) {
-			result.push_back(std::make_pair(tile, item));
-			if(limit > 0 && result.size() >= size_t(limit))
-				exceeded = true;
-		}
-	}
-
-	std::vector<std::pair<Tile*, Item*>> result;
-
-private:
-	uint16_t itemid;
-	int32_t limit;
-	bool exceeded;
-};
-
-
-
 struct ItemCounter
 {
 	ItemCounter(uint16_t itemid) : itemid(itemid), result(0) {}

@@ -575,7 +575,7 @@ int LuaInterface::luaEditorCreateSelection(lua_State* L)
 		g_gui.SetSelectionMode();
 		const Position& start = getPosition(L, 2);
 		const Position& end = getPosition(L, 3);
-		if(editor->createSelection(start, end)) {
+		if(editor->createSelectionArea(start, end)) {
 			g_gui.RefreshView();
 			pushUserdata<Editor>(L, editor);
 			setMetatable(L, -1, "Selection");
@@ -1015,7 +1015,7 @@ int LuaInterface::luaSelectionCreate(lua_State* L)
 		g_gui.SetSelectionMode();
 		const Position& start = getPosition(L, 3);
 		const Position& end = getPosition(L, 4);
-		if(editor->createSelection(start, end)) {
+		if(editor->createSelectionArea(start, end)) {
 			g_gui.RefreshView();
 			pushUserdata<Editor>(L, editor);
 			setMetatable(L, -1, "Selection");
