@@ -229,6 +229,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					friends.push_back(brush->getID());
 				} else {
 					warnings.push_back("Brush '" + wxstr(name) + "' is not defined.");
+					continue;
 				}
 
 				if(childNode.attribute("redirect").as_bool()) {
