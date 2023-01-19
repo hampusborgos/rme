@@ -111,6 +111,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(MAP_REMOVE_ITEMS, wxITEM_NORMAL, OnMapRemoveItems);
 	MAKE_ACTION(MAP_REMOVE_CORPSES, wxITEM_NORMAL, OnMapRemoveCorpses);
 	MAKE_ACTION(MAP_REMOVE_UNREACHABLE_TILES, wxITEM_NORMAL, OnMapRemoveUnreachable);
+	MAKE_ACTION(MAP_REMOVE_EMPTY_SPAWNS, wxITEM_NORMAL, OnMapRemoveEmptySpawns);
 	MAKE_ACTION(MAP_CLEANUP, wxITEM_NORMAL, OnMapCleanup);
 	MAKE_ACTION(MAP_CLEAN_HOUSE_ITEMS, wxITEM_NORMAL, OnMapCleanHouseItems);
 	MAKE_ACTION(MAP_PROPERTIES, wxITEM_NORMAL, OnMapProperties);
@@ -355,6 +356,7 @@ void MainMenuBar::Update()
 	EnableItem(MAP_REMOVE_ITEMS, is_host);
 	EnableItem(MAP_REMOVE_CORPSES, is_local);
 	EnableItem(MAP_REMOVE_UNREACHABLE_TILES, is_local);
+	EnableItem(MAP_REMOVE_EMPTY_SPAWNS, is_local);
 	EnableItem(CLEAR_INVALID_HOUSES, is_local);
 	EnableItem(CLEAR_MODIFIED_STATE, is_local);
 
@@ -1389,6 +1391,72 @@ void MainMenuBar::OnMapRemoveUnreachable(wxCommandEvent& WXUNUSED(event))
 
 		g_gui.PopupDialog("Search completed", msg, wxOK);
 
+		g_gui.GetCurrentMap().doChange();
+	}
+}
+
+void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
+{
+	if (!g_gui.IsEditorOpen()) {
+		return;
+	}
+
+	int ok = g_gui.PopupDialog("Remove Empty Spawns", "Do you want to remove all empty spawns from the map?", wxYES | wxNO);
+	if (ok == wxID_YES) {
+		g_gui.GetCurrentEditor()->selection.clear();
+		g_gui.GetCurrentEditor()->actionQueue->clear();
+
+		g_gui.CreateLoadBar("Searching map for empty spawns to remove...");
+
+		Map& map = g_gui.GetCurrentMap();
+		CreatureVector creatures;
+		TileVector toDeleteSpawns;
+		for (const auto& spawnPosition : map.spawns) {
+			Tile* tile = map.getTile(spawnPosition);
+			if (!tile || !tile->spawn) {
+				continue;
+			}
+
+			const int32_t radius = tile->spawn->getSize();
+
+			bool empty = true;
+			for (int32_t y = -radius; y <= radius; ++y) {
+				for (int32_t x = -radius; x <= radius; ++x) {
+					Tile* creature_tile = map.getTile(spawnPosition + Position(x, y, 0));
+					if (creature_tile && creature_tile->creature && !creature_tile->creature->isSaved()) {
+						creature_tile->creature->save();
+						creatures.push_back(creature_tile->creature);
+						empty = false;
+					}
+				}
+			}
+
+			if (empty) {
+				toDeleteSpawns.push_back(tile);
+			}
+		}
+
+		for (Creature* creature : creatures) {
+			creature->reset();
+		}
+
+		const size_t count = toDeleteSpawns.size();
+		size_t removed = 0;
+		for (const auto& tile : toDeleteSpawns) {
+			map.removeSpawn(tile);
+			delete tile->spawn;
+			tile->spawn = nullptr;
+			if (++removed % 5 == 0) {
+				// update progress bar for each 5 spawns removed
+				g_gui.SetLoadDone(100 * removed / count);
+			}
+		}
+
+		g_gui.DestroyLoadBar();
+
+		wxString msg;
+		msg << removed << " empty spawns removed.";
+		g_gui.PopupDialog("Search completed", msg, wxOK);
 		g_gui.GetCurrentMap().doChange();
 	}
 }
