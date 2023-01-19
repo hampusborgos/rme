@@ -1403,8 +1403,8 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 
 	int ok = g_gui.PopupDialog("Remove Empty Spawns", "Do you want to remove all empty spawns from the map?", wxYES | wxNO);
 	if (ok == wxID_YES) {
-		g_gui.GetCurrentEditor()->selection.clear();
-		g_gui.GetCurrentEditor()->actionQueue->clear();
+		Editor* editor = g_gui.GetCurrentEditor();
+		editor->selection.clear();
 
 		g_gui.CreateLoadBar("Searching map for empty spawns to remove...");
 
@@ -1440,17 +1440,25 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 			creature->reset();
 		}
 
+		BatchAction* batch = editor->actionQueue->createBatch(ACTION_DELETE_TILES);
+		Action* action = editor->actionQueue->createAction(batch);
+
 		const size_t count = toDeleteSpawns.size();
 		size_t removed = 0;
 		for (const auto& tile : toDeleteSpawns) {
-			map.removeSpawn(tile);
-			delete tile->spawn;
-			tile->spawn = nullptr;
+			Tile* newtile = tile->deepCopy(map);
+			map.removeSpawn(newtile);
+			delete newtile->spawn;
+			newtile->spawn = nullptr;
 			if (++removed % 5 == 0) {
 				// update progress bar for each 5 spawns removed
 				g_gui.SetLoadDone(100 * removed / count);
 			}
+			action->addChange(newd Change(newtile));
 		}
+
+		batch->addAndCommitAction(action);
+		editor->addBatch(batch);
 
 		g_gui.DestroyLoadBar();
 
