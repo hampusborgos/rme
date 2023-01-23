@@ -74,6 +74,7 @@ public:
 	void OnDelete(wxCommandEvent& event);
 	// ----
 	void OnGotoDestination(wxCommandEvent& event);
+	void OnCopyDestination(wxCommandEvent& event);
 	void OnRotateItem(wxCommandEvent& event);
 	void OnSwitchDoor(wxCommandEvent& event);
 	// ----

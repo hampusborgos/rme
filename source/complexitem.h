@@ -68,11 +68,10 @@ class Teleport : public Item
 		//virtual void serializeItemAttributes_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
 		//virtual bool readItemAttribute_OTMM(const IOMap& maphandle, OTMM_ItemAttribute attr, BinaryNode* node);
 
-		int32_t getX() const { return destination.x; }
-		int32_t getY() const { return destination.y; }
-		int32_t getZ() const { return destination.z; }
-
-		Position getDestination() const { return destination; }
+		const Position& getDestination() const noexcept { return destination; }
+		int getX() const noexcept { return destination.x; }
+		int getY() const noexcept { return destination.y; }
+		int getZ() const noexcept { return destination.z; }
 		void setDestination(const Position& position) { destination = position; }
 
 		bool hasDestination() const { return destination != Position(); }

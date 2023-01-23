@@ -238,6 +238,63 @@ bool posFromClipboard(int& x, int& y, int& z)
 	return done;
 }
 
+bool posToClipboard(int x, int y, int z, int format)
+{
+	if (!wxTheClipboard->Open())
+		return false;
+
+	wxTextDataObject* data = new wxTextDataObject();
+
+	switch (format) {
+		case 0:
+			data->SetText(wxString::Format("{x = %d, y = %d, z = %d}", x, y, z));
+			break;
+		case 1:
+			data->SetText(wxString::Format("{\"x\":%d, \"y\":%d, \"z\":%d}", x, y, z));
+			break;
+		case 2:
+			data->SetText(wxString::Format("%d, %d, %d", x, y, z));
+			break;
+		case 3:
+			data->SetText(wxString::Format("(%d, %d, %d)", x, y, z));
+			break;
+		case 4:
+			data->SetText(wxString::Format("Position(%d, %d, %d)", x, y, z));
+			break;
+		default:
+			wxTheClipboard->Close();
+			return false;
+	}
+
+	wxTheClipboard->SetData(data);
+	wxTheClipboard->Close();
+	return true;
+}
+
+bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz)
+{
+	if (!wxTheClipboard->Open())
+		return false;
+
+	std::ostringstream clip;
+	clip << "{";
+	clip << "fromx = " << fromx << ", ";
+	clip << "tox = " << tox << ", ";
+	clip << "fromy = " << fromy << ", ";
+	clip << "toy = " << toy << ", ";
+	if (fromz != toz) {
+		clip << "fromz = " << fromz << ", ";
+		clip << "toz = " << toz;
+	}
+	else
+		clip << "z = " << fromz;
+	clip << "}";
+
+	wxTheClipboard->SetData(new wxTextDataObject(clip.str()));
+	wxTheClipboard->Close();
+	return true;
+}
+
 wxString b2yn(bool value)
 {
 	return value ? "Yes" : "No";

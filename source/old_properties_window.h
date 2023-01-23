@@ -41,17 +41,13 @@ public:
 	void Update();
 
 protected:
-
-protected:
 	wxSpinCtrl* count_field;
 	wxChoice* direction_field;
 	wxSpinCtrl* action_id_field;
 	wxSpinCtrl* unique_id_field;
 	wxSpinCtrl* door_id_field;
 	wxChoice* depot_id_field;
-	wxSpinCtrl* x_field;
-	wxSpinCtrl* y_field;
-	wxSpinCtrl* z_field;
+	PositionCtrl* destination_field;
 	wxChoice* splash_type_field;
 	wxTextCtrl* text_field;
 	wxTextCtrl* description_field;
