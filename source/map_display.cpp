@@ -2448,13 +2448,7 @@ void MapCanvas::getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, Posi
 
 bool MapCanvas::floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions)
 {
-	countMaxFills++;
-	if (countMaxFills > (BLOCK_SIZE * 4 * 4)) {
-		countMaxFills = 0;
-		return true;
-	}
-
-	if(x <= 0 || y <= 0 || x >= BLOCK_SIZE || y >= BLOCK_SIZE) {
+	if(x < 0 || y < 0 || x > BLOCK_SIZE || y > BLOCK_SIZE) {
 		return false;
 	}
 
