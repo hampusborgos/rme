@@ -80,7 +80,7 @@ public:
 		return *this;
 	}
 
-	bool operator==(const Position& p) const {
+	bool operator==(const Position& p) const noexcept {
 		return p.x == x && p.y == y && p.z == z;
 	}
 

@@ -249,6 +249,12 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 	editor.SendNodeRequests();
 }
 
+void MapCanvas::ShowPositionIndicator(const Position& position)
+{
+	if (drawer)
+		drawer->ShowPositionIndicator(position);
+}
+
 void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 {
 	int screensize_x, screensize_y;

@@ -271,7 +271,7 @@ public:
 	bool IsVersionLoaded() const {return loaded_version != CLIENT_VERSION_NONE;}
 
 	// Centers current view on position
-	void SetScreenCenterPosition(Position pos);
+	void SetScreenCenterPosition(const Position& position, bool showIndicator = true);
 	// Refresh the view canvas
 	void RefreshView();
 	// Fit all/specified current map view to map dimensions

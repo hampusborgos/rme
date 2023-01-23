@@ -102,6 +102,9 @@ protected:
 	std::vector<MapTooltip*> tooltips;
 	std::ostringstream tooltip;
 
+	wxStopWatch pos_indicator_timer;
+	Position pos_indicator;
+
 public:
 	MapDrawer(MapCanvas* canvas);
 	~MapDrawer();
@@ -127,6 +130,8 @@ public:
 
 	void TakeScreenshot(uint8_t* screenshot_buffer);
 
+	void ShowPositionIndicator(const Position& position);
+
 	DrawingOptions& getOptions() { return options; }
 
 protected:
@@ -141,6 +146,7 @@ protected:
 	void DrawHookIndicator(int x, int y, const ItemType& type);
 	void DrawTileIndicators(TileLocation* location);
 	void DrawIndicator(int x, int y, int indicator, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255, uint8_t a = 255);
+	void DrawPositionIndicator(int z);
 	void WriteTooltip(Item* item, std::ostringstream& stream);
 	void WriteTooltip(Waypoint* item, std::ostringstream& stream);
 	void MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);
@@ -162,8 +168,10 @@ protected:
 	void glColor(wxColor color);
 	void glColor(BrushColor color);
 	void glColorCheck(Brush* brush, const Position& pos);
+	void drawRect(int x, int y, int w, int h, const wxColour& color, int width = 1);
+
+private:
+	void getDrawPosition(const Position& position, int &x, int &y);
 };
 
-
 #endif
-

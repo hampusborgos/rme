@@ -321,6 +321,8 @@ void MapDrawer::DrawMap()
 					}
 				}
 			}
+
+			DrawPositionIndicator(map_z);
 		}
 
 		if(only_colors)
@@ -1396,18 +1398,13 @@ void MapDrawer::DrawTile(TileLocation* location)
 {
 	if(!location)
 		return;
-	Tile* tile = location->get();
 
+	Tile* tile = location->get();
 	if(!tile)
 		return;
 
 	if(options.show_only_modified && !tile->isModified())
 		return;
-
-	int map_x = location->getX();
-	int map_y = location->getY();
-	int map_z = location->getZ();
-
 
 	if(options.show_tooltips && location->getWaypointCount() > 0) {
 		Waypoint* waypoint = canvas->editor.map.waypoints.getWaypoint(location);
@@ -1418,14 +1415,9 @@ void MapDrawer::DrawTile(TileLocation* location)
 	bool as_minimap = options.show_as_minimap;
 	bool only_colors = as_minimap || options.show_only_colors;
 
-	int offset;
-	if (map_z <= GROUND_LAYER)
-		offset = (GROUND_LAYER - map_z) * TILE_SIZE;
-	else
-		offset = TILE_SIZE * (floor - map_z);
-
-	int draw_x = ((map_x * TILE_SIZE) - view_scroll_x) - offset;
-	int draw_y = ((map_y * TILE_SIZE) - view_scroll_y) - offset;
+	const Position& position = location->getPosition();
+	int draw_x, draw_y;
+	getDrawPosition(position, draw_x, draw_y);
 
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
@@ -1501,14 +1493,14 @@ void MapDrawer::DrawTile(TileLocation* location)
 			BlitItem(draw_x, draw_y, tile, tile->ground, false, r, g, b);
 		}
 
-		if(options.show_tooltips && map_z == floor)
+		if(options.show_tooltips && position.z == floor)
 			WriteTooltip(tile->ground, tooltip);
 	}
 
 	if(!only_colors) {
 		if(zoom < 10.0 || !options.hide_items_when_zoomed) {
 			for(ItemVector::iterator it = tile->items.begin(); it != tile->items.end(); it++) {
-				if(options.show_tooltips && map_z == floor)
+				if(options.show_tooltips && position.z == floor)
 					WriteTooltip(*it, tooltip);
 
 				if(options.show_preview && zoom <= 2.0)
@@ -1618,18 +1610,8 @@ void MapDrawer::DrawTileIndicators(TileLocation* location)
 	if(!tile)
 		return;
 
-	int map_x = location->getX();
-	int map_y = location->getY();
-	int map_z = location->getZ();
-
-	int offset;
-	if (map_z <= GROUND_LAYER)
-		offset = (GROUND_LAYER - map_z) * TILE_SIZE;
-	else
-		offset = TILE_SIZE * (floor - map_z);
-
-	int x = ((map_x * TILE_SIZE) - view_scroll_x) - offset;
-	int y = ((map_y * TILE_SIZE) - view_scroll_y) - offset;
+	int x, y;
+	getDrawPosition(location->getPosition(), x, y);
 
 	if(zoom < 10.0 && (options.show_pickupables || options.show_moveables)) {
 		uint8_t red = 0xFF, green = 0xFF, blue = 0xFF;
@@ -1676,6 +1658,36 @@ void MapDrawer::DrawIndicator(int x, int y, int indicator, uint8_t r, uint8_t g,
 
 	int textureId = sprite->getHardwareID(0,0,0,-1,0,0,0,0);
 	glBlitTexture(x, y, textureId, r, g, b, a, true);
+}
+
+void MapDrawer::DrawPositionIndicator(int z)
+{
+	if (z != pos_indicator.z
+		|| pos_indicator.x < start_x
+		|| pos_indicator.x > end_x
+		|| pos_indicator.y < start_y
+		|| pos_indicator.y > end_y) {
+		return;
+	}
+
+	constexpr int duration = 3000;
+	const long time = pos_indicator_timer.Time();
+	if (time >= duration)
+		return;
+
+	int x, y;
+	getDrawPosition(pos_indicator, x, y);
+
+	int size = static_cast<int>(TILE_SIZE * (0.3f + std::abs(500 - time % 1000) / 1000.f));
+	int offset = (TILE_SIZE - size) / 2;
+
+	glDisable(GL_TEXTURE_2D);
+		drawRect(x + offset + 2, y + offset + 2, size - 4, size - 4, *wxWHITE, 2);
+		drawRect(x + offset + 1, y + offset + 1, size - 2, size - 2, *wxBLACK, 2);
+	glEnable(GL_TEXTURE_2D);
+
+	if (time >= duration)
+		pos_indicator_timer.Pause();
 }
 
 void MapDrawer::DrawTooltips()
@@ -1815,6 +1827,12 @@ void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
 		glReadPixels(0, screensize_y - i, screensize_x, 1, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*)(screenshot_buffer) + 3*screensize_x*i);
 }
 
+void MapDrawer::ShowPositionIndicator(const Position& position)
+{
+	pos_indicator = position;
+	pos_indicator_timer.Start();
+}
+
 void MapDrawer::glBlitTexture(int x, int y, int textureId, int red, int green, int blue, int alpha, bool adjustZoom)
 {
 	if (textureId <= 0)
@@ -1917,4 +1935,29 @@ void MapDrawer::glColorCheck(Brush* brush, const Position& pos)
 		glColor(COLOR_VALID);
 	else
 		glColor(COLOR_INVALID);
+}
+
+void MapDrawer::drawRect(int x, int y, int w, int h, const wxColour& color, int width)
+{
+	glLineWidth(width);
+	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
+	glBegin(GL_LINE_LOOP);
+		glVertex2f(x, y);
+		glVertex2f(x + w, y);
+		glVertex2f(x + w, y + h);
+		glVertex2f(x, y + h);
+		glVertex2f(x, y);
+	glEnd();
+}
+
+void MapDrawer::getDrawPosition(const Position& position, int& x, int& y)
+{
+	int offset;
+	if (position.z <= GROUND_LAYER)
+		offset = (GROUND_LAYER - position.z) * TILE_SIZE;
+	else
+		offset = TILE_SIZE * (floor - position.z);
+
+	x = ((position.x * TILE_SIZE) - view_scroll_x) - offset;
+	y = ((position.y * TILE_SIZE) - view_scroll_y) - offset;
 }

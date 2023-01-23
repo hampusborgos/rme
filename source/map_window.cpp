@@ -134,7 +134,7 @@ Position MapWindow::GetScreenCenterPosition()
 	return Position(x, y, canvas->GetFloor());
 }
 
-void MapWindow::SetScreenCenterPosition(const Position& position)
+void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndicator)
 {
 	if(position == Position())
 		return;
@@ -156,11 +156,14 @@ void MapWindow::SetScreenCenterPosition(const Position& position)
 
 	Scroll(x, y, true);
 	canvas->ChangeFloor(position.z);
+
+	if (showIndicator)
+		canvas->ShowPositionIndicator(position);
 }
 
 void MapWindow::GoToPreviousCenterPosition()
 {
-	SetScreenCenterPosition(previous_position);
+	SetScreenCenterPosition(previous_position, true);
 }
 
 void MapWindow::Scroll(int x, int y, bool center)

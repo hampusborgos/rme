@@ -1223,11 +1223,11 @@ void GUI::UpdateMenubar()
 	root->UpdateMenubar();
 }
 
-void GUI::SetScreenCenterPosition(Position position)
+void GUI::SetScreenCenterPosition(const Position& position, bool showIndicator)
 {
 	MapTab* mapTab = GetCurrentMapTab();
 	if(mapTab)
-		mapTab->SetScreenCenterPosition(position);
+		mapTab->SetScreenCenterPosition(position, showIndicator);
 }
 
 void GUI::DoCut()

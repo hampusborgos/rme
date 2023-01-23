@@ -50,11 +50,10 @@ public:
 	int size() const;
 	bool empty() const;
 
-	Position getPosition() const { return position; }
-
-	int getX() const {return position.x;}
-	int getY() const {return position.y;}
-	int getZ() const {return position.z;}
+	const Position& getPosition() const noexcept { return position; }
+	int getX() const noexcept { return position.x; }
+	int getY() const noexcept { return position.y; }
+	int getZ() const noexcept { return position.z; }
 
 	size_t getSpawnCount() const {return spawn_count;}
 	void increaseSpawnCount() {spawn_count++;}
