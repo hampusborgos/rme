@@ -1339,7 +1339,7 @@ namespace OnMapRemoveUnreachable
 			if(done % 0x1000 == 0)
 				g_gui.SetLoadDone((unsigned int)(100 * done / total));
 
-			Position pos = tile->getPosition();
+			const Position& pos = tile->getPosition();
 			int sx = std::max(pos.x - 10, 0);
 			int ex = std::min(pos.x + 10, 65535);
 			int sy = std::max(pos.y - 8,  0);

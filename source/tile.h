@@ -73,11 +73,10 @@ public:
 	const TileLocation* getLocation() const {return location;}
 
 	// Position of the tile
-	Position getPosition() {return location->getPosition();}
-	const Position getPosition() const {return location->getPosition();}
-	int getX() const {return location->getPosition().x;}
-	int getY() const {return location->getPosition().y;}
-	int getZ() const {return location->getPosition().z;}
+	const Position& getPosition() const noexcept { return location->getPosition(); }
+	int getX() const noexcept { return location->getX(); }
+	int getY() const noexcept { return location->getY(); }
+	int getZ() const noexcept { return location->getZ(); }
 
 public: //Functions
 	// Absorb the other tile into this tile

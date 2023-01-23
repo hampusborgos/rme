@@ -160,7 +160,7 @@ void Action::commit(DirtyList* dirty_list)
 				void** data = &c->data;
 				Tile* newtile = reinterpret_cast<Tile*>(*data);
 				ASSERT(newtile);
-				Position pos = newtile->getPosition();
+				const Position& pos = newtile->getPosition();
 
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.map.getLeaf(pos.x, pos.y);
@@ -303,7 +303,7 @@ void Action::undo(DirtyList* dirty_list)
 				void** data = &c->data;
 				Tile* oldtile = reinterpret_cast<Tile*>(*data);
 				ASSERT(oldtile);
-				Position pos = oldtile->getPosition();
+				const Position& pos = oldtile->getPosition();
 
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.map.getLeaf(pos.x, pos.y);

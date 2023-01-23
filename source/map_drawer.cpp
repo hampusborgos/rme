@@ -1880,7 +1880,7 @@ void MapDrawer::glBlitSquare(int sx, int sy, int red, int green, int blue, int a
 	glEnd();
 }
 
-void MapDrawer::glColor(wxColor color)
+void MapDrawer::glColor(const wxColor& color)
 {
 	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
 }
