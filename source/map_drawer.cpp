@@ -114,7 +114,7 @@ bool DrawingOptions::isOnlyColors() const noexcept
 
 bool DrawingOptions::isTileIndicators() const noexcept
 {
-	if (isOnlyColors())
+	if(isOnlyColors())
 		return false;
 	return show_pickupables || show_moveables || show_houses || show_spawns;
 }
@@ -310,7 +310,7 @@ void MapDrawer::DrawMap()
 								DrawTile(nd->getTile(map_x, map_y, map_z));
 							}
 						}
-						if (tile_indicators) {
+						if(tile_indicators) {
 							for(int map_x = 0; map_x < 4; ++map_x) {
 								for(int map_y = 0; map_y < 4; ++map_y) {
 									DrawTileIndicators(nd->getTile(map_x, map_y, map_z));
@@ -385,7 +385,7 @@ void MapDrawer::DrawSecondaryMap(int map_z)
 			}
 
 			Tile* tile = secondary_map->getTile(pos);
-			if (!tile) continue;
+			if(!tile) continue;
 
 			int draw_x, draw_y;
 			getDrawPosition(final_pos, draw_x, draw_y);
@@ -560,7 +560,7 @@ void MapDrawer::DrawGrid()
 
 void MapDrawer::DrawDraggingShadow()
 {
-	if (!dragging || options.ingame || editor.selection.isBusy())
+	if(!dragging || options.ingame || editor.selection.isBusy())
 		return;
 
 	glEnable(GL_TEXTURE_2D);
@@ -610,7 +610,7 @@ void MapDrawer::DrawDraggingShadow()
 
 void MapDrawer::DrawHigherFloors()
 {
-	if (!options.transparent_floors || floor == 0 || floor == 8)
+	if(!options.transparent_floors || floor == 0 || floor == 8)
 		return;
 
 	glEnable(GL_TEXTURE_2D);
@@ -715,7 +715,7 @@ void MapDrawer::DrawLiveCursors()
 		}
 
 		int offset;
-		if (cursor.pos.z <= GROUND_LAYER)
+		if(cursor.pos.z <= GROUND_LAYER)
 			offset = (GROUND_LAYER - cursor.pos.z) * TILE_SIZE;
 		else
 			offset = TILE_SIZE * (floor - cursor.pos.z);
@@ -798,7 +798,7 @@ void MapDrawer::DrawBrush()
 					glVertex2f(last_click_end_sx - TILE_SIZE, last_click_end_sy - TILE_SIZE);
 				}
 
-				if (delta_y > TILE_SIZE) {
+				if(delta_y > TILE_SIZE) {
 					glVertex2f(last_click_start_sx, last_click_end_sy - TILE_SIZE);
 					glVertex2f(last_click_end_sx, last_click_end_sy - TILE_SIZE);
 					glVertex2f(last_click_end_sx, last_click_end_sy);
@@ -1168,14 +1168,14 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 		}
 	}
 
-	if (options.show_hooks && (type.hookSouth || type.hookEast))
+	if(options.show_hooks && (type.hookSouth || type.hookEast))
 		DrawHookIndicator(draw_x, draw_y, type);
 }
 
 void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const Item* item, bool ephemeral, int red, int green, int blue, int alpha)
 {
 	const ItemType& type = g_items.getItemType(item->getID());
-	if (type.id == 0)
+	if(type.id == 0)
 		return;
 
 	if(!options.ingame && !ephemeral && item->isSelected()) {
@@ -1282,7 +1282,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int red, int green, int blue, int alpha)
 {
 	const ItemType& type = g_items.getItemType(spriteid);
-	if (type.id == 0)
+	if(type.id == 0)
 		return;
 
 	GameSprite* sprite = type.sprite;
@@ -1334,10 +1334,10 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 
 		// mount and addon drawing thanks to otc code
 		int pattern_z = 0;
-		if (outfit.lookMount != 0) {
-			if (GameSprite* mountSpr = g_gui.gfx.getCreatureSprite(outfit.lookMount)) {
-				for (int cx = 0; cx != mountSpr->width; ++cx) {
-					for (int cy = 0; cy != mountSpr->height; ++cy) {
+		if(outfit.lookMount != 0) {
+			if(GameSprite* mountSpr = g_gui.gfx.getCreatureSprite(outfit.lookMount)) {
+				for(int cx = 0; cx != mountSpr->width; ++cx) {
+					for(int cy = 0; cy != mountSpr->height; ++cy) {
 						int texnum = mountSpr->getHardwareID(cx, cy, 0, 0, (int)dir, 0, 0, 0);
 						glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
 					}
@@ -1349,14 +1349,14 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		int frame = 0;
 
 		// pattern_y => creature addon
-		for (int pattern_y = 0; pattern_y < sprite->pattern_y; pattern_y++) {
+		for(int pattern_y = 0; pattern_y < sprite->pattern_y; pattern_y++) {
 
 			// continue if we dont have this addon
-			if (pattern_y > 0 && !(outfit.lookAddon & (1 << (pattern_y - 1))))
+			if(pattern_y > 0 && !(outfit.lookAddon & (1 << (pattern_y - 1))))
 				continue;
 
-			for (int cx = 0; cx != sprite->width; ++cx) {
-				for (int cy = 0; cy != sprite->height; ++cy) {
+			for(int cx = 0; cx != sprite->width; ++cx) {
+				for(int cy = 0; cy != sprite->height; ++cy) {
 					int texnum = sprite->getHardwareID(cx, cy, (int)dir, pattern_y, pattern_z, outfit, frame);
 					glBlitTexture(screenx - cx * TILE_SIZE, screeny - cy * TILE_SIZE, texnum, red, green, blue, alpha);
 				}
@@ -1394,7 +1394,7 @@ void MapDrawer::WriteTooltip(const Item* item, std::ostringstream& stream)
 
 	stream << "id: " << id << "\n";
 
-	if (action > 0)
+	if(action > 0)
 		stream << "aid: " << action << "\n";
 	if(unique > 0)
 		stream << "uid: " << unique << "\n";
@@ -1404,7 +1404,7 @@ void MapDrawer::WriteTooltip(const Item* item, std::ostringstream& stream)
 
 void MapDrawer::WriteTooltip(const Waypoint* waypoint, std::ostringstream& stream)
 {
-	if (stream.tellp() > 0)
+	if(stream.tellp() > 0)
 		stream << "\n";
 	stream << "wp: " << waypoint->name << "\n";
 }
@@ -1631,12 +1631,12 @@ void MapDrawer::DrawTileIndicators(TileLocation* location)
 		}
 		for(const Item* item : tile->items) {
 			const ItemType& type = g_items.getItemType(item->getID());
-			if ((type.pickupable && options.show_pickupables) || (type.moveable && options.show_moveables)) {
-				if (type.pickupable && options.show_pickupables && type.moveable && options.show_moveables)
+			if((type.pickupable && options.show_pickupables) || (type.moveable && options.show_moveables)) {
+				if(type.pickupable && options.show_pickupables && type.moveable && options.show_moveables)
 					DrawIndicator(x, y, EDITOR_SPRITE_PICKUPABLE_MOVEABLE_ITEM, red, green, blue);
-				else if (type.pickupable && options.show_pickupables)
+				else if(type.pickupable && options.show_pickupables)
 					DrawIndicator(x, y, EDITOR_SPRITE_PICKUPABLE_ITEM, red, green, blue);
-				else if (type.moveable && options.show_moveables)
+				else if(type.moveable && options.show_moveables)
 					DrawIndicator(x, y, EDITOR_SPRITE_MOVEABLE_ITEM, red, green, blue);
 			}
 		}
@@ -1671,7 +1671,7 @@ void MapDrawer::DrawIndicator(int x, int y, int indicator, uint8_t r, uint8_t g,
 
 void MapDrawer::DrawPositionIndicator(int z)
 {
-	if (z != pos_indicator.z
+	if(z != pos_indicator.z
 		|| pos_indicator.x < start_x
 		|| pos_indicator.x > end_x
 		|| pos_indicator.y < start_y
@@ -1681,7 +1681,7 @@ void MapDrawer::DrawPositionIndicator(int z)
 
 	constexpr int duration = 3000;
 	const long time = pos_indicator_timer.Time();
-	if (time >= duration)
+	if(time >= duration)
 		return;
 
 	int x, y;
@@ -1796,7 +1796,7 @@ void MapDrawer::DrawTooltips()
 					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, '.');
 					if(char_count >= (MapTooltip::MAX_CHARS + 2))
 						break;
-				} else if (!iscntrl(*c)) {
+				} else if(!iscntrl(*c)) {
 					glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, *c);
 				}
 			}
@@ -1847,7 +1847,7 @@ void MapDrawer::ShowPositionIndicator(const Position& position)
 
 void MapDrawer::glBlitTexture(int x, int y, int textureId, int red, int green, int blue, int alpha, bool adjustZoom)
 {
-	if (textureId <= 0)
+	if(textureId <= 0)
 		return;
 
 	glBindTexture(GL_TEXTURE_2D, textureId);
@@ -1856,12 +1856,12 @@ void MapDrawer::glBlitTexture(int x, int y, int textureId, int red, int green, i
 
 	if(adjustZoom) {
 		float size = TILE_SIZE;
-		if (zoom < 1.0f) {
+		if(zoom < 1.0f) {
 			float offset = 10 / (10 * zoom);
 			size = std::max<float>(16, TILE_SIZE * zoom);
 			x += offset;
 			y += offset;
-		} else if (zoom > 1.f) {
+		} else if(zoom > 1.f) {
 			float offset = (10 * zoom);
 			size = TILE_SIZE + offset;
 			x -= offset;
@@ -1976,7 +1976,7 @@ void MapDrawer::drawRect(int x, int y, int w, int h, const wxColour& color, int 
 void MapDrawer::getDrawPosition(const Position& position, int& x, int& y)
 {
 	int offset;
-	if (position.z <= GROUND_LAYER)
+	if(position.z <= GROUND_LAYER)
 		offset = (GROUND_LAYER - position.z) * TILE_SIZE;
 	else
 		offset = TILE_SIZE * (floor - position.z);

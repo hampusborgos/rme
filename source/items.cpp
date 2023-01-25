@@ -821,18 +821,18 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 				item.type = ITEM_TYPE_MAILBOX;
 			} else if(typeValue == "trashholder") {
 				item.type = ITEM_TYPE_TRASHHOLDER;
-			} else if (typeValue == "container") {
+			} else if(typeValue == "container") {
 				item.type = ITEM_TYPE_CONTAINER;
-			} else if (typeValue == "door") {
+			} else if(typeValue == "door") {
 				item.type = ITEM_TYPE_DOOR;
-			} else if (typeValue == "magicfield") {
+			} else if(typeValue == "magicfield") {
 				item.group = ITEM_GROUP_MAGICFIELD;
 				item.type = ITEM_TYPE_MAGICFIELD;
-			} else if (typeValue == "teleport") {
+			} else if(typeValue == "teleport") {
 				item.type = ITEM_TYPE_TELEPORT;
-			} else if (typeValue == "bed") {
+			} else if(typeValue == "bed") {
 				item.type = ITEM_TYPE_BED;
-			} else if (typeValue == "key") {
+			} else if(typeValue == "key") {
 				item.type = ITEM_TYPE_KEY;
 			}
 		} else if(key == "name") {
@@ -896,21 +896,21 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 				item.extra_chargeable = true;
 			}
 		} else if(key == "floorchange") {
-			if ((attribute = itemAttributesNode.attribute("value"))) {
+			if((attribute = itemAttributesNode.attribute("value"))) {
 				std::string value = attribute.as_string();
 				if(value == "down") {
 					item.floorChangeDown = true;
 					item.floorChange = true;
-				} else if (value == "north") {
+				} else if(value == "north") {
 					item.floorChangeNorth = true;
 					item.floorChange = true;
-				} else if (value == "south") {
+				} else if(value == "south") {
 					item.floorChangeSouth = true;
 					item.floorChange = true;
-				} else if (value == "west") {
+				} else if(value == "west") {
 					item.floorChangeWest = true;
 					item.floorChange = true;
-				} else if (value == "east") {
+				} else if(value == "east") {
 					item.floorChangeEast = true;
 					item.floorChange = true;
 				} else if(value == "northex")
@@ -921,9 +921,9 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 					item.floorChange = true;
 				else if(value == "eastex")
 					item.floorChange = true;
-				else if (value == "southalt")
+				else if(value == "southalt")
 					item.floorChange = true;
-				else if (value == "eastalt")
+				else if(value == "eastalt")
 					item.floorChange = true;
 			}
 		}
@@ -1011,7 +1011,7 @@ ItemType* ItemDatabase::getRawItemType(uint16_t id)
 
 bool ItemDatabase::isValidID(uint16_t id) const
 {
-	if (id == 0 || id > maxItemId)
+	if(id == 0 || id > maxItemId)
 		return false;
 	return items[id] != nullptr;
 }

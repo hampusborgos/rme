@@ -520,7 +520,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	client_list_sizer->AddGrowableCol(1);
 
     int version_counter = 0;
-	for (auto version : versions) {
+	for(auto version : versions) {
         if(!version->isVisible())
 			continue;
 
@@ -692,7 +692,7 @@ void PreferencesWindow::Apply()
 	// Client
 	ClientVersionList versions = ClientVersion::getAllVisible();
 	int version_counter = 0;
-	for (auto version : versions) {
+	for(auto version : versions) {
         wxString dir = version_dir_pickers[version_counter]->GetPath();
 		if(dir.Length() > 0 && dir.Last() != '/' && dir.Last() != '\\')
 			dir.Append("/");

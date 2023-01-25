@@ -293,7 +293,7 @@ void MainMenuBar::Update()
 
 	bool enable = !g_gui.IsWelcomeDialogShown();
 	menubar->Enable(enable);
-    if (!enable) {
+    if(!enable) {
         return;
 	}
 
@@ -472,7 +472,7 @@ void MainMenuBar::AddRecentFile(FileName file)
 std::vector<wxString> MainMenuBar::GetRecentFiles()
 {
     std::vector<wxString> files(recentFiles.GetCount());
-    for (size_t i = 0; i < recentFiles.GetCount(); ++i) {
+    for(size_t i = 0; i < recentFiles.GetCount(); ++i) {
         files[i] = recentFiles.GetHistoryFile(i);
     }
     return files;
@@ -486,7 +486,7 @@ void MainMenuBar::UpdateFloorMenu()
 		return;
 	}
 
-	for (int i = 0; i < MAP_LAYERS; ++i)
+	for(int i = 0; i < MAP_LAYERS; ++i)
 		CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + i), false);
 
 	CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
@@ -921,7 +921,7 @@ void MainMenuBar::OnReplaceItems(wxCommandEvent& WXUNUSED(event))
 		return;
 
 	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
-		if (MapWindow* window = tab->GetView()) {
+		if(MapWindow* window = tab->GetView()) {
 			window->ShowReplaceItemsDialog(false);
 		}
 	}
@@ -1398,12 +1398,12 @@ void MainMenuBar::OnMapRemoveUnreachable(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 {
-	if (!g_gui.IsEditorOpen()) {
+	if(!g_gui.IsEditorOpen()) {
 		return;
 	}
 
 	int ok = g_gui.PopupDialog("Remove Empty Spawns", "Do you want to remove all empty spawns from the map?", wxYES | wxNO);
-	if (ok == wxID_YES) {
+	if(ok == wxID_YES) {
 		Editor* editor = g_gui.GetCurrentEditor();
 		editor->selection.clear();
 
@@ -1412,19 +1412,19 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 		Map& map = g_gui.GetCurrentMap();
 		CreatureVector creatures;
 		TileVector toDeleteSpawns;
-		for (const auto& spawnPosition : map.spawns) {
+		for(const auto& spawnPosition : map.spawns) {
 			Tile* tile = map.getTile(spawnPosition);
-			if (!tile || !tile->spawn) {
+			if(!tile || !tile->spawn) {
 				continue;
 			}
 
 			const int32_t radius = tile->spawn->getSize();
 
 			bool empty = true;
-			for (int32_t y = -radius; y <= radius; ++y) {
-				for (int32_t x = -radius; x <= radius; ++x) {
+			for(int32_t y = -radius; y <= radius; ++y) {
+				for(int32_t x = -radius; x <= radius; ++x) {
 					Tile* creature_tile = map.getTile(spawnPosition + Position(x, y, 0));
-					if (creature_tile && creature_tile->creature && !creature_tile->creature->isSaved()) {
+					if(creature_tile && creature_tile->creature && !creature_tile->creature->isSaved()) {
 						creature_tile->creature->save();
 						creatures.push_back(creature_tile->creature);
 						empty = false;
@@ -1432,12 +1432,12 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 				}
 			}
 
-			if (empty) {
+			if(empty) {
 				toDeleteSpawns.push_back(tile);
 			}
 		}
 
-		for (Creature* creature : creatures) {
+		for(Creature* creature : creatures) {
 			creature->reset();
 		}
 
@@ -1446,12 +1446,12 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 
 		const size_t count = toDeleteSpawns.size();
 		size_t removed = 0;
-		for (const auto& tile : toDeleteSpawns) {
+		for(const auto& tile : toDeleteSpawns) {
 			Tile* newtile = tile->deepCopy(map);
 			map.removeSpawn(newtile);
 			delete newtile->spawn;
 			newtile->spawn = nullptr;
-			if (++removed % 5 == 0) {
+			if(++removed % 5 == 0) {
 				// update progress bar for each 5 spawns removed
 				g_gui.SetLoadDone(100 * removed / count);
 			}
@@ -2115,7 +2115,7 @@ void MainMenuBar::OnCloseLive(wxCommandEvent& event)
 
 void MainMenuBar::SearchItems(bool unique, bool action, bool container, bool writable, bool onSelection/* = false*/)
 {
-	if (!unique && !action && !container && !writable)
+	if(!unique && !action && !container && !writable)
 		return;
 
 	if(!g_gui.IsEditorOpen())

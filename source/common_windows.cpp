@@ -410,7 +410,7 @@ void ImportMapWindow::OnClickBrowse(wxCommandEvent& WXUNUSED(event))
 	wxFileDialog dialog(this, "Import...", "", "", "*.otbm", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
 	int ok = dialog.ShowModal();
 
-	if (ok == wxID_OK)
+	if(ok == wxID_OK)
 		file_text_field->ChangeValue(dialog.GetPath());
 }
 
@@ -498,7 +498,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	choices.Add("Ground Floor");
 	choices.Add("Specific Floor");
 
-	if (editor.hasSelection())
+	if(editor.hasSelection())
 		choices.Add("Selected Area");
 
 	// Area options
@@ -617,7 +617,7 @@ void ExportMiniMapWindow::CheckValues()
 		return;
 	}
 
-	if (file_name_text_field->IsEmpty()) {
+	if(file_name_text_field->IsEmpty()) {
 		error_field->SetLabel("Type a name for the file.");
 		ok_button->Enable(false);
 		return;
@@ -625,13 +625,13 @@ void ExportMiniMapWindow::CheckValues()
 
 	FileName directory(directory_text_field->GetValue());
 
-	if (!directory.Exists()) {
+	if(!directory.Exists()) {
 		error_field->SetLabel("Output folder not found.");
 		ok_button->Enable(false);
 		return;
 	}
 
-	if (!directory.IsDirWritable()) {
+	if(!directory.IsDirWritable()) {
 		error_field->SetLabel("Output folder is not writable.");
 		ok_button->Enable(false);
 		return;
@@ -1012,7 +1012,7 @@ SortableListBox::~SortableListBox() {}
 
 void SortableListBox::Sort() {
 
-	if (GetCount() == 0)
+	if(GetCount() == 0)
 		return;
 
 	wxASSERT_MSG(GetClientDataType() != wxClientData_Object, "Sorting a list with data of type wxClientData_Object is currently not implemented");
@@ -1028,14 +1028,14 @@ void SortableListBox::DoSort() {
 	wxArrayString stringList;
 	wxArrayPtrVoid dataList;
 
-	for (size_t i = 0; i < count; ++i) {
+	for(size_t i = 0; i < count; ++i) {
 		stringList.Add(GetString(i));
-		if (dataType == wxClientData_Void)
+		if(dataType == wxClientData_Void)
 			dataList.Add(GetClientData(i));
 	}
 
 	//Insertion sort
-	for (size_t i = 0; i < count; ++i) {
+	for(size_t i = 0; i < count; ++i) {
 		size_t j = i;
 		while (j > 0 && stringList[j].CmpNoCase(stringList[j - 1]) < 0) {
 
@@ -1043,15 +1043,15 @@ void SortableListBox::DoSort() {
 			stringList[j] = stringList[j - 1];
 			stringList[j - 1] = tmpString;
 
-			if (dataType == wxClientData_Void) {
+			if(dataType == wxClientData_Void) {
 				void* tmpData = dataList[j];
 				dataList[j] = dataList[j - 1];
 				dataList[j - 1] = tmpData;
 			}
 
-			if (selection == j - 1)
+			if(selection == j - 1)
 				selection++;
-			else if (selection == j) {
+			else if(selection == j) {
 				selection--;
 			}
 
@@ -1061,8 +1061,8 @@ void SortableListBox::DoSort() {
 
 	Freeze();
 	Clear();
-	for (size_t i = 0; i < count; ++i) {
-		if (dataType == wxClientData_Void)
+	for(size_t i = 0; i < count; ++i) {
+		if(dataType == wxClientData_Void)
 			Append(stringList[i], dataList[i]);
 		else
 			Append(stringList[i]);

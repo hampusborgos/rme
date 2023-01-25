@@ -253,7 +253,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 
 void MapCanvas::ShowPositionIndicator(const Position& position)
 {
-	if (drawer)
+	if(drawer)
 		drawer->ShowPositionIndicator(position);
 }
 
@@ -363,7 +363,7 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 MapWindow* MapCanvas::GetMapWindow() const
 {
 	wxWindow* window = GetParent();
-	if (window)
+	if(window)
 		return static_cast<MapWindow*>(window);
 	return nullptr;
 }
@@ -563,7 +563,7 @@ void MapCanvas::OnMouseMove(wxMouseEvent& event)
 			g_gui.RefreshView();
 		} else if(dragging_draw) {
 			g_gui.RefreshView();
-		} else if (map_update && brush) {
+		} else if(map_update && brush) {
 			Refresh();
 		}
 	}
@@ -1962,7 +1962,7 @@ void MapCanvas::OnCopyDestination(wxCommandEvent& WXUNUSED(event))
 	ASSERT(selected_items.size() > 0);
 
 	Teleport* teleport = dynamic_cast<Teleport*>(selected_items.front());
-	if (teleport) {
+	if(teleport) {
 		const Position& destination = teleport->getDestination();
 		int format = g_settings.getInteger(Config::COPY_POSITION_FORMAT);
 		posToClipboard(destination.x, destination.y, destination.z, format);
@@ -2274,7 +2274,7 @@ void MapPopupMenu::Update()
 			Creature* topCreature = tile->creature;
 			Spawn* topSpawn = tile->spawn;
 
-			for (auto *item : tile->items) {
+			for(auto *item : tile->items) {
 				if(item->isWall()) {
 					Brush* wb = item->getWallBrush();
 					if(wb && wb->visibleInPalette()) hasWall = true;
@@ -2322,7 +2322,7 @@ void MapPopupMenu::Update()
 
 					if(topSelectedItem->isDoor())
 					{
-						if (topSelectedItem->isOpen()) {
+						if(topSelectedItem->isOpen()) {
 							Append(MAP_POPUP_MENU_SWITCH_DOOR, "&Close door", "Close this door");
 						} else {
 							Append(MAP_POPUP_MENU_SWITCH_DOOR, "&Open door", "Open this door");

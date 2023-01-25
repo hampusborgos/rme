@@ -1259,7 +1259,7 @@ void GameSprite::EditorImage::createGLTexture(GLuint textureId)
 	wxBitmap bitmap = wxArtProvider::GetBitmap(bitmapId, wxART_OTHER, size);
 
 	wxNativePixelData data(bitmap);
-	if (!data) return;
+	if(!data) return;
 
 	const int imageSize = SPRITE_PIXELS_SIZE * 4;
 	GLubyte *imageData = new GLubyte[imageSize];
@@ -1268,7 +1268,7 @@ void GameSprite::EditorImage::createGLTexture(GLuint textureId)
 	wxNativePixelData::Iterator it(data);
 	it.Offset(data, 0, 0);
 
-	for (size_t y = 0; y < SPRITE_PIXELS; ++y)
+	for(size_t y = 0; y < SPRITE_PIXELS; ++y)
 	{
 		wxNativePixelData::Iterator row_start = it;
 

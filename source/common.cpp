@@ -240,7 +240,7 @@ bool posFromClipboard(int& x, int& y, int& z)
 
 bool posToClipboard(int x, int y, int z, int format)
 {
-	if (!wxTheClipboard->Open())
+	if(!wxTheClipboard->Open())
 		return false;
 
 	wxTextDataObject* data = new wxTextDataObject();
@@ -273,7 +273,7 @@ bool posToClipboard(int x, int y, int z, int format)
 
 bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz)
 {
-	if (!wxTheClipboard->Open())
+	if(!wxTheClipboard->Open())
 		return false;
 
 	std::ostringstream clip;
@@ -282,7 +282,7 @@ bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz)
 	clip << "tox = " << tox << ", ";
 	clip << "fromy = " << fromy << ", ";
 	clip << "toy = " << toy << ", ";
-	if (fromz != toz) {
+	if(fromz != toz) {
 		clip << "fromz = " << fromz << ", ";
 		clip << "toz = " << toz;
 	}

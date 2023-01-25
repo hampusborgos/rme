@@ -548,7 +548,7 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 				WallBrush* brush = item->getWallBrush();
 				if(brush && brush->isWallDecoration()) {
 					// We got a decoration!
-					for (std::vector<WallBrush::DoorType>::iterator it = brush->door_items[wall_alignment].begin(); it != brush->door_items[wall_alignment].end(); ++it) {
+					for(std::vector<WallBrush::DoorType>::iterator it = brush->door_items[wall_alignment].begin(); it != brush->door_items[wall_alignment].end(); ++it) {
 						WallBrush::DoorType& dt = (*it);
 						if(dt.type == doortype) {
 							ASSERT(dt.id);

@@ -255,7 +255,7 @@ public:
 	int getFrame() const { return frame; }
 
 	void doRotate() {
-		if (isRoteable()) {
+		if(isRoteable()) {
 			setID(getItemType().rotateTo);
 		}
 	}

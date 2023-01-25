@@ -35,7 +35,7 @@ Item* Item::Create(uint16_t id, uint16_t subtype /*= 0xFFFF*/)
 	if(id == 0) return nullptr;
 
 	const ItemType& type = g_items.getItemType(id);
-	if (type.id == 0) {
+	if(type.id == 0) {
 		return newd Item(id, subtype);
 	}
 
