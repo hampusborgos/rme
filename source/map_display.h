@@ -75,6 +75,7 @@ public:
 	void OnDelete(wxCommandEvent& event);
 	// ----
 	void OnGotoDestination(wxCommandEvent& event);
+	void OnCopyDestination(wxCommandEvent& event);
 	void OnRotateItem(wxCommandEvent& event);
 	void OnSwitchDoor(wxCommandEvent& event);
 	// ----
@@ -123,17 +124,16 @@ protected:
 
 private:
 	enum {
-		BLOCK_SIZE = 100
+		BLOCK_SIZE = 64
 	};
 
-	inline int getFillIndex(int x, int y) const { return x + BLOCK_SIZE * y; }
+	inline int getFillIndex(int x, int y) const noexcept { return ((y % BLOCK_SIZE) * BLOCK_SIZE) + (x % BLOCK_SIZE); }
 
 	static bool processed[BLOCK_SIZE*BLOCK_SIZE];
 
 	Editor& editor;
 	MapDrawer *drawer;
 	int keyCode;
-	int countMaxFills = 0;
 
 // View related
 	int floor;

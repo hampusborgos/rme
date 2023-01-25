@@ -1685,9 +1685,6 @@ void MapDrawer::DrawPositionIndicator(int z)
 		drawRect(x + offset + 2, y + offset + 2, size - 4, size - 4, *wxWHITE, 2);
 		drawRect(x + offset + 1, y + offset + 1, size - 2, size - 2, *wxBLACK, 2);
 	glEnable(GL_TEXTURE_2D);
-
-	if (time >= duration)
-		pos_indicator_timer.Pause();
 }
 
 void MapDrawer::DrawTooltips()

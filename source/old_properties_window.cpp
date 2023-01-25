@@ -52,7 +52,8 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	depot_id_field(nullptr),
 	splash_type_field(nullptr),
 	text_field(nullptr),
-	description_field(nullptr)
+	description_field(nullptr),
+	destination_field(nullptr)
 {
 	ASSERT(edit_item);
 
@@ -303,22 +304,13 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 			subsizer->Add(door_id_field, wxSizerFlags(1).Expand());
 		}
 
-		if(teleport) {
-			subsizer->Add(newd wxStaticText(this, wxID_ANY, "Destination"));
-
-			wxSizer* possizer = newd wxBoxSizer(wxHORIZONTAL);
-			x_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(teleport->getX()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, map->getWidth(), teleport->getX());
-			possizer->Add(x_field, wxSizerFlags(3).Expand());
-			y_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(teleport->getY()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, map->getHeight(), teleport->getY());
-			possizer->Add(y_field, wxSizerFlags(3).Expand());
-			z_field = newd wxSpinCtrl(this, wxID_ANY, i2ws(teleport->getZ()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, MAP_MAX_LAYER, teleport->getZ());
-			possizer->Add(z_field, wxSizerFlags(2).Expand());
-
-			subsizer->Add(possizer, wxSizerFlags(1).Expand());
-		}
-
 		boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
 		topsizer->Add(boxsizer, wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT, 20));
+
+		if(teleport) {
+			destination_field = new PositionCtrl(this, "Destination", teleport->getX(), teleport->getY(), teleport->getZ(), map->getWidth(), map->getHeight());
+			topsizer->Add(destination_field, wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT, 20));
+		}
 	}
 
 	// Others attributes
@@ -362,7 +354,8 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	depot_id_field(nullptr),
 	splash_type_field(nullptr),
 	text_field(nullptr),
-	description_field(nullptr)
+	description_field(nullptr),
+	destination_field(nullptr)
 {
 	ASSERT(edit_creature);
 
@@ -413,7 +406,8 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	depot_id_field(nullptr),
 	splash_type_field(nullptr),
 	text_field(nullptr),
-	description_field(nullptr)
+	description_field(nullptr),
+	destination_field(nullptr)
 {
 	ASSERT(edit_spawn);
 
@@ -569,10 +563,6 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			if(edit_item->canHoldDescription() && description_field) {
 				description_field->GetValue();
 			}
-			Position new_dest;
-			if(teleport) {
-				new_dest = Position(x_field->GetValue(), y_field->GetValue(), z_field->GetValue());
-			}
 			uint8_t new_door_id = 0;
 			if(door) {
 				new_door_id = door_id_field->GetValue();
@@ -618,12 +608,14 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			if(teleport) {
-				if(edit_map->getTile(new_dest) == nullptr || edit_map->getTile(new_dest)->isBlocking()) {
+				Position destination = destination_field->GetPosition();
+				if(!edit_map->getTile(destination) || edit_map->getTile(destination)->isBlocking()) {
 					int ret = g_gui.PopupDialog(this, "Warning", "This teleport leads nowhere, or to an invalid location. Do you want to change the destination?", wxYES | wxNO);
 					if(ret == wxID_YES) {
 						return;
 					}
 				}
+				teleport->setDestination(destination);
 			}
 
 			// Done validating, set the values.
@@ -635,9 +627,6 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 			if(door) {
 				door->setDoorID(new_door_id);
-			}
-			if(teleport) {
-				teleport->setDestination(new_dest);
 			}
 
 			edit_item->setUniqueID(new_uid);
