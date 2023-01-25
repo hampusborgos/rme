@@ -96,9 +96,14 @@ ItemType::ItemType() :
 	////
 }
 
-bool ItemType::isFloorChange() const
+bool ItemType::isFloorChange() const noexcept
 {
-	return floorChange || floorChangeDown || floorChangeNorth || floorChangeSouth || floorChangeEast || floorChangeWest;
+	return floorChange
+		|| floorChangeDown
+		|| floorChangeNorth
+		|| floorChangeSouth
+		|| floorChangeEast
+		|| floorChangeWest;
 }
 
 ItemDatabase::ItemDatabase() :

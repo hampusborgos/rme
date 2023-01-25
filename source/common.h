@@ -77,4 +77,6 @@ bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz);
 // Returns 'yes' if the defined value is true or 'no' if it is false.
 wxString b2yn(bool v);
 
+wxColor colorFromEightBit(int color);
+
 #endif

@@ -274,7 +274,6 @@ void Tile::select()
 	statflags |= TILESTATE_SELECTED;
 }
 
-
 void Tile::deselect()
 {
 	if(ground) ground->deselect();

@@ -83,6 +83,7 @@ public:
 protected:
 	// Constructor for items
 	Item(unsigned short _type, unsigned short _count);
+
 public:
 	virtual ~Item();
 

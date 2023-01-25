@@ -1475,11 +1475,8 @@ void MapDrawer::DrawTile(TileLocation* location)
 
 		if(only_colors) {
 			if(as_minimap) {
-				uint8_t color = tile->getMiniMapColor();
-				r = (uint8_t)(int(color / 36) % 6 * 51);
-				g = (uint8_t)(int(color / 6) % 6 * 51);
-				b = (uint8_t)(color % 6 * 51);
-				glBlitSquare(draw_x, draw_y, r, g, b, 255);
+				wxColor color = colorFromEightBit(tile->getMiniMapColor());
+				glBlitSquare(draw_x, draw_y, color);
 			}
 			else if(r != 255 || g != 255 || b != 255) {
 				glBlitSquare(draw_x, draw_y, r, g, b, 128);
