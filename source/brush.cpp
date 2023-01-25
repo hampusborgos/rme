@@ -362,10 +362,10 @@ void DoorBrush::switchDoor(Item* item)
 		WallBrush::DoorType& dt = *iter;
 		if(dt.type == doortype) {
 			ASSERT(dt.id);
-			ItemType& it = g_items[dt.id];
-			ASSERT(it.id != 0);
+			const ItemType& type = g_items.getItemType(dt.id);
+			ASSERT(type.id != 0);
 
-			if(it.isOpen == new_open) {
+			if(type.isOpen == new_open) {
 				item->setID(dt.id);
 				return;
 			}
@@ -408,10 +408,10 @@ bool DoorBrush::canDraw(BaseMap* map, const Position& position) const
 			WallBrush::DoorType& dt = *iter;
 			if(dt.type == doortype) {
 				ASSERT(dt.id);
-				ItemType& it = g_items[dt.id];
-				ASSERT(it.id != 0);
+				const ItemType& type = g_items.getItemType(dt.id);
+				ASSERT(type.id != 0);
 
-				if(it.isOpen == open) {
+				if(type.isOpen == open) {
 					return true;
 				} else if(!close_match) {
 					discarded_id = dt.id;
@@ -484,10 +484,10 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 				WallBrush::DoorType& dt = *iter;
 				if(dt.type == doortype) {
 					ASSERT(dt.id);
-					ItemType& it = g_items[dt.id];
-					ASSERT(it.id != 0);
+					const ItemType& type = g_items.getItemType(dt.id);
+					ASSERT(type.id != 0);
 
-					if(it.isOpen == open) {
+					if(type.isOpen == open) {
 						item = transformItem(item, dt.id, tile);
 						perfect_match = true;
 						break;
@@ -552,10 +552,10 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 						WallBrush::DoorType& dt = (*it);
 						if(dt.type == doortype) {
 							ASSERT(dt.id);
-							ItemType& it = g_items[dt.id];
-							ASSERT(it.id != 0);
+							const ItemType& type = g_items.getItemType(dt.id);
+							ASSERT(type.id != 0);
 
-							if(it.isOpen == open) {
+							if(type.isOpen == open) {
 								item = transformItem(item, dt.id, tile);
 								perfect_match = true;
 								break;

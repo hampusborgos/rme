@@ -32,6 +32,7 @@
 
 #include <wx/chartype.h>
 
+#include "items.h"
 #include "editor.h"
 #include "materials.h"
 #include "live_client.h"
@@ -1604,7 +1605,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	item_count += 1; \
 	if(!(_item)->isGroundTile() && !(_item)->isBorder()) { \
 		is_detailed = true; \
-		ItemType& it = g_items[(_item)->getID()]; \
+		const ItemType& it = g_items.getItemType((_item)->getID()); \
 		if(it.moveable) { \
 			loose_item_count += 1; \
 		} \
@@ -1624,13 +1625,11 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 		} \
 	} \
 }
-
 		if(tile->ground) {
 			ANALYZE_ITEM(tile->ground);
 		}
 
-		for(ItemVector::const_iterator item_iter = tile->items.begin(); item_iter != tile->items.end(); ++item_iter) {
-			Item* item = *item_iter;
+		for(Item* item : tile->items) {
 			ANALYZE_ITEM(item);
 		}
 #undef ANALYZE_ITEM
@@ -1652,9 +1651,9 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 		load_counter += 1;
 	}
 
-	creatures_per_spawn =       (spawn_count != 0? double(creature_count) /      double(spawn_count) : -1.0);
-	percent_pathable    = 100.0*(tile_count != 0?  double(walkable_tile_count) / double(tile_count) : -1.0);
-	percent_detailed    = 100.0*(tile_count != 0?  double(detailed_tile_count) / double(tile_count) : -1.0);
+	creatures_per_spawn = (spawn_count != 0 ? double(creature_count) / double(spawn_count) : -1.0);
+	percent_pathable = 100.0*(tile_count != 0 ? double(walkable_tile_count) / double(tile_count) : -1.0);
+	percent_detailed = 100.0*(tile_count != 0 ? double(detailed_tile_count) / double(tile_count) : -1.0);
 
 	load_counter = 0;
 	Houses& houses = map->houses;

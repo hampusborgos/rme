@@ -286,7 +286,7 @@ void FindItemDialog::RefreshContentsInternal()
 	if(selection == SearchMode::ServerIDs) {
 		uint16_t serverID = (uint16_t)server_id_spin->GetValue();
 		for(int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
+			const ItemType& item = g_items.getItemType(id);
 			if(item.id != serverID)
 				continue;
 
@@ -304,7 +304,7 @@ void FindItemDialog::RefreshContentsInternal()
 	else if(selection == SearchMode::ClientIDs) {
 		uint16_t clientID = (uint16_t)client_id_spin->GetValue();
 		for (int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
+			const ItemType& item = g_items.getItemType(id);
 			if (item.id == 0 || item.clientID != clientID)
 				continue;
 
@@ -323,7 +323,7 @@ void FindItemDialog::RefreshContentsInternal()
 		std::string search_string = as_lower_str(nstr(name_text_input->GetValue()));
 		if(search_string.size() >= 2) {
 			for(int id = 100; id <= g_items.getMaxID(); ++id) {
-				ItemType& item = g_items.getItemType(id);
+				const ItemType& item = g_items.getItemType(id);
 				if(item.id == 0)
 					continue;
 
@@ -344,7 +344,7 @@ void FindItemDialog::RefreshContentsInternal()
 	}
 	else if(selection == SearchMode::Types) {
 		for(int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
+			const ItemType& item = g_items.getItemType(id);
 			if (item.id == 0)
 				continue;
 
@@ -391,7 +391,7 @@ void FindItemDialog::RefreshContentsInternal()
 
 		if(has_selected) {
 			for(int id = 100; id <= g_items.getMaxID(); ++id) {
-				ItemType& item = g_items.getItemType(id);
+				const ItemType& item = g_items.getItemType(id);
 				if(item.id == 0)
 					continue;
 

@@ -87,9 +87,9 @@ public:
 
 	void clean(int time);
 
-	int getDrawHeight() const;
-	std::pair<int, int> getDrawOffset() const;
-	uint8_t getMiniMapColor() const;
+	int getDrawHeight() const noexcept { return draw_height; }
+	const wxPoint& getDrawOffset() const noexcept { return draw_offset; }
+	uint8_t getMiniMapColor() const noexcept { return minimap_color; }
 
 	static GameSprite* createFromBitmap(const wxArtID& bitmapId);
 
@@ -194,8 +194,7 @@ public:
 	Animator* animator;
 
 	uint16_t draw_height;
-	uint16_t drawoffset_x;
-	uint16_t drawoffset_y;
+	wxPoint draw_offset;
 
 	uint16_t minimap_color;
 

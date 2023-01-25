@@ -30,40 +30,35 @@
 #include "table_brush.h"
 #include "wall_brush.h"
 
-Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
+Item* Item::Create(uint16_t id, uint16_t subtype /*= 0xFFFF*/)
 {
-	if(_type == 0) return nullptr;
-	Item* newItem = nullptr;
+	if(id == 0) return nullptr;
 
-	const ItemType& it = g_items[_type];
-
-	if(it.id != 0){
-		if(it.isDepot()) {
-			newItem = newd Depot(_type);
-		} else if(it.isContainer()) {
-			newItem = newd Container(_type);
-		} else if(it.isTeleport()) {
-			newItem = newd Teleport(_type);
-		} else if(it.isDoor()) {
-			newItem = newd Door(_type);
-		} else if(_subtype == 0xFFFF) {
-			if(it.isFluidContainer()) {
-				newItem = newd Item(_type, LIQUID_NONE);
-			} else if(it.isSplash()) {
-				newItem = newd Item(_type, LIQUID_WATER);
-			} else if(it.charges > 0) {
-				newItem = newd Item(_type, it.charges);
-			} else {
-				newItem = newd Item(_type, 1);
-			}
-		} else {
-			newItem = newd Item(_type, _subtype);
-		}
-	} else {
-		newItem = newd Item(_type, _subtype);
+	const ItemType& type = g_items.getItemType(id);
+	if (type.id == 0) {
+		return newd Item(id, subtype);
 	}
 
-	return newItem;
+	if(type.isDepot()) {
+		return new Depot(id);
+	} else if(type.isContainer()) {
+		return new Container(id);
+	} else if(type.isTeleport()) {
+		return new Teleport(id);
+	} else if(type.isDoor()) {
+		return new Door(id);
+	} else if(subtype == 0xFFFF) {
+		if(type.isFluidContainer()) {
+			return new Item(id, LIQUID_NONE);
+		} else if(type.isSplash()) {
+			return new Item(id, LIQUID_WATER);
+		} else if(type.charges > 0) {
+			return new Item(id, type.charges);
+		} else {
+			return new Item(id, 1);
+		}
+	}
+	return new Item(id, subtype);
 }
 
 Item::Item(unsigned short _type, unsigned short _count) :
@@ -153,41 +148,42 @@ uint32_t Item::memsize() const
 	return mem;
 }
 
-void Item::setID(uint16_t newid)
+void Item::setID(uint16_t new_id)
 {
-	id = newid;
+	id = new_id;
 }
 
-void Item::setSubtype(uint16_t n)
+void Item::setSubtype(uint16_t _subtype)
 {
-	subtype = n;
+	subtype = _subtype;
 }
 
 bool Item::hasSubtype() const
 {
-	const ItemType& it = g_items[id];
-	return (it.isFluidContainer() || it.isSplash() || isCharged() || it.stackable || it.charges != 0);
+	const ItemType& type = g_items.getItemType(id);
+	return (type.isFluidContainer()
+	     || type.stackable
+	     || type.charges != 0
+		 || type.isSplash()
+	     || isCharged());
 }
 
 uint16_t Item::getSubtype() const
 {
-	if(hasSubtype()) {
-		return subtype;
-	}
-	return 0;
+	return hasSubtype() ? subtype : 0;
 }
 
 bool Item::hasProperty(enum ITEMPROPERTY prop) const
 {
-	const ItemType& it = g_items[id];
-	switch(prop){
+	const ItemType& type = g_items.getItemType(id);
+	switch(prop) {
 		case BLOCKSOLID:
-			if(it.unpassable)
+			if(type.unpassable)
 				return true;
 			break;
 
 		case MOVEABLE:
-			if(it.moveable && getUniqueID() == 0)
+			if(type.moveable && getUniqueID() == 0)
 				return true;
 			break;
 /*
@@ -197,27 +193,27 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 			break;
 */
 		case BLOCKPROJECTILE:
-			if(it.blockMissiles)
+			if(type.blockMissiles)
 				return true;
 			break;
 
 		case BLOCKPATHFIND:
-			if(it.blockPathfinder)
+			if(type.blockPathfinder)
 				return true;
 			break;
 
 		case HOOK_SOUTH:
-			if(it.hookSouth)
+			if(type.hookSouth)
 				return true;
 			break;
 
 		case HOOK_EAST:
-			if(it.hookEast)
+			if(type.hookEast)
 				return true;
 			break;
 
 		case BLOCKINGANDNOTMOVEABLE:
-			if(it.unpassable && (!it.moveable || getUniqueID() != 0))
+			if(type.unpassable && (!type.moveable || getUniqueID() != 0))
 				return true;
 			break;
 
@@ -227,23 +223,22 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 	return false;
 }
 
-std::pair<int, int> Item::getDrawOffset() const
+wxPoint Item::getDrawOffset() const
 {
-	ItemType& it = g_items[id];
-	if(it.sprite != nullptr) {
-		return it.sprite->getDrawOffset();
+	const ItemType& type = g_items.getItemType(id);
+	if(type.sprite) {
+		return type.sprite->getDrawOffset();
 	}
-	return std::make_pair(0,0);
+	return wxPoint(0, 0);
 }
 
 double Item::getWeight() const
 {
-	ItemType& it = g_items[id];
-	if(it.stackable) {
-		return it.weight * std::max(1, (int)subtype);
+	const ItemType& type = g_items.getItemType(id);
+	if(type.stackable) {
+		return type.weight * std::max(1, (int)subtype);
 	}
-
-	return it.weight;
+	return type.weight;
 }
 
 void Item::setUniqueID(unsigned short n)
@@ -268,11 +263,11 @@ void Item::setDescription(const std::string& str)
 
 double Item::getWeight()
 {
-	ItemType& it = g_items[id];
-	if(it.isStackable()) {
-		return it.weight * subtype;
+	const ItemType& type = g_items.getItemType(id);
+	if(type.isStackable()) {
+		return type.weight * subtype;
 	}
-	return it.weight;
+	return type.weight;
 }
 
 bool Item::canHoldText() const
@@ -282,53 +277,53 @@ bool Item::canHoldText() const
 
 bool Item::canHoldDescription() const
 {
-	return g_items[id].allowDistRead;
+	return g_items.getItemType(id).allowDistRead;
 }
 
 uint8_t Item::getMiniMapColor() const
 {
-	GameSprite* spr = g_items[id].sprite;
-	if(spr) {
-		return spr->getMiniMapColor();
+	GameSprite* sprite = g_items.getItemType(id).sprite;
+	if(sprite) {
+		return sprite->getMiniMapColor();
 	}
 	return 0;
 }
 
 GroundBrush* Item::getGroundBrush() const
 {
-	ItemType& item_type = g_items.getItemType(id);
-	if(item_type.isGroundTile() && item_type.brush && item_type.brush->isGround()) {
-		return item_type.brush->asGround();
+	const ItemType& type = g_items.getItemType(id);
+	if(type.isGroundTile() && type.brush && type.brush->isGround()) {
+		return type.brush->asGround();
 	}
 	return nullptr;
 }
 
 TableBrush* Item::getTableBrush() const
 {
-	ItemType& item_type = g_items.getItemType(id);
-	if(item_type.isTable && item_type.brush && item_type.brush->isTable()) {
-		return item_type.brush->asTable();
+	const ItemType& type = g_items.getItemType(id);
+	if(type.isTable && type.brush && type.brush->isTable()) {
+		return type.brush->asTable();
 	}
 	return nullptr;
 }
 
 CarpetBrush* Item::getCarpetBrush() const
 {
-	ItemType& item_type = g_items.getItemType(id);
-	if(item_type.isCarpet && item_type.brush && item_type.brush->isCarpet()) {
-		return item_type.brush->asCarpet();
+	const ItemType& type = g_items.getItemType(id);
+	if(type.isCarpet && type.brush && type.brush->isCarpet()) {
+		return type.brush->asCarpet();
 	}
 	return nullptr;
 }
 
 DoorBrush* Item::getDoorBrush() const
 {
-	ItemType& item_type = g_items.getItemType(id);
-	if(!item_type.isWall || !item_type.isBrushDoor || !item_type.brush || !item_type.brush->isWall()) {
+	const ItemType& type = g_items.getItemType(id);
+	if(!type.isWall || !type.isBrushDoor || !type.brush || !type.brush->isWall()) {
 		return nullptr;
 	}
 
-	DoorType door_type = item_type.brush->asWall()->getDoorTypeFromID(id);
+	DoorType door_type = type.brush->asWall()->getDoorTypeFromID(id);
 	DoorBrush* door_brush = nullptr;
 	// Quite a horrible dependency on a global here, meh.
 	switch(door_type) {
@@ -365,30 +360,30 @@ DoorBrush* Item::getDoorBrush() const
 
 WallBrush* Item::getWallBrush() const
 {
-	ItemType& item_type = g_items.getItemType(id);
-	if(item_type.isWall && item_type.brush && item_type.brush->isWall())
-		return item_type.brush->asWall();
+	const ItemType& type = g_items.getItemType(id);
+	if(type.isWall && type.brush && type.brush->isWall())
+		return type.brush->asWall();
 	return nullptr;
 }
 
 BorderType Item::getWallAlignment() const
 {
-	ItemType& it = g_items[id];
-	if(!it.isWall) {
+	const ItemType& type = g_items.getItemType(id);
+	if(!type.isWall) {
 		return BORDER_NONE;
 	}
-	return it.border_alignment;
+	return type.border_alignment;
 }
 
 BorderType Item::getBorderAlignment() const
 {
-	ItemType& it = g_items[id];
-	return it.border_alignment;
+	const ItemType& type = g_items.getItemType(id);
+	return type.border_alignment;
 }
 
 void Item::animate()
 {
-	ItemType& type = g_items[id];
+	const ItemType& type = g_items.getItemType(id);
 	GameSprite* sprite = type.sprite;
 	if(!sprite || !sprite->animator)
 		return;

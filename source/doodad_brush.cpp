@@ -95,15 +95,12 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 				continue;
 			}
 
-			ItemType& it = g_items[item->getID()];
-			if(it.id != 0) {
-				it.doodad_brush = this;
+			ItemType* type = g_items.getRawItemType(item->getID());
+			if(!type) {
+				type->doodad_brush = this;
 			}
 
-			SingleBlock sb;
-			sb.item = item;
-			sb.chance = attribute.as_int();
-
+			SingleBlock sb{ attribute.as_int(), item };
 			alternativeBlock->single_items.push_back(sb);
 			alternativeBlock->single_chance += sb.chance;
 		} else if(childName == "composite") {
@@ -156,9 +153,9 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 					if(item) {
 						items.push_back(item);
 
-						ItemType& it = g_items[item->getID()];
-						if(it.id != 0) {
-							it.doodad_brush = this;
+						ItemType* type = g_items.getRawItemType(item->getID());
+						if(!type) {
+							type->doodad_brush = this;
 						}
 					}
 				}
@@ -185,7 +182,7 @@ bool DoodadBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = g_items[attribute.as_ushort()].clientID;
+		look_id = g_items.getItemType(attribute.as_ushort()).clientID;
 	}
 
 	if((attribute = node.attribute("on_blocking"))) {

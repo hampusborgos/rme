@@ -40,8 +40,6 @@ class GameSprite;
 class GameSprite;
 class ItemDatabase;
 
-extern ItemDatabase g_items;
-
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
 typedef uint16_t datasize_t;
@@ -236,13 +234,13 @@ struct writeableBlock3 {
 
 #pragma pack()
 
-class ItemType {
+class ItemType
+{
 private:
 	ItemType(const ItemType&) {}
 
 public:
 	ItemType();
-	~ItemType();
 
 	bool isGroundTile() const { return (group == ITEM_GROUP_GROUND); }
 	bool isSplash() const { return (group == ITEM_GROUP_SPLASH); }
@@ -352,16 +350,15 @@ public:
 
 	void clear();
 
-	ItemType& operator[](size_t id) {return getItemType(id);}
-	uint16_t getMaxID() const {return max_item_id;}
+	uint16_t getMaxID() const noexcept { return maxItemId; }
+	const ItemType& getItemType(uint16_t id) const;
+	ItemType* getRawItemType(uint16_t id);
 
-	bool typeExists(int id) const;
-	ItemType& getItemType(int id);
-	ItemType& getItemIdByClientID(int spriteId);
+	bool isValidID(uint16_t id) const;
 
 	bool loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings);
 	bool loadFromGameXml(const FileName& datafile, wxString& error, wxArrayString& warnings);
-	bool loadItemFromGameXml(pugi::xml_node itemNode, int id);
+	bool loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id);
 	bool loadMetaItem(pugi::xml_node node);
 
 	//typedef std::map<int32_t, ItemType*> ItemMap;
@@ -386,12 +383,16 @@ protected:
 	uint16_t monster_count;
 	uint16_t distance_count;
 
-	uint16_t minclientID;
-	uint16_t maxclientID;
-	uint16_t max_item_id;
+	uint16_t minClientID;
+	uint16_t maxClientID;
+	uint16_t maxItemId;
+
+	ItemType dummy;
 
 	friend class GameSprite;
 	friend class Item;
 };
+
+extern ItemDatabase g_items;
 
 #endif

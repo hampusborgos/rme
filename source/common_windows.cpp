@@ -833,11 +833,11 @@ void FindBrushDialog::OnClickOKInternal()
 				if(!result_brush) {
 					// Then let's search the RAWs
 					for(int id = 0; id <= g_items.getMaxID(); ++id) {
-						ItemType& it = g_items[id];
-						if(it.id == 0)
+						const ItemType& type = g_items.getItemType(id);
+						if(type.id == 0)
 							continue;
 
-						RAWBrush* raw_brush = it.raw_brush;
+						RAWBrush* raw_brush = type.raw_brush;
 						if(!raw_brush)
 							continue;
 
@@ -888,11 +888,11 @@ void FindBrushDialog::RefreshContentsInternal()
 		}
 
 		for(int id = 0; id <= g_items.getMaxID(); ++id) {
-			ItemType& it = g_items[id];
-			if(it.id == 0)
+			const ItemType& type = g_items.getItemType(id);
+			if(type.id == 0)
 				continue;
 
-			RAWBrush* raw_brush = it.raw_brush;
+			RAWBrush* raw_brush = type.raw_brush;
 			if(!raw_brush)
 				continue;
 

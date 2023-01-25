@@ -96,11 +96,6 @@ ItemType::ItemType() :
 	////
 }
 
-ItemType::~ItemType()
-{
-	////
-}
-
 bool ItemType::isFloorChange() const
 {
 	return floorChange || floorChangeDown || floorChangeNorth || floorChangeSouth || floorChangeEast || floorChangeWest;
@@ -118,10 +113,10 @@ ItemDatabase::ItemDatabase() :
 	monster_count(0),
 	distance_count(0),
 
-	minclientID(0),
-	maxclientID(0),
+	minClientID(0),
+	maxClientID(0),
 
-	max_item_id(0)
+	maxItemId(0)
 {
 	////
 }
@@ -133,7 +128,7 @@ ItemDatabase::~ItemDatabase()
 
 void ItemDatabase::clear()
 {
-	for(uint32_t i = 0; i < items.size(); i++) {
+	for(size_t i = 0; i < items.size(); i++) {
 		delete items[i];
 		items.set(i, nullptr);
 	}
@@ -141,22 +136,21 @@ void ItemDatabase::clear()
 
 bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArrayString& warnings)
 {
-	uint8_t u8;
-
-	for( ; itemNode != nullptr; itemNode = itemNode->advance()) {
-		if(!itemNode->getU8(u8)) {
+	for(; itemNode != nullptr; itemNode = itemNode->advance()) {
+		uint8_t group;
+		if(!itemNode->getU8(group)) {
 			// Invalid!
 			warnings.push_back("Invalid item type encountered...");
 			continue;
 		}
 
-		if(u8 == ITEM_GROUP_DEPRECATED)
+		if(group == ITEM_GROUP_DEPRECATED)
 			continue;
 
-		ItemType* t = newd ItemType();
-		t->group = ItemGroup_t(u8);
+		ItemType* item = new ItemType();
+		item->group = static_cast<ItemGroup_t>(group);
 
-		switch(t->group) {
+		switch(item->group) {
 			case ITEM_GROUP_NONE:
 			case ITEM_GROUP_GROUND:
 			case ITEM_GROUP_SPLASH:
@@ -167,39 +161,50 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 			case ITEM_GROUP_WRITEABLE:
 			case ITEM_GROUP_KEY:
 				break;
-			case ITEM_GROUP_DOOR: t->type = ITEM_TYPE_DOOR; break;
-			case ITEM_GROUP_CONTAINER: t->type = ITEM_TYPE_CONTAINER; break;
-			case ITEM_GROUP_RUNE: t->client_chargeable = true; break;
-			case ITEM_GROUP_TELEPORT: t->type = ITEM_TYPE_TELEPORT; break;
-			case ITEM_GROUP_MAGICFIELD: t->type = ITEM_TYPE_MAGICFIELD; break;
+			case ITEM_GROUP_DOOR:
+				item->type = ITEM_TYPE_DOOR;
+				break;
+			case ITEM_GROUP_CONTAINER:
+				item->type = ITEM_TYPE_CONTAINER;
+				break;
+			case ITEM_GROUP_RUNE:
+				item->client_chargeable = true;
+				break;
+			case ITEM_GROUP_TELEPORT:
+				item->type = ITEM_TYPE_TELEPORT;
+				break;
+			case ITEM_GROUP_MAGICFIELD:
+				item->type = ITEM_TYPE_MAGICFIELD;
+				break;
 			default:
 				warnings.push_back("Unknown item group declaration");
+				break;
 		}
 
 		uint32_t flags;
 		if(itemNode->getU32(flags)) {
-			t->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
-			t->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
-			t->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
-			t->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
+			item->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
+			item->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
+			item->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
+			item->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
 			//t->useable = ((flags & FLAG_USEABLE) == FLAG_USEABLE);
-			t->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
-			t->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
-			t->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
-			t->floorChangeDown = ((flags & FLAG_FLOORCHANGEDOWN) == FLAG_FLOORCHANGEDOWN);
-			t->floorChangeNorth = ((flags & FLAG_FLOORCHANGENORTH) == FLAG_FLOORCHANGENORTH);
-			t->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
-			t->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
-			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
-			t->floorChange = t->floorChangeDown || t->floorChangeNorth || t->floorChangeEast || t->floorChangeSouth || t->floorChangeWest;
+			item->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
+			item->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
+			item->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
+			item->floorChangeDown = ((flags & FLAG_FLOORCHANGEDOWN) == FLAG_FLOORCHANGEDOWN);
+			item->floorChangeNorth = ((flags & FLAG_FLOORCHANGENORTH) == FLAG_FLOORCHANGENORTH);
+			item->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
+			item->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
+			item->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
+			item->floorChange = item->floorChangeDown || item->floorChangeNorth || item->floorChangeEast || item->floorChangeSouth || item->floorChangeWest;
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
-			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
-			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
-			t->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
-			t->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
-			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
-			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
-			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
+			item->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
+			item->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
+			item->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			item->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
+			item->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
+			item->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
+			item->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
 		}
 
 		uint8_t attribute;
@@ -216,11 +221,11 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						error = "items.otb: Unexpected data length of server id block (Should be 2 bytes)";
 						return false;
 					}
-					if(!itemNode->getU16(t->id))
+					if(!itemNode->getU16(item->id))
 						warnings.push_back("Invalid item type property (2)");
 
-					if(max_item_id < t->id)
-						max_item_id = t->id;
+					if(maxItemId < item->id)
+						maxItemId = item->id;
 					break;
 				}
 
@@ -230,10 +235,10 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						return false;
 					}
 
-					if(!itemNode->getU16(t->clientID))
+					if(!itemNode->getU16(item->clientID))
 						warnings.push_back("Invalid item type property (2)");
 
-					t->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(t->clientID));
+					item->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(item->clientID));
 					break;
 				}
 
@@ -269,11 +274,11 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						break;
 					}
 
-					uint8_t u8 = 0;
-					if(!itemNode->getU8(u8))
+					uint8_t value = 0;
+					if(!itemNode->getU8(value))
 						warnings.push_back("Invalid item type property (5)");
 
-					t->alwaysOnTopOrder = u8;
+					item->alwaysOnTopOrder = value;
 					break;
 				}
 
@@ -290,7 +295,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						warnings.push_back("Invalid item type property (6)");
 						break;
 					}
-					t->name = (char*)name;
+					item->name = (char*)name;
 					break;
 				}
 
@@ -308,7 +313,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						break;
 					}
 
-					t->description = (char*)description;
+					item->description = (char*)description;
 					break;
 				}
 
@@ -318,7 +323,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						break;
 					}
 
-					if(!itemNode->getU16(t->volume))
+					if(!itemNode->getU16(item->volume))
 						warnings.push_back("Invalid item type property (8)");
 					break;
 				}
@@ -328,14 +333,14 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						warnings.push_back("items.otb: Unexpected data length of item weight block (Should be 8 bytes)");
 						break;
 					}
-					uint8_t w[sizeof(double)];
-					if(!itemNode->getRAW(w, sizeof(double))) {
+
+					uint8_t weight[sizeof(double)];
+					if(!itemNode->getRAW(weight, sizeof(double))) {
 						warnings.push_back("Invalid item type property (7)");
 						break;
 					}
 
-					double wi = *reinterpret_cast<double*>(&w);
-					t->weight = wi;
+					item->weight = *reinterpret_cast<double*>(&weight);
 					break;
 				}
 
@@ -351,7 +356,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 						break;
 					}
 
-					t->rotateTo = rotate;
+					item->rotateTo = rotate;
 					break;
 				}
 
@@ -375,7 +380,7 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 					}
 
 					//t->readOnlyId = wb3->readOnlyId;
-					t->maxTextLen = maxTextLen;
+					item->maxTextLen = maxTextLen;
 					break;
 				}
 
@@ -388,71 +393,80 @@ bool ItemDatabase::loadFromOtbVer1(BinaryNode* itemNode, wxString& error, wxArra
 			}
 		}
 
-		if(t) {
-			if(items[t->id]) {
-				warnings.push_back("items.otb: Duplicate items");
-				delete items[t->id];
-			}
-			items.set(t->id, t);
+		if(items[item->id]) {
+			warnings.push_back("items.otb: Duplicate items");
+			delete items[item->id];
 		}
+		items.set(item->id, item);
 	}
 	return true;
 }
 
 bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArrayString& warnings)
 {
-	uint8_t u8;
-	for( ; itemNode != nullptr; itemNode = itemNode->advance()) {
-		if(!itemNode->getU8(u8)) {
+	uint8_t group;
+	for(; itemNode != nullptr; itemNode = itemNode->advance()) {
+		if(!itemNode->getU8(group)) {
 			// Invalid!
 			warnings.push_back("Invalid item type encountered...");
 			continue;
 		}
 
-		if(ItemGroup_t(u8) == ITEM_GROUP_DEPRECATED)
+		if(group == ITEM_GROUP_DEPRECATED)
 			continue;
 
-		ItemType* t = newd ItemType();
-		t->group = ItemGroup_t(u8);
+		ItemType* item = newd ItemType();
+		item->group = static_cast<ItemGroup_t>(group);
 
-		switch(t->group) {
+		switch(item->group) {
 			case ITEM_GROUP_NONE:
 			case ITEM_GROUP_GROUND:
 			case ITEM_GROUP_SPLASH:
 			case ITEM_GROUP_FLUID:
 				break;
-			case ITEM_GROUP_DOOR: t->type = ITEM_TYPE_DOOR; break;
-			case ITEM_GROUP_CONTAINER: t->type = ITEM_TYPE_CONTAINER; break;
-			case ITEM_GROUP_RUNE: t->client_chargeable = true; break;
-			case ITEM_GROUP_TELEPORT: t->type = ITEM_TYPE_TELEPORT; break;
-			case ITEM_GROUP_MAGICFIELD: t->type = ITEM_TYPE_MAGICFIELD; break;
+			case ITEM_GROUP_DOOR:
+				item->type = ITEM_TYPE_DOOR;
+				break;
+			case ITEM_GROUP_CONTAINER:
+				item->type = ITEM_TYPE_CONTAINER;
+				break;
+			case ITEM_GROUP_RUNE:
+				item->client_chargeable = true;
+				break;
+			case ITEM_GROUP_TELEPORT:
+				item->type = ITEM_TYPE_TELEPORT;
+				break;
+			case ITEM_GROUP_MAGICFIELD:
+				item->type = ITEM_TYPE_MAGICFIELD;
+				break;
 			default:
 				warnings.push_back("Unknown item group declaration");
+				break;
 		}
 
 		uint32_t flags;
 		if(itemNode->getU32(flags)) {
-			t->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
-			t->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
-			t->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
-			t->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
-			t->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
-			t->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
-			t->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
-			t->floorChangeDown = ((flags & FLAG_FLOORCHANGEDOWN) == FLAG_FLOORCHANGEDOWN);
-			t->floorChangeNorth = ((flags & FLAG_FLOORCHANGENORTH) == FLAG_FLOORCHANGENORTH);
-			t->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
-			t->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
-			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
-			t->floorChange = t->floorChangeDown || t->floorChangeNorth || t->floorChangeEast || t->floorChangeSouth || t->floorChangeWest;
+			item->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
+			item->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
+			item->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
+			item->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
+			item->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
+			item->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
+			item->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
+			item->floorChangeDown = ((flags & FLAG_FLOORCHANGEDOWN) == FLAG_FLOORCHANGEDOWN);
+			item->floorChangeNorth = ((flags & FLAG_FLOORCHANGENORTH) == FLAG_FLOORCHANGENORTH);
+			item->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
+			item->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
+			item->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
+			item->floorChange = item->floorChangeDown || item->floorChangeNorth || item->floorChangeEast || item->floorChangeSouth || item->floorChangeWest;
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
-			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
-			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
-			t->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
-			t->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
-			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
-			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
-			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
+			item->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
+			item->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
+			item->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			item->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
+			item->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
+			item->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
+			item->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
 		}
 
 		uint8_t attribute;
@@ -470,11 +484,11 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 						return false;
 					}
 
-					if(!itemNode->getU16(t->id))
+					if(!itemNode->getU16(item->id))
 						warnings.push_back("Invalid item type property (2)");
 
-					if(max_item_id < t->id)
-						max_item_id = t->id;
+					if(maxItemId < item->id)
+						maxItemId = item->id;
 					break;
 				}
 
@@ -484,10 +498,10 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 						return false;
 					}
 
-					if(!itemNode->getU16(t->clientID))
+					if(!itemNode->getU16(item->clientID))
 						warnings.push_back("Invalid item type property (2)");
 
-					t->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(t->clientID));
+					item->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(item->clientID));
 					break;
 				}
 
@@ -523,11 +537,11 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 						break;
 					}
 
-					uint8_t u8 = 0;
-					if(!itemNode->getU8(u8)) {
+					uint8_t value = 0;
+					if(!itemNode->getU8(value)) {
 						warnings.push_back("Invalid item type property (5)");
 					}
-					t->alwaysOnTopOrder = u8;
+					item->alwaysOnTopOrder = value;
 					break;
 				}
 
@@ -540,69 +554,70 @@ bool ItemDatabase::loadFromOtbVer2(BinaryNode* itemNode, wxString& error, wxArra
 			}
 		}
 
-		if(t) {
-			if(items[t->id]) {
-				warnings.push_back("items.otb: Duplicate items");
-				delete items[t->id];
-			}
-			items.set(t->id, t);
+		if(items[item->id]) {
+			warnings.push_back("items.otb: Duplicate items");
+			delete items[item->id];
 		}
+		items.set(item->id, item);
 	}
 	return true;
 }
 
-bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArrayString& warnings) {
-	uint8_t u8;
-	for( ; itemNode != nullptr; itemNode = itemNode->advance()) {
-		if(!itemNode->getU8(u8)) {
+bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArrayString& warnings)
+{
+	uint8_t group;
+	for(; itemNode != nullptr; itemNode = itemNode->advance()) {
+		if(!itemNode->getU8(group)) {
 			// Invalid!
 			warnings.push_back("Invalid item type encountered...");
 			continue;
 		}
 
-		if(ItemGroup_t(u8) == ITEM_GROUP_DEPRECATED)
+		if(group == ITEM_GROUP_DEPRECATED)
 			continue;
 
-		ItemType* t = newd ItemType();
-		t->group = ItemGroup_t(u8);
+		ItemType* item = newd ItemType();
+		item->group = static_cast<ItemGroup_t>(group);
 
-		switch(t->group) {
-			case  ITEM_GROUP_NONE:
+		switch(item->group) {
+			case ITEM_GROUP_NONE:
 			case ITEM_GROUP_GROUND:
 			case ITEM_GROUP_SPLASH:
 			case ITEM_GROUP_FLUID:
 				break;
-			case ITEM_GROUP_CONTAINER: t->type = ITEM_TYPE_CONTAINER; break;
+			case ITEM_GROUP_CONTAINER:
+				item->type = ITEM_TYPE_CONTAINER;
 				break;
 			default:
 				warnings.push_back("Unknown item group declaration");
+				break;
 		}
 
 		uint32_t flags;
 		if(itemNode->getU32(flags)) {
-			t->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
-			t->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
-			t->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
-			t->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
-			t->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
-			t->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
-			t->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
-			t->floorChangeDown = ((flags & FLAG_FLOORCHANGEDOWN) == FLAG_FLOORCHANGEDOWN);
-			t->floorChangeNorth = ((flags & FLAG_FLOORCHANGENORTH) == FLAG_FLOORCHANGENORTH);
-			t->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
-			t->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
-			t->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
-			t->floorChange = t->floorChangeDown || t->floorChangeNorth || t->floorChangeEast || t->floorChangeSouth || t->floorChangeWest;
+			item->unpassable = ((flags & FLAG_UNPASSABLE) == FLAG_UNPASSABLE);
+			item->blockMissiles = ((flags & FLAG_BLOCK_MISSILES) == FLAG_BLOCK_MISSILES);
+			item->blockPathfinder = ((flags & FLAG_BLOCK_PATHFINDER) == FLAG_BLOCK_PATHFINDER);
+			item->hasElevation = ((flags & FLAG_HAS_ELEVATION) == FLAG_HAS_ELEVATION);
+			item->pickupable = ((flags & FLAG_PICKUPABLE) == FLAG_PICKUPABLE);
+			item->moveable = ((flags & FLAG_MOVEABLE) == FLAG_MOVEABLE);
+			item->stackable = ((flags & FLAG_STACKABLE) == FLAG_STACKABLE);
+			item->floorChangeDown = ((flags & FLAG_FLOORCHANGEDOWN) == FLAG_FLOORCHANGEDOWN);
+			item->floorChangeNorth = ((flags & FLAG_FLOORCHANGENORTH) == FLAG_FLOORCHANGENORTH);
+			item->floorChangeEast = ((flags & FLAG_FLOORCHANGEEAST) == FLAG_FLOORCHANGEEAST);
+			item->floorChangeSouth = ((flags & FLAG_FLOORCHANGESOUTH) == FLAG_FLOORCHANGESOUTH);
+			item->floorChangeWest = ((flags & FLAG_FLOORCHANGEWEST) == FLAG_FLOORCHANGEWEST);
+			item->floorChange = item->floorChangeDown || item->floorChangeNorth || item->floorChangeEast || item->floorChangeSouth || item->floorChangeWest;
 			// Now this is confusing, just accept that the ALWAYSONTOP flag means it's always on bottom, got it?!
-			t->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
-			t->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
-			t->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
-			t->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
-			t->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
-			t->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
-			t->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
-			t->client_chargeable = ((flags & FLAG_CLIENTCHARGES) == FLAG_CLIENTCHARGES);
-			t->ignoreLook = ((flags & FLAG_IGNORE_LOOK) == FLAG_IGNORE_LOOK);
+			item->alwaysOnBottom = ((flags & FLAG_ALWAYSONTOP) == FLAG_ALWAYSONTOP);
+			item->isHangable = ((flags & FLAG_HANGABLE) == FLAG_HANGABLE);
+			item->hookEast = ((flags & FLAG_HOOK_EAST) == FLAG_HOOK_EAST);
+			item->hookSouth = ((flags & FLAG_HOOK_SOUTH) == FLAG_HOOK_SOUTH);
+			item->allowDistRead = ((flags & FLAG_ALLOWDISTREAD) == FLAG_ALLOWDISTREAD);
+			item->rotable = ((flags & FLAG_ROTABLE) == FLAG_ROTABLE);
+			item->canReadText = ((flags & FLAG_READABLE) == FLAG_READABLE);
+			item->client_chargeable = ((flags & FLAG_CLIENTCHARGES) == FLAG_CLIENTCHARGES);
+			item->ignoreLook = ((flags & FLAG_IGNORE_LOOK) == FLAG_IGNORE_LOOK);
 		}
 
 		uint8_t attribute;
@@ -620,11 +635,11 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 						return false;
 					}
 
-					if(!itemNode->getU16(t->id))
+					if(!itemNode->getU16(item->id))
 						warnings.push_back("Invalid item type property (2)");
 
-					if(max_item_id < t->id)
-						max_item_id = t->id;
+					if(maxItemId < item->id)
+						maxItemId = item->id;
 					break;
 				}
 
@@ -634,10 +649,10 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 						return false;
 					}
 
-					if(!itemNode->getU16(t->clientID))
+					if(!itemNode->getU16(item->clientID))
 						warnings.push_back("Invalid item type property (2)");
 
-					t->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(t->clientID));
+					item->sprite = static_cast<GameSprite*>(g_gui.gfx.getSprite(item->clientID));
 					break;
 				}
 
@@ -673,10 +688,11 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 						break;
 					}
 
-					if(!itemNode->getU8(u8))
+					uint8_t value;
+					if(!itemNode->getU8(value))
 						warnings.push_back("Invalid item type property (5)");
 
-					t->alwaysOnTopOrder = u8;
+					item->alwaysOnTopOrder = value;
 					break;
 				}
 
@@ -689,13 +705,11 @@ bool ItemDatabase::loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArra
 			}
 		}
 
-		if(t) {
-			if(items[t->id]) {
-				warnings.push_back("items.otb: Duplicate items");
-				delete items[t->id];
-			}
-			items.set(t->id, t);
+		if(items[item->id]) {
+			warnings.push_back("items.otb: Duplicate items");
+			delete items[item->id];
 		}
+		items.set(item->id, item);
 	}
 	return true;
 }
@@ -763,7 +777,7 @@ bool ItemDatabase::loadFromOtb(const FileName& datafile, wxString& error, wxArra
 	return true;
 }
 
-bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
+bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 {
 	ClientVersionID clientVersion = g_gui.GetCurrentVersionID();
 	if(clientVersion < CLIENT_VERSION_980 && id > 20000 && id < 20100) {
@@ -774,10 +788,12 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 		return true;
 	}
 
-	ItemType& it = getItemType(id);
+	if(!isValidID(id))
+		return false;
 
-	it.name = itemNode.attribute("name").as_string();
-	it.editorsuffix = itemNode.attribute("editorsuffix").as_string();
+	ItemType& item = *items[id];
+	item.name = itemNode.attribute("name").as_string();
+	item.editorsuffix = itemNode.attribute("editorsuffix").as_string();
 
 	pugi::xml_attribute attribute;
 	for(pugi::xml_node itemAttributesNode = itemNode.first_child(); itemAttributesNode; itemAttributesNode = itemAttributesNode.next_sibling()) {
@@ -795,32 +811,32 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			std::string typeValue = attribute.as_string();
 			to_lower_str(key);
 			if(typeValue == "depot") {
-				it.type = ITEM_TYPE_DEPOT;
+				item.type = ITEM_TYPE_DEPOT;
 			} else if(typeValue == "mailbox") {
-				it.type = ITEM_TYPE_MAILBOX;
+				item.type = ITEM_TYPE_MAILBOX;
 			} else if(typeValue == "trashholder") {
-				it.type = ITEM_TYPE_TRASHHOLDER;
+				item.type = ITEM_TYPE_TRASHHOLDER;
 			} else if (typeValue == "container") {
-				it.type = ITEM_TYPE_CONTAINER;
+				item.type = ITEM_TYPE_CONTAINER;
 			} else if (typeValue == "door") {
-				it.type = ITEM_TYPE_DOOR;
+				item.type = ITEM_TYPE_DOOR;
 			} else if (typeValue == "magicfield") {
-				it.group = ITEM_GROUP_MAGICFIELD;
-				it.type = ITEM_TYPE_MAGICFIELD;
+				item.group = ITEM_GROUP_MAGICFIELD;
+				item.type = ITEM_TYPE_MAGICFIELD;
 			} else if (typeValue == "teleport") {
-				it.type = ITEM_TYPE_TELEPORT;
+				item.type = ITEM_TYPE_TELEPORT;
 			} else if (typeValue == "bed") {
-				it.type = ITEM_TYPE_BED;
+				item.type = ITEM_TYPE_BED;
 			} else if (typeValue == "key") {
-				it.type = ITEM_TYPE_KEY;
+				item.type = ITEM_TYPE_KEY;
 			}
 		} else if(key == "name") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.name = attribute.as_string();
+				item.name = attribute.as_string();
 			}
 		} else if(key == "description") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.description = attribute.as_string();
+				item.description = attribute.as_string();
 			}
 		}else if(key == "runespellName") {
 			/*if((attribute = itemAttributesNode.attribute("value"))) {
@@ -828,38 +844,38 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			}*/
 		} else if(key == "weight") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.weight = attribute.as_int() / 100.f;
+				item.weight = attribute.as_int() / 100.f;
 			}
 		} else if(key == "armor") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.armor = attribute.as_int();
+				item.armor = attribute.as_int();
 			}
 		} else if(key == "defense") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.defense = attribute.as_int();
+				item.defense = attribute.as_int();
 			}
 		} else if(key == "rotateto") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.rotateTo = attribute.as_ushort();
+				item.rotateTo = attribute.as_ushort();
 			}
 		} else if(key == "containersize") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.volume = attribute.as_ushort();
+				item.volume = attribute.as_ushort();
 			}
 		} else if(key == "readable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.canReadText = attribute.as_bool();
+				item.canReadText = attribute.as_bool();
 			}
 		} else if(key == "writeable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.canWriteText = it.canReadText = attribute.as_bool();
+				item.canWriteText = item.canReadText = attribute.as_bool();
 			}
 		} else if(key == "decayto") {
-			it.decays = true;
+			item.decays = true;
 		} else if(key == "maxtextlen" || key == "maxtextlength") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.maxTextLen = attribute.as_ushort();
-				it.canReadText = it.maxTextLen > 0;
+				item.maxTextLen = attribute.as_ushort();
+				item.canReadText = item.maxTextLen > 0;
 			}
 		} else if(key == "writeonceitemid") {
 			/*if((attribute = itemAttributesNode.attribute("value"))) {
@@ -867,43 +883,43 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			}*/
 		} else if(key == "allowdistread") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.allowDistRead = attribute.as_bool();
+				item.allowDistRead = attribute.as_bool();
 			}
 		} else if(key == "charges") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.charges = attribute.as_uint();
-				it.extra_chargeable = true;
+				item.charges = attribute.as_uint();
+				item.extra_chargeable = true;
 			}
 		} else if(key == "floorchange") {
 			if ((attribute = itemAttributesNode.attribute("value"))) {
 				std::string value = attribute.as_string();
 				if(value == "down") {
-					it.floorChangeDown = true;
-					it.floorChange = true;
+					item.floorChangeDown = true;
+					item.floorChange = true;
 				} else if (value == "north") {
-					it.floorChangeNorth = true;
-					it.floorChange = true;
+					item.floorChangeNorth = true;
+					item.floorChange = true;
 				} else if (value == "south") {
-					it.floorChangeSouth = true;
-					it.floorChange = true;
+					item.floorChangeSouth = true;
+					item.floorChange = true;
 				} else if (value == "west") {
-					it.floorChangeWest = true;
-					it.floorChange = true;
+					item.floorChangeWest = true;
+					item.floorChange = true;
 				} else if (value == "east") {
-					it.floorChangeEast = true;
-					it.floorChange = true;
+					item.floorChangeEast = true;
+					item.floorChange = true;
 				} else if(value == "northex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if(value == "southex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if(value == "westex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if(value == "eastex")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if (value == "southalt")
-					it.floorChange = true;
+					item.floorChange = true;
 				else if (value == "eastalt")
-					it.floorChange = true;
+					item.floorChange = true;
 			}
 		}
 	}
@@ -960,27 +976,37 @@ bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 		if(id == 0 || items[id]) {
 			return false;
 		}
-		items.set(id, newd ItemType());
-		items[id]->is_metaitem = true;
-		items[id]->id = id;
+
+		ItemType* item = new ItemType();
+		item->is_metaitem = true;
+		item->id = id;
+		items.set(id, item);
 		return true;
 	}
 	return false;
 }
 
-ItemType& ItemDatabase::getItemType(int id)
+const ItemType& ItemDatabase::getItemType(uint16_t id) const
 {
-	ItemType* it = items[id];
-	if(it)
-		return *it;
-	else {
-		static ItemType dummyItemType; // use this for invalid ids
-		return dummyItemType;
-	}
+	if(id == 0 || id > maxItemId)
+		return dummy;
+
+	const ItemType* type = items[id];
+	if(type) return *type;
+
+	return dummy;
 }
 
-bool ItemDatabase::typeExists(int id) const
+ItemType* ItemDatabase::getRawItemType(uint16_t id)
 {
-	ItemType* it = items[id];
-	return it != nullptr;
+	if(id == 0 || id > maxItemId)
+		return nullptr;
+	return items[id];
+}
+
+bool ItemDatabase::isValidID(uint16_t id) const
+{
+	if (id == 0 || id > maxItemId)
+		return false;
+	return items[id] != nullptr;
 }
