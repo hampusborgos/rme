@@ -185,12 +185,12 @@ public: //Functions
 	// Has to do with houses
 	bool isHouseTile() const noexcept;
 	uint32_t getHouseID() const noexcept;
-	void addHouseExit(House* h);
-	void removeHouseExit(House* h);
+	void addHouseExit(House* house);
+	void removeHouseExit(House* house);
 	bool isHouseExit() const;
 	const HouseExitList* getHouseExits() const;
 	HouseExitList* getHouseExits();
-	bool hasHouseExit(uint32_t exit) const;
+	bool hasHouseExit(uint32_t houseId) const;
 	void setHouse(House* house);
 
 	// Mapflags (PZ, PVPZONE etc.)
