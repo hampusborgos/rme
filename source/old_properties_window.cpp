@@ -595,9 +595,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 					const House* house = edit_map->houses.getHouse(edit_tile->getHouseID());
 					if(house) {
 						Position pos = house->getDoorPositionByID(new_door_id);
-						if(pos == Position()) {
-							// Do nothing
-						} else if(pos != edit_tile->getPosition()) {
+						if(pos.isValid() && pos != edit_tile->getPosition()) {
 							int ret = g_gui.PopupDialog(this, "Warning", "This doorid conflicts with another one in this house, are you sure you want to continue?", wxYES | wxNO);
 							if(ret == wxID_NO) {
 								return;

@@ -187,10 +187,10 @@ std::string House::getDescription()
 void House::setExit(Map* targetmap, const Position& pos)
 {
 	// This might fail when the user decides to put an exit at 0,0,0, let's just hope noone does (Noone SHOULD, so there is no problem? Hm?)
-	if(pos == exit || pos == Position())
+	if(pos == exit || !pos.isValid())
 		return;
 
-	if(exit != Position()) {
+	if(exit.isValid()) {
 		Tile* oldexit = targetmap->getTile(exit);
 		if(oldexit)
 			oldexit->removeHouseExit(this);

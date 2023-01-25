@@ -117,7 +117,7 @@ void WaypointPalettePanel::OnUpdate()
 {
 	if(wxTextCtrl* tc = waypoint_list->GetEditControl()) {
 		Waypoint* wp = map->waypoints.getWaypoint(nstr(tc->GetValue()));
-		if(wp && wp->pos == Position()) {
+		if(wp && !wp->pos.isValid()) {
 			if(map->getTile(wp->pos))
 				map->getTileL(wp->pos)->decreaseWaypointCount();
 			map->waypoints.removeWaypoint(wp->name);

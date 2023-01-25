@@ -1249,7 +1249,7 @@ void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder
 {
 	if(doodad_brush->doNewBorders() && g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 		const Position& position = new_tile->getPosition();
-		tilestoborder.push_back(position);
+		tilestoborder.push_back(Position(position));
 		if(buffer_tile->hasGround()) {
 			for(int y = -1; y <= 1; y++) {
 				for(int x = -1; x <= 1; x++) {
