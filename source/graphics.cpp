@@ -175,16 +175,6 @@ GameSprite* GraphicManager::getEditorSprite(int id)
 	return nullptr;
 }
 
-uint16_t GraphicManager::getItemSpriteMaxID() const
-{
-	return item_count;
-}
-
-uint16_t GraphicManager::getCreatureSpriteMaxID() const
-{
-	return creature_count;
-}
-
 #define loadPNGFile(name) _wxGetBitmapFromMemory(name, sizeof(name))
 inline wxBitmap* _wxGetBitmapFromMemory(const unsigned char* data, int length)
 {

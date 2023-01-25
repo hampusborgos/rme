@@ -360,6 +360,7 @@ public:
 
 	void clear();
 
+	uint16_t getMinID() const noexcept { return 100; }
 	uint16_t getMaxID() const noexcept { return maxItemId; }
 	const ItemType& getItemType(uint16_t id) const;
 	ItemType* getRawItemType(uint16_t id);

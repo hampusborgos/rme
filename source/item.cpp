@@ -162,10 +162,10 @@ bool Item::hasSubtype() const
 {
 	const ItemType& type = g_items.getItemType(id);
 	return (type.isFluidContainer()
-	     || type.stackable
-	     || type.charges != 0
-		 || type.isSplash()
-	     || isCharged());
+		|| type.stackable
+		|| type.charges != 0
+		|| type.isSplash()
+		|| isCharged());
 }
 
 uint16_t Item::getSubtype() const

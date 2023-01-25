@@ -274,14 +274,14 @@ void CopyBuffer::paste(Editor& editor, const Position& toPosition)
 			}
 			// Go through all neighbours
 			Tile* t;
-			t = map.getTile(pos.x-1, pos.y-1, pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x  , pos.y-1, pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x+1, pos.y-1, pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x-1, pos.y  , pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x+1, pos.y  , pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x-1, pos.y+1, pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x  , pos.y+1, pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
-			t = map.getTile(pos.x+1, pos.y+1, pos.z); if(t && !t->isSelected()) {borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x-1, pos.y-1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x  , pos.y-1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x+1, pos.y-1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x-1, pos.y  , pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x+1, pos.y  , pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x-1, pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x  , pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
+			t = map.getTile(pos.x+1, pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
 			if(add_me) borderize_tiles.push_back(map.getTile(pos));
 		}
 		// Remove duplicates
