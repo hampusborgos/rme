@@ -57,7 +57,7 @@ public: // Functions
 	LiveClient* GetLiveClient() const;
 	LiveServer* GetLiveServer() const;
 	LiveSocket& GetLive() const;
-	bool CanEdit() const {return true;}
+	bool CanEdit() const { return true; }
 	bool IsLocal() const;
 	bool IsLive() const;
 	bool IsLiveServer() const;
@@ -79,7 +79,7 @@ public: // Functions
 	uint16_t getMapWidth() const { return map.width; }
 	uint16_t getMapHeight() const { return map.height; }
 
-	wxString getLoaderError() const {return map.getError();}
+	wxString getLoaderError() const { return map.getError(); }
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset, ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);
 	bool exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog);
@@ -130,9 +130,9 @@ protected:
 
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }
 inline void Editor::undraw(const Position& offset, bool alt) { drawInternal(offset, alt, false); }
-inline void Editor::draw(const PositionVector& posvec, bool alt) {drawInternal(posvec, alt, true);}
-inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt) {drawInternal(todraw, toborder, alt, true);}
-inline void Editor::undraw(const PositionVector& posvec, bool alt) {drawInternal(posvec, alt, false);}
-inline void Editor::undraw(const PositionVector& todraw, PositionVector& toborder, bool alt) {drawInternal(todraw, toborder, alt, false);}
+inline void Editor::draw(const PositionVector& posvec, bool alt) { drawInternal(posvec, alt, true); }
+inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt) { drawInternal(todraw, toborder, alt, true); }
+inline void Editor::undraw(const PositionVector& posvec, bool alt) { drawInternal(posvec, alt, false); }
+inline void Editor::undraw(const PositionVector& todraw, PositionVector& toborder, bool alt) { drawInternal(todraw, toborder, alt, false); }
 
 #endif

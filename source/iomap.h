@@ -48,8 +48,8 @@ public:
 
 	MapVersion version;
 
-	wxArrayString& getWarnings() {return warnings;}
-	wxString& getError() {return errorstr;}
+	wxArrayString& getWarnings() { return warnings; }
+	wxString& getError() { return errorstr; }
 
 	virtual bool loadMap(Map& map, const FileName& identifier) = 0;
 	virtual bool saveMap(Map& map, const FileName& identifier) = 0;
@@ -62,8 +62,8 @@ public:
 		version = v;
 	}
 
-	virtual bool loadMap(Map& map, const FileName& identifier) {return false;}
-	virtual bool saveMap(Map& map, const FileName& identifier) {return false;}
+	virtual bool loadMap(Map& map, const FileName& identifier) { return false; }
+	virtual bool saveMap(Map& map, const FileName& identifier) { return false; }
 };
 
 #endif

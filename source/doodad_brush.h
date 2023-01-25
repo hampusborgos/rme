@@ -48,8 +48,8 @@ public:
 
 	bool isEmpty(int variation) const;
 
-	int getThickness() const {return thickness;}
-	int getThicknessCeiling() const {return thickness_ceiling;}
+	int getThickness() const { return thickness; }
+	int getThicknessCeiling() const { return thickness_ceiling; }
 
 	int getCompositeChance(int variation) const;
 	int getSingleChance(int variation) const;

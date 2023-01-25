@@ -37,7 +37,7 @@ public:
 	void draw_creature(BaseMap* map, Tile* tile);
 	virtual void undraw(BaseMap* map, Tile* tile);
 
-	CreatureType* getType() const {return creature_type;}
+	CreatureType* getType() const { return creature_type; }
 
 	virtual int getLookID() const; // We don't have a look type, this will always return 0
 	virtual std::string getName() const;

@@ -211,7 +211,7 @@ public:
 	static ClientVersionList getAllVersionsSupportedForClientVersion(ClientVersion* v);
 	static ClientVersion* getLatestVersion();
 
-	bool operator==(const ClientVersion& o) const {return otb.id == o.otb.id;}
+	bool operator==(const ClientVersion& o) const { return otb.id == o.otb.id; }
 
 	bool hasValidPaths();
 	bool loadValidPaths();

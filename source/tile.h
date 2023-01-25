@@ -68,9 +68,9 @@ public:
 
 	// The location of the tile
 	// Stores state that remains between the tile being moved (like house exits)
-	void setLocation(TileLocation* where) {location = where;}
-	TileLocation* getLocation() {return location;}
-	const TileLocation* getLocation() const {return location;}
+	void setLocation(TileLocation* where) { location = where; }
+	TileLocation* getLocation() { return location; }
+	const TileLocation* getLocation() const { return location; }
 
 	// Position of the tile
 	const Position& getPosition() const noexcept { return location->getPosition(); }
@@ -131,7 +131,7 @@ public: //Functions
 
 	uint8_t getMiniMapColor() const;
 
-	// Does this tile have ground?
+	bool hasItems() const noexcept { return ground || !items.empty(); }
 	bool hasGround() const noexcept { return ground != nullptr; }
 	bool hasBorders() const {
 		return !items.empty() && items.front()->isBorder();

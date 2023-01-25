@@ -34,17 +34,20 @@ public:
 	void OnKeyUp(wxKeyEvent&);
 	void OnIdle(wxIdleEvent&);
 
-	void pause() {paused_val = true;}
-	void unpause() {paused_val = false;}
-	bool paused() const {return paused_val || dead;}
+	void pause() { paused_val = true; }
+	void unpause() { paused_val = false; }
+	bool paused() const { return paused_val || dead; }
+
 protected:
 	virtual void Render(wxDC& pdc) = 0;
 	virtual void GameLoop(int time) = 0;
 	virtual void OnKey(wxKeyEvent& event, bool down) = 0;
 
 	virtual int getFPS() const = 0;
+
 protected:
 	wxStopWatch game_timer;
+
 private:
 	bool paused_val;
 
@@ -67,7 +70,7 @@ protected:
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
 
-	virtual int getFPS() const {return lines / 10 + 3;}
+	virtual int getFPS() const { return lines / 10 + 3; }
 
 	enum Color {
 		NO_COLOR,
@@ -125,7 +128,7 @@ protected:
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
 
-	virtual int getFPS() const {return 7;}
+	virtual int getFPS() const { return 7; }
 
 	enum {
 		NORTH,

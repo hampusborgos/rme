@@ -30,7 +30,7 @@ enum BrushListType {
 
 class BrushBoxInterface {
 public:
-	BrushBoxInterface(const TilesetCategory* _tileset) : tileset(_tileset), loaded(false) {ASSERT(tileset);}
+	BrushBoxInterface(const TilesetCategory* _tileset) : tileset(_tileset), loaded(false) {ASSERT(tileset); }
 	virtual ~BrushBoxInterface() {}
 
 	virtual wxWindow* GetSelfWindow() = 0;
@@ -51,7 +51,7 @@ public:
 	BrushListBox(wxWindow* parent, const TilesetCategory* _tileset);
 	~BrushListBox();
 
-	wxWindow* GetSelfWindow() {return this;}
+	wxWindow* GetSelfWindow() { return this; }
 
 	// Select the first brush
 	void SelectFirstBrush();
@@ -74,7 +74,7 @@ public:
 	BrushIconBox(wxWindow* parent, const TilesetCategory* _tileset, RenderSize rsz);
 	~BrushIconBox();
 
-	wxWindow* GetSelfWindow() {return this;}
+	wxWindow* GetSelfWindow() { return this; }
 
 	// Scrolls the window to the position of the named brush button
 	void EnsureVisible(BrushButton* btn);

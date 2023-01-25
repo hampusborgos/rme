@@ -215,7 +215,7 @@ public:
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter);
 	virtual void undraw(BaseMap* map, Tile* tile);
 
-	virtual bool canDrag() const {return true;}
+	virtual bool canDrag() const { return true; }
 	virtual int getLookID() const;
 	virtual std::string getName() const;
 

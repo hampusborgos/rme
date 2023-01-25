@@ -83,7 +83,7 @@ public:
 	void clear(bool del = true);
 	MapIterator begin();
 	MapIterator end();
-	uint64_t size() const {return tilecount;}
+	uint64_t size() const { return tilecount; }
 
 	// these functions take a position and returns a tile on the map
 	Tile* createTile(int x, int y, int z);
@@ -99,21 +99,21 @@ public:
 	const TileLocation* getTileL(const Position& pos) const;
 
 	// Get a Quad Tree Leaf from the map
-	QTreeNode* getLeaf(int x, int y) {return root.getLeaf(x, y);}
-	QTreeNode* createLeaf(int x, int y) {return root.getLeafForce(x, y);}
+	QTreeNode* getLeaf(int x, int y) { return root.getLeaf(x, y); }
+	QTreeNode* createLeaf(int x, int y) { return root.getLeafForce(x, y); }
 
 	// Assigns a tile, it might seem pointless to provide position, but it is not, as the passed tile may be nullptr
 	void setTile(int _x, int _y, int _z, Tile* newtile, bool remove = false);
-	void setTile(const Position& pos, Tile* newtile, bool remove = false) {setTile(pos.x, pos.y, pos.z, newtile, remove);}
-	void setTile(Tile* newtile, bool remove = false) {setTile(newtile->getX(), newtile->getY(), newtile->getZ(), newtile, remove);}
+	void setTile(const Position& pos, Tile* newtile, bool remove = false) { setTile(pos.x, pos.y, pos.z, newtile, remove); }
+	void setTile(Tile* newtile, bool remove = false) { setTile(newtile->getX(), newtile->getY(), newtile->getZ(), newtile, remove); }
 	// Replaces a tile and returns the old one
 	Tile* swapTile(int _x, int _y, int _z, Tile* newtile);
-	Tile* swapTile(const Position& pos, Tile* newtile) {return swapTile(pos.x, pos.y, pos.z, newtile);}
+	Tile* swapTile(const Position& pos, Tile* newtile) { return swapTile(pos.x, pos.y, pos.z, newtile); }
 
 	// Clears the visiblity according to the mask passed
 	void clearVisible(uint32_t mask);
 
-	uint64_t getTileCount() const {return tilecount;}
+	uint64_t getTileCount() const { return tilecount; }
 
 public:
 	MapAllocator allocator;
