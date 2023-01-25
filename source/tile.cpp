@@ -76,7 +76,7 @@ Tile* Tile::deepCopy(BaseMap& map)
 	// Spawncount & exits are not transferred on copy!
 	if(ground) copy->ground = ground->deepCopy();
 
-	for (const Item* item : items) {
+	for(const Item* item : items) {
 		copy->items.push_back(item->deepCopy());
 	}
 
@@ -88,7 +88,7 @@ uint32_t Tile::memsize() const
 	uint32_t mem = sizeof(*this);
 	if(ground) mem += ground->memsize();
 
-	for (const Item* item : items) {
+	for(const Item* item : items) {
 		mem += item->memsize();
 	}
 
@@ -114,7 +114,7 @@ int Tile::size() const
 
 void Tile::merge(Tile* other)
 {
-	if (!other) return;
+	if(!other) return;
 
 	if(other->isPZ()) setPZ(true);
 	if(other->house_id) {
@@ -145,7 +145,7 @@ void Tile::merge(Tile* other)
 		other->creature = nullptr;
 	}
 
-	for (Item* item : other->items) {
+	for(Item* item : other->items) {
 		addItem(item);
 	}
 	other->items.clear();
@@ -267,7 +267,7 @@ void Tile::select()
 	if(spawn) spawn->select();
 	if(creature) creature->select();
 
-	for (Item* item : items) {
+	for(Item* item : items) {
 		item->select();
 	}
 
@@ -281,7 +281,7 @@ void Tile::deselect()
 	if(spawn) spawn->deselect();
 	if(creature) creature->deselect();
 
-	for (Item* item : items) {
+	for(Item* item : items) {
 		item->deselect();
 	}
 
@@ -312,14 +312,12 @@ ItemVector Tile::popSelectedItems(bool ignoreTileSelected)
 		ground = nullptr;
 	}
 
-	auto it = items.begin();
-	while(it != items.end()) {
+	for(auto it = items.begin(); it != items.end();) {
 		if((*it)->isSelected()) {
 			pop_items.push_back(*it);
 			it = items.erase(it);
-		} else {
-			++it;
 		}
+		else ++it;
 	}
 
 	statflags &= ~TILESTATE_SELECTED;
@@ -336,7 +334,7 @@ ItemVector Tile::getSelectedItems()
 		selected_items.push_back(ground);
 	}
 
-	for (Item* item : items) {
+	for(Item* item : items) {
 		if(item->isSelected()) {
 			selected_items.push_back(item);
 		}
@@ -391,7 +389,7 @@ void Tile::update()
 		}
 	}
 
-	for (const Item* item : items) {
+	for(const Item* item : items) {
 		if(item->isSelected()) {
 			statflags |= TILESTATE_SELECTED;
 		}
@@ -446,15 +444,15 @@ GroundBrush* Tile::getGroundBrush() const
 
 void Tile::cleanBorders()
 {
-	ItemVector::iterator it = items.begin();
-	while(it != items.end()) {
-		if((*it)->isBorder()) {
-			delete *it;
-			it = items.erase(it);
-		} else {
-			// Borders should only be on the bottom, we can ignore the rest of the items
-			return;
-		}
+	if(items.empty()) return;
+
+	for(auto it = items.begin(); it != items.end();) {
+		Item* item = (*it);
+		// Borders should only be on the bottom, we can ignore the rest of the items
+		if(!item->isBorder()) break; 
+
+		delete item;
+		it = items.erase(it);
 	}
 }
 
@@ -502,40 +500,48 @@ void Tile::addWallItem(Item* item)
 
 void Tile::cleanWalls(bool dontdelete)
 {
-	ItemVector::iterator it = items.begin();
-	while(it != items.end()) {
-		if((*it)->isWall()) {
+	if(items.empty()) return;
+
+	for(auto it = items.begin(); it != items.end();) {
+		Item* item = (*it);
+		if(item && item->isWall()) {
 			if(!dontdelete) {
-				delete *it;
+				delete item;
 			}
 			it = items.erase(it);
-		} else ++it;
+		}
+		else ++it;
 	}
 }
 
 void Tile::cleanWalls(WallBrush* brush)
 {
-	if (!brush) return;
+	if(!brush || items.empty())
+		return;
 
-	ItemVector::iterator it = items.begin();
-	while(it != items.end()) {
-		if((*it)->isWall() && brush->hasWall(*it)) {
-			delete *it;
+	for(auto it = items.begin(); it != items.end();) {
+		Item* item = (*it);
+		if(item && item->isWall() && brush->hasWall(item)) {
+			delete item;
 			it = items.erase(it);
-		} else ++it;
+		}
+		else ++it;
 	}
 }
 
 void Tile::cleanTables(bool dontdelete)
 {
-	ItemVector::iterator it = items.begin();
-	while(it != items.end()) {
-		if((*it)->isTable()) {
+	if(items.empty()) return;
+
+	for(auto it = items.begin(); it != items.end();) {
+		Item* item = (*it);
+		if(item && item->isTable()) {
 			if(!dontdelete) {
-				delete *it;
+				delete item;
 			}
 			it = items.erase(it);
-		} else ++it;
+		}
+		else ++it;
 	}
 }
 
@@ -557,8 +563,8 @@ void Tile::selectGround()
 		selected = true;
 	}
 
-	for (Item* item : items) {
-		if (!item->isBorder())
+	for(Item* item : items) {
+		if(!item->isBorder())
 			break;
 		item->select();
 		selected = true;
@@ -573,8 +579,8 @@ void Tile::deselectGround()
 	if(ground) {
 		ground->deselect();
 	}
-	for (Item* item : items) {
-		if (!item->isBorder())
+	for(Item* item : items) {
+		if(!item->isBorder())
 			break;
 		item->deselect();
 	}
@@ -598,15 +604,11 @@ void Tile::removeHouseExit(House* house)
 	if(!house) return;
 
 	HouseExitList* exits = location->getHouseExits();
-	if(!exits)
-		return;
+	if(!exits || exits->empty()) return;
 
-	for(auto it = exits->begin(); it != exits->end(); ++it) {
-		if(*it == house->id) {
-			exits->erase(it);
-			return;
-		}
-	}
+	auto it = std::find(exits->begin(), exits->end(), house->id);
+	if(it != exits->end())
+		exits->erase(it);
 }
 
 bool Tile::hasHouseExit(uint32_t houseId) const
