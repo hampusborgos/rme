@@ -39,7 +39,7 @@ public:
 
 	void addWaypoint(Waypoint* wp);
 	Waypoint* getWaypoint(std::string name);
-	Waypoint* getWaypoint(TileLocation* location);
+	Waypoint* getWaypoint(const Position& position);
 	void removeWaypoint(std::string name);
 
 	WaypointMap waypoints;

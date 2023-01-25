@@ -44,11 +44,16 @@ struct MapTooltip
 };
 
 // Storage during drawing, for option caching
-struct DrawingOptions {
+class DrawingOptions
+{
+public:
 	DrawingOptions();
 
 	void SetIngame();
 	void SetDefault();
+
+	bool isOnlyColors() const noexcept;
+	bool isTileIndicators() const noexcept;
 
 	bool transparent_floors;
 	bool transparent_items;
@@ -118,7 +123,9 @@ public:
 
 	void Draw();
 	void DrawBackground();
+	void DrawShade(int map_z, bool only_colors);
 	void DrawMap();
+	void DrawSecondaryMap(int map_z);
 	void DrawDraggingShadow();
 	void DrawHigherFloors();
 	void DrawSelectionBox();

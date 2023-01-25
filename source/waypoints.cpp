@@ -41,14 +41,14 @@ Waypoint* Waypoints::getWaypoint(std::string name)
 	return iter->second;
 }
 
-Waypoint* Waypoints::getWaypoint(TileLocation* location)
+Waypoint* Waypoints::getWaypoint(const Position& position)
 {
-	if(!location)
+	if(!position.isValid())
 		return nullptr;
 	// TODO find waypoint by position hash.
 	for(WaypointMap::iterator it = waypoints.begin(); it != waypoints.end(); it++) {
 		Waypoint* waypoint = it->second;
-		if(waypoint && waypoint->pos == location->position)
+		if(waypoint && waypoint->pos == position)
 			return waypoint;
 	}
 	return nullptr;
