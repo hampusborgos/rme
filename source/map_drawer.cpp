@@ -107,6 +107,18 @@ void DrawingOptions::SetIngame()
 	hide_items_when_zoomed = false;
 }
 
+bool DrawingOptions::isOnlyColors() const noexcept
+{
+	return show_as_minimap || show_only_colors;
+}
+
+bool DrawingOptions::isTileIndicators() const noexcept
+{
+	if(isOnlyColors())
+		return false;
+	return show_pickupables || show_moveables || show_houses || show_spawns;
+}
+
 MapDrawer::MapDrawer(MapCanvas* canvas) : canvas(canvas), editor(canvas->editor)
 {
 	////
@@ -243,7 +255,8 @@ void MapDrawer::DrawMap()
 			current_house_id = brush->asHouseExit()->getHouseID();
 	}
 
-	bool only_colors = options.show_as_minimap || options.show_only_colors;
+	bool only_colors = options.isOnlyColors();
+	bool tile_indicators = options.isTileIndicators();
 
 	// Enable texture mode
 	if(!only_colors)
@@ -291,11 +304,7 @@ void MapDrawer::DrawMap()
 								DrawTile(nd->getTile(map_x, map_y, map_z));
 							}
 						}
-						if (!options.show_as_minimap && !options.show_only_colors &&
-							(options.show_pickupables
-							|| options.show_moveables
-							|| options.show_houses
-							|| options.show_spawns)) {
+						if (tile_indicators) {
 							for(int map_x = 0; map_x < 4; ++map_x) {
 								for(int map_y = 0; map_y < 4; ++map_y) {
 									DrawTileIndicators(nd->getTile(map_x, map_y, map_z));
@@ -1412,8 +1421,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 			WriteTooltip(waypoint, tooltip);
 	}
 
-	bool as_minimap = options.show_as_minimap;
-	bool only_colors = as_minimap || options.show_only_colors;
+	bool only_colors = options.isOnlyColors();
 
 	const Position& position = location->getPosition();
 	int draw_x, draw_y;
@@ -1422,7 +1430,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 	uint8_t r = 255,g = 255,b = 255;
 	if(tile->ground || only_colors) {
 
-		if(!as_minimap) {
+		if(!options.show_as_minimap) {
 			bool showspecial = options.show_only_colors || options.show_special_tiles;
 
 			if(options.show_blocking && tile->isBlocking() && tile->size() > 0) {
@@ -1476,7 +1484,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 		}
 
 		if(only_colors) {
-			if(as_minimap) {
+			if(options.show_as_minimap) {
 				wxColor color = colorFromEightBit(tile->getMiniMapColor());
 				glBlitSquare(draw_x, draw_y, color);
 			}

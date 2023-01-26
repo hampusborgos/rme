@@ -50,6 +50,9 @@ struct DrawingOptions {
 	void SetIngame();
 	void SetDefault();
 
+	bool isOnlyColors() const noexcept;
+	bool isTileIndicators() const noexcept;
+
 	bool transparent_floors;
 	bool transparent_items;
 	bool show_ingame_box;
