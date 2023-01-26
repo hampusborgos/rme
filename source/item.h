@@ -178,7 +178,6 @@ public:
 
 	// Drawing related
 	uint8_t getMiniMapColor() const;
-	int getHeight() const;
 	wxPoint getDrawOffset() const;
 
 	// Item types

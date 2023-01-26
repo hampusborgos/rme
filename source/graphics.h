@@ -88,7 +88,7 @@ public:
 
 	void clean(int time);
 
-	int getDrawHeight() const noexcept { return draw_height; }
+	uint16_t getDrawHeight() const noexcept { return draw_height; }
 	const wxPoint& getDrawOffset() const noexcept { return draw_offset; }
 	uint8_t getMiniMapColor() const noexcept { return minimap_color; }
 
@@ -196,7 +196,6 @@ public:
 
 	uint16_t draw_height;
 	wxPoint draw_offset;
-
 	uint16_t minimap_color;
 
 	std::vector<NormalImage*> spriteList;

@@ -240,8 +240,9 @@ inline int getFloorAdjustment(int floor)
 		return TILE_SIZE * (GROUND_LAYER - floor);
 }
 
-void MapDrawer::DrawShade(int map_z, bool only_colors)
+void MapDrawer::DrawShade(int map_z)
 {
+	bool only_colors = options.isOnlyColors();
 	if(map_z == end_z && start_z != end_z) {
 		if(!only_colors)
 			glDisable(GL_TEXTURE_2D);
@@ -285,7 +286,7 @@ void MapDrawer::DrawMap()
 
 	for(int map_z = start_z; map_z >= superend_z; map_z--) {
 		if(options.show_shade) {
-			DrawShade(map_z, only_colors);
+			DrawShade(map_z);
 		}
 
 		if(map_z >= end_z) {

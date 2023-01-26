@@ -123,9 +123,9 @@ public:
 
 	void Draw();
 	void DrawBackground();
-	void DrawShade(int map_z, bool only_colors);
+	void DrawShade(int mapz);
 	void DrawMap();
-	void DrawSecondaryMap(int map_z);
+	void DrawSecondaryMap(int mapz);
 	void DrawDraggingShadow();
 	void DrawHigherFloors();
 	void DrawSelectionBox();
