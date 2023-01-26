@@ -265,10 +265,8 @@ void Action::commit(DirtyList* dirty_list)
 					TileLocation* newtile = editor.map.getTileL(p->second);
 
 					// Only need to remove from old if it actually exists
-					if(p->second.isValid()) {
-						if(oldtile && oldtile->getWaypointCount() > 0)
-							oldtile->decreaseWaypointCount();
-					}
+					if(p->second.isValid() && oldtile && oldtile->getWaypointCount() > 0)
+						oldtile->decreaseWaypointCount();
 
 					newtile->increaseWaypointCount();
 
@@ -390,10 +388,8 @@ void Action::undo(DirtyList* dirty_list)
 					TileLocation* newtile = editor.map.getTileL(p->second);
 
 					// Only need to remove from old if it actually exists
-					if(p->second.isValid()) {
-						if(oldtile && oldtile->getWaypointCount() > 0)
-							oldtile->decreaseWaypointCount();
-					}
+					if(p->second.isValid() && oldtile && oldtile->getWaypointCount() > 0)
+						oldtile->decreaseWaypointCount();
 
 					newtile->increaseWaypointCount();
 

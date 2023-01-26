@@ -81,9 +81,7 @@ public:
 	bool isValid() const noexcept {
 		if(x == 0 && y == 0 && z == 0)
 			return false;
-		return z >= 0 && z <= MAP_MAX_LAYER
-			&& x >= 0 && x <= MAP_MAX_WIDTH
-			&& y >= 0 && y <= MAP_MAX_HEIGHT;
+		return z >= 0 && z <= MAP_MAX_LAYER && x >= 0 && x <= MAP_MAX_WIDTH && y >= 0 && y <= MAP_MAX_HEIGHT;
 	}
 };
 
