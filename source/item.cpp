@@ -227,13 +227,13 @@ bool Item::hasProperty(enum ITEMPROPERTY prop) const
 	return false;
 }
 
-std::pair<int, int> Item::getDrawOffset() const
+wxPoint Item::getDrawOffset() const
 {
 	ItemType& it = g_items[id];
 	if(it.sprite != nullptr) {
 		return it.sprite->getDrawOffset();
 	}
-	return std::make_pair(0,0);
+	return wxPoint(0, 0);
 }
 
 double Item::getWeight() const

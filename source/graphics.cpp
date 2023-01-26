@@ -661,12 +661,9 @@ bool GraphicManager::loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* s
 					uint16_t offset_y;
 					file.getU16(offset_x);
 					file.getU16(offset_y);
-
-					sType->drawoffset_x = offset_x;
-					sType->drawoffset_y = offset_y;
+					sType->draw_offset = wxPoint(offset_x, offset_y);
 				} else {
-					sType->drawoffset_x = 8;
-					sType->drawoffset_y = 8;
+					sType->draw_offset = wxPoint(8, 8);
 				}
 				break;
 			}
@@ -892,8 +889,6 @@ GameSprite::GameSprite() :
 	numsprites(0),
 	animator(nullptr),
 	draw_height(0),
-	drawoffset_x(0),
-	drawoffset_y(0),
 	minimap_color(0)
 {
 	dc[SPRITE_SIZE_16x16] = nullptr;
@@ -925,21 +920,6 @@ void GameSprite::unloadDC()
 	delete dc[SPRITE_SIZE_32x32];
 	dc[SPRITE_SIZE_16x16] = nullptr;
 	dc[SPRITE_SIZE_32x32] = nullptr;
-}
-
-int GameSprite::getDrawHeight() const
-{
-	return draw_height;
-}
-
-std::pair<int, int> GameSprite::getDrawOffset() const
-{
-	return std::make_pair(drawoffset_x, drawoffset_y);
-}
-
-uint8_t GameSprite::getMiniMapColor() const
-{
-	return minimap_color;
 }
 
 int GameSprite::getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const

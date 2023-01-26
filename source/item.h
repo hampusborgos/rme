@@ -174,8 +174,7 @@ public:
 
 	// Drawing related
 	uint8_t getMiniMapColor() const;
-	int getHeight() const;
-	std::pair<int,int> getDrawOffset() const;
+	wxPoint getDrawOffset() const;
 
 	// Item types
 	bool hasProperty(enum ITEMPROPERTY prop) const;
