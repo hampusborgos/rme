@@ -1,0 +1,31 @@
+/* XPM */
+static const char *toolbar_pickupables_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 9 1 ",
+"  c None",
+". c black",
+"X c #010101",
+"o c #040404",
+"O c gray2",
+"+ c #FBFBFB",
+"@ c #FDFDFD",
+"# c #FEFEFE",
+"$ c white",
+/* pixels */
+"          .     ",
+"         .$.    ",
+"        .$$$.   ",
+"       .$$$$$.  ",
+"      .$.$$$.$. ",
+"      .$$.$.$$. ",
+"       .$$.$$.  ",
+"        .$.$. . ",
+"    ........ .$.",
+"  ..$$$$$$$.o$$.",
+" .$.+$$$o..$$$. ",
+".$$$.$$$$$$$$.  ",
+" .$$$.o......   ",
+"  .$$$.         ",
+"   .$.          ",
+"    .           "
+};

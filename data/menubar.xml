@@ -51,6 +51,7 @@
             <item name="$Remove Items by ID..." action="MAP_REMOVE_ITEMS" help="Removes all items with the selected ID from the map."/>
             <item name="Remove $all corpses..." action="MAP_REMOVE_CORPSES" help="Removes all corpses from the map."/>
             <item name="Remove all $unreachable tiles..." action="MAP_REMOVE_UNREACHABLE_TILES" help="Removes all tiles that cannot be reached (or seen) by the player from the map."/>
+            <item name="Remove empty spawns" action="MAP_REMOVE_EMPTY_SPAWNS" help="Removes all empty spawns from the map."/>
             <item name="$Clear Invalid Houses" action="CLEAR_INVALID_HOUSES" help="Clears house tiles not belonging to any house."/>
             <item name="Clear $Modified State" action="CLEAR_MODIFIED_STATE" help="Clears the modified state from all tiles."/>
         </menu>
@@ -103,6 +104,7 @@
             <item name="Brushes" action="VIEW_TOOLBARS_BRUSHES" help="Show or hide the Brushes toolbar."/>
             <item name="Position" action="VIEW_TOOLBARS_POSITION" help="Show or hide the Position toolbar."/>
             <item name="Sizes" action="VIEW_TOOLBARS_SIZES" help="Show or hide the Sizes toolbar."/>
+            <item name="Indicators" action="VIEW_TOOLBARS_INDICATORS" help="Show or hide the Indicators toolbar."/>
             <item name="Standard" action="VIEW_TOOLBARS_STANDARD" help="Show or hide the Standard toolbar."/>
         </menu>
         <item name="$New View" hotkey="Ctrl+Shift+N" action="NEW_VIEW" help="Creates a new view of the current map."/>
@@ -131,7 +133,11 @@
         <item name="Show $pathing" hotkey="O" action="SHOW_PATHING" help="Show pathing grid (blocking tiles)."/>
         <item name="Show T$ooltips" hotkey="Y" action="SHOW_TOOLTIPS" help="Show tooltips."/>
         <item name="Show Previe$w" hotkey="L" action="SHOW_PREVIEW" help="Show animations and lights preview."/>
-        <item name="Show Wall Hoo$ks" hotkey="K" action="SHOW_WALL_HOOKS" help="Show indicators for wall hooks."/>
+        <menu name="Show Indicators">
+            <item name="Show Wall Hoo$ks" hotkey="K" action="SHOW_WALL_HOOKS" help="Show indicators for wall hooks."/>
+            <item name="Show Pickupables" action="SHOW_PICKUPABLES" help="Show indicators for pickupable items."/>
+            <item name="Show Moveables" action="SHOW_MOVEABLES" help="Show indicators for moveable items."/>
+        </menu>
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>
