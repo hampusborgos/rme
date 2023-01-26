@@ -187,7 +187,7 @@ public:
 	void setString(uint32_t key, std::string newval);
 
 	wxConfigBase& getConfigObject();
-	void setDefaults() {IO(DEFAULT);}
+	void setDefaults() { IO(DEFAULT); }
 	void load();
 	void save(bool endoftheworld = false);
 public:

@@ -177,7 +177,7 @@ bool HousePalettePanel::SelectBrush(const Brush* whatbrush)
 				}
 			}
 		}
-	} else if (whatbrush->isSpawn()) {
+	} else if(whatbrush->isSpawn()) {
 		SelectExitBrush();
 	}
 	return false;
@@ -428,7 +428,7 @@ void HousePalettePanel::OnClickRemoveHouse(wxCommandEvent& event)
 //EVT_LISTBOX is not triggered when the deselection is happening. http://trac.wxwidgets.org/ticket/15603
 //Here we find out if the listbox was deselected using a normal mouse up event so we know when to disable the buttons and brushes.
 void HousePalettePanel::OnListBoxClick(wxMouseEvent& event) {
-	if (house_list->GetSelection() == wxNOT_FOUND) {
+	if(house_list->GetSelection() == wxNOT_FOUND) {
 		select_position_button->Enable(false);
 		select_position_button->SetValue(false);
 		house_brush_button->Enable(false);

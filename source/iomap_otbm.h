@@ -119,7 +119,7 @@ struct OTBM_HouseTile_coords
 class IOMapOTBM : public IOMap
 {
 public:
-	IOMapOTBM(MapVersion ver) {version = ver;}
+	IOMapOTBM(MapVersion ver) { version = ver; }
 	~IOMapOTBM() {}
 
 	static bool getVersionInfo(const FileName& identifier, MapVersion& out_ver);

@@ -68,16 +68,16 @@ public:
 
 	// The location of the tile
 	// Stores state that remains between the tile being moved (like house exits)
-	void setLocation(TileLocation* where) {location = where;}
-	TileLocation* getLocation() {return location;}
-	const TileLocation* getLocation() const {return location;}
+	void setLocation(TileLocation* where) {location = where; }
+	TileLocation* getLocation() { return location; }
+	const TileLocation* getLocation() const { return location; }
 
 	// Position of the tile
-	Position getPosition() {return location->getPosition();}
-	const Position getPosition() const {return location->getPosition();}
-	int getX() const {return location->getPosition().x;}
-	int getY() const {return location->getPosition().y;}
-	int getZ() const {return location->getPosition().z;}
+	Position getPosition() { return location->getPosition(); }
+	const Position getPosition() const { return location->getPosition(); }
+	int getX() const { return location->getPosition().x; }
+	int getY() const { return location->getPosition().y; }
+	int getZ() const { return location->getPosition().z; }
 
 public: //Functions
 	// Absorb the other tile into this tile

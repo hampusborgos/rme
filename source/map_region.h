@@ -44,8 +44,8 @@ public:
 
 	// Access tile
 	// Can't set directly since that does not update tile count
-	Tile* get() {return tile;}
-	const Tile* get() const {return tile;}
+	Tile* get() { return tile; }
+	const Tile* get() const { return tile; }
 
 	int size() const;
 	bool empty() const;
@@ -55,14 +55,14 @@ public:
 	int getY() const noexcept { return position.y; }
 	int getZ() const noexcept { return position.z; }
 
-	size_t getSpawnCount() const {return spawn_count;}
-	void increaseSpawnCount() {spawn_count++;}
-	void decreaseSpawnCount() {spawn_count--;}
-	size_t getWaypointCount() const {return waypoint_count;}
-	void increaseWaypointCount() {waypoint_count++;}
-	void decreaseWaypointCount() {waypoint_count--;}
-	HouseExitList* createHouseExits() {if(house_exits) return house_exits; return house_exits = newd HouseExitList;}
-	HouseExitList* getHouseExits() {return house_exits;}
+	size_t getSpawnCount() const { return spawn_count; }
+	void increaseSpawnCount() { spawn_count++; }
+	void decreaseSpawnCount() { spawn_count--; }
+	size_t getWaypointCount() const { return waypoint_count; }
+	void increaseWaypointCount() { waypoint_count++; }
+	void decreaseWaypointCount() { waypoint_count--; }
+	HouseExitList* createHouseExits() { if(house_exits) return house_exits; return house_exits = newd HouseExitList; }
+	HouseExitList* getHouseExits() { return house_exits; }
 
 	friend class Floor;
 	friend class QTreeNode;

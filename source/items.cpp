@@ -800,18 +800,18 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 				it.type = ITEM_TYPE_MAILBOX;
 			} else if(typeValue == "trashholder") {
 				it.type = ITEM_TYPE_TRASHHOLDER;
-			} else if (typeValue == "container") {
+			} else if(typeValue == "container") {
 				it.type = ITEM_TYPE_CONTAINER;
-			} else if (typeValue == "door") {
+			} else if(typeValue == "door") {
 				it.type = ITEM_TYPE_DOOR;
-			} else if (typeValue == "magicfield") {
+			} else if(typeValue == "magicfield") {
 				it.group = ITEM_GROUP_MAGICFIELD;
 				it.type = ITEM_TYPE_MAGICFIELD;
-			} else if (typeValue == "teleport") {
+			} else if(typeValue == "teleport") {
 				it.type = ITEM_TYPE_TELEPORT;
-			} else if (typeValue == "bed") {
+			} else if(typeValue == "bed") {
 				it.type = ITEM_TYPE_BED;
-			} else if (typeValue == "key") {
+			} else if(typeValue == "key") {
 				it.type = ITEM_TYPE_KEY;
 			}
 		} else if(key == "name") {
@@ -875,21 +875,21 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 				it.extra_chargeable = true;
 			}
 		} else if(key == "floorchange") {
-			if ((attribute = itemAttributesNode.attribute("value"))) {
+			if((attribute = itemAttributesNode.attribute("value"))) {
 				std::string value = attribute.as_string();
 				if(value == "down") {
 					it.floorChangeDown = true;
 					it.floorChange = true;
-				} else if (value == "north") {
+				} else if(value == "north") {
 					it.floorChangeNorth = true;
 					it.floorChange = true;
-				} else if (value == "south") {
+				} else if(value == "south") {
 					it.floorChangeSouth = true;
 					it.floorChange = true;
-				} else if (value == "west") {
+				} else if(value == "west") {
 					it.floorChangeWest = true;
 					it.floorChange = true;
-				} else if (value == "east") {
+				} else if(value == "east") {
 					it.floorChangeEast = true;
 					it.floorChange = true;
 				} else if(value == "northex")
@@ -900,9 +900,9 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 					it.floorChange = true;
 				else if(value == "eastex")
 					it.floorChange = true;
-				else if (value == "southalt")
+				else if(value == "southalt")
 					it.floorChange = true;
-				else if (value == "eastalt")
+				else if(value == "eastalt")
 					it.floorChange = true;
 			}
 		}

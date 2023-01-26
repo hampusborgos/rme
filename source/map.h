@@ -54,10 +54,10 @@ public:
 	bool clearChanges();
 
 	// Errors/warnings
-	bool hasWarnings() const {return warnings.size() != 0;}
-	const wxArrayString& getWarnings() const {return warnings;}
-	bool hasError() const {return error.size() != 0;}
-	wxString getError() const {return error;}
+	bool hasWarnings() const { return warnings.size() != 0; }
+	const wxArrayString& getWarnings() const { return warnings; }
+	bool hasError() const { return error.size() != 0; }
+	wxString getError() const { return error; }
 
 	// Mess with spawns
 	bool addSpawn(Tile* spawn);
@@ -72,16 +72,16 @@ public:
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to
 	bool hasFile() const;
-	std::string getFilename() const {return filename;}
-	std::string getName() const {return name;}
-	void setName(const std::string& n) {name = n;}
+	std::string getFilename() const { return filename; }
+	std::string getName() const { return name; }
+	void setName(const std::string& n) {name = n; }
 
 	// Get map data
-	int getWidth() const {return width;}
-	int getHeight() const {return height;}
-	std::string getMapDescription() const {return description;}
-	std::string getHouseFilename() const {return housefile;}
-	std::string getSpawnFilename() const {return spawnfile;}
+	int getWidth() const { return width; }
+	int getHeight() const { return height; }
+	std::string getMapDescription() const { return description; }
+	std::string getHouseFilename() const { return housefile; }
+	std::string getSpawnFilename() const { return spawnfile; }
 
 	// Set some map data
 	void setWidth(int new_width);
@@ -90,7 +90,7 @@ public:
 	void setHouseFilename(const std::string& new_housefile);
 	void setSpawnFilename(const std::string& new_spawnfile);
 
-	void flagAsNamed() {unnamed = false;}
+	void flagAsNamed() { unnamed = false; }
 
 protected:
 	// Loads a map

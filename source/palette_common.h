@@ -126,13 +126,13 @@ public:
 	void OnClickCircleBrush(wxCommandEvent& event);
 
 	void OnClickBrushSize(int which);
-	void OnClickBrushSize0(wxCommandEvent& event) {OnClickBrushSize(0);}
-	void OnClickBrushSize1(wxCommandEvent& event) {OnClickBrushSize(1);}
-	void OnClickBrushSize2(wxCommandEvent& event) {OnClickBrushSize(2);}
-	void OnClickBrushSize4(wxCommandEvent& event) {OnClickBrushSize(4);}
-	void OnClickBrushSize6(wxCommandEvent& event) {OnClickBrushSize(6);}
-	void OnClickBrushSize8(wxCommandEvent& event) {OnClickBrushSize(8);}
-	void OnClickBrushSize11(wxCommandEvent& event){OnClickBrushSize(11);}
+	void OnClickBrushSize0(wxCommandEvent& event) { OnClickBrushSize(0); }
+	void OnClickBrushSize1(wxCommandEvent& event) { OnClickBrushSize(1); }
+	void OnClickBrushSize2(wxCommandEvent& event) { OnClickBrushSize(2); }
+	void OnClickBrushSize4(wxCommandEvent& event) { OnClickBrushSize(4); }
+	void OnClickBrushSize6(wxCommandEvent& event) { OnClickBrushSize(6); }
+	void OnClickBrushSize8(wxCommandEvent& event) { OnClickBrushSize(8); }
+	void OnClickBrushSize11(wxCommandEvent& event){ OnClickBrushSize(11); }
 
 protected:
 	bool loaded;

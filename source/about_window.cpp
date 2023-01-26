@@ -24,7 +24,8 @@
 #include <typeinfo>
 #include <memory>
 
-class GamePanel : public wxPanel {
+class GamePanel : public wxPanel
+{
 public:
 	GamePanel(wxWindow* parent, int width, int height);
 	virtual ~GamePanel();
@@ -34,17 +35,20 @@ public:
 	void OnKeyUp(wxKeyEvent&);
 	void OnIdle(wxIdleEvent&);
 
-	void pause() {paused_val = true;}
-	void unpause() {paused_val = false;}
-	bool paused() const {return paused_val || dead;}
+	void pause() { paused_val = true; }
+	void unpause() { paused_val = false; }
+	bool paused() const { return paused_val || dead; }
+
 protected:
 	virtual void Render(wxDC& pdc) = 0;
 	virtual void GameLoop(int time) = 0;
 	virtual void OnKey(wxKeyEvent& event, bool down) = 0;
 
 	virtual int getFPS() const = 0;
+
 protected:
 	wxStopWatch game_timer;
+
 private:
 	bool paused_val;
 
@@ -57,7 +61,8 @@ protected:
 const int TETRIS_MAPHEIGHT = 20;
 const int TETRIS_MAPWIDTH = 10;
 
-class TetrisPanel : public GamePanel {
+class TetrisPanel : public GamePanel
+{
 public:
 	TetrisPanel(wxWindow* parent);
 	~TetrisPanel();
@@ -67,7 +72,7 @@ protected:
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
 
-	virtual int getFPS() const {return lines / 10 + 3;}
+	virtual int getFPS() const { return lines / 10 + 3; }
 
 	enum Color {
 		NO_COLOR,
@@ -115,7 +120,8 @@ protected:
 const int SNAKE_MAPHEIGHT = 20;
 const int SNAKE_MAPWIDTH = 20;
 
-class SnakePanel : public GamePanel {
+class SnakePanel : public GamePanel
+{
 public:
 	SnakePanel(wxWindow* parent);
 	~SnakePanel();
@@ -125,7 +131,7 @@ protected:
 	virtual void GameLoop(int time);
 	virtual void OnKey(wxKeyEvent& event, bool down);
 
-	virtual int getFPS() const {return 7;}
+	virtual int getFPS() const { return 7; }
 
 	enum {
 		NORTH,
@@ -696,12 +702,12 @@ void SnakePanel::OnKey(wxKeyEvent& event, bool down)
 	if(!down) return;
 
 	int keyCode = event.GetKeyCode();
-	if (keyCode == WXK_SPACE) {
-		if (paused())
+	if(keyCode == WXK_SPACE) {
+		if(paused())
 			unpause();
 		else
 			pause();
-	} else if (!dead) {
+	} else if(!dead) {
 		switch (keyCode) {
 			case WXK_NUMPAD_UP:
 			case WXK_UP: {

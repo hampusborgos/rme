@@ -291,7 +291,7 @@ void FindItemDialog::RefreshContentsInternal()
 				continue;
 
 			RAWBrush* raw_brush = item.raw_brush;
-			if (!raw_brush)
+			if(!raw_brush)
 				continue;
 
 			if(only_pickupables && !item.pickupable)
@@ -303,13 +303,13 @@ void FindItemDialog::RefreshContentsInternal()
 	}
 	else if(selection == SearchMode::ClientIDs) {
 		uint16_t clientID = (uint16_t)client_id_spin->GetValue();
-		for (int id = 100; id <= g_items.getMaxID(); ++id) {
+		for(int id = 100; id <= g_items.getMaxID(); ++id) {
 			ItemType& item = g_items.getItemType(id);
-			if (item.id == 0 || item.clientID != clientID)
+			if(item.id == 0 || item.clientID != clientID)
 				continue;
 
 			RAWBrush* raw_brush = item.raw_brush;
-			if (!raw_brush)
+			if(!raw_brush)
 				continue;
 
 			if(only_pickupables && !item.pickupable)
@@ -345,7 +345,7 @@ void FindItemDialog::RefreshContentsInternal()
 	else if(selection == SearchMode::Types) {
 		for(int id = 100; id <= g_items.getMaxID(); ++id) {
 			ItemType& item = g_items.getItemType(id);
-			if (item.id == 0)
+			if(item.id == 0)
 				continue;
 
 			RAWBrush* raw_brush = item.raw_brush;
@@ -356,7 +356,7 @@ void FindItemDialog::RefreshContentsInternal()
 				continue;
 
 			SearchItemType selection = (SearchItemType)types_radio_box->GetSelection();
-			if ((selection == SearchItemType::Depot && !item.isDepot()) ||
+			if((selection == SearchItemType::Depot && !item.isDepot()) ||
 				(selection == SearchItemType::Mailbox && !item.isMailbox()) ||
 				(selection == SearchItemType::TrashHolder && !item.isTrashHolder()) ||
 				(selection == SearchItemType::Container && !item.isContainer()) ||

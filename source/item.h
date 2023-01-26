@@ -92,18 +92,18 @@ public:
 	// Get memory footprint size
 	uint32_t memsize() const;
 	/*
-	virtual Container* getContainer() {return nullptr;}
-	virtual const Container* getContainer() const {return nullptr;}
-	virtual Teleport* getTeleport() {return nullptr;}
-	virtual const Teleport* getTeleport() const {return nullptr;}
-	virtual TrashHolder* getTrashHolder() {return nullptr;}
-	virtual const TrashHolder* getTrashHolder() const {return nullptr;}
-	virtual Mailbox* getMailbox() {return nullptr;}
-	virtual const Mailbox* getMailbox() const {return nullptr;}
-	virtual Door* getDoor() {return nullptr;}
-	virtual const Door* getDoor() const {return nullptr;}
-	virtual MagicField* getMagicField() {return nullptr;}
-	virtual const MagicField* getMagicField() const {return nullptr;}
+	virtual Container* getContainer() { return nullptr; }
+	virtual const Container* getContainer() const { return nullptr; }
+	virtual Teleport* getTeleport() { return nullptr; }
+	virtual const Teleport* getTeleport() const { return nullptr; }
+	virtual TrashHolder* getTrashHolder() { return nullptr; }
+	virtual const TrashHolder* getTrashHolder() const { return nullptr; }
+	virtual Mailbox* getMailbox() { return nullptr; }
+	virtual const Mailbox* getMailbox() const { return nullptr; }
+	virtual Door* getDoor() { return nullptr; }
+	virtual const Door* getDoor() const { return nullptr; }
+	virtual MagicField* getMagicField() { return nullptr; }
+	virtual const MagicField* getMagicField() const { return nullptr; }
 	*/
 
 	// OTBM map interface
@@ -139,38 +139,38 @@ public:
 	static uint16_t LiquidName2ID(std::string id);
 
 	// IDs
-	uint16_t getID() const {return id;}
-	uint16_t getClientID() const {return g_items[id].clientID;}
+	uint16_t getID() const { return id; }
+	uint16_t getClientID() const { return g_items[id].clientID; }
 	// NOTE: This is very volatile, do NOT use this unless you know exactly what you're doing
 	// which you probably don't so avoid it like the plague!
 	void setID(uint16_t id);
 
-	bool typeExists() const {return g_items.typeExists(id);}
+	bool typeExists() const { return g_items.typeExists(id); }
 
 	// Usual attributes
 	virtual double getWeight() const;
-	int getAttack() const {return g_items[id].attack;}
-	int getArmor() const {return g_items[id].armor;}
-	int getDefense() const {return g_items[id].defense;}
-	//int getSlotPosition() const {return g_items[id].slot_position;}
+	int getAttack() const { return g_items[id].attack; }
+	int getArmor() const { return g_items[id].armor; }
+	int getDefense() const { return g_items[id].defense; }
+	//int getSlotPosition() const { return g_items[id].slot_position; }
 
 	// Item g_settings
 	bool canHoldText() const;
 	bool canHoldDescription() const;
-	bool isReadable() const {return g_items[id].canReadText;}
-	bool canWriteText() const {return g_items[id].canWriteText;}
-	uint32_t getMaxWriteLength() const {return g_items[id].maxTextLen;}
-	Brush* getBrush() const {return g_items[id].brush;}
+	bool isReadable() const { return g_items[id].canReadText; }
+	bool canWriteText() const { return g_items[id].canWriteText; }
+	uint32_t getMaxWriteLength() const { return g_items[id].maxTextLen; }
+	Brush* getBrush() const { return g_items[id].brush; }
 	GroundBrush* getGroundBrush() const;
 	WallBrush* getWallBrush() const;
 	DoorBrush* getDoorBrush() const;
 	TableBrush* getTableBrush() const;
 	CarpetBrush* getCarpetBrush() const;
-	Brush* getDoodadBrush() const {return g_items[id].doodad_brush;} // This is not necessarily a doodad brush
-	RAWBrush* getRAWBrush() const {return g_items[id].raw_brush;}
-	uint16_t getGroundEquivalent() const {return g_items[id].ground_equivalent;}
-	uint16_t hasBorderEquivalent() const {return g_items[id].has_equivalent;}
-	uint32_t getBorderGroup() const {return g_items[id].border_group;}
+	Brush* getDoodadBrush() const { return g_items[id].doodad_brush; } // This is not necessarily a doodad brush
+	RAWBrush* getRAWBrush() const { return g_items[id].raw_brush; }
+	uint16_t getGroundEquivalent() const { return g_items[id].ground_equivalent; }
+	uint16_t hasBorderEquivalent() const { return g_items[id].has_equivalent; }
+	uint32_t getBorderGroup() const { return g_items[id].border_group; }
 
 	// Drawing related
 	uint8_t getMiniMapColor() const;
@@ -179,35 +179,35 @@ public:
 
 	// Item types
 	bool hasProperty(enum ITEMPROPERTY prop) const;
-	bool isBlocking() const {return g_items[id].unpassable;}
-	bool isStackable() const {return g_items[id].stackable;}
-	bool isClientCharged() const {return g_items[id].isClientCharged();}
-	bool isExtraCharged() const {return g_items[id].isExtraCharged();}
-	bool isCharged() const {return isClientCharged() || isExtraCharged();}
-	bool isFluidContainer() const {return (g_items[id].isFluidContainer());}
-	bool isAlwaysOnBottom() const {return g_items[id].alwaysOnBottom;}
-	int  getTopOrder() const {return g_items[id].alwaysOnTopOrder;}
-	bool isGroundTile() const {return g_items[id].isGroundTile();}
-	bool isSplash() const {return g_items[id].isSplash();}
-	bool isMagicField() const {return g_items[id].isMagicField();}
-	bool isNotMoveable() const {return !g_items[id].moveable;}
-	bool isMoveable() const {return g_items[id].moveable;}
-	bool isPickupable() const {return g_items[id].pickupable;}
-	//bool isWeapon() const {return (g_items[id].weaponType != WEAPON_NONE && g_items[id].weaponType != WEAPON_AMMO);}
-	//bool isUseable() const {return g_items[id].useable;}
-	bool isHangable() const {return g_items[id].isHangable;}
-	bool isRoteable() const {const ItemType& it = g_items[id]; return it.rotable && it.rotateTo;}
-	void doRotate() {if(isRoteable()) id = g_items[id].rotateTo;}
-	bool hasCharges() const {return g_items[id].charges != 0;}
-	bool isBorder() const {return g_items[id].isBorder;}
-	bool isOptionalBorder() const {return g_items[id].isOptionalBorder;}
-	bool isWall() const {return g_items[id].isWall;}
-	bool isDoor() const {return g_items[id].isDoor();}
-	bool isOpen() const {return g_items[id].isOpen;}
-	bool isBrushDoor() const {return g_items[id].isBrushDoor;}
-	bool isTable() const {return g_items[id].isTable;}
-	bool isCarpet() const {return g_items[id].isCarpet;}
-	bool isMetaItem() const {return g_items[id].isMetaItem();}
+	bool isBlocking() const { return g_items[id].unpassable; }
+	bool isStackable() const { return g_items[id].stackable; }
+	bool isClientCharged() const { return g_items[id].isClientCharged(); }
+	bool isExtraCharged() const { return g_items[id].isExtraCharged(); }
+	bool isCharged() const { return isClientCharged() || isExtraCharged(); }
+	bool isFluidContainer() const { return (g_items[id].isFluidContainer()); }
+	bool isAlwaysOnBottom() const { return g_items[id].alwaysOnBottom; }
+	int  getTopOrder() const { return g_items[id].alwaysOnTopOrder; }
+	bool isGroundTile() const { return g_items[id].isGroundTile(); }
+	bool isSplash() const { return g_items[id].isSplash(); }
+	bool isMagicField() const { return g_items[id].isMagicField(); }
+	bool isNotMoveable() const { return !g_items[id].moveable; }
+	bool isMoveable() const { return g_items[id].moveable; }
+	bool isPickupable() const { return g_items[id].pickupable; }
+	//bool isWeapon() const { return (g_items[id].weaponType != WEAPON_NONE && g_items[id].weaponType != WEAPON_AMMO); }
+	//bool isUseable() const { return g_items[id].useable; }
+	bool isHangable() const { return g_items[id].isHangable; }
+	bool isRoteable() const {const ItemType& it = g_items[id]; return it.rotable && it.rotateTo; }
+	void doRotate() {if(isRoteable()) id = g_items[id].rotateTo; }
+	bool hasCharges() const { return g_items[id].charges != 0; }
+	bool isBorder() const { return g_items[id].isBorder; }
+	bool isOptionalBorder() const { return g_items[id].isOptionalBorder; }
+	bool isWall() const { return g_items[id].isWall; }
+	bool isDoor() const { return g_items[id].isDoor(); }
+	bool isOpen() const { return g_items[id].isOpen; }
+	bool isBrushDoor() const { return g_items[id].isBrushDoor; }
+	bool isTable() const { return g_items[id].isTable; }
+	bool isCarpet() const { return g_items[id].isCarpet; }
+	bool isMetaItem() const { return g_items[id].isMetaItem(); }
 
 	// Wall alignment (vertical, horizontal, pole, corner)
 	BorderType getWallAlignment() const;
@@ -215,20 +215,20 @@ public:
 	BorderType getBorderAlignment() const;
 
 	// Get the name!
-	const std::string getName() const {return g_items[id].name;}
-	const std::string getFullName() const {return g_items[id].name + g_items[id].editorsuffix;}
+	const std::string getName() const { return g_items[id].name; }
+	const std::string getFullName() const { return g_items[id].name + g_items[id].editorsuffix; }
 
 	// Selection
-	bool isSelected() const {return selected;}
-	void select() {selected = true;}
-	void deselect() {selected = false;}
-	void toggleSelection() {selected =! selected;}
+	bool isSelected() const { return selected; }
+	void select() {selected = true; }
+	void deselect() {selected = false; }
+	void toggleSelection() {selected =! selected; }
 
 	// Item properties!
-	virtual bool isComplex() const {return attributes && attributes->size();} // If this item requires full save (not compact)
+	virtual bool isComplex() const { return attributes && attributes->size(); } // If this item requires full save (not compact)
 
 	// Weight
-	bool hasWeight() {return isPickupable();}
+	bool hasWeight() { return isPickupable(); }
 	virtual double getWeight();
 
 	// Subtype (count, fluid, charges)
@@ -250,7 +250,7 @@ public:
 	std::string getDescription() const;
 
 	void animate();
-	int getFrame() const {return frame;}
+	int getFrame() const { return frame; }
 
 protected:
 	uint16_t id;  // the same id as in ItemType

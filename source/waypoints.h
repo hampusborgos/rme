@@ -44,10 +44,10 @@ public:
 
 	WaypointMap waypoints;
 
-	WaypointMap::iterator begin() {return waypoints.begin();}
-	WaypointMap::const_iterator begin() const {return waypoints.begin();}
-	WaypointMap::iterator end() {return waypoints.end();}
-	WaypointMap::const_iterator end() const {return waypoints.end();}
+	WaypointMap::iterator begin() { return waypoints.begin(); }
+	WaypointMap::const_iterator begin() const { return waypoints.begin(); }
+	WaypointMap::iterator end() { return waypoints.end(); }
+	WaypointMap::const_iterator end() const { return waypoints.end(); }
 };
 
 #endif

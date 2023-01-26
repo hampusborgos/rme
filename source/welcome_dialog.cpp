@@ -43,19 +43,19 @@ void WelcomeDialog::OnButtonClicked(const wxMouseEvent &event) {
     auto *button = dynamic_cast<WelcomeDialogButton *>(event.GetEventObject());
     wxSize button_size = button->GetSize();
     wxPoint click_point = event.GetPosition();
-    if (click_point.x > 0 && click_point.x < button_size.x && click_point.y > 0 && click_point.y < button_size.x) {
-        if (button->GetAction() == wxID_PREFERENCES) {
+    if(click_point.x > 0 && click_point.x < button_size.x && click_point.y > 0 && click_point.y < button_size.x) {
+        if(button->GetAction() == wxID_PREFERENCES) {
             PreferencesWindow preferences_window(m_welcome_dialog_panel, true);
             preferences_window.ShowModal();
             m_welcome_dialog_panel->updateInputs();
         } else {
             wxCommandEvent action_event(WELCOME_DIALOG_ACTION);
-            if (button->GetAction() == wxID_OPEN) {
+            if(button->GetAction() == wxID_OPEN) {
                 wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ?
                                     "(*.otbm;*.otgz)|*.otbm;*.otgz" :
                                     "(*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz";
                 wxFileDialog file_dialog(this, "Open map file", "", "", wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-                if (file_dialog.ShowModal() == wxID_OK) {
+                if(file_dialog.ShowModal() == wxID_OK) {
                     action_event.SetString(file_dialog.GetPath());
                 } else {
                     return;
@@ -75,7 +75,7 @@ void WelcomeDialog::OnRecentItemClicked(const wxMouseEvent &event) {
     auto *recent_item = dynamic_cast<RecentItem *>(event.GetEventObject());
     wxSize button_size = recent_item->GetSize();
     wxPoint click_point = event.GetPosition();
-    if (click_point.x > 0 && click_point.x < button_size.x && click_point.y > 0 && click_point.y < button_size.x) {
+    if(click_point.x > 0 && click_point.x < button_size.x && click_point.y > 0 && click_point.y < button_size.x) {
         wxCommandEvent action_event(WELCOME_DIALOG_ACTION);
         action_event.SetString(recent_item->GetText());
         action_event.SetId(wxID_OPEN);
@@ -233,7 +233,7 @@ RecentMapsPanel::RecentMapsPanel(wxWindow *parent,
                                  const std::vector<wxString> &recent_files)
         : wxPanel(parent, wxID_ANY) {
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-    for (const wxString &file : recent_files) {
+    for(const wxString &file : recent_files) {
         auto *recent_item = newd RecentItem(this, base_colour, file);
         sizer->Add(recent_item, 0, wxEXPAND);
         recent_item->Bind(wxEVT_LEFT_UP, &WelcomeDialog::OnRecentItemClicked, dialog);
@@ -276,7 +276,7 @@ void RecentItem::PropagateItemClicked(wxMouseEvent& event) {
 }
 
 void RecentItem::OnMouseEnter(const wxMouseEvent &event) {
-    if (GetScreenRect().Contains(ClientToScreen(event.GetPosition()))
+    if(GetScreenRect().Contains(ClientToScreen(event.GetPosition()))
         && m_title->GetForegroundColour() != m_text_colour_hover) {
         m_title->SetForegroundColour(m_text_colour_hover);
         m_file_path->SetForegroundColour(m_text_colour_hover);
@@ -286,7 +286,7 @@ void RecentItem::OnMouseEnter(const wxMouseEvent &event) {
 }
 
 void RecentItem::OnMouseLeave(const wxMouseEvent &event) {
-    if (!GetScreenRect().Contains(ClientToScreen(event.GetPosition()))
+    if(!GetScreenRect().Contains(ClientToScreen(event.GetPosition()))
         && m_title->GetForegroundColour() != m_text_colour) {
         m_title->SetForegroundColour(m_text_colour);
         m_file_path->SetForegroundColour(m_text_colour);

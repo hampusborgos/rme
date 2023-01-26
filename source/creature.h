@@ -51,17 +51,17 @@ public:
 	void save();
 	void reset();
 
-	bool isSelected() const {return selected;}
-	void deselect() {selected = false;}
-	void select() {selected = true;}
+	bool isSelected() const { return selected; }
+	void deselect() { selected = false; }
+	void select() { selected = true; }
 
 	bool isNpc() const;
 
 	std::string getName() const;
 	CreatureBrush* getBrush() const;
 
-	int getSpawnTime() const {return spawntime;}
-	void setSpawnTime(int spawntime) {this->spawntime = spawntime;}
+	int getSpawnTime() const { return spawntime; }
+	void setSpawnTime(int spawntime) { this->spawntime = spawntime; }
 
 	Direction getDirection() const { return direction; }
 	void setDirection(Direction direction) { this->direction = direction; }

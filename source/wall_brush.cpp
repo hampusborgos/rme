@@ -233,7 +233,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				if(childNode.attribute("redirect").as_bool()) {
-					if (!brush->isWall()) {
+					if(!brush->isWall()) {
 						warnings.push_back("Wall brush redirect link: '" + wxstr(name) + "' is not a wall brush.");
 					} else if(!redirect_to) {
 						redirect_to = brush->asWall();
@@ -456,7 +456,7 @@ void WallBrush::doWalls(BaseMap* map, Tile* tile)
 					Item* wall_decoration = *it;
 					ASSERT(wall_decoration);
 					WallBrush* brush = wall_decoration->getWallBrush();
-					if (brush && brush->isWallDecoration()) {
+					if(brush && brush->isWallDecoration()) {
 						// We don't know if we have changed alignment
 						if(wall_decoration->getWallAlignment() == bt) {
 							// Same, no need to change...

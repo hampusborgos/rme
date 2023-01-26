@@ -99,7 +99,7 @@ CreatureType* CreatureType::loadFromXML(pugi::xml_node node, wxArrayString& warn
 		ct->outfit.lookItem = attribute.as_int();
 	}
 
-	if ((attribute = node.attribute("lookmount"))) {
+	if((attribute = node.attribute("lookmount"))) {
 		ct->outfit.lookMount = attribute.as_int();
 	}
 
@@ -167,7 +167,7 @@ CreatureType* CreatureType::loadFromOTXML(const FileName& filename, pugi::xml_do
 			ct->outfit.lookItem = attribute.as_int();
 		}
 
-		if ((attribute = optionNode.attribute("mount"))) {
+		if((attribute = optionNode.attribute("mount"))) {
 			ct->outfit.lookMount = attribute.as_int();
 		}
 

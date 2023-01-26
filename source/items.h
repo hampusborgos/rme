@@ -352,8 +352,8 @@ public:
 
 	void clear();
 
-	ItemType& operator[](size_t id) {return getItemType(id);}
-	uint16_t getMaxID() const {return max_item_id;}
+	ItemType& operator[](size_t id) { return getItemType(id); }
+	uint16_t getMaxID() const { return max_item_id; }
 
 	bool typeExists(int id) const;
 	ItemType& getItemType(int id);
