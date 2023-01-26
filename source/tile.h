@@ -48,11 +48,11 @@ enum : uint8_t {
 class Tile
 {
 public: // Members
-	TileLocation*  location;
-	Item*          ground;
-	ItemVector     items;
-	Creature*      creature;
-	Spawn*         spawn;
+	TileLocation* location;
+	Item* ground;
+	ItemVector items;
+	Creature* creature;
+	Spawn* spawn;
 	uint32_t house_id; // House id for this tile (pointer not safe)
 
 public:
@@ -68,16 +68,15 @@ public:
 
 	// The location of the tile
 	// Stores state that remains between the tile being moved (like house exits)
-	void setLocation(TileLocation* where) {location = where; }
+	void setLocation(TileLocation* where) { location = where; }
 	TileLocation* getLocation() { return location; }
 	const TileLocation* getLocation() const { return location; }
 
 	// Position of the tile
-	Position getPosition() { return location->getPosition(); }
-	const Position getPosition() const { return location->getPosition(); }
-	int getX() const { return location->getPosition().x; }
-	int getY() const { return location->getPosition().y; }
-	int getZ() const { return location->getPosition().z; }
+	const Position& getPosition() const noexcept { return location->getPosition(); }
+	int getX() const noexcept { return location->getX(); }
+	int getY() const noexcept { return location->getY(); }
+	int getZ() const noexcept { return location->getZ(); }
 
 public: //Functions
 	// Absorb the other tile into this tile
@@ -132,10 +131,10 @@ public: //Functions
 
 	uint8_t getMiniMapColor() const;
 
-	// Does this tile have ground?
-	bool hasGround() const { return ground != nullptr; }
+	bool hasItems() const noexcept { return ground || !items.empty(); }
+	bool hasGround() const noexcept { return ground != nullptr; }
 	bool hasBorders() const {
-		return items.size() && items[0]->isBorder();
+		return !items.empty() && items.front()->isBorder();
 	}
 
 	// Get the border brush of this tile
@@ -169,7 +168,7 @@ public: //Functions
 	Item* getWall() const;
 	bool hasWall() const;
 	// Remove all walls from the tile (for autowall) (only of those belonging to the specified brush
-	void cleanWalls(WallBrush* wb);
+	void cleanWalls(WallBrush* brush);
 	// Remove all walls from the tile
 	void cleanWalls(bool dontdelete = false);
 	// Add a wall item (same as just addItem, but an additional check to verify that it is a wall)
@@ -184,25 +183,25 @@ public: //Functions
 	void carpetize(BaseMap* parent);
 
 	// Has to do with houses
-	bool isHouseTile() const;
-	uint32_t getHouseID() const;
-	void addHouseExit(House* h);
-	void removeHouseExit(House* h);
+	bool isHouseTile() const noexcept;
+	uint32_t getHouseID() const noexcept;
+	void addHouseExit(House* house);
+	void removeHouseExit(House* house);
 	bool isHouseExit() const;
 	const HouseExitList* getHouseExits() const;
 	HouseExitList* getHouseExits();
-	bool hasHouseExit(uint32_t exit) const;
+	bool hasHouseExit(uint32_t houseId) const;
 	void setHouse(House* house);
 
 	// Mapflags (PZ, PVPZONE etc.)
-	void setMapFlags(uint16_t _flags);
-	void unsetMapFlags(uint16_t _flags);
-	uint16_t getMapFlags() const;
+	void setMapFlags(uint16_t flags);
+	void unsetMapFlags(uint16_t flags);
+	uint16_t getMapFlags() const noexcept;
 
 	// Statflags (You really ought not to touch this)
-	void setStatFlags(uint16_t _flags);
-	void unsetStatFlags(uint16_t _flags);
-	uint16_t getStatFlags() const;
+	void setStatFlags(uint16_t flags);
+	void unsetStatFlags(uint16_t flags);
+	uint16_t getStatFlags() const noexcept;
 
 protected:
 	union {
@@ -221,10 +220,6 @@ private:
 	Tile& operator==(const Tile& i);// Can't compare
 };
 
-bool tilePositionLessThan(const Tile* a, const Tile* b);
-// This sorts them by draw order
-bool tilePositionVisualLessThan(const Tile* a, const Tile* b);
-
 typedef std::vector<Tile*> TileVector;
 typedef std::unordered_set<Tile*> TileSet;
 typedef std::list<Tile*> TileList;
@@ -233,11 +228,11 @@ inline bool Tile::hasWall() const {
 	return getWall() != nullptr;
 }
 
-inline bool Tile::isHouseTile() const {
+inline bool Tile::isHouseTile() const noexcept {
 	return house_id != 0;
 }
 
-inline uint32_t Tile::getHouseID() const {
+inline uint32_t Tile::getHouseID() const noexcept  {
 	return house_id;
 }
 
@@ -250,45 +245,31 @@ inline const HouseExitList* Tile::getHouseExits() const {
 }
 
 inline bool Tile::isHouseExit() const {
-	const HouseExitList* house_exits = getHouseExits();
-	if(house_exits)
-		return !house_exits->empty();
-	return false;
+	const HouseExitList* exits = location->getHouseExits();
+	return exits && !exits->empty();
 }
 
-inline bool Tile::hasHouseExit(uint32_t exit) const {
-	const HouseExitList* house_exits = getHouseExits();
-	if(house_exits) {
-		for(HouseExitList::const_iterator iter = house_exits->begin(); iter != house_exits->end(); ++iter) {
-			if(*iter == exit) {
-				return true;
-			}
-		}
-	}
-	return false;
+inline void Tile::setMapFlags(uint16_t flags) {
+	mapflags = flags | mapflags;
 }
 
-inline void Tile::setMapFlags(uint16_t _flags) {
-	mapflags = _flags | mapflags;
+inline void Tile::unsetMapFlags(uint16_t flags) {
+	mapflags &= ~flags;
 }
 
-inline void Tile::unsetMapFlags(uint16_t _flags) {
-	mapflags &= ~_flags;
-}
-
-inline uint16_t Tile::getMapFlags() const {
+inline uint16_t Tile::getMapFlags() const noexcept {
 	return mapflags;
 }
 
-inline void Tile::setStatFlags(uint16_t _flags) {
-	statflags = _flags | statflags;
+inline void Tile::setStatFlags(uint16_t flags) {
+	statflags = flags | statflags;
 }
 
-inline void Tile::unsetStatFlags(uint16_t _flags) {
-	statflags &= ~_flags;
+inline void Tile::unsetStatFlags(uint16_t flags) {
+	statflags &= ~flags;
 }
 
-inline uint16_t Tile::getStatFlags() const {
+inline uint16_t Tile::getStatFlags() const noexcept {
 	return statflags;
 }
 
