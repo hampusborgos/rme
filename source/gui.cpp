@@ -1270,9 +1270,10 @@ void GUI::PreparePaste()
 	Editor* editor = GetCurrentEditor();
 	if(editor) {
 		SetSelectionMode();
-		editor->selection.start();
-		editor->selection.clear();
-		editor->selection.finish();
+		Selection& selection = editor->getSelection();
+		selection.start();
+		selection.clear();
+		selection.finish();
 		StartPasting();
 		RefreshView();
 	}
@@ -1311,7 +1312,7 @@ bool GUI::DoUndo()
 	Editor* editor = GetCurrentEditor();
 	if(editor && editor->actionQueue->canUndo()) {
 		editor->actionQueue->undo();
-		if(editor->selection.size() > 0)
+		if(editor->hasSelection())
 			SetSelectionMode();
 		SetStatusText("Undo action");
 		UpdateMinimap();
@@ -1327,7 +1328,7 @@ bool GUI::DoRedo()
 	Editor* editor = GetCurrentEditor();
 	if(editor && editor->actionQueue->canRedo()) {
 		editor->actionQueue->redo();
-		if(editor->selection.size() > 0)
+		if(editor->hasSelection())
 			SetSelectionMode();
 		SetStatusText("Redo action");
 		UpdateMinimap();
@@ -1463,9 +1464,10 @@ void GUI::SetDrawingMode()
 				continue;
 
 			Editor* editor = mapTab->GetEditor();
-			editor->selection.start();
-			editor->selection.clear();
-			editor->selection.finish();
+			Selection& selection = editor->getSelection();
+			selection.start();
+			selection.clear();
+			selection.finish();
 			al.insert(mapTab);
 		}
 	}

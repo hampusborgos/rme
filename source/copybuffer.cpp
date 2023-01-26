@@ -58,7 +58,7 @@ void CopyBuffer::clear()
 
 void CopyBuffer::copy(Editor& editor, int floor)
 {
-	if(editor.selection.size() == 0) {
+	if(!editor.hasSelection()) {
 		g_gui.SetStatusText("No tiles to copy.");
 		return;
 	}
@@ -70,10 +70,9 @@ void CopyBuffer::copy(Editor& editor, int floor)
 	int item_count = 0;
 	copyPos = Position(0xFFFF, 0xFFFF, floor);
 
-	for(TileSet::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
+	for(Tile* tile : editor.getSelection()) {
 		++tile_count;
 
-		Tile* tile = *it;
 		TileLocation* newlocation = tiles->createTileL(tile->getPosition());
 		Tile* copied_tile = tiles->allocator(newlocation);
 
@@ -112,7 +111,7 @@ void CopyBuffer::copy(Editor& editor, int floor)
 
 void CopyBuffer::cut(Editor& editor, int floor)
 {
-	if(editor.selection.size() == 0) {
+	if(!editor.hasSelection()) {
 		g_gui.SetStatusText("No tiles to cut.");
 		return;
 	}
@@ -120,6 +119,7 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	clear();
 	tiles = newd BaseMap();
 
+	Map& map = editor.getMap();
 	int tile_count = 0;
 	int item_count = 0;
 	copyPos = Position(0xFFFF, 0xFFFF, floor);
@@ -129,11 +129,10 @@ void CopyBuffer::cut(Editor& editor, int floor)
 
 	PositionList tilestoborder;
 
-	for(TileSet::iterator it = editor.selection.begin(); it != editor.selection.end(); ++it) {
+	for(Tile* tile : editor.getSelection()) {
 		tile_count++;
 
-		Tile* tile = *it;
-		Tile* newtile = tile->deepCopy(editor.getMap());
+		Tile* newtile = tile->deepCopy(map);
 		Tile* copied_tile = tiles->allocator(tile->getLocation());
 
 		if(tile->ground && tile->ground->isSelected()) {
@@ -187,15 +186,15 @@ void CopyBuffer::cut(Editor& editor, int floor)
 	if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 		action = editor.actionQueue->createAction(batch);
 		for(PositionList::iterator it = tilestoborder.begin(); it != tilestoborder.end(); ++it) {
-			TileLocation* location = editor.getMap().createTileL(*it);
+			TileLocation* location = map.createTileL(*it);
 			if(location->get()) {
-				Tile* new_tile = location->get()->deepCopy(editor.getMap());
-				new_tile->borderize(&editor.getMap());
-				new_tile->wallize(&editor.getMap());
+				Tile* new_tile = location->get()->deepCopy(map);
+				new_tile->borderize(&map);
+				new_tile->wallize(&map);
 				action->addChange(newd Change(new_tile));
 			} else {
-				Tile* new_tile = editor.getMap().allocator(location);
-				new_tile->borderize(&editor.getMap());
+				Tile* new_tile = map.allocator(location);
+				new_tile->borderize(&map);
 				if(new_tile->size()) {
 					action->addChange(newd Change(new_tile));
 				} else {

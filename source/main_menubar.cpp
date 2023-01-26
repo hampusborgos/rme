@@ -1260,7 +1260,7 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 	if(dialog.ShowModal() == wxID_OK) {
 		uint16_t itemid = dialog.getResultID();
 
-		g_gui.GetCurrentEditor()->selection.clear();
+		g_gui.GetCurrentEditor()->getSelection().clear();
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 
 		OnMapRemoveItems::RemoveItemCondition condition(itemid);
@@ -1303,7 +1303,7 @@ void MainMenuBar::OnMapRemoveCorpses(wxCommandEvent& WXUNUSED(event))
 	int ok = g_gui.PopupDialog("Remove Corpses", "Do you want to remove all corpses from the map?", wxYES | wxNO);
 
 	if(ok == wxID_YES) {
-		g_gui.GetCurrentEditor()->selection.clear();
+		g_gui.GetCurrentEditor()->getSelection().clear();
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 
 		OnMapRemoveCorpses::condition func;
@@ -1377,7 +1377,7 @@ void MainMenuBar::OnMapRemoveUnreachable(wxCommandEvent& WXUNUSED(event))
 	int ok = g_gui.PopupDialog("Remove Unreachable Tiles", "Do you want to remove all unreachable items from the map?", wxYES | wxNO);
 
 	if(ok == wxID_YES) {
-		g_gui.GetCurrentEditor()->selection.clear();
+		g_gui.GetCurrentEditor()->getSelection().clear();
 		g_gui.GetCurrentEditor()->actionQueue->clear();
 
 		OnMapRemoveUnreachable::condition func;
@@ -1405,7 +1405,7 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 	int ok = g_gui.PopupDialog("Remove Empty Spawns", "Do you want to remove all empty spawns from the map?", wxYES | wxNO);
 	if(ok == wxID_YES) {
 		Editor* editor = g_gui.GetCurrentEditor();
-		editor->selection.clear();
+		editor->getSelection().clear();
 
 		g_gui.CreateLoadBar("Searching map for empty spawns to remove...");
 

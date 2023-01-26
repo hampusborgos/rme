@@ -151,7 +151,8 @@ size_t Action::memsize() const
 
 void Action::commit(DirtyList* dirty_list)
 {
-	editor.selection.start(Selection::INTERNAL);
+	Selection& selection = editor.getSelection();
+	selection.start(Selection::INTERNAL);
 	ChangeList::const_iterator it = changes.begin();
 	while(it != changes.end()) {
 		Change* c = *it;
@@ -184,7 +185,7 @@ void Action::commit(DirtyList* dirty_list)
 
 				//std::cout << "\tSwitched tile at " << pos.x << ";" << pos.y << ";" << pos.z << " from " << (void*)oldtile << " to " << *data <<  std::endl;
 				if(newtile->isSelected())
-					editor.selection.addInternal(newtile);
+					selection.addInternal(newtile);
 
 				if(oldtile) {
 					if(newtile->getHouseID() != oldtile->getHouseID()) {
@@ -213,7 +214,7 @@ void Action::commit(DirtyList* dirty_list)
 
 					//oldtile->update();
 					if(oldtile->isSelected())
-						editor.selection.removeInternal(oldtile);
+						selection.removeInternal(oldtile);
 
 					*data = oldtile;
 				} else {
@@ -283,7 +284,7 @@ void Action::commit(DirtyList* dirty_list)
 		}
 		++it;
 	}
-	editor.selection.finish(Selection::INTERNAL);
+	selection.finish(Selection::INTERNAL);
 	commited = true;
 }
 
@@ -292,7 +293,8 @@ void Action::undo(DirtyList* dirty_list)
 	if(changes.empty())
 		return;
 
-	editor.selection.start(Selection::INTERNAL);
+	Selection& selection = editor.getSelection();
+	selection.start(Selection::INTERNAL);
 	ChangeList::reverse_iterator it = changes.rbegin();
 
 	while(it != changes.rend()) {
@@ -322,9 +324,9 @@ void Action::undo(DirtyList* dirty_list)
 
 
 				if(oldtile->isSelected())
-					editor.selection.addInternal(oldtile);
+					selection.addInternal(oldtile);
 				if(newtile->isSelected())
-					editor.selection.removeInternal(newtile);
+					selection.removeInternal(newtile);
 
 				if(newtile->getHouseID() != oldtile->getHouseID()) {
 					// oooooomggzzz we need to remove it from the appropriate house!
@@ -406,7 +408,7 @@ void Action::undo(DirtyList* dirty_list)
 		}
 		++it;
 	}
-	editor.selection.finish(Selection::INTERNAL);
+	selection.finish(Selection::INTERNAL);
 	commited = false;
 }
 

@@ -48,7 +48,6 @@ protected:
 public:
 	// Public members
 	ActionQueue* actionQueue;
-	Selection selection;
 	CopyBuffer& copybuffer;
 	GroundBrush* replace_brush;
 
@@ -92,6 +91,8 @@ public: // Functions
 	void addAction(Action* action, int stacking_delay = 0);
 
 	// Selection
+	Selection& getSelection() { return selection; }
+	const Selection& getSelection() const { return selection; }
 	bool hasSelection() const noexcept { return selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
@@ -130,6 +131,7 @@ protected:
 
 private:
 	Map map;
+	Selection selection;
 };
 
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }
