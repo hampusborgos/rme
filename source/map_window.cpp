@@ -136,7 +136,7 @@ Position MapWindow::GetScreenCenterPosition()
 
 void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndicator)
 {
-	if(position == Position())
+	if(!position.isValid())
 		return;
 
 	int x = position.x * TILE_SIZE;
