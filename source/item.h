@@ -23,10 +23,6 @@
 //#include "iomap_otmm.h"
 #include "item_attributes.h"
 
-class Creature;
-class Border;
-class Tile;
-
 enum ITEMPROPERTY {
 	BLOCKSOLID,
 	HASHEIGHT,
@@ -71,6 +67,14 @@ enum SplashType
 
 IMPLEMENT_INCREMENT_OP(SplashType)
 
+class Creature;
+class Border;
+class Tile;
+class Container;
+class Depot;
+class Teleport;
+class Door;
+
 class Item : public ItemAttributes
 {
 public:
@@ -92,48 +96,39 @@ public:
 
 	// Get memory footprint size
 	uint32_t memsize() const;
-	/*
+
 	virtual Container* getContainer() { return nullptr; }
-	virtual const Container* getContainer() const { return nullptr; }
+	virtual Depot* getDepot() { return nullptr; }
 	virtual Teleport* getTeleport() { return nullptr; }
-	virtual const Teleport* getTeleport() const { return nullptr; }
-	virtual TrashHolder* getTrashHolder() { return nullptr; }
-	virtual const TrashHolder* getTrashHolder() const { return nullptr; }
-	virtual Mailbox* getMailbox() { return nullptr; }
-	virtual const Mailbox* getMailbox() const { return nullptr; }
 	virtual Door* getDoor() { return nullptr; }
-	virtual const Door* getDoor() const { return nullptr; }
-	virtual MagicField* getMagicField() { return nullptr; }
-	virtual const MagicField* getMagicField() const { return nullptr; }
-	*/
 
 	// OTBM map interface
-		// Serialize and unserialize (for save/load)
-		// Used internally
-		virtual bool readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attr, BinaryNode* stream);
-		virtual bool unserializeAttributes_OTBM(const IOMap& maphandle, BinaryNode* stream);
-		virtual bool unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node);
+	// Serialize and unserialize (for save/load)
+	// Used internally
+	virtual bool readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attr, BinaryNode* stream);
+	virtual bool unserializeAttributes_OTBM(const IOMap& maphandle, BinaryNode* stream);
+	virtual bool unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node);
 
-		// Will return a node containing this item
-		virtual bool serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		// Will write this item to the stream supplied in the argument
-		virtual void serializeItemCompact_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		virtual void serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	// Will return a node containing this item
+	virtual bool serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	// Will write this item to the stream supplied in the argument
+	virtual void serializeItemCompact_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	virtual void serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
 
 	// OTMM map interface
-		/*
-		// Serialize and unserialize (for save/load)
-		// Used internally
-		virtual bool readItemAttribute_OTMM(const IOMap& maphandle, OTMM_ItemAttribute attr, BinaryNode* stream);
-		virtual bool unserializeAttributes_OTMM(const IOMap& maphandle, BinaryNode* stream);
-		virtual bool unserializeItemNode_OTMM(const IOMap& maphandle, BinaryNode* node);
+	/*
+	// Serialize and unserialize (for save/load)
+	// Used internally
+	virtual bool readItemAttribute_OTMM(const IOMap& maphandle, OTMM_ItemAttribute attr, BinaryNode* stream);
+	virtual bool unserializeAttributes_OTMM(const IOMap& maphandle, BinaryNode* stream);
+	virtual bool unserializeItemNode_OTMM(const IOMap& maphandle, BinaryNode* node);
 
-		// Will return a node containing this item
-		virtual bool serializeItemNode_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		// Will write this item to the stream supplied in the argument
-		virtual void serializeItemCompact_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		virtual void serializeItemAttributes_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		*/
+	// Will return a node containing this item
+	virtual bool serializeItemNode_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	// Will write this item to the stream supplied in the argument
+	virtual void serializeItemCompact_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	virtual void serializeItemAttributes_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	*/
 
 	// Static conversions
 	static std::string LiquidID2Name(uint16_t id);
