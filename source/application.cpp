@@ -126,12 +126,12 @@ bool Application::OnInit()
 
 #ifdef _USE_PROCESS_COM
 	m_single_instance_checker = newd wxSingleInstanceChecker; //Instance checker has to stay alive throughout the applications lifetime
-	if (g_settings.getInteger(Config::ONLY_ONE_INSTANCE) && m_single_instance_checker->IsAnotherRunning()) {
+	if(g_settings.getInteger(Config::ONLY_ONE_INSTANCE) && m_single_instance_checker->IsAnotherRunning()) {
 		RMEProcessClient client;
 		wxConnectionBase* connection = client.MakeConnection("localhost", "rme_host", "rme_talk");
-		if (connection) {
+		if(connection) {
 			wxString fileName;
-			if (ParseCommandLineMap(fileName)) {
+			if(ParseCommandLineMap(fileName)) {
 				wxLogNull nolog; //We might get a timeout message if the file fails to open on the running instance. Let's not show that message.
 				connection->Execute(fileName);
 			}
@@ -178,7 +178,7 @@ bool Application::OnInit()
     wxIcon icon(rme_icon);
     g_gui.root->SetIcon(icon);
 
-    if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1 && m_file_to_open == wxEmptyString) {
+    if(g_settings.getInteger(Config::WELCOME_DIALOG) == 1 && m_file_to_open == wxEmptyString) {
         g_gui.ShowWelcomeDialog(icon);
     } else {
         g_gui.root->Show();
@@ -268,7 +268,7 @@ bool Application::OnInit()
 void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
 
     //First startup?
-    if (!m_startup)
+    if(!m_startup)
         return;
     m_startup = false;
 
@@ -277,9 +277,9 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
         return;
 
     //Open a map.
-    if (m_file_to_open != wxEmptyString) {
+    if(m_file_to_open != wxEmptyString) {
         g_gui.LoadMap(FileName(m_file_to_open));
-    } else if (!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
+    } else if(!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
         // You generally don't want to save this map...
         g_gui.GetCurrentEditor()->getMap().clearChanges();
     }
@@ -287,7 +287,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
 
 void Application::MacOpenFiles(const wxArrayString& fileNames)
 {
-	if (!fileNames.IsEmpty()) {
+	if(!fileNames.IsEmpty()) {
 		g_gui.LoadMap(FileName(fileNames.Item(0)));
 	}
 }
@@ -572,6 +572,11 @@ bool MainFrame::DoQueryImportCreatures()
 void MainFrame::UpdateFloorMenu()
 {
 	menu_bar->UpdateFloorMenu();
+}
+
+void MainFrame::UpdateIndicatorsMenu()
+{
+	menu_bar->UpdateIndicatorsMenu();
 }
 
 bool MainFrame::LoadMap(FileName name)

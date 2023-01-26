@@ -82,33 +82,33 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 
 		const std::string& orientation = attribute.as_string();
 
-		ItemType& it = g_items[itemid];
-		if(it.id == 0) {
+		ItemType* type = g_items.getRawItemType(itemid);
+		if(!type) {
 			warnings.push_back("Invalid item ID " + std::to_string(itemid) + " for border " + std::to_string(id));
 			continue;
 		}
 
 		if(ground) { // We are a ground border
-			it.group = ITEM_GROUP_NONE;
-			it.ground_equivalent = ground_equivalent;
-			it.brush = owner;
+			type->group = ITEM_GROUP_NONE;
+			type->ground_equivalent = ground_equivalent;
+			type->brush = owner;
 
-			ItemType& it2 = g_items[ground_equivalent];
-			it2.has_equivalent = it2.id != 0;
+			ItemType* type2 = g_items.getRawItemType(ground_equivalent);
+			type2->has_equivalent = type2->id != 0;
 		}
 
-		it.alwaysOnBottom = true; // Never-ever place other items under this, will confuse the user something awful.
-		it.isBorder = true;
-		it.isOptionalBorder = it.isOptionalBorder ? true : optionalBorder;
-		if(group && !it.border_group) {
-			it.border_group = group;
+		type->alwaysOnBottom = true; // Never-ever place other items under this, will confuse the user something awful.
+		type->isBorder = true;
+		type->isOptionalBorder = type->isOptionalBorder ? true : optionalBorder;
+		if(group && !type->border_group) {
+			type->border_group = group;
 		}
 
 		int32_t edge_id = edgeNameToID(orientation);
 		if(edge_id != BORDER_NONE) {
 			tiles[edge_id] = itemid;
-			if(it.border_alignment == BORDER_NONE) {
-				it.border_alignment = ::BorderType(edge_id);
+			if(type->border_alignment == BORDER_NONE) {
+				type->border_alignment = ::BorderType(edge_id);
 			}
 		}
 	}
@@ -154,7 +154,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = g_items[attribute.as_ushort()].clientID;
+		look_id = g_items.getItemType(attribute.as_ushort()).clientID;
 	}
 
 	if((attribute = node.attribute("z-order"))) {
@@ -175,23 +175,23 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			uint16_t itemId = childNode.attribute("id").as_ushort();
 			int32_t chance = childNode.attribute("chance").as_int();
 
-			ItemType& it = g_items[itemId];
-			if(it.id == 0) {
+			ItemType* type = g_items.getRawItemType(itemId);
+			if(!type) {
 				warnings.push_back("\nInvalid item id " + std::to_string(itemId));
 				return false;
 			}
 
-			if(!it.isGroundTile()) {
+			if(!type->isGroundTile()) {
 				warnings.push_back("\nItem " + std::to_string(itemId) + " is not ground item.");
 				return false;
 			}
 
-			if(it.brush && it.brush != this) {
+			if(type->brush && type->brush != this) {
 				warnings.push_back("\nItem " + std::to_string(itemId) + " can not be member of two brushes");
 				return false;
 			}
 
-			it.brush = this;
+			type->brush = this;
 			total_chance += chance;
 
 			ItemChanceBlock ci;
@@ -209,14 +209,14 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				uint16_t ground_equivalent = attribute.as_ushort();
 
 				// Load from inline definition
-				ItemType& it = g_items[ground_equivalent];
-				if(it.id == 0) {
+				const ItemType& type = g_items.getItemType(ground_equivalent);
+				if(type.id == 0) {
 					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
 					continue;
-				} else if(!it.isGroundTile()) {
+				} else if(!type.isGroundTile()) {
 					warnings.push_back("Ground dependency equivalent is not a ground item.\n");
 					continue;
-				} else if(it.brush && it.brush != this) {
+				} else if(type.brush && type.brush != this) {
 					warnings.push_back("Ground dependency equivalent does not use the same brush as ground border.\n");
 					continue;
 				}
@@ -248,7 +248,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				}
 
 				uint16_t ground_equivalent = attribute.as_ushort();
-				ItemType& it = g_items[ground_equivalent];
+				const ItemType& it = g_items.getItemType(ground_equivalent);
 				if(it.id == 0) {
 					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
 				}
@@ -424,12 +424,12 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								AutoBorder* autoBorder = itt->second;
 								ASSERT(autoBorder != nullptr);
 
-								ItemType& it = g_items[with_id];
-								if(it.id == 0) {
+								ItemType* type = g_items.getRawItemType(with_id);
+								if(!type) {
 									return false;
 								}
 
-								it.isBorder = true;
+								type->isBorder = true;
 								if(!specificCaseBlock) {
 									specificCaseBlock = newd SpecificCaseBlock();
 								}
@@ -447,12 +447,12 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 								}
 
 								int32_t with_id = attribute.as_int();
-								ItemType& it = g_items[with_id];
-								if(it.id == 0) {
+								ItemType* type = g_items.getRawItemType(with_id);
+								if(!type) {
 									return false;
 								}
 
-								it.isBorder = true;
+								type->isBorder = true;
 								if(!specificCaseBlock) {
 									specificCaseBlock = newd SpecificCaseBlock();
 								}

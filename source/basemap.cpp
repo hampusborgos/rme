@@ -22,8 +22,8 @@
 
 BaseMap::BaseMap() :
 	allocator(),
-	m_tileCount(0),
-	m_root(*this)
+	tilecount(0),
+	root(*this)
 {
 	////
 }
@@ -47,13 +47,13 @@ void BaseMap::clear(bool del)
 
 void BaseMap::clearVisible(uint32_t mask)
 {
-	m_root.clearVisible(mask);
+	root.clearVisible(mask);
 }
 
 Tile* BaseMap::createTile(int x, int y, int z)
 {
 	ASSERT(z < MAP_LAYERS);
-	QTreeNode* leaf = m_root.getLeafForce(x, y);
+	QTreeNode* leaf = root.getLeafForce(x, y);
 	TileLocation* loc = leaf->createTile(x, y, z);
 	if(loc->get())
 		return loc->get();
@@ -65,7 +65,7 @@ Tile* BaseMap::createTile(int x, int y, int z)
 TileLocation* BaseMap::getTileL(int x, int y, int z)
 {
 	ASSERT(z < MAP_LAYERS);
-	QTreeNode* leaf = m_root.getLeaf(x, y);
+	QTreeNode* leaf = root.getLeaf(x, y);
 	if(leaf) {
 		Floor* floor = leaf->getFloor(z);
 		if(floor)
@@ -95,7 +95,7 @@ TileLocation* BaseMap::createTileL(int x, int y, int z)
 {
 	ASSERT(z < MAP_LAYERS);
 
-	QTreeNode* leaf = m_root.getLeafForce(x, y);
+	QTreeNode* leaf = root.getLeafForce(x, y);
 	Floor* floor = leaf->createFloor(x, y, z);
 	uint32_t offsetX = x & 3;
 	uint32_t offsetY = y & 3;
@@ -108,27 +108,55 @@ TileLocation* BaseMap::createTileL(const Position& pos)
 	return createTileL(pos.x, pos.y, pos.z);
 }
 
-void BaseMap::setTile(int x, int y, int z, Tile* newtile, bool remove)
+void BaseMap::setTile(int x, int y, int z, Tile* new_tile, bool remove)
 {
-	ASSERT(!newtile || newtile->getX() == int(x));
-	ASSERT(!newtile || newtile->getY() == int(y));
-	ASSERT(!newtile || newtile->getZ() == int(z));
+	ASSERT(!new_tile || new_tile->getX() == x);
+	ASSERT(!new_tile || new_tile->getY() == y);
+	ASSERT(!new_tile || new_tile->getZ() == z);
 
-	QTreeNode* leaf = m_root.getLeafForce(x, y);
-	Tile* old = leaf->setTile(x, y, z, newtile);
-	if(remove)
-		delete old;
+	QTreeNode* leaf = root.getLeafForce(x, y);
+	Tile* old_tile = leaf->setTile(x, y, z, new_tile);
+
+	if ((remove && old_tile) || new_tile)
+		updateUniqueIds(remove ? old_tile : nullptr, new_tile);
+
+	if (remove) {
+		delete old_tile;
+	}
 }
 
-Tile* BaseMap::swapTile(int x, int y, int z, Tile* newtile)
+void BaseMap::setTile(const Position& position, Tile* new_tile, bool remove)
+{
+	setTile(position.x, position.y, position.z, new_tile, remove);
+}
+
+void BaseMap::setTile(Tile* new_tile, bool remove)
+{
+	ASSERT(new_tile);
+
+	const Position& position = new_tile->getPosition();
+	setTile(position.x, position.y, position.z, new_tile, remove);
+}
+
+Tile* BaseMap::swapTile(int x, int y, int z, Tile* new_tile)
 {
 	ASSERT(z < MAP_LAYERS);
-	ASSERT(!newtile || newtile->getX() == int(x));
-	ASSERT(!newtile || newtile->getY() == int(y));
-	ASSERT(!newtile || newtile->getZ() == int(z));
+	ASSERT(!new_tile || new_tile->getX() == x);
+	ASSERT(!new_tile || new_tile->getY() == y);
+	ASSERT(!new_tile || new_tile->getZ() == z);
 
-	QTreeNode* leaf = m_root.getLeafForce(x, y);
-	return leaf->setTile(x, y, z, newtile);
+	QTreeNode* leaf = root.getLeafForce(x, y);
+	Tile* old_tile = leaf->setTile(x, y, z, new_tile);
+
+	if (old_tile || new_tile)
+		updateUniqueIds(old_tile, new_tile);
+
+	return old_tile;
+}
+
+Tile* BaseMap::swapTile(const Position& position, Tile* new_tile)
+{
+	return swapTile(position.x, position.y, position.z, new_tile);
 }
 
 // Iterators
@@ -161,7 +189,7 @@ MapIterator::MapIterator(const MapIterator& other)
 MapIterator BaseMap::begin()
 {
 	MapIterator it(this);
-	it.nodestack.push_back(MapIterator::NodeIndex(&m_root));
+	it.nodestack.push_back(MapIterator::NodeIndex(&root));
 
 	while(true) {
 		MapIterator::NodeIndex& current = it.nodestack.back();

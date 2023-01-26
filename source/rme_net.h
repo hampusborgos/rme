@@ -34,7 +34,7 @@ public:
 
 	void HandleEvent(wxSocketEvent& evt);
 
-	bool CanHostLive() {return can_host;}
+	bool CanHostLive() { return can_host; }
 
 protected:
 	void OnParsePacket(NetworkMessage* nmsg);

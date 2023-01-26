@@ -25,48 +25,52 @@
 #include "gui.h"
 
 Selection::Selection(Editor& editor) :
-	busy(false),
 	editor(editor),
 	session(nullptr),
-	subsession(nullptr)
+	subsession(nullptr),
+	busy(false)
 {
 	////
 }
 
 Selection::~Selection()
 {
+	tiles.clear();
+
 	delete subsession;
 	delete session;
 }
 
 Position Selection::minPosition() const
 {
-	Position minPos(0x10000, 0x10000, 0x10);
-	for(TileSet::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
-		Position pos((*tile)->getPosition());
-		if(minPos.x > pos.x)
-			minPos.x = pos.x;
-		if(minPos.y > pos.y)
-			minPos.y = pos.y;
-		if(minPos.z > pos.z)
-			minPos.z = pos.z;
+	Position min_pos(0x10000, 0x10000, 0x10);
+	for(const Tile* tile : tiles) {
+		if(!tile) continue;
+		const Position& tile_pos = tile->getPosition();
+		if(min_pos.x > tile_pos.x)
+			min_pos.x = tile_pos.x;
+		if(min_pos.y > tile_pos.y)
+			min_pos.y = tile_pos.y;
+		if(min_pos.z > tile_pos.z)
+			min_pos.z = tile_pos.z;
 	}
-	return minPos;
+	return min_pos;
 }
 
 Position Selection::maxPosition() const
 {
-	Position maxPos(0, 0, 0);
-	for(TileSet::const_iterator tile = tiles.begin(); tile != tiles.end(); ++tile) {
-		Position pos((*tile)->getPosition());
-		if(maxPos.x < pos.x)
-			maxPos.x = pos.x;
-		if(maxPos.y < pos.y)
-			maxPos.y = pos.y;
-		if(maxPos.z < pos.z)
-			maxPos.z = pos.z;
+	Position max_pos;
+	for(const Tile* tile : tiles) {
+		if(!tile) continue;
+		const Position& tile_pos = tile->getPosition();
+		if(max_pos.x < tile_pos.x)
+			max_pos.x = tile_pos.x;
+		if(max_pos.y < tile_pos.y)
+			max_pos.y = tile_pos.y;
+		if(max_pos.z < tile_pos.z)
+			max_pos.z = tile_pos.z;
 	}
-	return maxPos;
+	return max_pos;
 }
 
 void Selection::add(Tile* tile, Item* item)
@@ -82,9 +86,10 @@ void Selection::add(Tile* tile, Item* item)
 	Tile* new_tile = tile->deepCopy(editor.getMap());
 	item->deselect();
 
-	if(g_settings.getInteger(Config::BORDER_IS_GROUND))
+	if(g_settings.getInteger(Config::BORDER_IS_GROUND)) {
 		if(item->isBorder())
 			new_tile->selectGround();
+	}
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -138,10 +143,10 @@ void Selection::remove(Tile* tile, Item* item)
 	ASSERT(tile);
 	ASSERT(item);
 
-	bool tmp = item->isSelected();
+	bool selected = item->isSelected();
 	item->deselect();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-	if(tmp) item->select();
+	if(selected) item->select();
 	if(item->isBorder() && g_settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
 
 	subsession->addChange(newd Change(new_tile));
@@ -153,10 +158,10 @@ void Selection::remove(Tile* tile, Spawn* spawn)
 	ASSERT(tile);
 	ASSERT(spawn);
 
-	bool tmp = spawn->isSelected();
+	bool selected = spawn->isSelected();
 	spawn->deselect();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-	if(tmp) spawn->select();
+	if(selected) spawn->select();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -167,10 +172,10 @@ void Selection::remove(Tile* tile, Creature* creature)
 	ASSERT(tile);
 	ASSERT(creature);
 
-	bool tmp = creature->isSelected();
+	bool selected = creature->isSelected();
 	creature->deselect();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-	if(tmp) creature->select();
+	if(selected) creature->select();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -201,14 +206,14 @@ void Selection::removeInternal(Tile* tile)
 void Selection::clear()
 {
 	if(session) {
-		for(TileSet::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			Tile* new_tile = (*it)->deepCopy(editor.getMap());
+		for(Tile* tile : tiles) {
+			Tile* new_tile = tile->deepCopy(editor.getMap());
 			new_tile->deselect();
 			subsession->addChange(newd Change(new_tile));
 		}
 	} else {
-		for(TileSet::iterator it = tiles.begin(); it != tiles.end(); it++) {
-			(*it)->deselect();
+		for(Tile* tile : tiles) {
+			tile->deselect();
 		}
 		tiles.clear();
 	}
@@ -217,9 +222,7 @@ void Selection::clear()
 void Selection::start(SessionFlags flags)
 {
 	if(!(flags & INTERNAL)) {
-		if(flags & SUBTHREAD) {
-			;
-		} else {
+		if(!(flags & SUBTHREAD)) {
 			session = editor.getHistoryActions()->createBatch(ACTION_SELECT);
 		}
 		subsession = editor.getHistoryActions()->createAction(ACTION_SELECT);
@@ -232,15 +235,15 @@ void Selection::commit()
 	if(session) {
 		ASSERT(subsession);
 		// We need to step out of the session before we do the action, else peril awaits us!
-		BatchAction* tmp = session;
+		BatchAction* batch = session;
 		session = nullptr;
 
 		// Do the action
-		tmp->addAndCommitAction(subsession);
+		batch->addAndCommitAction(subsession);
 
 		// Create a newd action for subsequent selects
 		subsession = editor.getHistoryActions()->createAction(ACTION_SELECT);
-		session = tmp;
+		session = batch;
 	}
 }
 
@@ -254,11 +257,11 @@ void Selection::finish(SessionFlags flags)
 			ASSERT(session);
 			ASSERT(subsession);
 			// We need to exit the session before we do the action, else peril awaits us!
-			BatchAction* tmp = session;
+			BatchAction* batch = session;
 			session = nullptr;
 
-			tmp->addAndCommitAction(subsession);
-			editor.addBatch(tmp, 2);
+			batch->addAndCommitAction(subsession);
+			editor.addBatch(batch, 2);
 
 			session = nullptr;
 			subsession = nullptr;
@@ -302,11 +305,6 @@ SelectionThread::SelectionThread(Editor& editor, Position start, Position end) :
 	////
 }
 
-SelectionThread::~SelectionThread()
-{
-	////
-}
-
 void SelectionThread::Execute()
 {
 	Create();
@@ -316,6 +314,7 @@ void SelectionThread::Execute()
 wxThread::ExitCode SelectionThread::Entry()
 {
 	selection.start(Selection::SUBTHREAD);
+	bool compesated = g_settings.getInteger(Config::COMPENSATED_SELECT);
 	for(int z = start.z; z >= end.z; --z) {
 		for(int x = start.x; x <= end.x; ++x) {
 			for(int y = start.y; y <= end.y; ++y) {
@@ -326,13 +325,12 @@ wxThread::ExitCode SelectionThread::Entry()
 				selection.add(tile);
 			}
 		}
-		if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
+		if(compesated && z <= GROUND_LAYER) {
 			++start.x; ++start.y;
 			++end.x; ++end.y;
 		}
 	}
 	result = selection.subsession;
 	selection.finish(Selection::SUBTHREAD);
-
 	return nullptr;
 }

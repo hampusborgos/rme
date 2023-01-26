@@ -124,7 +124,8 @@ void MapWindow::GetViewSize(int* x, int* y)
 
 void MapWindow::FitToMap()
 {
-	SetSize(editor.getMapWidth() * TILE_SIZE, editor.getMapHeight() * TILE_SIZE, true);
+	const Map& map = editor.getMap();
+	SetSize(map.getWidth() * TILE_SIZE, map.getHeight() * TILE_SIZE, true);
 }
 
 Position MapWindow::GetScreenCenterPosition()
@@ -134,9 +135,9 @@ Position MapWindow::GetScreenCenterPosition()
 	return Position(x, y, canvas->GetFloor());
 }
 
-void MapWindow::SetScreenCenterPosition(const Position& position)
+void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndicator)
 {
-	if(position == Position())
+	if(!position.isValid())
 		return;
 
 	int x = position.x * TILE_SIZE;
@@ -156,11 +157,14 @@ void MapWindow::SetScreenCenterPosition(const Position& position)
 
 	Scroll(x, y, true);
 	canvas->ChangeFloor(position.z);
+
+	if(showIndicator)
+		canvas->ShowPositionIndicator(position);
 }
 
 void MapWindow::GoToPreviousCenterPosition()
 {
-	SetScreenCenterPosition(previous_position);
+	SetScreenCenterPosition(previous_position, true);
 }
 
 void MapWindow::Scroll(int x, int y, bool center)

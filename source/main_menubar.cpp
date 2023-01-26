@@ -32,6 +32,7 @@
 
 #include <wx/chartype.h>
 
+#include "items.h"
 #include "editor.h"
 #include "materials.h"
 #include "live_client.h"
@@ -111,6 +112,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(MAP_REMOVE_ITEMS, wxITEM_NORMAL, OnMapRemoveItems);
 	MAKE_ACTION(MAP_REMOVE_CORPSES, wxITEM_NORMAL, OnMapRemoveCorpses);
 	MAKE_ACTION(MAP_REMOVE_UNREACHABLE_TILES, wxITEM_NORMAL, OnMapRemoveUnreachable);
+	MAKE_ACTION(MAP_REMOVE_EMPTY_SPAWNS, wxITEM_NORMAL, OnMapRemoveEmptySpawns);
 	MAKE_ACTION(MAP_CLEANUP, wxITEM_NORMAL, OnMapCleanup);
 	MAKE_ACTION(MAP_CLEAN_HOUSE_ITEMS, wxITEM_NORMAL, OnMapCleanHouseItems);
 	MAKE_ACTION(MAP_PROPERTIES, wxITEM_NORMAL, OnMapProperties);
@@ -119,6 +121,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(VIEW_TOOLBARS_BRUSHES, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_POSITION, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_SIZES, wxITEM_CHECK, OnToolbars);
+	MAKE_ACTION(VIEW_TOOLBARS_INDICATORS, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(VIEW_TOOLBARS_STANDARD, wxITEM_CHECK, OnToolbars);
 	MAKE_ACTION(NEW_VIEW, wxITEM_NORMAL, OnNewView);
 	MAKE_ACTION(TOGGLE_FULLSCREEN, wxITEM_NORMAL, OnToggleFullscreen);
@@ -146,6 +149,8 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SHOW_TOOLTIPS, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_PREVIEW, wxITEM_CHECK, OnChangeViewSettings);
 	MAKE_ACTION(SHOW_WALL_HOOKS, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_PICKUPABLES, wxITEM_CHECK, OnChangeViewSettings);
+	MAKE_ACTION(SHOW_MOVEABLES, wxITEM_CHECK, OnChangeViewSettings);
 
 	MAKE_ACTION(WIN_MINIMAP, wxITEM_NORMAL, OnMinimapWindow);
 	MAKE_ACTION(NEW_PALETTE, wxITEM_NORMAL, OnNewPalette);
@@ -184,7 +189,6 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(EXTENSIONS, wxITEM_NORMAL, OnListExtensions);
 	MAKE_ACTION(GOTO_WEBSITE, wxITEM_NORMAL, OnGotoWebsite);
 	MAKE_ACTION(ABOUT, wxITEM_NORMAL, OnAbout);
-
 
 	// A deleter, this way the frame does not need
 	// to bother deleting us.
@@ -289,7 +293,7 @@ void MainMenuBar::Update()
 
 	bool enable = !g_gui.IsWelcomeDialogShown();
 	menubar->Enable(enable);
-    if (!enable) {
+    if(!enable) {
         return;
 	}
 
@@ -353,6 +357,7 @@ void MainMenuBar::Update()
 	EnableItem(MAP_REMOVE_ITEMS, is_host);
 	EnableItem(MAP_REMOVE_CORPSES, is_local);
 	EnableItem(MAP_REMOVE_UNREACHABLE_TILES, is_local);
+	EnableItem(MAP_REMOVE_EMPTY_SPAWNS, is_local);
 	EnableItem(CLEAR_INVALID_HOUSES, is_local);
 	EnableItem(CLEAR_MODIFIED_STATE, is_local);
 
@@ -389,6 +394,7 @@ void MainMenuBar::Update()
 	EnableItem(DEBUG_VIEW_DAT, loaded);
 
 	UpdateFloorMenu();
+	UpdateIndicatorsMenu();
 }
 
 void MainMenuBar::LoadValues()
@@ -398,6 +404,7 @@ void MainMenuBar::LoadValues()
 	CheckItem(VIEW_TOOLBARS_BRUSHES, g_settings.getBoolean(Config::SHOW_TOOLBAR_BRUSHES));
 	CheckItem(VIEW_TOOLBARS_POSITION, g_settings.getBoolean(Config::SHOW_TOOLBAR_POSITION));
 	CheckItem(VIEW_TOOLBARS_SIZES, g_settings.getBoolean(Config::SHOW_TOOLBAR_SIZES));
+	CheckItem(VIEW_TOOLBARS_INDICATORS, g_settings.getBoolean(Config::SHOW_TOOLBAR_INDICATORS));
 	CheckItem(VIEW_TOOLBARS_STANDARD, g_settings.getBoolean(Config::SHOW_TOOLBAR_STANDARD));
 
 	CheckItem(SELECT_MODE_COMPENSATE, g_settings.getBoolean(Config::COMPENSATED_SELECT));
@@ -443,6 +450,8 @@ void MainMenuBar::LoadValues()
 	CheckItem(SHOW_TOOLTIPS, g_settings.getBoolean(Config::SHOW_TOOLTIPS));
 	CheckItem(SHOW_PREVIEW, g_settings.getBoolean(Config::SHOW_PREVIEW));
 	CheckItem(SHOW_WALL_HOOKS, g_settings.getBoolean(Config::SHOW_WALL_HOOKS));
+	CheckItem(SHOW_PICKUPABLES, g_settings.getBoolean(Config::SHOW_PICKUPABLES));
+	CheckItem(SHOW_MOVEABLES, g_settings.getBoolean(Config::SHOW_MOVEABLES));
 }
 
 void MainMenuBar::LoadRecentFiles()
@@ -463,7 +472,7 @@ void MainMenuBar::AddRecentFile(FileName file)
 std::vector<wxString> MainMenuBar::GetRecentFiles()
 {
     std::vector<wxString> files(recentFiles.GetCount());
-    for (size_t i = 0; i < recentFiles.GetCount(); ++i) {
+    for(size_t i = 0; i < recentFiles.GetCount(); ++i) {
         files[i] = recentFiles.GetHistoryFile(i);
     }
     return files;
@@ -471,11 +480,29 @@ std::vector<wxString> MainMenuBar::GetRecentFiles()
 
 void MainMenuBar::UpdateFloorMenu()
 {
-	if(g_gui.IsEditorOpen()) {
-		for(int i = 0; i < MAP_LAYERS; ++i)
-			CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + i), false);
-		CheckItem(MenuBar::ActionID(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
+	using namespace MenuBar;
+
+	if(!g_gui.IsEditorOpen()) {
+		return;
 	}
+
+	for(int i = 0; i < MAP_LAYERS; ++i)
+		CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + i), false);
+
+	CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
+}
+
+void MainMenuBar::UpdateIndicatorsMenu()
+{
+	using namespace MenuBar;
+
+	if(!g_gui.IsEditorOpen()) {
+		return;
+	}
+
+	CheckItem(SHOW_WALL_HOOKS, g_settings.getBoolean(Config::SHOW_WALL_HOOKS));
+	CheckItem(SHOW_PICKUPABLES, g_settings.getBoolean(Config::SHOW_PICKUPABLES));
+	CheckItem(SHOW_MOVEABLES, g_settings.getBoolean(Config::SHOW_MOVEABLES));
 }
 
 bool MainMenuBar::Load(const FileName& path, wxArrayString& warnings, wxString& error)
@@ -894,7 +921,7 @@ void MainMenuBar::OnReplaceItems(wxCommandEvent& WXUNUSED(event))
 		return;
 
 	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
-		if (MapWindow* window = tab->GetView()) {
+		if(MapWindow* window = tab->GetView()) {
 			window->ShowReplaceItemsDialog(false);
 		}
 	}
@@ -1313,7 +1340,7 @@ namespace OnMapRemoveUnreachable
 			if(done % 0x1000 == 0)
 				g_gui.SetLoadDone((unsigned int)(100 * done / total));
 
-			Position pos = tile->getPosition();
+			const Position& pos = tile->getPosition();
 			int sx = std::max(pos.x - 10, 0);
 			int ex = std::min(pos.x + 10, 65535);
 			int sy = std::max(pos.y - 8,  0);
@@ -1365,6 +1392,80 @@ void MainMenuBar::OnMapRemoveUnreachable(wxCommandEvent& WXUNUSED(event))
 
 		g_gui.PopupDialog("Search completed", msg, wxOK);
 
+		g_gui.GetCurrentMap().doChange();
+	}
+}
+
+void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
+{
+	if(!g_gui.IsEditorOpen()) {
+		return;
+	}
+
+	int ok = g_gui.PopupDialog("Remove Empty Spawns", "Do you want to remove all empty spawns from the map?", wxYES | wxNO);
+	if(ok == wxID_YES) {
+		Editor* editor = g_gui.GetCurrentEditor();
+		editor->getSelection().clear();
+
+		g_gui.CreateLoadBar("Searching map for empty spawns to remove...");
+
+		Map& map = g_gui.GetCurrentMap();
+		CreatureVector creatures;
+		TileVector toDeleteSpawns;
+		for(const auto& spawnPosition : map.spawns) {
+			Tile* tile = map.getTile(spawnPosition);
+			if(!tile || !tile->spawn) {
+				continue;
+			}
+
+			const int32_t radius = tile->spawn->getSize();
+
+			bool empty = true;
+			for(int32_t y = -radius; y <= radius; ++y) {
+				for(int32_t x = -radius; x <= radius; ++x) {
+					Tile* creature_tile = map.getTile(spawnPosition + Position(x, y, 0));
+					if(creature_tile && creature_tile->creature && !creature_tile->creature->isSaved()) {
+						creature_tile->creature->save();
+						creatures.push_back(creature_tile->creature);
+						empty = false;
+					}
+				}
+			}
+
+			if(empty) {
+				toDeleteSpawns.push_back(tile);
+			}
+		}
+
+		for(Creature* creature : creatures) {
+			creature->reset();
+		}
+
+		BatchAction* batch = editor->getHistoryActions()->createBatch(ACTION_DELETE_TILES);
+		Action* action = editor->getHistoryActions()->createAction(batch);
+
+		const size_t count = toDeleteSpawns.size();
+		size_t removed = 0;
+		for(const auto& tile : toDeleteSpawns) {
+			Tile* newtile = tile->deepCopy(map);
+			map.removeSpawn(newtile);
+			delete newtile->spawn;
+			newtile->spawn = nullptr;
+			if(++removed % 5 == 0) {
+				// update progress bar for each 5 spawns removed
+				g_gui.SetLoadDone(100 * removed / count);
+			}
+			action->addChange(newd Change(newtile));
+		}
+
+		batch->addAndCommitAction(action);
+		editor->addBatch(batch);
+
+		g_gui.DestroyLoadBar();
+
+		wxString msg;
+		msg << removed << " empty spawns removed.";
+		g_gui.PopupDialog("Search completed", msg, wxOK);
 		g_gui.GetCurrentMap().doChange();
 	}
 }
@@ -1476,8 +1577,8 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	uint64_t unique_item_count = 0;
 	uint64_t container_count = 0; // Only includes containers containing more than 1 item
 
-	int town_count = map->getTowns().count();
-	int house_count = map->getHouses().count();
+	int town_count = map->towns.count();
+	int house_count = map->houses.count();
 	std::map<uint32_t, uint32_t> town_sqm_count;
 	const Town* largest_town = nullptr;
 	uint64_t largest_town_size = 0;
@@ -1504,7 +1605,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	item_count += 1; \
 	if(!(_item)->isGroundTile() && !(_item)->isBorder()) { \
 		is_detailed = true; \
-		ItemType& it = g_items[(_item)->getID()]; \
+		const ItemType& it = g_items.getItemType((_item)->getID()); \
 		if(it.moveable) { \
 			loose_item_count += 1; \
 		} \
@@ -1524,13 +1625,11 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 		} \
 	} \
 }
-
 		if(tile->ground) {
 			ANALYZE_ITEM(tile->ground);
 		}
 
-		for(ItemVector::const_iterator item_iter = tile->items.begin(); item_iter != tile->items.end(); ++item_iter) {
-			Item* item = *item_iter;
+		for(Item* item : tile->items) {
 			ANALYZE_ITEM(item);
 		}
 #undef ANALYZE_ITEM
@@ -1552,12 +1651,12 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 		load_counter += 1;
 	}
 
-	creatures_per_spawn =       (spawn_count != 0? double(creature_count) /      double(spawn_count) : -1.0);
-	percent_pathable    = 100.0*(tile_count != 0?  double(walkable_tile_count) / double(tile_count) : -1.0);
-	percent_detailed    = 100.0*(tile_count != 0?  double(detailed_tile_count) / double(tile_count) : -1.0);
+	creatures_per_spawn = (spawn_count != 0 ? double(creature_count) / double(spawn_count) : -1.0);
+	percent_pathable = 100.0*(tile_count != 0 ? double(walkable_tile_count) / double(tile_count) : -1.0);
+	percent_detailed = 100.0*(tile_count != 0 ? double(detailed_tile_count) / double(tile_count) : -1.0);
 
 	load_counter = 0;
-	Houses& houses = map->getHouses();
+	Houses& houses = map->houses;
 	for(HouseMap::const_iterator hit = houses.begin(); hit != houses.end(); ++hit) {
 		const House* house = hit->second;
 
@@ -1576,7 +1675,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	sqm_per_house   = (house_count != 0? double(total_house_sqm) / double(house_count) : -1.0);
 	sqm_per_town    = (town_count != 0?  double(total_house_sqm) / double(town_count)  : -1.0);
 
-	Towns& towns = map->getTowns();
+	Towns& towns = map->towns;
 	for(std::map<uint32_t, uint32_t>::iterator town_iter = town_sqm_count.begin();
 			town_iter != town_sqm_count.end();
 			++town_iter)
@@ -1598,7 +1697,7 @@ void MainMenuBar::OnMapStatistics(wxCommandEvent& WXUNUSED(event))
 	std::ostringstream os;
 	os.setf(std::ios::fixed, std::ios::floatfield);
 	os.precision(2);
-	os << "Map statistics for the map \"" << map->getDescription() << "\"\n";
+	os << "Map statistics for the map \"" << map->getMapDescription() << "\"\n";
 	os << "\tTile data:\n";
 	os << "\t\tTotal number of tiles: " << tile_count << "\n";
 	os << "\t\tNumber of pathable tiles: " << walkable_tile_count << "\n";
@@ -1707,6 +1806,10 @@ void MainMenuBar::OnToolbars(wxCommandEvent& event)
 			g_gui.ShowToolbar(TOOLBAR_SIZES, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_SIZES, event.IsChecked());
 			break;
+		case VIEW_TOOLBARS_INDICATORS:
+			g_gui.ShowToolbar(TOOLBAR_INDICATORS, event.IsChecked());
+			g_settings.setInteger(Config::SHOW_TOOLBAR_INDICATORS, event.IsChecked());
+			break;
 		case VIEW_TOOLBARS_STANDARD:
 			g_gui.ShowToolbar(TOOLBAR_STANDARD, event.IsChecked());
 			g_settings.setInteger(Config::SHOW_TOOLBAR_STANDARD, event.IsChecked());
@@ -1789,8 +1892,11 @@ void MainMenuBar::OnChangeViewSettings(wxCommandEvent& event)
 	g_settings.setInteger(Config::SHOW_TOOLTIPS, IsItemChecked(MenuBar::SHOW_TOOLTIPS));
 	g_settings.setInteger(Config::SHOW_PREVIEW, IsItemChecked(MenuBar::SHOW_PREVIEW));
 	g_settings.setInteger(Config::SHOW_WALL_HOOKS, IsItemChecked(MenuBar::SHOW_WALL_HOOKS));
+	g_settings.setInteger(Config::SHOW_PICKUPABLES, IsItemChecked(MenuBar::SHOW_PICKUPABLES));
+	g_settings.setInteger(Config::SHOW_MOVEABLES, IsItemChecked(MenuBar::SHOW_MOVEABLES));
 
 	g_gui.RefreshView();
+	g_gui.root->GetAuiToolBar()->UpdateIndicators();
 }
 
 void MainMenuBar::OnChangeFloor(wxCommandEvent& event)
@@ -2009,7 +2115,7 @@ void MainMenuBar::OnCloseLive(wxCommandEvent& event)
 
 void MainMenuBar::SearchItems(bool unique, bool action, bool container, bool writable, bool onSelection/* = false*/)
 {
-	if (!unique && !action && !container && !writable)
+	if(!unique && !action && !container && !writable)
 		return;
 
 	if(!g_gui.IsEditorOpen())

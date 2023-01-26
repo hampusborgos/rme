@@ -23,10 +23,6 @@
 //#include "iomap_otmm.h"
 #include "item_attributes.h"
 
-class Creature;
-class Border;
-class Tile;
-
 enum ITEMPROPERTY {
 	BLOCKSOLID,
 	HASHEIGHT,
@@ -71,11 +67,19 @@ enum SplashType
 
 IMPLEMENT_INCREMENT_OP(SplashType)
 
+class Creature;
+class Border;
+class Tile;
+class Container;
+class Depot;
+class Teleport;
+class Door;
+
 class Item : public ItemAttributes
 {
 public:
 	//Factory member to create item of right type based on type
-	static Item* Create(uint16_t _type, uint16_t _subtype = 0xFFFF);
+	static Item* Create(uint16_t id, uint16_t subtype = 0xFFFF);
 	static Item* Create(pugi::xml_node);
 	static Item* Create_OTBM(const IOMap& maphandle, BinaryNode* stream);
 	//static Item* Create_OTMM(const IOMap& maphandle, BinaryNode* stream);
@@ -83,6 +87,7 @@ public:
 protected:
 	// Constructor for items
 	Item(unsigned short _type, unsigned short _count);
+
 public:
 	virtual ~Item();
 
@@ -91,123 +96,115 @@ public:
 
 	// Get memory footprint size
 	uint32_t memsize() const;
-	/*
-	virtual Container* getContainer() {return nullptr;}
-	virtual const Container* getContainer() const {return nullptr;}
-	virtual Teleport* getTeleport() {return nullptr;}
-	virtual const Teleport* getTeleport() const {return nullptr;}
-	virtual TrashHolder* getTrashHolder() {return nullptr;}
-	virtual const TrashHolder* getTrashHolder() const {return nullptr;}
-	virtual Mailbox* getMailbox() {return nullptr;}
-	virtual const Mailbox* getMailbox() const {return nullptr;}
-	virtual Door* getDoor() {return nullptr;}
-	virtual const Door* getDoor() const {return nullptr;}
-	virtual MagicField* getMagicField() {return nullptr;}
-	virtual const MagicField* getMagicField() const {return nullptr;}
-	*/
+
+	virtual Container* getContainer() { return nullptr; }
+	virtual Depot* getDepot() { return nullptr; }
+	virtual Teleport* getTeleport() { return nullptr; }
+	virtual Door* getDoor() { return nullptr; }
 
 	// OTBM map interface
-		// Serialize and unserialize (for save/load)
-		// Used internally
-		virtual bool readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attr, BinaryNode* stream);
-		virtual bool unserializeAttributes_OTBM(const IOMap& maphandle, BinaryNode* stream);
-		virtual bool unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node);
+	// Serialize and unserialize (for save/load)
+	// Used internally
+	virtual bool readItemAttribute_OTBM(const IOMap& maphandle, OTBM_ItemAttribute attr, BinaryNode* stream);
+	virtual bool unserializeAttributes_OTBM(const IOMap& maphandle, BinaryNode* stream);
+	virtual bool unserializeItemNode_OTBM(const IOMap& maphandle, BinaryNode* node);
 
-		// Will return a node containing this item
-		virtual bool serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		// Will write this item to the stream supplied in the argument
-		virtual void serializeItemCompact_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		virtual void serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	// Will return a node containing this item
+	virtual bool serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	// Will write this item to the stream supplied in the argument
+	virtual void serializeItemCompact_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	virtual void serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
 
 	// OTMM map interface
-		/*
-		// Serialize and unserialize (for save/load)
-		// Used internally
-		virtual bool readItemAttribute_OTMM(const IOMap& maphandle, OTMM_ItemAttribute attr, BinaryNode* stream);
-		virtual bool unserializeAttributes_OTMM(const IOMap& maphandle, BinaryNode* stream);
-		virtual bool unserializeItemNode_OTMM(const IOMap& maphandle, BinaryNode* node);
+	/*
+	// Serialize and unserialize (for save/load)
+	// Used internally
+	virtual bool readItemAttribute_OTMM(const IOMap& maphandle, OTMM_ItemAttribute attr, BinaryNode* stream);
+	virtual bool unserializeAttributes_OTMM(const IOMap& maphandle, BinaryNode* stream);
+	virtual bool unserializeItemNode_OTMM(const IOMap& maphandle, BinaryNode* node);
 
-		// Will return a node containing this item
-		virtual bool serializeItemNode_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		// Will write this item to the stream supplied in the argument
-		virtual void serializeItemCompact_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		virtual void serializeItemAttributes_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
-		*/
+	// Will return a node containing this item
+	virtual bool serializeItemNode_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	// Will write this item to the stream supplied in the argument
+	virtual void serializeItemCompact_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	virtual void serializeItemAttributes_OTMM(const IOMap& maphandle, NodeFileWriteHandle& f) const;
+	*/
 
 	// Static conversions
 	static std::string LiquidID2Name(uint16_t id);
 	static uint16_t LiquidName2ID(std::string id);
 
+	const ItemType& getItemType() const noexcept { return g_items.getItemType(id); }
+
 	// IDs
-	uint16_t getID() const {return id;}
-	uint16_t getClientID() const {return g_items[id].clientID;}
+	uint16_t getID() const { return id; }
+	uint16_t getClientID() const { return g_items.getItemType(id).clientID; }
+
 	// NOTE: This is very volatile, do NOT use this unless you know exactly what you're doing
 	// which you probably don't so avoid it like the plague!
-	void setID(uint16_t id);
+	void setID(uint16_t new_id);
 
-	bool typeExists() const {return g_items.typeExists(id);}
+	bool isValidID() const { return g_items.isValidID(id); }
 
 	// Usual attributes
 	virtual double getWeight() const;
-	int getAttack() const {return g_items[id].attack;}
-	int getArmor() const {return g_items[id].armor;}
-	int getDefense() const {return g_items[id].defense;}
-	//int getSlotPosition() const {return g_items[id].slot_position;}
+	int getAttack() const { return getItemType().attack; }
+	int getArmor() const { return getItemType().armor; }
+	int getDefense() const { return getItemType().defense; }
+	//int getSlotPosition() const { return g_items.getItemType(id).slot_position; }
 
 	// Item g_settings
 	bool canHoldText() const;
 	bool canHoldDescription() const;
-	bool isReadable() const {return g_items[id].canReadText;}
-	bool canWriteText() const {return g_items[id].canWriteText;}
-	uint32_t getMaxWriteLength() const {return g_items[id].maxTextLen;}
-	Brush* getBrush() const {return g_items[id].brush;}
+	bool isReadable() const { return getItemType().canReadText; }
+	bool canWriteText() const { return getItemType().canWriteText; }
+	uint32_t getMaxWriteLength() const { return getItemType().maxTextLen; }
+	Brush* getBrush() const { return getItemType().brush; }
 	GroundBrush* getGroundBrush() const;
 	WallBrush* getWallBrush() const;
 	DoorBrush* getDoorBrush() const;
 	TableBrush* getTableBrush() const;
 	CarpetBrush* getCarpetBrush() const;
-	Brush* getDoodadBrush() const {return g_items[id].doodad_brush;} // This is not necessarily a doodad brush
-	RAWBrush* getRAWBrush() const {return g_items[id].raw_brush;}
-	uint16_t getGroundEquivalent() const {return g_items[id].ground_equivalent;}
-	uint16_t hasBorderEquivalent() const {return g_items[id].has_equivalent;}
-	uint32_t getBorderGroup() const {return g_items[id].border_group;}
+	Brush* getDoodadBrush() const { return getItemType().doodad_brush; } // This is not necessarily a doodad brush
+	RAWBrush* getRAWBrush() const { return getItemType().raw_brush; }
+	uint16_t getGroundEquivalent() const { return getItemType().ground_equivalent; }
+	uint16_t hasBorderEquivalent() const { return getItemType().has_equivalent; }
+	uint32_t getBorderGroup() const { return getItemType().border_group; }
 
 	// Drawing related
 	uint8_t getMiniMapColor() const;
-	int getHeight() const;
-	std::pair<int,int> getDrawOffset() const;
+	wxPoint getDrawOffset() const;
 
 	// Item types
 	bool hasProperty(enum ITEMPROPERTY prop) const;
-	bool isBlocking() const {return g_items[id].unpassable;}
-	bool isStackable() const {return g_items[id].stackable;}
-	bool isClientCharged() const {return g_items[id].isClientCharged();}
-	bool isExtraCharged() const {return g_items[id].isExtraCharged();}
-	bool isCharged() const {return isClientCharged() || isExtraCharged();}
-	bool isFluidContainer() const {return (g_items[id].isFluidContainer());}
-	bool isAlwaysOnBottom() const {return g_items[id].alwaysOnBottom;}
-	int  getTopOrder() const {return g_items[id].alwaysOnTopOrder;}
-	bool isGroundTile() const {return g_items[id].isGroundTile();}
-	bool isSplash() const {return g_items[id].isSplash();}
-	bool isMagicField() const {return g_items[id].isMagicField();}
-	bool isNotMoveable() const {return !g_items[id].moveable;}
-	bool isMoveable() const {return g_items[id].moveable;}
-	bool isPickupable() const {return g_items[id].pickupable;}
-	//bool isWeapon() const {return (g_items[id].weaponType != WEAPON_NONE && g_items[id].weaponType != WEAPON_AMMO);}
-	//bool isUseable() const {return g_items[id].useable;}
-	bool isHangable() const {return g_items[id].isHangable;}
-	bool isRoteable() const {const ItemType& it = g_items[id]; return it.rotable && it.rotateTo;}
-	void doRotate() {if(isRoteable()) id = g_items[id].rotateTo;}
-	bool hasCharges() const {return g_items[id].charges != 0;}
-	bool isBorder() const {return g_items[id].isBorder;}
-	bool isOptionalBorder() const {return g_items[id].isOptionalBorder;}
-	bool isWall() const {return g_items[id].isWall;}
-	bool isDoor() const {return g_items[id].isDoor();}
-	bool isOpen() const {return g_items[id].isOpen;}
-	bool isBrushDoor() const {return g_items[id].isBrushDoor;}
-	bool isTable() const {return g_items[id].isTable;}
-	bool isCarpet() const {return g_items[id].isCarpet;}
-	bool isMetaItem() const {return g_items[id].isMetaItem();}
+	bool isBlocking() const { return getItemType().unpassable; }
+	bool isStackable() const { return getItemType().stackable; }
+	bool isClientCharged() const { return getItemType().isClientCharged(); }
+	bool isExtraCharged() const { return getItemType().isExtraCharged(); }
+	bool isCharged() const { return isClientCharged() || isExtraCharged(); }
+	bool isFluidContainer() const { return (getItemType().isFluidContainer()); }
+	bool isAlwaysOnBottom() const { return getItemType().alwaysOnBottom; }
+	int  getTopOrder() const { return getItemType().alwaysOnTopOrder; }
+	bool isGroundTile() const { return getItemType().isGroundTile(); }
+	bool isSplash() const { return getItemType().isSplash(); }
+	bool isMagicField() const { return getItemType().isMagicField(); }
+	bool isNotMoveable() const { return !getItemType().moveable; }
+	bool isMoveable() const { return getItemType().moveable; }
+	bool isPickupable() const { return getItemType().pickupable; }
+	//bool isWeapon() const { return (getItemType().weaponType != WEAPON_NONE && g_items[id].weaponType != WEAPON_AMMO); }
+	//bool isUseable() const { return getItemType().useable; }
+	bool isHangable() const { return getItemType().isHangable; }
+	bool isRoteable() const { return getItemType().rotable && getItemType().rotateTo; }
+	bool hasCharges() const { return getItemType().charges != 0; }
+	bool isBorder() const { return getItemType().isBorder; }
+	bool isOptionalBorder() const { return getItemType().isOptionalBorder; }
+	bool isWall() const { return getItemType().isWall; }
+	bool isDoor() const { return getItemType().isDoor(); }
+	bool isOpen() const { return getItemType().isOpen; }
+	bool isBrushDoor() const { return getItemType().isBrushDoor; }
+	bool isTable() const { return getItemType().isTable; }
+	bool isCarpet() const { return getItemType().isCarpet; }
+	bool isMetaItem() const { return getItemType().isMetaItem(); }
 
 	// Wall alignment (vertical, horizontal, pole, corner)
 	BorderType getWallAlignment() const;
@@ -215,26 +212,26 @@ public:
 	BorderType getBorderAlignment() const;
 
 	// Get the name!
-	const std::string getName() const {return g_items[id].name;}
-	const std::string getFullName() const {return g_items[id].name + g_items[id].editorsuffix;}
+	const std::string getName() const { return getItemType().name; }
+	const std::string getFullName() const { return getItemType().name + getItemType().editorsuffix; }
 
 	// Selection
-	bool isSelected() const {return selected;}
-	void select() {selected = true;}
-	void deselect() {selected = false;}
-	void toggleSelection() {selected =! selected;}
+	bool isSelected() const { return selected; }
+	void select() {selected = true; }
+	void deselect() {selected = false; }
+	void toggleSelection() {selected =! selected; }
 
 	// Item properties!
-	virtual bool isComplex() const {return attributes && attributes->size();} // If this item requires full save (not compact)
+	virtual bool isComplex() const { return attributes && attributes->size(); } // If this item requires full save (not compact)
 
 	// Weight
-	bool hasWeight() {return isPickupable();}
+	bool hasWeight() { return isPickupable(); }
 	virtual double getWeight();
 
 	// Subtype (count, fluid, charges)
 	int getCount() const;
 	uint16_t getSubtype() const;
-	void setSubtype(uint16_t n);
+	void setSubtype(uint16_t subtype);
 	bool hasSubtype() const;
 
 	void setUniqueID(uint16_t n);
@@ -250,7 +247,13 @@ public:
 	std::string getDescription() const;
 
 	void animate();
-	int getFrame() const {return frame;}
+	int getFrame() const { return frame; }
+
+	void doRotate() {
+		if(isRoteable()) {
+			setID(getItemType().rotateTo);
+		}
+	}
 
 protected:
 	uint16_t id;  // the same id as in ItemType
@@ -269,7 +272,6 @@ typedef std::vector<Item*> ItemVector;
 typedef std::list<Item*> ItemList;
 
 Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent = nullptr);
-
 
 inline int Item::getCount() const {
 	if(isStackable() || isExtraCharged() || isClientCharged()) {

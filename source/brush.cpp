@@ -362,10 +362,10 @@ void DoorBrush::switchDoor(Item* item)
 		WallBrush::DoorType& dt = *iter;
 		if(dt.type == doortype) {
 			ASSERT(dt.id);
-			ItemType& it = g_items[dt.id];
-			ASSERT(it.id != 0);
+			const ItemType& type = g_items.getItemType(dt.id);
+			ASSERT(type.id != 0);
 
-			if(it.isOpen == new_open) {
+			if(type.isOpen == new_open) {
 				item->setID(dt.id);
 				return;
 			}
@@ -408,10 +408,10 @@ bool DoorBrush::canDraw(BaseMap* map, const Position& position) const
 			WallBrush::DoorType& dt = *iter;
 			if(dt.type == doortype) {
 				ASSERT(dt.id);
-				ItemType& it = g_items[dt.id];
-				ASSERT(it.id != 0);
+				const ItemType& type = g_items.getItemType(dt.id);
+				ASSERT(type.id != 0);
 
-				if(it.isOpen == open) {
+				if(type.isOpen == open) {
 					return true;
 				} else if(!close_match) {
 					discarded_id = dt.id;
@@ -484,10 +484,10 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 				WallBrush::DoorType& dt = *iter;
 				if(dt.type == doortype) {
 					ASSERT(dt.id);
-					ItemType& it = g_items[dt.id];
-					ASSERT(it.id != 0);
+					const ItemType& type = g_items.getItemType(dt.id);
+					ASSERT(type.id != 0);
 
-					if(it.isOpen == open) {
+					if(type.isOpen == open) {
 						item = transformItem(item, dt.id, tile);
 						perfect_match = true;
 						break;
@@ -515,7 +515,7 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 			Map* mmap = dynamic_cast<Map*>(map);
 			Door* door = dynamic_cast<Door*>(item);
 			if(mmap && door) {
-				House* house = mmap->getHouses().getHouse(tile->getHouseID());
+				House* house = mmap->houses.getHouse(tile->getHouseID());
 				ASSERT(house);
 				Map* real_map = dynamic_cast<Map*>(map);
 				if(real_map) {
@@ -548,14 +548,14 @@ void DoorBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 				WallBrush* brush = item->getWallBrush();
 				if(brush && brush->isWallDecoration()) {
 					// We got a decoration!
-					for (std::vector<WallBrush::DoorType>::iterator it = brush->door_items[wall_alignment].begin(); it != brush->door_items[wall_alignment].end(); ++it) {
+					for(std::vector<WallBrush::DoorType>::iterator it = brush->door_items[wall_alignment].begin(); it != brush->door_items[wall_alignment].end(); ++it) {
 						WallBrush::DoorType& dt = (*it);
 						if(dt.type == doortype) {
 							ASSERT(dt.id);
-							ItemType& it = g_items[dt.id];
-							ASSERT(it.id != 0);
+							const ItemType& type = g_items.getItemType(dt.id);
+							ASSERT(type.id != 0);
 
-							if(it.isOpen == open) {
+							if(type.isOpen == open) {
 								item = transformItem(item, dt.id, tile);
 								perfect_match = true;
 								break;

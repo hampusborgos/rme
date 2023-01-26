@@ -32,14 +32,15 @@ class LiveClient;
 class LiveServer;
 class LiveSocket;
 
-class Editor {
+class Editor
+{
 public:
 	Editor(CopyBuffer& copybuffer, LiveClient* client);
 	Editor(CopyBuffer& copybuffer, const FileName& fn);
 	Editor(CopyBuffer& copybuffer);
 	~Editor();
-protected:
 
+protected:
 	// Live Server
 	LiveServer* live_server;
 	LiveClient* live_client;
@@ -54,7 +55,7 @@ public: // Functions
 	LiveClient* GetLiveClient() const;
 	LiveServer* GetLiveServer() const;
 	LiveSocket& GetLive() const;
-	bool CanEdit() const {return true;}
+	bool CanEdit() const noexcept { return true; }
 	bool IsLocal() const;
 	bool IsLive() const;
 	bool IsLiveServer() const;
@@ -72,28 +73,27 @@ public: // Functions
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 
-	Map& getMap() { return m_map; }
-	const Map& getMap() const { return m_map; }
-	const std::string& getMapName() const { return m_map.getName(); }
-	uint16_t getMapWidth() const noexcept { return m_map.getWidth(); }
-	uint16_t getMapHeight() const noexcept { return m_map.getHeight(); }
+	Map& getMap() noexcept { return map; }
+	const Map& getMap() const noexcept { return map; }
+	uint16_t getMapWidth() const noexcept { return map.width; }
+	uint16_t getMapHeight() const noexcept { return map.height; }
 
-	wxString getLoaderError() const {return m_map.getError();}
+	wxString getLoaderError() const { return map.getError(); }
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset, ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);
 	bool exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog);
 	bool exportSelectionAsMiniMap(FileName directory, wxString fileName);
 
+	ActionQueue* getHistoryActions() const noexcept { return actionQueue; }
 	// Adds an action to the action queue (this allows the user to undo the action)
 	// Invalidates the action pointer
-	ActionQueue* getHistoryActions() const { return m_actionQueue; }
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
 
 	// Selection
-	Selection& getSelection() { return m_selection; }
-	const Selection& getSelection() const { return m_selection; }
-	bool hasSelection() const { return m_selection.size() != 0; }
+	Selection& getSelection() noexcept { return selection; }
+	const Selection& getSelection() const noexcept { return selection; }
+	bool hasSelection() const noexcept { return selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
 	void moveSelection(Position offset);
@@ -130,16 +130,16 @@ protected:
 	Editor& operator=(const Editor&);
 
 private:
-	Map m_map;
-	Selection m_selection;
-	ActionQueue* m_actionQueue;
+	Map map;
+	Selection selection;
+	ActionQueue* actionQueue;
 };
 
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }
 inline void Editor::undraw(const Position& offset, bool alt) { drawInternal(offset, alt, false); }
-inline void Editor::draw(const PositionVector& posvec, bool alt) {drawInternal(posvec, alt, true);}
-inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt) {drawInternal(todraw, toborder, alt, true);}
-inline void Editor::undraw(const PositionVector& posvec, bool alt) {drawInternal(posvec, alt, false);}
-inline void Editor::undraw(const PositionVector& todraw, PositionVector& toborder, bool alt) {drawInternal(todraw, toborder, alt, false);}
+inline void Editor::draw(const PositionVector& posvec, bool alt) { drawInternal(posvec, alt, true); }
+inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt) { drawInternal(todraw, toborder, alt, true); }
+inline void Editor::undraw(const PositionVector& posvec, bool alt) { drawInternal(posvec, alt, false); }
+inline void Editor::undraw(const PositionVector& todraw, PositionVector& toborder, bool alt) { drawInternal(todraw, toborder, alt, false); }
 
 #endif

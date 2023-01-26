@@ -51,7 +51,7 @@ public:
 	void clear();
 
 	// Returns true when inside a session
-	bool isBusy() {return busy;}
+	bool isBusy() const noexcept { return busy; }
 
 	//
 	Position minPosition() const;
@@ -76,31 +76,30 @@ public:
 	// This deletes the thread
 	void join(SelectionThread* thread);
 
-	size_t size() {return tiles.size();}
-	size_t size() const {return tiles.size();}
+	size_t size() const noexcept { return tiles.size(); }
 	void updateSelectionCount();
-	TileSet::iterator begin() {return tiles.begin();}
-	TileSet::iterator end() {return tiles.end();}
-	TileSet& getTiles() {return tiles; }
-	Tile* getSelectedTile() {ASSERT(size() == 1); return *tiles.begin();}
+	TileSet::iterator begin() noexcept { return tiles.begin(); }
+	TileSet::iterator end() noexcept { return tiles.end(); }
+	const TileSet& getTiles() const noexcept { return tiles; }
+	Tile* getSelectedTile() { ASSERT(size() == 1); return *tiles.begin(); }
 
 private:
-	bool busy;
 	Editor& editor;
 	BatchAction* session;
 	Action* subsession;
-
 	TileSet tiles;
+	bool busy;
 
 	friend class SelectionThread;
 };
 
-class SelectionThread : public wxThread {
+class SelectionThread : public wxThread
+{
 public:
 	SelectionThread(Editor& editor, Position start, Position end);
-	virtual ~SelectionThread();
 
 	void Execute(); // Calls "Create" and then "Run"
+
 protected:
 	virtual ExitCode Entry();
 	Editor& editor;

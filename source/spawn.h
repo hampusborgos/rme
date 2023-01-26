@@ -20,30 +20,27 @@
 
 class Tile;
 
-class Spawn {
+class Spawn
+{
 public:
-	Spawn(int size = 3) : size(0), selected(false) {setSize(size);}
-	~Spawn() {}
+	Spawn(int size = 3);
 
-	Spawn* deepCopy() {
-		Spawn* copy = newd Spawn(size);
-		copy->selected = selected;
-		return copy;
-	}
+	Spawn* deepCopy() const;
 
-	bool isSelected() const {return selected;}
-	void select() {selected = true;}
-	void deselect() {selected = false;}
+	bool isSelected() const noexcept { return selected; }
+	void select() noexcept { selected = true; }
+	void deselect() noexcept { selected = false; }
 
-	// Does not compare selection!
-	bool operator==(const Spawn& other) {return size == other.size;}
-	bool operator!=(const Spawn& other) {return size != other.size;}
-
+	int getSize() const noexcept { return size; }
 	void setSize(int newsize) {
 		ASSERT(size < 100);
 		size = newsize;
 	}
-	int getSize() const {return size;}
+
+	// Does not compare selection!
+	bool operator==(const Spawn& other) { return size == other.size; }
+	bool operator!=(const Spawn& other) { return size != other.size; }
+
 protected:
 	int size;
 	bool selected;
@@ -52,23 +49,21 @@ protected:
 typedef std::set<Position> SpawnPositionList;
 typedef std::list<Spawn*> SpawnList;
 
-class Spawns {
+class Spawns
+{
 public:
-	Spawns();
-	~Spawns();
-
 	void addSpawn(Tile* tile);
 	void removeSpawn(Tile* tile);
 
-	SpawnPositionList::iterator begin() {return spawns.begin();}
-	SpawnPositionList::const_iterator begin() const {return spawns.begin();}
-	SpawnPositionList::iterator end() {return spawns.end();}
-	SpawnPositionList::const_iterator end() const {return spawns.end();}
-	void erase(SpawnPositionList::iterator iter) {spawns.erase(iter);}
-	SpawnPositionList::iterator find(Position& pos) {return spawns.find(pos);}
+	SpawnPositionList::iterator begin() noexcept { return spawns.begin(); }
+	SpawnPositionList::const_iterator begin() const noexcept { return spawns.begin(); }
+	SpawnPositionList::iterator end() noexcept { return spawns.end(); }
+	SpawnPositionList::const_iterator end() const noexcept { return spawns.end(); }
+	void erase(SpawnPositionList::iterator iter) noexcept { spawns.erase(iter); }
+	SpawnPositionList::iterator find(Position& pos) { return spawns.find(pos); }
+
 private:
 	SpawnPositionList spawns;
 };
-
 
 #endif

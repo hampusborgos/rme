@@ -117,6 +117,11 @@
 #define MAP_MAX_HEIGHT 65000
 #define MAP_MAX_LAYER 15
 
+#define MIN_UNIQUE_ID 1000
+#define MAX_UNIQUE_ID 65535
+#define MIN_ACTION_ID 100
+#define MAX_ACTION_ID 65535
+
 // The size of the tile in pixels
 #define TILE_SIZE 32
 

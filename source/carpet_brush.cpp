@@ -46,7 +46,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = g_items[attribute.as_ushort()].clientID;
+		look_id = g_items.getItemType(attribute.as_ushort()).clientID;
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -91,17 +91,17 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 
 			int32_t chance = attribute.as_int();
 
-			ItemType& it = g_items[id];
-			if(it.id == 0) {
+			ItemType* type = g_items.getRawItemType(id);
+			if(!type) {
 				warnings.push_back("There is no itemtype with id " + std::to_string(id));
 				continue;
-			} else if(it.brush && it.brush != this) {
+			} else if(type->brush && type->brush != this) {
 				warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 				continue;
 			}
 
-			it.isCarpet = true;
-			it.brush = this;
+			type->isCarpet = true;
+			type->brush = this;
 
 			auto& alignItem = carpet_items[alignment];
 			alignItem.total_chance += chance;
@@ -120,18 +120,17 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			}
 
 			uint16_t id = attribute.as_ushort();
-
-			ItemType& it = g_items[id];
-			if(it.id == 0) {
+			ItemType* type = g_items.getRawItemType(id);
+			if(!type) {
 				warnings.push_back("There is no itemtype with id " + std::to_string(id));
 				return false;
-			} else if(it.brush && it.brush != this) {
+			} else if(type->brush && type->brush != this) {
 				warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 				return false;
 			}
 
-			it.isCarpet = true;
-			it.brush = this;
+			type->isCarpet = true;
+			type->brush = this;
 
 			auto& alignItem = carpet_items[alignment];
 			alignItem.total_chance = 1;

@@ -52,6 +52,13 @@ bool TileLocation::empty() const
 	return size() == 0;
 }
 
+HouseExitList* TileLocation::createHouseExits()
+{
+	if(!house_exits)
+		house_exits = new HouseExitList();
+	return house_exits;
+}
+
 //**************** Floor **********************
 
 Floor::Floor(int sx, int sy, int z)
@@ -243,9 +250,9 @@ Tile* QTreeNode::setTile(int x, int y, int z, Tile* newtile)
 	tmp->tile = newtile;
 
 	if(newtile && !oldtile)
-		++map.m_tileCount;
+		++map.tilecount;
 	else if(oldtile && !newtile)
-		--map.m_tileCount;
+		--map.tilecount;
 
 	return oldtile;
 }

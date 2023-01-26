@@ -323,7 +323,7 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 		}
 
 		if(houseId) {
-			House* house = map.getHouses().getHouse(houseId);
+			House* house = map.houses.getHouse(houseId);
 			if(house) {
 				tile->setHouse(house);
 			}

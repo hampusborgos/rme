@@ -87,7 +87,7 @@ Brush* WaypointPalettePanel::GetSelectedBrush() const
 	g_gui.waypoint_brush->setWaypoint(
 		item == -1?
 			nullptr :
-			map->getWaypoints().getWaypoint(nstr(waypoint_list->GetItemText(item)))
+			map->waypoints.getWaypoint(nstr(waypoint_list->GetItemText(item)))
 	);
 	return g_gui.waypoint_brush;
 }
@@ -116,11 +116,11 @@ wxString WaypointPalettePanel::GetName() const
 void WaypointPalettePanel::OnUpdate()
 {
 	if(wxTextCtrl* tc = waypoint_list->GetEditControl()) {
-		Waypoint* wp = map->getWaypoints().getWaypoint(nstr(tc->GetValue()));
-		if(wp && wp->pos == Position()) {
+		Waypoint* wp = map->waypoints.getWaypoint(nstr(tc->GetValue()));
+		if(wp && !wp->pos.isValid()) {
 			if(map->getTile(wp->pos))
 				map->getTileL(wp->pos)->decreaseWaypointCount();
-			map->getWaypoints().removeWaypoint(wp->name);
+			map->waypoints.removeWaypoint(wp->name);
 		}
 	}
 	waypoint_list->DeleteAllItems();
@@ -134,7 +134,7 @@ void WaypointPalettePanel::OnUpdate()
 		add_waypoint_button->Enable(true);
 		remove_waypoint_button->Enable(true);
 
-		Waypoints& waypoints = map->getWaypoints();
+		Waypoints& waypoints = map->waypoints;
 
 		for(WaypointMap::const_iterator iter = waypoints.begin(); iter != waypoints.end(); ++iter) {
 			waypoint_list->InsertItem(0, wxstr(iter->second->name));
@@ -148,7 +148,7 @@ void WaypointPalettePanel::OnClickWaypoint(wxListEvent& event)
 		return;
 
 	std::string wpname = nstr(event.GetText());
-	Waypoint* wp = map->getWaypoints().getWaypoint(wpname);
+	Waypoint* wp = map->waypoints.getWaypoint(wpname);
 	if(wp) {
 		g_gui.SetScreenCenterPosition(wp->pos);
 		g_gui.waypoint_brush->setWaypoint(wp);
@@ -165,38 +165,38 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 {
 	std::string wpname = nstr(event.GetLabel());
 	std::string oldwpname = nstr(waypoint_list->GetItemText(event.GetIndex()));
-	Waypoint* wp = map->getWaypoints().getWaypoint(oldwpname);
+	Waypoint* wp = map->waypoints.getWaypoint(oldwpname);
 
 	if(event.IsEditCancelled())
 		return;
 
 	if(wpname == "") {
-		map->getWaypoints().removeWaypoint(oldwpname);
+		map->waypoints.removeWaypoint(oldwpname);
 		g_gui.RefreshPalettes();
 	} else if(wp) {
 		if(wpname == oldwpname) {
 			; // do nothing
 		} else {
-			if(map->getWaypoints().getWaypoint(wpname)) {
+			if(map->waypoints.getWaypoint(wpname)) {
 				// Already exists a waypoint with this name!
 				g_gui.SetStatusText("There already is a waypoint with this name.");
 				event.Veto();
 				if(oldwpname == "") {
-					map->getWaypoints().removeWaypoint(oldwpname);
+					map->waypoints.removeWaypoint(oldwpname);
 					g_gui.RefreshPalettes();
 				}
 			} else {
 				Waypoint* nwp = newd Waypoint(*wp);
 				nwp->name = wpname;
 
-				Waypoint* rwp = map->getWaypoints().getWaypoint(oldwpname);
+				Waypoint* rwp = map->waypoints.getWaypoint(oldwpname);
 				if(rwp) {
 					if(map->getTile(rwp->pos))
 						map->getTileL(rwp->pos)->decreaseWaypointCount();
-					map->getWaypoints().removeWaypoint(rwp->name);
+					map->waypoints.removeWaypoint(rwp->name);
 				}
 
-				map->getWaypoints().addWaypoint(nwp);
+				map->waypoints.addWaypoint(nwp);
 				g_gui.waypoint_brush->setWaypoint(nwp);
 
 				// Refresh other palettes
@@ -212,7 +212,7 @@ void WaypointPalettePanel::OnEditWaypointLabel(wxListEvent& event)
 void WaypointPalettePanel::OnClickAddWaypoint(wxCommandEvent& event)
 {
 	if(map) {
-		map->getWaypoints().addWaypoint(newd Waypoint());
+		map->waypoints.addWaypoint(newd Waypoint());
 		long i = waypoint_list->InsertItem(0, "");
 		waypoint_list->EditLabel(i);
 
@@ -227,11 +227,11 @@ void WaypointPalettePanel::OnClickRemoveWaypoint(wxCommandEvent& event)
 
     long item = waypoint_list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 	if(item != -1) {
-		Waypoint* wp = map->getWaypoints().getWaypoint(nstr(waypoint_list->GetItemText(item)));
+		Waypoint* wp = map->waypoints.getWaypoint(nstr(waypoint_list->GetItemText(item)));
 		if(wp) {
 			if(map->getTile(wp->pos))
 				map->getTileL(wp->pos)->decreaseWaypointCount();
-			map->getWaypoints().removeWaypoint(wp->name);
+			map->waypoints.removeWaypoint(wp->name);
 		}
 		waypoint_list->DeleteItem(item);
 		refresh_timer.Start(300, true);

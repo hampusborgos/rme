@@ -45,6 +45,7 @@ public:
 	size_t GetTileCount();
 
 	BaseMap& getBufferMap();
+
 private:
 	Position copyPos;
 	BaseMap* tiles;

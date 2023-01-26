@@ -208,8 +208,8 @@ public:
 	void OnClickCancel(wxCommandEvent&);
 
 	void RefreshContents();
-	virtual const Brush* getResult() const {return result_brush;}
-	virtual int getResultID() const {return result_id;}
+	virtual const Brush* getResult() const { return result_brush; }
+	virtual int getResultID() const { return result_id; }
 protected:
 	virtual void RefreshContentsInternal() = 0;
 	virtual void OnClickListInternal(wxCommandEvent&) = 0;

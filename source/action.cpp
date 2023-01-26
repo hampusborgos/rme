@@ -151,7 +151,8 @@ size_t Action::memsize() const
 
 void Action::commit(DirtyList* dirty_list)
 {
-	editor.getSelection().start(Selection::INTERNAL);
+	Selection& selection = editor.getSelection();
+	selection.start(Selection::INTERNAL);
 	ChangeList::const_iterator it = changes.begin();
 	while(it != changes.end()) {
 		Change* c = *it;
@@ -160,7 +161,7 @@ void Action::commit(DirtyList* dirty_list)
 				void** data = &c->data;
 				Tile* newtile = reinterpret_cast<Tile*>(*data);
 				ASSERT(newtile);
-				Position pos = newtile->getPosition();
+				const Position& pos = newtile->getPosition();
 
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.getMap().getLeaf(pos.x, pos.y);
@@ -184,16 +185,16 @@ void Action::commit(DirtyList* dirty_list)
 
 				//std::cout << "\tSwitched tile at " << pos.x << ";" << pos.y << ";" << pos.z << " from " << (void*)oldtile << " to " << *data <<  std::endl;
 				if(newtile->isSelected())
-					editor.getSelection().addInternal(newtile);
+					selection.addInternal(newtile);
 
 				if(oldtile) {
 					if(newtile->getHouseID() != oldtile->getHouseID()) {
 						// oooooomggzzz we need to add it to the appropriate house!
-						House* house = editor.getMap().getHouses().getHouse(oldtile->getHouseID());
+						House* house = editor.getMap().houses.getHouse(oldtile->getHouseID());
 						if(house)
 							house->removeTile(oldtile);
 
-						house = editor.getMap().getHouses().getHouse(newtile->getHouseID());
+						house = editor.getMap().houses.getHouse(newtile->getHouseID());
 						if(house)
 							house->addTile(newtile);
 					}
@@ -213,14 +214,14 @@ void Action::commit(DirtyList* dirty_list)
 
 					//oldtile->update();
 					if(oldtile->isSelected())
-						editor.getSelection().removeInternal(oldtile);
+						selection.removeInternal(oldtile);
 
 					*data = oldtile;
 				} else {
 					*data = editor.getMap().allocator(location);
 					if(newtile->getHouseID() != 0) {
 						// oooooomggzzz we need to add it to the appropriate house!
-						House* house = editor.getMap().getHouses().getHouse(newtile->getHouseID());
+						House* house = editor.getMap().houses.getHouse(newtile->getHouseID());
 						if(house) {
 							house->addTile(newtile);
 						}
@@ -244,7 +245,7 @@ void Action::commit(DirtyList* dirty_list)
 			case CHANGE_MOVE_HOUSE_EXIT: {
 				std::pair<uint32_t, Position>* p = reinterpret_cast<std::pair<uint32_t, Position>* >(c->data);
 				ASSERT(p);
-				House* whathouse = editor.getMap().getHouses().getHouse(p->first);
+				House* whathouse = editor.getMap().houses.getHouse(p->first);
 
 				if(whathouse) {
 					Position oldpos = whathouse->getExit();
@@ -257,7 +258,7 @@ void Action::commit(DirtyList* dirty_list)
 			case CHANGE_MOVE_WAYPOINT: {
 				std::pair<std::string, Position>* p = reinterpret_cast<std::pair<std::string, Position>* >(c->data);
 				ASSERT(p);
-				Waypoint* wp = editor.getMap().getWaypoints().getWaypoint(p->first);
+				Waypoint* wp = editor.getMap().waypoints.getWaypoint(p->first);
 
 				if(wp) {
 					// Change the tiles
@@ -265,9 +266,8 @@ void Action::commit(DirtyList* dirty_list)
 					TileLocation* newtile = editor.getMap().getTileL(p->second);
 
 					// Only need to remove from old if it actually exists
-					if(p->second != Position())
-						if(oldtile && oldtile->getWaypointCount() > 0)
-							oldtile->decreaseWaypointCount();
+					if(p->second.isValid() && oldtile && oldtile->getWaypointCount() > 0)
+						oldtile->decreaseWaypointCount();
 
 					newtile->increaseWaypointCount();
 
@@ -284,7 +284,7 @@ void Action::commit(DirtyList* dirty_list)
 		}
 		++it;
 	}
-	editor.getSelection().finish(Selection::INTERNAL);
+	selection.finish(Selection::INTERNAL);
 	commited = true;
 }
 
@@ -293,7 +293,8 @@ void Action::undo(DirtyList* dirty_list)
 	if(changes.empty())
 		return;
 
-	editor.getSelection().start(Selection::INTERNAL);
+	Selection& selection = editor.getSelection();
+	selection.start(Selection::INTERNAL);
 	ChangeList::reverse_iterator it = changes.rbegin();
 
 	while(it != changes.rend()) {
@@ -303,7 +304,7 @@ void Action::undo(DirtyList* dirty_list)
 				void** data = &c->data;
 				Tile* oldtile = reinterpret_cast<Tile*>(*data);
 				ASSERT(oldtile);
-				Position pos = oldtile->getPosition();
+				const Position& pos = oldtile->getPosition();
 
 				if(editor.IsLiveClient()) {
 					QTreeNode* nd = editor.getMap().getLeaf(pos.x, pos.y);
@@ -323,13 +324,13 @@ void Action::undo(DirtyList* dirty_list)
 
 
 				if(oldtile->isSelected())
-					editor.getSelection().addInternal(oldtile);
+					selection.addInternal(oldtile);
 				if(newtile->isSelected())
-					editor.getSelection().removeInternal(newtile);
+					selection.removeInternal(newtile);
 
 				if(newtile->getHouseID() != oldtile->getHouseID()) {
 					// oooooomggzzz we need to remove it from the appropriate house!
-					House* house = editor.getMap().getHouses().getHouse(newtile->getHouseID());
+					House* house = editor.getMap().houses.getHouse(newtile->getHouseID());
 					if(house) {
 						house->removeTile(newtile);
 					} else {
@@ -337,7 +338,7 @@ void Action::undo(DirtyList* dirty_list)
 						newtile->setHouse(nullptr);
 					}
 
-					house = editor.getMap().getHouses().getHouse(oldtile->getHouseID());
+					house = editor.getMap().houses.getHouse(oldtile->getHouseID());
 					if(house) {
 						house->addTile(oldtile);
 					}
@@ -369,7 +370,7 @@ void Action::undo(DirtyList* dirty_list)
 			case CHANGE_MOVE_HOUSE_EXIT: {
 				std::pair<uint32_t, Position>* p = reinterpret_cast<std::pair<uint32_t, Position>* >(c->data);
 				ASSERT(p);
-				House* whathouse = editor.getMap().getHouses().getHouse(p->first);
+				House* whathouse = editor.getMap().houses.getHouse(p->first);
 				if(whathouse) {
 					Position oldpos = whathouse->getExit();
 					whathouse->setExit(p->second);
@@ -381,7 +382,7 @@ void Action::undo(DirtyList* dirty_list)
 			case CHANGE_MOVE_WAYPOINT: {
 				std::pair<std::string, Position>* p = reinterpret_cast<std::pair<std::string, Position>* >(c->data);
 				ASSERT(p);
-				Waypoint* wp = editor.getMap().getWaypoints().getWaypoint(p->first);
+				Waypoint* wp = editor.getMap().waypoints.getWaypoint(p->first);
 
 				if(wp) {
 					// Change the tiles
@@ -389,9 +390,8 @@ void Action::undo(DirtyList* dirty_list)
 					TileLocation* newtile = editor.getMap().getTileL(p->second);
 
 					// Only need to remove from old if it actually exists
-					if(p->second != Position())
-						if(oldtile && oldtile->getWaypointCount() > 0)
-							oldtile->decreaseWaypointCount();
+					if(p->second.isValid() && oldtile && oldtile->getWaypointCount() > 0)
+						oldtile->decreaseWaypointCount();
 
 					newtile->increaseWaypointCount();
 
@@ -408,7 +408,7 @@ void Action::undo(DirtyList* dirty_list)
 		}
 		++it;
 	}
-	editor.getSelection().finish(Selection::INTERNAL);
+	selection.finish(Selection::INTERNAL);
 	commited = false;
 }
 

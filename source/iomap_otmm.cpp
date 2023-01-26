@@ -312,7 +312,7 @@ ClientVersionID IOMapOTMM::getVersionInfo(const FileName& filename)
 	}
 
 	BinaryNode* root = f.getRootNode();
-	if(!root) {return CLIENT_VERSION_NONE;}
+	if(!root) { return CLIENT_VERSION_NONE; }
 	root->skip(1); // Skip the type byte
 
 	uint16_t u16;

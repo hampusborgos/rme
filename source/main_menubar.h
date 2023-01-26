@@ -82,12 +82,14 @@ namespace MenuBar
 		MAP_REMOVE_ITEMS,
 		MAP_REMOVE_CORPSES,
 		MAP_REMOVE_UNREACHABLE_TILES,
+		MAP_REMOVE_EMPTY_SPAWNS,
 		MAP_CLEAN_HOUSE_ITEMS,
 		MAP_PROPERTIES,
 		MAP_STATISTICS,
 		VIEW_TOOLBARS_BRUSHES,
 		VIEW_TOOLBARS_POSITION,
 		VIEW_TOOLBARS_SIZES,
+		VIEW_TOOLBARS_INDICATORS,
 		VIEW_TOOLBARS_STANDARD,
 		NEW_VIEW,
 		TOGGLE_FULLSCREEN,
@@ -113,6 +115,8 @@ namespace MenuBar
 		SHOW_TOOLTIPS,
 		SHOW_PREVIEW,
 		SHOW_WALL_HOOKS,
+		SHOW_PICKUPABLES,
+		SHOW_MOVEABLES,
 		WIN_MINIMAP,
 		NEW_PALETTE,
 		TAKE_SCREENSHOT,
@@ -163,6 +167,7 @@ public:
 	// Turn on/off all buttons according to current editor state
 	void Update();
 	void UpdateFloorMenu(); // Only concerns the floor menu
+	void UpdateIndicatorsMenu();
 
 	void AddRecentFile(FileName file);
 	void LoadRecentFiles();
@@ -208,6 +213,7 @@ public:
 	void OnMapRemoveItems(wxCommandEvent& event);
 	void OnMapRemoveCorpses(wxCommandEvent& event);
 	void OnMapRemoveUnreachable(wxCommandEvent& event);
+	void OnMapRemoveEmptySpawns(wxCommandEvent& event);
 	void OnClearHouseTiles(wxCommandEvent& event);
 	void OnClearModifiedState(wxCommandEvent& event);
 	void OnToggleAutomagic(wxCommandEvent& event);

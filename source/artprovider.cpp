@@ -37,54 +37,78 @@
 #include "../icons/rectangular_5.xpm"
 #include "../icons/rectangular_6.xpm"
 #include "../icons/rectangular_7.xpm"
+#include "../icons/toolbar_hooks.xpm"
+#include "../icons/toolbar_pickupables.xpm"
+#include "../icons/toolbar_moveables.xpm"
 
+#include "../icons/spawns.xpm"
+#include "../icons/house_exit.xpm"
+#include "../icons/pickupable.xpm"
+#include "../icons/moveable.xpm"
+#include "../icons/pickupable_moveable.xpm"
 
 wxBitmap ArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client, const wxSize& WXUNUSED(size))
 {
-	if (client == wxART_TOOLBAR) {
-		if (id == ART_CIRCULAR)
+	if(client == wxART_TOOLBAR) {
+		if(id == ART_CIRCULAR)
 			return wxBitmap(circular_4_xpm);
-		else if (id == ART_CIRCULAR_1)
+		else if(id == ART_CIRCULAR_1)
 			return wxBitmap(circular_1_xpm);
-		else if (id == ART_CIRCULAR_2)
+		else if(id == ART_CIRCULAR_2)
 			return wxBitmap(circular_2_xpm);
-		else if (id == ART_CIRCULAR_3)
+		else if(id == ART_CIRCULAR_3)
 			return wxBitmap(circular_3_xpm);
-		else if (id == ART_CIRCULAR_4)
+		else if(id == ART_CIRCULAR_4)
 			return wxBitmap(circular_4_xpm);
-		else if (id == ART_CIRCULAR_5)
+		else if(id == ART_CIRCULAR_5)
 			return wxBitmap(circular_5_xpm);
-		else if (id == ART_CIRCULAR_6)
+		else if(id == ART_CIRCULAR_6)
 			return wxBitmap(circular_6_xpm);
-		else if (id == ART_CIRCULAR_7)
+		else if(id == ART_CIRCULAR_7)
 			return wxBitmap(circular_7_xpm);
-		else if (id == ART_NOLOOUT_BRUSH)
+		else if(id == ART_NOLOOUT_BRUSH)
 			return wxBitmap(nologout_zone_xpm);
-		else if (id == ART_NOPVP_BRUSH)
+		else if(id == ART_NOPVP_BRUSH)
 			return wxBitmap(nopvp_zone_xpm);
-		else if (id == ART_POSITION_GO)
+		else if(id == ART_POSITION_GO)
 			return wxBitmap(position_go_xpm);
-		else if (id == ART_PVP_BRUSH)
+		else if(id == ART_PVP_BRUSH)
 			return wxBitmap(pvp_zone_xpm);
-		else if (id == ART_PZ_BRUSH)
+		else if(id == ART_PZ_BRUSH)
 			return wxBitmap(protected_zone_xpm);
-		else if (id == ART_RECTANGULAR)
+		else if(id == ART_RECTANGULAR)
 			return wxBitmap(rectangular_4_xpm);
-		else if (id == ART_RECTANGULAR_1)
+		else if(id == ART_RECTANGULAR_1)
 			return wxBitmap(rectangular_1_xpm);
-		else if (id == ART_RECTANGULAR_2)
+		else if(id == ART_RECTANGULAR_2)
 			return wxBitmap(rectangular_2_xpm);
-		else if (id == ART_RECTANGULAR_3)
+		else if(id == ART_RECTANGULAR_3)
 			return wxBitmap(rectangular_3_xpm);
-		else if (id == ART_RECTANGULAR_4)
+		else if(id == ART_RECTANGULAR_4)
 			return wxBitmap(rectangular_4_xpm);
-		else if (id == ART_RECTANGULAR_5)
+		else if(id == ART_RECTANGULAR_5)
 			return wxBitmap(rectangular_5_xpm);
-		else if (id == ART_RECTANGULAR_6)
+		else if(id == ART_RECTANGULAR_6)
 			return wxBitmap(rectangular_6_xpm);
-		else if (id == ART_RECTANGULAR_7)
+		else if(id == ART_RECTANGULAR_7)
 			return wxBitmap(rectangular_7_xpm);
+		else if(id == ART_HOOKS_TOOLBAR)
+			return wxBitmap(toolbar_hooks_xpm);
+		else if(id == ART_PICKUPABLE_TOOLBAR)
+			return wxBitmap(toolbar_pickupables_xpm);
+		else if(id == ART_MOVEABLE_TOOLBAR)
+			return wxBitmap(toolbar_moveable_xpm);
+	} else if(client == wxART_OTHER) {
+		if(id == ART_SPAWNS)
+			return wxBitmap(spawns_xpm);
+		else if(id == ART_HOUSE_EXIT)
+			return wxBitmap(house_exit_xpm);
+		else if(id == ART_PICKUPABLE)
+			return wxBitmap(pickupable_xpm);
+		else if(id == ART_MOVEABLE)
+			return wxBitmap(moveable_xpm);
+		else if(id == ART_PICKUPABLE_MOVEABLE)
+			return wxBitmap(pickupable_moveable_xpm);
 	}
-
 	return wxNullBitmap;
 }

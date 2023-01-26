@@ -20,10 +20,17 @@
 #include "waypoints.h"
 #include "map.h"
 
+Waypoints::~Waypoints()
+{
+	for(auto it = waypoints.begin(); it != waypoints.end(); ++it)
+		delete it->second;
+	waypoints.clear();
+}
+
 void Waypoints::addWaypoint(Waypoint* wp)
 {
 	removeWaypoint(wp->name);
-	if(wp->pos != Position()) {
+	if(wp->pos.isValid()) {
 		Tile* t = map.getTile(wp->pos);
 		if(!t)
 			map.setTile(wp->pos, t = map.allocator(map.createTileL(wp->pos)));
@@ -41,14 +48,14 @@ Waypoint* Waypoints::getWaypoint(std::string name)
 	return iter->second;
 }
 
-Waypoint* Waypoints::getWaypoint(TileLocation* location)
+Waypoint* Waypoints::getWaypoint(const Position& position)
 {
-	if(!location)
+	if(!position.isValid())
 		return nullptr;
 	// TODO find waypoint by position hash.
 	for(WaypointMap::iterator it = waypoints.begin(); it != waypoints.end(); it++) {
 		Waypoint* waypoint = it->second;
-		if(waypoint && waypoint->pos == location->position)
+		if(waypoint && waypoint->pos == position)
 			return waypoint;
 	}
 	return nullptr;

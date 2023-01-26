@@ -25,16 +25,16 @@ class Town
 public:
 	Town(uint32_t _id) : id(_id), name("") {}
 	Town(const Town& copy) : id(copy.id), name(copy.name), templepos(copy.templepos) {}
-	~Town() {}
 
-	const std::string& getName() const { return name; }
-	void setName(const std::string& newName) { name = newName; }
+	const std::string& getName() const noexcept { return name; }
+	void setName(const std::string& _name) noexcept { name = _name; }
 
-	const Position& getTemplePosition() const {return templepos;}
-	void setTemplePosition(const Position& _pos);
+	const Position& getTemplePosition() const noexcept { return templepos; }
+	void setTemplePosition(const Position& position);
 
-	uint32_t getID() const {return id;}
-	void setID(uint32_t _id) {id = _id;}
+	uint32_t getID() const noexcept { return id; }
+	void setID(uint32_t _id) noexcept { id = _id; }
+
 private:
 	uint32_t id;
 	std::string name;
@@ -52,7 +52,7 @@ public:
 	// Clears the townmap
 	void clear();
 
-	uint32_t count() const {return towns.size();}
+	uint32_t count() const noexcept { return towns.size(); }
 
 	bool addTown(Town* town);
 	uint32_t getEmptyID();
@@ -60,16 +60,16 @@ public:
 	Town* getTown(std::string& townname);
 	Town* getTown(uint32_t _townid);
 
-	TownMap::const_iterator begin() const{return towns.begin();}
-	TownMap::const_iterator end() const{return towns.end();}
-	TownMap::const_iterator find(uint32_t id) const {return towns.find(id);}
-	TownMap::iterator begin() {return towns.begin();}
-	TownMap::iterator end() {return towns.end();}
-	TownMap::iterator find(uint32_t id) {return towns.find(id);}
+	TownMap::const_iterator begin() const noexcept { return towns.begin(); }
+	TownMap::const_iterator end() const noexcept { return towns.end(); }
+	TownMap::const_iterator find(uint32_t id) const { return towns.find(id); }
+	TownMap::iterator begin() noexcept { return towns.begin(); }
+	TownMap::iterator end() noexcept { return towns.end(); }
+	TownMap::iterator find(uint32_t id) { return towns.find(id); }
 #ifdef __VISUALC__ // C++0x compliance to some degree :)
-	TownMap::iterator erase(TownMap::iterator iter) {return towns.erase(iter);}
+	TownMap::iterator erase(TownMap::iterator iter) noexcept { return towns.erase(iter); }
 #else
-	void erase(TownMap::iterator iter) {towns.erase(iter);}
+	void erase(TownMap::iterator iter) { towns.erase(iter); }
 #endif
 
 private:

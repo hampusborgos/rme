@@ -82,7 +82,7 @@ Town* Towns::getTown(uint32_t id)
 	return nullptr;
 }
 
-void Town::setTemplePosition(const Position& pos)
+void Town::setTemplePosition(const Position& position)
 {
-	templepos = pos;
+	templepos = position;
 }

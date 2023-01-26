@@ -44,33 +44,33 @@ public:
 
 	// Access tile
 	// Can't set directly since that does not update tile count
-	Tile* get() {return tile;}
-	const Tile* get() const {return tile;}
+	Tile* get() noexcept { return tile; }
+	const Tile* get() const noexcept { return tile; }
 
 	int size() const;
 	bool empty() const;
 
-	Position getPosition() const { return position; }
+	const Position& getPosition() const noexcept { return position; }
+	int getX() const noexcept { return position.x; }
+	int getY() const noexcept { return position.y; }
+	int getZ() const noexcept { return position.z; }
 
-	int getX() const {return position.x;}
-	int getY() const {return position.y;}
-	int getZ() const {return position.z;}
-
-	size_t getSpawnCount() const {return spawn_count;}
-	void increaseSpawnCount() {spawn_count++;}
-	void decreaseSpawnCount() {spawn_count--;}
-	size_t getWaypointCount() const {return waypoint_count;}
-	void increaseWaypointCount() {waypoint_count++;}
-	void decreaseWaypointCount() {waypoint_count--;}
-	HouseExitList* createHouseExits() {if(house_exits) return house_exits; return house_exits = newd HouseExitList;}
-	HouseExitList* getHouseExits() {return house_exits;}
+	size_t getSpawnCount() const noexcept { return spawn_count; }
+	void increaseSpawnCount() noexcept { spawn_count++; }
+	void decreaseSpawnCount() noexcept { spawn_count--; }
+	size_t getWaypointCount() const noexcept { return waypoint_count; }
+	void increaseWaypointCount() noexcept { waypoint_count++; }
+	void decreaseWaypointCount() noexcept { waypoint_count--; }
+	HouseExitList* createHouseExits();
+	HouseExitList* getHouseExits() noexcept { return house_exits; }
 
 	friend class Floor;
 	friend class QTreeNode;
 	friend class Waypoints;
 };
 
-class Floor {
+class Floor
+{
 public:
 	Floor(int x, int y, int z);
 	TileLocation locs[MAP_LAYERS];
@@ -112,6 +112,7 @@ public:
 	void setRequested(bool underground, bool r);
 	bool isVisible(bool underground);
 	bool isRequested(bool underground);
+
 protected:
 	BaseMap& map;
 	uint32_t visible;

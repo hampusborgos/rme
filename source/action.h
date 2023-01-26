@@ -38,12 +38,14 @@ enum ChangeType {
 	CHANGE_MOVE_WAYPOINT,
 };
 
-class Change {
+class Change
+{
 private:
 	ChangeType type;
 	void* data;
 
 	Change();
+
 public:
 	Change(Tile* tile);
 	static Change* Create(House* house, const Position& where);
@@ -51,8 +53,8 @@ public:
 	~Change();
 	void clear();
 
-	ChangeType getType() const {return type;}
-	void* getData() const {return data;}
+	ChangeType getType() const noexcept { return type; }
+	void* getData() const noexcept { return data; }
 
 	// Get memory footprint
 	uint32_t memsize() const;
@@ -63,7 +65,8 @@ public:
 typedef std::vector<Change*> ChangeList;
 
 // A dirty list represents a list of all tiles that was changed in an action
-class DirtyList {
+class DirtyList
+{
 public:
 	DirtyList();
 	~DirtyList();
@@ -87,7 +90,7 @@ public:
 
 	void AddPosition(int x, int y, int z);
 	void AddChange(Change* c);
-	bool Empty() const {return iset.empty() && ichanges.empty();}
+	bool Empty() const { return iset.empty() && ichanges.empty(); }
 	SetType& GetPosList();
 	ChangeList& GetChanges();
 
@@ -95,8 +98,6 @@ protected:
 	SetType iset;
 	ChangeList ichanges;
 };
-
-
 
 enum ActionIdentifier {
 	ACTION_MOVE,
@@ -114,7 +115,8 @@ enum ActionIdentifier {
 	ACTION_CHANGE_PROPERTIES,
 };
 
-class Action {
+class Action
+{
 public:
 	virtual ~Action();
 
@@ -125,13 +127,13 @@ public:
 	// Get memory footprint
 	size_t approx_memsize() const;
 	size_t memsize() const;
-	size_t size() const {return changes.size();}
-	ActionIdentifier getType() const {return type;}
+	size_t size() const noexcept { return changes.size(); }
+	ActionIdentifier getType() const noexcept { return type; }
 
 	void commit(DirtyList* dirty_list);
-	bool isCommited() const {return commited;}
+	bool isCommited() const noexcept { return commited; }
 	void undo(DirtyList* dirty_list);
-	void redo(DirtyList* dirty_list) {commit(dirty_list);}
+	void redo(DirtyList* dirty_list) { commit(dirty_list); }
 
 
 protected:
@@ -147,20 +149,20 @@ protected:
 
 typedef std::vector<Action*> ActionVector;
 
-class BatchAction {
+class BatchAction
+{
 public:
 	virtual ~BatchAction();
 
-	void resetTimer() {timestamp = 0;}
+	void resetTimer() noexcept { timestamp = 0; }
 
 	// Get memory footprint
 	size_t memsize(bool resize = false) const;
-	size_t size() const {return batch.size();}
-	ActionIdentifier getType() const {return type;}
+	size_t size() const noexcept { return batch.size(); }
+	ActionIdentifier getType() const noexcept { return type; }
 
 	virtual void addAction(Action* action);
 	virtual void addAndCommitAction(Action* action);
-
 
 protected:
 	BatchAction(Editor& editor, ActionIdentifier ident);
@@ -180,7 +182,8 @@ protected:
 	friend class ActionQueue;
 };
 
-class ActionQueue {
+class ActionQueue
+{
 public:
 	ActionQueue(Editor& editor);
 	virtual ~ActionQueue();
@@ -200,8 +203,8 @@ public:
 	void redo();
 	void clear();
 
-	bool canUndo() {return current > 0;}
-	bool canRedo() {return current < actions.size();}
+	bool canUndo() noexcept { return current > 0; }
+	bool canRedo() noexcept { return current < actions.size(); }
 
 protected:
 	size_t current;

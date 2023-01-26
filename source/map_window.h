@@ -67,11 +67,11 @@ public:
 
 	// Screen position.
 	Position GetScreenCenterPosition();
-	void SetScreenCenterPosition(const Position& position);
+	void SetScreenCenterPosition(const Position& position, bool showIndicator = false);
 	void GoToPreviousCenterPosition();
 
 	// Return the containing canvas
-	MapCanvas* GetCanvas() const { return canvas; }
+	MapCanvas* GetCanvas() const noexcept { return canvas; }
 
 	void ShowReplaceItemsDialog(bool selectionOnly);
 	void CloseReplaceItemsDialog();
@@ -110,9 +110,9 @@ public:
 	  wxScrollBar(parent, id, wxDefaultPosition, wxDefaultSize, style), canvas(canvas) {}
 	virtual ~MapScrollBar() {}
 
-	void OnKey(wxKeyEvent& event) {canvas->GetEventHandler()->AddPendingEvent(event);}
-	void OnWheel(wxMouseEvent& event) {canvas->GetEventHandler()->AddPendingEvent(event);}
-	void OnFocus(wxFocusEvent& event) {canvas->SetFocus();}
+	void OnKey(wxKeyEvent& event) { canvas->GetEventHandler()->AddPendingEvent(event); }
+	void OnWheel(wxMouseEvent& event) { canvas->GetEventHandler()->AddPendingEvent(event); }
+	void OnFocus(wxFocusEvent& event) { canvas->SetFocus(); }
 
 	wxWindow* canvas;
 	DECLARE_EVENT_TABLE()
