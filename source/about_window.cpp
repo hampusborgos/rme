@@ -24,7 +24,8 @@
 #include <typeinfo>
 #include <memory>
 
-class GamePanel : public wxPanel {
+class GamePanel : public wxPanel
+{
 public:
 	GamePanel(wxWindow* parent, int width, int height);
 	virtual ~GamePanel();
@@ -60,7 +61,8 @@ protected:
 const int TETRIS_MAPHEIGHT = 20;
 const int TETRIS_MAPWIDTH = 10;
 
-class TetrisPanel : public GamePanel {
+class TetrisPanel : public GamePanel
+{
 public:
 	TetrisPanel(wxWindow* parent);
 	~TetrisPanel();
@@ -118,7 +120,8 @@ protected:
 const int SNAKE_MAPHEIGHT = 20;
 const int SNAKE_MAPWIDTH = 20;
 
-class SnakePanel : public GamePanel {
+class SnakePanel : public GamePanel
+{
 public:
 	SnakePanel(wxWindow* parent);
 	~SnakePanel();
@@ -699,12 +702,12 @@ void SnakePanel::OnKey(wxKeyEvent& event, bool down)
 	if(!down) return;
 
 	int keyCode = event.GetKeyCode();
-	if (keyCode == WXK_SPACE) {
-		if (paused())
+	if(keyCode == WXK_SPACE) {
+		if(paused())
 			unpause();
 		else
 			pause();
-	} else if (!dead) {
+	} else if(!dead) {
 		switch (keyCode) {
 			case WXK_NUMPAD_UP:
 			case WXK_UP: {

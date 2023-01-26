@@ -1960,7 +1960,7 @@ void MapDrawer::glColorCheck(Brush* brush, const Position& pos)
 		glColor(COLOR_INVALID);
 }
 
-void MapDrawer::drawRect(int x, int y, int w, int h, const wxColour& color, int width)
+void MapDrawer::drawRect(int x, int y, int w, int h, const wxColor& color, int width)
 {
 	glLineWidth(width);
 	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());

@@ -1037,7 +1037,7 @@ void SortableListBox::DoSort() {
 	//Insertion sort
 	for(size_t i = 0; i < count; ++i) {
 		size_t j = i;
-		while (j > 0 && stringList[j].CmpNoCase(stringList[j - 1]) < 0) {
+		while(j > 0 && stringList[j].CmpNoCase(stringList[j - 1]) < 0) {
 
 			wxString tmpString = stringList[j];
 			stringList[j] = stringList[j - 1];

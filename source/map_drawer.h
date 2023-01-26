@@ -176,7 +176,7 @@ protected:
 	void glColor(const wxColor& color);
 	void glColor(BrushColor color);
 	void glColorCheck(Brush* brush, const Position& pos);
-	void drawRect(int x, int y, int w, int h, const wxColour& color, int width = 1);
+	void drawRect(int x, int y, int w, int h, const wxColor& color, int width = 1);
 
 private:
 	void getDrawPosition(const Position& position, int &x, int &y);

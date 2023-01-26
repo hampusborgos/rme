@@ -85,7 +85,7 @@ public:
 	virtual void close();
 	bool seek(size_t offset);
 	bool seekRelative(size_t offset);
-	FORCEINLINE void skip(size_t offset) {seekRelative(offset); }
+	FORCEINLINE void skip(size_t offset) { seekRelative(offset); }
 	size_t size() { return file_size; }
 	size_t tell() { if(file) return ftell(file); return 0; }
 protected:
