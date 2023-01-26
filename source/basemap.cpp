@@ -108,27 +108,55 @@ TileLocation* BaseMap::createTileL(const Position& pos)
 	return createTileL(pos.x, pos.y, pos.z);
 }
 
-void BaseMap::setTile(int x, int y, int z, Tile* newtile, bool remove)
+void BaseMap::setTile(int x, int y, int z, Tile* new_tile, bool remove)
 {
-	ASSERT(!newtile || newtile->getX() == int(x));
-	ASSERT(!newtile || newtile->getY() == int(y));
-	ASSERT(!newtile || newtile->getZ() == int(z));
+	ASSERT(!new_tile || new_tile->getX() == x);
+	ASSERT(!new_tile || new_tile->getY() == y);
+	ASSERT(!new_tile || new_tile->getZ() == z);
 
 	QTreeNode* leaf = root.getLeafForce(x, y);
-	Tile* old = leaf->setTile(x, y, z, newtile);
-	if(remove)
-		delete old;
+	Tile* old_tile = leaf->setTile(x, y, z, new_tile);
+
+	if ((remove && old_tile) || new_tile)
+		updateUniqueIds(remove ? old_tile : nullptr, new_tile);
+
+	if (remove) {
+		delete old_tile;
+	}
 }
 
-Tile* BaseMap::swapTile(int x, int y, int z, Tile* newtile)
+void BaseMap::setTile(const Position& position, Tile* new_tile, bool remove)
+{
+	setTile(position.x, position.y, position.z, new_tile, remove);
+}
+
+void BaseMap::setTile(Tile* new_tile, bool remove)
+{
+	ASSERT(new_tile);
+
+	const Position& position = new_tile->getPosition();
+	setTile(position.x, position.y, position.z, new_tile, remove);
+}
+
+Tile* BaseMap::swapTile(int x, int y, int z, Tile* new_tile)
 {
 	ASSERT(z < MAP_LAYERS);
-	ASSERT(!newtile || newtile->getX() == int(x));
-	ASSERT(!newtile || newtile->getY() == int(y));
-	ASSERT(!newtile || newtile->getZ() == int(z));
+	ASSERT(!new_tile || new_tile->getX() == x);
+	ASSERT(!new_tile || new_tile->getY() == y);
+	ASSERT(!new_tile || new_tile->getZ() == z);
 
 	QTreeNode* leaf = root.getLeafForce(x, y);
-	return leaf->setTile(x, y, z, newtile);
+	Tile* old_tile = leaf->setTile(x, y, z, new_tile);
+
+	if (old_tile || new_tile)
+		updateUniqueIds(old_tile, new_tile);
+
+	return old_tile;
+}
+
+Tile* BaseMap::swapTile(const Position& position, Tile* new_tile)
+{
+	return swapTile(position.x, position.y, position.z, new_tile);
 }
 
 // Iterators

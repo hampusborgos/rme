@@ -469,44 +469,32 @@ void OldPropertiesWindow::OnFocusChange(wxFocusEvent& event)
 void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	if(edit_item) {
-		if(dynamic_cast<Container*>(edit_item)) {
-			// Container
-			int new_uid = unique_id_field->GetValue();
-			int new_aid = action_id_field->GetValue();
-
-			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be between 1000 and 65535.", wxOK);
+		int new_uid = unique_id_field->GetValue();
+		int new_aid = action_id_field->GetValue();
+		if (!edit_item->getDepot()) {
+			if((new_uid < MIN_UNIQUE_ID || new_uid > MAX_UNIQUE_ID) && new_uid != 0) {
+				wxString message = "Unique ID must be between %d and %d.";
+				g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_UNIQUE_ID, MAX_UNIQUE_ID), wxOK);
 				return;
 			}
-			if(/* there is no item with the same UID */false) {
+			if(g_gui.GetCurrentMap().hasUniqueId(new_uid)) {
 				g_gui.PopupDialog(this, "Error", "Unique ID must be unique, this UID is already taken.", wxOK);
 				return;
 			}
-			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				g_gui.PopupDialog(this, "Error", "Action ID must be between 100 and 65535.", wxOK);
+			if((new_aid < MIN_ACTION_ID || new_aid > MAX_ACTION_ID) && new_aid != 0) {
+				wxString message = "Action ID must be between %d and %d.";
+				g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_ACTION_ID, MAX_ACTION_ID), wxOK);
 				return;
 			}
+		}
 
+		if(edit_item->getContainer()) {
+			// Container
 			edit_item->setUniqueID(new_uid);
 			edit_item->setActionID(new_aid);
 		} else if(edit_item->canHoldText() || edit_item->canHoldDescription()) {
 			// Book
-			int new_uid = unique_id_field->GetValue();
-			int new_aid = action_id_field->GetValue();
 			std::string text = nstr(text_field->GetValue());
-
-			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be between 1000 and 65535.", wxOK);
-				return;
-			}
-			if(/* there is no item with the same UID */false) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be unique, this UID is already taken.", wxOK);
-				return;
-			}
-			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				g_gui.PopupDialog(this, "Error", "Action ID must be between 100 and 65535.", wxOK);
-				return;
-			}
 			if(text.length() >= 0xFFFF) {
 				g_gui.PopupDialog(this, "Error", "Text is longer than 65535 characters, this is not supported by OpenTibia. Reduce the length of the text.", wxOK);
 				return;
@@ -523,22 +511,7 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			edit_item->setText(text);
 		} else if(edit_item->isSplash() || edit_item->isFluidContainer()) {
 			// Splash
-			int new_uid = unique_id_field->GetValue();
-			int new_aid = action_id_field->GetValue();
 			int* new_type = reinterpret_cast<int*>(splash_type_field->GetClientData(splash_type_field->GetSelection()));
-
-			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be between 1000 and 65535.", wxOK);
-				return;
-			}
-			if(/* there is no item with the same UID */false) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be unique, this UID is already taken.", wxOK);
-				return;
-			}
-			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				g_gui.PopupDialog(this, "Error", "Action ID must be between 100 and 65535.", wxOK);
-				return;
-			}
 			if(new_type) {
 				edit_item->setSubtype(*new_type);
 			}
@@ -546,18 +519,15 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			edit_item->setActionID(new_aid);
 
 			// Clean up client data
-		} else if(Depot* depot = dynamic_cast<Depot*>(edit_item)) {
+		} else if(Depot* depot = edit_item->getDepot()) {
 			// Depot
 			int* new_depotid = reinterpret_cast<int*>(depot_id_field->GetClientData(depot_id_field->GetSelection()));
-
 			depot->setDepotID(*new_depotid);
 		} else {
 			// Normal item
-			Door* door = dynamic_cast<Door*>(edit_item);
-			Teleport* teleport = dynamic_cast<Teleport*>(edit_item);
+			Door* door = edit_item->getDoor();
+			Teleport* teleport = edit_item->getTeleport();
 
-			int new_uid = unique_id_field->GetValue();
-			int new_aid = action_id_field->GetValue();
 			int new_count = count_field? count_field->GetValue() : 1;
 			std::string new_desc;
 			if(edit_item->canHoldDescription() && description_field) {
@@ -566,19 +536,6 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			uint8_t new_door_id = 0;
 			if(door) {
 				new_door_id = door_id_field->GetValue();
-			}
-
-			if((new_uid < 1000 || new_uid > 0xFFFF) && new_uid != 0) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be between 1000 and 65535.", wxOK);
-				return;
-			}
-			if(/* there is no item with the same UID */false) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be unique, this UID is already taken.", wxOK);
-				return;
-			}
-			if((new_aid < 100 || new_aid > 0xFFFF) && new_aid != 0) {
-				g_gui.PopupDialog(this, "Error", "Action ID must be between 100 and 65535.", wxOK);
-				return;
 			}
 
 			/*

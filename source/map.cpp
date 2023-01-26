@@ -619,3 +619,63 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 
 	return true;
 }
+
+void Map::updateUniqueIds(Tile* old_tile, Tile* new_tile)
+{
+	if(old_tile && old_tile->hasUniqueItem()) {
+		if(old_tile->ground) {
+			uint16_t uid = old_tile->ground->getUniqueID();
+			if(uid != 0)
+				removeUniqueId(uid);
+		}
+		for(const Item* item : old_tile->items) {
+			if(item) {
+				uint16_t uid = item->getUniqueID();
+				if(uid != 0) {
+					removeUniqueId(uid);
+				}
+			}
+		}
+	}
+
+	if(new_tile && new_tile->hasUniqueItem()) {
+		if(new_tile->ground) {
+			uint16_t uid = new_tile->ground->getUniqueID();
+			if(uid != 0)
+				addUniqueId(uid);
+		}
+		for(const Item* item : new_tile->items) {
+			if(item) {
+				uint16_t uid = item->getUniqueID();
+				if(uid != 0) {
+					addUniqueId(uid);
+				}
+			}
+		}
+	}
+}
+
+void Map::addUniqueId(uint16_t uid)
+{
+	auto it = std::find(uniqueIds.begin(), uniqueIds.end(), uid);
+	if (it == uniqueIds.end()) {
+		uniqueIds.push_back(uid);
+	}
+}
+
+void Map::removeUniqueId(uint16_t uid)
+{
+	auto it = std::find(uniqueIds.begin(), uniqueIds.end(), uid);
+	if (it != uniqueIds.end()) {
+		uniqueIds.erase(it);
+	}
+}
+
+bool Map::hasUniqueId(uint16_t uid)
+{
+	if (uid < MIN_UNIQUE_ID || uniqueIds.empty())
+		return false;
+
+	auto it = std::find(uniqueIds.begin(), uniqueIds.end(), uid);
+	return it != uniqueIds.end();
+}
