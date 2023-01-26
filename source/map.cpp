@@ -480,6 +480,10 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 		if(size() == 0)
 			return true;
 
+		uint32_t minimap_colors[256];
+		for(int i = 0; i < 256; ++i)
+			minimap_colors[i] = colorFromEightBit(i).GetRGB();
+
 		for(MapIterator mit = begin(); mit != end(); ++mit) {
 			if((*mit)->get() == nullptr || (*mit)->empty())
 				continue;
@@ -589,7 +593,7 @@ bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool di
 
 		// Write the color palette
 		for(int i = 0; i < 256; ++i)
-			fh.addU32(uint32_t(minimap_color[i]));
+			fh.addU32(minimap_colors[i]);
 
 		// Bitmap width must be divisible by four, calculate how much padding we need
 		int padding = ((minimap_width & 3) != 0? 4-(minimap_width & 3) : 0);

@@ -40,7 +40,7 @@ MinimapWindow::MinimapWindow(wxWindow* parent) :
 	update_timer(this)
 {
 	for(int i = 0; i < 256; ++i) {
-		pens[i] = newd wxPen(wxColor(minimap_color[i].red, minimap_color[i].green, minimap_color[i].blue));
+		pens[i] = new wxPen(colorFromEightBit(i));
 	}
 }
 

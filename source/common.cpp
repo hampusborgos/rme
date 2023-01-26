@@ -299,3 +299,13 @@ wxString b2yn(bool value)
 {
 	return value ? "Yes" : "No";
 }
+
+wxColor colorFromEightBit(int color)
+{
+	if(color <= 0 || color >= 216)
+		return wxColor(0, 0, 0);
+	const uint8_t red = (uint8_t)(int(color / 36) % 6 * 51);
+	const uint8_t green = (uint8_t)(int(color / 6) % 6 * 51);
+	const uint8_t blue = (uint8_t)(color % 6 * 51);
+	return wxColor(red, green, blue);
+}

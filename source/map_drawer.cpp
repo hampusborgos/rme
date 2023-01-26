@@ -1477,11 +1477,8 @@ void MapDrawer::DrawTile(TileLocation* location)
 
 		if(only_colors) {
 			if(as_minimap) {
-				uint8_t color = tile->getMiniMapColor();
-				r = (uint8_t)(int(color / 36) % 6 * 51);
-				g = (uint8_t)(int(color / 6) % 6 * 51);
-				b = (uint8_t)(color % 6 * 51);
-				glBlitSquare(draw_x, draw_y, r, g, b, 255);
+				wxColor color = colorFromEightBit(tile->getMiniMapColor());
+				glBlitSquare(draw_x, draw_y, color);
 			}
 			else if(r != 255 || g != 255 || b != 255) {
 				glBlitSquare(draw_x, draw_y, r, g, b, 128);
@@ -1877,7 +1874,18 @@ void MapDrawer::glBlitSquare(int sx, int sy, int red, int green, int blue, int a
 	glEnd();
 }
 
-void MapDrawer::glColor(wxColor color)
+void MapDrawer::glBlitSquare(int x, int y, const wxColor& color)
+{
+	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
+	glBegin(GL_QUADS);
+		glVertex2f(x, y);
+		glVertex2f(x + TILE_SIZE, y);
+		glVertex2f(x + TILE_SIZE, y + TILE_SIZE);
+		glVertex2f(x, y + TILE_SIZE);
+	glEnd();
+}
+
+void MapDrawer::glColor(const wxColor& color)
 {
 	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
 }
@@ -1934,11 +1942,11 @@ void MapDrawer::glColorCheck(Brush* brush, const Position& pos)
 		glColor(COLOR_INVALID);
 }
 
-void MapDrawer::drawRect(int x, int y, int w, int h, const wxColour& color, int width)
+void MapDrawer::drawRect(int x, int y, int w, int h, const wxColor& color, int width)
 {
 	glLineWidth(width);
 	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
-	glBegin(GL_LINE_LOOP);
+	glBegin(GL_LINE_STRIP);
 		glVertex2f(x, y);
 		glVertex2f(x + w, y);
 		glVertex2f(x + w, y + h);
