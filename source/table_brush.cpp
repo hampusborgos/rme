@@ -41,7 +41,7 @@ TableBrush::~TableBrush()
 bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	if(const pugi::xml_attribute attribute = node.attribute("server_lookid"))
-		look_id = g_items[attribute.as_ushort()].clientID;
+		look_id = g_items.getItemType(attribute.as_ushort()).clientID;
 
 	if(look_id == 0) {
 		look_id = node.attribute("lookid").as_ushort();
@@ -89,17 +89,17 @@ bool TableBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				break;
 			}
 
-			ItemType& it = g_items[id];
-			if(it.id == 0) {
+			ItemType* type = g_items.getRawItemType(id);
+			if(!type) {
 				warnings.push_back("There is no itemtype with id " + std::to_string(id));
 				return false;
-			} else if(it.brush && it.brush != this) {
+			} else if(type->brush && type->brush != this) {
 				warnings.push_back("Itemtype id " + std::to_string(id) + " already has a brush");
 				return false;
 			}
 
-			it.isTable = true;
-			it.brush = this;
+			type->isTable = true;
+			type->brush = this;
 
 			TableType tt;
 			tt.item_id = id;

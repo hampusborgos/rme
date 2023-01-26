@@ -41,8 +41,8 @@ class Container : public Item
 		Item* deepCopy() const;
 		Item* getItem(size_t index) const;
 
-		size_t getItemCount() const { return contents.size(); }
-		size_t getVolume() const { return g_items[id].volume; }
+		size_t getItemCount() const noexcept { return contents.size(); }
+		size_t getVolume() const noexcept { return getItemType().volume; }
 
 		ItemVector& getVector() { return contents; }
 		double getWeight();

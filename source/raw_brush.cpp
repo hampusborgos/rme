@@ -28,11 +28,7 @@
 RAWBrush::RAWBrush(uint16_t itemid) :
 	Brush()
 {
-	ItemType& it = g_items[itemid];
-	if(it.id == 0)
-		itemtype = nullptr;
-	else
-		itemtype = &it;
+	itemtype = g_items.getRawItemType(itemid);
 }
 
 RAWBrush::~RAWBrush()

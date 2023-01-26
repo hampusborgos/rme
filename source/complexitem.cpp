@@ -56,7 +56,7 @@ Item* Container::getItem(size_t index) const
 
 double Container::getWeight()
 {
-	return g_items[id].weight;
+	return getItemType().weight;
 }
 
 // Teleport

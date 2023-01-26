@@ -260,28 +260,28 @@ void Materials::createOtherTileset()
 
 	// There should really be an iterator to do this
 	for(int32_t id = 0; id <= g_items.getMaxID(); ++id) {
-		ItemType& it = g_items[id];
-		if(it.id == 0) {
+		ItemType* type = g_items.getRawItemType(id);
+		if(!type) {
 			continue;
 		}
 
-		if(!it.isMetaItem()) {
+		if(!type->isMetaItem()) {
 			Brush* brush;
-			if(it.in_other_tileset) {
-				others->getCategory(TILESET_RAW)->brushlist.push_back(it.raw_brush);
+			if(type->in_other_tileset) {
+				others->getCategory(TILESET_RAW)->brushlist.push_back(type->raw_brush);
 				continue;
-			} else if(it.raw_brush == nullptr) {
-				brush = it.raw_brush = newd RAWBrush(it.id);
-				it.has_raw = true;
-				g_brushes.addBrush(it.raw_brush);
-			} else if(!it.has_raw) {
-				brush = it.raw_brush;
+			} else if(!type->raw_brush) {
+				brush = type->raw_brush = newd RAWBrush(type->id);
+				type->has_raw = true;
+				g_brushes.addBrush(type->raw_brush);
+			} else if(!type->has_raw) {
+				brush = type->raw_brush;
 			} else
 				continue;
 
 			brush->flagAsVisible();
-			others->getCategory(TILESET_RAW)->brushlist.push_back(it.raw_brush);
-			it.in_other_tileset = true;
+			others->getCategory(TILESET_RAW)->brushlist.push_back(type->raw_brush);
+			type->in_other_tileset = true;
 		}
 	}
 
@@ -334,12 +334,11 @@ bool Materials::unserializeTileset(pugi::xml_node node, wxArrayString& warnings)
 
 bool Materials::isInTileset(Item* item, std::string tilesetName) const
 {
-	const ItemType& it = g_items[item->getID()];
-
-	return it.id != 0 && (
-		isInTileset(it.brush, tilesetName) ||
-		isInTileset(it.doodad_brush, tilesetName) ||
-		isInTileset(it.raw_brush, tilesetName));
+	const ItemType& type = g_items.getItemType(item->getID());
+	return type.id != 0 && (
+		isInTileset(type.brush, tilesetName) ||
+		isInTileset(type.doodad_brush, tilesetName) ||
+		isInTileset(type.raw_brush, tilesetName));
 }
 
 bool Materials::isInTileset(Brush* brush, std::string tilesetName) const

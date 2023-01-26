@@ -373,7 +373,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 		if(tile->empty())
 			continue;
 
-		Position pos = tile->getPosition();
+		const Position& pos = tile->getPosition();
 
 		if(pos.x < min_x)
 			min_x = pos.x;
@@ -1033,7 +1033,7 @@ void Editor::moveSelection(Position offset)
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
 		for(TileSet::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
-			Position pos = (*it)->getPosition();
+			const Position& pos = (*it)->getPosition();
 			// Go through all neighbours
 			Tile* t;
 			t = map.getTile(pos.x  , pos.y  , pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); }
@@ -1112,7 +1112,7 @@ void Editor::moveSelection(Position offset)
 		// Go through all modified (selected) tiles (might be slow)
 		for(TileSet::iterator it = selection.begin(); it != selection.end(); it++) {
 			bool add_me = false; // If this tile is touched
-			Position pos = (*it)->getPosition();
+			const Position& pos = (*it)->getPosition();
 			// Go through all neighbours
 			Tile* t;
 			t = map.getTile(pos.x-1, pos.y-1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
@@ -1196,10 +1196,8 @@ void Editor::destroySelection()
 			if(g_settings.getInteger(Config::USE_AUTOMAGIC)) {
 				for(int y = -1; y <= 1; y++) {
 					for(int x = -1; x <= 1; x++) {
-						tilestoborder.push_back(
-							Position(tile->getPosition().x + x,
-							tile->getPosition().y + y,
-							tile->getPosition().z));
+						const Position& position = tile->getPosition();
+						tilestoborder.push_back(Position(position.x + x, position.y + y, position.z));
 					}
 				}
 			}
@@ -1250,18 +1248,19 @@ void Editor::destroySelection()
 void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder, Tile* buffer_tile, Tile* new_tile)
 {
 	if(doodad_brush->doNewBorders() && g_settings.getInteger(Config::USE_AUTOMAGIC)) {
-		tilestoborder.push_back(Position(new_tile->getPosition().x, new_tile->getPosition().y, new_tile->getPosition().z));
+		const Position& position = new_tile->getPosition();
+		tilestoborder.push_back(Position(position));
 		if(buffer_tile->hasGround()) {
 			for(int y = -1; y <= 1; y++) {
 				for(int x = -1; x <= 1; x++) {
-					tilestoborder.push_back(Position(new_tile->getPosition().x + x, new_tile->getPosition().y + y, new_tile->getPosition().z));
+					tilestoborder.push_back(Position(position.x + x, position.y + y, position.z));
 				}
 			}
 		} else if(buffer_tile->hasWall()) {
-			tilestoborder.push_back(Position(new_tile->getPosition().x, new_tile->getPosition().y-1, new_tile->getPosition().z));
-			tilestoborder.push_back(Position(new_tile->getPosition().x-1, new_tile->getPosition().y, new_tile->getPosition().z));
-			tilestoborder.push_back(Position(new_tile->getPosition().x+1, new_tile->getPosition().y, new_tile->getPosition().z));
-			tilestoborder.push_back(Position(new_tile->getPosition().x, new_tile->getPosition().y+1, new_tile->getPosition().z));
+			tilestoborder.push_back(Position(position.x, position.y-1, position.z));
+			tilestoborder.push_back(Position(position.x-1, position.y, position.z));
+			tilestoborder.push_back(Position(position.x+1, position.y, position.z));
+			tilestoborder.push_back(Position(position.x, position.y+1, position.z));
 		}
 	}
 }

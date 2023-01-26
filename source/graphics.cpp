@@ -15,7 +15,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-
 #include "main.h"
 
 #include "sprites.h"
@@ -174,16 +173,6 @@ GameSprite* GraphicManager::getEditorSprite(int id)
 		return dynamic_cast<GameSprite*>(it->second);
 	}
 	return nullptr;
-}
-
-uint16_t GraphicManager::getItemSpriteMaxID() const
-{
-	return item_count;
-}
-
-uint16_t GraphicManager::getCreatureSpriteMaxID() const
-{
-	return creature_count;
 }
 
 #define loadPNGFile(name) _wxGetBitmapFromMemory(name, sizeof(name))
@@ -1327,7 +1316,8 @@ GameSprite::TemplateImage::~TemplateImage()
 	////
 }
 
-void GameSprite::TemplateImage::colorizePixel(uint8_t color, uint8_t& red, uint8_t& green, uint8_t& blue) {
+void GameSprite::TemplateImage::colorizePixel(uint8_t color, uint8_t& red, uint8_t& green, uint8_t& blue)
+{
 	// Thanks! Khaos, or was it mips? Hmmm... =)
 	uint8_t ro = (TemplateOutfitLookupTable[color] & 0xFF0000) >> 16; // rgb outfit
 	uint8_t go = (TemplateOutfitLookupTable[color] & 0xFF00) >> 8;

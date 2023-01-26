@@ -285,7 +285,7 @@ void Map::cleanInvalidTiles(bool showdialog)
 			continue;
 
 		for(ItemVector::iterator item_iter = tile->items.begin(); item_iter != tile->items.end();) {
-			if(g_items.typeExists((*item_iter)->getID()))
+			if(g_items.isValidID((*item_iter)->getID()))
 				++item_iter;
 			else {
 				delete *item_iter;

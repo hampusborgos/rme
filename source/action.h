@@ -151,7 +151,7 @@ class BatchAction {
 public:
 	virtual ~BatchAction();
 
-	void resetTimer() {timestamp = 0; }
+	void resetTimer() { timestamp = 0; }
 
 	// Get memory footprint
 	size_t memsize(bool resize = false) const;

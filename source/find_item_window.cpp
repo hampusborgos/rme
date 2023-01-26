@@ -54,12 +54,12 @@ FindItemDialog::FindItemDialog(wxWindow* parent, const wxString& title, bool onl
 	options_box_sizer->Add(options_radio_box, 0, wxALL | wxEXPAND, 5);
 
 	wxStaticBoxSizer* server_id_box_sizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Server ID"), wxVERTICAL);
-	server_id_spin = newd wxSpinCtrl(server_id_box_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 100, g_items.getMaxID(), 100);
+	server_id_spin = newd wxSpinCtrl(server_id_box_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, g_items.getMinID(), g_items.getMaxID(), g_items.getMinID());
 	server_id_box_sizer->Add(server_id_spin, 0, wxALL | wxEXPAND, 5);
 	options_box_sizer->Add(server_id_box_sizer, 1, wxALL | wxEXPAND, 5);
 
 	wxStaticBoxSizer* client_id_box_sizer = newd wxStaticBoxSizer(newd wxStaticBox(this, wxID_ANY, "Client ID"), wxVERTICAL);
-	client_id_spin = newd wxSpinCtrl(client_id_box_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 100, g_gui.gfx.getItemSpriteMaxID(), 100);
+	client_id_spin = newd wxSpinCtrl(client_id_box_sizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, g_gui.gfx.getItemSpriteMinID(), g_gui.gfx.getItemSpriteMaxID(), g_gui.gfx.getItemSpriteMinID());
 	client_id_spin->Enable(false);
 	client_id_box_sizer->Add(client_id_spin, 0, wxALL | wxEXPAND, 5);
 	options_box_sizer->Add(client_id_box_sizer, 1, wxALL | wxEXPAND, 5);
@@ -285,8 +285,8 @@ void FindItemDialog::RefreshContentsInternal()
 
 	if(selection == SearchMode::ServerIDs) {
 		uint16_t serverID = (uint16_t)server_id_spin->GetValue();
-		for(int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
+		for(int id = g_items.getMinID(); id <= g_items.getMaxID(); ++id) {
+			const ItemType& item = g_items.getItemType(id);
 			if(item.id != serverID)
 				continue;
 
@@ -302,9 +302,9 @@ void FindItemDialog::RefreshContentsInternal()
 		}
 	}
 	else if(selection == SearchMode::ClientIDs) {
-		uint16_t clientID = (uint16_t)client_id_spin->GetValue();
-		for(int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
+		uint16_t clientID = static_cast<uint16_t>(client_id_spin->GetValue());
+		for(int id = g_items.getMinID(); id <= g_items.getMaxID(); ++id) {
+			const ItemType& item = g_items.getItemType(id);
 			if(item.id == 0 || item.clientID != clientID)
 				continue;
 
@@ -322,8 +322,8 @@ void FindItemDialog::RefreshContentsInternal()
 	else if(selection == SearchMode::Names) {
 		std::string search_string = as_lower_str(nstr(name_text_input->GetValue()));
 		if(search_string.size() >= 2) {
-			for(int id = 100; id <= g_items.getMaxID(); ++id) {
-				ItemType& item = g_items.getItemType(id);
+			for(int id = g_items.getMinID(); id <= g_items.getMaxID(); ++id) {
+				const ItemType& item = g_items.getItemType(id);
 				if(item.id == 0)
 					continue;
 
@@ -343,8 +343,8 @@ void FindItemDialog::RefreshContentsInternal()
 		}
 	}
 	else if(selection == SearchMode::Types) {
-		for(int id = 100; id <= g_items.getMaxID(); ++id) {
-			ItemType& item = g_items.getItemType(id);
+		for(int id = g_items.getMinID(); id <= g_items.getMaxID(); ++id) {
+			const ItemType& item = g_items.getItemType(id);
 			if(item.id == 0)
 				continue;
 
@@ -390,8 +390,8 @@ void FindItemDialog::RefreshContentsInternal()
 			floor_change->GetValue());
 
 		if(has_selected) {
-			for(int id = 100; id <= g_items.getMaxID(); ++id) {
-				ItemType& item = g_items.getItemType(id);
+			for(int id = g_items.getMinID(); id <= g_items.getMaxID(); ++id) {
+				const ItemType& item = g_items.getItemType(id);
 				if(item.id == 0)
 					continue;
 

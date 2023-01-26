@@ -74,7 +74,7 @@ public:
 	bool hasFile() const;
 	std::string getFilename() const { return filename; }
 	std::string getName() const { return name; }
-	void setName(const std::string& n) {name = n; }
+	void setName(const std::string& n) { name = n; }
 
 	// Get map data
 	int getWidth() const { return width; }

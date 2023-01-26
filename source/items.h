@@ -40,8 +40,6 @@ class GameSprite;
 class GameSprite;
 class ItemDatabase;
 
-extern ItemDatabase g_items;
-
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
 typedef uint16_t datasize_t;
@@ -236,39 +234,41 @@ struct writeableBlock3 {
 
 #pragma pack()
 
-class ItemType {
+class ItemType
+{
 private:
 	ItemType(const ItemType&) {}
 
 public:
 	ItemType();
-	~ItemType();
 
-	bool isGroundTile() const { return (group == ITEM_GROUP_GROUND); }
-	bool isSplash() const { return (group == ITEM_GROUP_SPLASH); }
-	bool isFluidContainer() const { return (group == ITEM_GROUP_FLUID); }
+	bool isGroundTile() const noexcept { return group == ITEM_GROUP_GROUND; }
+	bool isSplash() const noexcept { return group == ITEM_GROUP_SPLASH; }
+	bool isFluidContainer() const noexcept { return group == ITEM_GROUP_FLUID; }
 
 	bool isClientCharged() const { return client_chargeable; }
 	bool isExtraCharged() const { return !client_chargeable && extra_chargeable; }
 
-	bool isDepot() const { return (type == ITEM_TYPE_DEPOT); }
-	bool isMailbox() const { return (type == ITEM_TYPE_MAILBOX); }
-	bool isTrashHolder() const { return (type == ITEM_TYPE_TRASHHOLDER); }
-	bool isContainer() const { return (type == ITEM_TYPE_CONTAINER); }
-	bool isDoor() const { return (type == ITEM_TYPE_DOOR); }
-	bool isMagicField() const { return (type == ITEM_TYPE_MAGICFIELD); }
-	bool isTeleport() const { return (type == ITEM_TYPE_TELEPORT); }
-	bool isBed() const { return (type == ITEM_TYPE_BED); }
-	bool isKey() const { return (type == ITEM_TYPE_KEY); }
+	bool isDepot() const noexcept { return type == ITEM_TYPE_DEPOT; }
+	bool isMailbox() const noexcept { return type == ITEM_TYPE_MAILBOX; }
+	bool isTrashHolder() const noexcept { return type == ITEM_TYPE_TRASHHOLDER; }
+	bool isContainer() const noexcept { return type == ITEM_TYPE_CONTAINER; }
+	bool isDoor() const noexcept { return type == ITEM_TYPE_DOOR; }
+	bool isMagicField() const noexcept { return type == ITEM_TYPE_MAGICFIELD; }
+	bool isTeleport() const noexcept { return type == ITEM_TYPE_TELEPORT; }
+	bool isBed() const noexcept { return type == ITEM_TYPE_BED; }
+	bool isKey() const noexcept { return type == ITEM_TYPE_KEY; }
 
-	bool isStackable() const { return stackable; }
-	bool isMetaItem() const { return is_metaitem; }
+	bool isStackable() const noexcept { return stackable; }
+	bool isMetaItem() const noexcept { return is_metaitem; }
 
-	bool isFloorChange() const;
+	bool isFloorChange() const noexcept;
 
-	GameSprite* sprite;
-	uint16_t id;
-	uint16_t clientID;
+	float getWeight() const noexcept { return weight; }
+	uint16_t getVolume() const noexcept { return volume; }
+
+// editor related
+public:
 	Brush* brush;
 	Brush* doodad_brush;
 	RAWBrush* raw_brush;
@@ -279,16 +279,31 @@ public:
 	bool has_raw;
 	bool in_other_tileset;
 
+	uint16_t ground_equivalent;
+	uint32_t border_group;
+	bool has_equivalent; // True if any item has this as ground_equivalent
+	bool wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
+
+	bool isBorder;
+	bool isOptionalBorder;
+	bool isWall;
+	bool isBrushDoor;
+	bool isOpen;
+	bool isTable;
+	bool isCarpet;
+
+public:
+	GameSprite* sprite;
+
+	uint16_t id;
+	uint16_t clientID;
+
 	ItemGroup_t group;
 	ItemTypes_t type;
 
 	uint16_t volume;
 	uint16_t maxTextLen;
 	//uint16_t writeOnceItemId;
-	uint16_t ground_equivalent;
-	uint32_t border_group;
-	bool has_equivalent; // True if any item has this as ground_equivalent
-	bool wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
 
 	std::string name;
 	std::string editorsuffix;
@@ -318,13 +333,6 @@ public:
 	bool alwaysOnBottom;
 	bool pickupable;
 	bool rotable;
-	bool isBorder;
-	bool isOptionalBorder;
-	bool isWall;
-	bool isBrushDoor;
-	bool isOpen;
-	bool isTable;
-	bool isCarpet;
 
 	bool floorChangeDown;
 	bool floorChangeNorth;
@@ -352,22 +360,21 @@ public:
 
 	void clear();
 
-	ItemType& operator[](size_t id) { return getItemType(id); }
-	uint16_t getMaxID() const { return max_item_id; }
+	uint16_t getMinID() const noexcept { return 100; }
+	uint16_t getMaxID() const noexcept { return maxItemId; }
+	const ItemType& getItemType(uint16_t id) const;
+	ItemType* getRawItemType(uint16_t id);
 
-	bool typeExists(int id) const;
-	ItemType& getItemType(int id);
-	ItemType& getItemIdByClientID(int spriteId);
+	bool isValidID(uint16_t id) const;
 
 	bool loadFromOtb(const FileName& datafile, wxString& error, wxArrayString& warnings);
 	bool loadFromGameXml(const FileName& datafile, wxString& error, wxArrayString& warnings);
-	bool loadItemFromGameXml(pugi::xml_node itemNode, int id);
+	bool loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id);
 	bool loadMetaItem(pugi::xml_node node);
 
 	//typedef std::map<int32_t, ItemType*> ItemMap;
 	typedef contigous_vector<ItemType*> ItemMap;
 	typedef std::map<std::string, ItemType*> ItemNameMap;
-	ItemMap items;
 
 	// Version information
 	uint32_t MajorVersion;
@@ -380,18 +387,24 @@ protected:
 	bool loadFromOtbVer3(BinaryNode* itemNode, wxString& error, wxArrayString& warnings);
 
 protected:
+	ItemMap items;
+
 	// Count of GameSprite types
 	uint16_t item_count;
 	uint16_t effect_count;
 	uint16_t monster_count;
 	uint16_t distance_count;
 
-	uint16_t minclientID;
-	uint16_t maxclientID;
-	uint16_t max_item_id;
+	uint16_t minClientID;
+	uint16_t maxClientID;
+	uint16_t maxItemId;
+
+	ItemType dummy;
 
 	friend class GameSprite;
 	friend class Item;
 };
+
+extern ItemDatabase g_items;
 
 #endif

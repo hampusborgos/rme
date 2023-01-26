@@ -1423,7 +1423,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 	const Position& position = location->getPosition();
 
 	if(options.show_tooltips && location->getWaypointCount() > 0) {
-		Waypoint* waypoint = canvas->editor.map.waypoints.getWaypoint(location);
+		Waypoint* waypoint = canvas->editor.map.waypoints.getWaypoint(position);
 		if(waypoint)
 			WriteTooltip(waypoint, tooltip);
 	}

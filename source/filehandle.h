@@ -54,7 +54,7 @@ class FileHandle : boost::noncopyable
 {
 public:
 	FileHandle() : error_code(FILE_NO_ERROR), file(nullptr) {}
-	virtual ~FileHandle() {close(); }
+	virtual ~FileHandle() { close(); }
 
 	virtual void close();
 	virtual bool isOpen() { return file != nullptr; }

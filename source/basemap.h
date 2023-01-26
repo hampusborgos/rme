@@ -104,8 +104,8 @@ public:
 
 	// Assigns a tile, it might seem pointless to provide position, but it is not, as the passed tile may be nullptr
 	void setTile(int _x, int _y, int _z, Tile* newtile, bool remove = false);
-	void setTile(const Position& pos, Tile* newtile, bool remove = false) {setTile(pos.x, pos.y, pos.z, newtile, remove); }
-	void setTile(Tile* newtile, bool remove = false) {setTile(newtile->getX(), newtile->getY(), newtile->getZ(), newtile, remove); }
+	void setTile(const Position& pos, Tile* newtile, bool remove = false) { setTile(pos.x, pos.y, pos.z, newtile, remove); }
+	void setTile(Tile* newtile, bool remove = false) { setTile(newtile->getX(), newtile->getY(), newtile->getZ(), newtile, remove); }
 	// Replaces a tile and returns the old one
 	Tile* swapTile(int _x, int _y, int _z, Tile* newtile);
 	Tile* swapTile(const Position& pos, Tile* newtile) { return swapTile(pos.x, pos.y, pos.z, newtile); }
