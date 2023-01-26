@@ -349,7 +349,7 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 		std::vector<std::pair<Tile*, Item*>>& result = finder.result;
 
 		if(!result.empty()) {
-			Action* action = editor->actionQueue->createAction(ACTION_REPLACE_ITEMS);
+			Action* action = editor->getHistoryActions()->createAction(ACTION_REPLACE_ITEMS);
 			for(std::vector<std::pair<Tile*, Item*>>::const_iterator rit = result.begin(); rit != result.end(); ++rit) {
 				Tile* new_tile = rit->first->deepCopy(editor->getMap());
 				int index = rit->first->getIndexOf(rit->second);
@@ -360,7 +360,7 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 				action->addChange(new Change(new_tile));
 				total++;
 			}
-			editor->actionQueue->addAction(action);
+			editor->getHistoryActions()->addAction(action);
 		}
 
 		done++;

@@ -689,7 +689,7 @@ bool GUI::ShouldSave()
 		if(map.getTileCount() == 0) {
 			Editor* editor = GetCurrentEditor();
 			ASSERT(editor);
-			return editor->actionQueue->canUndo();
+			return editor->getHistoryActions()->canUndo();
 		}
 		return true;
 	}
@@ -1298,20 +1298,20 @@ void GUI::EndPasting()
 bool GUI::CanUndo()
 {
 	Editor* editor = GetCurrentEditor();
-	return (editor && editor->actionQueue->canUndo());
+	return (editor && editor->getHistoryActions()->canUndo());
 }
 
 bool GUI::CanRedo()
 {
 	Editor* editor = GetCurrentEditor();
-	return (editor && editor->actionQueue->canRedo());
+	return (editor && editor->getHistoryActions()->canRedo());
 }
 
 bool GUI::DoUndo()
 {
 	Editor* editor = GetCurrentEditor();
-	if(editor && editor->actionQueue->canUndo()) {
-		editor->actionQueue->undo();
+	if(editor && editor->getHistoryActions()->canUndo()) {
+		editor->getHistoryActions()->undo();
 		if(editor->hasSelection())
 			SetSelectionMode();
 		SetStatusText("Undo action");
@@ -1326,8 +1326,8 @@ bool GUI::DoUndo()
 bool GUI::DoRedo()
 {
 	Editor* editor = GetCurrentEditor();
-	if(editor && editor->actionQueue->canRedo()) {
-		editor->actionQueue->redo();
+	if(editor && editor->getHistoryActions()->canRedo()) {
+		editor->getHistoryActions()->redo();
 		if(editor->hasSelection())
 			SetSelectionMode();
 		SetStatusText("Redo action");

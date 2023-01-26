@@ -47,7 +47,6 @@ protected:
 
 public:
 	// Public members
-	ActionQueue* actionQueue;
 	CopyBuffer& copybuffer;
 	GroundBrush* replace_brush;
 
@@ -74,7 +73,7 @@ public: // Functions
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 
-	Map& getMap() { return map; }
+	Map& getMap() noexcept { return map; }
 	const Map& getMap() const noexcept { return map; }
 	uint16_t getMapWidth() const noexcept { return map.width; }
 	uint16_t getMapHeight() const noexcept { return map.height; }
@@ -85,14 +84,15 @@ public: // Functions
 	bool exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog);
 	bool exportSelectionAsMiniMap(FileName directory, wxString fileName);
 
+	ActionQueue* getHistoryActions() const noexcept { return actionQueue; }
 	// Adds an action to the action queue (this allows the user to undo the action)
 	// Invalidates the action pointer
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
 
 	// Selection
-	Selection& getSelection() { return selection; }
-	const Selection& getSelection() const { return selection; }
+	Selection& getSelection() noexcept { return selection; }
+	const Selection& getSelection() const noexcept { return selection; }
 	bool hasSelection() const noexcept { return selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
@@ -132,6 +132,7 @@ protected:
 private:
 	Map map;
 	Selection selection;
+	ActionQueue* actionQueue;
 };
 
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }

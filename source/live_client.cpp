@@ -453,9 +453,9 @@ void LiveClient::parseNode(NetworkMessage& message)
 	int32_t ndy = (ind >> 4) & 0x3FFF;
 	bool underground = ind & 1;
 
-	Action* action = editor->actionQueue->createAction(ACTION_REMOTE);
+	Action* action = editor->getHistoryActions()->createAction(ACTION_REMOTE);
 	receiveNode(message, *editor, action, ndx, ndy, underground);
-	editor->actionQueue->addAction(action);
+	editor->getHistoryActions()->addAction(action);
 
 	g_gui.RefreshView();
 	g_gui.UpdateMinimap();
