@@ -309,7 +309,7 @@ void LiveClient::sendChanges(DirtyList& dirtyList)
 		switch (change->getType()) {
 			case CHANGE_TILE: {
 				const Position& position = static_cast<Tile*>(change->getData())->getPosition();
-				sendTile(mapWriter, editor->map.getTile(position), &position);
+				sendTile(mapWriter, editor->getMap().getTile(position), &position);
 				break;
 			}
 			default:
@@ -398,7 +398,7 @@ void LiveClient::parseHello(NetworkMessage& message)
 	ASSERT(editor == nullptr);
 	editor = newd Editor(g_gui.copybuffer, this);
 
-	Map& map = editor->map;
+	Map& map = editor->getMap();
 	map.setName("Live Map - " + message.read<std::string>());
 	map.setWidth(message.read<uint16_t>());
 	map.setHeight(message.read<uint16_t>());

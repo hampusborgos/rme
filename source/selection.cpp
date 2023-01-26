@@ -83,7 +83,7 @@ void Selection::add(Tile* tile, Item* item)
 
 	// Make a copy of the tile with the item selected
 	item->select();
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	item->deselect();
 
 	if(g_settings.getInteger(Config::BORDER_IS_GROUND)) {
@@ -104,7 +104,7 @@ void Selection::add(Tile* tile, Spawn* spawn)
 
 	// Make a copy of the tile with the item selected
 	spawn->select();
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	spawn->deselect();
 
 	subsession->addChange(newd Change(new_tile));
@@ -120,7 +120,7 @@ void Selection::add(Tile* tile, Creature* creature)
 
 	// Make a copy of the tile with the item selected
 	creature->select();
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	creature->deselect();
 
 	subsession->addChange(newd Change(new_tile));
@@ -131,7 +131,7 @@ void Selection::add(Tile* tile)
 	ASSERT(subsession);
 	ASSERT(tile);
 
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	new_tile->select();
 
 	subsession->addChange(newd Change(new_tile));
@@ -145,7 +145,7 @@ void Selection::remove(Tile* tile, Item* item)
 
 	bool selected = item->isSelected();
 	item->deselect();
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	if(selected) item->select();
 	if(item->isBorder() && g_settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
 
@@ -160,7 +160,7 @@ void Selection::remove(Tile* tile, Spawn* spawn)
 
 	bool selected = spawn->isSelected();
 	spawn->deselect();
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	if(selected) spawn->select();
 
 	subsession->addChange(newd Change(new_tile));
@@ -174,7 +174,7 @@ void Selection::remove(Tile* tile, Creature* creature)
 
 	bool selected = creature->isSelected();
 	creature->deselect();
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	if(selected) creature->select();
 
 	subsession->addChange(newd Change(new_tile));
@@ -184,7 +184,7 @@ void Selection::remove(Tile* tile)
 {
 	ASSERT(subsession);
 
-	Tile* new_tile = tile->deepCopy(editor.map);
+	Tile* new_tile = tile->deepCopy(editor.getMap());
 	new_tile->deselect();
 
 	subsession->addChange(newd Change(new_tile));
@@ -207,7 +207,7 @@ void Selection::clear()
 {
 	if(session) {
 		for(Tile* tile : tiles) {
-			Tile* new_tile = tile->deepCopy(editor.map);
+			Tile* new_tile = tile->deepCopy(editor.getMap());
 			new_tile->deselect();
 			subsession->addChange(newd Change(new_tile));
 		}
@@ -318,7 +318,7 @@ wxThread::ExitCode SelectionThread::Entry()
 	for(int z = start.z; z >= end.z; --z) {
 		for(int x = start.x; x <= end.x; ++x) {
 			for(int y = start.y; y <= end.y; ++y) {
-				Tile* tile = editor.map.getTile(x, y, z);
+				Tile* tile = editor.getMap().getTile(x, y, z);
 				if(!tile)
 					continue;
 

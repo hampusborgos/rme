@@ -254,7 +254,7 @@ void LivePeer::parseReady(NetworkMessage& message)
 	NetworkMessage outMessage;
 	outMessage.write<uint8_t>(PACKET_HELLO_FROM_SERVER);
 
-	Map& map = server->getEditor()->map;
+	const Map& map = server->getEditor()->getMap();
 	outMessage.write<std::string>(map.getName());
 	outMessage.write<uint16_t>(map.getWidth());
 	outMessage.write<uint16_t>(map.getHeight());
@@ -264,7 +264,7 @@ void LivePeer::parseReady(NetworkMessage& message)
 
 void LivePeer::parseNodeRequest(NetworkMessage& message)
 {
-	Map& map = server->getEditor()->map;
+	Map& map = server->getEditor()->getMap();
 	for(uint32_t nodes = message.read<uint32_t>(); nodes != 0; --nodes) {
 		uint32_t ind = message.read<uint32_t>();
 

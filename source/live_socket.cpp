@@ -103,7 +103,7 @@ void LiveSocket::logMessage(const wxString& message)
 
 void LiveSocket::receiveNode(NetworkMessage& message, Editor& editor, Action* action, int32_t ndx, int32_t ndy, bool underground)
 {
-	QTreeNode* node = editor.map.getLeaf(ndx * 4, ndy * 4);
+	QTreeNode* node = editor.getMap().getLeaf(ndx * 4, ndy * 4);
 	if(!node) {
 		log->Message("Warning: Received update for unknown tile (" + std::to_string(ndx * 4) + "/" + std::to_string(ndy * 4) + "/" + (underground ? "true" : "false") + ")");
 		return;
@@ -170,7 +170,7 @@ void LiveSocket::sendNode(uint32_t clientId, QTreeNode* node, int32_t ndx, int32
 
 void LiveSocket::receiveFloor(NetworkMessage& message, Editor& editor, Action* action, int32_t ndx, int32_t ndy, int32_t z, QTreeNode* node, Floor* floor)
 {
-	Map& map = editor.map;
+	Map& map = editor.getMap();
 
 	uint16_t tileBits = message.read<uint16_t>();
 	if(tileBits == 0) {
@@ -292,7 +292,7 @@ Tile* LiveSocket::readTile(BinaryNode* node, Editor& editor, const Position* pos
 {
 	ASSERT(node != nullptr);
 
-	Map& map = editor.map;
+	Map& map = editor.getMap();
 
 	uint8_t tileType;
 	node->getByte(tileType);

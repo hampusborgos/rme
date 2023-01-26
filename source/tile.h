@@ -64,7 +64,7 @@ public:
 	~Tile();
 
 	// Argument is a the map to allocate the tile from
-	Tile* deepCopy(BaseMap& map);
+	Tile* deepCopy(BaseMap& map) const;
 
 	// The location of the tile
 	// Stores state that remains between the tile being moved (like house exits)

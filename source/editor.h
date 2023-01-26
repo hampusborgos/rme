@@ -51,7 +51,6 @@ public:
 	Selection selection;
 	CopyBuffer& copybuffer;
 	GroundBrush* replace_brush;
-	Map map; // The map that is being edited
 
 public: // Functions
 	// Live Server handling
@@ -76,6 +75,8 @@ public: // Functions
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 
+	Map& getMap() { return map; }
+	const Map& getMap() const noexcept { return map; }
 	uint16_t getMapWidth() const noexcept { return map.width; }
 	uint16_t getMapHeight() const noexcept { return map.height; }
 
@@ -126,6 +127,9 @@ protected:
 
 	Editor(const Editor&);
 	Editor& operator=(const Editor&);
+
+private:
+	Map map;
 };
 
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }

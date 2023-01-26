@@ -124,7 +124,8 @@ void MapWindow::GetViewSize(int* x, int* y)
 
 void MapWindow::FitToMap()
 {
-	SetSize(editor.map.getWidth() * TILE_SIZE, editor.map.getHeight() * TILE_SIZE, true);
+	const Map& map = editor.getMap();
+	SetSize(map.getWidth() * TILE_SIZE, map.getHeight() * TILE_SIZE, true);
 }
 
 Position MapWindow::GetScreenCenterPosition()

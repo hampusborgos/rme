@@ -125,7 +125,7 @@ void LiveServer::removeClient(uint32_t id)
 	const uint32_t clientId = it->second->getClientId();
 	if(clientId != 0) {
 		clientIds &= ~clientId;
-		editor->map.clearVisible(clientIds);
+		editor->getMap().clearVisible(clientIds);
 	}
 
 	clients.erase(it);
@@ -197,7 +197,7 @@ void LiveServer::broadcastNodes(DirtyList& dirtyList)
 		int32_t ndy = (ind.pos >> 4) & 0x3FFF;
 		uint32_t floors = ind.floors;
 
-		QTreeNode* node = editor->map.getLeaf(ndx * 4, ndy * 4);
+		QTreeNode* node = editor->getMap().getLeaf(ndx * 4, ndy * 4);
 		if(!node) {
 			continue;
 		}

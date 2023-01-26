@@ -52,7 +52,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	editor(editor)
 {
 	// Setup data variabels
-	Map& map = editor.map;
+	const Map& map = editor.getMap();
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
@@ -213,8 +213,7 @@ struct MapConversionContext
 
 void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
-	Map& map = editor.map;
-
+	Map& map = editor.getMap();
 	MapVersion old_ver = map.getVersion();
 	MapVersion new_ver;
 
@@ -485,7 +484,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	sizer->Add(tmpsizer, 0, wxALL | wxEXPAND, 5);
 
 	// File name
-	wxString mapName(editor.map.getName().c_str(), wxConvUTF8);
+	wxString mapName(editor.getMap().getName().c_str(), wxConvUTF8);
 	file_name_text_field = newd wxTextCtrl(this, wxID_ANY, mapName.BeforeLast('.'), wxDefaultPosition, wxDefaultSize);
 	file_name_text_field->Bind(wxEVT_KEY_UP, &ExportMiniMapWindow::OnFileNameChanged, this);
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "File Name");
@@ -1133,7 +1132,7 @@ EditTownsDialog::EditTownsDialog(wxWindow* parent, Editor& editor) :
 	wxDialog(parent, wxID_ANY, "Towns", wxDefaultPosition, wxSize(280,330)),
 	editor(editor)
 {
-	Map& map = editor.map;
+	const Map& map = editor.getMap();
 
 	// Create topsizer
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -1344,10 +1343,9 @@ void EditTownsDialog::OnClickRemove(wxCommandEvent& WXUNUSED(event))
 		}
 		if(!town) return;
 
-		Map& map = editor.map;
-		for(HouseMap::iterator house_iter = map.houses.begin(); house_iter != map.houses.end(); ++house_iter) {
-			House* house = house_iter->second;
-			if(house->townid == town->getID()) {
+		const Map& map = editor.getMap();
+		for(const auto& pair : map.houses) {
+			if(pair.second->townid == town->getID()) {
 				g_gui.PopupDialog(this, "Error", "You cannot delete a town which still has houses associated with it.", wxOK);
 				return;
 			}
@@ -1396,7 +1394,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 		}
 
-		Towns& towns = editor.map.towns;
+		Towns& towns = editor.getMap().towns;
 
 		// Verify the newd information
 		for(std::vector<Town*>::iterator town_iter = town_list.begin(); town_iter != town_list.end(); ++town_iter) {
@@ -1406,8 +1404,8 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				return;
 			}
 			if(!town->getTemplePosition().isValid() ||
-				town->getTemplePosition().x > editor.map.getWidth() ||
-				town->getTemplePosition().y > editor.map.getHeight()) {
+				town->getTemplePosition().x > editor.getMap().getWidth() ||
+				town->getTemplePosition().y > editor.getMap().getHeight()) {
 				wxString msg;
 				msg << "The town " << wxstr(town->getName()) << " has an invalid temple position.";
 				g_gui.PopupDialog(this, "Error", msg, wxOK);
@@ -1423,7 +1421,7 @@ void EditTownsDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			towns.addTown(*town_iter);
 		}
 		town_list.clear();
-		editor.map.doChange();
+		editor.getMap().doChange();
 
 		EndModal(1);
 		g_gui.RefreshPalettes();
@@ -1449,7 +1447,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 	wxDialog(parent, wxID_ANY, "Go To Position", wxDefaultPosition, wxDefaultSize),
 	editor(editor)
 {
-	Map& map = editor.map;
+	const Map& map = editor.getMap();
 
 	// create topsizer
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
