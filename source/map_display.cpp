@@ -610,7 +610,7 @@ void MapCanvas::OnMouseLeftDoubleClick(wxMouseEvent& event)
 
 		int ret = dialog->ShowModal();
 		if(ret != 0) {
-			Action* action = editor.getHistoryActions()->createAction(ACTION_CHANGE_PROPERTIES);
+			Action* action = editor.createAction(ACTION_CHANGE_PROPERTIES);
 			action->addChange(newd Change(new_tile));
 			editor.addAction(action);
 		} else {
@@ -1102,7 +1102,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 				}
 			}
 		}
-		editor.getHistoryActions()->resetTimer();
+		editor.resetActionsTimer();
 		dragging = false;
 		boundbox_selection = false;
 	} else if(g_gui.GetCurrentBrush()){ // Drawing mode
@@ -1216,7 +1216,8 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 				}
 			}
 		}
-		editor.getHistoryActions()->resetTimer();
+		editor.resetActionsTimer();
+		editor.updateActions();
 		drawing = false;
 		dragging_draw = false;
 		replace_dragging = false;
@@ -1460,7 +1461,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 	popup_menu->Update();
 	PopupMenu(popup_menu);
 
-	editor.getHistoryActions()->resetTimer();
+	editor.resetActionsTimer();
 	dragging = false;
 	boundbox_selection = false;
 
@@ -1925,9 +1926,10 @@ void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 
 	int ret = w->ShowModal();
 	if(ret != 0) {
-		Action* action = editor.getHistoryActions()->createAction(ACTION_DELETE_TILES);
+		Action* action = editor.createAction(ACTION_DELETE_TILES);
 		action->addChange(newd Change(new_tile));
 		editor.addAction(action);
+		editor.updateActions();
 	} else {
 		// Cancel
 		delete new_tile;
@@ -1940,7 +1942,7 @@ void MapCanvas::OnRotateItem(wxCommandEvent& WXUNUSED(event))
 {
 	Tile* tile = editor.getSelection().getSelectedTile();
 
-	Action* action = editor.getHistoryActions()->createAction(ACTION_ROTATE_ITEM);
+	Action* action = editor.createAction(ACTION_ROTATE_ITEM);
 
 	Tile* new_tile = tile->deepCopy(editor.getMap());
 
@@ -1951,7 +1953,8 @@ void MapCanvas::OnRotateItem(wxCommandEvent& WXUNUSED(event))
 
 	action->addChange(newd Change(new_tile));
 
- 	editor.getHistoryActions()->addAction(action);
+ 	editor.addAction(action);
+	editor.updateActions();
 	g_gui.RefreshView();
 }
 
@@ -1985,7 +1988,7 @@ void MapCanvas::OnSwitchDoor(wxCommandEvent& WXUNUSED(event))
 {
 	Tile* tile = editor.getSelection().getSelectedTile();
 
-	Action* action = editor.getHistoryActions()->createAction(ACTION_SWITCHDOOR);
+	Action* action = editor.createAction(ACTION_SWITCHDOOR);
 
 	Tile* new_tile = tile->deepCopy(editor.getMap());
 
@@ -1996,7 +1999,8 @@ void MapCanvas::OnSwitchDoor(wxCommandEvent& WXUNUSED(event))
 
 	action->addChange(newd Change(new_tile));
 
-	editor.getHistoryActions()->addAction(action);
+	editor.addAction(action);
+	editor.updateActions();
 	g_gui.RefreshView();
 }
 
@@ -2150,7 +2154,7 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 
 	int ret = w->ShowModal();
 	if(ret != 0) {
-		Action* action = editor.getHistoryActions()->createAction(ACTION_CHANGE_PROPERTIES);
+		Action* action = editor.createAction(ACTION_CHANGE_PROPERTIES);
 		action->addChange(newd Change(new_tile));
 		editor.addAction(action);
 	} else {
@@ -2234,7 +2238,7 @@ void MapCanvas::Reset()
 	last_mmb_click_y = -1;
 
 	editor.getSelection().clear();
-	editor.getHistoryActions()->clear();
+	editor.clearActions();
 }
 
 MapPopupMenu::MapPopupMenu(Editor& editor) : wxMenu(""), editor(editor)

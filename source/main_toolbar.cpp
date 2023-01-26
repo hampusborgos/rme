@@ -200,8 +200,8 @@ void MainToolBar::UpdateButtons()
 {
 	Editor* editor = g_gui.GetCurrentEditor();
 	if(editor) {
-		standard_toolbar->EnableTool(wxID_UNDO, editor->getHistoryActions()->canUndo());
-		standard_toolbar->EnableTool(wxID_REDO, editor->getHistoryActions()->canRedo());
+		standard_toolbar->EnableTool(wxID_UNDO, editor->canUndo());
+		standard_toolbar->EnableTool(wxID_REDO, editor->canRedo());
 		standard_toolbar->EnableTool(wxID_PASTE, editor->copybuffer.canPaste());
 	} else {
 		standard_toolbar->EnableTool(wxID_UNDO, false);

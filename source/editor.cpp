@@ -165,16 +165,85 @@ Editor::~Editor()
 	delete actionQueue;
 }
 
+Action* Editor::createAction(ActionIdentifier type)
+{
+	return actionQueue->createAction(type);
+}
+
+Action* Editor::createAction(BatchAction* parent)
+{
+	return actionQueue->createAction(parent);
+}
+
+BatchAction* Editor::createBatch(ActionIdentifier type)
+{
+	return actionQueue->createBatch(type);
+}
+
 void Editor::addBatch(BatchAction* action, int stacking_delay)
 {
 	actionQueue->addBatch(action, stacking_delay);
-	g_gui.UpdateMenus();
 }
 
 void Editor::addAction(Action* action, int stacking_delay )
 {
 	actionQueue->addAction(action, stacking_delay);
+}
+
+bool Editor::canUndo() const
+{
+	return actionQueue->canUndo();
+}
+
+bool Editor::canRedo() const
+{
+	return actionQueue->canRedo();
+}
+
+void Editor::undo(int indexes)
+{
+	if(indexes <= 0 || !actionQueue->canUndo())
+		return;
+
+	while(indexes > 0) {
+		if(!actionQueue->undo())
+			break;
+		indexes--;
+	}
+	g_gui.UpdateActions();
+	g_gui.RefreshView();
+}
+
+void Editor::redo(int indexes)
+{
+	if(indexes <= 0 || !actionQueue->canRedo())
+		return;
+
+	while(indexes > 0) {
+		if(!actionQueue->redo())
+			break;
+		indexes--;
+	}
+	g_gui.UpdateActions();
+	g_gui.RefreshView();
+}
+
+void Editor::updateActions()
+{
+	actionQueue->generateLabels();
 	g_gui.UpdateMenus();
+	g_gui.UpdateActions();
+}
+
+void Editor::resetActionsTimer()
+{
+	actionQueue->resetTimer();
+}
+
+void Editor::clearActions()
+{
+	actionQueue->clear();
+	g_gui.UpdateActions();
 }
 
 void Editor::saveMap(FileName filename, bool showdialog)
@@ -793,6 +862,7 @@ void Editor::borderizeSelection()
 		action->addChange(newd Change(newTile));
 	}
 	addAction(action);
+	updateActions();
 }
 
 void Editor::borderizeMap(bool showdialog)
@@ -844,6 +914,7 @@ void Editor::randomizeSelection()
 		}
 	}
 	addAction(action);
+	updateActions();
 }
 
 void Editor::randomizeMap(bool showdialog)
@@ -1156,6 +1227,7 @@ void Editor::moveSelection(Position offset)
 
 	// Store the action for undo
 	addBatch(batchAction);
+	updateActions();
 	selection.updateSelectionCount();
 }
 
@@ -1239,6 +1311,8 @@ void Editor::destroySelection()
 		}
 
 		addBatch(batch);
+		updateActions();
+
 		wxString ss;
 		ss << "Deleted " << tile_count << " tile" << (tile_count > 1 ? "s" : "") <<  " (" << item_count << " item" << (item_count > 1? "s" : "") << ")";
 		g_gui.SetStatusText(ss);
@@ -1396,7 +1470,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 		batch->addAndCommitAction(action);
 		addBatch(batch, 2);
 	} else if(brush->isWall()) {
-		BatchAction* batch = actionQueue->createBatch(ACTION_DRAW);
+		BatchAction* batch = actionQueue->createBatch(dodraw ? ACTION_DRAW : ACTION_ERASE);
 		Action* action = actionQueue->createAction(batch);
 		// This will only occur with a size 0, when clicking on a tile (not drawing)
 		Tile* tile = map.getTile(offset);
@@ -1417,7 +1491,7 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 		batch->addAndCommitAction(action);
 		addBatch(batch, 2);
 	} else if(brush->isSpawn() || brush->isCreature()) {
-		BatchAction* batch = actionQueue->createBatch(ACTION_DRAW);
+		BatchAction* batch = actionQueue->createBatch(dodraw ? ACTION_DRAW : ACTION_ERASE);
 		Action* action = actionQueue->createAction(batch);
 
 		Tile* tile = map.getTile(offset);
@@ -1455,7 +1529,7 @@ void Editor::drawInternal(const PositionVector& tilestodraw, bool alt, bool dodr
 	}
 #endif
 
-	Action* action = actionQueue->createAction(ACTION_DRAW);
+	Action* action = actionQueue->createAction(dodraw ? ACTION_DRAW : ACTION_ERASE);
 
 	if(brush->isOptionalBorder()) {
 		// We actually need to do borders, but on the same tiles we draw to
@@ -1516,7 +1590,8 @@ void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& til
 		return;
 
 	if(brush->isGround() || brush->isEraser()) {
-		BatchAction* batch = actionQueue->createBatch(ACTION_DRAW);
+		ActionIdentifier identifier = (dodraw && !brush->isEraser()) ? ACTION_DRAW : ACTION_ERASE;
+		BatchAction* batch = actionQueue->createBatch(identifier);
 		Action* action = actionQueue->createAction(batch);
 
 		for(PositionVector::const_iterator it = tilestodraw.begin(); it != tilestodraw.end(); ++it) {

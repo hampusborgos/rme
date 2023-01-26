@@ -109,6 +109,7 @@ enum ActionIdentifier {
 	ACTION_RANDOMIZE,
 	ACTION_BORDERIZE,
 	ACTION_DRAW,
+	ACTION_ERASE,
 	ACTION_SWITCHDOOR,
 	ACTION_ROTATE_ITEM,
 	ACTION_REPLACE_ITEMS,
@@ -135,7 +136,6 @@ public:
 	void undo(DirtyList* dirty_list);
 	void redo(DirtyList* dirty_list) { commit(dirty_list); }
 
-
 protected:
 	Action(Editor& editor, ActionIdentifier ident);
 
@@ -160,6 +160,7 @@ public:
 	size_t memsize(bool resize = false) const;
 	size_t size() const noexcept { return batch.size(); }
 	ActionIdentifier getType() const noexcept { return type; }
+	const wxString& getLabel() const noexcept { return label; }
 
 	virtual void addAction(Action* action);
 	virtual void addAndCommitAction(Action* action);
@@ -178,6 +179,7 @@ protected:
 	uint32_t memory_size;
 	ActionIdentifier type;
 	ActionVector batch;
+	wxString label;
 
 	friend class ActionQueue;
 };
@@ -199,14 +201,20 @@ public:
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
 
-	void undo();
-	void redo();
+	bool undo();
+	bool redo();
 	void clear();
 
-	bool canUndo() noexcept { return current > 0; }
-	bool canRedo() noexcept { return current < actions.size(); }
+	const ActionList& getActions() const noexcept { return actions; }
+	int getCurrentIndex() const noexcept { return current; }
+	bool canUndo() const noexcept { return current > 0; }
+	bool canRedo() const noexcept { return current < actions.size(); }
+
+	void generateLabels();
 
 protected:
+	static wxString createLabel(ActionIdentifier type);
+
 	size_t current;
 	size_t memory_size;
 	Editor& editor;

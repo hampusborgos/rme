@@ -141,6 +141,7 @@
     </menu>
     <menu name="$Window">
         <item name="$Minimap" hotkey="M" action="WIN_MINIMAP" help="Displays the minimap window."/>
+        <item name="$Actions History" action="WIN_ACTIONS_HISTORY" help="Displays the actions history window."/>
         <item name="$New Palette" action="NEW_PALETTE" help="Creates a new palette."/>
         <separator/>
         <item name="$Terrain Palette" hotkey="T" action="SELECT_TERRAIN" help="Select the Terrain palette."/>

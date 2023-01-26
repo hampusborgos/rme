@@ -630,33 +630,69 @@ void ActionQueue::addAction(Action* action, int stacking_delay)
 	addBatch(batch, stacking_delay);
 }
 
-void ActionQueue::undo()
+void ActionQueue::generateLabels()
 {
-	if(current > 0) {
-		current--;
-		BatchAction* batch = actions[current];
-		batch->undo();
+	for(BatchAction* batch : actions) {
+		if(batch && batch->label.IsEmpty()) {
+			batch->label = createLabel(batch->getType());
+		}
 	}
 }
 
-void ActionQueue::redo()
+bool ActionQueue::undo()
+{
+	if(current > 0) {
+		current--;
+		BatchAction* batch = actions.at(current);
+		if(batch) {
+			batch->undo();
+		}
+		return true;
+	}
+	return false;
+}
+
+bool ActionQueue::redo()
 {
 	if(current < actions.size()) {
-		BatchAction* batch = actions[current];
-		batch->redo();
+		BatchAction* batch = actions.at(current);
+		if(batch) {
+			batch->redo();
+		}
 		current++;
+		return true;
 	}
+	return false;
 }
 
 void ActionQueue::clear()
 {
-	for(ActionList::iterator it = actions.begin(); it != actions.end();) {
-		delete *it;
-		it = actions.erase(it);
+	for(BatchAction* batch : actions) {
+		delete batch;
 	}
+	actions.clear();
 	current = 0;
 }
 
+wxString ActionQueue::createLabel(ActionIdentifier type)
+{
+	switch (type) {
+		case ACTION_MOVE: return "Move";
+		case ACTION_SELECT: return "Selection";
+		case ACTION_DELETE_TILES: return "Delete";
+		case ACTION_CUT_TILES: return "Cut";
+		case ACTION_PASTE_TILES: return "Paste";
+		case ACTION_RANDOMIZE: return "Randomize";
+		case ACTION_BORDERIZE: return "Borderize";
+		case ACTION_DRAW: return "Draw";
+		case ACTION_ERASE: return "Erase";
+		case ACTION_SWITCHDOOR: return "Switch Door";
+		case ACTION_ROTATE_ITEM: return "Rotate Item";
+		case ACTION_REPLACE_ITEMS: return "Replace";
+		case ACTION_CHANGE_PROPERTIES: return "Change Properties";
+		default: return wxEmptyString;
+	}
+}
 
 DirtyList::DirtyList() :
 	owner(0)

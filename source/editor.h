@@ -85,10 +85,18 @@ public: // Functions
 	bool exportSelectionAsMiniMap(FileName directory, wxString fileName);
 
 	ActionQueue* getHistoryActions() const noexcept { return actionQueue; }
-	// Adds an action to the action queue (this allows the user to undo the action)
-	// Invalidates the action pointer
+	Action* createAction(ActionIdentifier type);
+	Action* createAction(BatchAction* parent);
+	BatchAction* createBatch(ActionIdentifier type);
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
+	bool canUndo() const;
+	bool canRedo() const;
+	void undo(int indexes = 1);
+	void redo(int indexes = 1);
+	void updateActions();
+	void resetActionsTimer();
+	void clearActions();
 
 	// Selection
 	Selection& getSelection() noexcept { return selection; }

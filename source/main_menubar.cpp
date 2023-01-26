@@ -153,6 +153,7 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SHOW_MOVEABLES, wxITEM_CHECK, OnChangeViewSettings);
 
 	MAKE_ACTION(WIN_MINIMAP, wxITEM_NORMAL, OnMinimapWindow);
+	MAKE_ACTION(WIN_ACTIONS_HISTORY, wxITEM_NORMAL, OnActionsHistoryWindow);
 	MAKE_ACTION(NEW_PALETTE, wxITEM_NORMAL, OnNewPalette);
 	MAKE_ACTION(TAKE_SCREENSHOT, wxITEM_NORMAL, OnTakeScreenshot);
 
@@ -299,8 +300,8 @@ void MainMenuBar::Update()
 
 	Editor* editor = g_gui.GetCurrentEditor();
 	if(editor) {
-		EnableItem(UNDO, editor->getHistoryActions()->canUndo());
-		EnableItem(REDO, editor->getHistoryActions()->canRedo());
+		EnableItem(UNDO, editor->canUndo());
+		EnableItem(REDO, editor->canRedo());
 		EnableItem(PASTE, editor->copybuffer.canPaste());
 	} else {
 		EnableItem(UNDO, false);
@@ -1103,7 +1104,7 @@ void MainMenuBar::OnRemoveItemOnSelection(wxCommandEvent& WXUNUSED(event))
 
 	FindItemDialog dialog(frame, "Remove Item on Selection");
 	if(dialog.ShowModal() == wxID_OK) {
-		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
+		g_gui.GetCurrentEditor()->clearActions();
 		g_gui.CreateLoadBar("Searching item on selection to remove...");
 		OnMapRemoveItems::RemoveItemCondition condition(dialog.getResultID());
 		int64_t count = RemoveItemOnMap(g_gui.GetCurrentMap(), condition, true);
@@ -1261,7 +1262,7 @@ void MainMenuBar::OnMapRemoveItems(wxCommandEvent& WXUNUSED(event))
 		uint16_t itemid = dialog.getResultID();
 
 		g_gui.GetCurrentEditor()->getSelection().clear();
-		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
+		g_gui.GetCurrentEditor()->clearActions();
 
 		OnMapRemoveItems::RemoveItemCondition condition(itemid);
 		g_gui.CreateLoadBar("Searching map for items to remove...");
@@ -1304,7 +1305,7 @@ void MainMenuBar::OnMapRemoveCorpses(wxCommandEvent& WXUNUSED(event))
 
 	if(ok == wxID_YES) {
 		g_gui.GetCurrentEditor()->getSelection().clear();
-		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
+		g_gui.GetCurrentEditor()->clearActions();
 
 		OnMapRemoveCorpses::condition func;
 		g_gui.CreateLoadBar("Searching map for items to remove...");
@@ -1378,7 +1379,7 @@ void MainMenuBar::OnMapRemoveUnreachable(wxCommandEvent& WXUNUSED(event))
 
 	if(ok == wxID_YES) {
 		g_gui.GetCurrentEditor()->getSelection().clear();
-		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
+		g_gui.GetCurrentEditor()->clearActions();
 
 		OnMapRemoveUnreachable::condition func;
 		g_gui.CreateLoadBar("Searching map for tiles to remove...");
@@ -1441,8 +1442,8 @@ void MainMenuBar::OnMapRemoveEmptySpawns(wxCommandEvent& WXUNUSED(event))
 			creature->reset();
 		}
 
-		BatchAction* batch = editor->getHistoryActions()->createBatch(ACTION_DELETE_TILES);
-		Action* action = editor->getHistoryActions()->createAction(batch);
+		BatchAction* batch = editor->createBatch(ACTION_DELETE_TILES);
+		Action* action = editor->createAction(batch);
 
 		const size_t count = toDeleteSpawns.size();
 		size_t removed = 0;
@@ -1915,6 +1916,11 @@ void MainMenuBar::OnChangeFloor(wxCommandEvent& event)
 void MainMenuBar::OnMinimapWindow(wxCommandEvent& event)
 {
 	g_gui.CreateMinimap();
+}
+
+void MainMenuBar::OnActionsHistoryWindow(wxCommandEvent& WXUNUSED(event))
+{
+	g_gui.ShowActionsWindow();
 }
 
 void MainMenuBar::OnNewPalette(wxCommandEvent& event)

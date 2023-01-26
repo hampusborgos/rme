@@ -223,9 +223,9 @@ void Selection::start(SessionFlags flags)
 {
 	if(!(flags & INTERNAL)) {
 		if(!(flags & SUBTHREAD)) {
-			session = editor.getHistoryActions()->createBatch(ACTION_SELECT);
+			session = editor.createBatch(ACTION_SELECT);
 		}
-		subsession = editor.getHistoryActions()->createAction(ACTION_SELECT);
+		subsession = editor.createAction(ACTION_SELECT);
 	}
 	busy = true;
 }
@@ -242,7 +242,7 @@ void Selection::commit()
 		batch->addAndCommitAction(subsession);
 
 		// Create a newd action for subsequent selects
-		subsession = editor.getHistoryActions()->createAction(ACTION_SELECT);
+		subsession = editor.createAction(ACTION_SELECT);
 		session = batch;
 	}
 }
