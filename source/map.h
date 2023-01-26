@@ -42,22 +42,21 @@ public:
 	bool convert(MapVersion to, bool showdialog = false);
 	bool convert(const ConversionMap& cm, bool showdialog = false);
 
-
 	// Query information about the map
 
-	MapVersion getVersion() const;
+	MapVersion getVersion() const noexcept { return mapVersion; }
 	// Returns true if any change has been done since last save
-	bool hasChanged() const;
+	bool hasChanged() const noexcept { return has_changed; }
 	// Makes a change, doesn't matter what. Just so that it asks when saving (Also adds a * to the window title)
 	bool doChange();
 	// Clears any changes
 	bool clearChanges();
 
 	// Errors/warnings
-	bool hasWarnings() const { return warnings.size() != 0; }
-	const wxArrayString& getWarnings() const { return warnings; }
-	bool hasError() const { return error.size() != 0; }
-	wxString getError() const { return error; }
+	bool hasWarnings() const { return !warnings.empty(); }
+	const wxArrayString& getWarnings() const noexcept { return warnings; }
+	bool hasError() const { return !error.empty(); }
+	const wxString& getError() const noexcept { return error; }
 
 	// Mess with spawns
 	bool addSpawn(Tile* spawn);
@@ -65,23 +64,23 @@ public:
 	void removeSpawn(const Position& position) { removeSpawn(getTile(position)); }
 
 	// Returns all possible spawns on the target tile
-	SpawnList getSpawnList(Tile* t);
-	SpawnList getSpawnList(const Position& position) { return getSpawnList(getTile(position)); }
-	SpawnList getSpawnList(int32_t x, int32_t y, int32_t z) { return getSpawnList(getTile(x, y, z)); }
+	SpawnList getSpawnList(const Tile* tile) const;
+	SpawnList getSpawnList(const Position& position) const;
+	SpawnList getSpawnList(int x, int y, int z) const;
 
 	// Returns true if the map has been saved
 	// ie. it knows which file it should be saved to
-	bool hasFile() const;
-	std::string getFilename() const { return filename; }
-	std::string getName() const { return name; }
-	void setName(const std::string& n) { name = n; }
+	bool hasFile() const noexcept { return !filename.empty(); }
+	const std::string& getFilename() const noexcept { return filename; }
+	const std::string& getName() const noexcept { return name; }
+	void setName(const std::string& _name) noexcept { name = _name; }
 
 	// Get map data
-	int getWidth() const { return width; }
-	int getHeight() const { return height; }
-	std::string getMapDescription() const { return description; }
-	std::string getHouseFilename() const { return housefile; }
-	std::string getSpawnFilename() const { return spawnfile; }
+	int getWidth() const noexcept { return width; }
+	int getHeight() const noexcept { return height; }
+	const std::string& getMapDescription() const noexcept { return description; }
+	const std::string& getHouseFilename() const noexcept { return housefile; }
+	const std::string& getSpawnFilename() const noexcept { return spawnfile; }
 
 	// Set some map data
 	void setWidth(int new_width);
@@ -90,9 +89,9 @@ public:
 	void setHouseFilename(const std::string& new_housefile);
 	void setSpawnFilename(const std::string& new_spawnfile);
 
-	void flagAsNamed() { unnamed = false; }
+	void flagAsNamed() noexcept { unnamed = false; }
 
-	bool hasUniqueId(uint16_t uid);
+	bool hasUniqueId(uint16_t uid) const;
 
 protected:
 	// Loads a map

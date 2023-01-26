@@ -32,14 +32,15 @@ class LiveClient;
 class LiveServer;
 class LiveSocket;
 
-class Editor {
+class Editor
+{
 public:
 	Editor(CopyBuffer& copybuffer, LiveClient* client);
 	Editor(CopyBuffer& copybuffer, const FileName& fn);
 	Editor(CopyBuffer& copybuffer);
 	~Editor();
-protected:
 
+protected:
 	// Live Server
 	LiveServer* live_server;
 	LiveClient* live_client;
@@ -57,7 +58,7 @@ public: // Functions
 	LiveClient* GetLiveClient() const;
 	LiveServer* GetLiveServer() const;
 	LiveSocket& GetLive() const;
-	bool CanEdit() const { return true; }
+	bool CanEdit() const noexcept { return true; }
 	bool IsLocal() const;
 	bool IsLive() const;
 	bool IsLiveServer() const;
@@ -72,12 +73,11 @@ public: // Functions
 	void QueryNode(int ndx, int ndy, bool underground);
 	void SendNodeRequests();
 
-
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 
-	uint16_t getMapWidth() const { return map.width; }
-	uint16_t getMapHeight() const { return map.height; }
+	uint16_t getMapWidth() const noexcept { return map.width; }
+	uint16_t getMapHeight() const noexcept { return map.height; }
 
 	wxString getLoaderError() const { return map.getError(); }
 	bool importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset, ImportType house_import_type, ImportType spawn_import_type);
@@ -91,7 +91,7 @@ public: // Functions
 	void addAction(Action* action, int stacking_delay = 0);
 
 	// Selection
-	bool hasSelection() const { return selection.size() != 0; }
+	bool hasSelection() const noexcept { return selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
 	void moveSelection(Position offset);

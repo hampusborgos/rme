@@ -73,7 +73,7 @@ public:
 	bool unserializeBorder(pugi::xml_node node, wxArrayString& warnings);
 	bool unserializeBrush(pugi::xml_node node, wxArrayString& warnings);
 
-	const BrushMap& getMap() const { return brushes; }
+	const BrushMap& getMap() const noexcept { return brushes; }
 
 protected:
 	typedef std::map<uint32_t, AutoBorder*> BorderMap;
@@ -104,7 +104,7 @@ public:
 	virtual bool canDraw(BaseMap* map, const Position& position) const = 0;
 
 	//
-	uint32_t getID() const { return id; }
+	uint32_t getID() const noexcept { return id; }
 
 	virtual std::string getName() const = 0;
 	virtual void setName(const std::string& newName) {

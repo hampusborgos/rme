@@ -38,6 +38,7 @@ public:
 	std::string description;
 	bool for_all_versions;
 	ClientVersionList version_list;
+
 private:
 	MaterialsExtension(const MaterialsExtension&);
 	MaterialsExtension& operator=(const MaterialsExtension&);

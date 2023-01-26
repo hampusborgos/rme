@@ -71,7 +71,7 @@ public:
 	void GoToPreviousCenterPosition();
 
 	// Return the containing canvas
-	MapCanvas* GetCanvas() const { return canvas; }
+	MapCanvas* GetCanvas() const noexcept { return canvas; }
 
 	void ShowReplaceItemsDialog(bool selectionOnly);
 	void CloseReplaceItemsDialog();

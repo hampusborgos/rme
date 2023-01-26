@@ -2517,11 +2517,6 @@ AnimationTimer::AnimationTimer(MapCanvas *canvas) : wxTimer(),
 	////
 };
 
-AnimationTimer::~AnimationTimer()
-{
-	////
-};
-
 void AnimationTimer::Notify()
 {
 	if(map_canvas->GetZoom() <= 2.0)

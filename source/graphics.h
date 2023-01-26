@@ -51,14 +51,12 @@ class Sprite
 {
 public:
 	Sprite() {}
-	virtual ~Sprite() {}
 
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1) = 0;
 	virtual void unloadDC() = 0;
 
 private:
 	Sprite(const Sprite&);
-	Sprite& operator=(const Sprite&);
 };
 
 class EditorSprite : public Sprite
@@ -69,6 +67,7 @@ public:
 
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 	virtual void unloadDC();
+
 protected:
 	wxBitmap* bm[SPRITE_SIZE_COUNT];
 };
@@ -77,7 +76,7 @@ class GameSprite : public Sprite
 {
 public:
 	GameSprite();
-	~GameSprite();
+	virtual ~GameSprite();
 
 	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
 	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);

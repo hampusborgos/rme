@@ -303,16 +303,6 @@ void Map::cleanInvalidTiles(bool showdialog)
 		g_gui.DestroyLoadBar();
 }
 
-MapVersion Map::getVersion() const
-{
-	return mapVersion;
-}
-
-bool Map::hasChanged() const
-{
-	return has_changed;
-}
-
 bool Map::doChange()
 {
 	bool doupdate = !has_changed;
@@ -325,11 +315,6 @@ bool Map::clearChanges()
 	bool doupdate = has_changed;
 	has_changed = false;
 	return doupdate;
-}
-
-bool Map::hasFile() const
-{
-	return filename != "";
 }
 
 void Map::setWidth(int new_width)
@@ -418,54 +403,72 @@ void Map::removeSpawn(Tile* tile)
 	}
 }
 
-SpawnList Map::getSpawnList(Tile* where)
+SpawnList Map::getSpawnList(const Tile* tile) const
 {
 	SpawnList list;
-	TileLocation* tile_loc = where->getLocation();
-	if(tile_loc) {
-		if(tile_loc->getSpawnCount() > 0) {
-			uint32_t found = 0;
-			if(where->spawn) {
+	if(!tile) return list;
+
+	const TileLocation* location = tile->getLocation();
+	if(!location || location->getSpawnCount() == 0)
+		return list;
+
+	uint32_t found = 0;
+	if(tile->spawn) {
+		++found;
+		list.push_back(tile->spawn);
+	}
+
+	// Scans the border tiles in an expanding square around the original spawn
+	const Position& position = tile->getPosition();
+	int start_x = position.x - 1;
+	int end_x = position.x + 1;
+	int start_y = position.y - 1;
+	int end_y = position.y + 1;
+
+	while(found != location->getSpawnCount()) {
+		for(int x = start_x; x <= end_x; ++x) {
+			const Tile* start_tile = getTile(x, start_y, position.z);
+			if(start_tile && start_tile->spawn) {
+				list.push_back(start_tile->spawn);
 				++found;
-				list.push_back(where->spawn);
 			}
-
-			// Scans the border tiles in an expanding square around the original spawn
-			int z = where->getZ();
-			int start_x = where->getX() - 1, end_x = where->getX() + 1;
-			int start_y = where->getY() - 1, end_y = where->getY() + 1;
-			while(found != tile_loc->getSpawnCount()) {
-				for(int x = start_x; x <= end_x; ++x) {
-					Tile* tile = getTile(x, start_y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
-						++found;
-					}
-					tile = getTile(x, end_y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
-						++found;
-					}
-				}
-
-				for(int y = start_y + 1; y < end_y; ++y) {
-					Tile* tile = getTile(start_x, y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
-						++found;
-					}
-					tile = getTile(end_x, y, z);
-					if(tile && tile->spawn) {
-						list.push_back(tile->spawn);
-						++found;
-					}
-				}
-				--start_x, --start_y;
-				++end_x, ++end_y;
+			const Tile* end_tile = getTile(x, end_y, position.z);
+			if(end_tile && end_tile->spawn) {
+				list.push_back(end_tile->spawn);
+				++found;
 			}
 		}
+
+		for(int y = start_y + 1; y < end_y; ++y) {
+			const Tile* start_tile = getTile(start_x, y, position.z);
+			if(start_tile && start_tile->spawn) {
+				list.push_back(start_tile->spawn);
+				++found;
+			}
+			const Tile* end_tile = getTile(end_x, y, position.z);
+			if(end_tile && end_tile->spawn) {
+				list.push_back(end_tile->spawn);
+				++found;
+			}
+		}
+		--start_x;
+		--start_y;
+		++end_x;
+		++end_y;
 	}
 	return list;
+}
+
+SpawnList Map::getSpawnList(const Position& position) const
+{
+	const Tile* tile = getTile(position);
+	return getSpawnList(tile);
+}
+
+SpawnList Map::getSpawnList(int x, int y, int z) const
+{
+	const Tile* tile = getTile(x, y, z);
+	return getSpawnList(tile);
 }
 
 bool Map::exportMinimap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
@@ -671,7 +674,7 @@ void Map::removeUniqueId(uint16_t uid)
 	}
 }
 
-bool Map::hasUniqueId(uint16_t uid)
+bool Map::hasUniqueId(uint16_t uid) const
 {
 	if (uid < MIN_UNIQUE_ID || uniqueIds.empty())
 		return false;

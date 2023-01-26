@@ -26,10 +26,10 @@ class Door;
 
 class Houses;
 
-class House {
+class House
+{
 public:
 	House(Map& map);
-	~House();
 
 	void clean();
 	void addTile(Tile* tile);
@@ -46,9 +46,10 @@ public:
 
 	void setExit(const Position& pos);
 	void setExit(Map* map, const Position& pos);
-	Position getExit() const { return exit; }
+	const Position& getExit() const noexcept { return exit; }
 	uint8_t getEmptyDoorID() const;
 	Position getDoorPositionByID(uint8_t id) const;
+
 protected:
 	Map* map;
 	PositionList tiles;

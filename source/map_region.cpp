@@ -52,6 +52,13 @@ bool TileLocation::empty() const
 	return size() == 0;
 }
 
+HouseExitList* TileLocation::createHouseExits()
+{
+	if(!house_exits)
+		house_exits = new HouseExitList();
+	return house_exits;
+}
+
 //**************** Floor **********************
 
 Floor::Floor(int sx, int sy, int z)

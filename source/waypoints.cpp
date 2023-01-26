@@ -20,6 +20,13 @@
 #include "waypoints.h"
 #include "map.h"
 
+Waypoints::~Waypoints()
+{
+	for(auto it = waypoints.begin(); it != waypoints.end(); ++it)
+		delete it->second;
+	waypoints.clear();
+}
+
 void Waypoints::addWaypoint(Waypoint* wp)
 {
 	removeWaypoint(wp->name);

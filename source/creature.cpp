@@ -19,29 +19,80 @@
 
 #include "creature.h"
 
-Creature::Creature(CreatureType* ctype) : direction(NORTH), spawntime(0), saved(false), selected(false)
+Creature::Creature(CreatureType* type) :
+	direction(NORTH),
+	spawntime(0),
+	saved(false),
+	selected(false)
 {
-	if(ctype)
-		type_name = ctype->name;
+	if(type)
+		type_name = type->name;
 }
 
-Creature::Creature(std::string ctype_name) : type_name(ctype_name), direction(NORTH), spawntime(0), saved(false), selected(false)
+Creature::Creature(const std::string& type_name) :
+	type_name(type_name),
+	direction(NORTH),
+	spawntime(0),
+	saved(false),
+	selected(false)
 {
 	////
 }
 
-Creature::~Creature()
+Creature* Creature::deepCopy() const
 {
-	////
+	Creature* copy = new Creature(type_name);
+	copy->spawntime = spawntime;
+	copy->direction = direction;
+	copy->selected = selected;
+	copy->saved = saved;
+	return copy;
 }
 
-std::string Creature::DirID2Name(uint16_t id) {
+const Outfit& Creature::getLookType() const
+{
+	const CreatureType* type = g_creatures[type_name];
+	if(type)
+		return type->outfit;
+	static const Outfit otfi; // Empty outfit
+	return otfi;
+}
+
+bool Creature::isNpc() const
+{
+	const CreatureType* type = g_creatures[type_name];
+	if(type) {
+		return type->isNpc;
+	}
+	return false;
+}
+
+std::string Creature::getName() const
+{
+	const CreatureType* type = g_creatures[type_name];
+	if(type) {
+		return type->name;
+	}
+	return "";
+}
+
+CreatureBrush* Creature::getBrush() const
+{
+	const CreatureType* type = g_creatures[type_name];
+	if(type) {
+		return type->brush;
+	}
+	return nullptr;
+}
+
+std::string Creature::DirID2Name(uint16_t id)
+{
 	switch (id) {
-	case NORTH: return "North";
-	case EAST: return "East";
-	case SOUTH: return "South";
-	case WEST: return "West";
-	default: return "Unknown";
+		case NORTH: return "North";
+		case EAST: return "East";
+		case SOUTH: return "South";
+		case WEST: return "West";
+		default: return "Unknown";
 	}
 }
 
@@ -53,23 +104,4 @@ uint16_t Creature::DirName2ID(std::string dir)
 	if(dir == "south") return SOUTH;
 	if(dir == "west") return WEST;
 	return SOUTH;
-}
-
-Creature* Creature::deepCopy() const
-{
-	Creature* copy = newd Creature(type_name);
-	copy->spawntime = spawntime;
-	copy->direction = direction;
-	copy->selected = selected;
-	copy->saved = saved;
-	return copy;
-}
-
-const Outfit& Creature::getLookType() const
-{
-	CreatureType* type = g_creatures[type_name];
-	if(type)
-		return type->outfit;
-	static const Outfit otfi; // Empty outfit
-	return otfi;
 }

@@ -154,7 +154,8 @@ Editor::Editor(CopyBuffer& copybuffer, LiveClient* client) :
 	;
 }
 
-Editor::~Editor() {
+Editor::~Editor()
+{
 	if(IsLive()) {
 		CloseLiveServer();
 	}
@@ -554,7 +555,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 			House* current_house = map.houses.getHouse(imported_house->id);
 			imported_house->townid = town_id_map[imported_house->townid];
 
-			Position oldexit = imported_house->getExit();
+			const Position& oldexit = imported_house->getExit();
 			imported_house->setExit(nullptr, Position()); // Reset it
 
 			switch(house_import_type) {

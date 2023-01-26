@@ -139,7 +139,7 @@ public:
 
 	void ShowPositionIndicator(const Position& position);
 
-	DrawingOptions& getOptions() { return options; }
+	DrawingOptions& getOptions() noexcept { return options; }
 
 protected:
 	void BlitItem(int& screenx, int& screeny, const Tile* tile, const Item* item, bool ephemeral = false, int red = 255, int green = 255, int blue = 255, int alpha = 255);

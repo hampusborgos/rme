@@ -84,6 +84,9 @@ GraphicManager::~GraphicManager()
 		delete iter->second;
 	}
 
+	sprite_space.clear();
+	image_space.clear();
+
 	delete animation_timer;
 }
 

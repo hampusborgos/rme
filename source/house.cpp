@@ -31,8 +31,9 @@ Houses::Houses(Map& map) :
 
 Houses::~Houses()
 {
-	for(HouseMap::iterator it = houses.begin(); it != houses.end(); ++it)
+	for(auto it = houses.begin(); it != houses.end(); ++it)
 		delete it->second;
+	houses.clear();
 }
 
 uint32_t Houses::getEmptyID()
@@ -86,11 +87,6 @@ House::House(Map& map) :
 	guildhall(false),
 	map(&map),
 	exit(0,0,0)
-{
-	////
-}
-
-House::~House()
 {
 	////
 }
