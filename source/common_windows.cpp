@@ -241,7 +241,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 		// Switch version
 		g_gui.GetCurrentEditor()->getSelection().clear();
-		g_gui.GetCurrentEditor()->getHistoryActions()->clear();
+		g_gui.GetCurrentEditor()->clearActions();
 
 		if(new_ver.client < old_ver.client) {
 			int ret = g_gui.PopupDialog(this, "Notice",

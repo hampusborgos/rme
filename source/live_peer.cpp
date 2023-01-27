@@ -290,7 +290,7 @@ void LivePeer::parseReceiveChanges(NetworkMessage& message)
 	BinaryNode* rootNode = mapReader.getRootNode();
 	BinaryNode* tileNode = rootNode->getChild();
 
-	NetworkedAction* action = static_cast<NetworkedAction*>(editor.getHistoryActions()->createAction(ACTION_REMOTE));
+	NetworkedAction* action = static_cast<NetworkedAction*>(editor.createAction(ACTION_REMOTE));
 	action->owner = clientId;
 
 	if(tileNode) do {
@@ -301,7 +301,7 @@ void LivePeer::parseReceiveChanges(NetworkMessage& message)
 	} while(tileNode->advance());
 	mapReader.close();
 
-	editor.getHistoryActions()->addAction(action);
+	editor.addAction(action);
 
 	g_gui.RefreshView();
 	g_gui.UpdateMinimap();

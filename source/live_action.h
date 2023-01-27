@@ -49,13 +49,13 @@ protected:
 	friend class NetworkedActionQueue;
 };
 
-class NetworkedActionQueue : public ActionQueue {
+class NetworkedActionQueue : public ActionQueue
+{
 public:
 	NetworkedActionQueue(Editor& editor);
-	~NetworkedActionQueue();
 
-	Action* createAction(ActionIdentifier ident);
-	BatchAction* createBatch(ActionIdentifier ident);
+	Action* createAction(ActionIdentifier identifier) const;
+	BatchAction* createBatch(ActionIdentifier identifier);
 
 protected:
 	void broadcast(DirtyList& dirty_list);

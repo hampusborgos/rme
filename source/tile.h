@@ -149,13 +149,13 @@ public: //Functions
 	// Borderize this tile
 	void borderize(BaseMap* parent);
 
-	bool hasTable() const { return testFlags(statflags, TILESTATE_HAS_TABLE); }
+	bool hasTable() const noexcept { return testFlags(statflags, TILESTATE_HAS_TABLE); }
 	Item* getTable() const;
 
-	bool hasCarpet() const { return testFlags(statflags, TILESTATE_HAS_CARPET); }
+	bool hasCarpet() const noexcept { return testFlags(statflags, TILESTATE_HAS_CARPET); }
 	Item* getCarpet() const;
 
-	bool hasOptionalBorder() const { return testFlags(statflags, TILESTATE_OP_BORDER); }
+	bool hasOptionalBorder() const noexcept { return testFlags(statflags, TILESTATE_OP_BORDER); }
 	void setOptionalBorder(bool b) {
 		if(b) {
 			statflags |= TILESTATE_OP_BORDER;

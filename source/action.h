@@ -31,6 +31,24 @@ class Action;
 class BatchAction;
 class ActionQueue;
 
+enum ActionIdentifier {
+	ACTION_MOVE,
+	ACTION_REMOTE,
+	ACTION_SELECT,
+	ACTION_UNSELECT,
+	ACTION_DELETE_TILES,
+	ACTION_CUT_TILES,
+	ACTION_PASTE_TILES,
+	ACTION_RANDOMIZE,
+	ACTION_BORDERIZE,
+	ACTION_DRAW,
+	ACTION_ERASE,
+	ACTION_SWITCHDOOR,
+	ACTION_ROTATE_ITEM,
+	ACTION_REPLACE_ITEMS,
+	ACTION_CHANGE_PROPERTIES,
+};
+
 enum ChangeType {
 	CHANGE_NONE,
 	CHANGE_TILE,
@@ -38,26 +56,37 @@ enum ChangeType {
 	CHANGE_MOVE_WAYPOINT,
 };
 
+struct HouseData {
+	uint32_t id;
+	Position position;
+};
+
+struct WaypointData {
+	std::string id;
+	Position position;
+};
+
 class Change
 {
-private:
-	ChangeType type;
-	void* data;
-
 	Change();
 
 public:
 	Change(Tile* tile);
-	static Change* Create(House* house, const Position& where);
-	static Change* Create(Waypoint* wp, const Position& where);
 	~Change();
+
+	static Change* Create(House* house, const Position& position);
+	static Change* Create(Waypoint* waypoint, const Position& position);
+
 	void clear();
 
 	ChangeType getType() const noexcept { return type; }
 	void* getData() const noexcept { return data; }
 
-	// Get memory footprint
 	uint32_t memsize() const;
+
+private:
+	ChangeType type;
+	void* data;
 
 	friend class Action;
 };
@@ -68,15 +97,12 @@ typedef std::vector<Change*> ChangeList;
 class DirtyList
 {
 public:
-	DirtyList();
-	~DirtyList();
-
 	struct ValueType {
 		uint32_t pos;
 		uint32_t floors;
 	};
 
-	uint32_t owner;
+	uint32_t owner = 0;
 
 protected:
 	struct Comparator {
@@ -84,6 +110,7 @@ protected:
 			return a.pos < b.pos;
 		}
 	};
+
 public:
 
 	typedef std::set<ValueType, Comparator> SetType;
@@ -99,22 +126,6 @@ protected:
 	ChangeList ichanges;
 };
 
-enum ActionIdentifier {
-	ACTION_MOVE,
-	ACTION_REMOTE,
-	ACTION_SELECT,
-	ACTION_DELETE_TILES,
-	ACTION_CUT_TILES,
-	ACTION_PASTE_TILES,
-	ACTION_RANDOMIZE,
-	ACTION_BORDERIZE,
-	ACTION_DRAW,
-	ACTION_SWITCHDOOR,
-	ACTION_ROTATE_ITEM,
-	ACTION_REPLACE_ITEMS,
-	ACTION_CHANGE_PROPERTIES,
-};
-
 class Action
 {
 public:
@@ -128,13 +139,13 @@ public:
 	size_t approx_memsize() const;
 	size_t memsize() const;
 	size_t size() const noexcept { return changes.size(); }
+	bool empty() const noexcept { return changes.empty(); }
 	ActionIdentifier getType() const noexcept { return type; }
 
 	void commit(DirtyList* dirty_list);
 	bool isCommited() const noexcept { return commited; }
 	void undo(DirtyList* dirty_list);
 	void redo(DirtyList* dirty_list) { commit(dirty_list); }
-
 
 protected:
 	Action(Editor& editor, ActionIdentifier ident);
@@ -159,7 +170,10 @@ public:
 	// Get memory footprint
 	size_t memsize(bool resize = false) const;
 	size_t size() const noexcept { return batch.size(); }
+	bool empty() const noexcept { return batch.empty(); }
 	ActionIdentifier getType() const noexcept { return type; }
+	const wxString& getLabel() const noexcept { return label; }
+	bool isNoSelection() const noexcept;
 
 	virtual void addAction(Action* action);
 	virtual void addAndCommitAction(Action* action);
@@ -178,6 +192,7 @@ protected:
 	uint32_t memory_size;
 	ActionIdentifier type;
 	ActionVector batch;
+	wxString label;
 
 	friend class ActionQueue;
 };
@@ -192,21 +207,32 @@ public:
 
 	void resetTimer();
 
-	virtual Action* createAction(ActionIdentifier ident);
-	virtual Action* createAction(BatchAction* parent);
-	virtual BatchAction* createBatch(ActionIdentifier ident);
+	virtual Action* createAction(ActionIdentifier identifier) const;
+	virtual Action* createAction(BatchAction* parent) const;
+	virtual BatchAction* createBatch(ActionIdentifier identifier) const;
 
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
 
-	void undo();
-	void redo();
+	bool undo();
+	bool redo();
 	void clear();
 
-	bool canUndo() noexcept { return current > 0; }
-	bool canRedo() noexcept { return current < actions.size(); }
+	const ActionList& getActions() const noexcept { return actions; }
+	const BatchAction* getAction(size_t index) const;
+	int getCurrentIndex() const noexcept { return current; }
+	bool canUndo() const noexcept { return current > 0; }
+	bool canRedo() const noexcept { return current < actions.size(); }
+	size_t size() const noexcept { return actions.size(); }
+	bool empty() const noexcept { return actions.empty(); }
+
+	bool hasChanges() const;
+
+	void generateLabels();
 
 protected:
+	static wxString createLabel(ActionIdentifier type);
+
 	size_t current;
 	size_t memory_size;
 	Editor& editor;

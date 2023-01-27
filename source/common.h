@@ -28,7 +28,7 @@
 #include "mt_rand.h"
 
 //
-inline bool testFlags(size_t flags, size_t test) {
+inline bool testFlags(size_t flags, size_t test) noexcept {
 	return (flags & test) != 0;
 }
 

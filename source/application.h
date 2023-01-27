@@ -83,6 +83,7 @@ public:
 	MainToolBar* GetAuiToolBar() const { return tool_bar; }
 
 	void OnUpdateMenus(wxCommandEvent& event);
+	void OnUpdateActions(wxCommandEvent& event);
 	void UpdateFloorMenu();
 	void UpdateIndicatorsMenu();
 	void OnIdle(wxIdleEvent& event);

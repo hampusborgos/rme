@@ -73,7 +73,7 @@ Position Selection::maxPosition() const
 	return max_pos;
 }
 
-void Selection::add(Tile* tile, Item* item)
+void Selection::add(const Tile* tile, Item* item)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -94,7 +94,7 @@ void Selection::add(Tile* tile, Item* item)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile, Spawn* spawn)
+void Selection::add(const Tile* tile, Spawn* spawn)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -110,7 +110,7 @@ void Selection::add(Tile* tile, Spawn* spawn)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile, Creature* creature)
+void Selection::add(const Tile* tile, Creature* creature)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -126,7 +126,7 @@ void Selection::add(Tile* tile, Creature* creature)
 	subsession->addChange(newd Change(new_tile));
 }
 
-void Selection::add(Tile* tile)
+void Selection::add(const Tile* tile)
 {
 	ASSERT(subsession);
 	ASSERT(tile);
@@ -219,13 +219,13 @@ void Selection::clear()
 	}
 }
 
-void Selection::start(SessionFlags flags)
+void Selection::start(SessionFlags flags, ActionIdentifier identifier)
 {
 	if(!(flags & INTERNAL)) {
 		if(!(flags & SUBTHREAD)) {
-			session = editor.getHistoryActions()->createBatch(ACTION_SELECT);
+			session = editor.createBatch(identifier);
 		}
-		subsession = editor.getHistoryActions()->createAction(ACTION_SELECT);
+		subsession = editor.createAction(identifier);
 	}
 	busy = true;
 }
@@ -242,7 +242,7 @@ void Selection::commit()
 		batch->addAndCommitAction(subsession);
 
 		// Create a newd action for subsequent selects
-		subsession = editor.getHistoryActions()->createAction(ACTION_SELECT);
+		subsession = editor.createAction(ACTION_SELECT);
 		session = batch;
 	}
 }
@@ -262,6 +262,7 @@ void Selection::finish(SessionFlags flags)
 
 			batch->addAndCommitAction(subsession);
 			editor.addBatch(batch, 2);
+			editor.updateActions();
 
 			session = nullptr;
 			subsession = nullptr;

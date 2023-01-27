@@ -40,12 +40,26 @@
 #include "../icons/toolbar_hooks.xpm"
 #include "../icons/toolbar_pickupables.xpm"
 #include "../icons/toolbar_moveables.xpm"
-
 #include "../icons/spawns.xpm"
 #include "../icons/house_exit.xpm"
 #include "../icons/pickupable.xpm"
 #include "../icons/moveable.xpm"
 #include "../icons/pickupable_moveable.xpm"
+#include "../icons/mini_move.xpm"
+#include "../icons/mini_remote.xpm"
+#include "../icons/mini_select.xpm"
+#include "../icons/mini_unselect.xpm"
+#include "../icons/mini_delete.xpm"
+#include "../icons/mini_cut.xpm"
+#include "../icons/mini_paste.xpm"
+#include "../icons/mini_randomize.xpm"
+#include "../icons/mini_borderize.xpm"
+#include "../icons/mini_draw.xpm"
+#include "../icons/mini_erase.xpm"
+#include "../icons/mini_switch.xpm"
+#include "../icons/mini_rotate.xpm"
+#include "../icons/mini_replace.xpm"
+#include "../icons/mini_change.xpm"
 
 wxBitmap ArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client, const wxSize& WXUNUSED(size))
 {
@@ -98,6 +112,37 @@ wxBitmap ArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client,
 			return wxBitmap(toolbar_pickupables_xpm);
 		else if(id == ART_MOVEABLE_TOOLBAR)
 			return wxBitmap(toolbar_moveable_xpm);
+	} else if(client == wxART_LIST) {
+		if(id == ART_MOVE)
+			return wxBitmap(mini_move_xpm);
+		else if(id == ART_REMOTE)
+			return wxBitmap(mini_remote_xpm);
+		else if(id == ART_SELECT)
+			return wxBitmap(mini_select_xpm);
+		else if(id == ART_UNSELECT)
+			return wxBitmap(mini_unselect_xpm);
+		else if(id == ART_DELETE)
+			return wxBitmap(mini_delete_xpm);
+		else if(id == ART_CUT)
+			return wxBitmap(mini_cut_xpm);
+		else if(id == ART_PASTE)
+			return wxBitmap(mini_paste_xpm);
+		else if(id == ART_RANDOMIZE)
+			return wxBitmap(mini_randomize_xpm);
+		else if(id == ART_BORDERIZE)
+			return wxBitmap(mini_borderize_xpm);
+		else if(id == ART_DRAW)
+			return wxBitmap(mini_draw_xpm);
+		else if(id == ART_ERASE)
+			return wxBitmap(mini_erase_xpm);
+		else if(id == ART_SWITCH)
+			return wxBitmap(mini_switch_xpm);
+		else if(id == ART_ROTATE)
+			return wxBitmap(mini_rotate_xpm);
+		else if(id == ART_REPLACE)
+			return wxBitmap(mini_replace_xpm);
+		else if(id == ART_CHANGE)
+			return wxBitmap(mini_change_xpm);
 	} else if(client == wxART_OTHER) {
 		if(id == ART_SPAWNS)
 			return wxBitmap(spawns_xpm);

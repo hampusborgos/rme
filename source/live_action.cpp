@@ -109,18 +109,14 @@ NetworkedActionQueue::NetworkedActionQueue(Editor& editor) : ActionQueue(editor)
 {
 }
 
-NetworkedActionQueue::~NetworkedActionQueue()
+Action* NetworkedActionQueue::createAction(ActionIdentifier identifier) const
 {
+	return new NetworkedAction(editor, identifier);
 }
 
-Action* NetworkedActionQueue::createAction(ActionIdentifier ident)
+BatchAction* NetworkedActionQueue::createBatch(ActionIdentifier identifier)
 {
-	return newd NetworkedAction(editor, ident);
-}
-
-BatchAction* NetworkedActionQueue::createBatch(ActionIdentifier ident)
-{
-	return newd NetworkedBatchAction(editor, *this, ident);
+	return new NetworkedBatchAction(editor, *this, identifier);
 }
 
 void NetworkedActionQueue::broadcast(DirtyList& dirty_list)

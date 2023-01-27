@@ -51,6 +51,7 @@ BEGIN_EVENT_TABLE(MainFrame, wxFrame)
 	EVT_ON_UPDATE_CHECK_FINISHED(wxID_ANY, MainFrame::OnUpdateReceived)
 #endif
 	EVT_ON_UPDATE_MENUS(wxID_ANY, MainFrame::OnUpdateMenus)
+	EVT_ON_UPDATE_ACTIONS(wxID_ANY, MainFrame::OnUpdateActions)
 
 	// Idle event handler
 	EVT_IDLE(MainFrame::OnIdle)
@@ -281,7 +282,7 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
         g_gui.LoadMap(FileName(m_file_to_open));
     } else if(!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
         // You generally don't want to save this map...
-        g_gui.GetCurrentEditor()->getMap().clearChanges();
+        g_gui.GetCurrentEditor()->clearChanges();
     }
 }
 
@@ -435,6 +436,12 @@ void MainFrame::OnUpdateMenus(wxCommandEvent&)
 	UpdateMenubar();
 	g_gui.UpdateMinimap(true);
 	g_gui.UpdateTitle();
+}
+
+void MainFrame::OnUpdateActions(wxCommandEvent&)
+{
+	tool_bar->UpdateButtons();
+	g_gui.RefreshActions();
 }
 
 #ifdef __WINDOWS__
