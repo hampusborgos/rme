@@ -471,28 +471,35 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 	if(edit_item) {
 		int new_uid = unique_id_field->GetValue();
 		int new_aid = action_id_field->GetValue();
-		if (!edit_item->getDepot()) {
-			if((new_uid < MIN_UNIQUE_ID || new_uid > MAX_UNIQUE_ID) && new_uid != 0) {
-				wxString message = "Unique ID must be between %d and %d.";
-				g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_UNIQUE_ID, MAX_UNIQUE_ID), wxOK);
-				return;
+		bool uid_changed = false;
+		bool aid_changed = false;
+
+		if(!edit_item->getDepot()) {
+			uid_changed = new_uid != edit_item->getUniqueID();
+			aid_changed = new_aid != edit_item->getActionID();
+
+			if(uid_changed) {
+				if(new_uid != 0 && (new_uid < MIN_UNIQUE_ID || new_uid > MAX_UNIQUE_ID)) {
+					wxString message = "Unique ID must be between %d and %d.";
+					g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_UNIQUE_ID, MAX_UNIQUE_ID), wxOK);
+					return;
+				}
+				if(g_gui.GetCurrentMap().hasUniqueId(new_uid)) {
+					g_gui.PopupDialog(this, "Error", "Unique ID must be unique, this UID is already taken.", wxOK);
+					return;
+				}
 			}
-			if(g_gui.GetCurrentMap().hasUniqueId(new_uid)) {
-				g_gui.PopupDialog(this, "Error", "Unique ID must be unique, this UID is already taken.", wxOK);
-				return;
-			}
-			if((new_aid < MIN_ACTION_ID || new_aid > MAX_ACTION_ID) && new_aid != 0) {
-				wxString message = "Action ID must be between %d and %d.";
-				g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_ACTION_ID, MAX_ACTION_ID), wxOK);
-				return;
+
+			if(aid_changed) {
+				if(new_aid != 0 && (new_aid < MIN_ACTION_ID || new_aid > MAX_ACTION_ID)) {
+					wxString message = "Action ID must be between %d and %d.";
+					g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_ACTION_ID, MAX_ACTION_ID), wxOK);
+					return;
+				}
 			}
 		}
 
-		if(edit_item->getContainer()) {
-			// Container
-			edit_item->setUniqueID(new_uid);
-			edit_item->setActionID(new_aid);
-		} else if(edit_item->canHoldText() || edit_item->canHoldDescription()) {
+		if(edit_item->canHoldText() || edit_item->canHoldDescription()) {
 			// Book
 			std::string text = nstr(text_field->GetValue());
 			if(text.length() >= 0xFFFF) {
@@ -505,9 +512,6 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 					return;
 				}
 			}
-
-			edit_item->setUniqueID(new_uid);
-			edit_item->setActionID(new_aid);
 			edit_item->setText(text);
 		} else if(edit_item->isSplash() || edit_item->isFluidContainer()) {
 			// Splash
@@ -515,9 +519,6 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			if(new_type) {
 				edit_item->setSubtype(*new_type);
 			}
-			edit_item->setUniqueID(new_uid);
-			edit_item->setActionID(new_aid);
-
 			// Clean up client data
 		} else if(Depot* depot = edit_item->getDepot()) {
 			// Depot
@@ -583,10 +584,16 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			if(door) {
 				door->setDoorID(new_door_id);
 			}
+		}
 
+		if(uid_changed) {
 			edit_item->setUniqueID(new_uid);
+		}
+
+		if(aid_changed) {
 			edit_item->setActionID(new_aid);
 		}
+		
 	} else if(edit_creature) {
 		int new_spawntime = count_field->GetValue();
 		edit_creature->setSpawnTime(new_spawntime);
