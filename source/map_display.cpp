@@ -691,7 +691,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 				boundbox_selection = true;
 
 				if(!event.ControlDown()) {
-					selection.start(); // Start selection session
+					selection.start(Selection::NONE, ACTION_DESELECT); // Start selection session
 					selection.clear(); // Clear out selection
 					selection.finish(); // End selection session
 					selection.updateSelectionCount();
@@ -734,7 +734,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 			} else {
 				Tile* tile = editor.getMap().getTile(mouse_map_x, mouse_map_y, floor);
 				if(!tile) {
-					selection.start(); // Start selection session
+					selection.start(Selection::NONE, ACTION_DESELECT); // Start selection session
 					selection.clear(); // Clear out selection
 					selection.finish(); // End selection session
 					selection.updateSelectionCount();
@@ -1940,18 +1940,31 @@ void MapCanvas::OnBrowseTile(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnRotateItem(wxCommandEvent& WXUNUSED(event))
 {
-	Tile* tile = editor.getSelection().getSelectedTile();
+	if(!editor.hasSelection()) {
+		return;
+	}
+
+	Selection& selection = editor.getSelection();
+	if(selection.size() != 1) {
+		return;
+	}
+
+	Tile* tile = selection.getSelectedTile();
+	ItemVector items = tile->getSelectedItems();
+	if(items.empty()) {
+		return;
+	}
+
+	Item* item = items.front();
+	if(!item || !item->isRoteable()) {
+		return;
+	}
 
 	Action* action = editor.createAction(ACTION_ROTATE_ITEM);
-
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-
-	ItemVector selected_items = new_tile->getSelectedItems();
-	ASSERT(selected_items.size() > 0);
-
-	selected_items.front()->doRotate();
-
-	action->addChange(newd Change(new_tile));
+	Item* new_item = new_tile->getSelectedItems().front();
+	new_item->doRotate();
+	action->addChange(new Change(new_tile));
 
  	editor.addAction(action);
 	editor.updateActions();

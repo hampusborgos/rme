@@ -1534,15 +1534,16 @@ void GUI::SetDrawingMode()
 	std::set<MapTab*> al;
 	for(int idx = 0; idx < tabbook->GetTabCount(); ++idx) {
 		EditorTab* editorTab = tabbook->GetTab(idx);
-		if(auto * mapTab = dynamic_cast<MapTab*>(editorTab)) {
+		if(MapTab* mapTab = dynamic_cast<MapTab*>(editorTab)) {
 			if(al.find(mapTab) != al.end())
 				continue;
 
 			Editor* editor = mapTab->GetEditor();
 			Selection& selection = editor->getSelection();
-			selection.start();
+			selection.start(Selection::NONE, ACTION_DESELECT);
 			selection.clear();
 			selection.finish();
+			selection.updateSelectionCount();
 			al.insert(mapTab);
 		}
 	}

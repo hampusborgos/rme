@@ -19,6 +19,7 @@
 #define RME_SELECTION_H
 
 #include "position.h"
+#include "action.h"
 
 class Action;
 class Editor;
@@ -34,10 +35,10 @@ public:
 
 	// Selects the items on the tile/tiles
 	// Won't work outside a selection session
-	void add(Tile* tile, Item* item);
-	void add(Tile* tile, Spawn* spawn);
-	void add(Tile* tile, Creature* creature);
-	void add(Tile* tile);
+	void add(const Tile* tile, Item* item);
+	void add(const Tile* tile, Spawn* spawn);
+	void add(const Tile* tile, Creature* creature);
+	void add(const Tile* tile);
 	void remove(Tile* tile, Item* item);
 	void remove(Tile* tile, Spawn* spawn);
 	void remove(Tile* tile, Creature* creature);
@@ -68,7 +69,7 @@ public:
 		SUBTHREAD = 2,
 	};
 
-	void start(SessionFlags flags = NONE);
+	void start(SessionFlags flags = NONE, ActionIdentifier identifier = ACTION_SELECT);
 	void commit();
 	void finish(SessionFlags flags = NONE);
 
