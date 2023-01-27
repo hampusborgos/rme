@@ -1042,62 +1042,58 @@ void Editor::clearModifiedTileState(bool showdialog)
 
 void Editor::moveSelection(const Position& offset)
 {
-	BatchAction* batchAction = actionQueue->createBatch(ACTION_MOVE);
-	Action* action = actionQueue->createAction(batchAction);
-	bool doborders = false;
-	TileSet tmp_storage;
-
-	// Update the tiles with the newd positions
-	for(Tile* tile : selection) {
-		//const Position pos = tile->getPosition();
-
-		// Create the duplicate source tile, which will replace the old one later
-		Tile* old_src_tile = tile;
-		Tile* new_src_tile = old_src_tile->deepCopy(map);
-		Tile* tmp_storage_tile = map.allocator(tile->getLocation());
-
-		// Get all the selected items from the NEW source tile and iterate through them
-		// This transfers ownership to the temporary tile
-		ItemVector selected_items = new_src_tile->popSelectedItems();
-		for(Item* item : selected_items) {
-			// Add the copied item to the newd destination tile,
-			tmp_storage_tile->addItem(item);
-		}
-		// Move spawns
-		if(new_src_tile->spawn && new_src_tile->spawn->isSelected()) {
-			tmp_storage_tile->spawn = new_src_tile->spawn;
-			new_src_tile->spawn = nullptr;
-		}
-		// Move creatures
-		if(new_src_tile->creature && new_src_tile->creature->isSelected()) {
-			tmp_storage_tile->creature = new_src_tile->creature;
-			new_src_tile->creature = nullptr;
-		}
-
-		// Move house data & tile status if ground is transferred
-		if(tmp_storage_tile->ground) {
-			tmp_storage_tile->house_id = new_src_tile->house_id;
-			new_src_tile->house_id = 0;
-			tmp_storage_tile->setMapFlags(new_src_tile->getMapFlags());
-			new_src_tile->setMapFlags(TILESTATE_NONE);
-			doborders = true;
-		}
-
-		tmp_storage.insert(tmp_storage_tile);
-		// Add the tile copy to the action
-		action->addChange(newd Change(new_src_tile));
+	if(!CanEdit() || !hasSelection()) {
+		return;
 	}
-	// Commit changes to map
-	batchAction->addAndCommitAction(action);
 
-	// Remove old borders (and create some newd?)
-	if(g_settings.getInteger(Config::USE_AUTOMAGIC)
-		&& g_settings.getInteger(Config::BORDERIZE_DRAG)
-		&& selection.size() < size_t(g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
-		action = actionQueue->createAction(batchAction);
+	bool borderize = false;
+	int drag_threshold = g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD);
+	bool create_borders = g_settings.getInteger(Config::USE_AUTOMAGIC)
+		&& g_settings.getInteger(Config::BORDERIZE_DRAG);
+
+	TileSet storage;
+	BatchAction* batch_action = actionQueue->createBatch(ACTION_MOVE);
+	Action* action = actionQueue->createAction(batch_action);
+
+	// Update the tiles with the new positions
+	for(Tile* tile : selection) {
+		Tile* new_tile = tile->deepCopy(map);
+		Tile* storage_tile = map.allocator(tile->getLocation());
+
+		ItemVector selected_items = new_tile->popSelectedItems();
+		for(Item* item : selected_items) {
+			storage_tile->addItem(item);
+		}
+
+		if(new_tile->spawn && new_tile->spawn->isSelected()) {
+			storage_tile->spawn = new_tile->spawn;
+			new_tile->spawn = nullptr;
+		}
+
+		if(new_tile->creature && new_tile->creature->isSelected()) {
+			storage_tile->creature = new_tile->creature;
+			new_tile->creature = nullptr;
+		}
+
+		if(storage_tile->ground) {
+			storage_tile->house_id = new_tile->house_id;
+			new_tile->house_id = 0;
+			storage_tile->setMapFlags(new_tile->getMapFlags());
+			new_tile->setMapFlags(TILESTATE_NONE);
+			borderize = true;
+		}
+
+		storage.insert(storage_tile);
+		action->addChange(new Change(new_tile));
+	}
+	batch_action->addAndCommitAction(action);
+
+	// Remove old borders (and create some new?)
+	if(create_borders && selection.size() < static_cast<size_t>(drag_threshold)) {
+		action = actionQueue->createAction(batch_action);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
-		for(const Tile* tile : tmp_storage) {
+		for(const Tile* tile : storage) {
 			const Position& pos = tile->getPosition();
 			// Go through all neighbours
 			Tile* t;
@@ -1111,42 +1107,43 @@ void Editor::moveSelection(const Position& offset)
 			t = map.getTile(pos.x  , pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); }
 			t = map.getTile(pos.x+1, pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); }
 		}
+
 		// Remove duplicates
 		borderize_tiles.sort();
 		borderize_tiles.unique();
-		// Do le borders!
-		for(Tile* tile : borderize_tiles) {
+
+		// Create borders
+		for(const Tile* tile : borderize_tiles) {
 			Tile* new_tile = tile->deepCopy(map);
-			if(doborders) new_tile->borderize(&map);
+			if(borderize) {
+				new_tile->borderize(&map);
+			}
 			new_tile->wallize(&map);
 			new_tile->tableize(&map);
 			new_tile->carpetize(&map);
-			if(tile->ground && tile->ground->isSelected()) new_tile->selectGround();
-			action->addChange(newd Change(new_tile));
+			if(tile->ground && tile->ground->isSelected()) {
+				new_tile->selectGround();
+			}
+			action->addChange(new Change(new_tile));
 		}
-		// Commit changes to map
-		batchAction->addAndCommitAction(action);
+		batch_action->addAndCommitAction(action);
 	}
 
 	// New action for adding the destination tiles
-	action = actionQueue->createAction(batchAction);
-	for(TileSet::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
-		Tile* tile = (*it);
-		const Position old_pos = tile->getPosition();
-		Position new_pos;
-
-		new_pos = old_pos - offset;
-
+	action = actionQueue->createAction(batch_action);
+	for(Tile* tile : storage) {
+		const Position& old_pos = tile->getPosition();
+		Position new_pos = old_pos - offset;
 		if(new_pos.z < 0 && new_pos.z > MAP_MAX_LAYER) {
 			delete tile;
 			continue;
 		}
-		// Create the duplicate dest tile, which will replace the old one later
+
 		TileLocation* location = map.createTileL(new_pos);
 		Tile* old_dest_tile = location->get();
 		Tile* new_dest_tile = nullptr;
 
-		if(g_settings.getInteger(Config::MERGE_MOVE) || !tile->ground) {
+		if(!tile->ground || g_settings.getInteger(Config::MERGE_MOVE)) {
 			// Move items
 			if(old_dest_tile) {
 				new_dest_tile = old_dest_tile->deepCopy(map);
@@ -1160,23 +1157,17 @@ void Editor::moveSelection(const Position& offset)
 			tile->setLocation(location);
 			new_dest_tile = tile;
 		}
-
-		action->addChange(newd Change(new_dest_tile));
+		action->addChange(new Change(new_dest_tile));
 	}
+	batch_action->addAndCommitAction(action);
 
-	// Commit changes to the map
-	batchAction->addAndCommitAction(action);
-
-	// Create borders
-	if(g_settings.getInteger(Config::USE_AUTOMAGIC) &&
-			g_settings.getInteger(Config::BORDERIZE_DRAG) &&
-			selection.size() < size_t(g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
-		action = actionQueue->createAction(batchAction);
+	if(create_borders && selection.size() < static_cast<size_t>(drag_threshold)) {
+		action = actionQueue->createAction(batch_action);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
-		for(TileSet::iterator it = selection.begin(); it != selection.end(); it++) {
+		for(Tile* tile : selection) {
 			bool add_me = false; // If this tile is touched
-			const Position& pos = (*it)->getPosition();
+			const Position& pos = tile->getPosition();
 			// Go through all neighbours
 			Tile* t;
 			t = map.getTile(pos.x-1, pos.y-1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
@@ -1188,37 +1179,39 @@ void Editor::moveSelection(const Position& offset)
 			t = map.getTile(pos.x-1, pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
 			t = map.getTile(pos.x  , pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
 			t = map.getTile(pos.x+1, pos.y+1, pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); add_me = true; }
-			if(add_me) borderize_tiles.push_back(*it);
+			if(add_me) {
+				borderize_tiles.push_back(tile);
+			}
 		}
+
 		// Remove duplicates
 		borderize_tiles.sort();
 		borderize_tiles.unique();
-		// Do le borders!
-		for(TileList::iterator it = borderize_tiles.begin(); it != borderize_tiles.end(); it++) {
-			Tile* tile = *it;
-			if(tile->ground) {
-				if(tile->ground->getGroundBrush()) {
-					Tile* new_tile = tile->deepCopy(map);
 
-					if(doborders)
-						new_tile->borderize(&map);
-
-					new_tile->wallize(&map);
-					new_tile->tableize(&map);
-					new_tile->carpetize(&map);
-					if(tile->ground->isSelected())
-						new_tile->selectGround();
-
-					action->addChange(newd Change(new_tile));
+		// Create borders
+		for(const Tile* tile : borderize_tiles) {
+			if(!tile || !tile->ground) {
+				continue;
+			}
+			if(tile->ground->getGroundBrush()) {
+				Tile* new_tile = tile->deepCopy(map);
+				if(borderize) {
+					new_tile->borderize(&map);
 				}
+				new_tile->wallize(&map);
+				new_tile->tableize(&map);
+				new_tile->carpetize(&map);
+				if(tile->ground->isSelected()) {
+					new_tile->selectGround();
+				}
+				action->addChange(new Change(new_tile));
 			}
 		}
-		// Commit changes to map
-		batchAction->addAndCommitAction(action);
+		batch_action->addAndCommitAction(action);
 	}
 
 	// Store the action for undo
-	addBatch(batchAction);
+	addBatch(batch_action);
 	updateActions();
 	selection.updateSelectionCount();
 }
@@ -1334,18 +1327,30 @@ void doSurroundingBorders(DoodadBrush* doodad_brush, PositionList& tilestoborder
 
 void removeDuplicateWalls(Tile* buffer, Tile* tile)
 {
-	for(ItemVector::const_iterator iter = buffer->items.begin(); iter != buffer->items.end(); ++iter) {
-		if((*iter)->getWallBrush()) {
-			tile->cleanWalls((*iter)->getWallBrush());
+	if (!buffer || buffer->items.empty() || !tile || tile->items.empty()) {
+		return;
+	}
+
+	for(const Item* item : buffer->items) {
+		if(item) {
+			WallBrush* brush = item->getWallBrush();
+			if(brush) {
+				tile->cleanWalls(brush);
+			}
 		}
 	}
 }
 
 void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 {
-	Brush* brush = g_gui.GetCurrentBrush();
-	if(!brush)
+	if(!CanEdit()) {
 		return;
+	}
+
+	Brush* brush = g_gui.GetCurrentBrush();
+	if(!brush) {
+		return;
+	}
 
 	if(brush->isDoodad()) {
 		BatchAction* batch = actionQueue->createBatch(ACTION_DRAW);
@@ -1510,9 +1515,14 @@ void Editor::drawInternal(Position offset, bool alt, bool dodraw)
 
 void Editor::drawInternal(const PositionVector& tilestodraw, bool alt, bool dodraw)
 {
-	Brush* brush = g_gui.GetCurrentBrush();
-	if(!brush)
+	if(!CanEdit()) {
 		return;
+	}
+
+	Brush* brush = g_gui.GetCurrentBrush();
+	if(!brush) {
+		return;
+	}
 
 #ifdef __DEBUG__
 	if(brush->isGround() || brush->isWall()) {
@@ -1574,12 +1584,16 @@ void Editor::drawInternal(const PositionVector& tilestodraw, bool alt, bool dodr
 	addAction(action, 2);
 }
 
-
 void Editor::drawInternal(const PositionVector& tilestodraw, PositionVector& tilestoborder, bool alt, bool dodraw)
 {
-	Brush* brush = g_gui.GetCurrentBrush();
-	if(!brush)
+	if(!CanEdit()) {
 		return;
+	}
+
+	Brush* brush = g_gui.GetCurrentBrush();
+	if(!brush) {
+		return;
+	}
 
 	if(brush->isGround() || brush->isEraser()) {
 		ActionIdentifier identifier = (dodraw && !brush->isEraser()) ? ACTION_DRAW : ACTION_ERASE;

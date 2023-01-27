@@ -31,74 +31,6 @@ class Action;
 class BatchAction;
 class ActionQueue;
 
-enum ChangeType {
-	CHANGE_NONE,
-	CHANGE_TILE,
-	CHANGE_MOVE_HOUSE_EXIT,
-	CHANGE_MOVE_WAYPOINT,
-};
-
-class Change
-{
-private:
-	ChangeType type;
-	void* data;
-
-	Change();
-
-public:
-	Change(Tile* tile);
-	static Change* Create(House* house, const Position& where);
-	static Change* Create(Waypoint* wp, const Position& where);
-	~Change();
-	void clear();
-
-	ChangeType getType() const noexcept { return type; }
-	void* getData() const noexcept { return data; }
-
-	// Get memory footprint
-	uint32_t memsize() const;
-
-	friend class Action;
-};
-
-typedef std::vector<Change*> ChangeList;
-
-// A dirty list represents a list of all tiles that was changed in an action
-class DirtyList
-{
-public:
-	DirtyList();
-	~DirtyList();
-
-	struct ValueType {
-		uint32_t pos;
-		uint32_t floors;
-	};
-
-	uint32_t owner;
-
-protected:
-	struct Comparator {
-		bool operator()(const ValueType& a, const ValueType& b) const {
-			return a.pos < b.pos;
-		}
-	};
-public:
-
-	typedef std::set<ValueType, Comparator> SetType;
-
-	void AddPosition(int x, int y, int z);
-	void AddChange(Change* c);
-	bool Empty() const { return iset.empty() && ichanges.empty(); }
-	SetType& GetPosList();
-	ChangeList& GetChanges();
-
-protected:
-	SetType iset;
-	ChangeList ichanges;
-};
-
 enum ActionIdentifier {
 	ACTION_MOVE,
 	ACTION_REMOTE,
@@ -117,6 +49,83 @@ enum ActionIdentifier {
 	ACTION_CHANGE_PROPERTIES,
 };
 
+enum ChangeType {
+	CHANGE_NONE,
+	CHANGE_TILE,
+	CHANGE_MOVE_HOUSE_EXIT,
+	CHANGE_MOVE_WAYPOINT,
+};
+
+struct HouseData {
+	uint32_t id;
+	Position position;
+};
+
+struct WaypointData {
+	std::string id;
+	Position position;
+};
+
+class Change
+{
+	Change();
+
+public:
+	Change(Tile* tile);
+	~Change();
+
+	static Change* Create(House* house, const Position& position);
+	static Change* Create(Waypoint* waypoint, const Position& position);
+
+	void clear();
+
+	ChangeType getType() const noexcept { return type; }
+	void* getData() const noexcept { return data; }
+
+	uint32_t memsize() const;
+
+private:
+	ChangeType type;
+	void* data;
+
+	friend class Action;
+};
+
+typedef std::vector<Change*> ChangeList;
+
+// A dirty list represents a list of all tiles that was changed in an action
+class DirtyList
+{
+public:
+	struct ValueType {
+		uint32_t pos;
+		uint32_t floors;
+	};
+
+	uint32_t owner = 0;
+
+protected:
+	struct Comparator {
+		bool operator()(const ValueType& a, const ValueType& b) const {
+			return a.pos < b.pos;
+		}
+	};
+
+public:
+
+	typedef std::set<ValueType, Comparator> SetType;
+
+	void AddPosition(int x, int y, int z);
+	void AddChange(Change* c);
+	bool Empty() const { return iset.empty() && ichanges.empty(); }
+	SetType& GetPosList();
+	ChangeList& GetChanges();
+
+protected:
+	SetType iset;
+	ChangeList ichanges;
+};
+
 class Action
 {
 public:
@@ -130,6 +139,7 @@ public:
 	size_t approx_memsize() const;
 	size_t memsize() const;
 	size_t size() const noexcept { return changes.size(); }
+	bool empty() const noexcept { return changes.empty(); }
 	ActionIdentifier getType() const noexcept { return type; }
 
 	void commit(DirtyList* dirty_list);
