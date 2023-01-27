@@ -535,7 +535,7 @@ bool GUI::NewMap()
 
 	auto *mapTab = newd MapTab(tabbook, editor);
 	mapTab->OnSwitchEditorMode(mode);
-    editor->getMap().clearChanges();
+    editor->clearChanges();
 
 	SetStatusText("Created new map");
 	UpdateTitle();
@@ -686,17 +686,9 @@ int GUI::GetOpenMapCount()
 
 bool GUI::ShouldSave()
 {
-	const Map& map = GetCurrentMap();
-	if(map.hasChanged()) {
-		if(map.getTileCount() == 0) {
-			Editor* editor = GetCurrentEditor();
-			ASSERT(editor);
-			return editor->canUndo();
-		}
-		return true;
-	}
-	return false;
-
+	Editor* editor = GetCurrentEditor();
+	ASSERT(editor);
+	return editor->hasChanges();
 }
 
 void GUI::AddPendingCanvasEvent(wxEvent& event)

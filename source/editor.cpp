@@ -225,7 +225,7 @@ void Editor::redo(int indexes)
 		indexes--;
 	}
 	g_gui.UpdateActions();
-	g_gui.RefreshView();
+	g_gui.RefreshView();	
 }
 
 void Editor::updateActions()
@@ -244,6 +244,22 @@ void Editor::clearActions()
 {
 	actionQueue->clear();
 	g_gui.UpdateActions();
+}
+
+bool Editor::hasChanges() const
+{
+	if(map.hasChanged()) {
+		if(map.getTileCount() == 0) {
+			return actionQueue->hasChanges();
+		}
+		return true;
+	}
+	return false;
+}
+
+void Editor::clearChanges()
+{
+	map.clearChanges();
 }
 
 void Editor::saveMap(FileName filename, bool showdialog)
@@ -374,7 +390,6 @@ void Editor::saveMap(FileName filename, bool showdialog)
 			return;
 	}
 
-
 	// Move to permanent backup
 	if(!save_as && g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
 		// Move temporary backups to their proper files
@@ -417,7 +432,7 @@ void Editor::saveMap(FileName filename, bool showdialog)
 		std::remove(backup_spawn.c_str());
 	}
 
-	map.clearChanges();
+	clearChanges();
 }
 
 bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset)

@@ -417,6 +417,11 @@ size_t BatchAction::memsize(bool recalc) const
 	return mem;
 }
 
+bool BatchAction::isNoSelection() const noexcept
+{
+	return type != ACTION_SELECT && type != ACTION_UNSELECT;
+}
+
 void BatchAction::addAction(Action* action)
 {
 	if(!action) {
@@ -519,7 +524,7 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 	ASSERT(batch);
 	ASSERT(current <= actions.size());
 
-	if(batch->size() == 0) {
+	if(batch->empty()) {
 		delete batch;
 		return;
 	}
@@ -528,10 +533,11 @@ void ActionQueue::addBatch(BatchAction* batch, int stacking_delay)
 	batch->commit();
 
 	// Update title
-	if(editor.getMap().doChange())
+	if(batch->isNoSelection() && editor.getMap().doChange()) {
 		g_gui.UpdateTitle();
+	}
 
-	if(batch->type == ACTION_REMOTE) {
+	if(batch->getType() == ACTION_REMOTE) {
 		delete batch;
 		return;
 	}
@@ -614,6 +620,11 @@ bool ActionQueue::undo()
 		if(batch) {
 			batch->undo();
 		}
+
+		// Update title
+		if(batch->isNoSelection() && editor.getMap().doChange()) {
+			g_gui.UpdateTitle();
+		}
 		return true;
 	}
 	return false;
@@ -627,7 +638,22 @@ bool ActionQueue::redo()
 			batch->redo();
 		}
 		current++;
+
+		// Update title
+		if(batch->isNoSelection() && editor.getMap().doChange()) {
+			g_gui.UpdateTitle();
+		}
 		return true;
+	}
+	return false;
+}
+
+bool ActionQueue::hasChanges() const
+{
+	for(const BatchAction* batch : actions) {
+		if(batch && !batch->empty() && batch->isNoSelection()) {
+			return true;
+		}
 	}
 	return false;
 }

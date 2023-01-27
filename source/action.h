@@ -173,6 +173,7 @@ public:
 	bool empty() const noexcept { return batch.empty(); }
 	ActionIdentifier getType() const noexcept { return type; }
 	const wxString& getLabel() const noexcept { return label; }
+	bool isNoSelection() const noexcept;
 
 	virtual void addAction(Action* action);
 	virtual void addAndCommitAction(Action* action);
@@ -223,6 +224,9 @@ public:
 	bool canUndo() const noexcept { return current > 0; }
 	bool canRedo() const noexcept { return current < actions.size(); }
 	size_t size() const noexcept { return actions.size(); }
+	bool empty() const noexcept { return actions.empty(); }
+
+	bool hasChanges() const;
 
 	void generateLabels();
 

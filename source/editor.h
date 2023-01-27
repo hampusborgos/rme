@@ -70,6 +70,9 @@ public: // Functions
 	void QueryNode(int ndx, int ndy, bool underground);
 	void SendNodeRequests();
 
+	bool hasChanges() const;
+	void clearChanges();
+
 	// Map handling
 	void saveMap(FileName filename, bool showdialog); // "" means default filename
 

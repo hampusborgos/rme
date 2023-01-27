@@ -26,7 +26,6 @@ class MapTabbook : public wxPanel
 {
 public:
 	MapTabbook(wxWindow* parent, wxWindowID id);
-	~MapTabbook();
 
 	// Wrapper functions
 	void AddTab(EditorTab* tab, bool select);
