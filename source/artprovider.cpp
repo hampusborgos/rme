@@ -48,6 +48,7 @@
 #include "../icons/mini_move.xpm"
 #include "../icons/mini_remote.xpm"
 #include "../icons/mini_select.xpm"
+#include "../icons/mini_unselect.xpm"
 #include "../icons/mini_delete.xpm"
 #include "../icons/mini_cut.xpm"
 #include "../icons/mini_paste.xpm"
@@ -116,8 +117,10 @@ wxBitmap ArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client,
 			return wxBitmap(mini_move_xpm);
 		else if(id == ART_REMOTE)
 			return wxBitmap(mini_remote_xpm);
-		else if(id == ART_SELECT )
+		else if(id == ART_SELECT)
 			return wxBitmap(mini_select_xpm);
+		else if(id == ART_UNSELECT)
+			return wxBitmap(mini_unselect_xpm);
 		else if(id == ART_DELETE)
 			return wxBitmap(mini_delete_xpm);
 		else if(id == ART_CUT)

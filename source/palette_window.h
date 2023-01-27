@@ -25,7 +25,8 @@ class CreaturePalettePanel;
 class HousePalettePanel;
 class WaypointPalettePanel;
 
-class PaletteWindow : public wxPanel {
+class PaletteWindow : public wxPanel
+{
 public:
 	PaletteWindow(wxWindow* parent, const TilesetContainer& tilesets);
 	~PaletteWindow();
@@ -61,6 +62,7 @@ public:
 	// Forward key events to the parent window (The Map Window)
 	void OnKey(wxKeyEvent& event);
 	void OnClose(wxCloseEvent&);
+
 protected:
 	static PalettePanel* CreateTerrainPalette(wxWindow* parent, const TilesetContainer& tilesets);
 	static PalettePanel* CreateDoodadPalette(wxWindow* parent, const TilesetContainer& tilesets);

@@ -108,8 +108,6 @@ private:
 std::ostream& operator<<(std::ostream& os, const Hotkey& hotkey);
 std::istream& operator>>(std::istream& os, Hotkey& hotkey);
 
-
-
 class GUI
 {
 public: // dtor and ctor

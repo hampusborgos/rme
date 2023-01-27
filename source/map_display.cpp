@@ -691,7 +691,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 				boundbox_selection = true;
 
 				if(!event.ControlDown()) {
-					selection.start(Selection::NONE, ACTION_DESELECT); // Start selection session
+					selection.start(Selection::NONE, ACTION_UNSELECT); // Start selection session
 					selection.clear(); // Clear out selection
 					selection.finish(); // End selection session
 					selection.updateSelectionCount();
@@ -734,7 +734,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 			} else {
 				Tile* tile = editor.getMap().getTile(mouse_map_x, mouse_map_y, floor);
 				if(!tile) {
-					selection.start(Selection::NONE, ACTION_DESELECT); // Start selection session
+					selection.start(Selection::NONE, ACTION_UNSELECT); // Start selection session
 					selection.clear(); // Clear out selection
 					selection.finish(); // End selection session
 					selection.updateSelectionCount();

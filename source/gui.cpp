@@ -542,7 +542,6 @@ bool GUI::NewMap()
 	RefreshPalettes();
 	root->UpdateMenubar();
 	root->Refresh();
-
 	return true;
 }
 
@@ -987,10 +986,12 @@ PaletteWindow* GUI::NewPalette()
 
 void GUI::RefreshPalettes(Map* m, bool usedefault)
 {
-	for(auto &palette : palettes) {
+	for(auto&palette : palettes) {
 		palette->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : nullptr): nullptr));
 	}
 	SelectBrush();
+
+	RefreshActions();
 }
 
 void GUI::RefreshOtherPalettes(PaletteWindow* p)
@@ -1540,7 +1541,7 @@ void GUI::SetDrawingMode()
 
 			Editor* editor = mapTab->GetEditor();
 			Selection& selection = editor->getSelection();
-			selection.start(Selection::NONE, ACTION_DESELECT);
+			selection.start(Selection::NONE, ACTION_UNSELECT);
 			selection.clear();
 			selection.finish();
 			selection.updateSelectionCount();

@@ -646,6 +646,7 @@ wxString ActionQueue::createLabel(ActionIdentifier type)
 	switch (type) {
 		case ACTION_MOVE: return "Move";
 		case ACTION_SELECT: return "Select";
+		case ACTION_UNSELECT: return "Unselect";
 		case ACTION_DELETE_TILES: return "Delete";
 		case ACTION_CUT_TILES: return "Cut";
 		case ACTION_PASTE_TILES: return "Paste";
@@ -657,7 +658,7 @@ wxString ActionQueue::createLabel(ActionIdentifier type)
 		case ACTION_ROTATE_ITEM: return "Rotate Item";
 		case ACTION_REPLACE_ITEMS: return "Replace";
 		case ACTION_CHANGE_PROPERTIES: return "Change Properties";
-		default: return "Deselect";
+		default: return wxEmptyString;
 	}
 }
 

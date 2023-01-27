@@ -25,9 +25,11 @@ HistoryListBox::HistoryListBox(wxWindow* parent) :
 	wxVListBox(parent, wxID_ANY)
 {
 	wxSize icon_size = FROM_DIP(parent, wxSize(16, 16));
+	open_bitmap = wxArtProvider::GetBitmap(wxART_FILE_OPEN, wxART_TOOLBAR, icon_size);
 	move_bitmap = wxArtProvider::GetBitmap(ART_MOVE, wxART_LIST, icon_size);
 	remote_bitmap = wxArtProvider::GetBitmap(ART_REMOTE, wxART_LIST, icon_size);
 	select_bitmap = wxArtProvider::GetBitmap(ART_SELECT, wxART_LIST, icon_size);
+	unselect_bitmap = wxArtProvider::GetBitmap(ART_UNSELECT, wxART_LIST, icon_size);
 	delete_bitmap = wxArtProvider::GetBitmap(ART_DELETE, wxART_LIST, icon_size);
 	cut_bitmap = wxArtProvider::GetBitmap(ART_CUT, wxART_LIST, icon_size);
 	paste_bitmap = wxArtProvider::GetBitmap(ART_PASTE, wxART_LIST, icon_size);
@@ -65,6 +67,7 @@ void HistoryListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t index) cons
 		dc.DrawBitmap(bitmap, rect.GetX() + 4, rect.GetY() + 4, true);
 		dc.DrawText(action->getLabel(), rect.GetX() + 28, rect.GetY() + 3);
 	} else {
+		dc.DrawBitmap(open_bitmap, rect.GetX() + 4, rect.GetY() + 4, true);
 		dc.DrawText("Open Map", rect.GetX() + 28, rect.GetY() + 3);
 	}
 }
@@ -84,6 +87,8 @@ const wxBitmap& HistoryListBox::getIconBitmap(ActionIdentifier identifier) const
 			return remote_bitmap;
 		case ACTION_SELECT:
 			return select_bitmap;
+		case ACTION_UNSELECT:
+			return unselect_bitmap;
 		case ACTION_DELETE_TILES:
 			return delete_bitmap;
 		case ACTION_CUT_TILES:
@@ -139,18 +144,20 @@ void ActionsHistoryWindow::RefreshActions()
 	if(!IsShownOnScreen())
 		return;
 
-	size_t count = 0;
-	int selection = wxNOT_FOUND;
-
 	const Editor* editor = g_gui.GetCurrentEditor();
-	if(editor) {
-		count = 1;
-		selection = 0;
-		const ActionQueue* actions = editor->getHistoryActions();
-		if(actions) {
-			count += actions->size();
-			selection += actions->getCurrentIndex();
-		}
+	if(!editor) {
+		list->SetItemCount(0);
+		list->Refresh();
+		return;
+	}
+
+	size_t count = 1;
+	int selection = 0;
+
+	const ActionQueue* actions = editor->getHistoryActions();
+	if(actions) {
+		count += actions->size();
+		selection += actions->getCurrentIndex();
 	}
 
 	list->SetItemCount(count);
