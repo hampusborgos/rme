@@ -216,6 +216,7 @@ void MainToolBar::UpdateButtons()
 	standard_toolbar->EnableTool(wxID_SAVEAS, is_host);
 	standard_toolbar->EnableTool(wxID_CUT, has_map);
 	standard_toolbar->EnableTool(wxID_COPY, has_map);
+	standard_toolbar->Refresh();
 
 	brushes_toolbar->EnableTool(PALETTE_TERRAIN_OPTIONAL_BORDER_TOOL, has_map);
 	brushes_toolbar->EnableTool(PALETTE_TERRAIN_ERASER, has_map);
@@ -229,6 +230,7 @@ void MainToolBar::UpdateButtons()
 	brushes_toolbar->EnableTool(PALETTE_TERRAIN_QUEST_DOOR, has_map);
 	brushes_toolbar->EnableTool(PALETTE_TERRAIN_HATCH_DOOR, has_map);
 	brushes_toolbar->EnableTool(PALETTE_TERRAIN_WINDOW_DOOR, has_map);
+	brushes_toolbar->Refresh();
 
 	position_toolbar->EnableTool(TOOLBAR_POSITION_GO, has_map);
 	x_control->Enable(has_map);
@@ -249,6 +251,7 @@ void MainToolBar::UpdateButtons()
 	sizes_toolbar->EnableTool(TOOLBAR_SIZES_5, has_map);
 	sizes_toolbar->EnableTool(TOOLBAR_SIZES_6, has_map);
 	sizes_toolbar->EnableTool(TOOLBAR_SIZES_7, has_map);
+	sizes_toolbar->Refresh();
 }
 
 void MainToolBar::UpdateBrushButtons()
