@@ -1841,7 +1841,7 @@ void MapCanvas::OnDelete(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 {
-	if(editor.hasSelection())
+	if(!editor.hasSelection())
 		return;
 
 	Position minPos = editor.getSelection().minPosition();
