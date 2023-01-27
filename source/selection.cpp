@@ -262,6 +262,7 @@ void Selection::finish(SessionFlags flags)
 
 			batch->addAndCommitAction(subsession);
 			editor.addBatch(batch, 2);
+			editor.updateActions();
 
 			session = nullptr;
 			subsession = nullptr;

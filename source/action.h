@@ -159,6 +159,7 @@ public:
 	// Get memory footprint
 	size_t memsize(bool resize = false) const;
 	size_t size() const noexcept { return batch.size(); }
+	bool empty() const noexcept { return batch.empty(); }
 	ActionIdentifier getType() const noexcept { return type; }
 	const wxString& getLabel() const noexcept { return label; }
 
@@ -194,9 +195,9 @@ public:
 
 	void resetTimer();
 
-	virtual Action* createAction(ActionIdentifier ident);
-	virtual Action* createAction(BatchAction* parent);
-	virtual BatchAction* createBatch(ActionIdentifier ident);
+	virtual Action* createAction(ActionIdentifier identifier) const;
+	virtual Action* createAction(BatchAction* parent) const;
+	virtual BatchAction* createBatch(ActionIdentifier identifier) const;
 
 	void addBatch(BatchAction* action, int stacking_delay = 0);
 	void addAction(Action* action, int stacking_delay = 0);
@@ -206,9 +207,11 @@ public:
 	void clear();
 
 	const ActionList& getActions() const noexcept { return actions; }
+	const BatchAction* getAction(size_t index) const;
 	int getCurrentIndex() const noexcept { return current; }
 	bool canUndo() const noexcept { return current > 0; }
 	bool canRedo() const noexcept { return current < actions.size(); }
+	size_t size() const noexcept { return actions.size(); }
 
 	void generateLabels();
 

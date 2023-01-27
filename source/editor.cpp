@@ -850,16 +850,17 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 
 void Editor::borderizeSelection()
 {
-	if(selection.size() == 0) {
+	if(selection.empty()) {
 		g_gui.SetStatusText("No items selected. Can't borderize.");
+		return;
 	}
 
 	Action* action = actionQueue->createAction(ACTION_BORDERIZE);
-	for(Tile* tile : selection) {
-		Tile* newTile = tile->deepCopy(map);
-		newTile->borderize(&map);
-		newTile->select();
-		action->addChange(newd Change(newTile));
+	for(const Tile* tile : selection) {
+		Tile* new_tile = tile->deepCopy(map);
+		new_tile->borderize(&map);
+		new_tile->select();
+		action->addChange(new Change(new_tile));
 	}
 	addAction(action);
 	updateActions();
@@ -891,26 +892,27 @@ void Editor::borderizeMap(bool showdialog)
 
 void Editor::randomizeSelection()
 {
-	if(selection.size() == 0) {
+	if(selection.empty()) {
 		g_gui.SetStatusText("No items selected. Can't randomize.");
+		return;
 	}
 
 	Action* action = actionQueue->createAction(ACTION_RANDOMIZE);
-	for(Tile* tile : selection) {
-		Tile* newTile = tile->deepCopy(map);
-		GroundBrush* groundBrush = newTile->getGroundBrush();
-		if(groundBrush && groundBrush->isReRandomizable()) {
-			groundBrush->draw(&map, newTile, nullptr);
+	for(const Tile* tile : selection) {
+		Tile* new_tile = tile->deepCopy(map);
+		GroundBrush* brush = new_tile->getGroundBrush();
+		if(brush && brush->isReRandomizable()) {
+			brush->draw(&map, new_tile, nullptr);
 
-			Item* oldGround = tile->ground;
-			Item* newGround = newTile->ground;
-			if(oldGround && newGround) {
-				newGround->setActionID(oldGround->getActionID());
-				newGround->setUniqueID(oldGround->getUniqueID());
+			Item* old_ground = tile->ground;
+			Item* new_ground = new_tile->ground;
+			if(old_ground && new_ground) {
+				new_ground->setActionID(old_ground->getActionID());
+				new_ground->setUniqueID(old_ground->getUniqueID());
 			}
 
-			newTile->select();
-			action->addChange(newd Change(newTile));
+			new_tile->select();
+			action->addChange(new Change(new_tile));
 		}
 	}
 	addAction(action);
@@ -1038,36 +1040,27 @@ void Editor::clearModifiedTileState(bool showdialog)
 	}
 }
 
-void Editor::moveSelection(Position offset)
+void Editor::moveSelection(const Position& offset)
 {
-	BatchAction* batchAction = actionQueue->createBatch(ACTION_MOVE); // Our saved action batch, for undo!
-	Action* action;
-
-	// Remove tiles from the map
-	action = actionQueue->createAction(batchAction); // Our action!
+	BatchAction* batchAction = actionQueue->createBatch(ACTION_MOVE);
+	Action* action = actionQueue->createAction(batchAction);
 	bool doborders = false;
 	TileSet tmp_storage;
 
 	// Update the tiles with the newd positions
-	for(TileSet::iterator it = selection.begin(); it != selection.end(); ++it) {
-		// First we get the old tile and it's position
-		Tile* tile = (*it);
+	for(Tile* tile : selection) {
 		//const Position pos = tile->getPosition();
 
 		// Create the duplicate source tile, which will replace the old one later
 		Tile* old_src_tile = tile;
-		Tile* new_src_tile;
-
-		new_src_tile = old_src_tile->deepCopy(map);
-
+		Tile* new_src_tile = old_src_tile->deepCopy(map);
 		Tile* tmp_storage_tile = map.allocator(tile->getLocation());
 
 		// Get all the selected items from the NEW source tile and iterate through them
 		// This transfers ownership to the temporary tile
-		ItemVector tile_selection = new_src_tile->popSelectedItems();
-		for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); iit++) {
+		ItemVector selected_items = new_src_tile->popSelectedItems();
+		for(Item* item : selected_items) {
 			// Add the copied item to the newd destination tile,
-			Item* item = (*iit);
 			tmp_storage_tile->addItem(item);
 		}
 		// Move spawns
@@ -1098,14 +1091,14 @@ void Editor::moveSelection(Position offset)
 	batchAction->addAndCommitAction(action);
 
 	// Remove old borders (and create some newd?)
-	if(g_settings.getInteger(Config::USE_AUTOMAGIC) &&
-			g_settings.getInteger(Config::BORDERIZE_DRAG) &&
-			selection.size() < size_t(g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
+	if(g_settings.getInteger(Config::USE_AUTOMAGIC)
+		&& g_settings.getInteger(Config::BORDERIZE_DRAG)
+		&& selection.size() < size_t(g_settings.getInteger(Config::BORDERIZE_DRAG_THRESHOLD))) {
 		action = actionQueue->createAction(batchAction);
 		TileList borderize_tiles;
 		// Go through all modified (selected) tiles (might be slow)
-		for(TileSet::iterator it = tmp_storage.begin(); it != tmp_storage.end(); ++it) {
-			const Position& pos = (*it)->getPosition();
+		for(const Tile* tile : tmp_storage) {
+			const Position& pos = tile->getPosition();
 			// Go through all neighbours
 			Tile* t;
 			t = map.getTile(pos.x  , pos.y  , pos.z); if(t && !t->isSelected()) { borderize_tiles.push_back(t); }
@@ -1122,9 +1115,8 @@ void Editor::moveSelection(Position offset)
 		borderize_tiles.sort();
 		borderize_tiles.unique();
 		// Do le borders!
-		for(TileList::iterator it = borderize_tiles.begin(); it != borderize_tiles.end(); ++it) {
-			Tile* tile = *it;
-			Tile* new_tile = (*it)->deepCopy(map);
+		for(Tile* tile : borderize_tiles) {
+			Tile* new_tile = tile->deepCopy(map);
 			if(doborders) new_tile->borderize(&map);
 			new_tile->wallize(&map);
 			new_tile->tableize(&map);

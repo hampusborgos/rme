@@ -664,8 +664,6 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 	int mouse_map_x, mouse_map_y;
 	ScreenToMap(event.GetX(), event.GetY(), &mouse_map_x, &mouse_map_y);
 
-	Selection& selection = editor.getSelection();
-
 	if(event.ControlDown() && event.AltDown()) {
 		Tile* tile = editor.getMap().getTile(mouse_map_x, mouse_map_y, floor);
 		if(tile && tile->size() > 0) {
@@ -674,6 +672,7 @@ void MapCanvas::OnMouseActionClick(wxMouseEvent& event)
 				g_gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
 		}
 	} else if(g_gui.IsSelectionMode()) {
+		Selection& selection = editor.getSelection();
 		if(isPasting()) {
 			// Set paste to false (no rendering etc.)
 			EndPasting();
@@ -936,7 +935,6 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 	int mouse_map_x, mouse_map_y;
 	ScreenToMap(event.GetX(), event.GetY(), &mouse_map_x, &mouse_map_y);
 
-	Selection& selection = editor.getSelection();
 	int move_x = last_click_map_x - mouse_map_x;
 	int move_y = last_click_map_y - mouse_map_y;
 	int move_z = last_click_map_z - floor;
@@ -945,6 +943,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 		if(dragging && (move_x != 0 || move_y != 0 || move_z != 0)) {
 			editor.moveSelection(Position(move_x, move_y, move_z));
 		} else {
+			Selection& selection = editor.getSelection();
 			if(boundbox_selection) {
 				if(mouse_map_x == last_click_map_x && mouse_map_y == last_click_map_y && event.ControlDown()) {
 					// Mouse hasn't moved, do control+shift thingy!
@@ -1061,11 +1060,11 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 					ASSERT(remainder == 0);
 
 					selection.start(); // Start a selection session
-					for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
-						(*iter)->Execute();
+					for(SelectionThread* thread : threads) {
+						thread->Execute();
 					}
-					for(std::vector<SelectionThread*>::iterator iter = threads.begin(); iter != threads.end(); ++iter) {
-						selection.join(*iter);
+					for(SelectionThread* thread : threads) {
+						selection.join(thread);
 					}
 					selection.finish(); // Finish the selection session
 					selection.updateSelectionCount();
@@ -1103,6 +1102,7 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 			}
 		}
 		editor.resetActionsTimer();
+		editor.updateActions();
 		dragging = false;
 		boundbox_selection = false;
 	} else if(g_gui.GetCurrentBrush()){ // Drawing mode

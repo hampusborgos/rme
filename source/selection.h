@@ -77,6 +77,7 @@ public:
 	void join(SelectionThread* thread);
 
 	size_t size() const noexcept { return tiles.size(); }
+	bool empty() const noexcept { return tiles.empty(); }
 	void updateSelectionCount();
 	TileSet::iterator begin() noexcept { return tiles.begin(); }
 	TileSet::iterator end() noexcept { return tiles.end(); }

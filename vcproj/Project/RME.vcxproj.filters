@@ -373,6 +373,9 @@
     <ClInclude Include="..\..\source\replace_items_window.h">
       <Filter>gui\dialogs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\actions_history_window.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -654,6 +657,9 @@
       <Filter>gui\dialogs</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\replace_items_window.cpp">
+      <Filter>gui\dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\actions_history_window.cpp">
       <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>

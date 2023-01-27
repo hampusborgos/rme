@@ -534,19 +534,19 @@ ActionQueue::~ActionQueue()
 	}
 }
 
-Action* ActionQueue::createAction(ActionIdentifier ident)
+Action* ActionQueue::createAction(ActionIdentifier ident) const
 {
-	return newd Action(editor, ident);
+	return new Action(editor, ident);
 }
 
-Action* ActionQueue::createAction(BatchAction* batch)
+Action* ActionQueue::createAction(BatchAction* batch) const
 {
-	return newd Action(editor, batch->getType());
+	return new Action(editor, batch->getType());
 }
 
-BatchAction* ActionQueue::createBatch(ActionIdentifier ident)
+BatchAction* ActionQueue::createBatch(ActionIdentifier identifier) const
 {
-	return newd BatchAction(editor, ident);
+	return new BatchAction(editor, identifier);
 }
 
 void ActionQueue::resetTimer()
@@ -622,12 +622,20 @@ void ActionQueue::addAction(Action* action, int stacking_delay)
 {
 	BatchAction* batch = createBatch(action->getType());
 	batch->addAndCommitAction(action);
-	if(batch->size() == 0) {
+	if(batch->empty()) {
 		delete batch;
 		return;
 	}
 
 	addBatch(batch, stacking_delay);
+}
+
+const BatchAction* ActionQueue::getAction(size_t index) const
+{
+	if(index >= 0 && index < actions.size()) {
+		return actions.at(index);
+	}
+	return nullptr;
 }
 
 void ActionQueue::generateLabels()
@@ -678,7 +686,7 @@ wxString ActionQueue::createLabel(ActionIdentifier type)
 {
 	switch (type) {
 		case ACTION_MOVE: return "Move";
-		case ACTION_SELECT: return "Selection";
+		case ACTION_SELECT: return "Select";
 		case ACTION_DELETE_TILES: return "Delete";
 		case ACTION_CUT_TILES: return "Cut";
 		case ACTION_PASTE_TILES: return "Paste";
@@ -690,7 +698,7 @@ wxString ActionQueue::createLabel(ActionIdentifier type)
 		case ACTION_ROTATE_ITEM: return "Rotate Item";
 		case ACTION_REPLACE_ITEMS: return "Replace";
 		case ACTION_CHANGE_PROPERTIES: return "Change Properties";
-		default: return wxEmptyString;
+		default: return "Deselect";
 	}
 }
 

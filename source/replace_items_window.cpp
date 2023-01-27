@@ -346,21 +346,24 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 		foreach_ItemOnMap(editor->getMap(), finder, selectionOnly);
 
 		uint32_t total = 0;
-		std::vector<std::pair<Tile*, Item*>>& result = finder.result;
+		const auto& result = finder.result;
 
 		if(!result.empty()) {
-			Action* action = editor->getHistoryActions()->createAction(ACTION_REPLACE_ITEMS);
-			for(std::vector<std::pair<Tile*, Item*>>::const_iterator rit = result.begin(); rit != result.end(); ++rit) {
-				Tile* new_tile = rit->first->deepCopy(editor->getMap());
-				int index = rit->first->getIndexOf(rit->second);
+			BatchAction* batch = editor->createBatch(ACTION_REPLACE_ITEMS);
+			Action* action = editor->createAction(batch);
+			for(const auto& pair : result) {
+				Tile* new_tile = pair.first->deepCopy(editor->getMap());
+				int index = pair.first->getIndexOf(pair.second);
 				ASSERT(index != wxNOT_FOUND);
 				Item* item = new_tile->getItemAt(index);
-				ASSERT(item && item->getID() == rit->second->getID());
+				ASSERT(item && item->getID() == pair.second->getID());
 				transformItem(item, info.withId, new_tile);
 				action->addChange(new Change(new_tile));
 				total++;
 			}
-			editor->getHistoryActions()->addAction(action);
+			batch->addAndCommitAction(action);
+			editor->addBatch(batch);
+			editor->updateActions();
 		}
 
 		done++;

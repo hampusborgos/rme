@@ -104,7 +104,7 @@ public: // Functions
 	bool hasSelection() const noexcept { return selection.size() != 0; }
 	// Some simple actions that work on the map (these will work through the undo queue)
 	// Moves the selected area by the offset
-	void moveSelection(Position offset);
+	void moveSelection(const Position& offset);
 	// Deletes all selected items
 	void destroySelection();
 	// Borderizes the selected region
