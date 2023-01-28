@@ -119,6 +119,11 @@ bool DrawingOptions::isTileIndicators() const noexcept
 	return show_pickupables || show_moveables || show_houses || show_spawns;
 }
 
+bool DrawingOptions::isTooltips() const noexcept
+{
+	return show_tooltips && !isOnlyColors();
+}
+
 MapDrawer::MapDrawer(MapCanvas* canvas) : canvas(canvas), editor(canvas->editor)
 {
 	////
@@ -213,7 +218,7 @@ void MapDrawer::Draw()
 		DrawGrid();
 	if(options.show_ingame_box)
 		DrawIngameBox();
-	if(options.show_tooltips)
+	if(options.isTooltips())
 		DrawTooltips();
 }
 
@@ -242,8 +247,8 @@ inline int getFloorAdjustment(int floor)
 
 void MapDrawer::DrawShade(int map_z)
 {
-	bool only_colors = options.isOnlyColors();
 	if(map_z == end_z && start_z != end_z) {
+		bool only_colors = options.isOnlyColors();
 		if(!only_colors)
 			glDisable(GL_TEXTURE_2D);
 
@@ -341,9 +346,6 @@ void MapDrawer::DrawMap()
 			DrawPositionIndicator(map_z);
 		}
 
-		if(only_colors)
-			glEnable(GL_TEXTURE_2D);
-
 		// Draws the doodad preview or the paste preview (or import preview)
 		DrawSecondaryMap(map_z);
 
@@ -376,6 +378,8 @@ void MapDrawer::DrawSecondaryMap(int map_z)
 			normal_pos = Position(0x8000, 0x8000, 0x8);
 		}
 	}
+
+	glEnable(GL_TEXTURE_2D);
 
 	for(int map_x = start_x; map_x <= end_x; map_x++) {
 		for(int map_y = start_y; map_y <= end_y; map_y++) {
@@ -441,6 +445,8 @@ void MapDrawer::DrawSecondaryMap(int map_z)
 			}
 		}
 	}
+
+	glDisable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawIngameBox()
@@ -1421,8 +1427,9 @@ void MapDrawer::DrawTile(TileLocation* location)
 		return;
 
 	const Position& position = location->getPosition();
+	bool show_tooltips = options.isTooltips();
 
-	if(options.show_tooltips && location->getWaypointCount() > 0) {
+	if(show_tooltips && location->getWaypointCount() > 0) {
 		Waypoint* waypoint = canvas->editor.getMap().waypoints.getWaypoint(position);
 		if(waypoint)
 			WriteTooltip(waypoint, tooltip);
@@ -1489,13 +1496,14 @@ void MapDrawer::DrawTile(TileLocation* location)
 		}
 
 		if(only_colors) {
+			glDisable(GL_TEXTURE_2D);
 			if(options.show_as_minimap) {
 				wxColor color = colorFromEightBit(tile->getMiniMapColor());
 				glBlitSquare(draw_x, draw_y, color);
-			}
-			else if(r != 255 || g != 255 || b != 255) {
+			} else if(r != 255 || g != 255 || b != 255) {
 				glBlitSquare(draw_x, draw_y, r, g, b, 128);
 			}
+			glEnable(GL_TEXTURE_2D);
 		} else {
 			if(options.show_preview && zoom <= 2.0)
 				tile->ground->animate();
@@ -1503,7 +1511,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 			BlitItem(draw_x, draw_y, tile, tile->ground, false, r, g, b);
 		}
 
-		if(options.show_tooltips && position.z == floor)
+		if(show_tooltips && position.z == floor)
 			WriteTooltip(tile->ground, tooltip);
 	}
 
@@ -1511,7 +1519,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 
 	if(!hidden && !tile->items.empty()) {
 		for(Item* item : tile->items) {
-			if(options.show_tooltips && position.z == floor)
+			if(show_tooltips && position.z == floor)
 				WriteTooltip(item, tooltip);
 
 			if(options.show_preview && zoom <= 2.0)
@@ -1529,7 +1537,7 @@ void MapDrawer::DrawTile(TileLocation* location)
 		BlitCreature(draw_x, draw_y, tile->creature);
 	}
 
-	if(options.show_tooltips) {
+	if(show_tooltips) {
 		if(location->getWaypointCount() > 0)
 			MakeTooltip(draw_x, draw_y, tooltip.str(), 0, 255, 0);
 		else
@@ -1692,8 +1700,8 @@ void MapDrawer::DrawPositionIndicator(int z)
 	int offset = (TILE_SIZE - size) / 2;
 
 	glDisable(GL_TEXTURE_2D);
-		drawRect(x + offset + 2, y + offset + 2, size - 4, size - 4, *wxWHITE, 2);
-		drawRect(x + offset + 1, y + offset + 1, size - 2, size - 2, *wxBLACK, 2);
+	drawRect(x + offset + 2, y + offset + 2, size - 4, size - 4, *wxWHITE, 2);
+	drawRect(x + offset + 1, y + offset + 1, size - 2, size - 2, *wxBLACK, 2);
 	glEnable(GL_TEXTURE_2D);
 }
 
