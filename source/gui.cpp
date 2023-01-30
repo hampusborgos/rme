@@ -1407,7 +1407,7 @@ void GUI::ChangeFloor(int new_floor)
 	MapTab* tab = GetCurrentMapTab();
 	if(tab) {
 		int old_floor = GetCurrentFloor();
-		if(new_floor < 0 || new_floor > MAP_MAX_LAYER)
+		if(new_floor < rme::MapMinLayer || new_floor > rme::MapMaxLayer)
 			return;
 
 		if(old_floor != new_floor)
@@ -1808,7 +1808,7 @@ void GUI::FillDoodadPreviewBuffer()
 			// There is a huge deviation here with the other formula.
 			area = 5;
 		} else {
-			area = int(0.5 + GetBrushSize() * GetBrushSize() * PI);
+			area = int(0.5 + GetBrushSize() * GetBrushSize() * rme::PI);
 		}
 	}
 	const int object_range = (use_custom_thickness ? int(area*custom_thickness_mod) : brush->getThickness() * area / std::max(1, brush->getThicknessCeiling()));

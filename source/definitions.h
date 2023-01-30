@@ -105,36 +105,6 @@
 #   endif
 #endif
 
-// Mathematical constants
-#define PI 3.14159265358979323846264338327950288419716939937510
-#define DEG2RAD (PI/180.0)
-#define RAD2DEG (180.0/DEG)
-
-// The height of the map (there should be more checks for this...)
-#define MAP_LAYERS 16
-
-#define MAP_MAX_WIDTH 65000
-#define MAP_MAX_HEIGHT 65000
-#define MAP_MAX_LAYER 15
-
-#define MIN_UNIQUE_ID 1000
-#define MAX_UNIQUE_ID 65535
-#define MIN_ACTION_ID 100
-#define MAX_ACTION_ID 65535
-
-// The size of the tile in pixels
-#define TILE_SIZE 32
-
-// The default size of sprites
-#define SPRITE_PIXELS 32
-#define SPRITE_PIXELS_SIZE SPRITE_PIXELS * SPRITE_PIXELS
-
-// The sea layer
-#define GROUND_LAYER 7
-
-#define CLIENT_MAP_WIDTH 18
-#define CLIENT_MAP_HEIGHT 14
-
 #define MAP_LOAD_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz"
 #define MAP_SAVE_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz"
 

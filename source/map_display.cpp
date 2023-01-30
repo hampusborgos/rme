@@ -107,7 +107,7 @@ bool MapCanvas::processed[] = {0};
 MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 	wxGLCanvas(parent, wxID_ANY, nullptr, wxDefaultPosition, wxDefaultSize, wxWANTS_CHARS),
 	editor(editor),
-	floor(GROUND_LAYER),
+	floor(rme::MapGroundLayer),
 	zoom(1.0),
 	cursor_x(-1),
 	cursor_y(-1),
@@ -340,23 +340,23 @@ void MapCanvas::ScreenToMap(int screen_x, int screen_y, int* map_x, int* map_y)
 	screen_y *= GetContentScaleFactor();
 
 	if(screen_x < 0) {
-		*map_x = (start_x + screen_x) / TILE_SIZE;
+		*map_x = (start_x + screen_x) / rme::TileSize;
 	} else {
-		*map_x = int(start_x + (screen_x * zoom)) / TILE_SIZE;
+		*map_x = int(start_x + (screen_x * zoom)) / rme::TileSize;
 	}
 
 	if(screen_y < 0) {
-		*map_y = (start_y + screen_y) / TILE_SIZE;
+		*map_y = (start_y + screen_y) / rme::TileSize;
 	} else {
-		*map_y = int(start_y + (screen_y * zoom)) / TILE_SIZE;
+		*map_y = int(start_y + (screen_y * zoom)) / rme::TileSize;
 	}
 
-	if(floor <= GROUND_LAYER) {
-		*map_x += GROUND_LAYER - floor;
-		*map_y += GROUND_LAYER - floor;
+	if(floor <= rme::MapGroundLayer) {
+		*map_x += rme::MapGroundLayer - floor;
+		*map_y += rme::MapGroundLayer - floor;
 	}/* else {
-		*map_x += MAP_MAX_LAYER - floor;
-		*map_y += MAP_MAX_LAYER - floor;
+		*map_x += rme::MapMaxLayer - floor;
+		*map_y += rme::MapMaxLayer - floor;
 	}*/
 }
 
@@ -989,17 +989,17 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 						case SELECT_ALL_FLOORS: {
 							start_x = last_click_map_x;
 							start_y = last_click_map_y;
-							start_z = MAP_MAX_LAYER;
+							start_z = rme::MapMaxLayer;
 							end_x = mouse_map_x;
 							end_y = mouse_map_y;
 							end_z = floor;
 
 							if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
-								start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-								start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								start_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+								start_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 
-								end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-								end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								end_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+								end_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 							}
 
 							numtiles = (start_z - end_z) * (end_x - start_x) * (end_y - start_y);
@@ -1009,20 +1009,20 @@ void MapCanvas::OnMouseActionRelease(wxMouseEvent& event)
 							start_x = last_click_map_x;
 							start_y = last_click_map_y;
 							if(floor < 8) {
-								start_z = GROUND_LAYER;
+								start_z = rme::MapGroundLayer;
 							} else {
-								start_z = std::min(MAP_MAX_LAYER, floor + 2);
+								start_z = std::min(rme::MapMaxLayer, floor + 2);
 							}
 							end_x = mouse_map_x;
 							end_y = mouse_map_y;
 							end_z = floor;
 
 							if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
-								start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-								start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								start_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+								start_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 
-								end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-								end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+								end_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+								end_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 							}
 							break;
 						}
@@ -1384,17 +1384,17 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 
 					start_x = last_click_map_x;
 					start_y = last_click_map_y;
-					start_z = MAP_MAX_LAYER;
+					start_z = rme::MapMaxLayer;
 					end_x = mouse_map_x;
 					end_y = mouse_map_y;
 					end_z = floor;
 
 					if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
-						start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-						start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						start_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+						start_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 
-						end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-						end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						end_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+						end_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 					}
 
 					for(int z = start_z; z >= end_z; z--) {
@@ -1405,7 +1405,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 								selection.add(tile);
 							}
 						}
-						if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
+						if(z <= rme::MapGroundLayer && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 							start_x++; start_y++;
 							end_x++; end_y++;
 						}
@@ -1419,20 +1419,20 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 					start_x = last_click_map_x;
 					start_y = last_click_map_y;
 					if(floor < 8) {
-						start_z = GROUND_LAYER;
+						start_z = rme::MapGroundLayer;
 					} else {
-						start_z = std::min(MAP_MAX_LAYER, floor + 2);
+						start_z = std::min(rme::MapMaxLayer, floor + 2);
 					}
 					end_x = mouse_map_x;
 					end_y = mouse_map_y;
 					end_z = floor;
 
 					if(g_settings.getInteger(Config::COMPENSATED_SELECT)) {
-						start_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-						start_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						start_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+						start_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 
-						end_x -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
-						end_y -= (floor < GROUND_LAYER ? GROUND_LAYER - floor : 0);
+						end_x -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
+						end_y -= (floor < rme::MapGroundLayer ? rme::MapGroundLayer - floor : 0);
 					}
 
 					for(int z = start_z; z >= end_z; z--) {
@@ -1443,7 +1443,7 @@ void MapCanvas::OnMousePropertiesRelease(wxMouseEvent& event)
 								selection.add(tile);
 							}
 						}
-						if(z <= GROUND_LAYER && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
+						if(z <= rme::MapGroundLayer && g_settings.getInteger(Config::COMPENSATED_SELECT)) {
 							start_x++; start_y++;
 							end_x++; end_y++;
 						}
@@ -1633,7 +1633,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			else if(zoom == 1.0)
 				tiles = 1;
 
-			window->Scroll(start_x, int(start_y - TILE_SIZE * tiles * zoom));
+			window->Scroll(start_x, int(start_y - rme::TileSize * tiles * zoom));
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1649,7 +1649,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			else if(zoom == 1.0)
 				tiles = 1;
 
-			window->Scroll(start_x, int(start_y + TILE_SIZE * tiles * zoom));
+			window->Scroll(start_x, int(start_y + rme::TileSize * tiles * zoom));
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1665,7 +1665,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			else if(zoom == 1.0)
 				tiles = 1;
 
-			window->Scroll(int(start_x - TILE_SIZE * tiles * zoom), start_y);
+			window->Scroll(int(start_x - rme::TileSize * tiles * zoom), start_y);
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1681,7 +1681,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 			else if(zoom == 1.0)
 				tiles = 1;
 
-			window->Scroll(int(start_x + TILE_SIZE * tiles * zoom), start_y);
+			window->Scroll(int(start_x + rme::TileSize * tiles * zoom), start_y);
 			UpdatePositionStatus();
 			Refresh();
 			break;
@@ -1744,13 +1744,13 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 				if(g_gui.IsSelectionMode()) {
 					int view_start_x, view_start_y;
 					window->GetViewStart(&view_start_x, &view_start_y);
-					int view_start_map_x = view_start_x / TILE_SIZE, view_start_map_y = view_start_y / TILE_SIZE;
+					int view_start_map_x = view_start_x / rme::TileSize, view_start_map_y = view_start_y / rme::TileSize;
 
 					int view_screensize_x, view_screensize_y;
 					window->GetViewSize(&view_screensize_x, &view_screensize_y);
 
-					int map_x = int(view_start_map_x + (view_screensize_x * zoom) / TILE_SIZE / 2);
-					int map_y = int(view_start_map_y + (view_screensize_y * zoom) / TILE_SIZE / 2);
+					int map_x = int(view_start_map_x + (view_screensize_x * zoom) / rme::TileSize / 2);
+					int map_y = int(view_start_map_y + (view_screensize_y * zoom) / rme::TileSize / 2);
 
 					hk = Hotkey(Position(map_x, map_y, floor));
 				} else if(g_gui.GetCurrentBrush()) {
@@ -1770,7 +1770,7 @@ void MapCanvas::OnKeyDown(wxKeyEvent& event)
 					int map_y = hk.GetPosition().y;
 					int map_z = hk.GetPosition().z;
 
-					window->Scroll(TILE_SIZE * map_x, TILE_SIZE * map_y, true);
+					window->Scroll(rme::TileSize * map_x, rme::TileSize * map_y, true);
 					floor = map_z;
 
 					g_gui.SetStatusText("Used hotkey " + i2ws(index));
@@ -2179,7 +2179,7 @@ void MapCanvas::OnProperties(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::ChangeFloor(int new_floor)
 {
-	ASSERT(new_floor >= 0 || new_floor <= MAP_MAX_LAYER);
+	ASSERT(new_floor >= 0 || new_floor <= rme::MapMaxLayer);
 	int old_floor = floor;
 	floor = new_floor;
 	if(old_floor != new_floor) {
@@ -2228,7 +2228,7 @@ void MapCanvas::Reset()
 	cursor_y = 0;
 
 	zoom = 1.0;
-	floor = GROUND_LAYER;
+	floor = rme::MapGroundLayer;
 
 	dragging = false;
 	boundbox_selection = false;

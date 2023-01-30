@@ -21,7 +21,7 @@
 #include "position.h"
 
 PositionCtrl::PositionCtrl(wxWindow* parent, const wxString& label, int x, int y, int z,
-	int maxx /*= MAP_MAX_WIDTH*/, int maxy /*= MAP_MAX_HEIGHT*/, int maxz /*= MAP_MAX_LAYER*/) :
+	int maxx /*= rme::MapMaxWidth*/, int maxy /*= rme::MapMaxHeight*/, int maxz /*= rme::MapMaxLayer*/) :
 wxStaticBoxSizer(wxHORIZONTAL, parent, label)
 {
 	x_field = newd NumberTextCtrl(parent, wxID_ANY, x, 0, maxx, wxTE_PROCESS_ENTER, "X", wxDefaultPosition, wxSize(60, 20));

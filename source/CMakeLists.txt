@@ -14,6 +14,7 @@ ${CMAKE_CURRENT_LIST_DIR}/common.h
 ${CMAKE_CURRENT_LIST_DIR}/common_windows.h
 ${CMAKE_CURRENT_LIST_DIR}/complexitem.h
 ${CMAKE_CURRENT_LIST_DIR}/con_vector.h
+${CMAKE_CURRENT_LIST_DIR}/const.h
 ${CMAKE_CURRENT_LIST_DIR}/container_properties_window.h
 ${CMAKE_CURRENT_LIST_DIR}/copybuffer.h
 ${CMAKE_CURRENT_LIST_DIR}/creature.h

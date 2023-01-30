@@ -220,6 +220,7 @@
     <ClCompile Include="..\..\source\welcome_dialog.cpp" />
     <ClInclude Include="..\..\source\actions_history_window.h" />
     <ClInclude Include="..\..\source\artprovider.h" />
+    <ClInclude Include="..\..\source\const.h" />
     <ClInclude Include="..\..\source\main_toolbar.h" />
     <ClInclude Include="..\..\source\otml.h" />
     <ClInclude Include="..\..\source\browse_tile_window.h" />

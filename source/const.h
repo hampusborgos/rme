@@ -15,36 +15,41 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef _RME_POSITION_CTRL_H_
-#define _RME_POSITION_CTRL_H_
+#ifndef RME_CONST_H_
+#define RME_CONST_H_
 
-#include "numbertextctrl.h"
+namespace rme {
 
-class PositionCtrl : public wxStaticBoxSizer
-{
-public:
-	PositionCtrl(wxWindow* parent, const wxString& label, int x, int y, int z,
-		int maxx = rme::MapMaxWidth, int maxy = rme::MapMaxHeight, int maxz = rme::MapMaxLayer);
-	~PositionCtrl();
+constexpr double PI = 3.14159265;
 
-	long GetX() const { return x_field->GetIntValue(); }
-	long GetY() const { return y_field->GetIntValue(); }
-	long GetZ() const { return z_field->GetIntValue(); }
-	Position GetPosition() const;
+// The height of the map (there should be more checks for this...)
+constexpr int MapLayers = 16;
 
-	void SetX(long value) { x_field->SetIntValue(value); }
-	void SetY(long value) { y_field->SetIntValue(value); }
-	void SetZ(long value) { z_field->SetIntValue(value); }
-	void SetPosition(Position pos);
+constexpr int MapMinWidth = 256;
+constexpr int MapMaxWidth = 65000;
+constexpr int MapMinHeight = 256;
+constexpr int MapMaxHeight = 65000;
+constexpr int MapMinLayer = 0;
+constexpr int MapMaxLayer = 15;
 
-	bool Enable(bool enable = true);
+// The sea layer
+constexpr int MapGroundLayer = 7;
 
-	void OnClipboardText(wxClipboardTextEvent&);
+constexpr int ClientMapWidth = 18;
+constexpr int ClientMapHeight = 14;
 
-protected:
-	NumberTextCtrl* x_field;
-	NumberTextCtrl* y_field;
-	NumberTextCtrl* z_field;
-};
+// The size of the tile in pixels
+constexpr int TileSize = 32;
 
-#endif
+// The default size of sprites
+constexpr int SpritePixels = 32;
+constexpr int SpritePixelsSize = SpritePixels * SpritePixels;
+
+constexpr int MinUniqueId = 1000;
+constexpr int MaxUniqueId = 65535;
+constexpr int MinActionId = 100;
+constexpr int MaxActionId = 65535;
+
+} // namespace rme
+
+#endif // RME_CONST_H_

@@ -326,7 +326,7 @@ wxThread::ExitCode SelectionThread::Entry()
 				selection.add(tile);
 			}
 		}
-		if(compesated && z <= GROUND_LAYER) {
+		if(compesated && z <= rme::MapGroundLayer) {
 			++start.x; ++start.y;
 			++end.x; ++end.y;
 		}

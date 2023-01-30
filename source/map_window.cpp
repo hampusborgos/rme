@@ -125,7 +125,7 @@ void MapWindow::GetViewSize(int* x, int* y)
 void MapWindow::FitToMap()
 {
 	const Map& map = editor.getMap();
-	SetSize(map.getWidth() * TILE_SIZE, map.getHeight() * TILE_SIZE, true);
+	SetSize(map.getWidth() * rme::TileSize, map.getHeight() * rme::TileSize, true);
 }
 
 Position MapWindow::GetScreenCenterPosition()
@@ -140,12 +140,12 @@ void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndic
 	if(!position.isValid())
 		return;
 
-	int x = position.x * TILE_SIZE;
-	int y = position.y * TILE_SIZE;
+	int x = position.x * rme::TileSize;
+	int y = position.y * rme::TileSize;
 	if(position.z < 8) {
 		// Compensate for floor offset above ground
-		x -= (GROUND_LAYER - position.z) * TILE_SIZE;
-		y -= (GROUND_LAYER - position.z) * TILE_SIZE;
+		x -= (rme::MapGroundLayer - position.z) * rme::TileSize;
+		y -= (rme::MapGroundLayer - position.z) * rme::TileSize;
 	}
 
 	const Position& center = GetScreenCenterPosition();

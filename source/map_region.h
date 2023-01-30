@@ -18,6 +18,7 @@
 #ifndef RME_MAP_REGION_H
 #define RME_MAP_REGION_H
 
+#include "const.h"
 #include "position.h"
 
 class Tile;
@@ -73,7 +74,7 @@ class Floor
 {
 public:
 	Floor(int x, int y, int z);
-	TileLocation locs[MAP_LAYERS];
+	TileLocation locs[rme::MapLayers];
 };
 
 // This is not a QuadTree, but a HexTree (16 child nodes to every node), so the name is abit misleading
@@ -118,12 +119,13 @@ protected:
 	uint32_t visible;
 
 	bool isLeaf;
+
 	union {
-		QTreeNode* child[MAP_LAYERS];
-		Floor* array[MAP_LAYERS];
-#if 16 != MAP_LAYERS
-#    error "You need to rewrite the QuadTree in order to handle more or less than 16 floors"
-#endif
+		QTreeNode* child[rme::MapLayers];
+		Floor* array[rme::MapLayers];
+//#if 16 != rme::MapLayers
+//#    error "You need to rewrite the QuadTree in order to handle more or less than 16 floors"
+//#endif
 	};
 
 	friend class BaseMap;

@@ -440,7 +440,7 @@ bool Editor::importMiniMap(FileName filename, int import, int import_x_offset, i
 	return false;
 }
 
-bool Editor::exportMiniMap(FileName filename, int floor /*= GROUND_LAYER*/, bool displaydialog)
+bool Editor::exportMiniMap(FileName filename, int floor /*= rme::MapGroundLayer*/, bool displaydialog)
 {
 	return map.exportMinimap(filename, floor, displaydialog);
 }
@@ -450,7 +450,7 @@ bool Editor::exportSelectionAsMiniMap(FileName directory, wxString fileName)
 	if(!directory.Exists() || !directory.IsDirWritable())
 		return false;
 
-	int min_x = MAP_MAX_WIDTH + 1, min_y = MAP_MAX_HEIGHT + 1, min_z = MAP_MAX_LAYER + 1;
+	int min_x = rme::MapMaxWidth + 1, min_y = rme::MapMaxHeight + 1, min_z = rme::MapMaxLayer + 1;
 	int max_x = 0, max_y = 0, max_z = 0;
 
 	const TileSet& tiles = selection.getTiles();
@@ -1149,7 +1149,7 @@ void Editor::moveSelection(const Position& offset)
 	for(Tile* tile : storage) {
 		const Position& old_pos = tile->getPosition();
 		Position new_pos = old_pos - offset;
-		if(new_pos.z < 0 && new_pos.z > MAP_MAX_LAYER) {
+		if(new_pos.z < rme::MapMinLayer && new_pos.z > rme::MapMaxLayer) {
 			delete tile;
 			continue;
 		}

@@ -487,7 +487,7 @@ void MainMenuBar::UpdateFloorMenu()
 		return;
 	}
 
-	for(int i = 0; i < MAP_LAYERS; ++i)
+	for(int i = 0; i < rme::MapLayers; ++i)
 		CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + i), false);
 
 	CheckItem(static_cast<ActionID>(MenuBar::FLOOR_0 + g_gui.GetCurrentFloor()), true);
@@ -1353,8 +1353,8 @@ namespace OnMapRemoveUnreachable
 				ez = 9;
 			} else {
 				// underground
-				sz = std::max(pos.z - 2, GROUND_LAYER);
-				ez = std::min(pos.z + 2, MAP_MAX_LAYER);
+				sz = std::max(pos.z - 2, rme::MapGroundLayer);
+				ez = std::min(pos.z + 2, rme::MapMaxLayer);
 			}
 
 			for(int z = sz; z <= ez; ++z) {

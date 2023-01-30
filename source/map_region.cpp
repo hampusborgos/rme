@@ -66,7 +66,7 @@ Floor::Floor(int sx, int sy, int z)
 	sx = sx & ~3;
 	sy = sy & ~3;
 
-	for(int i = 0; i < MAP_LAYERS; ++i) {
+	for(int i = 0; i < rme::MapLayers; ++i) {
 		locs[i].position.x = sx + (i >> 2);
 		locs[i].position.y = sy + (i & 3);
 		locs[i].position.z = z;
@@ -81,17 +81,17 @@ QTreeNode::QTreeNode(BaseMap& map) :
 	isLeaf(false)
 {
 	// Doesn't matter if we're leaf or node
-	for(int i = 0; i < MAP_LAYERS; ++i)
+	for(int i = 0; i < rme::MapLayers; ++i)
 		child[i] = nullptr;
 }
 
 QTreeNode::~QTreeNode()
 {
 	if(isLeaf) {
-		for(int i = 0; i < MAP_LAYERS; ++i)
+		for(int i = 0; i < rme::MapLayers; ++i)
 			delete array[i];
 	} else {
-		for(int i = 0; i < MAP_LAYERS; ++i)
+		for(int i = 0; i < rme::MapLayers; ++i)
 			delete child[i];
 	}
 }
@@ -176,7 +176,7 @@ void QTreeNode::clearVisible(uint32_t u)
 	if(isLeaf)
 		visible &= u;
 	else
-		for(int i = 0; i < MAP_LAYERS; ++i)
+		for(int i = 0; i < rme::MapLayers; ++i)
 			if(child[i])
 				child[i]->clearVisible(u);
 }
@@ -184,7 +184,7 @@ void QTreeNode::clearVisible(uint32_t u)
 bool QTreeNode::isVisible(uint32_t client, bool underground)
 {
 	if(underground) {
-		return testFlags(visible >> MAP_LAYERS, static_cast<uint64_t>(1) << client);
+		return testFlags(visible >> rme::MapLayers, static_cast<uint64_t>(1) << client);
 	} else {
 		return testFlags(visible, static_cast<uint64_t>(1) << client);
 	}
@@ -216,9 +216,9 @@ void QTreeNode::setRequested(bool underground, bool r)
 void QTreeNode::setVisible(uint32_t client, bool underground, bool value)
 {
 	if(value)
-		visible |= (1 << client << (underground ? MAP_LAYERS : 0));
+		visible |= (1 << client << (underground ? rme::MapLayers : 0));
 	else
-		visible &= ~(1 << client << (underground ? MAP_LAYERS : 0));
+		visible &= ~(1 << client << (underground ? rme::MapLayers : 0));
 }
 
 TileLocation* QTreeNode::getTile(int x, int y, int z)

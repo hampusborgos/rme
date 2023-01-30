@@ -158,12 +158,12 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 			int view_start_x, view_start_y;
 			int view_end_x, view_end_y;
 
-			int tile_size = int(TILE_SIZE / canvas->GetZoom()); // after zoom
+			int tile_size = int(rme::TileSize / canvas->GetZoom()); // after zoom
 
-			int floor_offset = (floor > GROUND_LAYER ? 0 : (GROUND_LAYER - floor));
+			int floor_offset = (floor > rme::MapGroundLayer ? 0 : (rme::MapGroundLayer - floor));
 
-			view_start_x = view_scroll_x / TILE_SIZE + floor_offset;
-			view_start_y = view_scroll_y / TILE_SIZE + floor_offset;
+			view_start_x = view_scroll_x / rme::TileSize + floor_offset;
+			view_start_y = view_scroll_y / rme::TileSize + floor_offset;
 
 			view_end_x = view_start_x + screensize_x / tile_size + 1;
 			view_end_y = view_start_y + screensize_y / tile_size + 1;

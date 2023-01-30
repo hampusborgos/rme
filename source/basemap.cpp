@@ -52,7 +52,7 @@ void BaseMap::clearVisible(uint32_t mask)
 
 Tile* BaseMap::createTile(int x, int y, int z)
 {
-	ASSERT(z < MAP_LAYERS);
+	ASSERT(z < rme::MapLayers);
 	QTreeNode* leaf = root.getLeafForce(x, y);
 	TileLocation* loc = leaf->createTile(x, y, z);
 	if(loc->get())
@@ -64,7 +64,7 @@ Tile* BaseMap::createTile(int x, int y, int z)
 
 TileLocation* BaseMap::getTileL(int x, int y, int z)
 {
-	ASSERT(z < MAP_LAYERS);
+	ASSERT(z < rme::MapLayers);
 	QTreeNode* leaf = root.getLeaf(x, y);
 	if(leaf) {
 		Floor* floor = leaf->getFloor(z);
@@ -93,7 +93,7 @@ const TileLocation* BaseMap::getTileL(const Position& pos) const
 
 TileLocation* BaseMap::createTileL(int x, int y, int z)
 {
-	ASSERT(z < MAP_LAYERS);
+	ASSERT(z < rme::MapLayers);
 
 	QTreeNode* leaf = root.getLeafForce(x, y);
 	Floor* floor = leaf->createFloor(x, y, z);
@@ -140,7 +140,7 @@ void BaseMap::setTile(Tile* new_tile, bool remove)
 
 Tile* BaseMap::swapTile(int x, int y, int z, Tile* new_tile)
 {
-	ASSERT(z < MAP_LAYERS);
+	ASSERT(z < rme::MapLayers);
 	ASSERT(!new_tile || new_tile->getX() == x);
 	ASSERT(!new_tile || new_tile->getY() == y);
 	ASSERT(!new_tile || new_tile->getZ() == z);
@@ -204,7 +204,7 @@ MapIterator BaseMap::begin()
 				if(child->isLeaf) {
 					QTreeNode* leaf = child;
 					//printf("\t%p is leaf\n", child);
-					for(it.local_z = 0; it.local_z < MAP_LAYERS; ++it.local_z) {
+					for(it.local_z = 0; it.local_z < rme::MapLayers; ++it.local_z) {
 						if(Floor* floor = leaf->array[it.local_z]) {
 							for(it.local_i = 0; it.local_i < 16; ++it.local_i) {
 								//printf("\tit(%d;%d;%d)\n", it.local_x, it.local_y, it.local_z);
@@ -267,17 +267,17 @@ MapIterator& MapIterator::operator++()
 		//printf("Contemplating %p (stack size %d)\n", node, nodestack.size());
 
 		bool unwind = false;
-		for(; index < MAP_LAYERS; ++index) {
+		for(; index < rme::MapLayers; ++index) {
 			//printf("\tChecking index %d of %p\n", index, node);
 			if(QTreeNode* child = node->child[index]) {
 				if(child->isLeaf) {
 					QTreeNode* leaf = child;
 					//printf("\t%p is leaf\n", child);
-					for(; local_z < MAP_LAYERS; ++local_z) {
+					for(; local_z < rme::MapLayers; ++local_z) {
 						//printf("\t\tIterating over Z:%d of %p", local_z, child);
 						if(Floor* floor = leaf->array[local_z]) {
 							//printf("\n");
-							for(; local_i < MAP_LAYERS; ++local_i) {
+							for(; local_i < rme::MapLayers; ++local_i) {
 								//printf("\t\tIterating over Y:%d of %p\n", local_y, child);
 								TileLocation& t = floor->locs[local_i];
 								if(t.get()) {
@@ -294,14 +294,14 @@ MapIterator& MapIterator::operator++()
 								}
 							}
 
-							if(local_i > MAP_MAX_LAYER) {
+							if(local_i > rme::MapMaxLayer) {
 								//printf("\t\tReset local_x\n");
 								local_i = 0;
 							}
 						} else {
 							//printf(":dead floor\n");
 						}
-					} if(local_z == MAP_LAYERS) {
+					} if(local_z == rme::MapLayers) {
 							//printf("\t\tReset local_z\n");
 							local_z = 0;
 					}

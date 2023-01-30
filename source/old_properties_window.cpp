@@ -479,9 +479,9 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			aid_changed = new_aid != edit_item->getActionID();
 
 			if(uid_changed) {
-				if(new_uid != 0 && (new_uid < MIN_UNIQUE_ID || new_uid > MAX_UNIQUE_ID)) {
+				if(new_uid != 0 && (new_uid < rme::MinUniqueId || new_uid > rme::MaxUniqueId)) {
 					wxString message = "Unique ID must be between %d and %d.";
-					g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_UNIQUE_ID, MAX_UNIQUE_ID), wxOK);
+					g_gui.PopupDialog(this, "Error", wxString::Format(message, rme::MinUniqueId, rme::MaxUniqueId), wxOK);
 					return;
 				}
 				if(g_gui.GetCurrentMap().hasUniqueId(new_uid)) {
@@ -491,9 +491,9 @@ void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			if(aid_changed) {
-				if(new_aid != 0 && (new_aid < MIN_ACTION_ID || new_aid > MAX_ACTION_ID)) {
+				if(new_aid != 0 && (new_aid < rme::MinActionId || new_aid > rme::MaxActionId)) {
 					wxString message = "Action ID must be between %d and %d.";
-					g_gui.PopupDialog(this, "Error", wxString::Format(message, MIN_ACTION_ID, MAX_ACTION_ID), wxOK);
+					g_gui.PopupDialog(this, "Error", wxString::Format(message, rme::MinActionId, rme::MaxActionId), wxOK);
 					return;
 				}
 			}

@@ -37,7 +37,7 @@ public:
 	// Operations on the entire map
 	void cleanInvalidTiles(bool showdialog = false);
 	// Save a bmp image of the minimap
-	bool exportMinimap(FileName filename, int floor = GROUND_LAYER, bool showdialog = false);
+	bool exportMinimap(FileName filename, int floor = rme::MapGroundLayer, bool showdialog = false);
 	//
 	bool convert(MapVersion to, bool showdialog = false);
 	bool convert(const ConversionMap& cm, bool showdialog = false);

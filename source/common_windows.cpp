@@ -106,12 +106,12 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 		subsizer->Add(
 			width_spin =
 				newd wxSpinCtrl(this, wxID_ANY, wxstr(i2s(map.getWidth())),
-				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, MAP_MAX_WIDTH), wxSizerFlags(1).Expand()
+				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, rme::MapMinWidth, rme::MapMaxWidth), wxSizerFlags(1).Expand()
 			);
 		subsizer->Add(
 			height_spin =
 				newd wxSpinCtrl(this, wxID_ANY, wxstr(i2s(map.getHeight())),
-				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 256, MAP_MAX_HEIGHT), wxSizerFlags(1).Expand()
+				wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, rme::MapMinHeight, rme::MapMaxHeight), wxSizerFlags(1).Expand()
 			);
 		grid_sizer->Add(subsizer, 1, wxEXPAND);
 	}
@@ -355,13 +355,13 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 	// Import offset
 	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "Import Offset"), wxHORIZONTAL);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset X:"), 0, wxALL | wxEXPAND, 5);
-	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -rme::MapMaxHeight, rme::MapMaxHeight);
 	tmpsizer->Add(x_offset_ctrl, 0, wxALL, 5);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset Y:"), 0, wxALL, 5);
-	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -rme::MapMaxHeight, rme::MapMaxHeight);
 	tmpsizer->Add(y_offset_ctrl, 0, wxALL, 5);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset Z:"), 0, wxALL, 5);
-	z_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -MAP_MAX_LAYER, MAP_MAX_LAYER);
+	z_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -rme::MapMaxLayer, rme::MapMaxLayer);
 	tmpsizer->Add(z_offset_ctrl, 0, wxALL, 5);
 	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
@@ -503,7 +503,7 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	// Area options
 	tmpsizer = newd wxStaticBoxSizer(wxHORIZONTAL, this, "Area Options");
 	floor_options = newd wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
-	floor_number = newd wxSpinCtrl(this, wxID_ANY, i2ws(GROUND_LAYER), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, MAP_MAX_LAYER, GROUND_LAYER);
+	floor_number = newd wxSpinCtrl(this, wxID_ANY, i2ws(rme::MapGroundLayer), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, rme::MapMinLayer, rme::MapMaxLayer, rme::MapGroundLayer);
 	floor_number->Enable(false);
 	floor_options->SetSelection(0);
 	tmpsizer->Add(floor_options, 1, wxALL, 5);
@@ -563,7 +563,7 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 		switch(floor_options->GetSelection())
 		{
 			case 0: { // All floors
-				for(int floor = 0; floor < MAP_LAYERS; ++floor) {
+				for(int floor = 0; floor < rme::MapLayers; ++floor) {
 					g_gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
 					FileName file(file_name_text_field->GetValue() + "_" + i2ws(floor) + ".bmp");
 					file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
@@ -573,9 +573,9 @@ void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			case 1: { // Ground floor
-				FileName file(file_name_text_field->GetValue() + "_" + i2ws(GROUND_LAYER) + ".bmp");
+				FileName file(file_name_text_field->GetValue() + "_" + i2ws(rme::MapGroundLayer) + ".bmp");
 				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
-				editor.exportMiniMap(file, GROUND_LAYER, true);
+				editor.exportMiniMap(file, rme::MapGroundLayer, true);
 				break;
 			}
 
@@ -1452,7 +1452,7 @@ GotoPositionDialog::GotoPositionDialog(wxWindow* parent, Editor& editor) :
 	// create topsizer
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
-	posctrl = newd PositionCtrl(this, "Destination", map.getWidth() / 2, map.getHeight() / 2, GROUND_LAYER, map.getWidth(), map.getHeight());
+	posctrl = newd PositionCtrl(this, "Destination", map.getWidth() / 2, map.getHeight() / 2, rme::MapGroundLayer, map.getWidth(), map.getHeight());
 	sizer->Add(posctrl, 0, wxTOP | wxLEFT | wxRIGHT, 20);
 
 	// OK/Cancel buttons
