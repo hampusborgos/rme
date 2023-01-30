@@ -374,6 +374,8 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 
 	tab->Refresh();
 	close_button->Enable(true);
+	replace_button->Enable(true);
+	with_button->Enable(true);
 	UpdateWidgets();
 }
 
