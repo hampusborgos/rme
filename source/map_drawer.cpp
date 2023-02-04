@@ -214,7 +214,7 @@ void MapDrawer::Draw()
 		DrawSelectionBox();
 	DrawLiveCursors();
 	DrawBrush();
-	if(options.show_grid)
+	if(options.show_grid && zoom <= 10.f)
 		DrawGrid();
 	if(options.show_ingame_box)
 		DrawIngameBox();
@@ -548,21 +548,24 @@ void MapDrawer::DrawIngameBox()
 
 void MapDrawer::DrawGrid()
 {
+	glDisable(GL_TEXTURE_2D);
+	glColor4ub(255, 255, 255, 128);
+	glBegin(GL_LINES); 
+
 	for(int y = start_y; y < end_y; ++y) {
-		glColor4ub(255, 255, 255, 128);
-		glBegin(GL_LINES);
-			glVertex2f(start_x * rme::TileSize - view_scroll_x, y * rme::TileSize - view_scroll_y);
-			glVertex2f(end_x * rme::TileSize - view_scroll_x, y * rme::TileSize - view_scroll_y);
-		glEnd();
+		int py = y * rme::TileSize - view_scroll_y;
+		glVertex2f(start_x * rme::TileSize - view_scroll_x, py);
+		glVertex2f(end_x * rme::TileSize - view_scroll_x, py);
 	}
 
 	for(int x = start_x; x < end_x; ++x) {
-		glColor4ub(255, 255, 255, 128);
-		glBegin(GL_LINES);
-			glVertex2f(x * rme::TileSize - view_scroll_x, start_y * rme::TileSize - view_scroll_y);
-			glVertex2f(x * rme::TileSize - view_scroll_x, end_y * rme::TileSize - view_scroll_y);
-		glEnd();
+		int px = x * rme::TileSize - view_scroll_x;
+		glVertex2f(px, start_y * rme::TileSize - view_scroll_y);
+		glVertex2f(px, end_y * rme::TileSize - view_scroll_y);
 	}
+
+	glEnd();
+	glEnable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawDraggingShadow()
