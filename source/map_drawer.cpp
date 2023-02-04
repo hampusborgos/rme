@@ -655,8 +655,9 @@ void MapDrawer::DrawHigherFloors()
 
 void MapDrawer::DrawSelectionBox()
 {
-	if(options.ingame)
+	if (options.ingame) {
 		return;
+	}
 
 	// Draw bounding box
 
@@ -665,7 +666,7 @@ void MapDrawer::DrawSelectionBox()
 	double cursor_rx = canvas->cursor_x * zoom;
 	double cursor_ry = canvas->cursor_y * zoom;
 
-	double lines[4][4];
+	static double lines[4][4];
 
 	lines[0][0] = last_click_rx;
 	lines[0][1] = last_click_ry;
@@ -687,8 +688,9 @@ void MapDrawer::DrawSelectionBox()
 	lines[3][2] = last_click_rx;
 	lines[3][3] = last_click_ry;
 
+	glDisable(GL_TEXTURE_2D);
 	glEnable(GL_LINE_STIPPLE);
-	glLineStipple(1, 0xf0);
+	glLineStipple(2, 0xAAAA);
 	glLineWidth(1.0);
 	glColor4f(1.0,1.0,1.0,1.0);
 	glBegin(GL_LINES);
@@ -698,6 +700,7 @@ void MapDrawer::DrawSelectionBox()
 	}
 	glEnd();
 	glDisable(GL_LINE_STIPPLE);
+	glEnable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawLiveCursors()
@@ -745,12 +748,9 @@ void MapDrawer::DrawLiveCursors()
 
 void MapDrawer::DrawBrush()
 {
-	if(!g_gui.IsDrawingMode())
+	if(options.ingame || !g_gui.IsDrawingMode() || !g_gui.GetCurrentBrush()) {
 		return;
-	if(!g_gui.GetCurrentBrush())
-		return;
-	if(options.ingame)
-		return;
+	}
 
 	Brush* brush = g_gui.GetCurrentBrush();
 
@@ -1005,6 +1005,8 @@ void MapDrawer::DrawBrush()
 			if(brush->isRaw()) { // Textured brush
 				glEnable(GL_TEXTURE_2D);
 				raw_brush = brush->asRaw();
+			} else {
+				glDisable(GL_TEXTURE_2D);
 			}
 
 			for(int y = -g_gui.GetBrushSize()-1; y <= g_gui.GetBrushSize()+1; y++) {
@@ -1066,6 +1068,8 @@ void MapDrawer::DrawBrush()
 
 			if(brush->isRaw()) { // Textured brush
 				glDisable(GL_TEXTURE_2D);
+			} else {
+				glEnable(GL_TEXTURE_2D);
 			}
 		}
 	}
