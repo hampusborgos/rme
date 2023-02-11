@@ -75,6 +75,8 @@ class Depot;
 class Teleport;
 class Door;
 
+struct SpriteLight;
+
 class Item : public ItemAttributes
 {
 public:
@@ -174,6 +176,9 @@ public:
 	// Drawing related
 	uint8_t getMiniMapColor() const;
 	wxPoint getDrawOffset() const;
+
+	bool hasLight() const;
+	SpriteLight getLight() const;
 
 	// Item types
 	bool hasProperty(enum ITEMPROPERTY prop) const;

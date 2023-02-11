@@ -202,6 +202,7 @@ void MapCanvas::OnPaint(wxPaintEvent& event)
 			options.transparent_floors = g_settings.getBoolean(Config::TRANSPARENT_FLOORS);
 			options.transparent_items = g_settings.getBoolean(Config::TRANSPARENT_ITEMS);
 			options.show_ingame_box = g_settings.getBoolean(Config::SHOW_INGAME_BOX);
+			options.show_lights = g_settings.getBoolean(Config::SHOW_LIGHTS);
 			options.show_grid = g_settings.getInteger(Config::SHOW_GRID);
 			options.ingame = !g_settings.getBoolean(Config::SHOW_EXTRA);
 			options.show_all_floors = g_settings.getBoolean(Config::SHOW_ALL_FLOORS);

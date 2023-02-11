@@ -55,10 +55,12 @@ public:
 	bool isOnlyColors() const noexcept;
 	bool isTileIndicators() const noexcept;
 	bool isTooltips() const noexcept;
+	bool isDrawLight() const noexcept;
 
 	bool transparent_floors;
 	bool transparent_items;
 	bool show_ingame_box;
+	bool show_lights;
 	bool ingame;
 	bool dragging;
 
@@ -85,12 +87,14 @@ public:
 };
 
 class MapCanvas;
+class LightDrawer;
 
 class MapDrawer
 {
 	MapCanvas* canvas;
 	Editor& editor;
 	DrawingOptions options;
+	std::shared_ptr<LightDrawer> light_drawer;
 
 	float zoom;
 
@@ -158,6 +162,7 @@ protected:
 	void WriteTooltip(const Item* item, std::ostringstream& stream);
 	void WriteTooltip(const Waypoint* item, std::ostringstream& stream);
 	void MakeTooltip(int screenx, int screeny, const std::string& text, uint8_t r = 255, uint8_t g = 255, uint8_t b = 255);
+	void AddLight(TileLocation* location);
 
 	enum BrushColor {
 		COLOR_BRUSH,
@@ -178,6 +183,7 @@ protected:
 	void glColor(BrushColor color);
 	void glColorCheck(Brush* brush, const Position& pos);
 	void drawRect(int x, int y, int w, int h, const wxColor& color, int width = 1);
+	void drawFilledRect(int x, int y, int w, int h, const wxColor& color);
 
 private:
 	void getDrawPosition(const Position& position, int &x, int &y);

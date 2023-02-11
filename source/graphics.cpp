@@ -643,9 +643,16 @@ bool GraphicManager::loadSpriteMetadataFlags(FileReadHandle& file, GameSprite* s
 				file.skip(2);
 				break;
 
-			case DatFlagLight:
-				file.skip(4);
+			case DatFlagLight: {
+				SpriteLight light;
+				uint16_t intensity;
+				uint16_t color;
+				file.getU16(intensity);
+				file.getU16(color);
+				sType->has_light = true;
+                sType->light = SpriteLight{ static_cast<uint8_t>(intensity), static_cast<uint8_t>(color) };
 				break;
+			}
 
 			case DatFlagDisplacement: {
 				if(dat_format >= DAT_FORMAT_755) {

@@ -119,7 +119,10 @@
         <item name="Show $all floors" hotkey="Ctrl+W" action="SHOW_ALL_FLOORS" help="If not checked other floors are hidden."/>
         <item name="Ghost $loose items" hotkey="G" action="GHOST_ITEMS" help="Ghost items (except ground)."/>
         <item name="Ghost $higher floors" hotkey="Ctrl+L" action="GHOST_HIGHER_FLOORS" help="Ghost floors."/>
-        <item name="Show $Ingame Box" hotkey="Shift+I" action="SHOW_INGAME_BOX" help="Shadows out areas not visible ingame (from the center of the screen)."/>
+        <menu name="$Ingame Box">
+            <item name="Show $client box" hotkey="Shift+I" action="SHOW_INGAME_BOX" help="Shadows out areas not visible ingame (from the center of the screen)."/>
+            <item name="Show $lights" hotkey="Shift+I" action="SHOW_LIGHTS" help="Show lights."/>
+        </menu>
         <item name="Show $Grid" hotkey="Shift+G" action="SHOW_GRID" help="Shows a grid over all items."/>
         <item name="H$ighlight items" hotkey="V" action="HIGHLIGHT_ITEMS" help="Highlight tiles with items on them."/>
         <separator/>

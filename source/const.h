@@ -45,6 +45,11 @@ constexpr int TileSize = 32;
 constexpr int SpritePixels = 32;
 constexpr int SpritePixelsSize = SpritePixels * SpritePixels;
 
+constexpr int MaxLightIntensity = 8;
+
+constexpr int PixelFormatRGB = 3;
+constexpr int PixelFormatRGBA = 4;
+
 constexpr int MinUniqueId = 1000;
 constexpr int MaxUniqueId = 65535;
 constexpr int MinActionId = 100;

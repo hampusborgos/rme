@@ -44,6 +44,7 @@ ${CMAKE_CURRENT_LIST_DIR}/item.h
 ${CMAKE_CURRENT_LIST_DIR}/item_attributes.h
 ${CMAKE_CURRENT_LIST_DIR}/items.h
 ${CMAKE_CURRENT_LIST_DIR}/json.h
+${CMAKE_CURRENT_LIST_DIR}/light_drawer.h
 ${CMAKE_CURRENT_LIST_DIR}/live_action.h
 ${CMAKE_CURRENT_LIST_DIR}/live_client.h
 ${CMAKE_CURRENT_LIST_DIR}/live_packets.h
@@ -147,6 +148,7 @@ ${CMAKE_CURRENT_LIST_DIR}/iomap_otbm.cpp
 ${CMAKE_CURRENT_LIST_DIR}/item_attributes.cpp
 ${CMAKE_CURRENT_LIST_DIR}/item.cpp
 ${CMAKE_CURRENT_LIST_DIR}/items.cpp
+${CMAKE_CURRENT_LIST_DIR}/light_drawer.cpp
 ${CMAKE_CURRENT_LIST_DIR}/live_action.cpp
 ${CMAKE_CURRENT_LIST_DIR}/live_client.cpp
 ${CMAKE_CURRENT_LIST_DIR}/live_peer.cpp

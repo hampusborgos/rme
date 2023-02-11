@@ -232,6 +232,24 @@ wxPoint Item::getDrawOffset() const
 	return wxPoint(0, 0);
 }
 
+bool Item::hasLight() const
+{
+	const ItemType& type = g_items.getItemType(id);
+	if(type.sprite) {
+		return type.sprite->hasLight();
+	}
+	return false;
+}
+
+SpriteLight Item::getLight() const
+{
+	const ItemType& type = g_items.getItemType(id);
+	if(type.sprite) {
+		return type.sprite->getLight();
+	}
+	return SpriteLight{0, 0};
+}
+
 double Item::getWeight() const
 {
 	const ItemType& type = g_items.getItemType(id);

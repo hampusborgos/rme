@@ -379,6 +379,9 @@
     <ClInclude Include="..\..\source\const.h">
       <Filter>common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\light_drawer.h">
+      <Filter>gui\map window</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -664,6 +667,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\actions_history_window.cpp">
       <Filter>gui\dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\light_drawer.cpp">
+      <Filter>gui\map window</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,7 @@
 #include "map_display.h"
 #include "copybuffer.h"
 #include "live_socket.h"
+#include "graphics.h"
 
 #include "doodad_brush.h"
 #include "creature_brush.h"
@@ -41,6 +42,7 @@
 #include "raw_brush.h"
 #include "table_brush.h"
 #include "waypoint_brush.h"
+#include "light_drawer.h"
 
 DrawingOptions::DrawingOptions()
 {
@@ -52,6 +54,7 @@ void DrawingOptions::SetDefault()
 	transparent_floors = false;
 	transparent_items = false;
 	show_ingame_box = false;
+	show_lights = false;
 	ingame = false;
 	dragging = false;
 
@@ -82,6 +85,7 @@ void DrawingOptions::SetIngame()
 	transparent_floors = false;
 	transparent_items = false;
 	show_ingame_box = false;
+	show_lights = false;
 	ingame = true;
 	dragging = false;
 
@@ -124,9 +128,14 @@ bool DrawingOptions::isTooltips() const noexcept
 	return show_tooltips && !isOnlyColors();
 }
 
+bool DrawingOptions::isDrawLight() const noexcept
+{
+	return show_ingame_box && show_lights;
+}
+
 MapDrawer::MapDrawer(MapCanvas* canvas) : canvas(canvas), editor(canvas->editor)
 {
-	////
+	light_drawer = std::make_shared<LightDrawer>();
 }
 
 MapDrawer::~MapDrawer()
@@ -196,6 +205,10 @@ void MapDrawer::Release()
 		delete *it;
 	}
 	tooltips.clear();
+
+	if(light_drawer) {
+		light_drawer->clear();
+	}
 
 	// Disable 2D mode
 	glMatrixMode(GL_PROJECTION);
@@ -269,6 +282,14 @@ void MapDrawer::DrawShade(int map_z)
 
 void MapDrawer::DrawMap()
 {
+	int center_x = start_x + int(screensize_x * zoom / 64);
+	int center_y = start_y + int(screensize_y * zoom / 64);
+	int offset_y = 2;
+	int box_start_map_x = center_x - view_scroll_x;
+	int box_start_map_y = center_y - view_scroll_x + offset_y;
+	int box_end_map_x = center_x + rme::ClientMapWidth;
+	int box_end_map_y = center_y + rme::ClientMapHeight + offset_y;
+
 	bool live_client = editor.IsLiveClient();
 
 	Brush* brush = g_gui.GetCurrentBrush();
@@ -313,7 +334,14 @@ void MapDrawer::DrawMap()
 					if(!live_client || nd->isVisible(map_z > rme::MapGroundLayer)) {
 						for(int map_x = 0; map_x < 4; ++map_x) {
 							for(int map_y = 0; map_y < 4; ++map_y) {
-								DrawTile(nd->getTile(map_x, map_y, map_z));
+								TileLocation* location = nd->getTile(map_x, map_y, map_z);
+								DrawTile(location);
+								if(location && options.isDrawLight()) {
+									auto& position = location->getPosition();
+									if(position.x >= box_start_map_x && position.x <= box_end_map_x && position.y >= box_start_map_y && position.y <= box_end_map_y) {
+										AddLight(location);
+									}
+								}
 							}
 						}
 						if(tile_indicators) {
@@ -465,85 +493,52 @@ void MapDrawer::DrawIngameBox()
 	int box_end_x = box_end_map_x * rme::TileSize - view_scroll_x;
 	int box_end_y = box_end_map_y * rme::TileSize - view_scroll_y;
 
+	if(options.isDrawLight()) {
+		light_drawer->draw(box_start_map_x, box_start_map_y, view_scroll_x, view_scroll_y);
+	}
+
+	static wxColor side_color(0, 0, 0, 200);
+
+	glDisable(GL_TEXTURE_2D);
+
+	// left side
 	if(box_start_map_x >= start_x) {
-		glColor4ub(0, 0, 0, 128);
-		glBegin(GL_QUADS);
-			glVertex2f(0, screensize_y * zoom);
-			glVertex2f(box_start_x, screensize_y * zoom);
-			glVertex2f(box_start_x, 0);
-			glVertex2f(0, 0);
-		glEnd();
+		drawFilledRect(0, 0, box_start_x, screensize_y * zoom, side_color);
 	}
 
+	// right side
 	if(box_end_map_x < end_x) {
-		glColor4ub(0, 0, 0, 128);
-		glBegin(GL_QUADS);
-			glVertex2f(box_end_x, screensize_y * zoom);
-			glVertex2f(screensize_x * zoom, screensize_y * zoom);
-			glVertex2f(screensize_x * zoom, 0);
-			glVertex2f(box_end_x, 0);
-		glEnd();
+		drawFilledRect(box_end_x, 0, screensize_x * zoom, screensize_y * zoom, side_color);
 	}
 
+	// top side
 	if(box_start_map_y >= start_y) {
-		glColor4ub(0, 0, 0, 128);
-		glBegin(GL_QUADS);
-			glVertex2f(box_start_x, box_start_y);
-			glVertex2f(box_end_x, box_start_y);
-			glVertex2f(box_end_x, 0);
-			glVertex2f(box_start_x, 0);
-		glEnd();
+		drawFilledRect(box_start_x, 0, box_end_x-box_start_x, box_start_y, side_color);
 	}
 
+	// bottom side
 	if(box_end_map_y < end_y) {
-		glColor4ub(0, 0, 0, 128);
-		glBegin(GL_QUADS);
-			glVertex2f(box_start_x, screensize_y * zoom);
-			glVertex2f(box_end_x, screensize_y * zoom);
-			glVertex2f(box_end_x, box_end_y);
-			glVertex2f(box_start_x, box_end_y);
-		glEnd();
+		drawFilledRect(box_start_x, box_end_y, box_end_x-box_start_x, screensize_y * zoom, side_color);
 	}
 
-	// client hidden tiles
-	glColor4ub(255, 0, 0, 128);
-	glBegin(GL_LINE_STRIP);
-		glVertex2f(box_start_x, box_start_y);
-		glVertex2f(box_end_x, box_start_y);
-		glVertex2f(box_end_x, box_end_y);
-		glVertex2f(box_start_x, box_end_y);
-		glVertex2f(box_start_x, box_start_y);
-	glEnd();
+	// hidden tiles
+	drawRect(box_start_x, box_start_y, box_end_x-box_start_x, box_end_y-box_start_y, *wxRED);
 
+	// visible tiles
 	box_start_x += rme::TileSize;
 	box_start_y += rme::TileSize;
 	box_end_x -= 2 * rme::TileSize;
 	box_end_y -= 2 * rme::TileSize;
+	drawRect(box_start_x, box_start_y, box_end_x-box_start_x, box_end_y-box_start_y, *wxGREEN);
 
-	// client visible tiles
-	glColor4ub(0, 255, 0, 128);
-	glBegin(GL_LINE_STRIP);
-		glVertex2f(box_start_x, box_start_y);
-		glVertex2f(box_end_x, box_start_y);
-		glVertex2f(box_end_x, box_end_y);
-		glVertex2f(box_start_x, box_end_y);
-		glVertex2f(box_start_x, box_start_y);
-	glEnd();
-
+	// player position
 	box_start_x += ((rme::ClientMapWidth/2)-2) * rme::TileSize;
 	box_start_y += ((rme::ClientMapHeight/2)-2) * rme::TileSize;
 	box_end_x = box_start_x + rme::TileSize;
 	box_end_y = box_start_y + rme::TileSize;
+	drawRect(box_start_x, box_start_y, box_end_x-box_start_x, box_end_y-box_start_y, *wxGREEN);
 
-	// client player position
-	glColor4ub(0, 255, 0, 128);
-	glBegin(GL_LINE_STRIP);
-		glVertex2f(box_start_x, box_start_y);
-		glVertex2f(box_end_x, box_start_y);
-		glVertex2f(box_end_x, box_end_y);
-		glVertex2f(box_start_x, box_end_y);
-		glVertex2f(box_start_x, box_start_y);
-	glEnd();
+	glEnable(GL_TEXTURE_2D);
 }
 
 void MapDrawer::DrawGrid()
@@ -1832,6 +1827,35 @@ void MapDrawer::MakeTooltip(int screenx, int screeny, const std::string& text, u
 	tooltips.push_back(tooltip);
 }
 
+void MapDrawer::AddLight(TileLocation* location)
+{
+	if(!options.isDrawLight() || !location) {
+		return;
+	}
+
+	auto tile = location->get();
+	if(!tile) {
+		return;
+	}
+
+	auto& position = location->getPosition();
+
+	if(tile->ground) {
+		if (tile->ground->hasLight()) {
+			light_drawer->addLight(position.x, position.y, tile->ground->getLight());
+		}
+	}
+
+	bool hidden = options.hide_items_when_zoomed && zoom > 10.f;
+	if(!hidden && !tile->items.empty()) {
+		for(auto item : tile->items) {
+			if(item->hasLight()) {
+				light_drawer->addLight(position.x, position.y, item->getLight());
+			}
+		}
+	}
+}
+
 void MapDrawer::getColor(Brush* brush, const Position& position, uint8_t &r, uint8_t &g, uint8_t &b)
 {
 	if(brush->canDraw(&editor.getMap(), position)) {
@@ -1986,6 +2010,17 @@ void MapDrawer::drawRect(int x, int y, int w, int h, const wxColor& color, int w
 		glVertex2f(x + w, y + h);
 		glVertex2f(x, y + h);
 		glVertex2f(x, y);
+	glEnd();
+}
+
+void MapDrawer::drawFilledRect(int x, int y, int w, int h, const wxColor& color)
+{
+	glColor4ub(color.Red(), color.Green(), color.Blue(), color.Alpha());
+	glBegin(GL_QUADS);
+		glVertex2f(x, y);
+		glVertex2f(x + w, y);
+		glVertex2f(x + w, y + h);
+		glVertex2f(x, y + h);
 	glEnd();
 }
 
