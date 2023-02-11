@@ -1,5 +1,5 @@
 /* XPM */
-static char * mini_cut_xpm[] = {
+static const char *mini_cut_xpm[] = {
 "16 16 74 1",
 " 	c None",
 ".	c #3E7BA7",

@@ -1,5 +1,5 @@
 /* XPM */
-static char * mini_erase_xpm[] = {
+static const char *mini_erase_xpm[] = {
 "16 16 62 1",
 " 	c None",
 ".	c #FDB8C9",

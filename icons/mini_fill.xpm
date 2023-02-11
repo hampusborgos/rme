@@ -1,5 +1,5 @@
 /* XPM */
-static char * mini_fill_xpm[] = {
+static const char *mini_fill_xpm[] = {
 "16 16 103 2",
 "  	c None",
 ". 	c #4884C2",
