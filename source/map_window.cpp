@@ -142,10 +142,11 @@ void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndic
 
 	int x = position.x * rme::TileSize;
 	int y = position.y * rme::TileSize;
+	int z = position.z;
 	if(position.z < 8) {
 		// Compensate for floor offset above ground
-		x -= (rme::MapGroundLayer - position.z) * rme::TileSize;
-		y -= (rme::MapGroundLayer - position.z) * rme::TileSize;
+		x -= (rme::MapGroundLayer - z) * rme::TileSize;
+		y -= (rme::MapGroundLayer - z) * rme::TileSize;
 	}
 
 	const Position& center = GetScreenCenterPosition();
@@ -156,7 +157,7 @@ void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndic
 	}
 
 	Scroll(x, y, true);
-	canvas->ChangeFloor(position.z);
+	canvas->ChangeFloor(z);
 
 	if(showIndicator)
 		canvas->ShowPositionIndicator(position);
