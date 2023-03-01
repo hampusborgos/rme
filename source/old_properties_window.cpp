@@ -469,8 +469,8 @@ void OldPropertiesWindow::OnFocusChange(wxFocusEvent& event)
 void OldPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
 	if(edit_item) {
-		int new_uid = unique_id_field->GetValue();
-		int new_aid = action_id_field->GetValue();
+		int new_uid = (unique_id_field ? unique_id_field->GetValue() : 0);
+		int new_aid = (action_id_field ? action_id_field->GetValue() : 0);
 		bool uid_changed = false;
 		bool aid_changed = false;
 
