@@ -806,11 +806,12 @@ void MainMenuBar::OnImportMinimap(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnExportMinimap(wxCommandEvent& WXUNUSED(event))
 {
-	if(g_gui.GetCurrentEditor()) {
-		ExportMiniMapWindow dlg(frame, *g_gui.GetCurrentEditor());
-		dlg.ShowModal();
-		dlg.Destroy();
+	if(!g_gui.IsEditorOpen()) {
+		return;
 	}
+
+	ExportMiniMapWindow dialog(frame, *g_gui.GetCurrentEditor());
+	dialog.ShowModal();
 }
 
 void MainMenuBar::OnDebugViewDat(wxCommandEvent& WXUNUSED(event))
