@@ -26,6 +26,22 @@ uint8_t NodeFileWriteHandle::NODE_START = ::NODE_START;
 uint8_t NodeFileWriteHandle::NODE_END = ::NODE_END;
 uint8_t NodeFileWriteHandle::ESCAPE_CHAR = ::ESCAPE_CHAR;
 
+bool FileHandle::seek(size_t offset, int origin)
+{
+	if(file) {
+		return fseek(file, static_cast<long>(offset), origin) == 0;
+	}
+	return false;
+}
+
+size_t FileHandle::tell()
+{
+	if(file) {
+		return ftell(file);
+	}
+	return 0;
+}
+
 void FileHandle::close()
 {
 	if(file) {
@@ -124,16 +140,6 @@ bool FileReadHandle::getLongString(std::string& str)
 		return false;
 	}
 	return getRAW(str, sz);
-}
-
-bool FileReadHandle::seek(size_t offset)
-{
-	return fseek(file, long(offset), SEEK_SET) == 0;
-}
-
-bool FileReadHandle::seekRelative(size_t offset)
-{
-	return fseek(file, long(offset), SEEK_CUR) == 0;
 }
 
 //=============================================================================
@@ -551,6 +557,13 @@ bool FileWriteHandle::addRAW(const uint8_t* ptr, size_t sz)
 {
 	fwrite(ptr, 1, sz, file);
 	return ferror(file) == 0;
+}
+
+void FileWriteHandle::flush()
+{
+	if(file) {
+		fflush(file);
+	}
 }
 
 //=============================================================================

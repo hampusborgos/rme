@@ -33,6 +33,8 @@
 #include "common_windows.h"
 #include "positionctrl.h"
 
+#include "iominimap.h"
+
 #ifdef _MSC_VER
 	#pragma warning(disable:4018) // signed/unsigned mismatch
 #endif
@@ -491,6 +493,15 @@ ExportMiniMapWindow::ExportMiniMapWindow(wxWindow* parent, Editor& editor) :
 	tmpsizer->Add(file_name_text_field, 1, wxALL, 5);
 	sizer->Add(tmpsizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, 5);
 
+	// Format options
+	wxArrayString format_choices;
+	format_choices.Add(".otmm (Client Minimap)");
+	format_choices.Add(".png (PNG Image)");
+	format_choices.Add(".bmp (Bitmap Image)");
+	format_options = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, format_choices);
+	format_options->SetSelection(0);
+	tmpsizer->Add(format_options, 1, wxALL, 5);
+
 	// Export options
 	wxArrayString choices;
 	choices.Add("All Floors");
@@ -553,59 +564,29 @@ void ExportMiniMapWindow::OnFileNameChanged(wxKeyEvent& event)
 
 void ExportMiniMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 {
-	g_gui.CreateLoadBar("Exporting minimap");
+	g_gui.CreateLoadBar("Exporting minimap...");
 
-	try
-	{
-		FileName directory(directory_text_field->GetValue());
-		g_settings.setString(Config::MINIMAP_EXPORT_DIR, directory_text_field->GetValue().ToStdString());
+	auto format = static_cast<MinimapExportFormat>(format_options->GetSelection());
+	auto mode = static_cast<MinimapExportMode>(floor_options->GetSelection());
+	std::string directory = directory_text_field->GetValue().ToStdString();
+	std::string file_name = file_name_text_field->GetValue().ToStdString();
+	int floor = floor_number->GetValue();
 
-		switch(floor_options->GetSelection())
-		{
-			case 0: { // All floors
-				for(int floor = 0; floor < rme::MapLayers; ++floor) {
-					g_gui.SetLoadScale(int(floor*(100.f/16.f)), int((floor+1)*(100.f/16.f)));
-					FileName file(file_name_text_field->GetValue() + "_" + i2ws(floor) + ".bmp");
-					file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
-					editor.exportMiniMap(file, floor, true);
-				}
-				break;
-			}
+	g_settings.setString(Config::MINIMAP_EXPORT_DIR, directory);
 
-			case 1: { // Ground floor
-				FileName file(file_name_text_field->GetValue() + "_" + i2ws(rme::MapGroundLayer) + ".bmp");
-				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
-				editor.exportMiniMap(file, rme::MapGroundLayer, true);
-				break;
-			}
-
-			case 2: { // Specific floors
-				int floor = floor_number->GetValue();
-				FileName file(file_name_text_field->GetValue() + "_" + i2ws(floor) + ".bmp");
-				file.Normalize(wxPATH_NORM_ALL, directory.GetFullPath());
-				editor.exportMiniMap(file, floor, true);
-				break;
-			}
-
-			case 3: { // Selected area
-				editor.exportSelectionAsMiniMap(directory, file_name_text_field->GetValue());
-				break;
-			}
-		}
-	}
-	catch(std::bad_alloc&)
-	{
-		g_gui.PopupDialog("Error", "There is not enough memory available to complete the operation.", wxOK);
+	IOMinimap io(&editor, format, mode, true);
+	if (!io.saveMinimap(directory, file_name, floor)) {
+		g_gui.PopupDialog("Error", io.getError(), wxOK);
 	}
 
 	g_gui.DestroyLoadBar();
-	EndModal(1);
+	EndModal(wxID_OK);
 }
 
 void ExportMiniMapWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 {
 	// Just close this window
-	EndModal(0);
+	EndModal(wxID_CANCEL);
 }
 
 void ExportMiniMapWindow::CheckValues()

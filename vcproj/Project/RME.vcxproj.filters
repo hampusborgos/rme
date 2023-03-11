@@ -382,6 +382,9 @@
     <ClInclude Include="..\..\source\light_drawer.h">
       <Filter>gui\map window</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\iominimap.h">
+      <Filter>editor\io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\json\json_spirit_reader.cpp">
@@ -670,6 +673,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\light_drawer.cpp">
       <Filter>gui\map window</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\iominimap.cpp">
+      <Filter>editor\io</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -127,6 +127,7 @@ protected:
 
 	Editor& editor;
 
+	wxChoice* format_options;
 	wxStaticText* error_field;
 	wxTextCtrl* directory_text_field;
 	wxTextCtrl* file_name_text_field;
