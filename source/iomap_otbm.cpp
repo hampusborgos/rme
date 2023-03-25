@@ -1698,7 +1698,12 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 						monsterNode.append_attribute("x") = x;
 						monsterNode.append_attribute("y") = y;
 						monsterNode.append_attribute("z") = spawnPosition.z;
-						monsterNode.append_attribute("spawntime") = monster->getSpawnMonsterTime();
+						auto monsterSpawnTime = monster->getSpawnMonsterTime();
+						if (monsterSpawnTime > std::numeric_limits<uint32_t>::max() || monsterSpawnTime < std::numeric_limits<uint32_t>::min()) {
+							monsterSpawnTime = 60;
+						}
+
+						monsterNode.append_attribute("spawntime") = monsterSpawnTime;
 						if(monster->getDirection() != NORTH) {
 							monsterNode.append_attribute("direction") = monster->getDirection();
 						}
