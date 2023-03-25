@@ -24,6 +24,8 @@ data/user
 *.obj
 *.db
 *.opendb
+*.filters
+*.user
 
 vcproj/ipch/
 vcproj/Beta Release/
