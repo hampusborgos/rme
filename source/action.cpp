@@ -466,7 +466,7 @@ void BatchAction::commit()
 
 void BatchAction::undo()
 {
-	for(Action* action : boost::adaptors::reverse(batch)) {
+	for(Action* action : std::views::reverse(batch)) {
 		action->undo(nullptr);
 	}
 }
