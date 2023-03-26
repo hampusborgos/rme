@@ -1,5 +1,5 @@
 /* XPM */
-static char *mini_select_xpm[] = {
+static const char *mini_select_xpm[] = {
 "16 16 14 1",
 " 	c None",
 ".	c #8AA4F1",
