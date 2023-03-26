@@ -116,6 +116,16 @@ void replaceString(std::string& str, const std::string sought, const std::string
 	}
 }
 
+void trim(std::string& str) {
+	// Trim from start
+	str.erase(str.begin(), std::find_if(str.begin(), str.end(),
+		[](int ch) { return !std::isspace(ch); }));
+
+	// Trim from end
+	str.erase(std::find_if(str.rbegin(), str.rend(),
+		[](int ch) { return !std::isspace(ch); }).base(), str.end());
+}
+
 void trim_right(std::string& source, const std::string& t)
 {
 	source.erase(source.find_last_not_of(t)+1);

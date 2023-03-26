@@ -47,6 +47,7 @@ double ws2f(wxString s);
 
 // replaces all instances of sought in str with replacement
 void replaceString(std::string& str, const std::string sought, const std::string replacement);
+void trim(std::string& str);
 // Removes all characters in t from source (from either start or beginning of the string)
 void trim_right(std::string& source, const std::string& t);
 void trim_left(std::string& source, const std::string& t);
