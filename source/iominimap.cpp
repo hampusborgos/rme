@@ -29,7 +29,7 @@
 
 void MinimapBlock::updateTile(int x, int y, const MinimapTile& tile)
 {
-    m_tiles[getTileIndex(x, y)] = tile;
+	m_tiles[getTileIndex(x, y)] = tile;
 }
 
 IOMinimap::IOMinimap(Editor* editor, MinimapExportFormat format, MinimapExportMode mode, bool updateLoadbar) :
@@ -64,68 +64,68 @@ bool IOMinimap::saveOtmm(const wxFileName& file)
 {
 	try
 	{
-        FileWriteHandle writer(file.GetFullPath().ToStdString());
+		FileWriteHandle writer(file.GetFullPath().ToStdString());
 		if(!writer.isOk()) {
 			//error("Unable to open file %s for save minimap", file);
 			return false;
 		}
 
-        //TODO: compression flag with zlib
-        uint32_t flags = 0;
+		//TODO: compression flag with zlib
+		uint32_t flags = 0;
 
-        // header
-        writer.addU32(OTMM_SIGNATURE);
-        writer.addU16(0); // data start, will be overwritten later
-        writer.addU16(OTMM_VERSION);
-        writer.addU32(flags);
+		// header
+		writer.addU32(OTMM_SIGNATURE);
+		writer.addU16(0); // data start, will be overwritten later
+		writer.addU16(OTMM_VERSION);
+		writer.addU32(flags);
 
-        // version 1 header
-        writer.addString("OTMM 1.0"); // description
+		// version 1 header
+		writer.addString("OTMM 1.0"); // description
 
-        // go back and rewrite where the map data starts
-        uint32_t start = writer.tell();
-        writer.seek(4);
-        writer.addU16(start);
-        writer.seek(start);
+		// go back and rewrite where the map data starts
+		uint32_t start = writer.tell();
+		writer.seek(4);
+		writer.addU16(start);
+		writer.seek(start);
 
-        unsigned long blockSize = MMBLOCK_SIZE * MMBLOCK_SIZE * sizeof(MinimapTile);
-        std::vector<uint8_t> buffer(compressBound(blockSize));
-        constexpr int COMPRESS_LEVEL = 3;
+		unsigned long blockSize = MMBLOCK_SIZE * MMBLOCK_SIZE * sizeof(MinimapTile);
+		std::vector<uint8_t> buffer(compressBound(blockSize));
+		constexpr int COMPRESS_LEVEL = 3;
 
 		readBlocks();
 
-        for(uint8_t z = 0; z <= rme::MapMaxLayer; ++z) {
-            for(auto& it : m_blocks[z]) {
-                int index = it.first;
-                auto& block = it.second;
+		for(uint8_t z = 0; z <= rme::MapMaxLayer; ++z) {
+			for(auto& it : m_blocks[z]) {
+				int index = it.first;
+				auto& block = it.second;
 
 				// write index pos
-                uint16_t x = static_cast<uint16_t>((index % (65536 / MMBLOCK_SIZE)) * MMBLOCK_SIZE);
+				uint16_t x = static_cast<uint16_t>((index % (65536 / MMBLOCK_SIZE)) * MMBLOCK_SIZE);
 				uint16_t y = static_cast<uint16_t>((index / (65536 / MMBLOCK_SIZE)) * MMBLOCK_SIZE);
-                writer.addU16(x);
-                writer.addU16(y);
-                writer.addU8(z);
+				writer.addU16(x);
+				writer.addU16(y);
+				writer.addU8(z);
 
-                unsigned long len = blockSize;
-                int ret = compress2(buffer.data(), &len, (uint8_t*)&block.getTiles(), blockSize, COMPRESS_LEVEL);
-                assert(ret == Z_OK);
-                writer.addU16(len);
-                writer.addRAW(buffer.data(), len);
-            }
+				unsigned long len = blockSize;
+				int ret = compress2(buffer.data(), &len, (uint8_t*)&block.getTiles(), blockSize, COMPRESS_LEVEL);
+				assert(ret == Z_OK);
+				writer.addU16(len);
+				writer.addRAW(buffer.data(), len);
+			}
 			m_blocks[z].clear();
-        }
+		}
 
-        // end of file is an invalid pos
-        writer.addU16(65535);
-        writer.addU16(65535);
-        writer.addU8(255);
+		// end of file is an invalid pos
+		writer.addU16(65535);
+		writer.addU16(65535);
+		writer.addU8(255);
 
-        writer.flush();
-        writer.close();
-    } catch(std::exception& e) {
-        m_error = wxString::Format("failed to save OTMM minimap: %s", e.what());
+		writer.flush();
+		writer.close();
+	} catch(std::exception& e) {
+		m_error = wxString::Format("failed to save OTMM minimap: %s", e.what());
 		return false;
-    }
+	}
 
 	return true;
 }

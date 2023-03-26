@@ -40,29 +40,29 @@ enum {
 };
 
 enum MinimapTileFlags {
-    MinimapTileWasSeen = 1,
-    MinimapTileNotPathable = 2,
-    MinimapTileNotWalkable = 4
+	MinimapTileWasSeen = 1,
+	MinimapTileNotPathable = 2,
+	MinimapTileNotWalkable = 4
 };
 
 #pragma pack(push,1) // disable memory alignment
 struct MinimapTile
 {
-    uint8_t flags = 0;
-    uint8_t color = INVALID_MINIMAP_COLOR;
-    uint8_t speed = 10;
+	uint8_t flags = 0;
+	uint8_t color = INVALID_MINIMAP_COLOR;
+	uint8_t speed = 10;
 };
 
 class MinimapBlock
 {
 public:
-    void updateTile(int x, int y, const MinimapTile& tile);
-    MinimapTile& getTile(int x, int y) { return m_tiles[getTileIndex(x,y)]; }
-    inline uint32_t getTileIndex(int x, int y) const noexcept { return ((y % MMBLOCK_SIZE) * MMBLOCK_SIZE) + (x % MMBLOCK_SIZE); }
-    const std::array<MinimapTile, MMBLOCK_SIZE * MMBLOCK_SIZE>& getTiles() const noexcept { return m_tiles; }
+	void updateTile(int x, int y, const MinimapTile& tile);
+	MinimapTile& getTile(int x, int y) { return m_tiles[getTileIndex(x,y)]; }
+	inline uint32_t getTileIndex(int x, int y) const noexcept { return ((y % MMBLOCK_SIZE) * MMBLOCK_SIZE) + (x % MMBLOCK_SIZE); }
+	const std::array<MinimapTile, MMBLOCK_SIZE * MMBLOCK_SIZE>& getTiles() const noexcept { return m_tiles; }
 
 private:
-    std::array<MinimapTile, MMBLOCK_SIZE * MMBLOCK_SIZE> m_tiles;
+	std::array<MinimapTile, MMBLOCK_SIZE * MMBLOCK_SIZE> m_tiles;
 };
 #pragma pack(pop)
 
