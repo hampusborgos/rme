@@ -30,9 +30,6 @@
 
 #define _CRTDBG_MAP_ALLOC
 
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #pragma warning(disable: 4291)
 _Ret_bytecap_(_Size) inline void * __CRTDECL operator new(size_t _Size, const char* file, int line)
         { return ::operator new(_Size, _NORMAL_BLOCK, file, line); }
@@ -46,13 +43,12 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 
 #endif
 
-// Boost libraries
-#include <boost/utility.hpp>
-#include <boost/range/adaptor/reversed.hpp>
-#include <boost/asio.hpp>
-
 #include <wx/defs.h>
 #include "definitions.h"
+
+#include <asio.hpp>
+#include <fmt/core.h>
+#include <nlohmann/json.hpp>
 
 #include <wx/wxprec.h>
 #ifndef WX_PRECOMP
@@ -87,7 +83,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include "ext/pugixml.hpp"
 
 // Libarchive, for OTGZ
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 #include <archive.h>
 #include <archive_entry.h>
 #endif
@@ -119,13 +115,18 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <set>
 #include <queue>
 #include <stdexcept>
+#include <stdlib.h>
+#include <crtdbg.h>
 #include <time.h>
 #include <fstream>
+#include <memory>
+#include <exception>
+#include <cmath>
+#include <ranges>
+#include <regex>
 
 typedef std::vector<std::string> StringVector;
 typedef wxFileName FileName;
-
-#include "json.h"
 
 #include "con_vector.h"
 #include "common.h"

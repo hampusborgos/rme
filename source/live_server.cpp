@@ -45,13 +45,13 @@ bool LiveServer::bind()
 	}
 
 	auto& service = connection.get_service();
-	acceptor = std::make_shared<boost::asio::ip::tcp::acceptor>(service);
+	acceptor = std::make_shared<asio::ip::tcp::acceptor>(service);
 
-	boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), port);
+	asio::ip::tcp::endpoint endpoint(asio::ip::tcp::v4(), port);
 	acceptor->open(endpoint.protocol());
 
-	boost::system::error_code error;
-	acceptor->set_option(boost::asio::ip::tcp::no_delay(true), error);
+	std::error_code error;
+	acceptor->set_option(asio::ip::tcp::no_delay(true), error);
 	if(error) {
 		setLastError("Error: " + error.message());
 		return false;
@@ -95,12 +95,12 @@ void LiveServer::acceptClient()
 	}
 
 	if(!socket) {
-		socket = std::make_shared<boost::asio::ip::tcp::socket>(
+		socket = std::make_shared<asio::ip::tcp::socket>(
 			NetworkConnection::getInstance().get_service()
 		);
 	}
 
-	acceptor->async_accept(*socket, [this](const boost::system::error_code& error) -> void
+	acceptor->async_accept(*socket, [this](const std::error_code& error) -> void
 	{
 		if(error) {
 			//

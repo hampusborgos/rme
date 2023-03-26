@@ -50,7 +50,7 @@ enum NodeType {
 	ESCAPE_CHAR = 0xfd,
 };
 
-class FileHandle : boost::noncopyable
+class FileHandle
 {
 public:
 	FileHandle() : error_code(FILE_NO_ERROR), file(nullptr) {}
@@ -59,6 +59,11 @@ public:
 	bool seek(size_t offset, int origin = SEEK_SET);
 	size_t tell();
 	FORCEINLINE void skip(size_t offset) { seek(offset, SEEK_CUR); }
+
+	// Ensures we don't accidentally copy it.
+	FileHandle(const FileHandle &) = delete;
+	FileHandle &operator=(const FileHandle &) = delete;
+
 	virtual void close();
 	virtual bool isOpen() { return file != nullptr; }
 	virtual bool isOk() { return isOpen() && error_code == FILE_NO_ERROR && ferror(file) == 0; }

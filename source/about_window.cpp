@@ -169,6 +169,17 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 {
 	wxString about;
 
+	std::string compiler;
+#if defined(__clang__)
+	compiler = fmt::format("Clang++ {}.{}.{}", __clang_major__, __clang_minor__, __clang_patchlevel__);
+#elif defined(_MSC_VER)
+	compiler = fmt::format("Microsoft Visual Studio {}", _MSC_VER);
+#elif defined(__GNUC__)
+	compiler = fmt::format("G++ {}.{}.{}", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+#else
+	compiler = "unknown";
+#endif
+
 	about << "This is an OpenTibia Map Editor created by Remere.\n";
 	about << "Version " << __W_RME_VERSION__ << " for ";
 	about <<
@@ -192,7 +203,7 @@ AboutWindow::AboutWindow(wxWindow* parent) :
 	about << "under certain conditions.\n";
 	about << "\n";
 	about << "Compiled on: " << __TDATE__ << " : " << __TTIME__ << "\n";
-	about << "Compiled with: " << BOOST_COMPILER << "\n";
+	about << "Compiled with: " << compiler << "\n";
 
 	topsizer = newd wxBoxSizer(wxVERTICAL);
 

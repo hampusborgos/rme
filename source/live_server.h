@@ -73,8 +73,8 @@ class LiveServer : public LiveSocket
 	protected:
 		std::unordered_map<uint32_t, LivePeer*> clients;
 
-		std::shared_ptr<boost::asio::ip::tcp::acceptor> acceptor;
-		std::shared_ptr<boost::asio::ip::tcp::socket> socket;
+		std::shared_ptr<asio::ip::tcp::acceptor> acceptor;
+		std::shared_ptr<asio::ip::tcp::socket> socket;
 
 		Editor* editor;
 

@@ -23,8 +23,6 @@
 
 #include "filehandle.h"
 
-#include <boost/static_assert.hpp>
-
 class IOMap;
 class ItemAttribute;
 
