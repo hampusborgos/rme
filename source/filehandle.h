@@ -56,6 +56,10 @@ public:
 	FileHandle() : error_code(FILE_NO_ERROR), file(nullptr) {}
 	virtual ~FileHandle() { close(); }
 
+	bool seek(size_t offset, int origin = SEEK_SET);
+	size_t tell();
+	FORCEINLINE void skip(size_t offset) { seek(offset, SEEK_CUR); }
+
 	// Ensures we don't accidentally copy it.
 	FileHandle(const FileHandle &) = delete;
 	FileHandle &operator=(const FileHandle &) = delete;
@@ -64,6 +68,7 @@ public:
 	virtual bool isOpen() { return file != nullptr; }
 	virtual bool isOk() { return isOpen() && error_code == FILE_NO_ERROR && ferror(file) == 0; }
 	std::string getErrorMessage();
+
 public:
 	FileHandleError error_code;
 	FILE* file;
@@ -87,11 +92,8 @@ public:
 	bool getLongString(std::string& str);
 
 	virtual void close();
-	bool seek(size_t offset);
-	bool seekRelative(size_t offset);
-	FORCEINLINE void skip(size_t offset) { seekRelative(offset); }
 	size_t size() { return file_size; }
-	size_t tell() { if(file) return ftell(file); return 0; }
+	
 protected:
 	size_t file_size;
 
@@ -241,6 +243,7 @@ public:
 	bool addRAW(const std::string& str);
 	bool addRAW(const uint8_t* ptr, size_t sz);
 	bool addRAW(const char* c) { return addRAW(reinterpret_cast<const uint8_t*>(c), strlen(c)); }
+	void flush();
 
 protected:
 	template<class T>
@@ -301,17 +304,20 @@ protected:
 	}
 };
 
-class DiskNodeFileWriteHandle : public NodeFileWriteHandle {
+class DiskNodeFileWriteHandle : public NodeFileWriteHandle
+{
 public:
 	DiskNodeFileWriteHandle(const std::string& name, const std::string& identifier);
 	virtual ~DiskNodeFileWriteHandle();
 
 	virtual void close();
+
 protected:
 	virtual void renewCache();
 };
 
-class MemoryNodeFileWriteHandle : public NodeFileWriteHandle {
+class MemoryNodeFileWriteHandle : public NodeFileWriteHandle
+{
 public:
 	MemoryNodeFileWriteHandle();
 	virtual ~MemoryNodeFileWriteHandle();
@@ -321,6 +327,7 @@ public:
 
 	uint8_t* getMemory();
 	size_t getSize();
+
 protected:
 	virtual void renewCache();
 };

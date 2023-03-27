@@ -167,6 +167,14 @@ bool Tile::hasProperty(enum ITEMPROPERTY prop) const
 	return false;
 }
 
+uint16_t Tile::getGroundSpeed() const noexcept
+{
+	if(ground && !ground->isMetaItem()) {
+		return ground->getGroundSpeed();
+	}
+	return 0;
+}
+
 int Tile::getIndexOf(Item* item) const
 {
 	if(!item)

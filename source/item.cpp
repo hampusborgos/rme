@@ -232,6 +232,15 @@ wxPoint Item::getDrawOffset() const
 	return wxPoint(0, 0);
 }
 
+uint16_t Item::getGroundSpeed() const
+{
+	const auto& type = g_items.getItemType(id);
+	if(type.sprite) {
+		return type.sprite->ground_speed;
+	}
+	return 0;
+}
+
 bool Item::hasLight() const
 {
 	const ItemType& type = g_items.getItemType(id);

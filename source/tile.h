@@ -78,6 +78,8 @@ public:
 	int getY() const noexcept { return location->getY(); }
 	int getZ() const noexcept { return location->getZ(); }
 
+	uint16_t getGroundSpeed() const noexcept;
+	
 public: //Functions
 	// Absorb the other tile into this tile
 	void merge(Tile* other);
