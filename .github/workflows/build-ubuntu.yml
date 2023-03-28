@@ -1,0 +1,84 @@
+---
+name: Build - Ubuntu
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - main
+
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
+  MAKEFLAGS: '-j 2'
+
+jobs:
+  job:
+    if: ${{ github.event_name == 'push' || !github.event.pull_request.draft }}
+    name: ${{ matrix.os }}-${{ matrix.buildtype }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+        buildtype: [Release, Debug]
+        include:
+          - os: ubuntu-22.04
+            triplet: x64-linux
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Install Linux Dependencies
+        run: >
+          sudo apt-get update && sudo apt-get install ccache linux-headers-$(uname -r)
+      
+      - name: Switch to gcc-11
+        run: |
+          sudo apt install gcc-11 g++-11
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
+          sudo update-alternatives --set gcc /usr/bin/gcc-11
+
+      - name: CCache
+        uses: hendrikmuhs/ccache-action@main
+        with:
+          max-size: "1G"
+          key: ccache-${{ matrix.os }}-${{ matrix.buildtype }}
+          restore-keys: |
+            ccache-${{ matrix.os }}
+
+      - name: Restore artifacts and install vcpkg
+        id: vcpkg-step
+        run: |
+          vcpkgCommitId=$(grep '.builtin-baseline' vcpkg.json | awk -F: '{print $2}' | tr -d '," ')
+          echo "vcpkg commit ID: $vcpkgCommitId"
+          echo "::set-output name=vcpkgGitCommitId::$vcpkgCommitId"
+      - name: Get vcpkg commit id from vcpkg.json
+        uses: lukka/run-vcpkg@main
+        with:
+          vcpkgGitURL: "https://github.com/microsoft/vcpkg.git"
+          vcpkgGitCommitId: ${{ steps.vcpkg-step.outputs.vcpkgGitCommitId }}
+
+      - name: Get latest CMake and ninja
+        uses: lukka/get-cmake@main
+
+      - name: Install additional libraries
+        run: sudo apt-get install libasio-dev nlohmann-json3-dev libfmt-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev libxrandr-dev libxxf86vm-dev libglib2.0-dev at-spi2-core libwxgtk3.0-gtk3-dev libarchive-dev freeglut3-dev libxmu-dev libdbus-1-dev libxtst-dev
+
+      - name: Run CMake Cache and Build
+        uses: lukka/run-cmake@v3
+        with:
+          cmakeListsTxtPath: ${{ github.workspace }}/CMakeLists.txt
+          useVcpkgToolchainFile: true
+          buildDirectory: ${{ github.workspace }}/build/
+          cmakeBuildType: ${{ matrix.buildtype }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}-${{ matrix.buildtype }}
+          path: |
+            ${{ github.workspace }}/remeres

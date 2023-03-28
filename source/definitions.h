@@ -50,7 +50,8 @@
 #endif
 // OS
 
-#define OTGZ_SUPPORT 1
+#define OTGZ_SUPPORT 0
+
 #define ASSETS_NAME "Tibia"
 
 #ifdef __VISUALC__

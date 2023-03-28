@@ -24,6 +24,7 @@ data/user
 *.obj
 *.db
 *.opendb
+*.vs
 
 vcproj/ipch/
 vcproj/Beta Release/
@@ -38,6 +39,8 @@ vcproj/Installer/Beta Release/
 vcproj/Installer/Debug/
 vcproj/Installer/Release/
 .vscode/
+*.filters
+*.users
 
 # Xcode
 xcuserdata

@@ -126,6 +126,16 @@ void trim_left(std::string& source, const std::string& t)
 	source.erase(0, source.find_first_not_of(t));
 }
 
+void trim(std::string& str) {
+	// Trim from start
+	str.erase(str.begin(), std::find_if(str.begin(), str.end(),
+		[](int ch) { return !std::isspace(ch); }));
+
+	// Trim from end
+	str.erase(std::find_if(str.rbegin(), str.rend(),
+		[](int ch) { return !std::isspace(ch); }).base(), str.end());
+}
+
 void to_lower_str(std::string& source)
 {
 	std::transform(source.begin(), source.end(), source.begin(), tolower);

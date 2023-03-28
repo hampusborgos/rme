@@ -50,6 +50,7 @@ void replaceString(std::string& str, const std::string sought, const std::string
 // Removes all characters in t from source (from either start or beginning of the string)
 void trim_right(std::string& source, const std::string& t);
 void trim_left(std::string& source, const std::string& t);
+void trim(std::string& str);
 // Converts the argument to lower/uppercase
 void to_lower_str(std::string& source);
 void to_upper_str(std::string& source);

@@ -34,10 +34,10 @@ class LiveClient : public LiveSocket
 
 		//
 		bool connect(const std::string& address, uint16_t port);
-		void tryConnect(boost::asio::ip::tcp::resolver::iterator endpoint);
+		void tryConnect(asio::ip::tcp::resolver::iterator endpoint);
 
 		void close();
-		bool handleError(const boost::system::error_code& error);
+		bool handleError(const std::error_code& error);
 
 		//
 		std::string getHostName() const;
@@ -83,8 +83,8 @@ class LiveClient : public LiveSocket
 		std::set<uint32_t> queryNodeList;
 		wxString currentOperation;
 
-		std::shared_ptr<boost::asio::ip::tcp::resolver> resolver;
-		std::shared_ptr<boost::asio::ip::tcp::socket> socket;
+		std::shared_ptr<asio::ip::tcp::resolver> resolver;
+		std::shared_ptr<asio::ip::tcp::socket> socket;
 
 		Editor* editor;
 

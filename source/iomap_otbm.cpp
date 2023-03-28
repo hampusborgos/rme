@@ -410,7 +410,7 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
@@ -485,7 +485,7 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 
 bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
@@ -1331,7 +1331,7 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 
 bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 	if(identifier.GetExt() == "otgz") {
 		// Create the archive
 		struct archive* a = archive_write_new();

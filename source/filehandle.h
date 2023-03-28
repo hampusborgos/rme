@@ -50,11 +50,15 @@ enum NodeType {
 	ESCAPE_CHAR = 0xfd,
 };
 
-class FileHandle : boost::noncopyable
+class FileHandle
 {
 public:
 	FileHandle() : error_code(FILE_NO_ERROR), file(nullptr) {}
 	virtual ~FileHandle() {close();}
+
+	// Ensures we don't accidentally copy it.
+	FileHandle(const FileHandle &) = delete;
+	FileHandle &operator=(const FileHandle &) = delete;
 
 	virtual void close();
 	virtual bool isOpen() {return file != nullptr;}
