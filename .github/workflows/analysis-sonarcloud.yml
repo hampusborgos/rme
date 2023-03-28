@@ -71,6 +71,9 @@ jobs:
           vcpkgGitURL: "https://github.com/microsoft/vcpkg.git"
           vcpkgGitCommitId: ${{ steps.vcpkg-step.outputs.vcpkgGitCommitId }}
 
+      - name: Install additional libraries
+        run: sudo apt-get install libasio-dev nlohmann-json3-dev libfmt-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev libxrandr-dev libxxf86vm-dev libglib2.0-dev at-spi2-core libwxgtk3.0-gtk3-dev libarchive-dev freeglut3-dev libxmu-dev libdbus-1-dev libxtst-dev
+
       - name: Install sonar-scanner
         uses: SonarSource/sonarcloud-github-c-cpp@v1
 
