@@ -20,7 +20,6 @@
 
 #include "outfit.h"
 #include "common.h"
-#include <deque>
 
 #include "client_version.h"
 #include "sprite_appearances.h"
@@ -284,7 +283,6 @@ public:
 	bool loadEditorSprites();
 	// Metadata should be loaded first
 	// This fills the item / creature adress space
-	bool loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings);
 	bool loadItemSpriteMetadata(ItemType* t, wxString& error, wxArrayString& warnings);
 	bool loadOutfitSpriteMetadata(remeres::protobuf::appearances::Appearance outfit, wxString& error, wxArrayString& warnings);
 	bool loadSpriteMetadataFlags(const ItemType* t, GameSprite* sType, wxString& error, wxArrayString& warnings);
@@ -300,8 +298,6 @@ public:
 	bool hasTransparency() const;
 	bool isUnloaded() const;
 
-	ClientVersion *client_version;
-
 private:
 	bool unloaded;
 	// This is used if memcaching is NOT on
@@ -314,7 +310,6 @@ private:
 	ImageMap image_space;
 	std::deque<GameSprite*> cleanup_list;
 
-	DatFormat dat_format;
 	uint16_t item_count;
 	uint16_t creature_count;
 	bool otfi_found;

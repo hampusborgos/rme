@@ -18,13 +18,6 @@
 #ifndef RME_COMMONS_H_
 #define RME_COMMONS_H_
 
-#include "main.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <cmath>
-#include <iomanip>
-#include <string>
-
 #include "mt_rand.h"
 
 //

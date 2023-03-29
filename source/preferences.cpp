@@ -18,8 +18,6 @@
 
 #include "main.h"
 
-#include <wx/collpane.h>
-
 #include "settings.h"
 #include "client_version.h"
 #include "editor.h"
@@ -47,6 +45,7 @@ PreferencesWindow::PreferencesWindow(wxWindow *parent, bool clientVersionSelecte
     book->AddPage(CreateGraphicsPage(), "Graphics");
     book->AddPage(CreateUIPage(), "Interface");
     book->AddPage(CreateClientPage(), "Client Version", clientVersionSelected);
+	version_dir_picker->Bind(wxEVT_DIRPICKER_CHANGED, &PreferencesWindow::SelectNewAssetsFolder, this);
 
     sizer->Add(book, 1, wxEXPAND | wxALL, 10);
 
@@ -494,60 +493,29 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	wxNotebookPage* client_page = newd wxPanel(book, wxID_ANY);
 
 	// Refresh g_settings
-	ClientVersion::saveVersions();
-	ClientVersionList versions = ClientVersion::getAllVisible();
+	Assets::save();
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
-    auto * options_sizer = newd wxFlexGridSizer(2, 10, 10);
-	options_sizer->AddGrowableCol(1);
-
-	// Default client version choice control
-	default_version_choice = newd wxChoice(client_page, wxID_ANY);
-	wxStaticText* default_client_tooltip = newd wxStaticText(client_page, wxID_ANY, "Default client version:");
-	options_sizer->Add(default_client_tooltip, 0, wxLEFT | wxTOP, 5);
-	options_sizer->Add(default_version_choice, 0, wxTOP, 5);
-	SetWindowToolTip(default_client_tooltip, default_version_choice, "This will decide what client version will be used when new maps are created.");
-
-	// Check file sigs checkbox
-	check_sigs_chkbox = newd wxCheckBox(client_page, wxID_ANY, "Check file signatures");
-	check_sigs_chkbox->SetValue(g_settings.getBoolean(Config::CHECK_SIGNATURES));
-	check_sigs_chkbox->SetToolTip("When this option is not checked, the editor will load any OTB/DAT/SPR combination without complaints. This may cause graphics bugs.");
-	options_sizer->Add(check_sigs_chkbox, 0, wxLEFT | wxRIGHT | wxTOP, 5);
-
-	// Add the grid sizer
-	topsizer->Add(options_sizer, wxSizerFlags(0).Expand());
-	topsizer->AddSpacer(10);
-
 	wxScrolledWindow *client_list_window = newd wxScrolledWindow(client_page, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	client_list_window->SetMinSize(FROM_DIP(this, wxSize(450, 450)));
-    auto * client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
+	auto * client_list_sizer = newd wxFlexGridSizer(2, 10, 10);
 	client_list_sizer->AddGrowableCol(1);
 
-    int version_counter = 0;
-	for (auto version : versions) {
-        if(!version->isVisible())
-			continue;
 
-		default_version_choice->Append(wxstr(version->getName()));
+	std::string assets = "Client Assets";
 
-		wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString(version->getName()));
-		client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
+	wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString(assets));
+	client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
 
-		wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, version->getClientPath().GetFullPath());
-		version_dir_pickers.push_back(dir_picker);
-		client_list_sizer->Add(dir_picker, wxSizerFlags(0).Border(wxRIGHT, 10).Expand());
+	wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, Assets::getPath());
+	version_dir_picker = dir_picker;
+	client_list_sizer->Add(dir_picker, wxSizerFlags(0).Border(wxRIGHT, 10).Expand());
 
-		wxString tooltip;
-		tooltip << "The editor will look for " << wxstr(version->getName()) << " DAT & SPR here.";
-		tmp_text->SetToolTip(tooltip);
-		dir_picker->SetToolTip(tooltip);
-
-		if(version->getID() == g_settings.getInteger(Config::DEFAULT_CLIENT_VERSION))
-			default_version_choice->SetSelection(version_counter);
-
-		version_counter++;
-	}
+	wxString tooltip;
+	tooltip << "The editor will look for " << wxstr(assets) << " here.";
+	tmp_text->SetToolTip(tooltip);
+	dir_picker->SetToolTip(tooltip);
 
 	// Set the sizers
 	client_list_window->SetSizer(client_list_sizer);
@@ -555,6 +523,8 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	client_list_window->SetScrollRate(5, 5);
 	topsizer->Add(client_list_window, 0, wxALL, 5);
 	client_page->SetSizerAndFit(topsizer);
+
+	spdlog::warn("text window {}", client_page->GetLabel().ToStdString());
 
 	return client_page;
 }
@@ -575,6 +545,20 @@ void PreferencesWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
 void PreferencesWindow::OnClickApply(wxCommandEvent& WXUNUSED(event))
 {
 	Apply();
+}
+
+void PreferencesWindow::SelectNewAssetsFolder(wxCommandEvent& event)
+{
+	wxDirPickerCtrl* dir_picker = static_cast<wxDirPickerCtrl*>(event.GetEventObject());
+	wxString path = dir_picker->GetPath();
+	if (!path.IsEmpty()) {
+		Assets::setPath(path);
+		// spdlog::info("New directory selected: {}", path.ToStdString());
+	} else {
+		wxMessageDialog dialog(this, "Directory is empty", "Error", wxOK | wxICON_ERROR);
+		dialog.ShowModal();
+		spdlog::warn("No have selected directory");
+	}
 }
 
 void PreferencesWindow::OnCollapsiblePane(wxCollapsiblePaneEvent& event)
@@ -695,25 +679,9 @@ void PreferencesWindow::Apply()
 	g_settings.setFloat(Config::SCROLL_SPEED, scroll_mul * scroll_speed_slider->GetValue()/10.f);
 	g_settings.setFloat(Config::ZOOM_SPEED, zoom_speed_slider->GetValue()/10.f);
 
-	// Client
-	ClientVersionList versions = ClientVersion::getAllVisible();
-	int version_counter = 0;
-	for (auto version : versions) {
-        wxString dir = version_dir_pickers[version_counter]->GetPath();
-		if(dir.Length() > 0 && dir.Last() != '/' && dir.Last() != '\\')
-			dir.Append("/");
-		version->setClientPath(FileName(dir));
-
-		if(version->getName() == default_version_choice->GetStringSelection())
-			g_settings.setInteger(Config::DEFAULT_CLIENT_VERSION, version->getID());
-
-		version_counter++;
-	}
-	g_settings.setInteger(Config::CHECK_SIGNATURES, check_sigs_chkbox->GetValue());
-
 	// Make sure to reload client paths
-	ClientVersion::saveVersions();
-	ClientVersion::loadVersions();
+	Assets::save();
+	Assets::load();
 
 	g_settings.save();
 

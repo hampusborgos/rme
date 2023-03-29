@@ -18,8 +18,6 @@
 #ifndef WELCOME_DIALOG_H
 #define WELCOME_DIALOG_H
 
-#include <wx/wx.h>
-
 wxDECLARE_EVENT(WELCOME_DIALOG_ACTION, wxCommandEvent);
 
 class WelcomeDialogPanel;

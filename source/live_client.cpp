@@ -22,8 +22,6 @@
 #include "live_action.h"
 #include "editor.h"
 
-#include <wx/event.h>
-
 LiveClient::LiveClient() : LiveSocket(),
 	readMessage(), queryNodeList(), currentOperation(),
 	resolver(nullptr), socket(nullptr), editor(nullptr), stopped(false)
@@ -272,7 +270,7 @@ void LiveClient::sendHello()
 	message.write<uint8_t>(PACKET_HELLO_FROM_CLIENT);
 	message.write<uint32_t>(__RME_VERSION_ID__);
 	message.write<uint32_t>(__LIVE_NET_VERSION__);
-	message.write<uint32_t>(g_gui.GetCurrentVersionID());
+	message.write<uint32_t>(0);
 	message.write<std::string>(nstr(name));
 	message.write<std::string>(nstr(password));
 
@@ -421,7 +419,6 @@ void LiveClient::parseClientAccepted(NetworkMessage& message)
 
 void LiveClient::parseChangeClientVersion(NetworkMessage& message)
 {
-	ClientVersionID clientVersion = static_cast<ClientVersionID>(message.read<uint32_t>());
 	if(!g_gui.CloseAllEditors()) {
 		close();
 		return;
@@ -429,7 +426,7 @@ void LiveClient::parseChangeClientVersion(NetworkMessage& message)
 
 	wxString error;
 	wxArrayString warnings;
-	g_gui.LoadVersion(clientVersion, error, warnings);
+	g_gui.LoadVersion(error, warnings);
 
 	sendReady();
 }

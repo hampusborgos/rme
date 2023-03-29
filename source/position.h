@@ -18,11 +18,6 @@
 #ifndef __POSITION_HPP__
 #define __POSITION_HPP__
 
-#include <ostream>
-#include <cstdint>
-#include <vector>
-#include <list>
-
 class SmallPosition;
 
 class Position {

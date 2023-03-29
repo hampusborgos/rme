@@ -277,6 +277,7 @@ public:
 	std::vector<int> m_sprites;
 
 	uint16_t id;
+	uint16_t clientID;
 	Brush* brush;
 	Brush* doodad_brush;
 	RAWBrush* raw_brush;

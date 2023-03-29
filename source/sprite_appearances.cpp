@@ -15,19 +15,12 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "definitions.h"
+#include "main.h"
+
 #include "sprite_appearances.h"
 #include "settings.h"
 #include "filehandle.h"
 #include "gui.h"
-
-#include <exception>
-#include <fmt/core.h>
-#include <lzma.h>
-#include <spdlog/spdlog.h>
-#include <nlohmann/json.hpp>
-#include <filesystem>
-#include <iostream>
 
 namespace fs = std::filesystem;
 
@@ -48,8 +41,8 @@ bool SpriteAppearances::loadCatalogContent(const std::string& dir, bool loadData
 {
 	using json = nlohmann::json;
 	if (!fs::is_directory(dir)) {
-		spdlog::error("Given directory isn't directory: {}", dir.c_str());
-		throw std::exception(fmt::format("Given directory isn't directory: {}", dir).c_str());
+		spdlog::error("Given directory isn't valid directory: {}", dir.c_str());
+		throw std::exception(fmt::format("Given directory isn't valid directory: {}", dir).c_str());
 		return false;
 	}
 

@@ -17,10 +17,6 @@
 
 #include "main.h"
 
-#include <wx/display.h>
-#include <nlohmann/json.hpp>
-#include "spdlog/spdlog.h"
-
 #include "gui.h"
 #include "application.h"
 #include "main_menubar.h"
@@ -33,6 +29,7 @@
 #include "doodad_brush.h"
 #include "spawn_monster_brush.h"
 #include "sprite_appearances.h"
+#include "client_version.h"
 
 #include "common_windows.h"
 #include "result_window.h"
@@ -46,10 +43,6 @@
 #include "live_client.h"
 #include "live_tab.h"
 #include "live_server.h"
-
-#ifdef __WXOSX__
-#include <AGL/agl.h>
-#endif
 
 const wxEventType EVT_UPDATE_MENUS = wxNewEventType();
 
@@ -79,7 +72,6 @@ GUI::GUI() :
 	window_door_brush(nullptr),
 
 	OGLContext(nullptr),
-	loaded_version(CLIENT_VERSION_NONE),
 	mode(SELECTION_MODE),
 	pasting(false),
 	hotkeys_enabled(true),
@@ -258,12 +250,11 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 		wxLogError(wxString() + "Could not find data directory.\n");
 }
 
-bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& warnings, bool force)
+bool GUI::LoadVersion(wxString& error, wxArrayString& warnings, bool force)
 {
-	if(version != loaded_version || force) {
-		if(getLoadedVersion() != nullptr)
-			// There is another version loaded right now, save window layout
-			g_gui.SavePerspective();
+	if (force) {
+		// There is another version loaded right now, save window layout
+		g_gui.SavePerspective();
 
 		// Disable all rendering so the data is not accessed while reloading
 		UnnamedRenderingLock();
@@ -273,20 +264,9 @@ bool GUI::LoadVersion(ClientVersionID version, wxString& error, wxArrayString& w
 		// Destroy the previous version
 		UnloadVersion();
 
-		loaded_version = version;
-		if(!getLoadedVersion()->hasValidPaths()) {
-			if(!getLoadedVersion()->loadValidPaths()) {
-				error = "Couldn't load relevant asset files";
-				loaded_version = CLIENT_VERSION_NONE;
-				return false;
-			}
-		}
-
 		bool ret = LoadDataFiles(error, warnings);
 		if(ret)
 			g_gui.LoadPerspective();
-		else
-			loaded_version = CLIENT_VERSION_NONE;
 
 		return ret;
 	}
@@ -308,29 +288,14 @@ bool GUI::AreHotkeysEnabled() const
 	return hotkeys_enabled;
 }
 
-ClientVersionID GUI::GetCurrentVersionID() const
-{
-	if(loaded_version != CLIENT_VERSION_NONE) {
-		return getLoadedVersion()->getID();
-	}
-	return CLIENT_VERSION_NONE;
-}
-
-const ClientVersion& GUI::GetCurrentVersion() const
-{
-	assert(loaded_version);
-	return *getLoadedVersion();
-}
-
 void GUI::CycleTab(bool forward)
 {
 	tabbook->CycleTab(forward);
 }
 
-bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
+bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
 {
-	FileName data_path = getLoadedVersion()->getDataPath();
-	FileName client_path = getLoadedVersion()->getClientPath();
+	FileName data_path = Assets::getDataPath();
 	FileName extension_path = GetExtensionsDirectory();
 
 	FileName exec_directory;
@@ -346,24 +311,15 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_spriteAppearances.init();
 
-	g_gui.gfx.client_version = getLoadedVersion();
-
-	if(!g_gui.gfx.loadOTFI(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR), error, warnings)) {
-		error = "Couldn't load otfi file: " + error;
-		g_gui.DestroyLoadBar();
-		UnloadVersion();
-		return false;
-	}
-
 	g_gui.CreateLoadBar("Loading assets files");
 	g_gui.SetLoadDone(0, "Loading assets file");
 	spdlog::info("Loading assets");
 
 	g_gui.SetLoadDone(20, "Loading appearances.dat file...");
 	spdlog::info("Loading appearances");
-	if(!g_gui.loadAppearanceProtobuf(error, warnings)) {
+	if(!Assets::loadAppearanceProtobuf(error, warnings)) {
 		error = "Couldn't load catalog-content.json: " + error;
-		spdlog::error("[GUI::LoadDataFiles] - Couldn't load {}", error.ToStdString());
+		spdlog::error("[GUI::LoadDataFiles] {}", error.ToStdString());
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
@@ -373,20 +329,20 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	spdlog::info("Loading items");
 	if(!g_items.loadFromGameXml(exec_directory.GetPath() + wxString("\\data\\items\\items.xml"), error, warnings)) {
 		warnings.push_back("Couldn't load items.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] - Couldn't load {}: {}", wxString("data/items/items.xml").ToStdString(), error.ToStdString());
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/items/items.xml").ToStdString(), error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(45, "Loading monsters.xml ...");
 	spdlog::info("Loading monsters");
 	if(!g_monsters.loadFromXML(exec_directory.GetPath() + wxString("\\data\\creatures\\monsters.xml"), true, error, warnings)) {
 		warnings.push_back("Couldn't load monsters.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] - Couldn't load {}: {}", wxString("data/creatures/monsters.xml").ToStdString(), error.ToStdString());
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/creatures/monsters.xml").ToStdString(), error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(45, "Loading user monsters.xml ...");
 	spdlog::info("Loading user monsters");
 	{
-		FileName cdb = getLoadedVersion()->getLocalDataPath();
+		FileName cdb = Assets::getLocalPath();
 		cdb.SetFullName("monsters.xml");
 		wxString nerr;
 		wxArrayString nwarn;
@@ -397,13 +353,13 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	spdlog::info("Loading npcs");
 	if(!g_npcs.loadFromXML(exec_directory.GetPath() + wxString("\\data\\creatures\\npcs.xml"), true, error, warnings)) {
 		warnings.push_back("Couldn't load npcs.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] - Couldn't load {}: {}", wxString("data/creatures/npcs.xml").ToStdString(), error.ToStdString());
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/creatures/npcs.xml").ToStdString(), error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(45, "Loading user npcs.xml ...");
 	spdlog::info("Loading user npcs");
 	{
-		FileName cdb = getLoadedVersion()->getLocalDataPath();
+		FileName cdb = Assets::getLocalPath();
 		cdb.SetFullName("npcs.xml");
 		wxString nerr;
 		wxArrayString nwarn;
@@ -414,14 +370,14 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	spdlog::info("Loading materials");
 	if(!g_materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials.xml"), error, warnings)) {
 		warnings.push_back("Couldn't load materials.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] - Couldn't load {}: {}", wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials.xml").ToStdString(), error.ToStdString());
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials.xml").ToStdString(), error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(70, "Loading extensions...");
 	spdlog::info("Loading extensions");
 	if(!g_materials.loadExtensions(exec_directory.GetPath() + wxString("\\extensions\\"), error, warnings)) {
 		warnings.push_back("Couldn't load extensions: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] - Couldn't load extensions: {}", error.ToStdString());
+		spdlog::warn("[GUI::LoadDataFiles] extensions: {}", error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(70, "Finishing...");
@@ -432,69 +388,6 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	g_materials.createNpcTileset();
 
 	g_gui.DestroyLoadBar();
-	return true;
-}
-
-bool GUI::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
-{
-	using namespace remeres::protobuf::appearances;
-	using json = nlohmann::json;
-	std::stringstream ss;
-	ss << g_gui.GetDataDirectory();
-	const std::string& assetsDirectory = ss.str() + "assets/";
-	const std::string& catalogContentFile = assetsDirectory + "catalog-content.json";
-
-	if (!g_spriteAppearances.loadCatalogContent(assetsDirectory, false)) {
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Cannot open catalog content file");
-		return false;
-	}
-
-	const std::string appearanceFileName = g_spriteAppearances.getAppearanceFileName();
-
-	//g_spriteAppearances.setSpritesCount(spritesCount + 1);
-
-	std::fstream fileStream(assetsDirectory + appearanceFileName, std::ios::in | std::ios::binary);
-	if (!fileStream.is_open()) {
-		error = "Failed to load "+ appearanceFileName +", file cannot be oppened";
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to load %s, file cannot be oppened", appearanceFileName);
-		fileStream.close();
-		return false;
-	}
-
-	// Verify that the version of the library that we linked against is
-	// compatible with the version of the headers we compiled against.
-	GOOGLE_PROTOBUF_VERIFY_VERSION;
-	appearances = Appearances();
-	if (!appearances.ParseFromIstream(&fileStream)) {
-		error = "Failed to parse binary file "+ appearanceFileName +", file is invalid";
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse binary file {}, file is invalid", appearanceFileName);
-		fileStream.close();
-		return false;
-	}
-
-	// Parsing all items into ItemType
-	bool rt = g_items.loadFromProtobuf(error, warnings, appearances);
-	if (!rt) {
-		error = "Failed to parse item types from protobuf";
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse item types from protobuf");
-		fileStream.close();
-		return false;
-	}
-
-	// Load looktypes
-	for (int i = 0; i < appearances.outfit().size(); i++) {
-		const auto &outfit = appearances.outfit().Get(i);
-		if (!g_gui.gfx.loadOutfitSpriteMetadata(outfit, error, warnings)) {
-			error = "Failed to parse outfit types from protobuf";
-			spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse outfit types from protobuf");
-			fileStream.close();
-			return false;
-		}
-	}
-	fileStream.close();
-
-	// Disposing allocated objects.
-	google::protobuf::ShutdownProtobufLibrary();
 	return true;
 }
 
@@ -517,24 +410,21 @@ void GUI::UnloadVersion()
 	hatch_door_brush = nullptr;
 	window_door_brush = nullptr;
 
-	if(loaded_version != CLIENT_VERSION_NONE) {
-		//g_gui.UnloadVersion();
-		g_materials.clear();
-		g_brushes.clear();
-		g_items.clear();
-		gfx.clear();
+	//g_gui.UnloadVersion();
+	g_materials.clear();
+	g_brushes.clear();
+	g_items.clear();
+	gfx.clear();
 
-		FileName cdb = getLoadedVersion()->getLocalDataPath();
-		cdb.SetFullName("monsters.xml");
-		g_monsters.saveToXML(cdb);
-		g_monsters.clear();
+	FileName cdb = Assets::getLocalPath();
+	cdb.SetFullName("monsters.xml");
+	g_monsters.saveToXML(cdb);
+	g_monsters.clear();
 
-		cdb.SetFullName("npcs.xml");
-		g_npcs.saveToXML(cdb);
-		g_npcs.clear();
+	cdb.SetFullName("npcs.xml");
+	g_npcs.saveToXML(cdb);
+	g_npcs.clear();
 
-		loaded_version = CLIENT_VERSION_NONE;
-	}
 }
 
 void GUI::SaveCurrentMap(FileName filename, bool showdialog)
@@ -710,6 +600,16 @@ bool GUI::LoadMap(const FileName& fileName)
 			mapTab->SetScreenCenterPosition(position);
 		}
 	}
+
+	wxString error;
+	wxArrayString warnings;
+	if (!g_gui.LoadVersion(error, warnings, true)) {
+		return 0;
+	}
+
+	g_gui.PopupDialog("Error", error, wxOK);
+	g_gui.ListDialog("Warnings", warnings);
+
 	return true;
 }
 
@@ -858,7 +758,7 @@ void GUI::NewMapView()
 
 void GUI::LoadPerspective()
 {
-	if(!IsVersionLoaded()) {
+	if(!Assets::isLoaded()) {
 		if(g_settings.getInteger(Config::WINDOW_MAXIMIZED)) {
 			root->Maximize();
 		} else {
@@ -1026,7 +926,7 @@ void GUI::RefreshOtherPalettes(PaletteWindow* p)
 
 PaletteWindow* GUI::CreatePalette()
 {
-	if(!IsVersionLoaded())
+	if(!Assets::isLoaded())
 		return nullptr;
 
 	auto *palette = newd PaletteWindow(root, g_materials.tilesets);
@@ -1102,7 +1002,7 @@ void GUI::SelectPalettePage(PaletteType pt)
 
 void GUI::CreateMinimap()
 {
-	if(!IsVersionLoaded())
+	if(!Assets::isLoaded())
 		return;
 
 	if(minimap) {

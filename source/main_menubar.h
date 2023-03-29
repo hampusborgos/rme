@@ -19,8 +19,6 @@
 #ifndef RME_MAIN_BAR_H_
 #define RME_MAIN_BAR_H_
 
-#include <wx/docview.h>
-
 namespace MenuBar
 {
 	struct Action;

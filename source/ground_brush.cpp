@@ -67,7 +67,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 	}
 
 	if((attribute = node.attribute("group"))) {
-		group = attribute.as_ushort();
+		group = static_cast<uint16_t>(attribute.as_uint());
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -75,7 +75,7 @@ bool AutoBorder::load(pugi::xml_node node, wxArrayString& warnings, GroundBrush*
 			continue;
 		}
 
-		uint16_t itemid = attribute.as_ushort();
+		uint16_t itemid = static_cast<uint16_t>(attribute.as_uint());
 		if(!(attribute = childNode.attribute("edge"))) {
 			continue;
 		}
@@ -150,7 +150,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if((attribute = node.attribute("lookid"))) {
-		look_id = attribute.as_ushort();
+		look_id = static_cast<uint16_t>(attribute.as_uint());
 	}
 
 	if((attribute = node.attribute("z-order"))) {
@@ -168,7 +168,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
 		const std::string& childName = as_lower_str(childNode.name());
 		if(childName == "item") {
-			uint16_t itemId = childNode.attribute("id").as_ushort();
+			uint16_t itemId = childNode.attribute("id").as_uint();
 			int32_t chance = childNode.attribute("chance").as_int();
 
 			ItemType& it = g_items[itemId];
@@ -202,7 +202,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			}
 
 			if((attribute = childNode.attribute("ground_equivalent"))) {
-				uint16_t ground_equivalent = attribute.as_ushort();
+				uint16_t ground_equivalent = static_cast<uint16_t>(attribute.as_uint());
 
 				// Load from inline definition
 				ItemType& it = g_items[ground_equivalent];
@@ -227,7 +227,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					continue;
 				}
 
-				uint16_t id = attribute.as_ushort();
+				uint16_t id = static_cast<uint16_t>(attribute.as_uint());
 				auto it = g_brushes.borders.find(id);
 				if(it == g_brushes.borders.end() || !it->second) {
 					warnings.push_back("\nCould not find border id " + std::to_string(id));
@@ -243,7 +243,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					continue;
 				}
 
-				uint16_t ground_equivalent = attribute.as_ushort();
+				uint16_t ground_equivalent = static_cast<uint16_t>(attribute.as_uint());
 				ItemType& it = g_items[ground_equivalent];
 				if(it.id == 0) {
 					warnings.push_back("Invalid id of ground dependency equivalent item.\n");
@@ -365,7 +365,7 @@ bool GroundBrush::load(pugi::xml_node node, wxArrayString& warnings)
 									continue;
 								}
 
-								uint16_t group = attribute.as_ushort();
+								uint16_t group = static_cast<uint16_t>(attribute.as_uint());
 								if(!(attribute = conditionChild.attribute("edge"))) {
 									continue;
 								}

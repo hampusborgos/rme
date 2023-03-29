@@ -17,9 +17,6 @@
 
 #include "main.h"
 
-#include <wx/splitter.h>
-#include <wx/grid.h>
-
 #include "live_tab.h"
 #include "live_socket.h"
 #include "live_peer.h"

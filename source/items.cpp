@@ -19,8 +19,6 @@
 
 #include "materials.h"
 #include "gui.h"
-#include <string.h> // memcpy
-#include <spdlog/spdlog.h>
 
 #include "items.h"
 #include "item.h"
@@ -286,11 +284,7 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 
 bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 {
-	ClientVersionID clientVersion = g_gui.GetCurrentVersionID();
-	if(clientVersion < CLIENT_VERSION_980 && id > 20000 && id < 20100) {
-		itemNode = itemNode.next_sibling();
-		return true;
-	} else if(id > 30000 && id < 30100) {
+	if(id > 30000 && id < 30100) {
 		itemNode = itemNode.next_sibling();
 		return true;
 	}
@@ -361,11 +355,11 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			}
 		} else if(key == "rotateto") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.rotateTo = attribute.as_ushort();
+				it.rotateTo = static_cast<uint16_t>(attribute.as_uint());
 			}
 		} else if(key == "containersize") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.volume = attribute.as_ushort();
+				it.volume = static_cast<uint16_t>(attribute.as_uint());
 			}
 		} else if(key == "readable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
@@ -379,7 +373,7 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 			it.decays = true;
 		} else if(key == "maxtextlen" || key == "maxtextlength") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				it.maxTextLen = attribute.as_ushort();
+				it.maxTextLen = static_cast<uint16_t>(attribute.as_uint());
 				it.canReadText = it.maxTextLen > 0;
 			}
 		} else if(key == "writeonceitemid") {
@@ -454,10 +448,10 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 		uint16_t fromId = 0;
 		uint16_t toId = 0;
 		if(const pugi::xml_attribute attribute = itemNode.attribute("id")) {
-			fromId = toId = attribute.as_ushort();
+			fromId = toId = static_cast<uint16_t>(attribute.as_uint());
 		} else {
-			fromId = itemNode.attribute("fromid").as_ushort();
-			toId = itemNode.attribute("toid").as_ushort();
+			fromId = itemNode.attribute("fromid").as_uint();
+			toId = itemNode.attribute("toid").as_uint();
 		}
 
 		if(fromId == 0 || toId == 0) {
@@ -477,7 +471,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 {
 	if(const pugi::xml_attribute attribute = node.attribute("id")) {
-		const uint16_t id = attribute.as_ushort();
+		const uint16_t id = static_cast<uint16_t>(attribute.as_uint());
 		if(id == 0 || items[id]) {
 			return false;
 		}

@@ -19,11 +19,6 @@
 #ifndef RME_PREFERENCES_WINDOW_H_
 #define RME_PREFERENCES_WINDOW_H_
 
-#include "main.h"
-#include <wx/listbook.h>
-#include <wx/collpane.h>
-#include <wx/clrpicker.h>
-
 class PreferencesWindow : public wxDialog
 {
 public:
@@ -35,6 +30,8 @@ public:
 	void OnClickApply(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
+
+	void SelectNewAssetsFolder(wxCommandEvent& event);
 
 	void OnCollapsiblePane(wxCollapsiblePaneEvent&);
 
@@ -109,7 +106,7 @@ protected:
 
 	// Client info
 	wxChoice* default_version_choice;
-	std::vector<wxDirPickerCtrl*> version_dir_pickers;
+	wxDirPickerCtrl* version_dir_picker;
 	wxCheckBox* check_sigs_chkbox;
 
 	// Create controls

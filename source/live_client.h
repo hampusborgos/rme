@@ -21,8 +21,6 @@
 #include "live_socket.h"
 #include "net_connection.h"
 
-#include <set>
-
 class DirtyList;
 class MapTab;
 

@@ -17,9 +17,6 @@
 
 #include "main.h"
 
-#include <wx/dir.h>
-#include <spdlog/spdlog.h>
-
 #include "editor.h"
 #include "items.h"
 #include "monsters.h"
@@ -120,7 +117,7 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 		fn.SetPath(directoryName.GetPath());
 		fn.SetFullName(filename);
 		if(fn.GetExt() != "xml") {
-			spdlog::warn("[Materials::loadExtensions] - Invalid extension {}", fn.GetExt());
+			spdlog::warn("[Materials::loadExtensions] - Invalid extension {}", fn.GetExt().ToStdString());
 			continue;
 		}
 
@@ -177,41 +174,12 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 		materialExtension->url = extensionUrl;
 		materialExtension->author_url = extensionAuthorLink;
 
-		if((attribute = extensionNode.attribute("client"))) {
-			clientVersions.clear();
-			const std::string& extensionClientString = attribute.as_string();
-
-			size_t lastPosition = 0;
-			size_t position = extensionClientString.find(';');
-			while(position != std::string::npos) {
-				clientVersions.push_back(extensionClientString.substr(lastPosition, position - lastPosition));
-				lastPosition = position + 1;
-				position = extensionClientString.find(';', lastPosition);
-			}
-
-			clientVersions.push_back(extensionClientString.substr(lastPosition));
-			for(const std::string& version : clientVersions) {
-				materialExtension->addVersion(version);
-			}
-
-			std::sort(materialExtension->version_list.begin(), materialExtension->version_list.end(), VersionComparisonPredicate);
-
-			auto duplicate = std::unique(materialExtension->version_list.begin(), materialExtension->version_list.end());
-			while(duplicate != materialExtension->version_list.end()) {
-				materialExtension->version_list.erase(duplicate);
-				duplicate = std::unique(materialExtension->version_list.begin(), materialExtension->version_list.end());
-			}
-		} else {
-			spdlog::warn("[Materials::loadExtensions] - Extension is not available for any version {}", filename.ToStdString());
-			warnings.push_back(filename + ": Extension is not available for any version.");
-		}
-
 		extensions.push_back(materialExtension);
-		if(materialExtension->isForVersion(g_gui.GetCurrentVersionID())) {
+		if(materialExtension->isForVersion(0)) {
 			unserializeMaterials(filename, extensionNode, error, warnings);
-			spdlog::warn("[Materials::loadExtensions] - Extension '{}' unserialized", extensionName.ToStdString());
+			spdlog::warn("[Materials::loadExtensions] - Extension '{}' unserialized", extensionName);
 		} else {
-			spdlog::warn("[Materials::loadExtensions] - Extension '{}' not loaded due to different version", extensionName.ToStdString());
+			spdlog::warn("[Materials::loadExtensions] - Extension '{}' not loaded due to different version", extensionName);
 		}
 	} while(ext_dir.GetNext(&filename));
 

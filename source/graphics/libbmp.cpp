@@ -3,6 +3,8 @@
  */
 // Modified by Nekiro
 
+#include "main.h"
+
 #include "libbmp.h"
 
  //

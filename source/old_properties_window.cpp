@@ -17,8 +17,6 @@
 
 #include "main.h"
 
-#include <wx/grid.h>
-
 #include "tile.h"
 #include "item.h"
 #include "complexitem.h"

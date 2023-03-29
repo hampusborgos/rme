@@ -16,6 +16,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "main.h"
+
 #include "artprovider.h"
 
 #include "../icons/circular_1.xpm"
@@ -37,7 +38,6 @@
 #include "../icons/rectangular_5.xpm"
 #include "../icons/rectangular_6.xpm"
 #include "../icons/rectangular_7.xpm"
-
 
 wxBitmap ArtProvider::CreateBitmap(const wxArtID& id, const wxArtClient& client, const wxSize& WXUNUSED(size))
 {

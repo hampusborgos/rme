@@ -18,16 +18,6 @@
 #ifndef OTML_H
 #define OTML_H
 
-#include <sstream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <exception>
-#include <memory>
-#include <algorithm>
-#include <cmath>
-#include <algorithm>
-
 class OTMLNode;
 class OTMLDocument;
 class OTMLParser;

@@ -24,9 +24,6 @@
 #include "filehandle.h"
 #include "iomap.h"
 
-#include <memory>
-#include <unordered_map>
-
 class LiveLogTab;
 class Action;
 

@@ -23,7 +23,6 @@
 #include "map_region.h"
 #include "spawn_npc.h"
 #include "npc.h"
-#include <unordered_set>
 
 enum {
 	TILESTATE_NONE           = 0x0000,

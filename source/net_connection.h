@@ -20,12 +20,6 @@
 
 #include "position.h"
 
-#include <string>
-#include <vector>
-#include <cstdint>
-#include <thread>
-#include <mutex>
-
 struct NetworkMessage
 {
 	NetworkMessage();

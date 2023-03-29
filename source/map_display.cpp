@@ -17,10 +17,6 @@
 
 #include "main.h"
 
-#include <sstream>
-#include <time.h>
-#include <wx/wfstream.h>
-
 #include "gui.h"
 #include "editor.h"
 #include "brush.h"

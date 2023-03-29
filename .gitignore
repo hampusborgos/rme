@@ -41,6 +41,7 @@ vcproj/Installer/Release/
 .vscode/
 *.filters
 *.users
+*.ilk
 
 # Xcode
 xcuserdata

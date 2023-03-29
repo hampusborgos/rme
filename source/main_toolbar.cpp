@@ -24,9 +24,6 @@
 #include "pngfiles.h"
 #include "artprovider.h"
 
-#include <wx/artprov.h>
-#include <wx/mstream.h>
-
 const wxString MainToolBar::STANDARD_BAR_NAME = "standard_toolbar";
 const wxString MainToolBar::BRUSHES_BAR_NAME = "brushes_toolbar";
 const wxString MainToolBar::POSITION_BAR_NAME = "position_toolbar";

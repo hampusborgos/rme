@@ -66,11 +66,7 @@ public:
 	TownMap::iterator begin() {return towns.begin();}
 	TownMap::iterator end() {return towns.end();}
 	TownMap::iterator find(uint32_t id) {return towns.find(id);}
-#ifdef __VISUALC__ // C++0x compliance to some degree :)
 	TownMap::iterator erase(TownMap::iterator iter) {return towns.erase(iter);}
-#else
-	void erase(TownMap::iterator iter) {towns.erase(iter);}
-#endif
 
 private:
 	TownMap towns;

@@ -18,13 +18,6 @@
 #ifndef SPRITEAPPEARANCES_H
 #define SPRITEAPPEARANCES_H
 
-#include <mutex>
-#include <vector>
-#include <wx/mstream.h>
-#include <wx/stopwatch.h>
-#include <wx/dir.h>
-#include <fmt/core.h>
-
 #include "definitions.h"
 #include "main.h"
 #include "graphics.h"

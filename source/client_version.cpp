@@ -27,387 +27,139 @@
 
 using json = nlohmann::json;
 
-// Static methods to load/save
+std::string Assets::version_name;
+uint16_t Assets::client_version;
+wxString Assets::data_path;
+wxString Assets::assets_path;
+bool Assets::loaded = false;
 
-ClientVersion::VersionMap ClientVersion::client_versions;
-ClientVersion* ClientVersion::latest_version = nullptr;
-ClientVersion::OtbMap ClientVersion::otb_versions;
-
-void ClientVersion::loadVersions()
+void Assets::load()
 {
-	// Clean up old stuff
-	ClientVersion::unloadVersions();
-
-	// Locate the clients.xml file
-	wxFileName file_to_load;
-
-	wxFileName exec_dir_client_xml;
-	exec_dir_client_xml.Assign(g_gui.GetExecDirectory());
-	exec_dir_client_xml.SetFullName("clients.xml");
-
-	wxFileName data_dir_client_xml;
-	data_dir_client_xml.Assign(g_gui.GetDataDirectory());
-	data_dir_client_xml.SetFullName("clients.xml");
-
-	wxFileName work_dir_client_xml;
-	work_dir_client_xml.Assign(g_gui.getFoundDataDirectory());
-	work_dir_client_xml.SetFullName("clients.xml");
-
-	file_to_load = exec_dir_client_xml;
-	if(!file_to_load.FileExists()) {
-		file_to_load = data_dir_client_xml;
-		if(!file_to_load.FileExists()) {
-			file_to_load = work_dir_client_xml;
-			if(!file_to_load.FileExists()) {
-				file_to_load.Clear();
-			}
-		}
-	}
-
-	if(!file_to_load.FileExists()) {
-		wxLogError(wxString() +
-			"Could not load clients.xml, editor will NOT be able to load any client data files.\n" +
-			"Checked paths:\n" +
-			exec_dir_client_xml.GetFullPath() + "\n" +
-			data_dir_client_xml.GetFullPath() + "\n" +
-			work_dir_client_xml.GetFullPath()
-		);
-		return;
-	}
-
-	// Parse the file
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_file(file_to_load.GetFullPath().mb_str());
-	if(result) {
-		pugi::xml_node node = doc.child("client_config");
-		if(!node) {
-			wxLogError("Could not load clients.xml (syntax error), editor will NOT be able to load any client data files.");
-			return;
-		}
-
-		for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
-			const std::string& childName = as_lower_str(childNode.name());
-			if(childName == "otbs") {
-				for(pugi::xml_node otbNode = childNode.first_child(); otbNode; otbNode = otbNode.next_sibling()) {
-					if(as_lower_str(otbNode.name()) == "otb") {
-						loadOTBInfo(otbNode);
-					}
-				}
-			} else if(childName == "clients") {
-				for(pugi::xml_node versionNode = childNode.first_child(); versionNode; versionNode = versionNode.next_sibling()) {
-					if(as_lower_str(versionNode.name()) == "client") {
-						loadVersion(versionNode);
-					}
-				}
-			}
-		}
-
-		for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
-			if(as_lower_str(childNode.name()) != "clients") {
-				continue;
-			}
-
-			for(pugi::xml_node versionNode = childNode.first_child(); versionNode; versionNode = versionNode.next_sibling()) {
-				if(as_lower_str(versionNode.name()) == "client") {
-					loadVersionExtensions(versionNode);
-				}
-			}
-		}
-	}
-
-	// Assign a default if there isn't one.
-	if(!latest_version && !client_versions.empty()) {
-		latest_version = client_versions.begin()->second;
-	}
-
 	// Load the data directory info
 	try
 	{
-		json read_obj = json::parse(g_settings.getString(Config::ASSETS_DATA_DIRS));
-		auto vers_obj = read_obj.get<std::vector<json>>();
-		for (const auto& ver_iter : vers_obj) {
-			const auto& ver_obj = ver_iter.get<json::object_t>();
-			auto version = get(ver_obj.at("id").get<std::string>());
-			if (version == nullptr)
-				continue;
-			version->setClientPath(wxstr(ver_obj.at("path").get<std::string>()));
+		auto dataDirs = g_settings.getString(Config::ASSETS_DATA_DIRS);
+		if (!dataDirs.empty()) {
+			json read_obj = json::parse(dataDirs);
+			auto ver_obj = read_obj.at(0).get<json::object_t>();
+			auto path = ver_obj.at("path").get<std::string>();
+			setPath(wxstr(path));
 		}
 	}
 	catch (std::runtime_error&)
 	{
-		// pass
-		;
+		//
 	}
 }
 
-void ClientVersion::unloadVersions()
+bool Assets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
 {
-	for(VersionMap::iterator it = client_versions.begin(); it != client_versions.end(); ++it)
-		delete it->second;
-	client_versions.clear();
-	latest_version = nullptr;
-	otb_versions.clear();
+	using namespace remeres::protobuf::appearances;
+	using json = nlohmann::json;
+	
+	auto clientDirectory = Assets::getPath().ToStdString() + "/";
+	auto assetsDirectory = clientDirectory + "/assets/";
+	//const std::string& catalogContentFile = assetsDirectory + "/catalog-content.json";
+	//spdlog::info("assets dir: {}, catalog: {}", fullAssetsDir.ToStdString(), catalogContentFile);
 
+	if (!g_spriteAppearances.loadCatalogContent(assetsDirectory, false)) {
+		spdlog::error("[GUI::loadAppearanceProtobuf] - Cannot open catalog content file");
+		return false;
+	}
+
+	using json = nlohmann::json;
+	std::filesystem::path packagesPath = std::filesystem::path(clientDirectory) / std::filesystem::path("package.json");
+	if (!std::filesystem::exists(packagesPath)) {
+		spdlog::error("package.json is not present in given directory. {}", packagesPath.string().c_str());
+		throw std::exception(fmt::format("package.json is not present in given directory: {}", packagesPath.string()).c_str());
+		return false;
+	}
+
+	std::ifstream file(packagesPath, std::ios::in);
+	if (!file.is_open()) {
+		spdlog::error("Unable to open packages.json.");
+		throw std::exception("Unable to open packages.json.");
+		return false;
+	}
+
+	json document = json::parse(file, nullptr, false);
+
+	file.close();
+	// Save version from package.json
+	std::string version = document.at("version").get<std::string>();
+	version_name = version;
+
+	const std::string appearanceFileName = g_spriteAppearances.getAppearanceFileName();
+
+	//g_spriteAppearances.setSpritesCount(spritesCount + 1);
+
+	std::fstream fileStream(assetsDirectory + appearanceFileName, std::ios::in | std::ios::binary);
+	if (!fileStream.is_open()) {
+		error = "Failed to load "+ appearanceFileName +", file cannot be oppened";
+		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to load %s, file cannot be oppened", appearanceFileName);
+		fileStream.close();
+		return false;
+	}
+
+	// Verify that the version of the library that we linked against is
+	// compatible with the version of the headers we compiled against.
+	GOOGLE_PROTOBUF_VERIFY_VERSION;
+	g_gui.appearances = Appearances();
+	if (!g_gui.appearances.ParseFromIstream(&fileStream)) {
+		error = "Failed to parse binary file "+ appearanceFileName +", file is invalid";
+		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse binary file {}, file is invalid", appearanceFileName);
+		fileStream.close();
+		return false;
+	}
+
+	// Parsing all items into ItemType
+	bool rt = g_items.loadFromProtobuf(error, warnings, g_gui.appearances);
+	if (!rt) {
+		error = "Failed to parse item types from protobuf";
+		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse item types from protobuf");
+		fileStream.close();
+		return false;
+	}
+
+	// Load looktypes
+	for (int i = 0; i < g_gui.appearances.outfit().size(); i++) {
+		const auto &outfit = g_gui.appearances.outfit().Get(i);
+		if (!g_gui.gfx.loadOutfitSpriteMetadata(outfit, error, warnings)) {
+			error = "Failed to parse outfit types from protobuf";
+			spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse outfit types from protobuf");
+			fileStream.close();
+			return false;
+		}
+	}
+	fileStream.close();
+
+	// Disposing allocated objects.
+	google::protobuf::ShutdownProtobufLibrary();
+
+	// Client loaded
+	setLoaded(true);
+	return true;
 }
 
-void ClientVersion::loadOTBInfo(pugi::xml_node otbNode)
-{
-	if(as_lower_str(otbNode.name()) != "otb") {
-		return;
-	}
-
-	pugi::xml_attribute attribute;
-	if(!(attribute = otbNode.attribute("client"))) {
-		wxLogError("Node 'otb' must contain 'client' tag.");
-		return;
-	}
-
-	OtbVersion otb = {"", OTB_VERSION_3, CLIENT_VERSION_NONE};
-	otb.name = attribute.as_string();
-	if(!(attribute = otbNode.attribute("id"))) {
-		wxLogError("Node 'otb' must contain 'id' tag.");
-		return;
-	}
-
-	otb.id = static_cast<ClientVersionID>(attribute.as_int());
-	if(!(attribute = otbNode.attribute("version"))) {
-		wxLogError("Node 'otb' must contain 'version' tag.");
-		return;
-	}
-
-	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(attribute.as_uint());
-	if(versionId < OTB_VERSION_1 || versionId > OTB_VERSION_3) {
-		wxLogError("Node 'otb' unrecognized format version (version 1..3 supported).");
-		return;
-	}
-
-	otb.format_version = versionId;
-	otb_versions[otb.name] = otb;
-}
-
-void ClientVersion::loadVersion(pugi::xml_node versionNode)
-{
-	pugi::xml_attribute attribute;
-	if(!(attribute = versionNode.attribute("name"))) {
-		wxLogError("Node 'client' must contain 'name', 'data_directory' and 'otb' tags.");
-		return;
-	}
-
-	const std::string& versionName = attribute.as_string();
-	if(!(attribute = versionNode.attribute("data_directory"))) {
-		wxLogError("Node 'client' must contain 'name', 'data_directory' and 'otb' tags.");
-		return;
-	}
-
-	const std::string& dataPath = attribute.as_string();
-	if(!(attribute = versionNode.attribute("otb"))) {
-		wxLogError("Node 'client' must contain 'name', 'data_directory' and 'otb' tags.");
-		return;
-	}
-
-	const std::string& otbVersionName = attribute.as_string();
-	if(otb_versions.find(otbVersionName) == otb_versions.end()) {
-		wxLogError("Node 'client' 'otb' tag is invalid (couldn't find this otb version).");
-		return;
-	}
-
-	ClientVersion* version = newd ClientVersion(otb_versions[otbVersionName], versionName, wxstr(dataPath));
-
-	bool should_be_default = versionNode.attribute("default").as_bool();
-	version->visible = versionNode.attribute("visible").as_bool();
-
-	for(pugi::xml_node childNode = versionNode.first_child(); childNode; childNode = childNode.next_sibling()) {
-		const std::string& childName = as_lower_str(childNode.name());
-		if(childName == "otbm") {
-			if(!(attribute = childNode.attribute("version"))) {
-				wxLogError("Node 'otbm' missing version.");
-				continue;
-			}
-
-			int32_t otbmVersion = attribute.as_int() - 1;
-			if(otbmVersion < MAP_OTBM_1 || otbmVersion > MAP_OTBM_4) {
-				wxLogError("Node 'otbm' unsupported version.");
-				continue;
-			}
-
-			if(childNode.attribute("preffered").as_bool() || version->preferred_map_version == MAP_OTBM_UNKNOWN) {
-				version->preferred_map_version = static_cast<MapVersionID>(otbmVersion);
-			}
-			version->map_versions_supported.push_back(version->preferred_map_version);
-		} else if(childName == "fucked_up_charges") {
-			version->usesFuckedUpCharges = true;
-		} else if(childName == "data") {
-
-			if(!(attribute = childNode.attribute("format"))) {
-				wxLogError("Node 'data' does not have 'format' tag.");
-				continue;
-			}
-
-			const std::string& format = attribute.as_string();
-			ClientData client_data = { DAT_FORMAT_11, 0, 0 };
-			if(format == "11") {
-				client_data.datFormat = DAT_FORMAT_11;
-			} else {
-				wxLogError("Node 'data' 'format' is invalid (only 11.00 are supported)");
-				continue;
-			}
-
-			if(!(attribute = childNode.attribute("dat")) || !wxString(attribute.as_string(), wxConvUTF8).ToULong((unsigned long*)&client_data.datSignature, 16)) {
-				wxLogError("Node 'data' 'dat' tag is not hex-formatted.");
-				continue;
-			}
-
-			if(!(attribute = childNode.attribute("spr")) || !wxString(attribute.as_string(), wxConvUTF8).ToULong((unsigned long*)&client_data.sprSignature, 16)) {
-				wxLogError("Node 'data' 'spr' tag is not hex-formatted.");
-				continue;
-			}
-
-			version->data_versions.push_back(client_data);
-		}
-	}
-
-	if(client_versions[version->getID()]) {
-		wxLogError("Duplicate version id %i, discarding version '%s'.", version->getID(), version->name);
-		delete version;
-		return;
-	}
-
-	client_versions[version->getID()] = version;
-	if(should_be_default) {
-		latest_version = version;
-	}
-}
-
-void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
-{
-	pugi::xml_attribute attribute;
-	if(!(attribute = versionNode.attribute("name"))) {
-		// Error has already been displayed earlier, no need to show another error about the same thing
-		return;
-	}
-
-	ClientVersion* version = get(attribute.as_string());
-	if(!version) {
-		// Same rationale as above
-		return;
-	}
-
-	for(pugi::xml_node childNode = versionNode.first_child(); childNode; childNode = childNode.next_sibling()) {
-		if(as_lower_str(childNode.name()) != "extensions") {
-			continue;
-		}
-
-		const std::string& from = childNode.attribute("from").as_string();
-		const std::string& to = childNode.attribute("to").as_string();
-
-		ClientVersion* fromVersion = get(from);
-		ClientVersion* toVersion = get(to);
-
-		if(!fromVersion && !toVersion) {
-			wxLogError("Unknown client extension data.");
-			continue;
-		}
-
-		if(!fromVersion) {
-			fromVersion = client_versions.begin()->second;
-		}
-
-		if(!toVersion) {
-			toVersion = client_versions.rbegin()->second;
-		}
-
-		for(const auto& versionEntry : client_versions) {
-			ClientVersion* version = versionEntry.second;
-			if(version->getID() >= fromVersion->getID() && version->getID() <= toVersion->getID()) {
-				version->extension_versions.push_back(version);
-			}
-		}
-
-		std::sort(version->extension_versions.begin(), version->extension_versions.end(), VersionComparisonPredicate);
-	}
-}
-
-void ClientVersion::saveVersions()
+void Assets::save()
 {
 	json vers_obj;
 
-	for(auto& [id, version] : client_versions) {
-		json ver_obj;
-		ver_obj["id"] = version->getName();
-		ver_obj["path"] = version->getClientPath().GetFullPath().ToStdString();
-		vers_obj.push_back(ver_obj);
-	}
+	json ver_obj;
+	ver_obj["id"] = getVersionName();
+	wxFileName fileName;
+	fileName.Assign(getPath());
+	ver_obj["path"] = fileName.GetFullPath().ToStdString();
+	auto path = fileName.GetFullPath().ToStdString();
+	vers_obj.push_back(ver_obj);
+
 
 	std::ostringstream out;
 	out << vers_obj;
 	g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
 }
 
-// Client version class
-
-ClientVersion::ClientVersion(OtbVersion otb, std::string versionName, wxString path) :
-	otb(otb),
-	name(versionName),
-	visible(false),
-	preferred_map_version(MAP_OTBM_UNKNOWN),
-	data_path(path)
-{
-	////
-}
-
-ClientVersion* ClientVersion::get(ClientVersionID id)
-{
-	VersionMap::iterator i = client_versions.find(id);
-	if(i == client_versions.end())
-		return nullptr;
-	return i->second;
-}
-
-ClientVersion* ClientVersion::get(std::string id)
-{
-	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
-		if(i->second->getName() == id)
-			return i->second;
-	return nullptr;
-}
-
-ClientVersionList ClientVersion::getAll()
-{
-	ClientVersionList l;
-	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
-		l.push_back(i->second);
-	return l;
-}
-
-ClientVersionList ClientVersion::getAllVisible()
-{
-	ClientVersionList l;
-	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i)
-		if(i->second->isVisible())
-			l.push_back(i->second);
-	return l;
-}
-
-ClientVersionList ClientVersion::getAllForOTBMVersion(MapVersionID id)
-{
-	ClientVersionList list;
-	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i) {
-		if(i->second->isVisible()) {
-			for(std::vector<MapVersionID>::iterator v = i->second->map_versions_supported.begin(); v != i->second->map_versions_supported.end(); ++v) {
-				if(*v == id)
-					list.push_back(i->second);
-			}
-		}
-	}
-	return list;
-}
-
-ClientVersion* ClientVersion::getLatestVersion()
-{
-	return latest_version;
-}
-
-FileName ClientVersion::getDataPath() const
+FileName Assets::getDataPath()
 {
 	wxString basePath = g_gui.GetDataDirectory();
 	if(!wxFileName(basePath).DirExists())
@@ -415,157 +167,19 @@ FileName ClientVersion::getDataPath() const
 	return basePath + data_path + FileName::GetPathSeparator();
 }
 
-FileName ClientVersion::getLocalDataPath() const
+FileName Assets::getLocalPath()
 {
 	FileName f = g_gui.GetLocalDataDirectory() + data_path + FileName::GetPathSeparator();
 	f.Mkdir(0755, wxPATH_MKDIR_FULL);
 	return f;
 }
 
-bool ClientVersion::hasValidPaths()
+wxString Assets::getPath()
 {
-	if(!client_path.DirExists()) {
-		return false;
-	}
-
-	wxDir dir(client_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR));
-	wxString otfi_file;
-	metadata_path = wxFileName(client_path.GetFullPath(), wxString(ASSETS_NAME) + ".dat");
-	sprites_path = wxFileName(client_path.GetFullPath(), wxString(ASSETS_NAME) + ".spr");
-
-	if(dir.GetFirst(&otfi_file, "*.otfi", wxDIR_FILES)) {
-		wxFileName otfi(client_path.GetFullPath(), otfi_file);
-		OTMLDocumentPtr doc = OTMLDocument::parse(otfi.GetFullPath().ToStdString());
-		if(doc->size() != 0 && doc->hasChildAt("DatSpr")) {
-			OTMLNodePtr node = doc->get("DatSpr");
-			std::string metadata = node->valueAt<std::string>("metadata-file", std::string(ASSETS_NAME) + ".dat");
-			std::string sprites = node->valueAt<std::string>("sprites-file", std::string(ASSETS_NAME) + ".spr");
-			metadata_path = wxFileName(client_path.GetFullPath(), wxString(metadata));
-			sprites_path = wxFileName(client_path.GetFullPath(), wxString(sprites));
-		}
-	}
-
-	if(!metadata_path.FileExists() || !sprites_path.FileExists()) {
-		return false;
-	}
-
-	if(!g_settings.getInteger(Config::CHECK_SIGNATURES)) {
-		return true;
-	}
-
-	// Peek the version of the files
-	FileReadHandle dat_file(static_cast<const char*>(metadata_path.GetFullPath().mb_str()));
-	if(!dat_file.isOk()) {
-		wxLogError("Could not open metadata file.");
-		return false;
-	}
-
-	uint32_t datSignature;
-	dat_file.getU32(datSignature);
-	dat_file.close();
-
-	FileReadHandle spr_file(static_cast<const char*>(sprites_path.GetFullPath().mb_str()));
-	if(!spr_file.isOk()) {
-		wxLogError("Could not open sprites file.");
-		return false;
-	}
-
-	uint32_t sprSignature;
-	spr_file.getU32(sprSignature);
-	spr_file.close();
-
-	for(const auto& clientData : data_versions) {
-		if(clientData.sprSignature == sprSignature && clientData.datSignature == datSignature) {
-			return true;
-		}
-	}
-
-	wxString message = "Signatures are incorrect.\n";
-	message << "Metadata signature: %X\n";
-	message << "Sprites signature: %X";
-	wxLogError(wxString::Format(message, datSignature, sprSignature));
-	return false;
+	return assets_path;
 }
 
-bool ClientVersion::loadValidPaths()
+std::string Assets::getVersionName()
 {
-	while(!hasValidPaths()) {
-		wxString message = "Could not locate metadata and/or sprite files, please navigate to your client assets %s installation folder.\n";
-		message << "Attempted metadata file: %s\n";
-		message << "Attempted sprites file: %s\n";
-
-		g_gui.PopupDialog("Error", wxString::Format(message, name, metadata_path.GetFullPath(), sprites_path.GetFullPath()), wxOK);
-
-		wxString dirHelpText("Select assets directory.");
-		wxDirDialog file_dlg(nullptr, dirHelpText, "", wxDD_DIR_MUST_EXIST);
-		int ok = file_dlg.ShowModal();
-		if(ok == wxID_CANCEL)
-			return false;
-
-		client_path.Assign(file_dlg.GetPath() + FileName::GetPathSeparator());
-	}
-
-	ClientVersion::saveVersions();
-
-	return true;
-}
-
-DatFormat ClientVersion::getDatFormatForSignature(uint32_t signature) const
-{
-	for(std::vector<ClientData>::const_iterator iter = data_versions.begin(); iter != data_versions.end(); ++iter) {
-		if(iter->datSignature == signature)
-			return iter->datFormat;
-	}
-
-	return DAT_FORMAT_UNKNOWN;
-}
-
-std::string ClientVersion::getName() const
-{
-	return name;
-}
-
-ClientVersionID ClientVersion::getID() const
-{
-	return otb.id;
-}
-
-bool ClientVersion::isVisible() const
-{
-	return visible;
-}
-
-void ClientVersion::setClientPath(const FileName& dir)
-{
-	client_path.Assign(dir);
-}
-
-MapVersionID ClientVersion::getPrefferedMapVersionID() const
-{
-	return preferred_map_version;
-}
-
-OtbVersion ClientVersion::getOTBVersion() const
-{
-	return otb;
-}
-
-ClientVersionList ClientVersion::getExtensionsSupported() const
-{
-	return extension_versions;
-}
-
-ClientVersionList ClientVersion::getAllVersionsSupportedForClientVersion(ClientVersion* clientVersion)
-{
-	ClientVersionList versionList;
-	for(const auto& versionEntry : client_versions) {
-		ClientVersion* version = versionEntry.second;
-		for(ClientVersion* checkVersion : version->getExtensionsSupported()) {
-			if(clientVersion == checkVersion) {
-				versionList.push_back(version);
-			}
-		}
-	}
-	std::sort(versionList.begin(), versionList.end(), VersionComparisonPredicate);
-	return versionList;
+	return version_name;
 }

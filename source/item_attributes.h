@@ -18,9 +18,6 @@
 #ifndef RME_ITEM_ATTRIBUTES_H_
 #define RME_ITEM_ATTRIBUTES_H_
 
-#include <string>
-#include <map>
-
 #include "filehandle.h"
 
 class IOMap;

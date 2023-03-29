@@ -20,8 +20,6 @@
 
 #include "position.h"
 
-#include <deque>
-
 class Editor;
 class Tile;
 class House;

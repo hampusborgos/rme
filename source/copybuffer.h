@@ -18,8 +18,6 @@
 #ifndef RME_COPYBUFFER_H_
 #define RME_COPYBUFFER_H_
 
-#include <wx/dataobj.h>
-
 #include "position.h"
 #include "basemap.h"
 

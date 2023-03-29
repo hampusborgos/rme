@@ -140,7 +140,6 @@ protected:
 	bool unnamed; // If the map has yet to receive a name
 
 	friend class IOMapOTBM;
-	friend class IOMapOTMM;
 	friend class Editor;
 
 public:

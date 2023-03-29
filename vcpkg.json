@@ -9,6 +9,7 @@
     "wxwidgets",
     "opengl",
     "protobuf",
+    "pugixml",
     "liblzma",
     "spdlog"
   ],

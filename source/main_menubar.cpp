@@ -30,8 +30,6 @@
 
 #include "gui.h"
 
-#include <wx/chartype.h>
-
 #include "editor.h"
 #include "materials.h"
 #include "live_client.h"
@@ -308,7 +306,7 @@ void MainMenuBar::Update()
 		EnableItem(PASTE, false);
 	}
 
-	bool loaded = g_gui.IsVersionLoaded();
+	bool loaded = Assets::isLoaded();
 	bool has_map = editor != nullptr;
 	bool has_selection = editor && editor->hasSelection();
 	bool is_live = editor && editor->IsLive();
@@ -823,7 +821,7 @@ void MainMenuBar::OnReloadDataFiles(wxCommandEvent& WXUNUSED(event))
 {
 	wxString error;
 	wxArrayString warnings;
-	g_gui.LoadVersion(g_gui.GetCurrentVersionID(), error, warnings, true);
+	g_gui.LoadVersion(error, warnings, true);
 	g_gui.PopupDialog("Error", error, wxOK);
 	g_gui.ListDialog("Warnings", warnings);
 }
@@ -919,7 +917,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnReplaceItems(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsVersionLoaded())
+	if(!Assets::isLoaded())
 		return;
 
 	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
@@ -1088,7 +1086,7 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnReplaceItemsOnSelection(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsVersionLoaded())
+	if(!Assets::isLoaded())
 		return;
 
 	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
@@ -1201,7 +1199,7 @@ void MainMenuBar::OnRandomizeMap(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnJumpToBrush(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsVersionLoaded())
+	if(!Assets::isLoaded())
 		return;
 
 	// Create the jump to dialog
@@ -1220,7 +1218,7 @@ void MainMenuBar::OnJumpToBrush(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnJumpToItemBrush(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsVersionLoaded())
+	if(!Assets::isLoaded())
 		return;
 
 	// Create the jump to dialog

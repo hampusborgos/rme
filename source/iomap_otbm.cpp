@@ -17,12 +17,6 @@
 
 #include "main.h"
 
-#include <wx/wfstream.h>
-#include <wx/tarstrm.h>
-#include <wx/zstream.h>
-#include <wx/mstream.h>
-#include <wx/datstrm.h>
-
 #include "settings.h"
 #include "gui.h" // Loadbar
 
@@ -190,7 +184,7 @@ void Item::serializeItemAttributes_OTBM(const IOMap& maphandle, NodeFileWriteHan
 			serializeAttributeMap(maphandle, stream);
 		}
 	} else {
-		if(g_items.MinorVersion >= CLIENT_VERSION_820 && isCharged()) {
+		if(isCharged()) {
 			stream.addU8(OTBM_ATTR_CHARGES);
 			stream.addU16(getSubtype());
 		}
@@ -475,8 +469,6 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 	root->getU16(u16);
 	root->getU16(u16);
 	root->getU32(u32);
-
-	out_ver.client = ClientVersionID(u32);
 	return true;
 }
 
@@ -699,8 +691,6 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 
 	map.height = u16;
 
-	version.client = (ClientVersionID)u32;
-
 	BinaryNode* mapHeaderNode = root->getChild();
 	if(mapHeaderNode == nullptr || !mapHeaderNode->getByte(u8) || u8 != OTBM_MAP_DATA) {
 					spdlog::error("[IOMapOTBM::loadMap] - Could not get root child node. Cannot recover from fatal error!");
@@ -802,6 +792,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 						if(!tileNode->getU32(house_id)) {
 							spdlog::error("[IOMapOTBM::loadMap] - House tile without house data, discarding tile");
 							warning("House tile without house data, discarding tile");
+							delete tile;
 							continue;
 						}
 						if(house_id) {
@@ -1716,8 +1707,8 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 						monsterNode.append_attribute("x") = x;
 						monsterNode.append_attribute("y") = y;
 						monsterNode.append_attribute("z") = spawnPosition.z;
-						auto monsterSpawnTime = monster->getSpawnMonsterTime();
-						if (monsterSpawnTime > std::numeric_limits<uint32_t>::max() || monsterSpawnTime < std::numeric_limits<uint32_t>::min()) {
+						int monsterSpawnTime = monster->getSpawnMonsterTime();
+						if (monsterSpawnTime > std::numeric_limits<uint32_t>::max()) {
 							monsterSpawnTime = 60;
 						}
 

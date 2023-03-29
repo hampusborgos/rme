@@ -42,7 +42,6 @@ protected:
 public:
 	IOMap() {
 		version.otbm = MAP_OTBM_1;
-		version.client = CLIENT_VERSION_NONE;
 	}
 	virtual ~IOMap() {}
 

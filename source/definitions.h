@@ -62,13 +62,6 @@
 
 #define ASSETS_NAME "Tibia"
 
-#ifdef __VISUALC__
-#pragma warning(disable:4996) // Stupid MSVC complaining 'bout "unsafe" functions
-#pragma warning(disable:4800) // Bool conversion warning
-#pragma warning(disable:4100) // Unused parameter warning ( I like to name unused stuff... )
-#pragma warning(disable:4706) // Assignment within conditional expression
-#endif
-
 #ifndef FORCEINLINE
 #   ifdef __VISUALC__
 #       define FORCEINLINE __forceinline

@@ -53,26 +53,18 @@ Editor::Editor(CopyBuffer& copybuffer) :
 	wxArrayString warnings;
 	bool ok = true;
 
-	ClientVersionID defaultVersion = ClientVersionID(g_settings.getInteger(Config::DEFAULT_CLIENT_VERSION));
-	if(defaultVersion == CLIENT_VERSION_NONE)
-		defaultVersion = ClientVersion::getLatestVersion()->getID();
-
-	if(g_gui.GetCurrentVersionID() != defaultVersion) {
-		if(g_gui.CloseAllEditors()) {
-			ok = g_gui.LoadVersion(defaultVersion, error, warnings);
-			g_gui.PopupDialog("Error", error, wxOK);
-			g_gui.ListDialog("Warnings", warnings);
-		} else {
-			throw std::runtime_error("All maps of different versions were not closed.");
-		}
+	if(g_gui.CloseAllEditors()) {
+		ok = g_gui.LoadVersion(error, warnings);
+		g_gui.PopupDialog("Error", error, wxOK);
+		g_gui.ListDialog("Warnings", warnings);
+	} else {
+		throw std::runtime_error("All maps of different versions were not closed.");
 	}
 
 	if(!ok)
 		throw std::runtime_error("Couldn't load client version");
 
 	MapVersion version;
-	version.otbm = g_gui.GetCurrentVersion().getPrefferedMapVersionID();
-	version.client = g_gui.GetCurrentVersionID();
 	map.convert(version);
 
 	map.height = 2048;
@@ -101,48 +93,28 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 {
 	MapVersion ver;
 	if(!IOMapOTBM::getVersionInfo(fn, ver)) {
-		// g_gui.PopupDialog("Error", "Could not open file \"" + fn.GetFullPath() + "\".", wxOK);
+		g_gui.PopupDialog("Error", "Could not open file \"" + fn.GetFullPath() + "\".", wxOK);
+		spdlog::error("Could not open file {}. This is not a valid OTBM file or it does not exist.", nstr(fn.GetFullPath()));
 		throw std::runtime_error("Could not open file \"" + nstr(fn.GetFullPath()) + "\".\nThis is not a valid OTBM file or it does not exist.");
 	}
 
-	/*
-	if(ver < CLIENT_VERSION_760) {
-		long b = g_gui.PopupDialog("Error", "Unsupported Client Version (pre 7.6), do you want to try to load the map anyways?", wxYES | wxNO);
-		if(b == wxID_NO) {
-			valid_state = false;
-			return;
-		}
-	}
-	*/
-
 	bool success = true;
-	if(g_gui.GetCurrentVersionID() != ver.client) {
-		wxString error;
-		wxArrayString warnings;
-		if(g_gui.CloseAllEditors()) {
-			success = g_gui.LoadVersion(ver.client, error, warnings);
-			if(!success)
-				g_gui.PopupDialog("Error", error, wxOK);
-			else
-				g_gui.ListDialog("Warnings", warnings);
-		} else {
-			throw std::runtime_error("All maps of different versions were not closed.");
-		}
+	wxString error;
+	wxArrayString warnings;
+	if(g_gui.CloseAllEditors()) {
+		success = g_gui.LoadVersion(error, warnings);
+		if(!success)
+			g_gui.PopupDialog("Error", error, wxOK);
+		else
+			g_gui.ListDialog("Warnings", warnings);
+	} else {
+		spdlog::error("All maps of different versions were not closed.");
+		throw std::runtime_error("All maps of different versions were not closed.");
 	}
 
 	if(success) {
 		ScopedLoadingBar LoadingBar("Loading OTBM map...");
 		success = map.open(nstr(fn.GetFullPath()));
-		/* TODO
-		if(success && ver.client == CLIENT_VERSION_854_BAD) {
-			int ok = g_gui.PopupDialog("Incorrect OTB", "This map has been saved with an incorrect OTB version, do you want to convert it to the new OTB version?\n\nIf you are not sure, click Yes.", wxYES | wxNO);
-
-			if(ok == wxID_YES){
-				ver.client = CLIENT_VERSION_854;
-				map.convert(ver);
-			}
-		}
-		*/
 	}
 }
 
@@ -154,7 +126,7 @@ Editor::Editor(CopyBuffer& copybuffer, LiveClient* client) :
 	copybuffer(copybuffer),
 	replace_brush(nullptr)
 {
-	;
+	//
 }
 
 Editor::~Editor() {
@@ -557,22 +529,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 
 			map.towns.addTown(imported_town);
 
-#ifdef __VISUALC__ // C++0x compliance to some degree :)
 			tit = imported_map.towns.erase(tit);
-#else // Bulky, slow way
-			TownMap::iterator tmp_iter = tit;
-			++tmp_iter;
-			uint32_t next_key = 0;
-			if(tmp_iter != imported_map.towns.end()) {
-				next_key = tmp_iter->first;
-			}
-			imported_map.towns.erase(tit);
-			if(next_key != 0) {
-				tit = imported_map.towns.find(next_key);
-			} else {
-				tit = imported_map.towns.end();
-			}
-#endif
 		}
 
 		for(HouseMap::iterator hit = imported_map.houses.begin(); hit != imported_map.houses.end();) {
@@ -635,22 +592,7 @@ bool Editor::importMap(FileName filename, int import_x_offset, int import_y_offs
 			if(newexit.isValid()) imported_house->setExit(&map, newexit);
 			map.houses.addHouse(imported_house);
 
-#ifdef __VISUALC__ // C++0x compliance to some degree :)
 			hit = imported_map.houses.erase(hit);
-#else // Bulky, slow way
-			HouseMap::iterator tmp_iter = hit;
-			++tmp_iter;
-			uint32_t next_key = 0;
-			if(tmp_iter != imported_map.houses.end()) {
-				next_key = tmp_iter->first;
-			}
-			imported_map.houses.erase(hit);
-			if(next_key != 0) {
-				hit = imported_map.houses.find(next_key);
-			} else {
-				hit = imported_map.houses.end();
-			}
-#endif
 		}
 	}
 
@@ -984,22 +926,7 @@ void Editor::clearInvalidHouseTiles(bool showdialog)
 	while(iter != houses.end()) {
 		House* h = iter->second;
 		if(map.towns.getTown(h->townid) == nullptr) {
-#ifdef __VISUALC__ // C++0x compliance to some degree :)
 			iter = houses.erase(iter);
-#else // Bulky, slow way
-			HouseMap::iterator tmp_iter = iter;
-			++tmp_iter;
-			uint32_t next_key = 0;
-			if(tmp_iter != houses.end()) {
-				next_key = tmp_iter->first;
-			}
-			houses.erase(iter);
-			if(next_key != 0) {
-				iter = houses.find(next_key);
-			} else {
-				iter = houses.end();
-			}
-#endif
 		} else {
 			++iter;
 		}

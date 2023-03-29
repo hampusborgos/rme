@@ -36,12 +36,6 @@
 #include "monster.h"
 #include "npc.h"
 
-#include <wx/snglinst.h>
-
-#if defined(__LINUX__) || defined(__WINDOWS__)
-#include <GL/glut.h>
-#endif
-
 #include "../brushes/icon/rme_icon.xpm"
 
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -124,9 +118,8 @@ bool Application::OnInit()
 
 	// Load some internal stuff
 	g_settings.load();
-	FixVersionDiscrapencies();
 	g_gui.LoadHotkeys();
-	ClientVersion::loadVersions();
+	Assets::load();
 
 #ifdef _USE_PROCESS_COM
 	m_single_instance_checker = newd wxSingleInstanceChecker; //Instance checker has to stay alive throughout the applications lifetime
@@ -163,9 +156,6 @@ bool Application::OnInit()
 #ifndef __DEBUG_MODE__
 	//wxHandleFatalExceptions(true);
 #endif
-    // Load all the dependency files
-    std::string error;
-    StringVector warnings;
 
     m_file_to_open = wxEmptyString;
     ParseCommandLineMap(m_file_to_open);
@@ -173,6 +163,7 @@ bool Application::OnInit()
     g_gui.root = newd MainFrame(__W_RME_APPLICATION_NAME__, wxDefaultPosition, wxSize(700,500));
 	SetTopWindow(g_gui.root);
 	g_gui.SetTitle("");
+
 
 	g_gui.root->LoadRecentFiles();
 
@@ -282,10 +273,6 @@ void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
         return;
     m_startup = false;
 
-    //Don't try to create a map if we didn't load the client map.
-    if(ClientVersion::getLatestVersion() == nullptr)
-        return;
-
     //Open a map.
     if (m_file_to_open != wxEmptyString) {
         g_gui.LoadMap(FileName(m_file_to_open));
@@ -302,39 +289,13 @@ void Application::MacOpenFiles(const wxArrayString& fileNames)
 	}
 }
 
-void Application::FixVersionDiscrapencies()
-{
-	// Here the registry should be fixed, if the version has been changed
-	if(g_settings.getInteger(Config::VERSION_ID) < MAKE_VERSION_ID(1, 0, 5)) {
-		g_settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, 0);
-	}
-
-	if(g_settings.getInteger(Config::VERSION_ID) < __RME_VERSION_ID__ && ClientVersion::getLatestVersion() != nullptr){
-		g_settings.setInteger(Config::DEFAULT_CLIENT_VERSION, ClientVersion::getLatestVersion()->getID());
-	}
-
-	wxString ss = wxstr(g_settings.getString(Config::SCREENSHOT_DIRECTORY));
-	if(ss.empty()) {
-		ss = wxStandardPaths::Get().GetDocumentsDir();
-#ifdef __WINDOWS__
-		ss += "/My Pictures/RME/";
-#endif
-	}
-	g_settings.setString(Config::SCREENSHOT_DIRECTORY, nstr(ss));
-
-	// Set registry to newest version
-	g_settings.setInteger(Config::VERSION_ID, __RME_VERSION_ID__);
-}
-
 void Application::Unload()
 {
 	g_gui.CloseAllEditors();
-	g_gui.UnloadVersion();
 	g_gui.SaveHotkeys();
 	g_gui.SavePerspective();
 	g_gui.root->SaveRecentFiles();
-	ClientVersion::saveVersions();
-	ClientVersion::unloadVersions();
+	Assets::save();
 	g_settings.save(true);
 	g_gui.root = nullptr;
 }

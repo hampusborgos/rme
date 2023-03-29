@@ -18,8 +18,6 @@
 #ifndef RME_PALETTE_WAYPOINTS_H_
 #define RME_PALETTE_WAYPOINTS_H_
 
-#include <wx/listctrl.h>
-
 #include "waypoints.h"
 #include "palette_common.h"
 

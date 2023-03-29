@@ -20,9 +20,6 @@
 
 #include "outfit.h"
 
-#include <string>
-#include <map>
-
 class MonsterType;
 class MonsterBrush;
 

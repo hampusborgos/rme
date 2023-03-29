@@ -19,8 +19,6 @@
 
 #ifdef _USE_UPDATER_
 
-#include <wx/url.h>
-
 #include "updater.h"
 
 const wxEventType EVT_UPDATE_CHECK_FINISHED = wxNewEventType();

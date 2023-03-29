@@ -26,17 +26,6 @@
 #include "otml.h"
 #include "sprite_appearances.h"
 
-#include <wx/mstream.h>
-#include <wx/stopwatch.h>
-#include <wx/dir.h>
-#include <iostream>
-#include <memory>
-#include <thread>
-#include <chrono>
-#include <mutex>
-#include <algorithm>
-#include <string>
-
 #include "pngfiles.h"
 
 GraphicManager g_graphics;
@@ -70,9 +59,7 @@ static uint32_t TemplateOutfitLookupTable[] = {
 };
 
 GraphicManager::GraphicManager() :
-	client_version(nullptr),
 	unloaded(true),
-	dat_format(DAT_FORMAT_UNKNOWN),
 	otfi_found(false),
 	is_extended(false),
 	has_transparency(false),
@@ -343,45 +330,6 @@ bool GraphicManager::loadEditorSprites()
 			loadPNGFile(gem_move_png),
 			nullptr
 		);
-
-	return true;
-}
-
-bool GraphicManager::loadOTFI(const FileName& filename, wxString& error, wxArrayString& warnings)
-{
-	wxDir dir(filename.GetFullPath());
-	wxString otfi_file;
-
-	otfi_found = false;
-
-	if(dir.GetFirst(&otfi_file, "*.otfi", wxDIR_FILES)) {
-		wxFileName otfi(filename.GetFullPath(), otfi_file);
-		OTMLDocumentPtr doc = OTMLDocument::parse(otfi.GetFullPath().ToStdString());
-		if(doc->size() == 0 || !doc->hasChildAt("DatSpr")) {
-			error += "'DatSpr' tag not found";
-			return false;
-		}
-
-		OTMLNodePtr node = doc->get("DatSpr");
-		is_extended = node->valueAt<bool>("extended");
-		has_transparency = node->valueAt<bool>("transparency");
-		has_frame_durations = node->valueAt<bool>("frame-durations");
-		has_frame_groups = node->valueAt<bool>("frame-groups");
-		std::string metadata = node->valueAt<std::string>("metadata-file", std::string(ASSETS_NAME) + ".dat");
-		std::string sprites = node->valueAt<std::string>("sprites-file", std::string(ASSETS_NAME) + ".spr");
-		metadata_file = wxFileName(filename.GetFullPath(), wxString(metadata));
-		sprites_file = wxFileName(filename.GetFullPath(), wxString(sprites));
-		otfi_found = true;
-	}
-
-	if(!otfi_found) {
-		is_extended = false;
-		has_transparency = false;
-		has_frame_durations = false;
-		has_frame_groups = false;
-		metadata_file = wxFileName(filename.GetFullPath(), wxString(ASSETS_NAME) + ".dat");
-		sprites_file = wxFileName(filename.GetFullPath(), wxString(ASSETS_NAME) + ".spr");
-	}
 
 	return true;
 }

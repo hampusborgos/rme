@@ -218,12 +218,7 @@ void LivePeer::parseHello(NetworkMessage& message)
 	log->Message(name + " (" + getHostName() + ") connected.");
 
 	NetworkMessage outMessage;
-	if(static_cast<ClientVersionID>(clientVersion) != g_gui.GetCurrentVersionID()) {
-		outMessage.write<uint8_t>(PACKET_CHANGE_CLIENT_VERSION);
-		outMessage.write<uint32_t>(g_gui.GetCurrentVersionID());
-	} else {
-		outMessage.write<uint8_t>(PACKET_ACCEPTED_CLIENT);
-	}
+	outMessage.write<uint8_t>(PACKET_ACCEPTED_CLIENT);
 	send(outMessage);
 }
 

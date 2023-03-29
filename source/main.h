@@ -46,13 +46,14 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <asio.hpp>
 #include <fmt/core.h>
 #include <nlohmann/json.hpp>
+#include <spdlog/spdlog.h>
+#include <lzma.h>
+#include <pugixml.hpp>
 
 #include "definitions.h"
 
+#include <wx/wx.h>
 #include <wx/wxprec.h>
-#ifndef WX_PRECOMP
-#   include <wx/wx.h>
-#endif
 #include <wx/dir.h>
 #include <wx/defs.h>
 #include <wx/thread.h>
@@ -66,6 +67,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <wx/tglbtn.h>
 #include <wx/dcbuffer.h>
 #include <wx/aui/aui.h>
+#include <wx/aui/auibar.h>
 #include <wx/cmdline.h>
 #include <wx/filename.h>
 #include <wx/filepicker.h>
@@ -80,9 +82,34 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <wx/grid.h>
 #include <wx/clipbrd.h>
 #include <wx/snglinst.h>
-
-// PugiXML
-#include "ext/pugixml.hpp"
+#include <wx/dataobj.h>
+#include <wx/radiobox.h>
+#include <wx/sizer.h>
+#include <wx/statbox.h>
+#include <wx/textctrl.h>
+#include <wx/checkbox.h>
+#include <wx/button.h>
+#include <wx/dialog.h>
+#include <wx/stopwatch.h>
+#include <wx/display.h>
+#include <wx/wfstream.h>
+#include <wx/tarstrm.h>
+#include <wx/zstream.h>
+#include <wx/datstrm.h>
+#include <wx/event.h>
+#include <wx/splitter.h>
+#include <wx/chartype.h>
+#include <wx/docview.h>
+#include <wx/artprov.h>
+#include <wx/listctrl.h>
+#include <wx/listbook.h>
+#include <wx/collpane.h>
+#include <wx/clrpicker.h>
+#include <wx/confbase.h>
+#include <wx/config.h>
+#include <wx/fileconf.h>
+#include <wx/sstream.h>
+#include <wx/mstream.h>
 
 // Libarchive, for OTGZ
 #if OTGZ_SUPPORT > 0
@@ -90,6 +117,15 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <archive_entry.h>
 #endif
 
+#if defined(__LINUX__) || defined(__WINDOWS__)
+	#include <GL/glut.h>
+#elif __APPLE__
+	#include <GLUT/glut.h>
+#endif
+
+#ifdef __WXOSX__
+#include <AGL/agl.h>
+#endif
 // This has annoyed me one time too many
 #define wxANY_ID (wxID_ANY)
 
@@ -123,11 +159,24 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <stdexcept>
 #include <time.h>
 #include <fstream>
-#include <spdlog/spdlog.h>
-
-
+#include <fstream>
+#include <typeinfo>
+#include <memory>
 #include <ranges>
 #include <regex>
+#include <deque>
+#include <stdio.h>
+#include <cstdint>
+#include <cmath>
+#include <stack>
+#include <thread>
+#include <chrono>
+#include <mutex>
+#include <random>
+#include <unordered_map>
+#include <unordered_set>
+#include <exception>
+#include <filesystem>
 
 #include "con_vector.h"
 #include "common.h"

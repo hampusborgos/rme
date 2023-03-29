@@ -265,17 +265,9 @@ public:
 	void discoverDataDirectory(const wxString& existentFile);
 	wxString getFoundDataDirectory() { return m_dataDirectory; }
 
-	// Load protobuf appearance file and catalog-content json with sprites
-	bool loadAppearanceProtobuf(wxString& error, wxArrayString& warnings);
-
 	// Load/unload a client version (takes care of dialogs aswell)
 	void UnloadVersion();
-	bool LoadVersion(ClientVersionID ver, wxString& error, wxArrayString& warnings, bool force = false);
-	// The current version loaded (returns CLIENT_VERSION_NONE if no version is loaded)
-	const ClientVersion& GetCurrentVersion() const;
-	ClientVersionID GetCurrentVersionID() const;
-	// If any version is loaded at all
-	bool IsVersionLoaded() const {return loaded_version != CLIENT_VERSION_NONE;}
+	bool LoadVersion(wxString& error, wxArrayString& warnings, bool force = false);
 
 	// Centers current view on position
 	void SetScreenCenterPosition(Position pos);
@@ -327,9 +319,6 @@ public:
 
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);
-	ClientVersion* getLoadedVersion() const {
-		return loaded_version == CLIENT_VERSION_NONE ? nullptr : ClientVersion::get(loaded_version);
-	}
 
 	//=========================================================================
 	// Palette Interface
@@ -413,7 +402,6 @@ protected:
 
 	wxGLContext* OGLContext;
 
-	ClientVersionID loaded_version;
 	EditorMode mode;
 	bool pasting;
 

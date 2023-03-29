@@ -70,11 +70,7 @@ public:
 	HouseMap::iterator end() {return houses.end();}
 	HouseMap::const_iterator begin() const {return houses.begin();}
 	HouseMap::const_iterator end() const {return houses.end();}
-#ifdef __VISUALC__ // C++0x compliance to some degree :)
 	HouseMap::iterator erase(HouseMap::iterator iter) {return houses.erase(iter);}
-#else
-	void erase(HouseMap::iterator iter) {houses.erase(iter);}
-#endif
 	HouseMap::iterator find(uint32_t val) {return houses.find(val);}
 
 	void removeHouse(House* house_to_remove);

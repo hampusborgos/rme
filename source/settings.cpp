@@ -21,15 +21,6 @@
 #include "gui_ids.h"
 #include "client_version.h"
 
-#include <wx/confbase.h>
-#include <wx/config.h>
-#include <wx/fileconf.h>
-#include <wx/sstream.h>
-#include <wx/wfstream.h>
-
-#include <iostream>
-#include <string>
-
 Settings g_settings;
 
 Settings::Settings() : store(Config::LAST)
@@ -216,7 +207,6 @@ void Settings::IO(IOMode mode)
 
 	section("Version");
 	Int(VERSION_ID, 0);
-	Int(CHECK_SIGNATURES, 1);
 	Int(USE_CUSTOM_DATA_DIRECTORY, 0);
 	String(DATA_DIRECTORY, "");
 	String(EXTENSIONS_DIRECTORY, "");
@@ -257,7 +247,7 @@ void Settings::IO(IOMode mode)
 	Int(DEFAULT_SPAWN_NPC_TIME, 60);
 	Int(MAX_SPAWN_NPC_RADIUS, 30);
 	Int(CURRENT_SPAWN_NPC_RADIUS, 1);
-	Int(DEFAULT_CLIENT_VERSION, CLIENT_VERSION_NONE);
+	Int(DEFAULT_CLIENT_VERSION, std::atoi(Assets::getVersionName().c_str()));
 	Int(RAW_LIKE_SIMONE, 1);
 	Int(ONLY_ONE_INSTANCE, 1);
 	Int(USE_OTBM_4_FOR_ALL_MAPS, 0);

@@ -18,10 +18,6 @@
 #ifndef RME_MAINTOOLBAR_H_
 #define RME_MAINTOOLBAR_H_
 
-#include <wx/wx.h>
-#include <wx/aui/aui.h>
-#include <wx/aui/auibar.h>
-
 #include "gui_ids.h"
 #include "numbertextctrl.h"
 

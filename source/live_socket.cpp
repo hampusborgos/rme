@@ -24,7 +24,7 @@
 
 LiveSocket::LiveSocket() :
 	cursors(), mapReader(nullptr, 0), mapWriter(),
-	mapVersion(MapVersion(MAP_OTBM_4, CLIENT_VERSION_NONE)), log(nullptr),
+	mapVersion(MapVersion(MAP_OTBM_4)), log(nullptr),
 	name("User"), password("")
 {
 	//

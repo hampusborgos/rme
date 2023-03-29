@@ -10,6 +10,7 @@ find_package(GLUT REQUIRED)
 find_package(liblzma CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(pugixml CONFIG REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(Threads REQUIRED)
 find_package(wxWidgets COMPONENTS html aui gl adv core net base CONFIG REQUIRED)
@@ -30,7 +31,7 @@ else()
 endif()
 
 # === PRECOMPILED HEADER ===
-#target_precompile_headers(${PROJECT_NAME} PRIVATE main.h)
+target_precompile_headers(${PROJECT_NAME} PRIVATE main.h)
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
@@ -153,6 +154,7 @@ target_link_libraries(${PROJECT_NAME}
 	fmt::fmt
 	liblzma::liblzma
 	nlohmann_json::nlohmann_json
+	pugixml::pugixml
 	protobuf::libprotobuf
 	wx::base wx::core wx::net wx::gl wx::html wx::aui wx::adv
 )
