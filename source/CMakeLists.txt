@@ -7,8 +7,10 @@ project(remeres)
 find_package(asio CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(GLUT REQUIRED)
+find_package(liblzma CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(Protobuf REQUIRED)
 find_package(Threads REQUIRED)
 find_package(wxWidgets COMPONENTS html aui gl adv core net base CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
@@ -32,6 +34,8 @@ endif()
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
+	protobuf/appearances.pb.cc
+	graphics/libbmp.cpp
 	about_window.cpp
 	action.cpp
 	application.cpp
@@ -117,6 +121,7 @@ target_sources(${PROJECT_NAME}
 	spawn_monster.cpp
 	spawn_npc.cpp
 	spawn_npc_brush.cpp
+	sprite_appearances.cpp
 	table_brush.cpp
 	templatemap76-74.cpp
 	templatemap81.cpp
@@ -144,9 +149,11 @@ target_link_libraries(${PROJECT_NAME}
 	${OPENGL_LIBRARIES}
 	${GLUT_LIBRARIES}
 	${ZLIB_LIBRARIES}
-	fmt::fmt
 	asio::asio
+	fmt::fmt
+	liblzma::liblzma
 	nlohmann_json::nlohmann_json
+	protobuf::libprotobuf
 	wx::base wx::core wx::net wx::gl wx::html wx::aui wx::adv
 )
 

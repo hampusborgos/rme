@@ -336,9 +336,9 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Hangable"));
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.isHangable)));
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Block Missiles"));
-	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.blockMissiles)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.blockProjectile)));
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Block Pathfinder"));
-	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.blockPathfinder)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.blockPathFind)));
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Has Elevation"));
 	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.hasElevation)));
 	others_sizer->Add(others_subsizer, wxSizerFlags(1).Expand());

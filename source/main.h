@@ -79,6 +79,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <wx/ipc.h>
 #include <wx/grid.h>
 #include <wx/clipbrd.h>
+#include <wx/snglinst.h>
 
 // PugiXML
 #include "ext/pugixml.hpp"
