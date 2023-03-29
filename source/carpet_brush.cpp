@@ -21,7 +21,6 @@
 
 #include "basemap.h"
 #include "items.h"
-#include "pugicast.h"
 
 //=============================================================================
 // Carpet brush
@@ -43,11 +42,11 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if((attribute = node.attribute("lookid"))) {
-		look_id = pugi::cast<uint16_t>(attribute.value());
+		look_id = attribute.as_ushort();
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].id;
+		look_id = g_items[attribute.as_ushort()].id;
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -84,13 +83,13 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				continue;
 			}
 
-			int32_t id = pugi::cast<int32_t>(attribute.value());
+			int32_t id = attribute.as_int();
 			if(!(attribute = subChildNode.attribute("chance"))) {
 				warnings.push_back("Could not read chance tag of item node\n");
 				continue;
 			}
 
-			int32_t chance = pugi::cast<int32_t>(attribute.value());
+			int32_t chance = attribute.as_int();
 
 			ItemType& it = g_items[id];
 			if(it.id == 0) {
@@ -120,7 +119,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				continue;
 			}
 
-			int32_t id = pugi::cast<int32_t>(attribute.value());
+			uint16_t id = attribute.as_ushort();
 
 			ItemType& it = g_items[id];
 			if(it.id == 0) {

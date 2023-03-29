@@ -52,6 +52,8 @@ protected:
 	wxAuiNotebook* notebook;
 	std::map<wxWindow*, EditorTab*> conv;
 
+	friend class MapTab;
+
 	DECLARE_EVENT_TABLE();
 };
 

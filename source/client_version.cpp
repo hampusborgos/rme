@@ -23,9 +23,9 @@
 #include "gui.h"
 
 #include "client_version.h"
-#include "pugicast.h"
 #include "otml.h"
-#include <wx/dir.h>
+
+using json = nlohmann::json;
 
 // Static methods to load/save
 
@@ -123,15 +123,14 @@ void ClientVersion::loadVersions()
 	// Load the data directory info
 	try
 	{
-		json::mValue read_obj;
-		json::read_or_throw(g_settings.getString(Config::ASSETS_DATA_DIRS), read_obj);
-		json::mArray& vers_obj = read_obj.get_array();
-		for(json::mArray::iterator ver_iter = vers_obj.begin(); ver_iter != vers_obj.end(); ++ver_iter) {
-			json::mObject& ver_obj = ver_iter->get_obj();
-			ClientVersion* version = get(ver_obj["id"].get_str());
-			if(version == nullptr)
+		json read_obj = json::parse(g_settings.getString(Config::ASSETS_DATA_DIRS));
+		auto vers_obj = read_obj.get<std::vector<json>>();
+		for (const auto& ver_iter : vers_obj) {
+			const auto& ver_obj = ver_iter.get<json::object_t>();
+			auto version = get(ver_obj.at("id").get<std::string>());
+			if (version == nullptr)
 				continue;
-			version->setClientPath(wxstr(ver_obj["path"].get_str()));
+			version->setClientPath(wxstr(ver_obj.at("path").get<std::string>()));
 		}
 	}
 	catch (std::runtime_error&)
@@ -170,13 +169,13 @@ void ClientVersion::loadOTBInfo(pugi::xml_node otbNode)
 		return;
 	}
 
-	otb.id = pugi::cast<int32_t>(attribute.value());
+	otb.id = static_cast<ClientVersionID>(attribute.as_int());
 	if(!(attribute = otbNode.attribute("version"))) {
 		wxLogError("Node 'otb' must contain 'version' tag.");
 		return;
 	}
 
-	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(pugi::cast<uint32_t>(attribute.value()));
+	OtbFormatVersion versionId = static_cast<OtbFormatVersion>(attribute.as_uint());
 	if(versionId < OTB_VERSION_1 || versionId > OTB_VERSION_3) {
 		wxLogError("Node 'otb' unrecognized format version (version 1..3 supported).");
 		return;
@@ -225,7 +224,7 @@ void ClientVersion::loadVersion(pugi::xml_node versionNode)
 				continue;
 			}
 
-			int32_t otbmVersion = pugi::cast<int32_t>(attribute.value()) - 1;
+			int32_t otbmVersion = attribute.as_int() - 1;
 			if(otbmVersion < MAP_OTBM_1 || otbmVersion > MAP_OTBM_4) {
 				wxLogError("Node 'otbm' unsupported version.");
 				continue;
@@ -330,17 +329,17 @@ void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
 
 void ClientVersion::saveVersions()
 {
-	json::Array vers_obj;
+	json vers_obj;
 
-	for(VersionMap::iterator i = client_versions.begin(); i != client_versions.end(); ++i) {
-		ClientVersion* version = i->second;
-		json::Object ver_obj;
-		ver_obj.push_back(json::Pair("id", version->getName()));
-		ver_obj.push_back(json::Pair("path", nstr(version->getClientPath().GetFullPath())));
+	for(auto& [id, version] : client_versions) {
+		json ver_obj;
+		ver_obj["id"] = version->getName();
+		ver_obj["path"] = version->getClientPath().GetFullPath().ToStdString();
 		vers_obj.push_back(ver_obj);
 	}
+
 	std::ostringstream out;
-	json::write(vers_obj, out);
+	out << vers_obj;
 	g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
 }
 

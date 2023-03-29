@@ -22,7 +22,6 @@
 #include "brush.h"
 #include "monsters.h"
 #include "monster_brush.h"
-#include "pugicast.h"
 
 MonsterDatabase g_monsters;
 
@@ -75,34 +74,38 @@ MonsterType* MonsterType::loadFromXML(pugi::xml_node node, wxArrayString& warnin
 	ct->name = attribute.as_string();
 
 	if((attribute = node.attribute("looktype"))) {
-		ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookType = attribute.as_int();
 		if(g_gui.gfx.getCreatureSprite(ct->outfit.lookType) == nullptr) {
 			warnings.push_back("Invalid monster \"" + wxstr(ct->name) + "\" look type #" + std::to_string(ct->outfit.lookType));
 		}
 	}
 
 	if((attribute = node.attribute("lookitem"))) {
-		ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookItem = attribute.as_int();
+	}
+
+	if ((attribute = node.attribute("lookmount"))) {
+		ct->outfit.lookMount = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookaddon"))) {
-		ct->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookAddon = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookhead"))) {
-		ct->outfit.lookHead = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookHead = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookbody"))) {
-		ct->outfit.lookBody = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookBody = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("looklegs"))) {
-		ct->outfit.lookLegs = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookLegs = attribute.as_int();
 	}
 
 	if((attribute = node.attribute("lookfeet"))) {
-		ct->outfit.lookFeet = pugi::cast<int32_t>(attribute.value());
+		ct->outfit.lookFeet = attribute.as_int();
 	}
 	return ct;
 }
@@ -131,31 +134,35 @@ MonsterType* MonsterType::loadFromOTXML(const FileName& filename, pugi::xml_docu
 		}
 
 		if((attribute = optionNode.attribute("type"))) {
-			ct->outfit.lookType = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookType = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("item")) || (attribute = optionNode.attribute("lookex")) || (attribute = optionNode.attribute("typeex"))) {
-			ct->outfit.lookItem = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookItem = attribute.as_int();
+		}
+
+		if ((attribute = optionNode.attribute("mount"))) {
+			ct->outfit.lookMount = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("addon"))) {
-			ct->outfit.lookAddon = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookAddon = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("head"))) {
-			ct->outfit.lookHead = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookHead = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("body"))) {
-			ct->outfit.lookBody = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookBody = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("legs"))) {
-			ct->outfit.lookLegs = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookLegs = attribute.as_int();
 		}
 
 		if((attribute = optionNode.attribute("feet"))) {
-			ct->outfit.lookFeet = pugi::cast<int32_t>(attribute.value());
+			ct->outfit.lookFeet = attribute.as_int();
 		}
 	}
 	return ct;

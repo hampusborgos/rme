@@ -29,7 +29,6 @@
 #include "carpet_brush.h"
 #include "table_brush.h"
 #include "wall_brush.h"
-#include "pugicast.h"
 
 Item* Item::Create(uint16_t _type, uint16_t _subtype /*= 0xFFFF*/)
 {
@@ -467,14 +466,14 @@ Item* Item::Create(pugi::xml_node xml)
 {
 	pugi::xml_attribute attribute;
 
-	int32_t id = 0;
+	uint16_t id = 0;
 	if((attribute = xml.attribute("id"))) {
-		id = pugi::cast<int32_t>(attribute.value());
+		id = attribute.as_ushort();
 	}
 
-	int32_t count = 1;
+	uint16_t count = 1;
 	if((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
-		count = pugi::cast<int32_t>(attribute.value());
+		count = attribute.as_ushort();
 	}
 
 	return Create(id, count);

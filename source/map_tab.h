@@ -41,6 +41,8 @@ public:
 	Editor* GetEditor() const;
 	Map* GetMap() const;
 
+	void VisibilityCheck();
+
 	// Event handlers
 	void OnSwitchEditorMode(EditorMode mode);
 

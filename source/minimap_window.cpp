@@ -114,10 +114,10 @@ void MinimapWindow::OnPaint(wxPaintEvent& event)
 		end_y = editor.map.getHeight();
 	}
 
-	start_x = max(start_x, 0);
-	start_y = max(start_y, 0);
-	end_x = min(end_x, editor.map.getWidth());
-	end_y = min(end_y, editor.map.getHeight());
+	start_x = std::max(start_x, 0);
+	start_y = std::max(start_y, 0);
+	end_x = std::min(end_x, editor.map.getWidth());
+	end_y = std::min(end_y, editor.map.getHeight());
 
 	last_start_x = start_x;
 	last_start_y = start_y;

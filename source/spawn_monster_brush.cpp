@@ -67,6 +67,6 @@ void SpawnMonsterBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 	ASSERT(tile);
 	ASSERT(parameter); // Should contain an int which is the size of the newd monster spawn
 	if(tile->spawnMonster == nullptr) {
-		tile->spawnMonster = newd SpawnMonster(max(1, *(int*)parameter));
+		tile->spawnMonster = newd SpawnMonster(std::max(1, *(int*)parameter));
 	}
 }

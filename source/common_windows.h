@@ -99,6 +99,7 @@ protected:
 	wxTextCtrl* file_text_field;
 	wxSpinCtrl* x_offset_ctrl;
 	wxSpinCtrl* y_offset_ctrl;
+	wxSpinCtrl* z_offset_ctrl;
 
 	wxChoice* house_options;
 	wxChoice* spawn_monster_options;
@@ -238,44 +239,6 @@ public:
 	virtual void RefreshContentsInternal();
 	virtual void OnClickListInternal(wxCommandEvent&);
 	virtual void OnClickOKInternal();
-};
-
-/**
- * Select two items
- * Will return the two selected items through GetResultFindID() and GetResultWithID()
- */
-class ReplaceItemDialog : public wxDialog
-{
-public:
-	ReplaceItemDialog(wxWindow* parent, wxString title = "Replace Item");
-	virtual ~ReplaceItemDialog();
-
-	void OnKeyDown(wxKeyEvent&);
-	void OnTextChange(wxCommandEvent&);
-	void OnTextIdle(wxTimerEvent&);
-	void OnClickList(wxCommandEvent&);
-	void OnClickOK(wxCommandEvent&);
-	void OnClickCancel(wxCommandEvent&);
-
-	uint16_t GetResultFindID() const;
-	uint16_t GetResultWithID() const;
-
-protected:
-	void RefreshContents(FindDialogListBox *whichList);
-
-	KeyForwardingTextCtrl* find_item_field;
-	FindDialogListBox *find_item_list;
-	KeyForwardingTextCtrl* with_item_field;
-	FindDialogListBox *with_item_list;
-
-	wxTimer find_idle_input_timer;
-	wxTimer with_idle_input_timer;
-
-	wxStdDialogButtonSizer* buttons_box_sizer;
-	wxButton* ok_button;
-	wxButton* cancel_button;
-
-	DECLARE_EVENT_TABLE();
 };
 
 /**

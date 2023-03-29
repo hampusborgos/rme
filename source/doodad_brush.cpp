@@ -19,7 +19,6 @@
 
 #include "doodad_brush.h"
 #include "basemap.h"
-#include "pugicast.h"
 
 //=============================================================================
 // Doodad brush
@@ -101,7 +100,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 
 			SingleBlock sb;
 			sb.item = item;
-			sb.chance = pugi::cast<int32_t>(attribute.value());
+			sb.chance = attribute.as_int();
 
 			alternativeBlock->single_items.push_back(sb);
 			alternativeBlock->single_chance += sb.chance;
@@ -111,7 +110,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 				continue;
 			}
 
-			alternativeBlock->composite_chance += pugi::cast<int32_t>(attribute.value());
+			alternativeBlock->composite_chance += attribute.as_int();
 
 			CompositeBlock cb;
 			cb.chance = alternativeBlock->composite_chance;
@@ -126,14 +125,14 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 					continue;
 				}
 
-				int32_t x = pugi::cast<int32_t>(attribute.value());
+				int32_t x = attribute.as_int();
 				if(!(attribute = compositeNode.attribute("y"))) {
 					warnings.push_back("Couldn't read positionY values of composite tile node.");
 					continue;
 				}
 
-				int32_t y = pugi::cast<int32_t>(attribute.value());
-				int32_t z = pugi::cast<int32_t>(compositeNode.attribute("z").value());
+				int32_t y = attribute.as_int();
+				int32_t z = compositeNode.attribute("z").as_int();
 				if(x < -0x7FFF || x > 0x7FFF) {
 					warnings.push_back("Invalid range of x value on composite tile node.");
 					continue;
@@ -180,11 +179,11 @@ bool DoodadBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if((attribute = node.attribute("lookid"))) {
-		look_id = pugi::cast<uint16_t>(attribute.value());
+		look_id = attribute.as_ushort();
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = g_items[pugi::cast<uint16_t>(attribute.value())].id;
+		look_id = g_items[attribute.as_ushort()].id;
 	}
 
 	if((attribute = node.attribute("on_blocking"))) {
@@ -218,8 +217,20 @@ bool DoodadBrush::load(pugi::xml_node node, wxArrayString& warnings)
 	if(!thicknessString.empty()) {
 		size_t slash = thicknessString.find('/');
 		if(slash != std::string::npos) {
-			thickness = boost::lexical_cast<int32_t>(thicknessString.substr(0, slash));
-			thickness_ceiling = std::max<int32_t>(thickness, boost::lexical_cast<int32_t>(thicknessString.substr(slash + 1)));
+			try {
+				thickness = std::stoi(thicknessString.substr(0, slash));
+			} catch (const std::invalid_argument&) {
+				thickness = 0;
+			} catch (const std::out_of_range&) {
+				thickness = 0;
+			}
+			try {
+				thickness_ceiling = std::stoi(thicknessString.substr(slash + 1));
+			} catch (const std::invalid_argument&) {
+				thickness_ceiling = 0;
+			} catch (const std::out_of_range&) {
+				thickness_ceiling = 0;
+			}
 		}
 	}
 

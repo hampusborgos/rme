@@ -705,3 +705,16 @@ void MainFrame::PrepareDC(wxDC& dc)
 	dc.SetUserScale( 1.0, 1.0 );
 	dc.SetMapMode( wxMM_TEXT );
 }
+
+#ifdef _MSC_VER
+// This is necessary for cmake with visual studio link the executable
+int main(int argc, char** argv)
+{
+	wxEntryStart(argc, argv); // Start the wxWidgets library
+	Application* app = new Application(); // Create the application object
+	wxApp::SetInstance(app); // Informs wxWidgets that app is the application object
+	wxEntry(); // Call the wxEntry() function to start the application execution
+	wxEntryCleanup(); // Clear the wxWidgets library
+	return 0;
+}
+#endif

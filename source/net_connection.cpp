@@ -101,11 +101,11 @@ bool NetworkConnection::start()
 
 	stopped = false;
 	if(!service) {
-		service = new boost::asio::io_service;
+		service = new asio::io_service;
 	}
 
 	thread = std::thread([this]() -> void {
-		boost::asio::io_service& serviceRef = *service;
+		asio::io_service& serviceRef = *service;
 		try {
 			while(!stopped) {
 				serviceRef.run_one();
@@ -132,7 +132,7 @@ void NetworkConnection::stop()
 	service = nullptr;
 }
 
-boost::asio::io_service& NetworkConnection::get_service()
+asio::io_service& NetworkConnection::get_service()
 {
 	return *service;
 }

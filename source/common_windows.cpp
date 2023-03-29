@@ -385,7 +385,7 @@ BEGIN_EVENT_TABLE(ImportMapWindow, wxDialog)
 END_EVENT_TABLE()
 
 ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
-	wxDialog(parent, wxID_ANY, "Import Map", wxDefaultPosition, wxSize(350, 350)),
+	wxDialog(parent, wxID_ANY, "Import Map", wxDefaultPosition, wxSize(420, 350)),
 	editor(editor)
 {
 	wxBoxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
@@ -393,7 +393,7 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 
 	// File
 	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "Map File"), wxHORIZONTAL);
-	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, "", wxDefaultPosition, wxSize(230, 23));
+	file_text_field = newd wxTextCtrl(tmpsizer->GetStaticBox(), wxID_ANY, "", wxDefaultPosition, wxSize(300, 23));
 	tmpsizer->Add(file_text_field, 0, wxALL, 5);
 	wxButton* browse_button = newd wxButton(tmpsizer->GetStaticBox(), MAP_WINDOW_FILE_BUTTON, "Browse...", wxDefaultPosition, wxSize(80, 23));
 	tmpsizer->Add(browse_button, 0, wxALL, 5);
@@ -402,11 +402,14 @@ ImportMapWindow::ImportMapWindow(wxWindow* parent, Editor& editor) :
 	// Import offset
 	tmpsizer = newd wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, "Import Offset"), wxHORIZONTAL);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset X:"), 0, wxALL | wxEXPAND, 5);
-	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	x_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
 	tmpsizer->Add(x_offset_ctrl, 0, wxALL, 5);
 	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset Y:"), 0, wxALL, 5);
-	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(100, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
+	y_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -MAP_MAX_HEIGHT, MAP_MAX_HEIGHT);
 	tmpsizer->Add(y_offset_ctrl, 0, wxALL, 5);
+	tmpsizer->Add(newd wxStaticText(tmpsizer->GetStaticBox(), wxID_ANY, "Offset Z:"), 0, wxALL, 5);
+	z_offset_ctrl = newd wxSpinCtrl(tmpsizer->GetStaticBox(), wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(60, 23), wxSP_ARROW_KEYS, -MAP_MAX_LAYER, MAP_MAX_LAYER);
+	tmpsizer->Add(z_offset_ctrl, 0, wxALL, 5);
 	sizer->Add(tmpsizer, 1, wxEXPAND | wxLEFT | wxRIGHT, 5);
 
 	// Import options
@@ -496,7 +499,7 @@ void ImportMapWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 		EndModal(1);
 
-		editor.importMap(fn, x_offset_ctrl->GetValue(), y_offset_ctrl->GetValue(), house_import_type, spawn_import_type, spawn_npc_import_type);
+		editor.importMap(fn, x_offset_ctrl->GetValue(), y_offset_ctrl->GetValue(), z_offset_ctrl->GetValue(), house_import_type, spawn_import_type, spawn_npc_import_type);
 	}
 }
 
@@ -972,232 +975,6 @@ void FindBrushDialog::RefreshContentsInternal()
 
 	}
 	item_list->Refresh();
-}
-
-// ============================================================================
-// Replace item dialog
-
-BEGIN_EVENT_TABLE(ReplaceItemDialog, wxDialog)
-	EVT_TIMER(wxID_ANY, ReplaceItemDialog::OnTextIdle)
-
-	EVT_KEY_DOWN(ReplaceItemDialog::OnKeyDown)
-	EVT_TEXT(REPLACE_DIALOG_FIND_TEXT, ReplaceItemDialog::OnTextChange)
-	EVT_TEXT_ENTER(REPLACE_DIALOG_FIND_TEXT, ReplaceItemDialog::OnClickOK)
-	EVT_TEXT(REPLACE_DIALOG_WITH_TEXT, ReplaceItemDialog::OnTextChange)
-	EVT_TEXT_ENTER(REPLACE_DIALOG_WITH_TEXT, ReplaceItemDialog::OnClickOK)
-
-	EVT_BUTTON(wxID_OK, ReplaceItemDialog::OnClickOK)
-	EVT_BUTTON(wxID_CANCEL, ReplaceItemDialog::OnClickCancel)
-END_EVENT_TABLE()
-
-ReplaceItemDialog::ReplaceItemDialog(wxWindow* parent, wxString title) :
-	wxDialog(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE),
-	find_idle_input_timer(this),
-	with_idle_input_timer(this)
-{
-	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
-
-	wxFlexGridSizer *gridsizer = newd wxFlexGridSizer(2, 10, 10);
-
-	// Labels
-	gridsizer->Add(newd wxStaticText(this, wxID_ANY, "Replace this item:"), 0);
-	gridsizer->Add(newd wxStaticText(this, wxID_ANY, "With this item:"), 0);
-
-	// The text fields
-	find_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_FIND_TEXT, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	find_item_field->SetFocus();
-	gridsizer->Add(find_item_field, wxSizerFlags(0).Expand());
-
-	with_item_field = newd KeyForwardingTextCtrl(this, REPLACE_DIALOG_WITH_TEXT, "", wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
-	gridsizer->Add(with_item_field, wxSizerFlags(0).Expand());
-
-	// The lists
-	find_item_list = newd FindDialogListBox(this, REPLACE_DIALOG_FIND_LIST);
-	find_item_list->SetMinSize(wxSize(250, 400));
-	gridsizer->Add(find_item_list, wxSizerFlags(1).Expand());
-
-	with_item_list = newd FindDialogListBox(this, REPLACE_DIALOG_WITH_LIST);
-	with_item_list->SetMinSize(wxSize(250, 400));
-	gridsizer->Add(with_item_list, wxSizerFlags(1).Expand());
-
-	topsizer->Add(gridsizer, wxSizerFlags(1).Expand().Border());
-
-	// Buttons
-	buttons_box_sizer = newd wxStdDialogButtonSizer();
-	ok_button = newd wxButton(this, wxID_OK);
-	ok_button->Enable(false);
-	buttons_box_sizer->AddButton(ok_button);
-	cancel_button = newd wxButton(this, wxID_CANCEL);
-	buttons_box_sizer->AddButton(cancel_button);
-	buttons_box_sizer->Realize();
-	topsizer->Add(buttons_box_sizer, 0, wxALIGN_CENTER | wxALL, 5);
-
-	// Connect Events
-	find_item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
-	with_item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
-
-	SetSizerAndFit(topsizer);
-	Centre(wxBOTH);
-
-	RefreshContents(find_item_list);
-	RefreshContents(with_item_list);
-}
-
-ReplaceItemDialog::~ReplaceItemDialog()
-{
-	// Disconnect Events
-	find_item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
-	with_item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemDialog::OnClickList), NULL, this);
-}
-
-void ReplaceItemDialog::OnKeyDown(wxKeyEvent& event)
-{
-	FindDialogListBox *item_list = (event.GetEventObject() == find_item_field ? find_item_list : with_item_list);
-	int w, h;
-	item_list->GetSize(&w, &h);
-	size_t amount = 1;
-
-	switch(event.GetKeyCode()) {
-		case WXK_PAGEUP:
-			amount = h / 32 + 1;
-			[[fallthrough]];
-		case WXK_UP: {
-			if(item_list->GetItemCount() > 0) {
-				ssize_t n = item_list->GetSelection();
-				if(n == wxNOT_FOUND)
-					n = 0;
-				else if(n != amount && n - amount < n) // latter is needed for unsigned overflow
-					n -= amount;
-				else
-					n = 0;
-				item_list->SetSelection(n);
-			}
-			break;
-		}
-		case WXK_PAGEDOWN:
-			amount = h / 32 + 1;
-			[[fallthrough]];
-		case WXK_DOWN: {
-			if(item_list->GetItemCount() > 0) {
-				ssize_t n = item_list->GetSelection();
-				size_t itemcount = item_list->GetItemCount();
-				if(n == wxNOT_FOUND)
-					n = 0;
-				else if(static_cast<uint32_t>(n) < itemcount - amount && itemcount - amount < itemcount)
-					n += amount;
-				else
-					n = item_list->GetItemCount() - 1;
-
-				item_list->SetSelection(n);
-			}
-			break;
-		}
-		default:
-			event.Skip();
-			break;
-	}
-}
-
-void ReplaceItemDialog::OnTextIdle(wxTimerEvent& event)
-{
-	ok_button->Enable(false);
-
-	if(&event.GetTimer() == &find_idle_input_timer)
-		RefreshContents(find_item_list);
-	else
-		RefreshContents(with_item_list);
-
-	uint16_t find_id = GetResultFindID();
-	if(find_id != 0) {
-		uint16_t with_id = GetResultWithID();
-		ok_button->Enable(with_id != 0 && find_id != with_id);
-	}
-}
-
-void ReplaceItemDialog::OnTextChange(wxCommandEvent& event)
-{
-	if(event.GetEventObject() == find_item_field)
-		find_idle_input_timer.Start(800, true);
-	else
-		with_idle_input_timer.Start(800, true);
-}
-
-void ReplaceItemDialog::OnClickList(wxCommandEvent& WXUNUSED(event))
-{
-	uint16_t find_id = GetResultFindID();
-	uint16_t with_id = GetResultWithID();
-	ok_button->Enable(find_id != 0 && with_id != 0 && find_id != with_id);
-}
-
-void ReplaceItemDialog::OnClickOK(wxCommandEvent& WXUNUSED(event))
-{
-	EndModal(wxID_OK);
-}
-
-void ReplaceItemDialog::OnClickCancel(wxCommandEvent& WXUNUSED(event))
-{
-	EndModal(wxID_CANCEL);
-}
-
-void ReplaceItemDialog::RefreshContents(FindDialogListBox *which_list)
-{
-	which_list->Clear();
-
-	wxTextCtrl *search_field = (which_list == find_item_list ? find_item_field : with_item_field);
-
-	std::string search_string = as_lower_str(nstr(search_field->GetValue()));
-	bool do_search = (search_string.size() >= 2);
-
-	if(do_search) {
-
-		bool found_search_results = false;
-
-		for(int id = 0; id <= g_items.getMaxID(); ++id)
-		{
-			ItemType& it = g_items[id];
-			if(it.id == 0)
-				continue;
-
-			RAWBrush* raw_brush = it.raw_brush;
-			if(!raw_brush)
-				continue;
-
-			if(as_lower_str(raw_brush->getName()).find(search_string) == std::string::npos)
-				continue;
-
-			found_search_results = true;
-			which_list->AddBrush(raw_brush);
-		}
-
-		if(found_search_results)
-			which_list->SetSelection(0);
-		else
-			which_list->SetNoMatches();
-
-	}
-	which_list->Refresh();
-}
-
-uint16_t ReplaceItemDialog::GetResultFindID() const
-{
-	if(find_item_list->GetItemCount() != 0) {
-		Brush* brush = find_item_list->GetSelectedBrush();
-		if(brush && brush->isRaw()) {
-			return brush->asRaw()->getItemID();
-		}
-	}
-	return 0;
-}
-
-uint16_t ReplaceItemDialog::GetResultWithID() const
-{
-	if(with_item_list->GetItemCount() != 0) {
-		Brush* brush = with_item_list->GetSelectedBrush();
-		if(brush && brush->isRaw()) {
-			return brush->asRaw()->getItemID();
-		}
-	}
-	return 0;
 }
 
 // ============================================================================

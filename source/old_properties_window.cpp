@@ -319,12 +319,30 @@ OldPropertiesWindow::OldPropertiesWindow(wxWindow* win_parent, const Map* map, c
 		}
 
 		boxsizer->Add(subsizer, wxSizerFlags(1).Expand());
-
-		topsizer->Add(boxsizer, wxSizerFlags(0).Expand().Border(wxALL, 20));
-		//SetSize((teleport? 260 : 220), 30 + num_items*40);
+		topsizer->Add(boxsizer, wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT, 20));
 	}
 
-	// topsizer->Add(createAttributeList(this), wxSizerFlags(1).Expand().Border(wxALL, 20));
+	// Others attributes
+	const ItemType& type = g_items.getItemType(edit_item->getID());
+	wxStaticBoxSizer* others_sizer = newd wxStaticBoxSizer(wxVERTICAL, this, "Others");
+	wxFlexGridSizer* others_subsizer = newd wxFlexGridSizer(2, 5, 10);
+	others_subsizer->AddGrowableCol(1);
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Stackable"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.stackable)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Movable"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.moveable)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Pickupable"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.pickupable)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Hangable"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.isHangable)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Block Missiles"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.blockMissiles)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Block Pathfinder"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.blockPathfinder)));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, "Has Elevation"));
+	others_subsizer->Add(newd wxStaticText(this, wxID_ANY, b2yn(type.hasElevation)));
+	others_sizer->Add(others_subsizer, wxSizerFlags(1).Expand());
+	topsizer->Add(others_sizer, wxSizerFlags(0).Expand().Border(wxLEFT | wxRIGHT | wxBOTTOM, 20));
 
 	wxSizer* subsizer = newd wxBoxSizer(wxHORIZONTAL);
 	subsizer->Add(newd wxButton(this, wxID_OK, "OK"), wxSizerFlags(1).Center());

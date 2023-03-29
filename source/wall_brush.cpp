@@ -20,7 +20,6 @@
 #include "wall_brush.h"
 #include "items.h"
 #include "basemap.h"
-#include "pugicast.h"
 
 uint32_t WallBrush::full_border_types[16];
 uint32_t WallBrush::half_border_types[16];
@@ -40,11 +39,11 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if((attribute = node.attribute("lookid"))) {
-		look_id = pugi::cast<uint16_t>(attribute.value());
+		look_id = attribute.as_ushort();
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = pugi::cast<uint16_t>(attribute.value());
+		look_id = attribute.as_ushort();
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -101,7 +100,7 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 			for(pugi::xml_node subChildNode = childNode.first_child(); subChildNode; subChildNode = subChildNode.next_sibling()) {
 				const std::string& subChildName = as_lower_str(subChildNode.name());
 				if(subChildName == "item") {
-					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
+					uint16_t id = subChildNode.attribute("id").as_ushort();
 					if(id == 0) {
 						warnings.push_back("Could not read id tag of item node\n");
 						break;
@@ -123,12 +122,12 @@ bool WallBrush::load(pugi::xml_node node, wxArrayString& warnings)
 					WallType wt;
 					wt.id = id;
 
-					wall_items[alignment].total_chance += pugi::cast<int32_t>(subChildNode.attribute("chance").value());
+					wall_items[alignment].total_chance += subChildNode.attribute("chance").as_int();
 					wt.chance = wall_items[alignment].total_chance;
 
 					wall_items[alignment].items.push_back(wt);
 				} else if(subChildName == "door") {
-					uint16_t id = pugi::cast<uint16_t>(subChildNode.attribute("id").value());
+					uint16_t id = subChildNode.attribute("id").as_ushort();
 					if(id == 0) {
 						warnings.push_back("Could not read id tag of door node\n");
 						break;

@@ -31,7 +31,7 @@
 // Version info
 // xxyyzzt (major, minor, subversion)
 #define __RME_VERSION_MAJOR__      3
-#define __RME_VERSION_MINOR__      7
+#define __RME_VERSION_MINOR__      8
 #define __RME_SUBVERSION__         0
 
 #define __LIVE_NET_VERSION__       5
@@ -58,7 +58,8 @@
 #endif
 // OS
 
-#define OTGZ_SUPPORT 1
+#define OTGZ_SUPPORT 0
+
 #define ASSETS_NAME "Tibia"
 
 #ifdef __VISUALC__

@@ -37,7 +37,6 @@
 #include "town.h"
 
 #include "iomap_otbm.h"
-#include "pugicast.h"
 
 typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
@@ -411,7 +410,7 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
@@ -483,7 +482,7 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 
 bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 	if(filename.GetExt() == "otgz") {
 		// Open the archive
 		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
@@ -1014,16 +1013,16 @@ bool IOMapOTBM::loadSpawnsMonster(Map& map, pugi::xml_document& doc)
 		}
 
 		Position spawnPosition;
-		spawnPosition.x = pugi::cast<int32_t>(spawnNode.attribute("centerx").value());
-		spawnPosition.y = pugi::cast<int32_t>(spawnNode.attribute("centery").value());
-		spawnPosition.z = pugi::cast<int32_t>(spawnNode.attribute("centerz").value());
+		spawnPosition.x = spawnNode.attribute("centerx").as_int();
+		spawnPosition.y = spawnNode.attribute("centery").as_int();
+		spawnPosition.z = spawnNode.attribute("centerz").as_int();
 
 		if(spawnPosition.x == 0 || spawnPosition.y == 0) {
 			warning("Bad position data on one monster spawn, discarding...");
 			continue;
 		}
 
-		int32_t radius = pugi::cast<int32_t>(spawnNode.attribute("radius").value());
+		int32_t radius = spawnNode.attribute("radius").as_int();
 		if(radius < 1) {
 			warning("Couldn't read radius of monster spawn.. discarding spawn...");
 			continue;
@@ -1058,7 +1057,7 @@ bool IOMapOTBM::loadSpawnsMonster(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			int32_t spawntime = pugi::cast<int32_t>(monsterNode.attribute("spawntime").value());
+			int32_t spawntime = monsterNode.attribute("spawntime").as_int();
 			if(spawntime == 0) {
 				spawntime = g_settings.getInteger(Config::DEFAULT_SPAWN_MONSTER_TIME);
 			}
@@ -1080,8 +1079,8 @@ bool IOMapOTBM::loadSpawnsMonster(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			monsterPosition.x += pugi::cast<int32_t>(xAttribute.value());
-			monsterPosition.y += pugi::cast<int32_t>(yAttribute.value());
+			monsterPosition.x += xAttribute.as_int();
+			monsterPosition.y += yAttribute.as_int();
 
 			radius = std::max<int32_t>(radius, std::abs(monsterPosition.x - spawnPosition.x));
 			radius = std::max<int32_t>(radius, std::abs(monsterPosition.y - spawnPosition.y));
@@ -1162,7 +1161,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 
 		House* house = nullptr;
 		if((attribute = houseNode.attribute("houseid"))) {
-			house = map.houses.getHouse(pugi::cast<int32_t>(attribute.value()));
+			house = map.houses.getHouse(attribute.as_uint());
 			if(!house) {
 				break;
 			}
@@ -1175,16 +1174,16 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 		}
 
 		Position exitPosition(
-			pugi::cast<int32_t>(houseNode.attribute("entryx").value()),
-			pugi::cast<int32_t>(houseNode.attribute("entryy").value()),
-			pugi::cast<int32_t>(houseNode.attribute("entryz").value())
+			houseNode.attribute("entryx").as_int(),
+			houseNode.attribute("entryy").as_int(),
+			houseNode.attribute("entryz").as_int()
 		);
 		if(exitPosition.x != 0 && exitPosition.y != 0 && exitPosition.z != 0) {
 			house->setExit(exitPosition);
 		}
 
 		if((attribute = houseNode.attribute("rent"))) {
-			house->rent = pugi::cast<int32_t>(attribute.value());
+			house->rent = attribute.as_int();
 		}
 
 		if((attribute = houseNode.attribute("guildhall"))) {
@@ -1192,7 +1191,7 @@ bool IOMapOTBM::loadHouses(Map& map, pugi::xml_document& doc)
 		}
 
 		if((attribute = houseNode.attribute("townid"))) {
-			house->townid = pugi::cast<int32_t>(attribute.value());
+			house->townid = attribute.as_uint();
 		} else {
 			warning("House %d has no town! House was removed.", house->id);
 			map.houses.removeHouse(house);
@@ -1232,16 +1231,16 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 		}
 
 		Position spawnPosition;
-		spawnPosition.x = pugi::cast<int32_t>(spawnNpcNode.attribute("centerx").value());
-		spawnPosition.y = pugi::cast<int32_t>(spawnNpcNode.attribute("centery").value());
-		spawnPosition.z = pugi::cast<int32_t>(spawnNpcNode.attribute("centerz").value());
+		spawnPosition.x = spawnNpcNode.attribute("centerx").as_int();
+		spawnPosition.y = spawnNpcNode.attribute("centery").as_int();
+		spawnPosition.z = spawnNpcNode.attribute("centerz").as_int();
 
 		if(spawnPosition.x == 0 || spawnPosition.y == 0) {
 			warning("Bad position data on one npc spawn, discarding...");
 			continue;
 		}
 
-		int32_t radius = pugi::cast<int32_t>(spawnNpcNode.attribute("radius").value());
+		int32_t radius = spawnNpcNode.attribute("radius").as_int();
 		if(radius < 1) {
 			warning("Couldn't read radius of npc spawn.. discarding spawn...");
 			continue;
@@ -1276,7 +1275,7 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			int32_t spawntime = pugi::cast<int32_t>(npcNode.attribute("spawntime").value());
+			int32_t spawntime = npcNode.attribute("spawntime").as_int();
 			if(spawntime == 0) {
 				spawntime = g_settings.getInteger(Config::DEFAULT_SPAWN_NPC_TIME);
 			}
@@ -1298,8 +1297,8 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 				break;
 			}
 
-			npcPosition.x += pugi::cast<int32_t>(xAttribute.value());
-			npcPosition.y += pugi::cast<int32_t>(yAttribute.value());
+			npcPosition.x += xAttribute.as_int();
+			npcPosition.y += yAttribute.as_int();
 
 			radius = std::max<int32_t>(radius, std::abs(npcPosition.x - spawnPosition.x));
 			radius = std::max<int32_t>(radius, std::abs(npcPosition.y - spawnPosition.y));
@@ -1350,7 +1349,7 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 
 bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
-#ifdef OTGZ_SUPPORT
+#if OTGZ_SUPPORT > 0
 	if(identifier.GetExt() == "otgz") {
 		// Create the archive
 		struct archive* a = archive_write_new();
@@ -1717,7 +1716,12 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 						monsterNode.append_attribute("x") = x;
 						monsterNode.append_attribute("y") = y;
 						monsterNode.append_attribute("z") = spawnPosition.z;
-						monsterNode.append_attribute("spawntime") = monster->getSpawnMonsterTime();
+						auto monsterSpawnTime = monster->getSpawnMonsterTime();
+						if (monsterSpawnTime > std::numeric_limits<uint32_t>::max() || monsterSpawnTime < std::numeric_limits<uint32_t>::min()) {
+							monsterSpawnTime = 60;
+						}
+
+						monsterNode.append_attribute("spawntime") = monsterSpawnTime;
 						if(monster->getDirection() != NORTH) {
 							monsterNode.append_attribute("direction") = monster->getDirection();
 						}

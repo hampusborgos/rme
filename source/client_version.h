@@ -185,11 +185,15 @@ struct ClientData
 class ClientVersion;
 typedef std::vector<ClientVersion*> ClientVersionList;
 
-class ClientVersion : boost::noncopyable
+class ClientVersion
 {
 public:
 	ClientVersion(OtbVersion otb, std::string versionName, wxString path);
 	~ClientVersion() = default;
+
+	// Ensures we don't accidentally copy it.
+	ClientVersion(const ClientVersion &) = delete;
+	ClientVersion &operator=(const ClientVersion &) = delete;
 
 	static void loadVersions();
 	static void unloadVersions();
@@ -248,7 +252,7 @@ private:
 	static void loadVersionExtensions(pugi::xml_node client_node);
 
 	// All versions
-	typedef std::map<ClientVersionID, ClientVersion*> VersionMap;
+	using VersionMap = std::map<ClientVersionID, ClientVersion*>;
 	static VersionMap client_versions;
 	static ClientVersion* latest_version;
 

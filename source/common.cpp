@@ -126,6 +126,16 @@ void trim_left(std::string& source, const std::string& t)
 	source.erase(0, source.find_first_not_of(t));
 }
 
+void trim(std::string& str) {
+	// Trim from start
+	str.erase(str.begin(), std::find_if(str.begin(), str.end(),
+		[](int ch) { return !std::isspace(ch); }));
+
+	// Trim from end
+	str.erase(std::find_if(str.rbegin(), str.rend(),
+		[](int ch) { return !std::isspace(ch); }).base(), str.end());
+}
+
 void to_lower_str(std::string& source)
 {
 	std::transform(source.begin(), source.end(), source.begin(), tolower);
@@ -176,7 +186,7 @@ int random(int low, int high)
 	int range = high - low;
 
 	double dist = double(mt_randi()) / 0xFFFFFFFF;
-	return low + min(range, int((1 + range) * dist));
+	return low + std::min(range, int((1 + range) * dist));
 }
 
 int random(int high)
@@ -238,13 +248,7 @@ bool posFromClipboard(int& x, int& y, int& z)
 	return done;
 }
 
-wxString b2yn(bool v)
+wxString b2yn(bool value)
 {
-	wxString s;
-	if(v)
-		s << "yes";
-	else
-		s << "no";
-
-	return s;
+	return value ? "Yes" : "No";
 }

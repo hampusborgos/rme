@@ -44,7 +44,7 @@ namespace MenuBar
 		UNDO,
 		REDO,
 		FIND_ITEM,
-		REPLACE_ITEM,
+		REPLACE_ITEMS,
 		SEARCH_ON_MAP_EVERYTHING,
 		SEARCH_ON_MAP_UNIQUE,
 		SEARCH_ON_MAP_ACTION,
@@ -56,7 +56,7 @@ namespace MenuBar
 		SEARCH_ON_SELECTION_CONTAINER,
 		SEARCH_ON_SELECTION_WRITEABLE,
 		SEARCH_ON_SELECTION_ITEM,
-		REPLACE_ON_SELECTION_ITEM,
+		REPLACE_ON_SELECTION_ITEMS,
 		REMOVE_ON_SELECTION_ITEM,
 		SELECT_MODE_COMPENSATE,
 		SELECT_MODE_CURRENT,
@@ -155,7 +155,7 @@ namespace MenuBar
 
 class MainFrame;
 
-class MainMenuBar : wxEvtHandler
+class MainMenuBar : public wxEvtHandler
 {
 public:
 	MainMenuBar(MainFrame* frame);
@@ -221,7 +221,7 @@ public:
 	void OnCopy(wxCommandEvent& event);
 	void OnPaste(wxCommandEvent& event);
 	void OnSearchForItem(wxCommandEvent& event);
-	void OnReplaceItem(wxCommandEvent& event);
+	void OnReplaceItems(wxCommandEvent& event);
 	void OnSearchForStuffOnMap(wxCommandEvent& event);
 	void OnSearchForUniqueOnMap(wxCommandEvent& event);
 	void OnSearchForActionOnMap(wxCommandEvent& event);
@@ -235,7 +235,7 @@ public:
 	void OnSearchForContainerOnSelection(wxCommandEvent& event);
 	void OnSearchForWriteableOnSelection(wxCommandEvent& event);
 	void OnSearchForItemOnSelection(wxCommandEvent& event);
-	void OnReplaceItemOnSelection(wxCommandEvent& event);
+	void OnReplaceItemsOnSelection(wxCommandEvent& event);
 	void OnRemoveItemOnSelection(wxCommandEvent& event);
 
 	// Map menu
