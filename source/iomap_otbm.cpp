@@ -1504,8 +1504,8 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 		f.addU16(map.width);
 		f.addU16(map.height);
 
-		f.addU32(g_items.MajorVersion);
-		f.addU32(g_items.MinorVersion);
+		f.addU32(0);
+		f.addU32(0);
 
 		f.addNode(OTBM_MAP_DATA);
 		{
