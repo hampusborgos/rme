@@ -155,6 +155,7 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 
 		ItemType *t = newd ItemType();
 		t->id = static_cast<uint16_t>(object.id());
+		t->clientID = static_cast<uint16_t>(object.id());
 		t->name = object.name();
 		t->description = object.description();
 
@@ -284,11 +285,6 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 
 bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 {
-	if(id > 30000 && id < 30100) {
-		itemNode = itemNode.next_sibling();
-		return true;
-	}
-
 	ItemType& it = getItemType(id);
 
 	it.name = itemNode.attribute("name").as_string();

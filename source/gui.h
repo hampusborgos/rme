@@ -267,7 +267,7 @@ public:
 
 	// Load/unload a client version (takes care of dialogs aswell)
 	void UnloadVersion();
-	bool LoadVersion(wxString& error, wxArrayString& warnings, bool force = false);
+	bool LoadVersion(wxString& error, wxArrayString& warnings);
 
 	// Centers current view on position
 	void SetScreenCenterPosition(Position pos);

@@ -157,13 +157,12 @@ bool Application::OnInit()
 	//wxHandleFatalExceptions(true);
 #endif
 
-    m_file_to_open = wxEmptyString;
-    ParseCommandLineMap(m_file_to_open);
+	m_file_to_open = wxEmptyString;
+	ParseCommandLineMap(m_file_to_open);
 
-    g_gui.root = newd MainFrame(__W_RME_APPLICATION_NAME__, wxDefaultPosition, wxSize(700,500));
+	g_gui.root = newd MainFrame(__W_RME_APPLICATION_NAME__, wxDefaultPosition, wxSize(700,500));
 	SetTopWindow(g_gui.root);
 	g_gui.SetTitle("");
-
 
 	g_gui.root->LoadRecentFiles();
 
@@ -261,8 +260,9 @@ bool Application::OnInit()
 			}
 		}
 	}
-    // Keep track of first event loop entry
-    m_startup = true;
+
+	// Keep track of first event loop entry
+	m_startup = true;
 	return true;
 }
 

@@ -314,7 +314,7 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 			}
 
 			map.cleanInvalidTiles(true);
-		} else  {
+		} else {
 			UnnamedRenderingLock();
 			if(!g_gui.LoadVersion(error, warnings)) {
 				g_gui.ListDialog(this, "Warnings", warnings);

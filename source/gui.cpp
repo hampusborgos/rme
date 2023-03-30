@@ -250,27 +250,24 @@ void GUI::discoverDataDirectory(const wxString& existentFile)
 		wxLogError(wxString() + "Could not find data directory.\n");
 }
 
-bool GUI::LoadVersion(wxString& error, wxArrayString& warnings, bool force)
+bool GUI::LoadVersion(wxString& error, wxArrayString& warnings)
 {
-	if (force) {
-		// There is another version loaded right now, save window layout
-		g_gui.SavePerspective();
+	// There is another version loaded right now, save window layout
+	g_gui.SavePerspective();
 
-		// Disable all rendering so the data is not accessed while reloading
-		UnnamedRenderingLock();
-		DestroyPalettes();
-		DestroyMinimap();
+	// Disable all rendering so the data is not accessed while reloading
+	UnnamedRenderingLock();
+	DestroyPalettes();
+	DestroyMinimap();
 
-		// Destroy the previous version
-		UnloadVersion();
+	// Destroy the previous version
+	UnloadVersion();
 
-		bool ret = LoadDataFiles(error, warnings);
-		if(ret)
-			g_gui.LoadPerspective();
+	bool ret = LoadDataFiles(error, warnings);
+	if(ret)
+		g_gui.LoadPerspective();
 
-		return ret;
-	}
-	return true;
+	return ret;
 }
 
 void GUI::EnableHotkeys()
@@ -295,7 +292,7 @@ void GUI::CycleTab(bool forward)
 
 bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
 {
-	FileName data_path = Assets::getDataPath();
+	FileName data_path = GetDataDirectory();
 	FileName extension_path = GetExtensionsDirectory();
 
 	FileName exec_directory;
@@ -368,9 +365,10 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
 
 	g_gui.SetLoadDone(50, "Loading materials.xml ...");
 	spdlog::info("Loading materials");
-	if(!g_materials.loadMaterials(wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials.xml"), error, warnings)) {
+	auto materialsPath = wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials/materials.xml");
+	if(!g_materials.loadMaterials(materialsPath, error, warnings)) {
 		warnings.push_back("Couldn't load materials.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString(data_path.GetPath(wxPATH_GET_VOLUME | wxPATH_GET_SEPARATOR) + "materials.xml").ToStdString(), error.ToStdString());
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", materialsPath.ToStdString(), error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(70, "Loading extensions...");
@@ -600,15 +598,6 @@ bool GUI::LoadMap(const FileName& fileName)
 			mapTab->SetScreenCenterPosition(position);
 		}
 	}
-
-	wxString error;
-	wxArrayString warnings;
-	if (!g_gui.LoadVersion(error, warnings, true)) {
-		return 0;
-	}
-
-	g_gui.PopupDialog("Error", error, wxOK);
-	g_gui.ListDialog("Warnings", warnings);
 
 	return true;
 }
