@@ -26,101 +26,16 @@
 
 ItemDatabase g_items;
 
-ItemType::ItemType() :
-	sprite(nullptr),
-	id(0),
-	brush(nullptr),
-	doodad_brush(nullptr),
-	raw_brush(nullptr),
-	is_metaitem(false),
-	has_raw(false),
-	in_other_tileset(false),
-	group(ITEM_GROUP_NONE),
-	type(ITEM_TYPE_NONE),
-	volume(0),
-	maxTextLen(0),
-	//writeOnceItemID(0),
-	ground_equivalent(0),
-	border_group(0),
-	has_equivalent(false),
-	wall_hate_me(false),
-	name(""),
-	description(""),
-	weight(0.0f),
-	attack(0),
-	defense(0),
-	armor(0),
-	charges(0),
-	client_chargeable(false),
-	extra_chargeable(false),
-	ignoreLook(false),
+ItemType::ItemType() = default;
 
-	isHangable(false),
-	hookEast(false),
-	hookSouth(false),
-	canReadText(false),
-	canWriteText(false),
-	replaceable(true),
-	decays(false),
-	stackable(false),
-	moveable(true),
-	alwaysOnBottom(false),
-	pickupable(false),
-	rotable(false),
-	isBorder(false),
-	isOptionalBorder(false),
-	isWall(false),
-	isBrushDoor(false),
-	isOpen(false),
-	isTable(false),
-	isCarpet(false),
-
-	floorChangeDown(false),
-	floorChangeNorth(false),
-	floorChangeSouth(false),
-	floorChangeEast(false),
-	floorChangeWest(false),
-	floorChange(false),
-
-	blockSolid(false),
-	blockPickupable(false),
-	blockProjectile(false),
-	blockPathFind(false),
-	hasElevation(false),
-
-	alwaysOnTopOrder(0),
-	rotateTo(0),
-	border_alignment(BORDER_NONE)
-{
-	////
-}
-
-ItemType::~ItemType()
-{
-	////
-}
+ItemType::~ItemType() = default;
 
 bool ItemType::isFloorChange() const
 {
 	return floorChange || floorChangeDown || floorChangeNorth || floorChangeSouth || floorChangeEast || floorChangeWest;
 }
 
-ItemDatabase::ItemDatabase() :
-	// Version information
-	MajorVersion(0),
-	MinorVersion(0),
-	BuildNumber(0),
-
-	// Count of GameSprite types
-	item_count(0),
-	effect_count(0),
-	monster_count(0),
-	distance_count(0),
-
-	max_item_id(0)
-{
-	////
-}
+ItemDatabase::ItemDatabase() = default;
 
 ItemDatabase::~ItemDatabase()
 {
@@ -272,6 +187,9 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 			}
 		}
 
+		// Save max item id from the object size iteraction
+		max_item_id = it;
+
 		if (t) {
 			if (items[t->id]) {
 				wxLogWarning("appearances.dat: Duplicate items");
@@ -373,9 +291,9 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, int id)
 				it.canReadText = it.maxTextLen > 0;
 			}
 		} else if(key == "writeonceitemid") {
-			/*if((attribute = itemAttributesNode.attribute("value"))) {
-				it.writeOnceItemId = pugi::cast<int32_t>(attribute.value());
-			}*/
+			if((attribute = itemAttributesNode.attribute("value"))) {
+				it.write_once_item_id = attribute.as_int();
+			}
 		} else if(key == "allowdistread") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
 				it.allowDistRead = attribute.as_bool();

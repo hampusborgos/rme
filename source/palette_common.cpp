@@ -561,7 +561,6 @@ void BrushToolPanel::LoadAllContents()
 		size_sizer->Add(sub_sizer);
 		sub_sizer = newd wxBoxSizer(wxHORIZONTAL);
 
-
 		ASSERT(g_gui.pz_brush);
 		sub_sizer->Add(pzBrushButton = newd BrushButton(this, g_gui.pz_brush, RENDER_SIZE_16x16, PALETTE_TERRAIN_PZ_TOOL));
 			pzBrushButton->SetToolTip("PZ Tool");

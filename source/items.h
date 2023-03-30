@@ -269,113 +269,107 @@ public:
 
 	bool isFloorChange() const;
 
-	GameSprite* sprite;
+	GameSprite* sprite = nullptr;
+	Brush* brush = nullptr;
+	Brush* doodad_brush = nullptr;
+	RAWBrush* raw_brush = nullptr;
+
 	SpritesSize m_size;
 	std::vector<std::pair<int, int>> m_animationPhases;
 	int m_numPatternX{ 0 }, m_numPatternY{ 0 }, m_numPatternZ{ 0 };
 	int m_layers{ 0 };
 	std::vector<int> m_sprites;
 
-	uint16_t id;
-	uint16_t clientID;
-	Brush* brush;
-	Brush* doodad_brush;
-	RAWBrush* raw_brush;
-	bool is_metaitem;
-	// This is needed as a consequence of the item palette & the raw palette
-	// using the same brushes ("others" category consists of items with this
-	// flag set to false)
-	bool has_raw;
-	bool in_other_tileset;
-	bool async_animation;
+	uint8_t sprite_phase_size = 0;
 
-	ItemGroup_t group;
-	ItemTypes_t type;
+	uint16_t id = 0;
+	uint16_t clientID = 0;
+	uint16_t volume = 0;
+	uint16_t maxTextLen = 0;
+	uint16_t write_once_item_id = 0;
+	uint16_t ground_equivalent = 0;
+	uint16_t rotateTo = 0;
 
-	uint32_t border_group;
-	uint32_t pattern_width;
-	uint32_t pattern_height;
-	uint32_t pattern_depth;
-	uint32_t layers;
-	uint8_t sprite_phase_size;
-	uint32_t width;
-	uint32_t height;
-	uint32_t sprite_id;
-	uint32_t loop_count;
-	uint32_t start_frame;
-
-	uint16_t volume;
-	uint16_t maxTextLen;
-	//uint16_t writeOnceItemId;
-	uint16_t ground_equivalent;
-	bool has_equivalent; // True if any item has this as ground_equivalent
-	bool wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
+	uint32_t border_group = 0;
+	uint32_t pattern_width = 0;
+	uint32_t pattern_height = 0;
+	uint32_t pattern_depth = 0;
+	uint32_t layers = 0;
+	uint32_t width = 0;
+	uint32_t height = 0;
+	uint32_t sprite_id = 0;
+	uint32_t loop_count = 0;
+	uint32_t start_frame = 0;
+	uint32_t patternWidth = 0;
+	uint32_t charges = 0;
 
 	std::string name;
 	std::string editorsuffix;
 	std::string description;
 
-	uint32_t patternWidth;
-	uint32_t charges;
-	
-	float weight;
+	float weight = 0.0;
 	// It might be useful to be able to extrapolate this information in the future
-	int attack;
-	int defense;
-	int armor;
-	bool client_chargeable;
-	bool extra_chargeable;
-	bool ignoreLook;
+	int attack = 0;
+	int defense = 0;
+	int armor = 0;
+	int alwaysOnTopOrder = 0;
 
-	bool isHangable;
-	bool isCorpse;
-	bool isVertical;
-	bool isHorizontal;
-	bool isPodium;
-	bool hookEast;
-	bool hookSouth;
-	bool canReadText;
-	bool canWriteText;
-	bool allowDistRead;
-	bool replaceable;
-	bool decays;
-
-	bool stackable;
-	bool moveable;
-	bool alwaysOnBottom;
-	bool pickupable;
-	bool rotable;
-	bool isBorder;
-	bool isOptionalBorder;
-	bool isWall;
-	bool isBrushDoor;
-	bool isOpen;
-	bool isTable;
-	bool isCarpet;
-
-	bool floorChangeDown;
-	bool floorChangeNorth;
-	bool floorChangeSouth;
-	bool floorChangeEast;
-	bool floorChangeWest;
-	bool floorChange;
-
-	bool blockSolid;
-	bool blockPickupable;
-	bool blockProjectile;
-	bool blockPathFind;
-	bool hasElevation;
-	bool forceUse;
-	bool hasHeight;
-	bool walkStack;
-
+	bool is_metaitem = false;
+	// This is needed as a consequence of the item palette & the raw palette
+	// using the same brushes ("others" category consists of items with this
+	// flag set to false)
+	bool has_raw = false;
+	bool in_other_tileset = false;
+	bool async_animation = false;
+	bool has_equivalent = false; // True if any item has this as ground_equivalent
+	bool wall_hate_me = false; // (For wallbrushes, regard this as not part of the wall)
+	bool client_chargeable = false;
+	bool extra_chargeable = false;
+	bool ignoreLook = false;
+	bool isHangable = false;
+	bool isCorpse = false;
+	bool isVertical = false;
+	bool isHorizontal = false;
+	bool isPodium = false;
+	bool hookEast = false;
+	bool hookSouth = false;
+	bool canReadText = false;
+	bool canWriteText = false;
+	bool allowDistRead = false;
+	bool replaceable = true;
+	bool decays = false;
+	bool stackable = false;
+	bool moveable = true;
+	bool alwaysOnBottom = false;
+	bool pickupable = false;
+	bool rotable = false;
+	bool isBorder = false;
+	bool isOptionalBorder = false;
+	bool isWall = false;
+	bool isBrushDoor = false;
+	bool isOpen = false;
+	bool isTable = false;
+	bool isCarpet = false;
+	bool floorChangeDown = false;
+	bool floorChangeNorth = false;
+	bool floorChangeSouth = false;
+	bool floorChangeEast = false;
+	bool floorChangeWest = false;
+	bool floorChange = false;
+	bool blockSolid = false;
+	bool blockPickupable = false;
+	bool blockProjectile = false;
+	bool blockPathFind = false;
+	bool hasElevation = false;
+	bool forceUse = false;
+	bool hasHeight = false;
+	bool walkStack = false;
 	bool spriteInfo = false;
-
 	bool noMoveAnimation = false;
 
-	int alwaysOnTopOrder;
-	uint16_t rotateTo;
-	BorderType border_alignment;
+	BorderType border_alignment = BORDER_NONE;
+	ItemGroup_t group = ITEM_GROUP_NONE;
+	ItemTypes_t type = ITEM_TYPE_NONE;
 };
 
 class ItemDatabase
@@ -402,19 +396,13 @@ public:
 	typedef std::map<std::string, ItemType*> ItemNameMap;
 	ItemMap items;
 
-	// Version information
-	uint32_t MajorVersion;
-	uint32_t MinorVersion;
-	uint32_t BuildNumber;
-
 protected:
 	// Count of GameSprite types
-	uint16_t item_count;
-	uint16_t effect_count;
-	uint16_t monster_count;
-	uint16_t distance_count;
-
-	uint16_t max_item_id;
+	uint16_t item_count = 0;
+	uint16_t effect_count = 0;
+	uint16_t monster_count = 0;
+	uint16_t distance_count = 0;
+	uint16_t max_item_id = 0;
 
 	friend class GameSprite;
 	friend class Item;
