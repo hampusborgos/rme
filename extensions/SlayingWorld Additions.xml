@@ -642,16 +642,24 @@
 			<item id="11938" chance="500"/>
 			<item id="11938" chance="0"/>
 			<item id="11938" chance="0"/>
-			<door id="11961" type="normal" open="false"/>
-			<door id="12188" type="quest" open="false"/>
+			<door id="12189" type="normal" open="false"/>
+			<door id="12190" type="normal" open="true"/>
+			<door id="12193" type="magic" open="false"/>
+			<door id="12194" type="magic" open="true"/>
+			<door id="12195" type="quest" open="false"/>
+			<door id="12196" type="quest" open="true"/>
 			<door id="12228" type="window"/>
 		</wall>
 		<wall type="vertical">
 			<item id="11937" chance="500"/>
 			<item id="11937" chance="0"/>
 			<item id="11937" chance="0"/>
-			<door id="11960" type="normal" open="false"/>
-			<door id="12198" type="quest" open="false"/>
+			<door id="12198" type="normal" open="false"/>
+			<door id="12199" type="normal" open="true"/>
+			<door id="12202" type="magic" open="false"/>
+			<door id="12203" type="magic" open="true"/>
+			<door id="12204" type="quest" open="false"/>
+			<door id="12205" type="quest" open="true"/>
 			<door id="11948" type="window"/>
 		</wall>
 		<wall type="corner">

@@ -1332,7 +1332,6 @@
 			<item id="11847" chance="4"/>
 			<item id="11848" chance="6"/>
 			<item id="11849" chance="2"/>
-			<door id="12092" type="normal" open="false"/>
 			<door id="12093" type="normal" open="false"/>
 			<door id="12094" type="normal" open="true"/>
 			<door id="12095" type="quest" open="false"/>
@@ -1346,7 +1345,6 @@
 			<item id="11850" chance="4"/>
 			<item id="11851" chance="6"/>
 			<item id="11852" chance="2"/>
-			<door id="12099" type="normal" open="false"/>
 			<door id="12100" type="normal" open="false"/>
 			<door id="12101" type="normal" open="true"/>
 			<door id="12102" type="quest" open="false"/>
@@ -1366,7 +1364,6 @@
 	<brush name="corrupted wall2" type="wall" server_lookid="11938">
 		<wall type="horizontal">
 			<item id="11938" chance="1"/>
-			<door id="12188" type="normal" open="false"/>
 			<door id="12189" type="normal" open="false"/>
 			<door id="12190" type="normal" open="true"/>
 			<door id="12195" type="locked" open="false"/>
