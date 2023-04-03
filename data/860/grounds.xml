@@ -1181,6 +1181,13 @@
 		<border align="outer" id="132" to="none"/>
 	</brush>
 
+	<brush name="dirt mountain" type="ground" server_lookid="8913" z-order="6112">
+		<item id="8133" chance="1"/>
+		
+		<border align="outer" id="134"/>
+		<border align="outer" id="134" to="none"/>
+	</brush>
+
 	<brush name="mountain top ground" type="ground" server_lookid="4405" z-order="1005">
 		<item id="4405" chance="1"/>
 		<item id="4406" chance="1"/>

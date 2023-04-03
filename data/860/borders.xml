@@ -917,4 +917,19 @@
 		<borderitem edge="dse" item="6881"/>
 	</border>
 
+	<border id="134"> -- dirt mountain border --
+		<borderitem edge="n"   item="8121"/>
+		<borderitem edge="e"   item="8124"/>
+		<borderitem edge="s"   item="8123"/>
+		<borderitem edge="w"   item="8122"/>
+		<borderitem edge="cnw" item="8127"/>
+		<borderitem edge="cne" item="8128"/>
+		<borderitem edge="csw" item="8125"/>
+		<borderitem edge="cse" item="8126"/>
+		<borderitem edge="dnw" item="8129"/>
+		<borderitem edge="dne" item="8130"/>
+		<borderitem edge="dsw" item="8132"/>
+		<borderitem edge="dse" item="8131"/>
+	</border>
+
 </materials>

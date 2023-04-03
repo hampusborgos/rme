@@ -197,6 +197,7 @@
 			<brush name="frozen mud"/>
 			<brush name="frozen mud (thick border)"/>
 			<item id="3311"/>
+			<brush name="dirt mountain"/>
 		</terrain>
 		<doodad>
 			<brush name="mossy wall"/>
