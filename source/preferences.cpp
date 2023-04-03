@@ -123,11 +123,7 @@ wxNotebookPage* PreferencesWindow::CreateGeneralPage()
                                     R"(  {"x":0,"y":0,"z":0})",
 									"  x, y, z",
 									"  (x, y, z)",
-									"  Position(x, y, z)",
-									"  x,y,z",
-									"  alani x,y,z (SipSoft)",
-									"  /pos x,y,z (TFS)",
-									"  /a x,y,z (Ezzz RealOTS Reverse Server)" };
+									"  Position(x, y, z)" };
 	int radio_choices = sizeof(position_choices) / sizeof(wxString);
 	position_format = newd wxRadioBox(general_page, wxID_ANY, "Copy Position Format", wxDefaultPosition, wxDefaultSize, radio_choices, position_choices, 1, wxRA_SPECIFY_COLS);
 	position_format->SetSelection(g_settings.getInteger(Config::COPY_POSITION_FORMAT));

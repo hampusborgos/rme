@@ -271,18 +271,6 @@ bool posToClipboard(int x, int y, int z, int format)
 		case 4:
 			data->SetText(wxString::Format("Position(%d, %d, %d)", x, y, z));
 			break;
-		case 5:
-			data->SetText(wxString::Format("%d,%d,%d", x, y, z));
-			break;
-		case 6:
-			data->SetText(wxString::Format("alani %d,%d,%d", x, y, z));
-			break;
-		case 7:
-			data->SetText(wxString::Format("/pos %d,%d,%d", x, y, z));
-			break;
-		case 8:
-			data->SetText(wxString::Format("/a %d,%d,%d", x, y, z));
-			break;
 		default:
 			wxTheClipboard->Close();
 			return false;
