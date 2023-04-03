@@ -1834,21 +1834,20 @@
 			<item id="11938" chance="1"/>
 			<door id="12189" type="normal" open="false"/>
 			<door id="12190" type="normal" open="true"/>
-			<door id="12195" type="locked" open="false"/>
-			<door id="12196" type="locked" open="true"/>
-			<door id="12193" type="quest" open="false"/>
-			<door id="12194" type="quest" open="true"/>
+			<door id="12193" type="magic" open="false"/>
+			<door id="12194" type="magic" open="true"/>
+			<door id="12195" type="quest" open="false"/>
+			<door id="12196" type="quest" open="true"/>
 			<door id="12228" type="window"/>
 		</wall>
 		<wall type="vertical">
 			<item id="11937" chance="1"/>
-			<door id="12917" type="normal" open="false"/>
-			<door id="12918" type="normal" open="false"/>
-			<door id="12919" type="normal" open="true"/>
-			<door id="12204" type="locked" open="false"/>
-			<door id="12205" type="locked" open="true"/>
-			<door id="12202" type="quest" open="false"/>
-			<door id="12203" type="quest" open="true"/>
+			<door id="12198" type="normal" open="false"/>
+			<door id="12199" type="normal" open="true"/>
+			<door id="12202" type="magic" open="false"/>
+			<door id="12203" type="magic" open="true"/>
+			<door id="12204" type="quest" open="false"/>
+			<door id="12205" type="quest" open="true"/>
 			<door id="11948" type="window"/>
 		</wall>
 		<wall type="corner">
