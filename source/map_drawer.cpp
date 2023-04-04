@@ -306,16 +306,15 @@ void MapDrawer::DrawMap()
 	bool only_colors = options.isOnlyColors();
 	bool tile_indicators = options.isTileIndicators();
 
-	// Enable texture mode
-	if(!only_colors)
-		glEnable(GL_TEXTURE_2D);
-
 	for(int map_z = start_z; map_z >= superend_z; map_z--) {
 		if(options.show_shade) {
 			DrawShade(map_z);
 		}
 
 		if(map_z >= end_z) {
+			if(!only_colors)
+				glEnable(GL_TEXTURE_2D);
+
 			int nd_start_x = start_x & ~3;
 			int nd_start_y = start_y & ~3;
 			int nd_end_x = (end_x & ~3) + 4;
@@ -370,6 +369,9 @@ void MapDrawer::DrawMap()
 					}
 				}
 			}
+
+			if(!only_colors)
+				glDisable(GL_TEXTURE_2D);
 
 			DrawPositionIndicator(map_z);
 		}
