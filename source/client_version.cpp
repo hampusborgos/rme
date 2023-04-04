@@ -133,10 +133,9 @@ void ClientVersion::loadVersions()
 			version->setClientPath(wxstr(ver_obj.at("path").get<std::string>()));
 		}
 	}
-	catch (std::runtime_error&)
+	catch ([[maybe_unused]]const json::exception& e)
 	{
 		// pass
-		;
 	}
 }
 
@@ -329,18 +328,23 @@ void ClientVersion::loadVersionExtensions(pugi::xml_node versionNode)
 
 void ClientVersion::saveVersions()
 {
-	json vers_obj;
+	try {
+		json vers_obj;
 
-	for(auto& [id, version] : client_versions) {
-		json ver_obj;
-		ver_obj["id"] = version->getName();
-		ver_obj["path"] = version->getClientPath().GetFullPath().ToStdString();
-		vers_obj.push_back(ver_obj);
+		for(auto& [id, version] : client_versions) {
+			json ver_obj;
+			ver_obj["id"] = version->getName();
+			ver_obj["path"] = version->getClientPath().GetFullPath().ToStdString();
+			vers_obj.push_back(ver_obj);
+		}
+
+		std::ostringstream out;
+		out << vers_obj;
+		g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
 	}
-
-	std::ostringstream out;
-	out << vers_obj;
-	g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
+	catch ([[maybe_unused]]const json::exception& e) {
+		// pass
+	}
 }
 
 // Client version class
