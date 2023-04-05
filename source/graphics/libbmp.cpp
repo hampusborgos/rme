@@ -3,7 +3,7 @@
  */
 // Modified by Nekiro
 
-#include "main.h"
+#include "../main.h"
 
 #include "libbmp.h"
 
