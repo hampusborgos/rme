@@ -11,7 +11,8 @@
     "protobuf",
     "pugixml",
     "liblzma",
-    "spdlog"
+    "spdlog",
+    "libpng"
   ],
   "builtin-baseline":"0e67f312e831b4b897c7f492cf1e2858522c6e18"
 }

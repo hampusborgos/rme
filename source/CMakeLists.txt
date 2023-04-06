@@ -15,6 +15,7 @@ find_package(Protobuf REQUIRED)
 find_package(Threads REQUIRED)
 find_package(wxWidgets COMPONENTS html aui gl adv core net base CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
+find_package(PNG REQUIRED)
 
 # LibArchive disabled in compilation level by default, see "#define OTGZ_SUPPORT" in the "definitions.h" file
 #if(APPLE)
@@ -36,7 +37,6 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE main.h)
 target_sources(${PROJECT_NAME}
 	PRIVATE
 	protobuf/appearances.pb.cc
-	graphics/libbmp.cpp
 	about_window.cpp
 	action.cpp
 	application.cpp
@@ -157,6 +157,7 @@ target_link_libraries(${PROJECT_NAME}
 	pugixml::pugixml
 	protobuf::libprotobuf
 	wx::base wx::core wx::net wx::gl wx::html wx::aui wx::adv
+	PNG::PNG
 )
 
 set_target_properties(${PROJECT_NAME}

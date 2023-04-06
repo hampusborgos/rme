@@ -198,6 +198,8 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <AdditionalDependencies>comctl32.lib;WS2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -330,6 +332,8 @@
     <ClCompile Include="..\..\source\palette_npc.cpp" />
     <ClInclude Include="..\..\source\palette_window.h" />
     <ClCompile Include="..\..\source\palette_window.cpp" />
+    <ClInclude Include="..\..\source\protobuf\appearances.pb.h" />
+    <ClCompile Include="..\..\source\protobuf\appearances.pb.cc" />
     <ClInclude Include="..\..\source\about_window.h" />
     <ClCompile Include="..\..\source\about_window.cpp" />
     <ClInclude Include="..\..\source\common_windows.h" />

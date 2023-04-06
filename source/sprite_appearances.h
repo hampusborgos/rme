@@ -122,7 +122,7 @@ class SpriteAppearances
 
 		void setSpritesCount(int count) { spritesCount = count; }
 		int getSpritesCount() const { return spritesCount; }
-		BmpImgPtr getSpriteImage(int id);
+		wxImage getWxImageBySpriteId(int id);
 
 		const std::string getAppearanceFileName() const {
 			return appearanceFile;

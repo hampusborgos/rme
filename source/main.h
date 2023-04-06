@@ -49,6 +49,7 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <spdlog/spdlog.h>
 #include <lzma.h>
 #include <pugixml.hpp>
+#include <png.h>
 
 #include "definitions.h"
 
@@ -181,7 +182,6 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include "con_vector.h"
 #include "common.h"
 #include "threads.h"
-#include "graphics/libbmp.h"
 #include "rme_forward_declarations.h"
 
 using BmpImgPtr = std::shared_ptr<BmpImg>;

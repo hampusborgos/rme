@@ -229,15 +229,29 @@ SpriteSheetPtr SpriteAppearances::getSheetBySpriteId(int id, bool load /* = true
 	return sheet;
 }
 
-BmpImgPtr SpriteAppearances::getSpriteImage(int id)
+wxImage SpriteAppearances::getWxImageBySpriteId(int id)
 {
 	SpritePtr sprite = getSprite(id);
 	if (!sprite) {
-		spdlog::error("[SpriteAppearances::getSpriteImage] - Unknown sprite id");
+		spdlog::error("[{}] - Unknown sprite id", __func__);
 		throw std::exception("Unknown sprite id");
 	}
 
-	BmpImgPtr image(new BmpImg(sprite->size.width, sprite->size.height, sprite->pixels.data()));
+	const int width = sprite->size.width;
+	const int height = sprite->size.height;
+
+	wxImage image(width, height);
+	
+	for (int y = 0; y < height; ++y) {
+		for (int x = 0; x < width; ++x) {
+			const int index = (y * width + x) * 4;
+			const uint8_t r = sprite->pixels[index + 2];
+			const uint8_t g = sprite->pixels[index + 1];
+			const uint8_t b = sprite->pixels[index];
+			image.SetRGB(x, y, r, g, b);
+		}
+	}
+
 	return image;
 }
 
