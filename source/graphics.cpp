@@ -696,8 +696,7 @@ GameSprite::Image::~Image()
 	unloadGLTexture(0);
 }
 
-namespace {
-uint8_t* invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba)
+uint8_t* GameSprite::Image::invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba)
 {
 	uint8_t* rgba_inverted = new uint8_t[spriteWidth * spriteHeight * 4];
 	for (int i = 0; i < spriteWidth * spriteHeight; i++) {
@@ -708,7 +707,6 @@ uint8_t* invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba)
 	}
 
 	return rgba_inverted;
-}
 }
 
 void GameSprite::Image::createGLTexture(GLuint whatid)

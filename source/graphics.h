@@ -109,6 +109,7 @@ protected:
 
 		virtual GLuint getSpriteId() = 0;
 		virtual uint8_t* getRGBAData() = 0;
+		uint8_t* invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba);
 	protected:
 		virtual void createGLTexture(GLuint whatid);
 		virtual void unloadGLTexture(GLuint whatid);
