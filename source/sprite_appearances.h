@@ -61,9 +61,20 @@ struct Sprites {
 			pixels.resize(32 * 32 * 4, 0);
 		}
 
-		bool save(const std::string file, bool fixMagenta = false) {
-			BmpImg image(size.width, size.height, pixels.data());
-			return image.write(file, fixMagenta) == BMP_OK;
+		bool save(const std::string& file, bool fixMagenta = false) {
+			wxImage image(size.width, size.height);
+	
+			for (int y = 0; y < size.height; ++y) {
+				for (int x = 0; x < size.width; ++x) {
+					const int index = (y * size.width + x) * 4;
+					const uint8_t r = pixels[index + 2];
+					const uint8_t g = pixels[index + 1];
+					const uint8_t b = pixels[index];
+					image.SetRGB(x, y, r, g, b);
+				}
+			}
+
+			return image.SaveFile(wxString(file), wxBITMAP_TYPE_PNG);
 		}
 
 		std::vector<uint8_t> pixels;
@@ -88,8 +99,8 @@ class SpriteSheet {
 		}
 
 		bool exportSheetImage(const std::string& file, bool fixMagenta = false) {
-			BmpImg image(384, 384, data.get());
-			return image.write(file, fixMagenta) == BMP_OK;
+			wxImage image(384, 384, data.get(), true);
+			return image.SaveFile(wxString(file), wxBITMAP_TYPE_PNG);
 		};
 
 		int firstId = 0;

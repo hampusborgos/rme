@@ -108,10 +108,10 @@ void DCButton::OnPaint(wxPaintEvent& event)
 	static std::unique_ptr<wxPen> light_shadow_pen;
 	static std::unique_ptr<wxPen> shadow_pen;
 
-	if(highlight_pen.get() == nullptr)      highlight_pen.reset(newd wxPen(wxColor(0xFF,0xFF,0xFF), 1, wxSOLID));
-	if(dark_highlight_pen.get() == nullptr) dark_highlight_pen.reset(newd wxPen(wxColor(0xD4,0xD0,0xC8), 1, wxSOLID));
-	if(light_shadow_pen.get() == nullptr)   light_shadow_pen.reset(newd wxPen(wxColor(0x80,0x80,0x80), 1, wxSOLID));
-	if(shadow_pen.get() == nullptr)         shadow_pen.reset(newd wxPen(wxColor(0x40,0x40,0x40), 1, wxSOLID));
+	if (highlight_pen.get() == nullptr) highlight_pen.reset(new wxPen(wxColor(0xFF, 0xFF, 0xFF), 1, wxPENSTYLE_SOLID));
+	if (dark_highlight_pen.get() == nullptr) dark_highlight_pen.reset(new wxPen(wxColor(0xD4, 0xD0, 0xC8), 1, wxPENSTYLE_SOLID));
+	if (light_shadow_pen.get() == nullptr) light_shadow_pen.reset(new wxPen(wxColor(0x80, 0x80, 0x80), 1, wxPENSTYLE_SOLID));
+	if (shadow_pen.get() == nullptr) shadow_pen.reset(new wxPen(wxColor(0x40, 0x40, 0x40), 1, wxPENSTYLE_SOLID));
 
 	int size_x = 20, size_y = 20;
 
