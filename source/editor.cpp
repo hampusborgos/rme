@@ -300,7 +300,12 @@ void Editor::saveMap(FileName filename, bool showdialog)
 	if(!save_as && g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
 		// Move temporary backups to their proper files
 		time_t t = time(nullptr);
-		tm* current_time = localtime(&t);
+		tm* current_time;
+		#if defined(__WINDOWS__)
+		localtime_s(current_time, &t);
+		#else
+		localtime_r(current_time, &t);
+		#endif
 		ASSERT(current_time);
 
 		std::ostringstream date;

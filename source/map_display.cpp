@@ -269,7 +269,12 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		wxImage screenshot(screensize_x, screensize_y, screenshot_buffer);
 
 		time_t t = time(nullptr);
-		struct tm* current_time = localtime(&t);
+		struct tm* current_time;
+		#if defined(__WINDOWS__)
+		localtime_s(current_time, &t);
+		#else
+		localtime_r(current_time, &t);
+		#endif
 		ASSERT(current_time);
 
 		wxString date;
