@@ -269,24 +269,24 @@ void MapCanvas::TakeScreenshot(wxFileName path, wxString format)
 		wxImage screenshot(screensize_x, screensize_y, screenshot_buffer);
 
 		time_t t = time(nullptr);
-		struct tm* current_time;
+		struct tm current_time;
 		#if defined(__WINDOWS__)
-		localtime_s(current_time, &t);
+		localtime_s(&current_time, &t);
 		#else
 		localtime_r(current_time, &t);
 		#endif
-		ASSERT(current_time);
 
 		wxString date;
-		date << "screenshot_" << (1900 + current_time->tm_year);
-		if(current_time->tm_mon < 9)
-			date << "-" << "0" << current_time->tm_mon+1;
-		else
-			date << "-" << current_time->tm_mon+1;
-		date << "-" << current_time->tm_mday;
-		date << "-" << current_time->tm_hour;
-		date << "-" << current_time->tm_min;
-		date << "-" << current_time->tm_sec;
+		date << "screenshot_" << (1900 + current_time.tm_year);
+		if(current_time.tm_mon < 9) {
+			date << "-" << "0" << current_time.tm_mon+1;
+		} else {
+			date << "-" << current_time.tm_mon+1;
+		}
+		date << "-" << current_time.tm_mday;
+		date << "-" << current_time.tm_hour;
+		date << "-" << current_time.tm_min;
+		date << "-" << current_time.tm_sec;
 
 		int type = 0;
 		path.SetName(date);

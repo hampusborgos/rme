@@ -76,8 +76,8 @@ public:
 	~GameSprite();
 
 	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
-	GLuint getHardwareID(int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
-	GLuint getHardwareID(int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
+	GLuint getSpriteId(int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
+	GLuint getSpriteId(int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 
 	virtual void unloadDC();
@@ -93,7 +93,7 @@ protected:
 	class NormalImage;
 	class TemplateImage;
 
-	wxMemoryDC* getDC(SpriteSize size);
+	wxMemoryDC* getDC(SpriteSize spriteSize);
 	TemplateImage* getTemplateImage(int sprite_index, const Outfit& outfit);
 
 	class Image {
@@ -107,8 +107,7 @@ protected:
 		void visit();
 		virtual void clean(int time);
 
-		virtual GLuint getHardwareID() = 0;
-		virtual uint8_t* getRGBData() = 0;
+		virtual GLuint getSpriteId() = 0;
 		virtual uint8_t* getRGBAData() = 0;
 	protected:
 		virtual void createGLTexture(GLuint whatid);
@@ -129,8 +128,7 @@ protected:
 
 		virtual void clean(int time);
 
-		virtual GLuint getHardwareID();
-		virtual uint8_t* getRGBData();
+		virtual GLuint getSpriteId();
 		virtual uint8_t* getRGBAData();
 	protected:
 		virtual void createGLTexture(GLuint ignored = 0);
@@ -142,8 +140,7 @@ protected:
 		TemplateImage(GameSprite* parent, int v, const Outfit& outfit);
 		virtual ~TemplateImage();
 
-		virtual GLuint getHardwareID();
-		virtual uint8_t* getRGBData();
+		virtual GLuint getSpriteId();
 		virtual uint8_t* getRGBAData();
 
 		GLuint gl_tid;
@@ -161,7 +158,7 @@ protected:
 	};
 
 	uint32_t id;
-	wxMemoryDC* dc[SPRITE_SIZE_COUNT];
+	wxMemoryDC* m_wxMemoryDc[SPRITE_SIZE_COUNT];
 
 public:
 	uint32_t getID() const {
@@ -285,23 +282,13 @@ public:
 	// This fills the item / creature adress space
 	bool loadItemSpriteMetadata(ItemType* t, wxString& error, wxArrayString& warnings);
 	bool loadOutfitSpriteMetadata(remeres::protobuf::appearances::Appearance outfit, wxString& error, wxArrayString& warnings);
-	bool loadSpriteMetadataFlags(const ItemType* t, GameSprite* sType, wxString& error, wxArrayString& warnings);
-	bool loadSpriteData(const FileName& datafile, wxString& error, wxArrayString& warnings);
 
 	// Cleans old & unused textures according to config settings
 	void garbageCollection();
 	void addSpriteToCleanup(GameSprite* spr);
 
-	wxFileName getMetadataFileName() const { return metadata_file; }
-	wxFileName getSpritesFileName() const { return sprites_file; }
-
-	bool hasTransparency() const;
-	bool isUnloaded() const;
-
 private:
-	bool unloaded;
 	// This is used if memcaching is NOT on
-	std::string spritefile;
 	bool loadSpriteDump(uint8_t*& target, uint16_t& size, int sprite_id);
 
 	typedef std::map<int, Sprite*> SpriteMap;
@@ -314,11 +301,8 @@ private:
 	uint16_t creature_count;
 	bool otfi_found;
 	bool is_extended;
-	bool has_transparency;
 	bool has_frame_durations;
 	bool has_frame_groups;
-	wxFileName metadata_file;
-	wxFileName sprites_file;
 
 	int loaded_textures;
 	int lastclean;

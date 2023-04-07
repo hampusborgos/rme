@@ -133,7 +133,16 @@ class SpriteAppearances
 
 		void setSpritesCount(int count) { spritesCount = count; }
 		int getSpritesCount() const { return spritesCount; }
-		wxImage getWxImageBySpriteId(int id);
+		/**
+			Returns a wxImage object containing the sprite image data for a given sprite ID.
+			@param id The ID of the sprite to retrieve.
+			@param toSavePng Determines if the image should be saved as a PNG file.
+			@return A wxImage object containing the sprite image data.
+			@remarks The image data is retrieved from a sprite sheet using the provided ID.
+			If toSavePng is set to true, the black color (0, 0, 0) is set to transparent by default and the image will be saved as a PNG file (with transparent background).
+			Use to save image: image.SaveFile(g_gui.GetDataDirectory().ToStdString() + "image.png", wxBITMAP_TYPE_PNG);
+		*/
+		wxImage getWxImageBySpriteId(int id, bool toSavePng = false);
 
 		const std::string getAppearanceFileName() const {
 			return appearanceFile;

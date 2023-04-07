@@ -1145,7 +1145,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 	}
 
 	int frame = item->getFrame();
-	int texnum = spr->getHardwareID(0,
+	int texnum = spr->getSpriteId(0,
 		subtype,
 		pattern_x,
 		pattern_y,
@@ -1245,7 +1245,7 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 	}
 
 	int frame = item->getFrame();
-	int texnum = spr->getHardwareID(0,
+	int texnum = spr->getSpriteId(0,
 		subtype,
 		pattern_x,
 		pattern_y,
@@ -1266,7 +1266,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, uint32_t spriteid, int 
 	screeny -= spr->getDrawOffset().second;
 
 	int tme = 0; //GetTime() % itype->FPA;
-	int texnum = spr->getHardwareID(0,-1,0,0,0,tme);
+	int texnum = spr->getSpriteId(0,-1,0,0,0,tme);
 	//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
 	glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 }
@@ -1278,7 +1278,7 @@ void MapDrawer::BlitSpriteType(int screenx, int screeny, GameSprite* spr, int re
 	screeny -= spr->getDrawOffset().second;
 
 	int tme = 0; //GetTime() % itype->FPA;
-	int texnum = spr->getHardwareID(0,-1,0,0,0,tme);
+	int texnum = spr->getSpriteId(0,-1,0,0,0,tme);
 	//printf("CF: %d\tTexturenum: %d\n", cf, texnum);
 	glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 }
@@ -1293,7 +1293,7 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		if(!spr || outfit.lookType == 0)
 			return;
 
-		int texnum = spr->getHardwareID((int)dir,outfit,0);
+		int texnum = spr->getSpriteId((int)dir,outfit,0);
 		glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 	}
 }

@@ -170,12 +170,7 @@ bool SpriteAppearances::loadSpriteSheet(const SpriteSheetPtr& sheet)
 
 	uint8_t* bufferStart = decompressed.get() + data;
 
-	// reverse channels
-	for (uint8_t* itr = bufferStart; itr < bufferStart + BYTES_IN_SPRITE_SHEET; itr += 4) {
-		std::swap(*(itr + 0), *(itr + 2));
-	}
-
-	// flip vertically
+	// Flip vertically
 	for (int y = 0; y < 192; ++y) {
 		uint8_t* itr1 = &bufferStart[y * SPRITE_SHEET_WIDTH_BYTES];
 		uint8_t* itr2 = &bufferStart[(384 - y - 1) * SPRITE_SHEET_WIDTH_BYTES];
@@ -185,7 +180,7 @@ bool SpriteAppearances::loadSpriteSheet(const SpriteSheetPtr& sheet)
 		}
 	}
 
-	// fix magenta
+	// Fix magenta (remove transparency by black collor)
 	for (int offset = 0; offset < BYTES_IN_SPRITE_SHEET; offset += 4) {
 		std::memcpy(&data, bufferStart + offset, 4);
 		if (data == 0xFF00FF) {
@@ -229,12 +224,12 @@ SpriteSheetPtr SpriteAppearances::getSheetBySpriteId(int id, bool load /* = true
 	return sheet;
 }
 
-wxImage SpriteAppearances::getWxImageBySpriteId(int id)
+wxImage SpriteAppearances::getWxImageBySpriteId(int id, bool toSavePng/* = false*/)
 {
 	SpritePtr sprite = getSprite(id);
 	if (!sprite) {
 		spdlog::error("[{}] - Unknown sprite id", __func__);
-		throw std::exception("Unknown sprite id");
+		return {};
 	}
 
 	const int width = sprite->size.width;
@@ -250,6 +245,12 @@ wxImage SpriteAppearances::getWxImageBySpriteId(int id)
 			const uint8_t b = sprite->pixels[index];
 			image.SetRGB(x, y, r, g, b);
 		}
+	}
+
+	if (toSavePng) {
+		image.SetMaskColour(0, 0, 0);
+		image.InitAlpha();
+		image.ConvertAlphaToMask();
 	}
 
 	return image;

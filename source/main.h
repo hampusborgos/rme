@@ -49,7 +49,6 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <spdlog/spdlog.h>
 #include <lzma.h>
 #include <pugixml.hpp>
-#include <png.h>
 
 #include "definitions.h"
 

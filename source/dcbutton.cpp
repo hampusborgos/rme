@@ -98,11 +98,6 @@ bool DCButton::GetValue() const
 void DCButton::OnPaint(wxPaintEvent& event)
 {
 	wxBufferedPaintDC pdc(this);
-
-	if(g_gui.gfx.isUnloaded()) {
-		return;
-	}
-
 	static std::unique_ptr<wxPen> highlight_pen;
 	static std::unique_ptr<wxPen> dark_highlight_pen;
 	static std::unique_ptr<wxPen> light_shadow_pen;

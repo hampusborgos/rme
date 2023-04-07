@@ -219,14 +219,9 @@ wxNotebookPage* PreferencesWindow::CreateGraphicsPage()
 	sizer->Add(icon_selection_shadow_chkbox, 0, wxLEFT | wxTOP, 5);
 	SetWindowToolTip(icon_selection_shadow_chkbox, "When this option is checked, selected items in the palette menu will be shaded.");
 
-	use_memcached_chkbox = newd wxCheckBox(graphics_page, wxID_ANY, "Use memcached sprites");
-	use_memcached_chkbox->SetValue(g_settings.getBoolean(Config::USE_MEMCACHED_SPRITES));
-	sizer->Add(use_memcached_chkbox, 0, wxLEFT | wxTOP, 5);
-	SetWindowToolTip(use_memcached_chkbox, "When this is checked, sprites will be loaded into memory at startup and unpacked at runtime. This is faster but consumes more memory.\nIf it is not checked, the editor will use less memory but there will be a performance decrease due to reading sprites from the disk.");
+	sizer->AddSpacer(5);
 
-	sizer->AddSpacer(10);
-
-    auto * subsizer = newd wxFlexGridSizer(2, 10, 10);
+	auto * subsizer = newd wxFlexGridSizer(2, 10, 10);
 	subsizer->AddGrowableCol(1);
 
 	// Icon background color
@@ -571,7 +566,6 @@ void PreferencesWindow::OnCollapsiblePane(wxCollapsiblePaneEvent& event)
 
 void PreferencesWindow::Apply()
 {
-	bool must_restart = false;
 	// General
 	g_settings.setInteger(Config::WELCOME_DIALOG, show_welcome_dialog_chkbox->GetValue());
 	g_settings.setInteger(Config::ALWAYS_MAKE_BACKUP, always_make_backup_chkbox->GetValue());
@@ -598,10 +592,6 @@ void PreferencesWindow::Apply()
 
 	// Graphics
 	g_settings.setInteger(Config::USE_GUI_SELECTION_SHADOW, icon_selection_shadow_chkbox->GetValue());
-	if(g_settings.getBoolean(Config::USE_MEMCACHED_SPRITES) != use_memcached_chkbox->GetValue()) {
-		must_restart = true;
-	}
-	g_settings.setInteger(Config::USE_MEMCACHED_SPRITES_TO_SAVE, use_memcached_chkbox->GetValue());
 	if(icon_background_choice->GetSelection() == 0) {
 		if(g_settings.getInteger(Config::ICON_BACKGROUND) != 0) {
 			g_gui.gfx.cleanSoftwareSprites();
@@ -685,8 +675,6 @@ void PreferencesWindow::Apply()
 
 	g_settings.save();
 
-	if(must_restart) {
-		g_gui.PopupDialog(this, "Notice", "You must restart the editor for the changes to take effect.", wxOK);
-	}
+	g_gui.PopupDialog(this, "Notice", "You must restart the editor for the changes to take effect.", wxOK);
 	g_gui.RebuildPalettes();
 }
