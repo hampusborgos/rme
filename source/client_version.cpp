@@ -46,9 +46,9 @@ void Assets::load()
 			setPath(wxstr(path));
 		}
 	}
-	catch (std::runtime_error&)
+	catch ([[maybe_unused]]const json::exception& e)
 	{
-		//
+		// pass
 	}
 }
 
@@ -143,20 +143,22 @@ bool Assets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
 
 void Assets::save()
 {
-	json vers_obj;
+	try {
+		json vers_obj;
+		for(auto& [id, version] : client_versions) {
+			json ver_obj;
+			ver_obj["id"] = version->getName();
+			ver_obj["path"] = version->getClientPath().GetFullPath().ToStdString();
+			vers_obj.push_back(ver_obj);
+		}
 
-	json ver_obj;
-	ver_obj["id"] = getVersionName();
-	wxFileName fileName;
-	fileName.Assign(getPath());
-	ver_obj["path"] = fileName.GetFullPath().ToStdString();
-	auto path = fileName.GetFullPath().ToStdString();
-	vers_obj.push_back(ver_obj);
-
-
-	std::ostringstream out;
-	out << vers_obj;
-	g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
+		std::ostringstream out;
+		out << vers_obj;
+		g_settings.setString(Config::ASSETS_DATA_DIRS, out.str());
+	}
+	catch ([[maybe_unused]]const json::exception& e) {
+		// pass
+	}
 }
 
 FileName Assets::getDataPath()

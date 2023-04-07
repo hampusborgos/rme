@@ -6,7 +6,7 @@ You can find the project for hosting your own server at [Canary](https://github.
 
 Getting Started
 =========
-* [Gitbook](https://majestyotbr.gitbook.io/opentibiabr/projects/remeres-map-editor).
+* [Gitbook](https://docs.opentibiabr.com/projects/remeres-map-editor).
 * [Wiki](https://github.com/opentibiabr/remeres-map-editor/wiki).
 
 I want to contribute
