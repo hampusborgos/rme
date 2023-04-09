@@ -543,9 +543,8 @@ void PreferencesWindow::SelectNewAssetsFolder(wxCommandEvent& event)
 		ClientAssets::setPath(path);
 		// spdlog::info("New directory selected: {}", path.ToStdString());
 	} else {
-		wxMessageDialog dialog(this, "Directory is empty", "Error", wxOK | wxICON_ERROR);
+		wxMessageDialog dialog(this, "Directory is empty, please, select a valid directory", "Error", wxOK | wxICON_ERROR);
 		dialog.ShowModal();
-		spdlog::warn("No have selected directory");
 	}
 }
 

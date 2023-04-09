@@ -60,18 +60,13 @@ Editor::Editor(CopyBuffer& copybuffer) :
 		g_gui.ListDialog("Warnings", warnings);
 
 		auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
-		if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
+		if (!wxDirExists(wxString(clientDirectory))) {
 			PreferencesWindow dialog(nullptr);
 			dialog.getBookCtrl().SetSelection(4);
 			dialog.ShowModal();
 			dialog.Destroy();
 		}
-	} else {
-		throw std::runtime_error("All maps of different versions were not closed.");
 	}
-
-	if(!ok)
-		throw std::runtime_error("Couldn't load client version");
 
 	MapVersion version;
 	map.convert(version);
@@ -115,7 +110,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		if(!success) {
 			g_gui.PopupDialog("Error", error, wxOK);
 			auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
-			if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
+			if (!wxDirExists(wxString(clientDirectory))) {
 				PreferencesWindow dialog(nullptr);
 				dialog.getBookCtrl().SetSelection(4);
 				dialog.ShowModal();

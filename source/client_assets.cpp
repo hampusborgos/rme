@@ -58,6 +58,12 @@ bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnin
 	using json = nlohmann::json;
 
 	auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
+	if (!wxDirExists(wxString(clientDirectory))) {
+		error = "The client directory is not valid path, please set a valid path";
+		spdlog::error("The client directory is not valid path, please set a valid path");
+		return false;
+	}
+
 	auto assetsDirectory = clientDirectory + "/assets/";
 	if (!wxDirExists(wxString(assetsDirectory))) {
 		error = "The assets directory is not valid path, please set a valid path";

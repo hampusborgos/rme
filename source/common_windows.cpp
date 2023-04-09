@@ -32,6 +32,7 @@
 #include "application.h"
 #include "common_windows.h"
 #include "positionctrl.h"
+#include "preferences.h"
 
 #ifdef _MSC_VER
 	#pragma warning(disable:4018) // signed/unsigned mismatch
@@ -270,6 +271,14 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				g_gui.PopupDialog(this, "Map Loader Error", error, wxOK);
 				g_gui.PopupDialog(this, "Conversion Error", "Could not convert map. The map will now be closed.", wxOK);
 
+				auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
+				if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
+					PreferencesWindow dialog(nullptr);
+					dialog.getBookCtrl().SetSelection(4);
+					dialog.ShowModal();
+					dialog.Destroy();
+				}
+
 				EndModal(0);
 				return;
 			}
@@ -319,6 +328,14 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 				g_gui.ListDialog(this, "Warnings", warnings);
 				g_gui.PopupDialog(this, "Map Loader Error", error, wxOK);
 				g_gui.PopupDialog(this, "Conversion Error", "Could not convert map. The map will now be closed.", wxOK);
+
+				auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
+				if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
+					PreferencesWindow dialog(nullptr);
+					dialog.getBookCtrl().SetSelection(4);
+					dialog.ShowModal();
+					dialog.Destroy();
+				}
 
 				EndModal(0);
 				return;

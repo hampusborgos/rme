@@ -824,6 +824,13 @@ void MainMenuBar::OnReloadDataFiles(wxCommandEvent& WXUNUSED(event))
 	g_gui.LoadVersion(error, warnings);
 	g_gui.PopupDialog("Error", error, wxOK);
 	g_gui.ListDialog("Warnings", warnings);
+	auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
+	if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
+		PreferencesWindow dialog(nullptr);
+		dialog.getBookCtrl().SetSelection(4);
+		dialog.ShowModal();
+		dialog.Destroy();
+	}
 }
 
 void MainMenuBar::OnListExtensions(wxCommandEvent& WXUNUSED(event))
