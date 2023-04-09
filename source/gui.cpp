@@ -290,7 +290,7 @@ void GUI::CycleTab(bool forward)
 	tabbook->CycleTab(forward);
 }
 
-bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
+bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 {
 	FileName data_path = GetDataDirectory();
 	FileName extension_path = GetExtensionsDirectory();
