@@ -34,7 +34,6 @@ enum class SpriteLayout
 
 struct SpritesSize {
 	public:
-		SpritesSize() {}
 		SpritesSize(int height, int width) : height(height), width(width) {}
 
 		void resize(int height, int width) {
@@ -51,14 +50,14 @@ struct SpritesSize {
 			return width * height;
 		}
 
-		int height = 32;
-		int width = 32;
+		int height = 0;
+		int width = 0;
 };
 
 struct Sprites {
 	public:
-		Sprites() {
-			pixels.resize(32 * 32 * 4, 0);
+		Sprites(int32_t width, int32_t height) : size(width, height) {
+			pixels.resize(width * height * 4, 0);
 		}
 
 		bool save(const std::string& file, bool fixMagenta = false) {

@@ -269,20 +269,19 @@ SpritePtr SpriteAppearances::getSprite(int spriteId)
 		return nullptr;
 	}
 
-	const SpritesSize& size = sheet->getSpriteSize();
+	auto spriteWidth = sheet->getSpriteSize().width;
+	auto spriteHeight = sheet->getSpriteSize().height;
 
-	SpritePtr sprite = SpritePtr(new Sprites());
-
-	sprite->pixels.resize(size.area() * 4, 0);
+	SpritePtr sprite = SpritePtr(new Sprites(spriteWidth, spriteHeight));
 
 	int spriteOffset = spriteId - sheet->firstId;
-	int allColumns = size.width == 32 ? 12 : 6; // 64 pixel width == 6 columns each 64x or 32 pixels, 12 columns
+	int allColumns = spriteWidth == 32 ? 12 : 6; // 64 pixel width == 6 columns each 64x or 32 pixels, 12 columns
 	int spriteRow = static_cast<int>(std::floor(static_cast<float>(spriteOffset) / static_cast<float>(allColumns)));
 	int spriteColumn = spriteOffset % allColumns;
 
-	int spriteWidthBytes = size.width * 4;
+	int spriteWidthBytes = spriteWidth * 4;
 
-	for (int height = size.height * spriteRow, offset = 0; height < size.height + (spriteRow * size.height); height++, offset++) {
+	for (int height = spriteHeight * spriteRow, offset = 0; height < spriteHeight + (spriteRow * spriteHeight); height++, offset++) {
 		std::memcpy(&sprite->pixels[offset * spriteWidthBytes], &sheet->data[(height * SPRITE_SHEET_WIDTH_BYTES) + (spriteColumn * spriteWidthBytes)], spriteWidthBytes);
 	}
 

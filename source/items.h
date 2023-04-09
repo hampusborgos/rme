@@ -274,7 +274,6 @@ public:
 	Brush* doodad_brush = nullptr;
 	RAWBrush* raw_brush = nullptr;
 
-	SpritesSize m_size;
 	std::vector<std::pair<int, int>> m_animationPhases;
 	int m_numPatternX{ 0 }, m_numPatternY{ 0 }, m_numPatternZ{ 0 };
 	int m_layers{ 0 };

@@ -643,17 +643,23 @@ wxMemoryDC* GameSprite::getDC(SpriteSize spriteSize)
 {
 	if(!m_wxMemoryDc[spriteSize]) {
 		const int bgshade = g_settings.getInteger(Config::ICON_BACKGROUND);
-		wxImage background (getWidth(), getHeight());
+		wxImage background(getWidth(), getHeight());
 
 		auto backgroundBmp = wxBitmap(background);
 		m_wxMemoryDc[spriteSize] = new wxMemoryDC(backgroundBmp);
-		g_gui.gfx.addSpriteToCleanup(this);
 
 		m_wxMemoryDc[spriteSize]->SelectObject(wxNullBitmap);
 		auto spriteId = spriteList[0]->getSpriteId();
 		wxImage wxImage = g_spriteAppearances.getWxImageBySpriteId(spriteId);
+
+		// Resize image to 32x32
+		if (getWidth() > SPRITE_SIZE || getHeight() > SPRITE_SIZE) {
+			wxImage.Rescale(SPRITE_SIZE, SPRITE_SIZE);
+		}
+
 		auto bitMap = wxBitmap(wxImage);
 		m_wxMemoryDc[spriteSize]->SelectObject(bitMap);
+		g_gui.gfx.addSpriteToCleanup(this);
 	}
 
 	return m_wxMemoryDc[spriteSize];
