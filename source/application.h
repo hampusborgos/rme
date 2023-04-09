@@ -46,11 +46,9 @@ public:
 	virtual int OnExit();
 	void Unload();
 
-	bool openConsole();
-
 private:
-    bool m_startup;
-    wxString m_file_to_open;
+	bool m_startup;
+	wxString m_file_to_open;
 	bool ParseCommandLineMap(wxString& fileName);
 
 	virtual void OnFatalException();

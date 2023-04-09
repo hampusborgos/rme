@@ -111,8 +111,6 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 				const auto &spritesPhases = animation.sprite_phase();
 				t->start_frame = animation.default_start_phase();
 				t->loop_count = animation.loop_count();
-				//animation.loop_type();
-				//animation.random_start_phase();
 				t->async_animation = !animation.synchronized();
 				for (int k = 0; k < spritesPhases.size(); k++) {
 					t->m_animationPhases.push_back(std::pair<int,int>(static_cast<int>(spritesPhases[k].duration_min()),
@@ -124,36 +122,10 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 
 			t->m_sprites.clear();
 			t->m_sprites.resize(sprites.size());
-			for (int i = 0; i < sprites.size(); i++)
+			for (int i = 0; i < sprites.size(); i++) {
 				t->m_sprites[i] = sprites[i];
-
-			/*// animations
-			if (spritesPhases.size() > 1)
-			{
-				auto animator = AnimatorPtr(new Animator);
-				animator->unserializeAppearance(animation);
-
-				if (frameGroupType == FrameGroupMoving)
-					m_animator = animator;
-				else if (frameGroupType == FrameGroupIdle || frameGroupType == FrameGroupInitial)
-					m_idleAnimator = animator;
-			}*/
+			}
 		}
-
-		if (object.flags().has_clothes()) {
-			// t->slotPosition |= static_cast<SlotPositionBits>(1 << (object.flags().clothes().slot() - 1));
-		}
-
-		if (object.flags().has_market()) {
-			t->type = static_cast<ItemTypes_t>(object.flags().market().category());
-		}
-
-		// t->upgradeClassification = object.flags().has_upgradeclassification() ? static_cast<uint8_t>(object.flags().upgradeclassification().upgrade_classification()) : 0;
-		// t->lightLevel = object.flags().has_light() ? static_cast<uint8_t>(object.flags().light().brightness()) : 0;
-		// t->lightColor = object.flags().has_light() ? static_cast<uint8_t>(object.flags().light().color()) : 0;
-
-		// t->speed = object.flags().has_bank() ? static_cast<uint16_t>(object.flags().bank().waypoints()) : 0;
-		// t->wareId = object.flags().has_market() ? static_cast<uint16_t>(object.flags().market().trade_as_object_id()) : 0;
 
 		t->noMoveAnimation = object.flags().no_movement_animation();
 		t->isCorpse = object.flags().corpse() || object.flags().player_corpse();
@@ -163,16 +135,12 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 		t->blockProjectile = object.flags().unsight();
 		t->blockPathFind = object.flags().avoid();
 		t->pickupable = object.flags().take();
-		// t->rotatable = object.flags().rotate();
-		// t->wrapContainer = object.flags().wrap() || object.flags().unwrap();
-		// t->multiUse = object.flags().multiuse();
 		t->moveable = object.flags().unmove() == false;
 		t->canReadText = (object.flags().has_lenshelp() && object.flags().lenshelp().id() == 1112) || (object.flags().has_write() && object.flags().write().max_text_length() != 0) || (object.flags().has_write_once() && object.flags().write_once().max_text_length_once() != 0);
 		t->canReadText = object.flags().has_write() || object.flags().has_write_once();
 		t->isVertical = object.flags().has_hook() && object.flags().hook().south();
 		t->isHorizontal = object.flags().has_hook() && object.flags().hook().east();
 		t->isHangable = object.flags().hang();
-		// t->lookThrough = object.flags().ignore_look();
 		t->stackable = object.flags().cumulative();
 		t->isPodium = object.flags().show_off_socket();
 

@@ -95,7 +95,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	grid_sizer->Add(newd wxStaticText(this, wxID_ANY, "Client Version"));
 	protocol_choice = newd wxChoice(this, wxID_ANY);
 
-	protocol_choice->SetStringSelection(wxstr(std::string("Tibia 12")));
+	protocol_choice->SetStringSelection(wxstr(ClientAssets::getVersionName()));
 
 	grid_sizer->Add(protocol_choice, wxSizerFlags(1).Expand());
 
@@ -155,7 +155,7 @@ MapPropertiesWindow::MapPropertiesWindow(wxWindow* parent, MapTab* view, Editor&
 	Centre(wxBOTH);
 	UpdateProtocolList();
 
-	protocol_choice->SetStringSelection(wxstr(std::string("Tibia 12")));
+	protocol_choice->SetStringSelection(wxstr(ClientAssets::getVersionName()));
 }
 
 void MapPropertiesWindow::UpdateProtocolList()
