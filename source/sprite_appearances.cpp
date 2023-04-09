@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -40,12 +40,6 @@ void SpriteAppearances::terminate()
 bool SpriteAppearances::loadCatalogContent(const std::string& dir, bool loadData /* true*/)
 {
 	using json = nlohmann::json;
-	if (!fs::is_directory(dir)) {
-		spdlog::error("Given directory isn't valid directory: {}", dir.c_str());
-		throw std::exception(fmt::format("Given directory isn't valid directory: {}", dir).c_str());
-		return false;
-	}
-
 	fs::path catalogPath = fs::path(dir) / fs::path("catalog-content.json");
 	if (!fs::exists(catalogPath)) {
 		spdlog::error("catalog-content.json is not present in given directory. {}", catalogPath.string().c_str());

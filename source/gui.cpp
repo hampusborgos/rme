@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -30,6 +30,7 @@
 #include "spawn_monster_brush.h"
 #include "sprite_appearances.h"
 #include "client_assets.h"
+#include "preferences.h"
 
 #include "common_windows.h"
 #include "result_window.h"
@@ -172,7 +173,7 @@ wxString GUI::GetLocalDataDirectory()
 	} else {
 		FileName dir = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetUserDataDir();
 #ifdef __WINDOWS__
-		dir.AppendDir("Remere's Map Editor");
+		dir.AppendDir("Canary Map Editor");
 #else
 		dir.AppendDir(".rme");
 #endif
@@ -192,7 +193,7 @@ wxString GUI::GetLocalDirectory()
 	} else {
 		FileName dir = dynamic_cast<wxStandardPaths&>(wxStandardPaths::Get()).GetUserDataDir();
 #ifdef __WINDOWS__
-		dir.AppendDir("Remere's Map Editor");
+		dir.AppendDir("Canary Map Editor");
 #else
 		dir.AppendDir(".rme");
 #endif
@@ -312,10 +313,10 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	g_gui.SetLoadDone(0, "Loading assets file");
 	spdlog::info("Loading assets");
 
-	g_gui.SetLoadDone(20, "Loading appearances.dat file...");
+	g_gui.SetLoadDone(20, "Loading client assets...");
 	spdlog::info("Loading appearances");
 	if(!ClientAssets::loadAppearanceProtobuf(error, warnings)) {
-		error = "Couldn't load catalog-content.json: " + error;
+		error = "Couldn't load catalog-content.json, error: " + error;
 		spdlog::error("[GUI::LoadDataFiles] {}", error.ToStdString());
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
@@ -1357,22 +1358,22 @@ void GUI::SetTitle(wxString title)
 #endif
 #ifdef __EXPERIMENTAL__
 	if(title != "") {
-		g_gui.root->SetTitle(title << " - Remere's Map Editor BETA" << TITLE_APPEND);
+		g_gui.root->SetTitle(title << " - Canary Map Editor BETA" << TITLE_APPEND);
 	} else {
-		g_gui.root->SetTitle(wxString("Remere's Map Editor BETA") << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString("Canary Map Editor BETA") << TITLE_APPEND);
 	}
 #elif __SNAPSHOT__
 	if (title != "") {
-		g_gui.root->SetTitle(title << " - Remere's Map Editor - SNAPSHOT" << TITLE_APPEND);
+		g_gui.root->SetTitle(title << " - Canary Map Editor - SNAPSHOT" << TITLE_APPEND);
 	}
 	else {
-		g_gui.root->SetTitle(wxString("Remere's Map Editor - SNAPSHOT") << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString("Canary Map Editor - SNAPSHOT") << TITLE_APPEND);
 	}
 #else
 	if(!title.empty()) {
-		g_gui.root->SetTitle(title << " - Remere's Map Editor" << TITLE_APPEND);
+		g_gui.root->SetTitle(title << " - Canary Map Editor" << TITLE_APPEND);
 	} else {
-		g_gui.root->SetTitle(wxString("Remere's Map Editor") << TITLE_APPEND);
+		g_gui.root->SetTitle(wxString("Canary Map Editor") << TITLE_APPEND);
 	}
 #endif
 }

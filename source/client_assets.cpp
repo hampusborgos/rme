@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -19,6 +19,7 @@
 
 #include "settings.h"
 #include "filehandle.h"
+#include "preferences.h"
 
 #include "gui.h"
 
@@ -47,42 +48,46 @@ void ClientAssets::load()
 	}
 	catch ([[maybe_unused]]const json::exception& e)
 	{
-		// pass
+		spdlog::info("Json exception with error code {}", e.what());
 	}
 }
 
 bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
 {
-	using namespace remeres::protobuf::appearances;
+	using namespace canary::protobuf::appearances;
 	using json = nlohmann::json;
-	
+
 	auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
 	auto assetsDirectory = clientDirectory + "/assets/";
-	//const std::string& catalogContentFile = assetsDirectory + "/catalog-content.json";
-	//spdlog::info("assets dir: {}, catalog: {}", fullAssetsDir.ToStdString(), catalogContentFile);
+	if (!wxDirExists(wxString(assetsDirectory))) {
+		error = "The assets directory is not valid path, please set a valid path";
+		spdlog::error("The assets directory is not valid path, please set a valid path");
+		return false;
+	}
 
 	if (!g_spriteAppearances.loadCatalogContent(assetsDirectory, false)) {
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Cannot open catalog content file");
+		error = "The client directory is not valid path, please set a valid path";
+		spdlog::error("[{}] Cannot open catalog content file", __func__);
 		return false;
 	}
 
 	using json = nlohmann::json;
 	std::filesystem::path packagesPath = std::filesystem::path(clientDirectory) / std::filesystem::path("package.json");
 	if (!std::filesystem::exists(packagesPath)) {
-		spdlog::error("package.json is not present in given directory. {}", packagesPath.string().c_str());
-		throw std::exception(fmt::format("package.json is not present in given directory: {}", packagesPath.string()).c_str());
+		error = "The file package.json is not present in the client directory.";
+		spdlog::error("The file package.json is not present in the client directory. {}", packagesPath.string().c_str());
 		return false;
 	}
 
+
 	std::ifstream file(packagesPath, std::ios::in);
 	if (!file.is_open()) {
-		spdlog::error("Unable to open packages.json.");
-		throw std::exception("Unable to open packages.json.");
+		error = "Failed to open packages.json";
+		spdlog::error("Failed to open packages.json");
 		return false;
 	}
 
 	json document = json::parse(file, nullptr, false);
-
 	file.close();
 	// Save version from package.json
 	std::string version = document.at("version").get<std::string>();
@@ -92,8 +97,8 @@ bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnin
 
 	std::fstream fileStream(assetsDirectory + appearanceFileName, std::ios::in | std::ios::binary);
 	if (!fileStream.is_open()) {
-		error = "Failed to load "+ appearanceFileName +", file cannot be oppened";
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to load %s, file cannot be oppened", appearanceFileName);
+		error = "Failed to load "+ appearanceFileName +" from the client folder, file cannot be oppened";
+		spdlog::error("[{}] - Failed to load {}, file cannot be oppened", __func__, appearanceFileName);
 		fileStream.close();
 		return false;
 	}
@@ -104,7 +109,7 @@ bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnin
 	g_gui.appearances = Appearances();
 	if (!g_gui.appearances.ParseFromIstream(&fileStream)) {
 		error = "Failed to parse binary file "+ appearanceFileName +", file is invalid";
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse binary file {}, file is invalid", appearanceFileName);
+		spdlog::error("[{}] - Failed to parse binary file {}, file is invalid", __func__, appearanceFileName);
 		fileStream.close();
 		return false;
 	}
@@ -113,7 +118,7 @@ bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnin
 	bool rt = g_items.loadFromProtobuf(error, warnings, g_gui.appearances);
 	if (!rt) {
 		error = "Failed to parse item types from protobuf";
-		spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse item types from protobuf");
+		spdlog::error("[{}] - Failed to parse item types from protobuf", __func__);
 		fileStream.close();
 		return false;
 	}
@@ -123,7 +128,7 @@ bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnin
 		const auto &outfit = g_gui.appearances.outfit().Get(i);
 		if (!g_gui.gfx.loadOutfitSpriteMetadata(outfit, error, warnings)) {
 			error = "Failed to parse outfit types from protobuf";
-			spdlog::error("[GUI::loadAppearanceProtobuf] - Failed to parse outfit types from protobuf");
+			spdlog::error("[{}] - Failed to parse outfit types from protobuf", __func__);
 			fileStream.close();
 			return false;
 		}

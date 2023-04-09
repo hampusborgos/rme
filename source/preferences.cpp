@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -33,18 +33,17 @@ BEGIN_EVENT_TABLE(PreferencesWindow, wxDialog)
 	EVT_COLLAPSIBLEPANE_CHANGED(wxID_ANY, PreferencesWindow::OnCollapsiblePane)
 END_EVENT_TABLE()
 
-PreferencesWindow::PreferencesWindow(wxWindow *parent, bool clientVersionSelected = false)
+PreferencesWindow::PreferencesWindow(wxWindow *parent)
         : wxDialog(parent, wxID_ANY, "Preferences", wxDefaultPosition, wxSize(400, 400), wxCAPTION | wxCLOSE_BOX) {
     wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 
     book = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
-    //book->SetPadding(4);
 
     book->AddPage(CreateGeneralPage(), "General", true);
     book->AddPage(CreateEditorPage(), "Editor");
     book->AddPage(CreateGraphicsPage(), "Graphics");
     book->AddPage(CreateUIPage(), "Interface");
-    book->AddPage(CreateClientPage(), "Client Version", clientVersionSelected);
+    book->AddPage(CreateClientPage(), "Client Folder");
 	version_dir_picker->Bind(wxEVT_DIRPICKER_CHANGED, &PreferencesWindow::SelectNewAssetsFolder, this);
 
     sizer->Add(book, 1, wxEXPAND | wxALL, 10);
@@ -57,13 +56,9 @@ PreferencesWindow::PreferencesWindow(wxWindow *parent, bool clientVersionSelecte
 
     SetSizerAndFit(sizer);
     Centre(wxBOTH);
-    // FindWindowById(PANE_ADVANCED_GRAPHICS, this)->GetParent()->Fit();
 }
 
-PreferencesWindow::~PreferencesWindow()
-{
-	////
-}
+PreferencesWindow::~PreferencesWindow() = default;
 
 wxNotebookPage* PreferencesWindow::CreateGeneralPage()
 {
@@ -498,9 +493,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	client_list_sizer->AddGrowableCol(1);
 
 
-	std::string assets = "Client Assets";
-
-	wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString(assets));
+	wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString("Directory"));
 	client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
 
 	wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, ClientAssets::getPath());
@@ -508,7 +501,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	client_list_sizer->Add(dir_picker, wxSizerFlags(0).Border(wxRIGHT, 10).Expand());
 
 	wxString tooltip;
-	tooltip << "The editor will look for " << wxstr(assets) << " here.";
+	tooltip << "The editor will look for client directory here.";
 	tmp_text->SetToolTip(tooltip);
 	dir_picker->SetToolTip(tooltip);
 
@@ -674,7 +667,5 @@ void PreferencesWindow::Apply()
 	ClientAssets::load();
 
 	g_settings.save();
-
-	g_gui.PopupDialog(this, "Notice", "You must restart the editor for the changes to take effect.", wxOK);
 	g_gui.RebuildPalettes();
 }

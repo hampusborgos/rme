@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -19,11 +19,9 @@
 
 #include "extension.h"
 
-MaterialsExtension::MaterialsExtension(std::string name, std::string author, std::string description) :
+MaterialsExtension::MaterialsExtension(std::string name, std::string description) :
 	name(name),
-	author(author),
-	description(description),
-	for_all_versions(false)
+	description(description)
 {
 	////
 }
@@ -31,34 +29,4 @@ MaterialsExtension::MaterialsExtension(std::string name, std::string author, std
 MaterialsExtension::~MaterialsExtension()
 {
 	////
-}
-
-void MaterialsExtension::addVersion(const std::string& versionString)
-{
-	if(versionString == "all") {
-		for_all_versions = true;
-	}
-}
-
-bool MaterialsExtension::isForVersion(uint16_t versionId)
-{
-	if(for_all_versions) {
-		return true;
-	}
-
-	return false;
-}
-
-std::string MaterialsExtension::getVersionString()
-{
-	if(for_all_versions) {
-		return "All";
-	}
-
-	std::string versions = ClientAssets::getVersionName();
-	if(versions.empty()) {
-		return "None";
-	}
-
-	return versions;
 }

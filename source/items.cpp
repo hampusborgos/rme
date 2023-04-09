@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -50,9 +50,9 @@ void ItemDatabase::clear()
 	}
 }
 
-bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, remeres::protobuf::appearances::Appearances appearances)
+bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, canary::protobuf::appearances::Appearances appearances)
 {
-	using namespace remeres::protobuf::appearances;
+	using namespace canary::protobuf::appearances;
 
 	for (uint32_t it = 0; it < static_cast<uint32_t>(appearances.object_size()); ++it) {
 		Appearance object = appearances.object(it);
@@ -66,6 +66,10 @@ bool ItemDatabase::loadFromProtobuf(wxString &error, wxArrayString &warnings, re
 
 		if (object.id() >= items.size()) {
 			items.resize(object.id() + 1);
+		}
+
+		if (!object.has_id()) {
+			continue;
 		}
 
 		ItemType *t = newd ItemType();

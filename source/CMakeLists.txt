@@ -2,7 +2,7 @@
 # *****************************************************************************
 # Project remeres
 # *****************************************************************************
-project(remeres)
+project(canary-map-editor)
 
 find_package(asio CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)

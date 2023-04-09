@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -36,6 +36,7 @@
 #include "npc_brush.h"
 #include "spawn_monster_brush.h"
 #include "spawn_npc_brush.h"
+#include "preferences.h"
 
 #include "live_server.h"
 #include "live_client.h"
@@ -57,6 +58,14 @@ Editor::Editor(CopyBuffer& copybuffer) :
 		ok = g_gui.LoadVersion(error, warnings);
 		g_gui.PopupDialog("Error", error, wxOK);
 		g_gui.ListDialog("Warnings", warnings);
+
+		auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
+		if (!wxDirExists(wxString(clientDirectory))) {
+			PreferencesWindow dialog(nullptr);
+			dialog.getBookCtrl().SetSelection(4);
+			dialog.ShowModal();
+			dialog.Destroy();
+		}
 	} else {
 		throw std::runtime_error("All maps of different versions were not closed.");
 	}
@@ -103,10 +112,19 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 	wxArrayString warnings;
 	if(g_gui.CloseAllEditors()) {
 		success = g_gui.LoadVersion(error, warnings);
-		if(!success)
+		if(!success) {
 			g_gui.PopupDialog("Error", error, wxOK);
-		else
+			auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
+			if (!wxDirExists(wxString(clientDirectory))) {
+				PreferencesWindow dialog(nullptr);
+				dialog.getBookCtrl().SetSelection(4);
+				dialog.ShowModal();
+				dialog.Destroy();
+			}
+		}
+		else {
 			g_gui.ListDialog("Warnings", warnings);
+		}
 	} else {
 		spdlog::error("All maps of different versions were not closed.");
 		throw std::runtime_error("All maps of different versions were not closed.");
@@ -300,24 +318,23 @@ void Editor::saveMap(FileName filename, bool showdialog)
 	if(!save_as && g_settings.getInteger(Config::ALWAYS_MAKE_BACKUP)) {
 		// Move temporary backups to their proper files
 		time_t t = time(nullptr);
-		tm* current_time;
+		tm current_time;
 		#if defined(__WINDOWS__)
-		localtime_s(current_time, &t);
+		localtime_s(&current_time, &t);
 		#else
-		localtime_r(current_time, &t);
+		localtime_r(&current_time, &t);
 		#endif
-		ASSERT(current_time);
 
 		std::ostringstream date;
-		date << (1900 + current_time->tm_year);
-		if(current_time->tm_mon < 9)
-			date << "-" << "0" << current_time->tm_mon+1;
+		date << (1900 + current_time.tm_year);
+		if(current_time.tm_mon < 9)
+			date << "-" << "0" << current_time.tm_mon+1;
 		else
-			date << "-" << current_time->tm_mon+1;
-		date << "-" << current_time->tm_mday;
-		date << "-" << current_time->tm_hour;
-		date << "-" << current_time->tm_min;
-		date << "-" << current_time->tm_sec;
+			date << "-" << current_time.tm_mon+1;
+		date << "-" << current_time.tm_mday;
+		date << "-" << current_time.tm_hour;
+		date << "-" << current_time.tm_min;
+		date << "-" << current_time.tm_sec;
 
 		if(!backup_otbm.empty()) {
 			converter.SetFullName(wxstr(savefile));

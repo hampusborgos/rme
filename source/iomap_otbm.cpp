@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -1511,7 +1511,7 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 		{
 			f.addByte(OTBM_ATTR_DESCRIPTION);
 			// Neither SimOne's nor OpenTibia cares for additional description tags
-			f.addString("Saved with Remere's Map Editor " + __RME_VERSION__);
+			f.addString("Saved with Canary Map Editor " + __RME_VERSION__);
 
 			f.addU8(OTBM_ATTR_DESCRIPTION);
 			f.addString(map.description);
@@ -1707,8 +1707,10 @@ bool IOMapOTBM::saveSpawns(Map& map, pugi::xml_document& doc)
 						monsterNode.append_attribute("x") = x;
 						monsterNode.append_attribute("y") = y;
 						monsterNode.append_attribute("z") = spawnPosition.z;
+
 						int monsterSpawnTime = monster->getSpawnMonsterTime();
-						if (monsterSpawnTime > std::numeric_limits<uint32_t>::max()) {
+						uint16_t maxUint16 = std::numeric_limits<uint16_t>::max();
+						if (std::cmp_greater(monsterSpawnTime, maxUint16)) {
 							monsterSpawnTime = 60;
 						}
 

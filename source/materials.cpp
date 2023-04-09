@@ -1,12 +1,12 @@
 //////////////////////////////////////////////////////////////////////
-// This file is part of Remere's Map Editor
+// This file is part of Canary Map Editor
 //////////////////////////////////////////////////////////////////////
-// Remere's Map Editor is free software: you can redistribute it and/or modify
+// Canary Map Editor is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Remere's Map Editor is distributed in the hope that it will be useful,
+// Canary Map Editor is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
@@ -59,18 +59,7 @@ const MaterialsExtensionList& Materials::getExtensions()
 	return extensions;
 }
 
-MaterialsExtensionList Materials::getExtensionsByVersion(uint16_t version_id)
-{
-	MaterialsExtensionList ret_list;
-	for(MaterialsExtensionList::iterator iter = extensions.begin(); iter != extensions.end(); ++iter) {
-		if((*iter)->isForVersion(version_id)) {
-			ret_list.push_back(*iter);
-		}
-	}
-	return ret_list;
-}
-
-bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings, bool loadInclude)
+bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArrayString& warnings)
 {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(identifier.GetFullPath().mb_str());
@@ -87,9 +76,7 @@ bool Materials::loadMaterials(const FileName& identifier, wxString& error, wxArr
 		return false;
 	}
 
-	if (!loadInclude) {
-		unserializeMaterials(identifier, node, error, warnings);
-	}
+	unserializeMaterials(identifier, node, error, warnings);
 	return true;
 }
 
@@ -111,7 +98,6 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 		return true;
 	}
 
-	StringVector clientVersions;
 	do {
 		FileName fn;
 		fn.SetPath(directoryName.GetPath());
@@ -164,23 +150,12 @@ bool Materials::loadExtensions(FileName directoryName, wxString& error, wxArrayS
 			continue;
 		}
 
-		std::string extensionUrl = extensionNode.attribute("url").as_string();
-		extensionUrl.erase(std::remove(extensionUrl.begin(), extensionUrl.end(), '\''));
-
 		std::string extensionAuthorLink = extensionNode.attribute("authorurl").as_string();
 		extensionAuthorLink.erase(std::remove(extensionAuthorLink.begin(), extensionAuthorLink.end(), '\''));
 
-		MaterialsExtension* materialExtension = newd MaterialsExtension(extensionName, extensionAuthor, extensionDescription);
-		materialExtension->url = extensionUrl;
-		materialExtension->author_url = extensionAuthorLink;
-
+		MaterialsExtension* materialExtension = newd MaterialsExtension(extensionName, extensionDescription);
 		extensions.push_back(materialExtension);
-		if(materialExtension->isForVersion(0)) {
-			unserializeMaterials(filename, extensionNode, error, warnings);
-			spdlog::warn("[Materials::loadExtensions] - Extension '{}' unserialized", extensionName);
-		} else {
-			spdlog::warn("[Materials::loadExtensions] - Extension '{}' not loaded due to different version", extensionName);
-		}
+		unserializeMaterials(filename, extensionNode, error, warnings);
 	} while(ext_dir.GetNext(&filename));
 
 	return true;
@@ -202,7 +177,7 @@ bool Materials::unserializeMaterials(const FileName& filename, pugi::xml_node no
 			includeName.SetName(wxString(attribute.as_string(), wxConvUTF8));
 
 			wxString subError;
-			if(!loadMaterials(includeName, subError, warnings, true)) {
+			if(!loadMaterials(includeName, subError, warnings)) {
 				warnings.push_back("Error while loading file \"" + includeName.GetFullName() + "\": " + subError);
 				spdlog::warn("[Materials::unserializeMaterials] - Error while loading file {}", includeName.GetFullName().ToStdString());
 			}

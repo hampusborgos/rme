@@ -1,6 +1,6 @@
 syntax = "proto2";
 
-package remeres.protobuf.appearances;
+package canary.protobuf.appearances;
 
 message Coordinate {
 	optional uint32 x = 1;
