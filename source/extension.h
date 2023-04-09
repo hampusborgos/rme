@@ -19,7 +19,7 @@
 #define RME_EXTENSION_H_
 
 #include "tileset.h"
-#include "client_version.h"
+#include "client_assets.h"
 
 class MaterialsExtension
 {

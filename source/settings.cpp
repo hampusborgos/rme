@@ -19,7 +19,7 @@
 
 #include "settings.h"
 #include "gui_ids.h"
-#include "client_version.h"
+#include "client_assets.h"
 
 Settings g_settings;
 
@@ -247,7 +247,7 @@ void Settings::IO(IOMode mode)
 	Int(DEFAULT_SPAWN_NPC_TIME, 60);
 	Int(MAX_SPAWN_NPC_RADIUS, 30);
 	Int(CURRENT_SPAWN_NPC_RADIUS, 1);
-	Int(DEFAULT_CLIENT_VERSION, std::atoi(Assets::getVersionName().c_str()));
+	Int(DEFAULT_CLIENT_VERSION, std::atoi(ClientAssets::getVersionName().c_str()));
 	Int(RAW_LIKE_SIMONE, 1);
 	Int(ONLY_ONE_INSTANCE, 1);
 	Int(USE_OTBM_4_FOR_ALL_MAPS, 0);

@@ -226,7 +226,6 @@ void MapPropertiesWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
 
 	wxString ver = version_choice->GetStringSelection();
 
-	//new_ver.client = Assets::get(nstr(protocol_choice->GetStringSelection()))->getID();
 	if(ver.Contains("0.5.0")) {
 		new_ver.otbm = MAP_OTBM_1;
 	} else if(ver.Contains("0.6.0")) {

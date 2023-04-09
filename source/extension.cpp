@@ -55,7 +55,7 @@ std::string MaterialsExtension::getVersionString()
 		return "All";
 	}
 
-	std::string versions = Assets::getVersionName();
+	std::string versions = ClientAssets::getVersionName();
 	if(versions.empty()) {
 		return "None";
 	}

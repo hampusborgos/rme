@@ -29,7 +29,7 @@
 #include "doodad_brush.h"
 #include "spawn_monster_brush.h"
 #include "sprite_appearances.h"
-#include "client_version.h"
+#include "client_assets.h"
 
 #include "common_windows.h"
 #include "result_window.h"
@@ -314,7 +314,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
 
 	g_gui.SetLoadDone(20, "Loading appearances.dat file...");
 	spdlog::info("Loading appearances");
-	if(!Assets::loadAppearanceProtobuf(error, warnings)) {
+	if(!ClientAssets::loadAppearanceProtobuf(error, warnings)) {
 		error = "Couldn't load catalog-content.json: " + error;
 		spdlog::error("[GUI::LoadDataFiles] {}", error.ToStdString());
 		g_gui.DestroyLoadBar();
@@ -339,7 +339,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
 	g_gui.SetLoadDone(45, "Loading user monsters.xml ...");
 	spdlog::info("Loading user monsters");
 	{
-		FileName cdb = Assets::getLocalPath();
+		FileName cdb = ClientAssets::getLocalPath();
 		cdb.SetFullName("monsters.xml");
 		wxString nerr;
 		wxArrayString nwarn;
@@ -356,7 +356,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString&warnings)
 	g_gui.SetLoadDone(45, "Loading user npcs.xml ...");
 	spdlog::info("Loading user npcs");
 	{
-		FileName cdb = Assets::getLocalPath();
+		FileName cdb = ClientAssets::getLocalPath();
 		cdb.SetFullName("npcs.xml");
 		wxString nerr;
 		wxArrayString nwarn;
@@ -414,7 +414,7 @@ void GUI::UnloadVersion()
 	g_items.clear();
 	gfx.clear();
 
-	FileName cdb = Assets::getLocalPath();
+	FileName cdb = ClientAssets::getLocalPath();
 	cdb.SetFullName("monsters.xml");
 	g_monsters.saveToXML(cdb);
 	g_monsters.clear();
@@ -747,7 +747,7 @@ void GUI::NewMapView()
 
 void GUI::LoadPerspective()
 {
-	if(!Assets::isLoaded()) {
+	if(!ClientAssets::isLoaded()) {
 		if(g_settings.getInteger(Config::WINDOW_MAXIMIZED)) {
 			root->Maximize();
 		} else {
@@ -915,7 +915,7 @@ void GUI::RefreshOtherPalettes(PaletteWindow* p)
 
 PaletteWindow* GUI::CreatePalette()
 {
-	if(!Assets::isLoaded())
+	if(!ClientAssets::isLoaded())
 		return nullptr;
 
 	auto *palette = newd PaletteWindow(root, g_materials.tilesets);
@@ -991,7 +991,7 @@ void GUI::SelectPalettePage(PaletteType pt)
 
 void GUI::CreateMinimap()
 {
-	if(!Assets::isLoaded())
+	if(!ClientAssets::isLoaded())
 		return;
 
 	if(minimap) {

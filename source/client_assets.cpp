@@ -22,18 +22,17 @@
 
 #include "gui.h"
 
-#include "client_version.h"
+#include "client_assets.h"
 #include "otml.h"
 
 using json = nlohmann::json;
 
-std::string Assets::version_name;
-uint16_t Assets::client_version;
-wxString Assets::data_path;
-wxString Assets::assets_path;
-bool Assets::loaded = false;
+std::string ClientAssets::version_name;
+wxString ClientAssets::data_path;
+wxString ClientAssets::assets_path;
+bool ClientAssets::loaded = false;
 
-void Assets::load()
+void ClientAssets::load()
 {
 	// Load the data directory info
 	try
@@ -52,12 +51,12 @@ void Assets::load()
 	}
 }
 
-bool Assets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
+bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
 {
 	using namespace remeres::protobuf::appearances;
 	using json = nlohmann::json;
 	
-	auto clientDirectory = Assets::getPath().ToStdString() + "/";
+	auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
 	auto assetsDirectory = clientDirectory + "/assets/";
 	//const std::string& catalogContentFile = assetsDirectory + "/catalog-content.json";
 	//spdlog::info("assets dir: {}, catalog: {}", fullAssetsDir.ToStdString(), catalogContentFile);
@@ -90,8 +89,6 @@ bool Assets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
 	version_name = version;
 
 	const std::string appearanceFileName = g_spriteAppearances.getAppearanceFileName();
-
-	//g_spriteAppearances.setSpritesCount(spritesCount + 1);
 
 	std::fstream fileStream(assetsDirectory + appearanceFileName, std::ios::in | std::ios::binary);
 	if (!fileStream.is_open()) {
@@ -141,7 +138,7 @@ bool Assets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnings)
 	return true;
 }
 
-void Assets::save()
+void ClientAssets::save()
 {
 	try {
 		json vers_obj;
@@ -163,7 +160,7 @@ void Assets::save()
 	}
 }
 
-FileName Assets::getDataPath()
+FileName ClientAssets::getDataPath()
 {
 	wxString basePath = g_gui.GetDataDirectory();
 	if(!wxFileName(basePath).DirExists())
@@ -171,19 +168,19 @@ FileName Assets::getDataPath()
 	return basePath + data_path + FileName::GetPathSeparator();
 }
 
-FileName Assets::getLocalPath()
+FileName ClientAssets::getLocalPath()
 {
 	FileName f = g_gui.GetLocalDataDirectory() + data_path + FileName::GetPathSeparator();
 	f.Mkdir(0755, wxPATH_MKDIR_FULL);
 	return f;
 }
 
-wxString Assets::getPath()
+wxString ClientAssets::getPath()
 {
 	return assets_path;
 }
 
-std::string Assets::getVersionName()
+std::string ClientAssets::getVersionName()
 {
 	return version_name;
 }

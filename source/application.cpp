@@ -119,7 +119,7 @@ bool Application::OnInit()
 	// Load some internal stuff
 	g_settings.load();
 	g_gui.LoadHotkeys();
-	Assets::load();
+	ClientAssets::load();
 
 #ifdef _USE_PROCESS_COM
 	m_single_instance_checker = newd wxSingleInstanceChecker; //Instance checker has to stay alive throughout the applications lifetime
@@ -295,7 +295,7 @@ void Application::Unload()
 	g_gui.SaveHotkeys();
 	g_gui.SavePerspective();
 	g_gui.root->SaveRecentFiles();
-	Assets::save();
+	ClientAssets::save();
 	g_settings.save(true);
 	g_gui.root = nullptr;
 }

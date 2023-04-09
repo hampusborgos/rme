@@ -19,7 +19,7 @@
 #include "main.h"
 
 #include "settings.h"
-#include "client_version.h"
+#include "client_assets.h"
 #include "editor.h"
 
 #include "gui.h"
@@ -488,7 +488,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	wxNotebookPage* client_page = newd wxPanel(book, wxID_ANY);
 
 	// Refresh g_settings
-	Assets::save();
+	ClientAssets::save();
 
 	wxSizer* topsizer = newd wxBoxSizer(wxVERTICAL);
 
@@ -503,7 +503,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString(assets));
 	client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
 
-	wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, Assets::getPath());
+	wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, ClientAssets::getPath());
 	version_dir_picker = dir_picker;
 	client_list_sizer->Add(dir_picker, wxSizerFlags(0).Border(wxRIGHT, 10).Expand());
 
@@ -547,7 +547,7 @@ void PreferencesWindow::SelectNewAssetsFolder(wxCommandEvent& event)
 	wxDirPickerCtrl* dir_picker = static_cast<wxDirPickerCtrl*>(event.GetEventObject());
 	wxString path = dir_picker->GetPath();
 	if (!path.IsEmpty()) {
-		Assets::setPath(path);
+		ClientAssets::setPath(path);
 		// spdlog::info("New directory selected: {}", path.ToStdString());
 	} else {
 		wxMessageDialog dialog(this, "Directory is empty", "Error", wxOK | wxICON_ERROR);
@@ -670,8 +670,8 @@ void PreferencesWindow::Apply()
 	g_settings.setFloat(Config::ZOOM_SPEED, zoom_speed_slider->GetValue()/10.f);
 
 	// Make sure to reload client paths
-	Assets::save();
-	Assets::load();
+	ClientAssets::save();
+	ClientAssets::load();
 
 	g_settings.save();
 

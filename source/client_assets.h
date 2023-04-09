@@ -39,15 +39,15 @@ struct MapVersion
 	MapVersionID otbm;
 };
 
-class Assets
+class ClientAssets
 {
 public:
-	Assets() = default;
-	~Assets() = default;
+	ClientAssets() = default;
+	~ClientAssets() = default;
 
 	// Ensures we don't accidentally copy it.
-	Assets(const Assets &) = delete;
-	Assets &operator=(const Assets &) = delete;
+	ClientAssets(const ClientAssets &) = delete;
+	ClientAssets &operator=(const ClientAssets &) = delete;
 
 	static void load();
 	// Load protobuf appearance file and catalog-content json with sprites
@@ -59,12 +59,6 @@ public:
 	static FileName getDataPath();
 	static FileName getLocalPath();
 	static wxString getPath();
-	static uint16_t getVersion() {
-		return client_version;
-	}
-	static void setVersion(uint16_t newVersion) {
-		client_version = newVersion;
-	}
 	static void setPath(wxString newPath) {
 		assets_path = newPath;
 	}
@@ -78,7 +72,6 @@ public:
 
 private:
 	static std::string version_name;
-	static uint16_t client_version;
 
 	static wxString assets_path;
 	static wxString data_path;

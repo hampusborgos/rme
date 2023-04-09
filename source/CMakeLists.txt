@@ -46,7 +46,7 @@ target_sources(${PROJECT_NAME}
 	browse_tile_window.cpp
 	positionctrl.cpp
 	carpet_brush.cpp
-	client_version.cpp
+	client_assets.cpp
 	common.cpp
 	common_windows.cpp
 	complexitem.cpp

@@ -21,7 +21,7 @@
 #include "outfit.h"
 #include "common.h"
 
-#include "client_version.h"
+#include "client_assets.h"
 #include "sprite_appearances.h"
 #include "protobuf/appearances.pb.h"
 

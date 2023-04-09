@@ -306,7 +306,7 @@ void MainMenuBar::Update()
 		EnableItem(PASTE, false);
 	}
 
-	bool loaded = Assets::isLoaded();
+	bool loaded = ClientAssets::isLoaded();
 	bool has_map = editor != nullptr;
 	bool has_selection = editor && editor->hasSelection();
 	bool is_live = editor && editor->IsLive();
@@ -917,7 +917,7 @@ void MainMenuBar::OnSearchForItem(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnReplaceItems(wxCommandEvent& WXUNUSED(event))
 {
-	if(!Assets::isLoaded())
+	if(!ClientAssets::isLoaded())
 		return;
 
 	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
@@ -1086,7 +1086,7 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnReplaceItemsOnSelection(wxCommandEvent& WXUNUSED(event))
 {
-	if(!Assets::isLoaded())
+	if(!ClientAssets::isLoaded())
 		return;
 
 	if(MapTab* tab = g_gui.GetCurrentMapTab()) {
@@ -1199,7 +1199,7 @@ void MainMenuBar::OnRandomizeMap(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnJumpToBrush(wxCommandEvent& WXUNUSED(event))
 {
-	if(!Assets::isLoaded())
+	if(!ClientAssets::isLoaded())
 		return;
 
 	// Create the jump to dialog
@@ -1218,7 +1218,7 @@ void MainMenuBar::OnJumpToBrush(wxCommandEvent& WXUNUSED(event))
 
 void MainMenuBar::OnJumpToItemBrush(wxCommandEvent& WXUNUSED(event))
 {
-	if(!Assets::isLoaded())
+	if(!ClientAssets::isLoaded())
 		return;
 
 	// Create the jump to dialog
