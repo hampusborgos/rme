@@ -60,7 +60,7 @@ Editor::Editor(CopyBuffer& copybuffer) :
 		g_gui.ListDialog("Warnings", warnings);
 
 		auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
-		if (!wxDirExists(wxString(clientDirectory))) {
+		if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
 			PreferencesWindow dialog(nullptr);
 			dialog.getBookCtrl().SetSelection(4);
 			dialog.ShowModal();
@@ -115,7 +115,7 @@ Editor::Editor(CopyBuffer& copybuffer, const FileName& fn) :
 		if(!success) {
 			g_gui.PopupDialog("Error", error, wxOK);
 			auto clientDirectory = ClientAssets::getPath().ToStdString() + "/";
-			if (!wxDirExists(wxString(clientDirectory))) {
+			if (clientDirectory.empty() || !wxDirExists(wxString(clientDirectory))) {
 				PreferencesWindow dialog(nullptr);
 				dialog.getBookCtrl().SetSelection(4);
 				dialog.ShowModal();

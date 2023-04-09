@@ -493,7 +493,7 @@ wxNotebookPage* PreferencesWindow::CreateClientPage()
 	client_list_sizer->AddGrowableCol(1);
 
 
-	wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString("Directory"));
+	wxStaticText *tmp_text = newd wxStaticText(client_list_window, wxID_ANY, wxString("Select path:"));
 	client_list_sizer->Add(tmp_text, wxSizerFlags(0).Expand());
 
 	wxDirPickerCtrl* dir_picker = newd wxDirPickerCtrl(client_list_window, wxID_ANY, ClientAssets::getPath());
