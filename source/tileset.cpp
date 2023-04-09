@@ -251,6 +251,7 @@ void TilesetCategory::loadBrush(pugi::xml_node node, wxArrayString& warnings)
 		std::vector<Brush*> tempBrushVector;
 		for(uint16_t id = fromId; id <= toId; ++id) {
 			ItemType& it = g_items[id];
+			// Ignore item if not exist
 			if(it.id == 0) {
 				continue;
 			}

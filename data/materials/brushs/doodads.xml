@@ -17022,21 +17022,6 @@
 		</alternate>
 	</brush>
 
-	<brush name="stack of books" type="doodad" lookid="31435" draggable="true" on_blocking="true" thickness="10/10">
-		<alternate>		-- on --
-			<item id="31435" chance="10"/>
-		</alternate>
-		<alternate>		-- off --
-			<item id="31401" chance="10"/>
-		</alternate>
-		<alternate>		-- off --
-			<item id="31402" chance="10"/>
-		</alternate>
-		<alternate>		-- off --
-			<item id="27945" chance="10"/>
-		</alternate>
-	</brush>
-
 	<brush name="new colored flags" type="doodad" lookid="27937" draggable="true" on_blocking="true" thickness="10/10">
 		<alternate>		-- on --
 			<item id="27937" chance="10"/>
