@@ -408,6 +408,14 @@ bool GraphicManager::loadOutfitSpriteMetadata(canary::protobuf::appearances::App
 		(int)sType->pattern_x * (int)sType->pattern_y * sType->pattern_z *
 		std::max<int>(1, sType->sprite_phase_size);
 
+	sType->minimap_color = outfit.flags().has_automap() ? static_cast<uint16_t>(outfit.flags().automap().color()) : 0;
+	sType->draw_height = outfit.flags().has_height() ? static_cast<uint16_t>(outfit.flags().height().elevation()) : 0;
+	if (outfit.flags().has_shift()) {
+		sType->drawoffset_x = static_cast<uint16_t>(outfit.flags().shift().x());
+		sType->drawoffset_y = static_cast<uint16_t>(outfit.flags().shift().y());
+		sType->isDrawOffsetLoaded = true;
+	}
+
 	// Read the sprite ids
 	for(uint32_t i = 0; i < sType->numsprites; ++i) {
 		uint32_t sprite_id = spriteInfo.sprite_id().Get(i);
@@ -603,6 +611,9 @@ GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const 
 {
 	if(instanced_templates.empty()) {
 		TemplateImage* img = newd TemplateImage(this, sprite_index, outfit);
+		if (!img) {
+			return nullptr;
+		}
 		instanced_templates.push_back(img);
 		return img;
 	}

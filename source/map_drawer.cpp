@@ -1293,6 +1293,9 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		if(!spr || outfit.lookType == 0)
 			return;
 
+		screenx -= spr->getDrawOffset().first;
+		screeny -= spr->getDrawOffset().second;
+
 		int texnum = spr->getSpriteId((int)dir,outfit,0);
 		glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
 	}
