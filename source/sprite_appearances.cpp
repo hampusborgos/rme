@@ -81,6 +81,20 @@ bool SpriteAppearances::loadCatalogContent(const std::string& dir, bool loadData
 	return true;
 }
 
+bool SpriteAppearances::isSpriteSizeEmpty(uint8_t* buffer) {
+	for (int y = 0; y < 32; ++y) {
+		uint8_t* itr = &buffer[y * 64 * 4];
+
+		for (std::size_t x = 0; x < 32; ++x) {
+			if (*(itr + x * 4 + 3) != 0x00) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
 bool SpriteAppearances::loadSpriteSheet(const SpriteSheetPtr& sheet)
 {
 	if (sheet->loaded) {
@@ -276,7 +290,8 @@ SpritePtr SpriteAppearances::getSprite(int spriteId)
 	int spriteWidthBytes = spriteWidth * 4;
 
 	for (int height = spriteHeight * spriteRow, offset = 0; height < spriteHeight + (spriteRow * spriteHeight); height++, offset++) {
-		std::memcpy(&sprite->pixels[offset * spriteWidthBytes], &sheet->data[(height * SPRITE_SHEET_WIDTH_BYTES) + (spriteColumn * spriteWidthBytes)], spriteWidthBytes);
+		auto bufferData = &sheet->data[(height * SPRITE_SHEET_WIDTH_BYTES) + (spriteColumn * spriteWidthBytes)];
+		std::memcpy(&sprite->pixels[offset * spriteWidthBytes], bufferData, spriteWidthBytes);
 	}
 
 	// cache it for faster later access

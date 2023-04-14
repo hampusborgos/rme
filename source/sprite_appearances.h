@@ -147,6 +147,14 @@ class SpriteAppearances
 			return appearanceFile;
 		}
 
+		/**
+		* Checks if a sprite with a size of 32x32 pixels in a RGBA buffer is empty.
+		* @param buffer The buffer containing the sprite.
+		* @return True if the sprite is empty, false otherwise.
+		* NOTE: This serves to fetch the sprites of outfits that have color (have 64x64)
+		*/
+		bool isSpriteSizeEmpty(uint8_t* buffer);
+
 		bool loadCatalogContent(const std::string& dir, bool loadData = true);
 		bool loadSpriteSheet(const SpriteSheetPtr& sheet);
 		void saveSheetToFileBySprite(int id, const std::string& file);
