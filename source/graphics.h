@@ -20,6 +20,7 @@
 
 #include "outfit.h"
 #include "common.h"
+#include "enums.h"
 
 #include "client_assets.h"
 #include "sprite_appearances.h"
@@ -46,6 +47,31 @@ class MapCanvas;
 class GraphicManager;
 class FileReadHandle;
 class Animator;
+class GameSprite;
+
+class OutfitImage {
+public:
+	OutfitImage(GameSprite* initParent, int initSpriteIndex, GLuint initSpriteId, const Outfit& initOutfit);
+	~OutfitImage();
+
+	GLuint getSpriteId();
+	uint8_t* getRGBAData();
+
+	GLuint m_spriteId = 0;
+	GameSprite* m_parent = 0;
+	int m_spriteIndex = 0;
+	uint8_t m_lookHead = 0;
+	uint8_t m_lookBody = 0;
+	uint8_t m_lookLegs = 0;
+	uint8_t m_lookFeet = 0;
+	bool m_isGLLoaded = false;
+	uint8_t* dump = nullptr;
+
+	void colorizePixel(uint8_t color, uint8_t &r, uint8_t &b, uint8_t &g);
+	uint8_t* getOutfitData(int spriteId);
+
+	void createGLTexture(GLuint spriteId = 0);
+};
 
 class Sprite {
 public:
@@ -70,7 +96,6 @@ protected:
 	wxBitmap* bm[SPRITE_SIZE_COUNT];
 };
 
-
 class GameSprite : public Sprite {
 public:
 	GameSprite();
@@ -78,24 +103,21 @@ public:
 
 	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
 	GLuint getSpriteId(int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
-	GLuint getSpriteId(int _dir, const Outfit& _outfit, int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 
 	virtual void unloadDC();
 
-	void clean(int time);
-
 	int getDrawHeight() const;
 	std::pair<int, int> getDrawOffset();
 	uint8_t getMiniMapColor() const;
+	static uint8_t* invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba);
+	std::shared_ptr<OutfitImage> getOutfitImage(int spriteId, Direction direction, const Outfit& outfit);
 
 protected:
 	class Image;
 	class NormalImage;
-	class TemplateImage;
 
 	wxMemoryDC* getDC(SpriteSize spriteSize);
-	TemplateImage* getTemplateImage(int sprite_index, const Outfit& outfit);
 
 	class Image {
 	public:
@@ -110,7 +132,6 @@ protected:
 
 		virtual GLuint getSpriteId() = 0;
 		virtual uint8_t* getRGBAData() = 0;
-		uint8_t* invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba);
 	protected:
 		virtual void createGLTexture(GLuint whatid);
 		virtual void unloadGLTexture(GLuint whatid);
@@ -133,28 +154,6 @@ protected:
 		virtual GLuint getSpriteId();
 		virtual uint8_t* getRGBAData();
 	protected:
-		virtual void createGLTexture(GLuint ignored = 0);
-		virtual void unloadGLTexture(GLuint ignored = 0);
-	};
-
-	class TemplateImage : public Image {
-	public:
-		TemplateImage(GameSprite* parent, int v, const Outfit& outfit);
-		virtual ~TemplateImage();
-
-		virtual GLuint getSpriteId();
-		virtual uint8_t* getRGBAData();
-
-		GLuint gl_tid;
-		GameSprite* parent;
-		int sprite_index;
-		uint8_t lookHead;
-		uint8_t lookBody;
-		uint8_t lookLegs;
-		uint8_t lookFeet;
-	protected:
-		void colorizePixel(uint8_t color, uint8_t &r, uint8_t &b, uint8_t &g);
-
 		virtual void createGLTexture(GLuint ignored = 0);
 		virtual void unloadGLTexture(GLuint ignored = 0);
 	};
@@ -191,7 +190,7 @@ public:
 	uint16_t minimap_color;
 
 	std::vector<NormalImage*> spriteList;
-	std::list<TemplateImage*> instanced_templates; // Templates that use this sprite
+	std::list<std::shared_ptr<OutfitImage>> instanced_templates; // Templates that use this sprite
 
 	friend class GraphicManager;
 };
@@ -313,7 +312,7 @@ private:
 
 	friend class GameSprite::Image;
 	friend class GameSprite::NormalImage;
-	friend class GameSprite::TemplateImage;
+	friend class OutfitImage;
 };
 
 struct RGBQuad {

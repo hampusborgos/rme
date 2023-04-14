@@ -371,7 +371,7 @@ bool GraphicManager::loadItemSpriteMetadata(ItemType* t, wxString& error, wxArra
 bool GraphicManager::loadOutfitSpriteMetadata(canary::protobuf::appearances::Appearance outfit, wxString& error, wxArrayString& warnings)
 {
 	GameSprite* sType = newd GameSprite();
-	sType->id = outfit.id();
+	sType->id = outfit.id() + getItemSpriteMaxID();
 	sprite_space[outfit.id() + getItemSpriteMaxID()] = sType;
 	creature_count = std::max<uint16_t>(creature_count, outfit.id());
 
@@ -472,12 +472,6 @@ void GraphicManager::garbageCollection()
 				iit->second->clean(t);
 				++iit;
 			}
-			SpriteMap::iterator sit = sprite_space.begin();
-			while(sit != sprite_space.end()) {
-				GameSprite* gs = dynamic_cast<GameSprite*>(sit->second);
-				if(gs) gs->clean(t);
-				++sit;
-			}
 			lastclean = t;
 		}
 	}
@@ -532,20 +526,7 @@ GameSprite::GameSprite() :
 GameSprite::~GameSprite()
 {
 	unloadDC();
-	for(std::list<TemplateImage*>::iterator iter = instanced_templates.begin(); iter != instanced_templates.end(); ++iter) {
-		delete *iter;
-	}
-
 	delete animator;
-}
-
-void GameSprite::clean(int time) {
-	for(std::list<TemplateImage*>::iterator iter = instanced_templates.begin();
-			iter != instanced_templates.end();
-			++iter)
-	{
-		(*iter)->clean(time);
-	}
 }
 
 void GameSprite::unloadDC()
@@ -607,10 +588,19 @@ GLuint GameSprite::getSpriteId(int _layer, int _count, int _pattern_x, int _patt
 	return spriteList[v]->getSpriteId();
 }
 
-GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const Outfit& outfit)
+std::shared_ptr<OutfitImage> GameSprite::getOutfitImage(int spriteId, Direction direction, const Outfit& outfit)
 {
+	uint32_t spriteIndex = direction * layers;
+	if(layers > 1 && spriteIndex >= numsprites) {
+		if(numsprites == 1) {
+			spriteIndex = 0;
+		} else {
+			spriteIndex %= numsprites;
+		}
+	}
+
 	if(instanced_templates.empty()) {
-		TemplateImage* img = newd TemplateImage(this, sprite_index, outfit);
+		auto img = std::make_shared<OutfitImage>(this, spriteIndex, spriteId, outfit);
 		if (!img) {
 			return nullptr;
 		}
@@ -618,36 +608,19 @@ GameSprite::TemplateImage* GameSprite::getTemplateImage(int sprite_index, const 
 		return img;
 	}
 	// While this is linear lookup, it is very rare for the list to contain more than 4-8 entries, so it's faster than a hashmap anyways.
-	for(std::list<TemplateImage*>::iterator iter = instanced_templates.begin(); iter != instanced_templates.end(); ++iter) {
-		TemplateImage* img = *iter;
-		if(img->sprite_index == sprite_index) {
-			uint32_t lookHash = img->lookHead << 24 | img->lookBody << 16 | img->lookLegs << 8 | img->lookFeet;
+	for(std::list<std::shared_ptr<OutfitImage>>::iterator iter = instanced_templates.begin(); iter != instanced_templates.end(); ++iter) {
+		auto img = *iter;
+		if(img->m_spriteId == spriteId) {
+			uint32_t lookHash = img->m_lookHead << 24 | img->m_lookBody << 16 | img->m_lookLegs << 8 | img->m_lookFeet;
 			if(outfit.getColorHash() == lookHash) {
 				return img;
 			}
 		}
 	}
-	TemplateImage* img = newd TemplateImage(this, sprite_index, outfit);
+
+	auto img = std::make_shared<OutfitImage>(this, spriteIndex, spriteId, outfit);
 	instanced_templates.push_back(img);
 	return img;
-}
-
-GLuint GameSprite::getSpriteId(int _dir, const Outfit& _outfit, int _frame)
-{
-	uint32_t v;
-	v = _dir * layers;
-	if(v >= numsprites) {
-		if(numsprites == 1) {
-			v = 0;
-		} else {
-			v %= numsprites;
-		}
-	}
-	if(layers > 1) { // Template
-		TemplateImage* img = getTemplateImage(v, _outfit);
-		return img->getSpriteId();
-	}
-	return spriteList[v]->getSpriteId();
 }
 
 wxMemoryDC* GameSprite::getDC(SpriteSize spriteSize)
@@ -701,19 +674,7 @@ void GameSprite::DrawTo(wxDC* dcWindow, SpriteSize spriteSize, int start_x, int 
 	}
 }
 
-GameSprite::Image::Image() :
-	isGLLoaded(false),
-	lastaccess(0)
-{
-	////
-}
-
-GameSprite::Image::~Image()
-{
-	unloadGLTexture(0);
-}
-
-uint8_t* GameSprite::Image::invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba)
+uint8_t* GameSprite::invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba)
 {
 	uint8_t* rgba_inverted = new uint8_t[spriteWidth * spriteHeight * 4];
 	for (int i = 0; i < spriteWidth * spriteHeight; i++) {
@@ -724,6 +685,18 @@ uint8_t* GameSprite::Image::invertGLColors(int spriteHeight, int spriteWidth, ui
 	}
 
 	return rgba_inverted;
+}
+
+GameSprite::Image::Image() :
+	isGLLoaded(false),
+	lastaccess(0)
+{
+	////
+}
+
+GameSprite::Image::~Image()
+{
+	unloadGLTexture(0);
 }
 
 void GameSprite::Image::createGLTexture(GLuint whatid)
@@ -828,32 +801,6 @@ void GameSprite::NormalImage::unloadGLTexture(GLuint ignored)
 	Image::unloadGLTexture(id);
 }
 
-GameSprite::TemplateImage::TemplateImage(GameSprite* parent, int v, const Outfit& outfit) :
-	gl_tid(0),
-	parent(parent),
-	sprite_index(v),
-	lookHead(outfit.lookHead),
-	lookBody(outfit.lookBody),
-	lookLegs(outfit.lookLegs),
-	lookFeet(outfit.lookFeet)
-{
-	////
-}
-
-GameSprite::TemplateImage::~TemplateImage()
-{
-	////
-}
-
-void GameSprite::TemplateImage::colorizePixel(uint8_t color, uint8_t& red, uint8_t& green, uint8_t& blue) {
-	uint8_t ro = (TemplateOutfitLookupTable[color] & 0xFF0000) >> 16; // rgb outfit
-	uint8_t go = (TemplateOutfitLookupTable[color] & 0xFF00) >> 8;
-	uint8_t bo = (TemplateOutfitLookupTable[color] & 0xFF);
-	red = (uint8_t)(red * (ro / 255.f));
-	green = (uint8_t)(green * (go / 255.f));
-	blue = (uint8_t)(blue * (bo / 255.f));
-}
-
 uint8_t GameSprite::getWidth()
 {
 	if (width <= 0) {
@@ -880,12 +827,41 @@ uint8_t GameSprite::getHeight()
 	return height;
 }
 
-uint8_t* GameSprite::TemplateImage::getRGBAData()
+// OutfitImage
+OutfitImage::OutfitImage(GameSprite* initParent, int initSpriteIndex, GLuint initSpriteId, const Outfit& initOutfit) :
+	m_spriteId(initSpriteId),
+	m_spriteIndex(initSpriteIndex),
+	m_parent(initParent),
+	m_lookHead(initOutfit.lookHead),
+	m_lookBody(initOutfit.lookBody),
+	m_lookLegs(initOutfit.lookLegs),
+	m_lookFeet(initOutfit.lookFeet)
 {
-	uint8_t* rgbadata = parent->spriteList[sprite_index]->getRGBAData();
-	uint8_t* template_rgbadata = parent->spriteList[sprite_index + 1]->getRGBAData();
+	////
+}
 
-	SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(parent->spriteList[sprite_index]->id);
+OutfitImage::~OutfitImage() = default;
+
+void OutfitImage::colorizePixel(uint8_t color, uint8_t& red, uint8_t& green, uint8_t& blue) {
+	uint8_t ro = (TemplateOutfitLookupTable[color] & 0xFF0000) >> 16; // rgb outfit
+	uint8_t go = (TemplateOutfitLookupTable[color] & 0xFF00) >> 8;
+	uint8_t bo = (TemplateOutfitLookupTable[color] & 0xFF);
+	red = (uint8_t)(red * (ro / 255.f));
+	green = (uint8_t)(green * (go / 255.f));
+	blue = (uint8_t)(blue * (bo / 255.f));
+}
+std::string colorToHexString(uint8_t r, uint8_t g, uint8_t b) {
+    char buffer[8];
+    snprintf(buffer, sizeof(buffer), "#%02X%02X%02X", r, g, b);
+    return std::string(buffer);
+}
+
+uint8_t* OutfitImage::getRGBAData()
+{
+	uint8_t* rgbadata = m_parent->spriteList[m_spriteIndex]->getRGBAData();
+	uint8_t* template_rgbadata = m_parent->spriteList[m_spriteIndex + 1]->getRGBAData();
+
+	SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(m_parent->spriteList[m_spriteIndex]->id);
 	if (!sheet || !sheet->loaded) {
 		return nullptr;
 	}
@@ -897,68 +873,111 @@ uint8_t* GameSprite::TemplateImage::getRGBAData()
 		return nullptr;
 	}
 
-	if(lookHead > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
-		lookHead = 0;
+	if(m_lookHead > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
+		m_lookHead = 0;
 	}
-	if(lookBody > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
-		lookBody = 0;
+	if(m_lookBody > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
+		m_lookBody = 0;
 	}
-	if(lookLegs > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
-		lookLegs = 0;
+	if(m_lookLegs > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
+		m_lookLegs = 0;
 	}
-	if(lookFeet > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
-		lookFeet = 0;
+	if(m_lookFeet > (sizeof(TemplateOutfitLookupTable) / sizeof(TemplateOutfitLookupTable[0]))) {
+		m_lookFeet = 0;
 	}
 
 	int height = sheet->getSpriteSize().height;
 	int width = sheet->getSpriteSize().width;
+	// wxImage for testing
+	wxImage image(width, height);
 	for(int y = 0; y < height; ++y) {
 		for(int x = 0; x < width; ++x) {
-			uint8_t& red   = rgbadata[y*width*4 + x*4 + 0];
+			uint8_t& red = rgbadata[y*width*4 + x*4 + 0];
 			uint8_t& green = rgbadata[y*width*4 + x*4 + 1];
-			uint8_t& blue  = rgbadata[y*width*4 + x*4 + 2];
+			uint8_t& blue = rgbadata[y*width*4 + x*4 + 2];
 
-			uint8_t& tred   = template_rgbadata[y*width*3 + x*3 + 0];
-			uint8_t& tgreen = template_rgbadata[y*width*3 + x*3 + 1];
-			uint8_t& tblue  = template_rgbadata[y*width*3 + x*3 + 2];
+			uint8_t& tred = template_rgbadata[y*width*4 + x*4 + 0];
+			uint8_t& tgreen = template_rgbadata[y*width*4 + x*4 + 1];
+			uint8_t& tblue = template_rgbadata[y*width*4 + x*4 + 2];
 
 			if(tred && tgreen && !tblue) { // yellow => head
-				colorizePixel(lookHead, red, green, blue);
+				colorizePixel(m_lookHead, red, green, blue);
 			} else if(tred && !tgreen && !tblue) { // red => body
-				colorizePixel(lookBody, red, green, blue);
+				colorizePixel(m_lookBody, red, green, blue);
 			} else if(!tred && tgreen && !tblue) { // green => legs
-				colorizePixel(lookLegs, red, green, blue);
+				colorizePixel(m_lookLegs, red, green, blue);
 			} else if(!tred && !tgreen && tblue) { // blue => feet
-				colorizePixel(lookFeet, red, green, blue);
+				colorizePixel(m_lookFeet, red, green, blue);
 			}
+			image.SetRGB(x, y, tred, tgreen, tblue);
 		}
 	}
+
+	image.SaveFile(g_gui.GetDataDirectory().ToStdString() + "image.png", wxBITMAP_TYPE_PNG);
 	return rgbadata;
 }
 
-GLuint GameSprite::TemplateImage::getSpriteId()
+GLuint OutfitImage::getSpriteId()
 {
-	if(!isGLLoaded) {
-		if(gl_tid == 0) {
-			gl_tid = g_gui.gfx.getFreeTextureID();
+	if(!m_isGLLoaded) {
+		if(m_spriteId == 0) {
+			m_spriteId = g_gui.gfx.getFreeTextureID();
 		}
-		createGLTexture(gl_tid);
-		if(!isGLLoaded) {
+		createGLTexture(m_spriteId);
+		if(!m_isGLLoaded) {
 			return 0;
 		}
 	}
-	visit();
-	return gl_tid;
+
+	return m_spriteId;
 }
 
-void GameSprite::TemplateImage::createGLTexture(GLuint unused)
+void OutfitImage::createGLTexture(GLuint spriteId)
 {
-	Image::createGLTexture(gl_tid);
-}
+	ASSERT(!m_isGLLoaded);
 
-void GameSprite::TemplateImage::unloadGLTexture(GLuint unused)
-{
-	Image::unloadGLTexture(gl_tid);
+	uint8_t* rgba = getRGBAData();
+	if(!rgba) {
+		return;
+	}
+
+	SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteId);
+	if (!sheet) {
+		return;
+	}
+
+	auto spriteWidth = sheet->getSpriteSize().width;
+	auto spriteHeight = sheet->getSpriteSize().height;
+	auto invertedBuffer = m_parent->invertGLColors(spriteHeight, spriteWidth, rgba);
+
+	// Only for testing
+	wxImage image(spriteWidth, spriteHeight);
+	
+	for (int y = 0; y < spriteHeight; ++y) {
+		for (int x = 0; x < spriteWidth; ++x) {
+			const int index = (y * spriteWidth + x) * 4;
+			const uint8_t r = rgba[index + 2];
+			const uint8_t g = rgba[index + 1];
+			const uint8_t b = rgba[index];
+			image.SetRGB(x, y, r, g, b);
+		}
+	}
+
+	image.SetMaskColour(0, 0, 0);
+	image.InitAlpha();
+	image.ConvertAlphaToMask();
+
+	//image.SaveFile(g_gui.GetDataDirectory().ToStdString() + "image2.png", wxBITMAP_TYPE_PNG);
+
+	m_isGLLoaded = true;
+	g_gui.gfx.loaded_textures += 1;
+
+	glBindTexture(GL_TEXTURE_2D, spriteId);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, spriteWidth, spriteHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, invertedBuffer);
 }
 
 // ============================================================================

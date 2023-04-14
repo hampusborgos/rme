@@ -1288,16 +1288,21 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 	if(outfit.lookItem != 0) {
 		ItemType& it = g_items[outfit.lookItem];
 		BlitSpriteType(screenx, screeny, it.sprite, red, green, blue, alpha);
-	} else {
-		GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
-		if(!spr || outfit.lookType == 0)
-			return;
+		return;
+	}
 
-		screenx -= spr->getDrawOffset().first;
-		screeny -= spr->getDrawOffset().second;
+	GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
+	if(!spr || outfit.lookType == 0)
+		return;
 
-		auto spriteId = spr->spriteList[0]->getSpriteId();
-		spr->getTemplateImage(spriteId, dir, outfit)->createGLTexture(spriteId);
+	screenx -= spr->getDrawOffset().first;
+	screeny -= spr->getDrawOffset().second;
+
+	auto spriteId = spr->spriteList[0]->getSpriteId();
+	auto outfitImage = spr->getOutfitImage(spriteId, dir, outfit);
+	if (outfitImage) {
+		// Create outfits texture
+		outfitImage->createGLTexture(spriteId);
 		glBlitTexture(screenx, screeny, spriteId, red, green, blue, alpha);
 	}
 }
