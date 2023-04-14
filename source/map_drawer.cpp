@@ -301,7 +301,7 @@ void MapDrawer::DrawMap()
 							glVertex2f(cx, cy + TILE_SIZE * 4);
 							glVertex2f(cx + TILE_SIZE * 4, cy + TILE_SIZE * 4);
 							glVertex2f(cx + TILE_SIZE * 4, cy);
-							glVertex2f(cx,     cy);
+							glVertex2f(cx, cy);
 						glEnd();
 					}
 				}
@@ -1296,8 +1296,9 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		screenx -= spr->getDrawOffset().first;
 		screeny -= spr->getDrawOffset().second;
 
-		int texnum = spr->getSpriteId((int)dir,outfit,0);
-		glBlitTexture(screenx, screeny, texnum, red, green, blue, alpha);
+		auto spriteId = spr->spriteList[0]->getSpriteId();
+		spr->getTemplateImage(spriteId, dir, outfit)->createGLTexture(spriteId);
+		glBlitTexture(screenx, screeny, spriteId, red, green, blue, alpha);
 	}
 }
 
@@ -1549,10 +1550,10 @@ void MapDrawer::DrawBrushIndicator(int x, int y, Brush* brush, uint8_t r, uint8_
 	y += (TILE_SIZE / 2);
 
 	// 7----0----1
-	// |         |
+	// |		 |
 	// 6--5  3--2
-	//     \/
-	//     4
+	//	 \/
+	//	 4
 	static int vertexes[9][2] = {
 		{-15, -20},  // 0
 		{ 15, -20},  // 1
@@ -1659,20 +1660,20 @@ void MapDrawer::DrawTooltips()
 		float endy = y - space;
 
 		// 7----0----1
-		// |         |
+		// |		 |
 		// 6--5  3--2
-		//     \/
-		//     4
+		//	 \/
+		//	 4
 		float vertexes[9][2] = {
-			{x,         starty}, // 0
-			{endx,      starty}, // 1
-			{endx,      endy},   // 2
+			{x,		 starty}, // 0
+			{endx,	  starty}, // 1
+			{endx,	  endy},   // 2
 			{x + space, endy},   // 3
-			{x,         y},      // 4
+			{x,		 y},	  // 4
 			{x - space, endy},   // 5
-			{startx,    endy},   // 6
-			{startx,    starty}, // 7
-			{x,         starty}, // 0
+			{startx,	endy},   // 6
+			{startx,	starty}, // 7
+			{x,		 starty}, // 0
 		};
 
 		// background
@@ -1761,13 +1762,22 @@ void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int g
 		if (!sheet)
 			return;
 
+		auto spriteWidth = sheet->getSpriteSize().width;
+		auto spriteHeight = sheet->getSpriteSize().height;
+		// Sprites that are 64x64 pixels but are only occupied by 32x32 pixels will be fixed
+		bool isHalfOccupied = g_spriteAppearances.isSpriteSizeEmpty(g_spriteAppearances.getSprite(texture_number)->pixels.data());
+		if (isHalfOccupied && spriteWidth == 64 && spriteHeight == 64) {
+			sx -= spriteWidth / 2;
+			sy -= spriteWidth / 2;
+		}
+
 		glBindTexture(GL_TEXTURE_2D, texture_number);
 		glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));
 		glBegin(GL_QUADS);
 			glTexCoord2f(0.f, 0.f); glVertex2f(sx, sy);
-			glTexCoord2f(1.f, 0.f); glVertex2f(sx + sheet->getSpriteSize().width, sy);
-			glTexCoord2f(1.f, 1.f); glVertex2f(sx + sheet->getSpriteSize().width, sy + sheet->getSpriteSize().height);
-			glTexCoord2f(0.f, 1.f); glVertex2f(sx, sy + sheet->getSpriteSize().height);
+			glTexCoord2f(1.f, 0.f); glVertex2f(sx + spriteWidth, sy);
+			glTexCoord2f(1.f, 1.f); glVertex2f(sx + spriteWidth, sy + spriteHeight);
+			glTexCoord2f(0.f, 1.f); glVertex2f(sx, sy + spriteHeight);
 		glEnd();
 	}
 }
