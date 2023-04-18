@@ -58,8 +58,6 @@
 #endif
 // OS
 
-#define OTGZ_SUPPORT 0
-
 #define ASSETS_NAME "Tibia"
 
 #ifndef FORCEINLINE
@@ -131,9 +129,6 @@
 
 #define CLIENT_MAP_WIDTH 18
 #define CLIENT_MAP_HEIGHT 14
-
-#define MAP_LOAD_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz"
-#define MAP_SAVE_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz"
 
 #define MAP_LOAD_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
 #define MAP_SAVE_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"

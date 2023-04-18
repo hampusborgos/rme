@@ -16,14 +16,6 @@ find_package(Threads REQUIRED)
 find_package(wxWidgets COMPONENTS html aui gl adv core net base CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
 
-# LibArchive disabled in compilation level by default, see "#define OTGZ_SUPPORT" in the "definitions.h" file
-#if(APPLE)
-#	set(CMAKE_PREFIX_PATH /usr/local/opt/libarchive)
-#endif()
-# If you need use, enable this:
-#find_package(LibArchive REQUIRED)
-#${LibArchive_INCLUDE_DIRS} ${LibArchive_LIBRARIES}
-
 if (MSVC)
 	add_executable(${PROJECT_NAME} "" ../cmake/remeres.rc)
 else()

@@ -51,9 +51,7 @@ void WelcomeDialog::OnButtonClicked(const wxMouseEvent &event) {
         } else {
             wxCommandEvent action_event(WELCOME_DIALOG_ACTION);
             if (button->GetAction() == wxID_OPEN) {
-                wxString wildcard = g_settings.getInteger(Config::USE_OTGZ) != 0 ?
-                                    "(*.otbm;*.otgz)|*.otbm;*.otgz" :
-                                    "(*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz";
+                wxString wildcard = "(*.otbm)";
                 wxFileDialog file_dialog(this, "Open map file", "", "", wildcard, wxFD_OPEN | wxFD_FILE_MUST_EXIST);
                 if (file_dialog.ShowModal() == wxID_OK) {
                     action_event.SetString(file_dialog.GetPath());

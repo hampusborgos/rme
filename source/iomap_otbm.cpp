@@ -404,45 +404,6 @@ bool Container::serializeItemNode_OTBM(const IOMap& maphandle, NodeFileWriteHand
 
 bool IOMapOTBM::getVersionInfo(const FileName& filename, MapVersion& out_ver)
 {
-#if OTGZ_SUPPORT > 0
-	if(filename.GetExt() == "otgz") {
-		// Open the archive
-		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
-		archive_read_support_filter_all(a.get());
-		archive_read_support_format_all(a.get());
-		if(archive_read_open_filename(a.get(), nstr(filename.GetFullPath()).c_str(), 10240) != ARCHIVE_OK)
-			 return false;
-
-		// Loop over the archive entries until we find the otbm file
-		struct archive_entry* entry;
-		while(archive_read_next_header(a.get(), &entry) == ARCHIVE_OK) {
-			std::string entryName = archive_entry_pathname(entry);
-
-			if(entryName == "world/map.otbm") {
-				// Read the OTBM header into temporary memory
-				uint8_t buffer[8096];
-				memset(buffer, 0, 8096);
-
-				// Read from the archive
-				int read_bytes = archive_read_data(a.get(), buffer, 8096);
-
-				// Check so it at least contains the 4-byte file id
-				if(read_bytes < 4)
-					return false;
-
-				// Create a read handle on it
-				std::shared_ptr<NodeFileReadHandle> f(new MemoryNodeFileReadHandle(buffer + 4, read_bytes - 4));
-
-				// Read the version info
-				return getVersionInfo(f.get(), out_ver);
-			}
-		}
-
-		// Didn't find OTBM file, lame
-		return false;
-	}
-#endif
-
 	// Just open a disk-based read handle
 	DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
 	if(!f.isOk())
@@ -474,152 +435,6 @@ bool IOMapOTBM::getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver)
 
 bool IOMapOTBM::loadMap(Map& map, const FileName& filename)
 {
-#if OTGZ_SUPPORT > 0
-	if(filename.GetExt() == "otgz") {
-		// Open the archive
-		std::shared_ptr<struct archive> a(archive_read_new(), archive_read_free);
-		archive_read_support_filter_all(a.get());
-		archive_read_support_format_all(a.get());
-		if(archive_read_open_filename(a.get(), nstr(filename.GetFullPath()).c_str(), 10240) != ARCHIVE_OK)
-			 return false;
-
-		// Memory buffers for the houses & monsters & npcs
-		std::shared_ptr<uint8_t> house_buffer;
-		std::shared_ptr<uint8_t> spawn_monster_buffer;
-		std::shared_ptr<uint8_t> spawn_npc_buffer;
-		size_t house_buffer_size = 0;
-		size_t spawn_monster_buffer_size = 0;
-		size_t spawn_npc_buffer_size = 0;
-
-		// See if the otbm file has been loaded
-		bool otbm_loaded = false;
-
-		// Loop over the archive entries until we find the otbm file
-		g_gui.SetLoadDone(0, "Decompressing archive...");
-		struct archive_entry* entry;
-		while(archive_read_next_header(a.get(), &entry) == ARCHIVE_OK) {
-			std::string entryName = archive_entry_pathname(entry);
-
-			if(entryName == "world/map.otbm") {
-				// Read the entire OTBM file into a memory region
-				size_t otbm_size = archive_entry_size(entry);
-				std::shared_ptr<uint8_t> otbm_buffer(new uint8_t[otbm_size], [](uint8_t* p) { delete[] p; });
-
-				// Read from the archive
-				size_t read_bytes = archive_read_data(a.get(), otbm_buffer.get(), otbm_size);
-
-				// Check so it at least contains the 4-byte file id
-				if(read_bytes < 4)
-					return false;
-
-				if(read_bytes < otbm_size) {
-					error("Could not read file.");
-					return false;
-				}
-
-				g_gui.SetLoadDone(0, "Loading OTBM map...");
-
-				// Create a read handle on it
-				std::shared_ptr<NodeFileReadHandle> f(
-					new MemoryNodeFileReadHandle(otbm_buffer.get() + 4, otbm_size - 4));
-
-				// Read the version info
-				if(!loadMap(map, *f.get())) {
-					error("Could not load OTBM file inside archive");
-					return false;
-				}
-
-				otbm_loaded = true;
-			} else if(entryName == "world/houses.xml") {
-				house_buffer_size = archive_entry_size(entry);
-				house_buffer.reset(new uint8_t[house_buffer_size]);
-
-				// Read from the archive
-				size_t read_bytes = archive_read_data(a.get(), house_buffer.get(), house_buffer_size);
-
-				// Check so it at least contains the 4-byte file id
-				if(read_bytes < house_buffer_size) {
-					house_buffer.reset();
-					house_buffer_size = 0;
-					warning("Failed to decompress houses.");
-				}
-			} else if(entryName == "world/monsters.xml") {
-				spawn_monster_buffer_size = archive_entry_size(entry);
-				spawn_monster_buffer.reset(new uint8_t[spawn_monster_buffer_size]);
-
-				// Read from the archive
-				size_t read_bytes = archive_read_data(a.get(), spawn_monster_buffer.get(), spawn_monster_buffer_size);
-
-				// Check so it at least contains the 4-byte file id
-				if(read_bytes < spawn_monster_buffer_size) {
-					spawn_monster_buffer.reset();
-					spawn_monster_buffer_size = 0;
-					warning("Failed to decompress monsters spawns.");
-				}
-			} else if(entryName == "world/npcs.xml") {
-				spawn_npc_buffer_size = archive_entry_size(entry);
-				spawn_npc_buffer.reset(new uint8_t[spawn_npc_buffer_size]);
-
-				// Read from the archive
-				size_t read_bytes = archive_read_data(a.get(), spawn_npc_buffer.get(), spawn_npc_buffer_size);
-
-				// Check so it at least contains the 4-byte file id
-				if(read_bytes < spawn_npc_buffer_size) {
-					spawn_npc_buffer.reset();
-					spawn_npc_buffer_size = 0;
-					warning("Failed to decompress npcs spawns.");
-				}
-			}
-		}
-
-		if(!otbm_loaded) {
-			error("OTBM file not found inside archive.");
-			return false;
-		}
-
-		// Load the houses from the stored buffer
-		if(house_buffer.get() && house_buffer_size > 0) {
-			pugi::xml_document doc;
-			pugi::xml_parse_result result = doc.load_buffer(house_buffer.get(), house_buffer_size);
-			if(result) {
-				if(!loadHouses(map, doc)) {
-					warning("Failed to load houses.");
-				}
-			} else {
-				warning("Failed to load houses due to XML parse error.");
-			}
-		}
-
-		// Load the monster spawns from the stored buffer
-		if(spawn_monster_buffer.get() && spawn_monster_buffer_size > 0) {
-			pugi::xml_document doc;
-			pugi::xml_parse_result result = doc.load_buffer(spawn_monster_buffer.get(), spawn_monster_buffer_size);
-			if(result) {
-				if(!loadSpawnsMonster(map, doc)) {
-					warning("Failed to load monsters spawns.");
-				}
-			} else {
-				warning("Failed to load monsters spawns due to XML parse error.");
-			}
-		}
-
-		// Load the npcs from the stored buffer
-		if(spawn_npc_buffer.get() && spawn_npc_buffer_size > 0) {
-			pugi::xml_document doc;
-			pugi::xml_parse_result result = doc.load_buffer(spawn_npc_buffer.get(), spawn_npc_buffer_size);
-			if(result) {
-				if(!loadSpawnsNpc(map, doc)) {
-					warning("Failed to load npcs spawns.");
-				}
-			} else {
-				warning("Failed to load npcs spawns due to XML parse error.");
-			}
-		}
-
-		return true;
-	}
-#endif
-
 	DiskNodeFileReadHandle f(nstr(filename.GetFullPath()), StringVector(1, "OTBM"));
 	if(!f.isOk()) {
 		error(("Couldn't open file for reading\nThe error reported was: " + wxstr(f.getErrorMessage())).wc_str());
@@ -1340,121 +1155,6 @@ bool IOMapOTBM::loadSpawnsNpc(Map& map, pugi::xml_document& doc)
 
 bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 {
-#if OTGZ_SUPPORT > 0
-	if(identifier.GetExt() == "otgz") {
-		// Create the archive
-		struct archive* a = archive_write_new();
-		struct archive_entry* entry = nullptr;
-		std::ostringstream streamData;
-
-		archive_write_set_compression_gzip(a);
-		archive_write_set_format_pax_restricted(a);
-		archive_write_open_filename(a, nstr(identifier.GetFullPath()).c_str());
-
-		g_gui.SetLoadDone(0, "Saving monsters...");
-
-		pugi::xml_document spawnDoc;
-		if(saveSpawns(map, spawnDoc)) {
-			// Write the data
-			spawnDoc.save(streamData, "", pugi::format_raw, pugi::encoding_utf8);
-			std::string xmlData = streamData.str();
-
-			// Write to the arhive
-			entry = archive_entry_new();
-			archive_entry_set_pathname(entry, "world/monsters.xml");
-			archive_entry_set_size(entry, xmlData.size());
-			archive_entry_set_filetype(entry, AE_IFREG);
-			archive_entry_set_perm(entry, 0644);
-
-			// Write to the archive
-			archive_write_header(a, entry);
-			archive_write_data(a, xmlData.data(), xmlData.size());
-
-			// Free the entry
-			archive_entry_free(entry);
-			streamData.str("");
-		}
-
-		g_gui.SetLoadDone(0, "Saving houses...");
-
-		pugi::xml_document houseDoc;
-		if(saveHouses(map, houseDoc)) {
-			// Write the data
-			houseDoc.save(streamData, "", pugi::format_raw, pugi::encoding_utf8);
-			std::string xmlData = streamData.str();
-
-			// Write to the arhive
-			entry = archive_entry_new();
-			archive_entry_set_pathname(entry, "world/houses.xml");
-			archive_entry_set_size(entry, xmlData.size());
-			archive_entry_set_filetype(entry, AE_IFREG);
-			archive_entry_set_perm(entry, 0644);
-
-			// Write to the archive
-			archive_write_header(a, entry);
-			archive_write_data(a, xmlData.data(), xmlData.size());
-
-			// Free the entry
-			archive_entry_free(entry);
-			streamData.str("");
-		}
-
-		g_gui.SetLoadDone(0, "Saving npcs...");
-
-		pugi::xml_document npcDoc;
-		if(saveSpawnsNpc(map, npcDoc)) {
-			// Write the data
-			npcDoc.save(streamData, "", pugi::format_raw, pugi::encoding_utf8);
-			std::string xmlData = streamData.str();
-
-			// Write to the arhive
-			entry = archive_entry_new();
-			archive_entry_set_pathname(entry, "world/npcs.xml");
-			archive_entry_set_size(entry, xmlData.size());
-			archive_entry_set_filetype(entry, AE_IFREG);
-			archive_entry_set_perm(entry, 0644);
-
-			// Write to the archive
-			archive_write_header(a, entry);
-			archive_write_data(a, xmlData.data(), xmlData.size());
-
-			// Free the entry
-			archive_entry_free(entry);
-			streamData.str("");
-		}
-
-		g_gui.SetLoadDone(0, "Saving OTBM map...");
-
-		MemoryNodeFileWriteHandle otbmWriter;
-		saveMap(map, otbmWriter);
-
-		g_gui.SetLoadDone(75, "Compressing...");
-
-		// Create an archive entry for the otbm file
-		entry = archive_entry_new();
-		archive_entry_set_pathname(entry, "world/map.otbm");
-		archive_entry_set_size(entry, otbmWriter.getSize() + 4); // 4 bytes extra for header
-		archive_entry_set_filetype(entry, AE_IFREG);
-		archive_entry_set_perm(entry, 0644);
-		archive_write_header(a, entry);
-
-		// Write the version header
-		char otbm_identifier[] = "OTBM";
-		archive_write_data(a, otbm_identifier, 4);
-
-		// Write the OTBM data
-		archive_write_data(a, otbmWriter.getMemory(), otbmWriter.getSize());
-		archive_entry_free(entry);
-
-		// Free / close the archive
-		archive_write_close(a);
-		archive_write_free(a);
-
-		g_gui.DestroyLoadBar();
-		return true;
-	}
-#endif
-
 	DiskNodeFileWriteHandle f(
 		nstr(identifier.GetFullPath()),
 		(g_settings.getInteger(Config::SAVE_WITH_OTB_MAGIC_NUMBER) ? "OTBM" : std::string(4, '\0'))
@@ -1462,11 +1162,14 @@ bool IOMapOTBM::saveMap(Map& map, const FileName& identifier)
 
 	if(!f.isOk()) {
 		error("Can not open file %s for writing", (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
+		spdlog::error("Can not open file {} for writing", (const char*)identifier.GetFullPath().mb_str(wxConvUTF8));
 		return false;
 	}
 
-	if(!saveMap(map, f))
+	if(!saveMap(map, f)) {
+		spdlog::error("Failed to save map");
 		return false;
+	}
 
 	g_gui.SetLoadDone(99, "Saving monster spawns...");
 	saveSpawns(map, identifier);

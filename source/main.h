@@ -111,12 +111,6 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <wx/sstream.h>
 #include <wx/mstream.h>
 
-// Libarchive, for OTGZ
-#if OTGZ_SUPPORT > 0
-#include <archive.h>
-#include <archive_entry.h>
-#endif
-
 #if defined(__LINUX__) || defined(__WINDOWS__)
 	#include <GL/glut.h>
 #elif __APPLE__
