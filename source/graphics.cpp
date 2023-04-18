@@ -545,7 +545,7 @@ int GameSprite::getDrawHeight() const
 std::pair<int, int> GameSprite::getDrawOffset()
 {
 	if (!isDrawOffsetLoaded && spriteList.size() > 0) {
-		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->id);
+		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->getSpriteId());
 		if (!sheet)
 			return std::make_pair(0, 0);
 
@@ -655,7 +655,7 @@ void GameSprite::DrawTo(wxDC* dcWindow, SpriteSize spriteSize, int start_x, int 
 		if (spriteList.size() == 0) {
 			return;
 		}
-		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->id);
+		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->getSpriteId());
 		if (!sheet)
 			return;
 
@@ -804,7 +804,7 @@ void GameSprite::NormalImage::unloadGLTexture(GLuint ignored)
 uint8_t GameSprite::getWidth()
 {
 	if (width <= 0) {
-		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->id, false);
+		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->getSpriteId(), false);
 		if (sheet) {
 			width = sheet->getSpriteSize().width;
 			height = sheet->getSpriteSize().height;
@@ -817,7 +817,7 @@ uint8_t GameSprite::getWidth()
 uint8_t GameSprite::getHeight()
 {
 	if (height <= 0) {
-		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->id, false);
+		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(spriteList[0]->getSpriteId(), false);
 		if (sheet) {
 			width = sheet->getSpriteSize().width;
 			height = sheet->getSpriteSize().height;
@@ -861,7 +861,7 @@ uint8_t* OutfitImage::getRGBAData()
 	uint8_t* rgbadata = m_parent->spriteList[m_spriteIndex]->getRGBAData();
 	uint8_t* template_rgbadata = m_parent->spriteList[m_spriteIndex + 1]->getRGBAData();
 
-	SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(m_parent->spriteList[m_spriteIndex]->id);
+	SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(m_parent->spriteList[m_spriteIndex]->getSpriteId());
 	if (!sheet || !sheet->loaded) {
 		return nullptr;
 	}
