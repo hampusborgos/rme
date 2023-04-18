@@ -357,8 +357,8 @@
     <ClCompile Include="..\..\source\map_window.cpp" />
     <ClInclude Include="..\..\source\action.h" />
     <ClCompile Include="..\..\source\action.cpp" />
-    <ClInclude Include="..\..\source\client_version.h" />
-    <ClCompile Include="..\..\source\client_version.cpp" />
+    <ClInclude Include="..\..\source\client_assets.h" />
+    <ClCompile Include="..\..\source\client_assets.cpp" />
     <ClInclude Include="..\..\source\copybuffer.h" />
     <ClCompile Include="..\..\source\copybuffer.cpp" />
     <ClInclude Include="..\..\source\monsters.h" />
