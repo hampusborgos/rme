@@ -493,7 +493,7 @@ void BinaryNode::load()
 
 FileWriteHandle::FileWriteHandle(const std::string& name)
 {
-	errno_t err = _wfopen_s(&file, string2wstring(name).c_str(), L"rb");
+	errno_t err = _wfopen_s(&file, string2wstring(name).c_str(), L"wb");
 	if (err != 0) {
 		file = nullptr;
 	}
@@ -555,24 +555,38 @@ bool FileWriteHandle::addRAW(const uint8_t* ptr, size_t sz)
 
 DiskNodeFileWriteHandle::DiskNodeFileWriteHandle(const std::string& name, const std::string& identifier)
 {
-	errno_t err = _wfopen_s(&file, string2wstring(name).c_str(), L"rb");
+	// Attempt to open the file for binary write
+	errno_t err = _wfopen_s(&file, string2wstring(name).c_str(), L"wb");
+
 	if (err != 0) {
+		// Error opening the file
 		file = nullptr;
+		spdlog::error("DiskNodeFileWriteHandle: Failed to open file {}: {}", name, strerror(errno));
 	}
 
-	if(!file || ferror(file)) {
+	// Check if the file was opened successfully
+	if (!file || ferror(file)) {
+		// Error opening the file
 		error_code = FILE_COULD_NOT_OPEN;
-		return;
-	}
-	if(identifier.length() != 4) {
-		error_code = FILE_INVALID_IDENTIFIER;
+		spdlog::error("DiskNodeFileWriteHandle: Failed to open file {}: {}", name, strerror(errno));
 		return;
 	}
 
-	fwrite(identifier.c_str(), 1, 4, file);
-	if(!cache) {
-		cache = (uint8_t*)malloc(cache_size+1);
+	// Check if the file identifier is valid
+	if (identifier.length() != 4) {
+		error_code = FILE_INVALID_IDENTIFIER;
+		spdlog::error("DiskNodeFileWriteHandle: The identifier for file {} is invalid", name);
+		return;
 	}
+
+	// Write the file identifier at the beginning of the file
+	fwrite(identifier.c_str(), 1, 4, file);
+
+	// Allocate memory for the cache
+	if (!cache) {
+		cache = (uint8_t*)malloc(cache_size + 1);
+	}
+
 	local_write_index = 0;
 }
 
