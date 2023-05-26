@@ -313,6 +313,13 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	g_gui.SetLoadDone(0, "Loading assets file");
 	spdlog::info("Loading assets");
 
+	g_gui.SetLoadDone(30, "Loading items.xml ...");
+	spdlog::info("Loading items");
+	if(!g_items.loadFromGameXml(exec_directory.GetPath() + wxString("\\data\\items\\items.xml"), error, warnings)) {
+		warnings.push_back("Couldn't load items.xml: " + error);
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/items/items.xml").ToStdString(), error.ToStdString());
+	}
+
 	g_gui.SetLoadDone(20, "Loading client assets...");
 	spdlog::info("Loading appearances");
 	if(!ClientAssets::loadAppearanceProtobuf(error, warnings)) {
@@ -321,13 +328,6 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 		g_gui.DestroyLoadBar();
 		UnloadVersion();
 		return false;
-	}
-
-	g_gui.SetLoadDone(30, "Loading items.xml ...");
-	spdlog::info("Loading items");
-	if(!g_items.loadFromGameXml(exec_directory.GetPath() + wxString("\\data\\items\\items.xml"), error, warnings)) {
-		warnings.push_back("Couldn't load items.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/items/items.xml").ToStdString(), error.ToStdString());
 	}
 
 	g_gui.SetLoadDone(45, "Loading monsters.xml ...");
@@ -381,7 +381,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.SetLoadDone(70, "Finishing...");
 	spdlog::info("Finishing load map...");
-	
+
 	g_brushes.init();
 	g_materials.createOtherTileset();
 	g_materials.createNpcTileset();

@@ -640,7 +640,7 @@ bool IOMapOTBM::loadMap(Map& map, NodeFileReadHandle& f)
 							case OTBM_ATTR_ITEM: {
 								Item* item = Item::Create_OTBM(*this, tileNode);
 								if(item == nullptr)
-								{ 
+								{
 									spdlog::error("[IOMapOTBM::loadMap] - Invalid item at tile x: {}, y: {}, z: {}", pos.x, pos.y, pos.z);
 									warning("Invalid item at tile %d:%d:%d", pos.x, pos.y, pos.z);
 								}
@@ -1202,13 +1202,13 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 
 	f.addNode(0);
 	{
-		f.addU32(mapVersion.otbm); // Version
+		f.addU32(2); // Version
 
 		f.addU16(map.width);
 		f.addU16(map.height);
 
-		f.addU32(0);
-		f.addU32(0);
+		f.addU32(4);
+		f.addU32(4);
 
 		f.addNode(OTBM_MAP_DATA);
 		{
@@ -1299,18 +1299,30 @@ bool IOMapOTBM::saveMap(Map& map, NodeFileWriteHandle& f)
 						}
 
 						if(!found) {
+							if (ground->getID() == 0) {
+								continue;
+							}
 							ground->serializeItemNode_OTBM(self, f);
 						}
 					} else if(ground->isComplex()) {
+						if (ground->getID() == 0) {
+							continue;
+						}
 						ground->serializeItemNode_OTBM(self, f);
 					} else {
 						f.addByte(OTBM_ATTR_ITEM);
+						if (ground->getID() == 0) {
+							continue;
+						}
 						ground->serializeItemCompact_OTBM(self, f);
 					}
 				}
 
 				for(Item* item : save_tile->items) {
 					if(!item->isMetaItem()) {
+						if (item->getID() == 0) {
+							continue;
+						}
 						item->serializeItemNode_OTBM(self, f);
 					}
 				}
