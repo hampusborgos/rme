@@ -42,11 +42,11 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 {
 	pugi::xml_attribute attribute;
 	if((attribute = node.attribute("lookid"))) {
-		look_id = attribute.as_ushort();
+		look_id = attribute.as_uint();
 	}
 
 	if((attribute = node.attribute("server_lookid"))) {
-		look_id = g_items.getItemType(attribute.as_ushort()).clientID;
+		look_id = g_items.getItemType(attribute.as_uint()).clientID;
 	}
 
 	for(pugi::xml_node childNode = node.first_child(); childNode; childNode = childNode.next_sibling()) {
@@ -119,7 +119,7 @@ bool CarpetBrush::load(pugi::xml_node node, wxArrayString& warnings)
 				continue;
 			}
 
-			uint16_t id = attribute.as_ushort();
+			uint16_t id = attribute.as_uint();
 			ItemType* type = g_items.getRawItemType(id);
 			if(!type) {
 				warnings.push_back("There is no itemtype with id " + std::to_string(id));
