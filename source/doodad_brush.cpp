@@ -94,7 +94,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 			}
 
 			ItemType* type = g_items.getRawItemType(item->getID());
-			if(!type) {
+			if(type) {
 				type->doodad_brush = this;
 			}
 
@@ -152,7 +152,7 @@ bool DoodadBrush::loadAlternative(pugi::xml_node node, wxArrayString& warnings, 
 						items.push_back(item);
 
 						ItemType* type = g_items.getRawItemType(item->getID());
-						if(!type) {
+						if(type) {
 							type->doodad_brush = this;
 						}
 					}
