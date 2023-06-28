@@ -861,11 +861,11 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			}
 		} else if(key == "rotateto") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.rotateTo = attribute.as_ushort();
+				item.rotateTo = attribute.as_uint();
 			}
 		} else if(key == "containersize") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.volume = attribute.as_ushort();
+				item.volume = attribute.as_uint();
 			}
 		} else if(key == "readable") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
@@ -879,7 +879,7 @@ bool ItemDatabase::loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id)
 			item.decays = true;
 		} else if(key == "maxtextlen" || key == "maxtextlength") {
 			if((attribute = itemAttributesNode.attribute("value"))) {
-				item.maxTextLen = attribute.as_ushort();
+				item.maxTextLen = attribute.as_uint();
 				item.canReadText = item.maxTextLen > 0;
 			}
 		} else if(key == "writeonceitemid") {
@@ -954,10 +954,10 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 		uint16_t fromId = 0;
 		uint16_t toId = 0;
 		if(const pugi::xml_attribute attribute = itemNode.attribute("id")) {
-			fromId = toId = attribute.as_ushort();
+			fromId = toId = attribute.as_uint();
 		} else {
-			fromId = itemNode.attribute("fromid").as_ushort();
-			toId = itemNode.attribute("toid").as_ushort();
+			fromId = itemNode.attribute("fromid").as_uint();
+			toId = itemNode.attribute("toid").as_uint();
 		}
 
 		if(fromId == 0 || toId == 0) {
@@ -978,7 +978,7 @@ bool ItemDatabase::loadFromGameXml(const FileName& identifier, wxString& error, 
 bool ItemDatabase::loadMetaItem(pugi::xml_node node)
 {
 	if(const pugi::xml_attribute attribute = node.attribute("id")) {
-		const uint16_t id = attribute.as_ushort();
+		const uint16_t id = attribute.as_uint();
 		if(id == 0 || items[id]) {
 			return false;
 		}

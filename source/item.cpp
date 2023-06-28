@@ -487,12 +487,12 @@ Item* Item::Create(pugi::xml_node xml)
 
 	uint16_t id = 0;
 	if((attribute = xml.attribute("id"))) {
-		id = attribute.as_ushort();
+		id = attribute.as_uint();
 	}
 
 	uint16_t count = 1;
 	if((attribute = xml.attribute("count")) || (attribute = xml.attribute("subtype"))) {
-		count = attribute.as_ushort();
+		count = attribute.as_uint();
 	}
 
 	return Create(id, count);
