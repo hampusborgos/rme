@@ -15,8 +15,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#ifndef RME_BASE_MAP_H_
-#define RME_BASE_MAP_H_
+#pragma once
 
 #include "main.h"
 #include "position.h"
@@ -149,5 +148,3 @@ inline const Tile* BaseMap::getTile(const Position& pos) const
 	const TileLocation* l = getTileL(pos);
 	return l? l->get() : nullptr;
 }
-
-#endif
