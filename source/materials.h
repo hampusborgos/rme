@@ -20,7 +20,8 @@
 
 #include "extension.h"
 
-class Materials {
+class Materials
+{
 public:
 	Materials();
 	~Materials();

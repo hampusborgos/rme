@@ -23,7 +23,7 @@
 //=============================================================================
 // Doodadbrush, add doodads!
 
-typedef std::vector<std::pair<Position, ItemVector> > CompositeTileList;
+typedef std::vector<std::pair<Position, ItemVector>> CompositeTileList;
 
 class DoodadBrush : public Brush
 {
@@ -86,17 +86,20 @@ protected:
 	uint16_t clear_mapflags;
 	uint16_t clear_statflags;
 
-	struct SingleBlock {
+	struct SingleBlock
+	{
 		int chance;
 		Item* item;
 	};
 
-	struct CompositeBlock {
+	struct CompositeBlock
+	{
 		int chance;
 		CompositeTileList items;
 	};
 
-	struct AlternativeBlock {
+	struct AlternativeBlock
+	{
 		AlternativeBlock();
 		~AlternativeBlock();
 		bool ownsItem(uint16_t id) const;
@@ -104,7 +107,7 @@ protected:
 		std::vector<CompositeBlock> composite_items;
 
 		int composite_chance; // Total chance of a composite
-		int single_chance; // Total chance of a single object
+		int single_chance;    // Total chance of a single object
 	};
 
 	std::vector<AlternativeBlock*> alternatives;

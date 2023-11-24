@@ -16,10 +16,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "main.h"
-
 #include "templates.h"
 
-ConversionMap getReplacementMapClassic() {
+ConversionMap getReplacementMapClassic()
+{
 	ConversionMap replacement_map;
 	std::vector<uint16_t> veckey, vecval;
 

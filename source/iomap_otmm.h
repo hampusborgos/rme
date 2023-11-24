@@ -22,15 +22,18 @@
 
 #pragma pack(1)
 
-enum OTMM_VERSION {
+enum OTMM_VERSION
+{
 	OTMM_VERSION_1,
 };
 
-enum OTMM_TileAttributes {
+enum OTMM_TileAttributes
+{
 	OTMM_ATTR_TILE_FLAGS = 1,
 };
 
-enum OTMM_ItemAttribute {
+enum OTMM_ItemAttribute
+{
 	OTMM_ATTR_DESCRIPTION = 1,
 	OTMM_ATTR_ACTION_ID = 2,
 	OTMM_ATTR_UNIQUE_ID = 3,
@@ -44,7 +47,8 @@ enum OTMM_ItemAttribute {
 	OTMM_ATTR_DURATION = 11,
 };
 
-enum OTMM_NodeTypes {
+enum OTMM_NodeTypes
+{
 	OTMM_ROOT = 1,
 	OTMM_MAP_DATA = 2,
 	OTMM_TILE_DATA = 3,
@@ -68,7 +72,8 @@ enum OTMM_NodeTypes {
 class NodeFileReadHandle;
 class NodeFileWriteHandle;
 
-class IOMapOTMM : public IOMap {
+class IOMapOTMM : public IOMap
+{
 public:
 	IOMapOTMM();
 	~IOMapOTMM();

@@ -15,44 +15,42 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
 #include "replace_items_window.h"
+
+#include "artprovider.h"
 #include "find_item_window.h"
 #include "graphics.h"
 #include "gui.h"
-#include "artprovider.h"
 #include "items.h"
+#include "main.h"
 
 // ============================================================================
 // ReplaceItemsButton
 
 ReplaceItemsButton::ReplaceItemsButton(wxWindow* parent) :
-	DCButton(parent, wxID_ANY, wxDefaultPosition, DC_BTN_TOGGLE, RENDER_SIZE_32x32, 0),
-	m_id(0)
+    DCButton(parent, wxID_ANY, wxDefaultPosition, DC_BTN_TOGGLE, RENDER_SIZE_32x32, 0), m_id(0)
 {
 	////
 }
 
 ItemGroup_t ReplaceItemsButton::GetGroup() const
 {
-	if(m_id != 0) {
+	if (m_id != 0) {
 		const ItemType& it = g_items.getItemType(m_id);
-		if(it.id != 0)
-			return it.group;
+		if (it.id != 0) return it.group;
 	}
 	return ITEM_GROUP_NONE;
 }
 
 void ReplaceItemsButton::SetItemId(uint16_t id)
 {
-	if(m_id == id)
-		return;
+	if (m_id == id) return;
 
 	m_id = id;
 
-	if(m_id != 0) {
+	if (m_id != 0) {
 		const ItemType& it = g_items.getItemType(m_id);
-		if(it.id != 0) {
+		if (it.id != 0) {
 			SetSprite(it.clientID);
 			return;
 		}
@@ -65,7 +63,7 @@ void ReplaceItemsButton::SetItemId(uint16_t id)
 // ReplaceItemsListBox
 
 ReplaceItemsListBox::ReplaceItemsListBox(wxWindow* parent) :
-	wxVListBox(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE)
+    wxVListBox(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_SINGLE)
 {
 	m_arrow_bitmap = wxArtProvider::GetBitmap(ART_POSITION_GO, wxART_TOOLBAR, wxSize(16, 16));
 	m_flag_bitmap = wxArtProvider::GetBitmap(ART_PZ_BRUSH, wxART_TOOLBAR, wxSize(16, 16));
@@ -73,8 +71,7 @@ ReplaceItemsListBox::ReplaceItemsListBox(wxWindow* parent) :
 
 bool ReplaceItemsListBox::AddItem(const ReplacingItem& item)
 {
-	if(item.replaceId == 0 || item.withId == 0 || item.replaceId == item.withId)
-		return false;
+	if (item.replaceId == 0 || item.withId == 0 || item.replaceId == item.withId) return false;
 
 	SetItemCount(GetItemCount() + 1);
 	m_items.push_back(item);
@@ -86,7 +83,7 @@ bool ReplaceItemsListBox::AddItem(const ReplacingItem& item)
 void ReplaceItemsListBox::MarkAsComplete(const ReplacingItem& item, uint32_t total)
 {
 	auto it = std::find(m_items.begin(), m_items.end(), item);
-	if(it != m_items.end()) {
+	if (it != m_items.end()) {
 		it->total = total;
 		it->complete = true;
 		Refresh();
@@ -95,12 +92,10 @@ void ReplaceItemsListBox::MarkAsComplete(const ReplacingItem& item, uint32_t tot
 
 void ReplaceItemsListBox::RemoveSelected()
 {
-	if(m_items.empty())
-		return;
+	if (m_items.empty()) return;
 
 	const int index = GetSelection();
-	if(index == wxNOT_FOUND)
-		return;
+	if (index == wxNOT_FOUND) return;
 
 	m_items.erase(m_items.begin() + index);
 	SetItemCount(GetItemCount() - 1);
@@ -109,12 +104,10 @@ void ReplaceItemsListBox::RemoveSelected()
 
 bool ReplaceItemsListBox::CanAdd(uint16_t replaceId, uint16_t withId) const
 {
-	if(replaceId == 0 || withId == 0 || replaceId == withId)
-		return false;
+	if (replaceId == 0 || withId == 0 || replaceId == withId) return false;
 
-	for(const ReplacingItem& item : m_items) {
-		if(replaceId == item.replaceId)
-			return false;
+	for (const ReplacingItem& item : m_items) {
+		if (replaceId == item.replaceId) return false;
 	}
 	return true;
 }
@@ -129,7 +122,7 @@ void ReplaceItemsListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t index)
 	const ItemType& type2 = g_items.getItemType(item.withId);
 	Sprite* sprite2 = g_gui.gfx.getSprite(type2.clientID);
 
-	if(sprite1 && sprite2) {
+	if (sprite1 && sprite2) {
 		int x = rect.GetX();
 		int y = rect.GetY();
 		sprite1->DrawTo(&dc, SPRITE_SIZE_32x32, x + 4, y + 4, rect.GetWidth(), rect.GetHeight());
@@ -137,15 +130,15 @@ void ReplaceItemsListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t index)
 		sprite2->DrawTo(&dc, SPRITE_SIZE_32x32, x + 56, y + 4, rect.GetWidth(), rect.GetHeight());
 		dc.DrawText(wxString::Format("Replace: %d With: %d", item.replaceId, item.withId), x + 104, y + 10);
 
-		if(item.complete) {
+		if (item.complete) {
 			x = rect.GetWidth() - 100;
 			dc.DrawBitmap(m_flag_bitmap, x + 70, y + 10, true);
 			dc.DrawText(wxString::Format("Total: %d", item.total), x, y + 10);
 		}
 	}
 
-	if(IsSelected(index)) {
-		if(HasFocus())
+	if (IsSelected(index)) {
+		if (HasFocus())
 			dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
 		else
 			dc.SetTextForeground(wxColor(0x00, 0x00, 0xFF));
@@ -154,18 +147,15 @@ void ReplaceItemsListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t index)
 	}
 }
 
-wxCoord ReplaceItemsListBox::OnMeasureItem(size_t WXUNUSED(index)) const
-{
-	return 40;
-}
+wxCoord ReplaceItemsListBox::OnMeasureItem(size_t WXUNUSED(index)) const { return 40; }
 
 // ============================================================================
 // ReplaceItemsDialog
 
 ReplaceItemsDialog::ReplaceItemsDialog(wxWindow* parent, bool selectionOnly) :
-	wxDialog(parent, wxID_ANY, (selectionOnly ? "Replace Items on Selection" : "Replace Items"),
-			 wxDefaultPosition, wxSize(500, 480), wxDEFAULT_DIALOG_STYLE),
-	selectionOnly(selectionOnly)
+    wxDialog(parent, wxID_ANY, (selectionOnly ? "Replace Items on Selection" : "Replace Items"), wxDefaultPosition,
+             wxSize(500, 480), wxDEFAULT_DIALOG_STYLE),
+    selectionOnly(selectionOnly)
 {
 	SetSizeHints(wxDefaultSize, wxDefaultSize);
 
@@ -229,25 +219,36 @@ ReplaceItemsDialog::ReplaceItemsDialog(wxWindow* parent, bool selectionOnly) :
 	Centre(wxBOTH);
 
 	// Connect Events
-	list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemsDialog::OnListSelected), NULL, this);
+	list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemsDialog::OnListSelected), NULL,
+	              this);
 	replace_button->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ReplaceItemsDialog::OnReplaceItemClicked), NULL, this);
 	with_button->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ReplaceItemsDialog::OnWithItemClicked), NULL, this);
-	add_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnAddButtonClicked), NULL, this);
-	remove_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnRemoveButtonClicked), NULL, this);
-	execute_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnExecuteButtonClicked), NULL, this);
-	close_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnCancelButtonClicked), NULL, this);
+	add_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnAddButtonClicked),
+	                    NULL, this);
+	remove_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+	                       wxCommandEventHandler(ReplaceItemsDialog::OnRemoveButtonClicked), NULL, this);
+	execute_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+	                        wxCommandEventHandler(ReplaceItemsDialog::OnExecuteButtonClicked), NULL, this);
+	close_button->Connect(wxEVT_COMMAND_BUTTON_CLICKED,
+	                      wxCommandEventHandler(ReplaceItemsDialog::OnCancelButtonClicked), NULL, this);
 }
 
 ReplaceItemsDialog::~ReplaceItemsDialog()
 {
 	// Disconnect Events
-	list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemsDialog::OnListSelected), NULL, this);
-	replace_button->Disconnect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ReplaceItemsDialog::OnReplaceItemClicked), NULL, this);
+	list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(ReplaceItemsDialog::OnListSelected), NULL,
+	                 this);
+	replace_button->Disconnect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ReplaceItemsDialog::OnReplaceItemClicked), NULL,
+	                           this);
 	with_button->Disconnect(wxEVT_LEFT_DOWN, wxMouseEventHandler(ReplaceItemsDialog::OnWithItemClicked), NULL, this);
-	add_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnAddButtonClicked), NULL, this);
-	remove_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnRemoveButtonClicked), NULL, this);
-	execute_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnExecuteButtonClicked), NULL, this);
-	close_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnCancelButtonClicked), NULL, this);
+	add_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ReplaceItemsDialog::OnAddButtonClicked),
+	                       NULL, this);
+	remove_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+	                          wxCommandEventHandler(ReplaceItemsDialog::OnRemoveButtonClicked), NULL, this);
+	execute_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+	                           wxCommandEventHandler(ReplaceItemsDialog::OnExecuteButtonClicked), NULL, this);
+	close_button->Disconnect(wxEVT_COMMAND_BUTTON_CLICKED,
+	                         wxCommandEventHandler(ReplaceItemsDialog::OnCancelButtonClicked), NULL, this);
 }
 
 void ReplaceItemsDialog::UpdateWidgets()
@@ -267,9 +268,9 @@ void ReplaceItemsDialog::OnListSelected(wxCommandEvent& WXUNUSED(event))
 void ReplaceItemsDialog::OnReplaceItemClicked(wxMouseEvent& WXUNUSED(event))
 {
 	FindItemDialog dialog(this, "Replace Item");
-	if(dialog.ShowModal() == wxID_OK) {
+	if (dialog.ShowModal() == wxID_OK) {
 		uint16_t id = dialog.getResultID();
-		if(id != with_button->GetItemId()) {
+		if (id != with_button->GetItemId()) {
 			replace_button->SetItemId(id);
 			UpdateWidgets();
 		}
@@ -279,13 +280,12 @@ void ReplaceItemsDialog::OnReplaceItemClicked(wxMouseEvent& WXUNUSED(event))
 
 void ReplaceItemsDialog::OnWithItemClicked(wxMouseEvent& WXUNUSED(event))
 {
-	if(replace_button->GetItemId() == 0)
-		return;
+	if (replace_button->GetItemId() == 0) return;
 
 	FindItemDialog dialog(this, "With Item");
-	if(dialog.ShowModal() == wxID_OK) {
+	if (dialog.ShowModal() == wxID_OK) {
 		uint16_t id = dialog.getResultID();
-		if(id != replace_button->GetItemId()) {
+		if (id != replace_button->GetItemId()) {
 			with_button->SetItemId(id);
 			UpdateWidgets();
 		}
@@ -297,11 +297,11 @@ void ReplaceItemsDialog::OnAddButtonClicked(wxCommandEvent& WXUNUSED(event))
 {
 	const uint16_t replaceId = replace_button->GetItemId();
 	const uint16_t withId = with_button->GetItemId();
-	if(list->CanAdd(replaceId, withId)) {
+	if (list->CanAdd(replaceId, withId)) {
 		ReplacingItem item;
 		item.replaceId = replaceId;
 		item.withId = withId;
-		if(list->AddItem(item)) {
+		if (list->AddItem(item)) {
 			replace_button->SetItemId(0);
 			with_button->SetItemId(0);
 			UpdateWidgets();
@@ -317,12 +317,10 @@ void ReplaceItemsDialog::OnRemoveButtonClicked(wxCommandEvent& WXUNUSED(event))
 
 void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 {
-	if(!g_gui.IsEditorOpen())
-		return;
+	if (!g_gui.IsEditorOpen()) return;
 
 	const auto& items = list->GetItems();
-	if(items.empty())
-		return;
+	if (items.empty()) return;
 
 	replace_button->Enable(false);
 	with_button->Enable(false);
@@ -333,13 +331,12 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 	progress->SetValue(0);
 
 	MapTab* tab = dynamic_cast<MapTab*>(GetParent());
-	if(!tab)
-		return;
+	if (!tab) return;
 
 	Editor* editor = tab->GetEditor();
 
 	int done = 0;
-	for(const ReplacingItem& info : items) {
+	for (const ReplacingItem& info : items) {
 		ItemFinder finder(info.replaceId, (uint32_t)g_settings.getInteger(Config::REPLACE_SIZE));
 
 		// search on map
@@ -348,10 +345,10 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 		uint32_t total = 0;
 		const auto& result = finder.result;
 
-		if(!result.empty()) {
+		if (!result.empty()) {
 			BatchAction* batch = editor->createBatch(ACTION_REPLACE_ITEMS);
 			Action* action = editor->createAction(batch);
-			for(const auto& pair : result) {
+			for (const auto& pair : result) {
 				Tile* new_tile = pair.first->deepCopy(editor->getMap());
 				int index = pair.first->getIndexOf(pair.second);
 				ASSERT(index != wxNOT_FOUND);
@@ -379,7 +376,4 @@ void ReplaceItemsDialog::OnExecuteButtonClicked(wxCommandEvent& WXUNUSED(event))
 	UpdateWidgets();
 }
 
-void ReplaceItemsDialog::OnCancelButtonClicked(wxCommandEvent& WXUNUSED(event))
-{
-	Close();
-}
+void ReplaceItemsDialog::OnCancelButtonClicked(wxCommandEvent& WXUNUSED(event)) { Close(); }

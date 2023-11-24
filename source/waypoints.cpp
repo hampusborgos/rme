@@ -15,25 +15,23 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "waypoints.h"
+
+#include "main.h"
 #include "map.h"
 
 Waypoints::~Waypoints()
 {
-	for(auto it = waypoints.begin(); it != waypoints.end(); ++it)
-		delete it->second;
+	for (auto it = waypoints.begin(); it != waypoints.end(); ++it) delete it->second;
 	waypoints.clear();
 }
 
 void Waypoints::addWaypoint(Waypoint* wp)
 {
 	removeWaypoint(wp->name);
-	if(wp->pos.isValid()) {
+	if (wp->pos.isValid()) {
 		Tile* t = map.getTile(wp->pos);
-		if(!t)
-			map.setTile(wp->pos, t = map.allocator(map.createTileL(wp->pos)));
+		if (!t) map.setTile(wp->pos, t = map.allocator(map.createTileL(wp->pos)));
 		t->getLocation()->increaseWaypointCount();
 	}
 	waypoints.insert(std::make_pair(as_lower_str(wp->name), wp));
@@ -43,20 +41,17 @@ Waypoint* Waypoints::getWaypoint(std::string name)
 {
 	to_lower_str(name);
 	WaypointMap::iterator iter = waypoints.find(name);
-	if(iter == waypoints.end())
-		return nullptr;
+	if (iter == waypoints.end()) return nullptr;
 	return iter->second;
 }
 
 Waypoint* Waypoints::getWaypoint(const Position& position)
 {
-	if(!position.isValid())
-		return nullptr;
+	if (!position.isValid()) return nullptr;
 	// TODO find waypoint by position hash.
-	for(WaypointMap::iterator it = waypoints.begin(); it != waypoints.end(); it++) {
+	for (WaypointMap::iterator it = waypoints.begin(); it != waypoints.end(); it++) {
 		Waypoint* waypoint = it->second;
-		if(waypoint && waypoint->pos == position)
-			return waypoint;
+		if (waypoint && waypoint->pos == position) return waypoint;
 	}
 	return nullptr;
 }
@@ -65,8 +60,7 @@ void Waypoints::removeWaypoint(std::string name)
 {
 	to_lower_str(name);
 	WaypointMap::iterator iter = waypoints.find(name);
-	if(iter == waypoints.end())
-		return;
+	if (iter == waypoints.end()) return;
 	delete iter->second;
 	waypoints.erase(iter);
 }

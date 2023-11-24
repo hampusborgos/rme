@@ -25,26 +25,26 @@
 extern const wxEventType EVT_UPDATE_CHECK_FINISHED;
 
 #define EVT_ON_UPDATE_CHECK_FINISHED(id, fn) \
-    DECLARE_EVENT_TABLE_ENTRY( \
-        EVT_UPDATE_CHECK_FINISHED, id, wxID_ANY, \
-        (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent( wxCommandEventFunction, &fn ), \
-        (wxObject *) nullptr \
-    ),
-
+	DECLARE_EVENT_TABLE_ENTRY(EVT_UPDATE_CHECK_FINISHED, id, wxID_ANY, \
+	                          (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent(wxCommandEventFunction, &fn), \
+	                          (wxObject*)nullptr),
 
 class wxURL;
 
-class UpdateConnectionThread : public DetachedThread {
+class UpdateConnectionThread : public DetachedThread
+{
 public:
 	UpdateConnectionThread(wxEvtHandler* receiver, wxURL* url);
 	virtual ~UpdateConnectionThread();
+
 protected:
 	virtual ExitCode Entry();
 	wxEvtHandler* receiver;
 	wxURL* url;
 };
 
-class UpdateChecker {
+class UpdateChecker
+{
 public:
 	UpdateChecker();
 	~UpdateChecker();
@@ -55,4 +55,3 @@ public:
 #endif
 
 #endif
-

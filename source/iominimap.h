@@ -20,32 +20,36 @@
 
 #include "map.h"
 
-enum class MinimapExportFormat {
+enum class MinimapExportFormat
+{
 	Otmm,
 	Png,
 	Bmp
 };
 
-enum class MinimapExportMode {
+enum class MinimapExportMode
+{
 	AllFloors,
 	GroundFloor,
 	SpecificFloor,
 	SelectedArea
 };
 
-enum {
+enum
+{
 	MMBLOCK_SIZE = 64,
 	OTMM_SIGNATURE = 0x4D4d544F,
 	OTMM_VERSION = 1
 };
 
-enum MinimapTileFlags {
+enum MinimapTileFlags
+{
 	MinimapTileWasSeen = 1,
 	MinimapTileNotPathable = 2,
 	MinimapTileNotWalkable = 4
 };
 
-#pragma pack(push,1) // disable memory alignment
+#pragma pack(push, 1) // disable memory alignment
 struct MinimapTile
 {
 	uint8_t flags = 0;
@@ -57,8 +61,11 @@ class MinimapBlock
 {
 public:
 	void updateTile(int x, int y, const MinimapTile& tile);
-	MinimapTile& getTile(int x, int y) { return m_tiles[getTileIndex(x,y)]; }
-	inline uint32_t getTileIndex(int x, int y) const noexcept { return ((y % MMBLOCK_SIZE) * MMBLOCK_SIZE) + (x % MMBLOCK_SIZE); }
+	MinimapTile& getTile(int x, int y) { return m_tiles[getTileIndex(x, y)]; }
+	inline uint32_t getTileIndex(int x, int y) const noexcept
+	{
+		return ((y % MMBLOCK_SIZE) * MMBLOCK_SIZE) + (x % MMBLOCK_SIZE);
+	}
 	const std::array<MinimapTile, MMBLOCK_SIZE * MMBLOCK_SIZE>& getTiles() const noexcept { return m_tiles; }
 
 private:
@@ -81,7 +88,8 @@ private:
 	bool exportMinimap(const std::string& directory);
 	bool exportSelection(const std::string& directory, const std::string& name);
 	void readBlocks();
-	inline uint32_t getBlockIndex(const Position& pos) {
+	inline uint32_t getBlockIndex(const Position& pos)
+	{
 		return ((pos.y / MMBLOCK_SIZE) * (65536 / MMBLOCK_SIZE)) + (pos.x / MMBLOCK_SIZE);
 	}
 

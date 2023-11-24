@@ -15,18 +15,16 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "house_exit_brush.h"
-#include "house.h"
+
 #include "basemap.h"
+#include "house.h"
+#include "main.h"
 
 //=============================================================================
 // House Exit Brush
 
-HouseExitBrush::HouseExitBrush() :
-	Brush(),
-	draw_house(0)
+HouseExitBrush::HouseExitBrush() : Brush(), draw_house(0)
 {
 	////
 }
@@ -36,24 +34,17 @@ HouseExitBrush::~HouseExitBrush()
 	////
 }
 
-void HouseExitBrush::setHouse(House* house)
-{
-	draw_house = house->id;
-}
+void HouseExitBrush::setHouse(House* house) { draw_house = house->id; }
 
-uint32_t HouseExitBrush::getHouseID() const
-{
-	return draw_house;
-}
-
+uint32_t HouseExitBrush::getHouseID() const { return draw_house; }
 
 bool HouseExitBrush::canDraw(BaseMap* map, const Position& position) const
 {
 	Tile* tile = map->getTile(position);
-	if(!tile || !tile->hasGround()) {
+	if (!tile || !tile->hasGround()) {
 		return false;
 	}
-	if(tile->isHouseTile() || tile->isBlocking()) {
+	if (tile->isHouseTile() || tile->isBlocking()) {
 		return false;
 	}
 	return true;

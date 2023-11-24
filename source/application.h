@@ -18,13 +18,12 @@
 #ifndef RME_APPLICATION_H_
 #define RME_APPLICATION_H_
 
+#include "action.h"
 #include "gui.h"
 #include "main_toolbar.h"
-#include "action.h"
-#include "settings.h"
-
-#include "process_com.h"
 #include "map_display.h"
+#include "process_com.h"
+#include "settings.h"
 #include "welcome_dialog.h"
 
 class Item;
@@ -40,14 +39,14 @@ class Application : public wxApp
 public:
 	~Application();
 	virtual bool OnInit();
-    virtual void OnEventLoopEnter(wxEventLoopBase* loop);
+	virtual void OnEventLoopEnter(wxEventLoopBase* loop);
 	virtual void MacOpenFiles(const wxArrayString& fileNames);
 	virtual int OnExit();
 	void Unload();
 
 private:
-    bool m_startup;
-    wxString m_file_to_open;
+	bool m_startup;
+	wxString m_file_to_open;
 	void FixVersionDiscrapencies();
 	bool ParseCommandLineMap(wxString& fileName);
 
@@ -57,7 +56,6 @@ private:
 	RMEProcessServer* m_proc_server;
 	wxSingleInstanceChecker* m_single_instance_checker;
 #endif
-
 };
 
 class MainMenuBar;
@@ -65,8 +63,7 @@ class MainMenuBar;
 class MainFrame : public wxFrame
 {
 public:
-	MainFrame(const wxString& title,
-		const wxPoint& pos, const wxSize& size);
+	MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size);
 	~MainFrame();
 
 	void UpdateMenubar();
@@ -94,10 +91,11 @@ public:
 #endif
 
 #ifdef __WINDOWS__
-	virtual bool MSWTranslateMessage(WXMSG *msg);
+	virtual bool MSWTranslateMessage(WXMSG* msg);
 #endif
 
 	void PrepareDC(wxDC& dc);
+
 protected:
 	MainMenuBar* menu_bar;
 	MainToolBar* tool_bar;

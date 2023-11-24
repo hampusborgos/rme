@@ -15,20 +15,16 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "selection.h"
-#include "tile.h"
+
 #include "creature.h"
-#include "item.h"
 #include "editor.h"
 #include "gui.h"
+#include "item.h"
+#include "main.h"
+#include "tile.h"
 
-Selection::Selection(Editor& editor) :
-	editor(editor),
-	session(nullptr),
-	subsession(nullptr),
-	busy(false)
+Selection::Selection(Editor& editor) : editor(editor), session(nullptr), subsession(nullptr), busy(false)
 {
 	////
 }
@@ -44,15 +40,12 @@ Selection::~Selection()
 Position Selection::minPosition() const
 {
 	Position min_pos(0x10000, 0x10000, 0x10);
-	for(const Tile* tile : tiles) {
-		if(!tile) continue;
+	for (const Tile* tile : tiles) {
+		if (!tile) continue;
 		const Position& tile_pos = tile->getPosition();
-		if(min_pos.x > tile_pos.x)
-			min_pos.x = tile_pos.x;
-		if(min_pos.y > tile_pos.y)
-			min_pos.y = tile_pos.y;
-		if(min_pos.z > tile_pos.z)
-			min_pos.z = tile_pos.z;
+		if (min_pos.x > tile_pos.x) min_pos.x = tile_pos.x;
+		if (min_pos.y > tile_pos.y) min_pos.y = tile_pos.y;
+		if (min_pos.z > tile_pos.z) min_pos.z = tile_pos.z;
 	}
 	return min_pos;
 }
@@ -60,15 +53,12 @@ Position Selection::minPosition() const
 Position Selection::maxPosition() const
 {
 	Position max_pos;
-	for(const Tile* tile : tiles) {
-		if(!tile) continue;
+	for (const Tile* tile : tiles) {
+		if (!tile) continue;
 		const Position& tile_pos = tile->getPosition();
-		if(max_pos.x < tile_pos.x)
-			max_pos.x = tile_pos.x;
-		if(max_pos.y < tile_pos.y)
-			max_pos.y = tile_pos.y;
-		if(max_pos.z < tile_pos.z)
-			max_pos.z = tile_pos.z;
+		if (max_pos.x < tile_pos.x) max_pos.x = tile_pos.x;
+		if (max_pos.y < tile_pos.y) max_pos.y = tile_pos.y;
+		if (max_pos.z < tile_pos.z) max_pos.z = tile_pos.z;
 	}
 	return max_pos;
 }
@@ -79,16 +69,15 @@ void Selection::add(const Tile* tile, Item* item)
 	ASSERT(tile);
 	ASSERT(item);
 
-	if(item->isSelected()) return;
+	if (item->isSelected()) return;
 
 	// Make a copy of the tile with the item selected
 	item->select();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
 	item->deselect();
 
-	if(g_settings.getInteger(Config::BORDER_IS_GROUND)) {
-		if(item->isBorder())
-			new_tile->selectGround();
+	if (g_settings.getInteger(Config::BORDER_IS_GROUND)) {
+		if (item->isBorder()) new_tile->selectGround();
 	}
 
 	subsession->addChange(newd Change(new_tile));
@@ -100,7 +89,7 @@ void Selection::add(const Tile* tile, Spawn* spawn)
 	ASSERT(tile);
 	ASSERT(spawn);
 
-	if(spawn->isSelected()) return;
+	if (spawn->isSelected()) return;
 
 	// Make a copy of the tile with the item selected
 	spawn->select();
@@ -116,7 +105,7 @@ void Selection::add(const Tile* tile, Creature* creature)
 	ASSERT(tile);
 	ASSERT(creature);
 
-	if(creature->isSelected()) return;
+	if (creature->isSelected()) return;
 
 	// Make a copy of the tile with the item selected
 	creature->select();
@@ -146,8 +135,8 @@ void Selection::remove(Tile* tile, Item* item)
 	bool selected = item->isSelected();
 	item->deselect();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-	if(selected) item->select();
-	if(item->isBorder() && g_settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
+	if (selected) item->select();
+	if (item->isBorder() && g_settings.getInteger(Config::BORDER_IS_GROUND)) new_tile->deselectGround();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -161,7 +150,7 @@ void Selection::remove(Tile* tile, Spawn* spawn)
 	bool selected = spawn->isSelected();
 	spawn->deselect();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-	if(selected) spawn->select();
+	if (selected) spawn->select();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -175,7 +164,7 @@ void Selection::remove(Tile* tile, Creature* creature)
 	bool selected = creature->isSelected();
 	creature->deselect();
 	Tile* new_tile = tile->deepCopy(editor.getMap());
-	if(selected) creature->select();
+	if (selected) creature->select();
 
 	subsession->addChange(newd Change(new_tile));
 }
@@ -205,14 +194,14 @@ void Selection::removeInternal(Tile* tile)
 
 void Selection::clear()
 {
-	if(session) {
-		for(Tile* tile : tiles) {
+	if (session) {
+		for (Tile* tile : tiles) {
 			Tile* new_tile = tile->deepCopy(editor.getMap());
 			new_tile->deselect();
 			subsession->addChange(newd Change(new_tile));
 		}
 	} else {
-		for(Tile* tile : tiles) {
+		for (Tile* tile : tiles) {
 			tile->deselect();
 		}
 		tiles.clear();
@@ -221,8 +210,8 @@ void Selection::clear()
 
 void Selection::start(SessionFlags flags, ActionIdentifier identifier)
 {
-	if(!(flags & INTERNAL)) {
-		if(!(flags & SUBTHREAD)) {
+	if (!(flags & INTERNAL)) {
+		if (!(flags & SUBTHREAD)) {
 			session = editor.createBatch(identifier);
 		}
 		subsession = editor.createAction(identifier);
@@ -232,7 +221,7 @@ void Selection::start(SessionFlags flags, ActionIdentifier identifier)
 
 void Selection::commit()
 {
-	if(session) {
+	if (session) {
 		ASSERT(subsession);
 		// We need to step out of the session before we do the action, else peril awaits us!
 		BatchAction* batch = session;
@@ -249,8 +238,8 @@ void Selection::commit()
 
 void Selection::finish(SessionFlags flags)
 {
-	if(!(flags & INTERNAL)) {
-		if(flags & SUBTHREAD) {
+	if (!(flags & INTERNAL)) {
+		if (flags & SUBTHREAD) {
 			ASSERT(subsession);
 			subsession = nullptr;
 		} else {
@@ -273,9 +262,9 @@ void Selection::finish(SessionFlags flags)
 
 void Selection::updateSelectionCount()
 {
-	if(size() > 0) {
+	if (size() > 0) {
 		wxString ss;
-		if(size() == 1) {
+		if (size() == 1) {
 			ss << "One tile selected.";
 		} else {
 			ss << size() << " tiles selected.";
@@ -296,12 +285,7 @@ void Selection::join(SelectionThread* thread)
 }
 
 SelectionThread::SelectionThread(Editor& editor, Position start, Position end) :
-	wxThread(wxTHREAD_JOINABLE),
-	editor(editor),
-	start(start),
-	end(end),
-	selection(editor),
-	result(nullptr)
+    wxThread(wxTHREAD_JOINABLE), editor(editor), start(start), end(end), selection(editor), result(nullptr)
 {
 	////
 }
@@ -316,19 +300,20 @@ wxThread::ExitCode SelectionThread::Entry()
 {
 	selection.start(Selection::SUBTHREAD);
 	bool compesated = g_settings.getInteger(Config::COMPENSATED_SELECT);
-	for(int z = start.z; z >= end.z; --z) {
-		for(int x = start.x; x <= end.x; ++x) {
-			for(int y = start.y; y <= end.y; ++y) {
+	for (int z = start.z; z >= end.z; --z) {
+		for (int x = start.x; x <= end.x; ++x) {
+			for (int y = start.y; y <= end.y; ++y) {
 				Tile* tile = editor.getMap().getTile(x, y, z);
-				if(!tile)
-					continue;
+				if (!tile) continue;
 
 				selection.add(tile);
 			}
 		}
-		if(compesated && z <= rme::MapGroundLayer) {
-			++start.x; ++start.y;
-			++end.x; ++end.y;
+		if (compesated && z <= rme::MapGroundLayer) {
+			++start.x;
+			++start.y;
+			++end.x;
+			++end.y;
 		}
 	}
 	result = selection.subsession;

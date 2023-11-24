@@ -22,12 +22,14 @@ class Sprite;
 class GameSprite;
 class EditorSprite;
 
-enum {
+enum
+{
 	DC_BTN_NORMAL,
 	DC_BTN_TOGGLE,
 };
 
-enum RenderSize {
+enum RenderSize
+{
 	RENDER_SIZE_16x16,
 	RENDER_SIZE_32x32,
 	RENDER_SIZE_64x64,
@@ -47,6 +49,7 @@ public:
 
 	void OnPaint(wxPaintEvent&);
 	void OnClick(wxMouseEvent&);
+
 protected:
 	void SetOverlay(Sprite* espr);
 

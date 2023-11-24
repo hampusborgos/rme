@@ -15,37 +15,35 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "properties_window.h"
-
-#include "gui_ids.h"
-#include "complexitem.h"
-#include "container_properties_window.h"
 
 #include <wx/grid.h>
 
+#include "complexitem.h"
+#include "container_properties_window.h"
+#include "gui_ids.h"
+#include "main.h"
+
 BEGIN_EVENT_TABLE(PropertiesWindow, wxDialog)
-	EVT_BUTTON(wxID_OK, PropertiesWindow::OnClickOK)
-	EVT_BUTTON(wxID_CANCEL, PropertiesWindow::OnClickCancel)
+EVT_BUTTON(wxID_OK, PropertiesWindow::OnClickOK)
+EVT_BUTTON(wxID_CANCEL, PropertiesWindow::OnClickCancel)
 
-	EVT_BUTTON(ITEM_PROPERTIES_ADD_ATTRIBUTE, PropertiesWindow::OnClickAddAttribute)
-	EVT_BUTTON(ITEM_PROPERTIES_REMOVE_ATTRIBUTE, PropertiesWindow::OnClickRemoveAttribute)
+EVT_BUTTON(ITEM_PROPERTIES_ADD_ATTRIBUTE, PropertiesWindow::OnClickAddAttribute)
+EVT_BUTTON(ITEM_PROPERTIES_REMOVE_ATTRIBUTE, PropertiesWindow::OnClickRemoveAttribute)
 
-	EVT_NOTEBOOK_PAGE_CHANGED(wxID_ANY, PropertiesWindow::OnNotebookPageChanged)
+EVT_NOTEBOOK_PAGE_CHANGED(wxID_ANY, PropertiesWindow::OnNotebookPageChanged)
 
-	EVT_GRID_CELL_CHANGED(PropertiesWindow::OnGridValueChanged)
+EVT_GRID_CELL_CHANGED(PropertiesWindow::OnGridValueChanged)
 END_EVENT_TABLE()
 
 PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile_parent, Item* item, wxPoint pos) :
-	ObjectPropertiesWindowBase(parent, "Item Properties", map, tile_parent, item, pos),
-	currentPanel(nullptr)
+    ObjectPropertiesWindowBase(parent, "Item Properties", map, tile_parent, item, pos), currentPanel(nullptr)
 {
 	ASSERT(edit_item);
 	notebook = newd wxNotebook(this, wxID_ANY, wxDefaultPosition, wxSize(600, 300));
 
 	notebook->AddPage(createGeneralPanel(notebook), "Simple", true);
-	if(dynamic_cast<Container*>(item)) {
+	if (dynamic_cast<Container*>(item)) {
 		notebook->AddPage(createContainerPanel(notebook), "Contents");
 	}
 	notebook->AddPage(createAttributesPanel(notebook), "Advanced");
@@ -62,16 +60,13 @@ PropertiesWindow::PropertiesWindow(wxWindow* parent, const Map* map, const Tile*
 	Centre(wxBOTH);
 }
 
-PropertiesWindow::~PropertiesWindow()
-{
-	;
-}
+PropertiesWindow::~PropertiesWindow() { ; }
 
 void PropertiesWindow::Update()
 {
 	Container* container = dynamic_cast<Container*>(edit_item);
-	if(container) {
-		for(uint32_t i = 0; i < container->getVolume(); ++i) {
+	if (container) {
+		for (uint32_t i = 0; i < container->getVolume(); ++i) {
 			container_items[i]->setItem(container->getItem(i));
 		}
 	}
@@ -88,11 +83,13 @@ wxWindow* PropertiesWindow::createGeneralPanel(wxWindow* parent)
 	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "\"" + wxstr(edit_item->getName()) + "\""));
 
 	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "Action ID"));
-	wxSpinCtrl* action_id_field = newd wxSpinCtrl(panel, wxID_ANY, i2ws(edit_item->getActionID()), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getActionID());
+	wxSpinCtrl* action_id_field = newd wxSpinCtrl(panel, wxID_ANY, i2ws(edit_item->getActionID()), wxDefaultPosition,
+	                                              wxDefaultSize, wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getActionID());
 	gridsizer->Add(action_id_field, wxSizerFlags(1).Expand());
 
 	gridsizer->Add(newd wxStaticText(panel, wxID_ANY, "Unique ID"));
-	wxSpinCtrl* unique_id_field = newd wxSpinCtrl(panel, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition, wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
+	wxSpinCtrl* unique_id_field = newd wxSpinCtrl(panel, wxID_ANY, i2ws(edit_item->getUniqueID()), wxDefaultPosition,
+	                                              wxSize(-1, 20), wxSP_ARROW_KEYS, 0, 0xFFFF, edit_item->getUniqueID());
 	gridsizer->Add(unique_id_field, wxSizerFlags(1).Expand());
 
 	panel->SetSizerAndFit(gridsizer);
@@ -109,9 +106,10 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 	wxSizer* gridSizer = newd wxGridSizer(6, 5, 5);
 
 	bool use_large_sprites = g_settings.getBoolean(Config::USE_LARGE_CONTAINER_ICONS);
-	for(uint32_t i = 0; i < container->getVolume(); ++i) {
+	for (uint32_t i = 0; i < container->getVolume(); ++i) {
 		Item* item = container->getItem(i);
-		ContainerItemButton* containerItemButton = newd ContainerItemButton(panel, use_large_sprites, i, edit_map, item);
+		ContainerItemButton* containerItemButton =
+		    newd ContainerItemButton(panel, use_large_sprites, i, edit_map, item);
 
 		container_items.push_back(containerItemButton);
 		gridSizer->Add(containerItemButton, wxSizerFlags(0));
@@ -122,8 +120,8 @@ wxWindow* PropertiesWindow::createContainerPanel(wxWindow* parent)
 	/*
 	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
 	optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_ADD_ATTRIBUTE, "Add Item"), wxSizerFlags(0).Center());
-	// optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, "Remove Attribute"), wxSizerFlags(0).Center());
-	topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
+	// optSizer->Add(newd wxButton(panel, ITEM_PROPERTIES_REMOVE_ATTRIBUTE, "Remove Attribute"),
+	wxSizerFlags(0).Center()); topSizer->Add(optSizer, wxSizerFlags(0).Center().DoubleBorder());
 	*/
 
 	panel->SetSizer(topSizer);
@@ -145,8 +143,8 @@ wxWindow* PropertiesWindow::createAttributesPanel(wxWindow* parent)
 	attributesGrid->DisableDragColSize();
 	attributesGrid->SetSelectionMode(wxGrid::wxGridSelectRows);
 	attributesGrid->SetRowLabelSize(0);
-	//log->SetColLabelSize(0);
-	//log->EnableGridLines(false);
+	// log->SetColLabelSize(0);
+	// log->EnableGridLines(false);
 	attributesGrid->EnableEditing(true);
 
 	attributesGrid->SetColLabelValue(0, "Key");
@@ -160,7 +158,7 @@ wxWindow* PropertiesWindow::createAttributesPanel(wxWindow* parent)
 	ItemAttributeMap attrs = edit_item->getAttributes();
 	attributesGrid->AppendRows(attrs.size());
 	int i = 0;
-	for(ItemAttributeMap::iterator aiter = attrs.begin(); aiter != attrs.end(); ++aiter, ++i)
+	for (ItemAttributeMap::iterator aiter = attrs.begin(); aiter != attrs.end(); ++aiter, ++i)
 		SetGridValue(attributesGrid, i, aiter->first, aiter->second);
 
 	wxSizer* optSizer = newd wxBoxSizer(wxHORIZONTAL);
@@ -226,13 +224,13 @@ void PropertiesWindow::OnResize(wxSizeEvent& evt)
 {
 	/*
 	if(wxGrid* grid = (wxGrid*)currentPanel->FindWindowByName("AdvancedGrid")) {
-		int tWidth = 0;
-		for(int i = 0; i < 3; ++i)
-			tWidth += grid->GetColumnWidth(i);
+	    int tWidth = 0;
+	    for(int i = 0; i < 3; ++i)
+	        tWidth += grid->GetColumnWidth(i);
 
-		int wWidth = grid->GetParent()->GetSize().GetWidth();
+	    int wWidth = grid->GetParent()->GetSize().GetWidth();
 
-		grid->SetColumnWidth(2, wWidth - 100 - 80);
+	    grid->SetColumnWidth(2, wWidth - 100 - 80);
 	}
 	*/
 }
@@ -245,11 +243,11 @@ void PropertiesWindow::OnNotebookPageChanged(wxNotebookEvent& evt)
 
 	switch (page->GetId()) {
 		case ITEM_PROPERTIES_GENERAL_TAB: {
-			//currentPanel = createGeneralPanel(page);
+			// currentPanel = createGeneralPanel(page);
 			break;
 		}
 		case ITEM_PROPERTIES_ADVANCED_TAB: {
-			//currentPanel = createAttributesPanel(page);
+			// currentPanel = createAttributesPanel(page);
 			break;
 		}
 		default:
@@ -270,22 +268,22 @@ void PropertiesWindow::saveContainerPanel()
 void PropertiesWindow::saveAttributesPanel()
 {
 	edit_item->clearAllAttributes();
-	for(int32_t rowIndex = 0; rowIndex < attributesGrid->GetNumberRows(); ++rowIndex) {
+	for (int32_t rowIndex = 0; rowIndex < attributesGrid->GetNumberRows(); ++rowIndex) {
 		ItemAttribute attr;
 		wxString type = attributesGrid->GetCellValue(rowIndex, 1);
-		if(type == "String") {
+		if (type == "String") {
 			attr.set(nstr(attributesGrid->GetCellValue(rowIndex, 2)));
-		} else if(type == "Float") {
+		} else if (type == "Float") {
 			double value;
-			if(attributesGrid->GetCellValue(rowIndex, 2).ToDouble(&value)) {
+			if (attributesGrid->GetCellValue(rowIndex, 2).ToDouble(&value)) {
 				attr.set(value);
 			}
-		} else if(type == "Number") {
+		} else if (type == "Number") {
 			long value;
-			if(attributesGrid->GetCellValue(rowIndex, 2).ToLong(&value)) {
+			if (attributesGrid->GetCellValue(rowIndex, 2).ToLong(&value)) {
 				attr.set(static_cast<int32_t>(value));
 			}
-		} else if(type == "Boolean") {
+		} else if (type == "Boolean") {
 			attr.set(attributesGrid->GetCellValue(rowIndex, 2) == "1");
 		} else {
 			continue;
@@ -296,20 +294,20 @@ void PropertiesWindow::saveAttributesPanel()
 
 void PropertiesWindow::OnGridValueChanged(wxGridEvent& event)
 {
-	if(event.GetCol() == 1) {
+	if (event.GetCol() == 1) {
 		wxString newType = attributesGrid->GetCellValue(event.GetRow(), 1);
-		if(newType == event.GetString()) {
+		if (newType == event.GetString()) {
 			return;
 		}
 
 		ItemAttribute attr;
-		if(newType == "String") {
+		if (newType == "String") {
 			attr.set("");
-		} else if(newType == "Float") {
+		} else if (newType == "Float") {
 			attr.set(0.0f);
-		} else if(newType == "Number") {
+		} else if (newType == "Number") {
 			attr.set(0);
-		} else if(newType == "Boolean") {
+		} else if (newType == "Boolean") {
 			attr.set(false);
 		}
 		SetGridValue(attributesGrid, event.GetRow(), nstr(attributesGrid->GetCellValue(event.GetRow(), 0)), attr);
@@ -332,14 +330,10 @@ void PropertiesWindow::OnClickAddAttribute(wxCommandEvent&)
 void PropertiesWindow::OnClickRemoveAttribute(wxCommandEvent&)
 {
 	wxArrayInt rowIndexes = attributesGrid->GetSelectedRows();
-	if(rowIndexes.Count() != 1)
-		return;
+	if (rowIndexes.Count() != 1) return;
 
 	int rowIndex = rowIndexes[0];
 	attributesGrid->DeleteRows(rowIndex, 1);
 }
 
-void PropertiesWindow::OnClickCancel(wxCommandEvent&)
-{
-	EndModal(0);
-}
+void PropertiesWindow::OnClickCancel(wxCommandEvent&) { EndModal(0); }

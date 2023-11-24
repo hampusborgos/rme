@@ -22,8 +22,7 @@
 #include "gui.h"
 #include "process_com.h"
 
-
-//Server
+// Server
 
 RMEProcessServer::RMEProcessServer()
 {
@@ -37,34 +36,26 @@ RMEProcessServer::~RMEProcessServer()
 
 wxConnectionBase* RMEProcessServer::OnAcceptConnection(const wxString& topic)
 {
-	if(topic.Lower() == "rme_talk") {
-		g_gui.root->Iconize(false); //Show application if minimized
-		g_gui.root->Raise(); //Request the window manager to raise this application to the top of Z-order
+	if (topic.Lower() == "rme_talk") {
+		g_gui.root->Iconize(false); // Show application if minimized
+		g_gui.root->Raise();        // Request the window manager to raise this application to the top of Z-order
 		return newd RMEProcessConnection();
 	}
 	return nullptr;
 }
 
-
-//Client
+// Client
 
 RMEProcessClient::RMEProcessClient() : proc(nullptr)
 {
 	////
 }
 
-RMEProcessClient::~RMEProcessClient()
-{
-	delete proc;
-}
+RMEProcessClient::~RMEProcessClient() { delete proc; }
 
-wxConnectionBase* RMEProcessClient::OnMakeConnection()
-{
-	return proc = newd RMEProcessConnection();
-}
+wxConnectionBase* RMEProcessClient::OnMakeConnection() { return proc = newd RMEProcessConnection(); }
 
-
-//Connection
+// Connection
 
 RMEProcessConnection::RMEProcessConnection() : wxConnection()
 {
@@ -78,7 +69,7 @@ RMEProcessConnection::~RMEProcessConnection()
 
 bool RMEProcessConnection::OnExec(const wxString& topic, const wxString& fileName)
 {
-	if(topic.Lower() == "rme_talk" && fileName != wxEmptyString) {
+	if (topic.Lower() == "rme_talk" && fileName != wxEmptyString) {
 		g_gui.LoadMap(FileName(fileName));
 		return true;
 	}

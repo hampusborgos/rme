@@ -21,7 +21,7 @@
 #include "json/json_spirit.h"
 
 namespace json {
-	using namespace json_spirit;
+using namespace json_spirit;
 }
 
 #endif

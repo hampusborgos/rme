@@ -18,9 +18,9 @@
 #ifndef RME_ACTION_H_
 #define RME_ACTION_H_
 
-#include "position.h"
-
 #include <deque>
+
+#include "position.h"
 
 class Editor;
 class Tile;
@@ -31,7 +31,8 @@ class Action;
 class BatchAction;
 class ActionQueue;
 
-enum ActionIdentifier {
+enum ActionIdentifier
+{
 	ACTION_MOVE,
 	ACTION_REMOTE,
 	ACTION_SELECT,
@@ -49,19 +50,22 @@ enum ActionIdentifier {
 	ACTION_CHANGE_PROPERTIES,
 };
 
-enum ChangeType {
+enum ChangeType
+{
 	CHANGE_NONE,
 	CHANGE_TILE,
 	CHANGE_MOVE_HOUSE_EXIT,
 	CHANGE_MOVE_WAYPOINT,
 };
 
-struct HouseData {
+struct HouseData
+{
 	uint32_t id;
 	Position position;
 };
 
-struct WaypointData {
+struct WaypointData
+{
 	std::string id;
 	Position position;
 };
@@ -97,7 +101,8 @@ typedef std::vector<Change*> ChangeList;
 class DirtyList
 {
 public:
-	struct ValueType {
+	struct ValueType
+	{
 		uint32_t pos;
 		uint32_t floors;
 	};
@@ -105,14 +110,12 @@ public:
 	uint32_t owner = 0;
 
 protected:
-	struct Comparator {
-		bool operator()(const ValueType& a, const ValueType& b) const {
-			return a.pos < b.pos;
-		}
+	struct Comparator
+	{
+		bool operator()(const ValueType& a, const ValueType& b) const { return a.pos < b.pos; }
 	};
 
 public:
-
 	typedef std::set<ValueType, Comparator> SetType;
 
 	void AddPosition(int x, int y, int z);
@@ -131,9 +134,7 @@ class Action
 public:
 	virtual ~Action();
 
-	void addChange(Change* t) {
-		changes.push_back(t);
-	}
+	void addChange(Change* t) { changes.push_back(t); }
 
 	// Get memory footprint
 	size_t approx_memsize() const;

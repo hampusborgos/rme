@@ -24,62 +24,62 @@
 class LiveServer;
 class LivePeer : public LiveSocket
 {
-	public:
-		LivePeer(LiveServer* server, asio::ip::tcp::socket socket);
-		~LivePeer();
+public:
+	LivePeer(LiveServer* server, asio::ip::tcp::socket socket);
+	~LivePeer();
 
-		void close();
-		bool handleError(const std::error_code& error);
+	void close();
+	bool handleError(const std::error_code& error);
 
-		//
-		uint32_t getId() const { return id; }
-		uint32_t getClientId() const { return clientId; }
+	//
+	uint32_t getId() const { return id; }
+	uint32_t getClientId() const { return clientId; }
 
-		std::string getHostName() const;
+	std::string getHostName() const;
 
-		wxColor getUsedColor() const { return color; }
-		void setUsedColor(const wxColor& newColor) { color = newColor; }
+	wxColor getUsedColor() const { return color; }
+	void setUsedColor(const wxColor& newColor) { color = newColor; }
 
-		//
-		void receiveHeader();
-		void receive(uint32_t packetSize);
-		void send(NetworkMessage& message);
+	//
+	void receiveHeader();
+	void receive(uint32_t packetSize);
+	void send(NetworkMessage& message);
 
-		//
-		void updateCursor(const Position& position) {}
+	//
+	void updateCursor(const Position& position) {}
 
-	protected:
-		void parseLoginPacket(NetworkMessage message);
-		void parseEditorPacket(NetworkMessage message);
+protected:
+	void parseLoginPacket(NetworkMessage message);
+	void parseEditorPacket(NetworkMessage message);
 
-		// login packets
-		void parseHello(NetworkMessage& message);
-		void parseReady(NetworkMessage& message);
+	// login packets
+	void parseHello(NetworkMessage& message);
+	void parseReady(NetworkMessage& message);
 
-		// editor packets
-		void parseNodeRequest(NetworkMessage& message);
-		void parseReceiveChanges(NetworkMessage& message);
-		void parseAddHouse(NetworkMessage& message);
-		void parseEditHouse(NetworkMessage& message);
-		void parseRemoveHouse(NetworkMessage& message);
-		void parseCursorUpdate(NetworkMessage& message);
-		void parseChatMessage(NetworkMessage& message);
+	// editor packets
+	void parseNodeRequest(NetworkMessage& message);
+	void parseReceiveChanges(NetworkMessage& message);
+	void parseAddHouse(NetworkMessage& message);
+	void parseEditHouse(NetworkMessage& message);
+	void parseRemoveHouse(NetworkMessage& message);
+	void parseCursorUpdate(NetworkMessage& message);
+	void parseChatMessage(NetworkMessage& message);
 
-		//
-		NetworkMessage readMessage;
+	//
+	NetworkMessage readMessage;
 
-		LiveServer* server;
-		asio::ip::tcp::socket socket;
+	LiveServer* server;
+	asio::ip::tcp::socket socket;
 
-		wxColor color;
+	wxColor color;
 
-		uint32_t id;
-		uint32_t clientId;
+	uint32_t id;
+	uint32_t clientId;
 
-		bool connected;
+	bool connected;
 
-		friend class LiveLogTab;
-		friend class LiveServer;
+	friend class LiveLogTab;
+	friend class LiveServer;
 };
 
 #endif

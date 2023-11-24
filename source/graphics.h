@@ -18,27 +18,30 @@
 #ifndef RME_GRAPHICS_H_
 #define RME_GRAPHICS_H_
 
-#include "outfit.h"
-#include "common.h"
+#include <wx/artprov.h>
+
 #include <deque>
 
 #include "client_version.h"
+#include "common.h"
+#include "outfit.h"
 
-#include <wx/artprov.h>
-
-enum SpriteSize {
+enum SpriteSize
+{
 	SPRITE_SIZE_16x16,
-	//SPRITE_SIZE_24x24,
+	// SPRITE_SIZE_24x24,
 	SPRITE_SIZE_32x32,
 	SPRITE_SIZE_COUNT
 };
 
-enum AnimationDirection {
+enum AnimationDirection
+{
 	ANIMATION_FORWARD = 0,
 	ANIMATION_BACKWARD = 1
 };
 
-enum ItemAnimationDuration {
+enum ItemAnimationDuration
+{
 	ITEM_FRAME_DURATION = 500
 };
 
@@ -47,7 +50,8 @@ class GraphicManager;
 class FileReadHandle;
 class Animator;
 
-struct SpriteLight {
+struct SpriteLight
+{
 	uint8_t intensity = 0;
 	uint8_t color = 0;
 };
@@ -84,8 +88,10 @@ public:
 	virtual ~GameSprite();
 
 	int getIndex(int width, int height, int layer, int pattern_x, int pattern_y, int pattern_z, int frame) const;
-	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z, int _frame);
-	GLuint getHardwareID(int _x, int _y, int _dir, int _addon, int _pattern_z, const Outfit& _outfit, int _frame); // CreatureDatabase
+	GLuint getHardwareID(int _x, int _y, int _layer, int _subtype, int _pattern_x, int _pattern_y, int _pattern_z,
+	                     int _frame);
+	GLuint getHardwareID(int _x, int _y, int _dir, int _addon, int _pattern_z, const Outfit& _outfit,
+	                     int _frame); // CreatureDatabase
 	virtual void DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width = -1, int height = -1);
 
 	virtual void unloadDC();
@@ -109,7 +115,8 @@ protected:
 	wxMemoryDC* getDC(SpriteSize size);
 	TemplateImage* getTemplateImage(int sprite_index, const Outfit& outfit);
 
-	class Image {
+	class Image
+	{
 	public:
 		Image();
 		virtual ~Image();
@@ -129,7 +136,8 @@ protected:
 		virtual void unloadGLTexture(GLuint textureId);
 	};
 
-	class NormalImage : public Image {
+	class NormalImage : public Image
+	{
 	public:
 		NormalImage();
 		virtual ~NormalImage();
@@ -152,17 +160,21 @@ protected:
 		virtual void unloadGLTexture(GLuint textureId = 0);
 	};
 
-	class EditorImage : public NormalImage {
+	class EditorImage : public NormalImage
+	{
 	public:
 		EditorImage(const wxArtID& bitmapId);
+
 	protected:
 		void createGLTexture(GLuint textureId) override;
 		void unloadGLTexture(GLuint textureId) override;
+
 	private:
 		wxArtID bitmapId;
 	};
 
-	class TemplateImage : public Image {
+	class TemplateImage : public Image
+	{
 	public:
 		TemplateImage(GameSprite* parent, int v, const Outfit& outfit);
 		virtual ~TemplateImage();
@@ -178,8 +190,9 @@ protected:
 		uint8_t lookBody;
 		uint8_t lookLegs;
 		uint8_t lookFeet;
+
 	protected:
-		void colorizePixel(uint8_t color, uint8_t &r, uint8_t &b, uint8_t &g);
+		void colorizePixel(uint8_t color, uint8_t& r, uint8_t& b, uint8_t& g);
 
 		virtual void createGLTexture(GLuint ignored = 0);
 		virtual void unloadGLTexture(GLuint ignored = 0);
@@ -220,15 +233,11 @@ struct FrameDuration
 	int min;
 	int max;
 
-	FrameDuration(int min, int max) : min(min), max(max)
-	{
-		ASSERT(min <= max);
-	}
+	FrameDuration(int min, int max) : min(min), max(max) { ASSERT(min <= max); }
 
 	int getDuration() const
 	{
-		if(min == max)
-			return min;
+		if (min == max) return min;
 		return uniform_random(min, max);
 	};
 
@@ -316,7 +325,7 @@ public:
 	bool hasTransparency() const;
 	bool isUnloaded() const;
 
-	ClientVersion *client_version;
+	ClientVersion* client_version;
 
 private:
 	bool unloaded;

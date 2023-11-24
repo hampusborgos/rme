@@ -15,8 +15,9 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
 #include "light_drawer.h"
+
+#include "main.h"
 
 LightDrawer::LightDrawer()
 {
@@ -47,7 +48,7 @@ void LightDrawer::draw(int map_x, int map_y, int scroll_x, int scroll_y)
 			int index = (y * rme::ClientMapWidth + x);
 			int color_index = index * rme::PixelFormatRGBA;
 
-			buffer[color_index]	 = global_color.Red();
+			buffer[color_index] = global_color.Red();
 			buffer[color_index + 1] = global_color.Green();
 			buffer[color_index + 2] = global_color.Blue();
 			buffer[color_index + 3] = global_color.Alpha();
@@ -61,7 +62,7 @@ void LightDrawer::draw(int map_x, int map_y, int scroll_x, int scroll_y)
 				uint8_t red = static_cast<uint8_t>(light_color.Red() * intensity);
 				uint8_t green = static_cast<uint8_t>(light_color.Green() * intensity);
 				uint8_t blue = static_cast<uint8_t>(light_color.Blue() * intensity);
-				buffer[color_index]	 = std::max(buffer[color_index], red);
+				buffer[color_index] = std::max(buffer[color_index], red);
 				buffer[color_index + 1] = std::max(buffer[color_index + 1], green);
 				buffer[color_index + 2] = std::max(buffer[color_index + 2], blue);
 			}
@@ -78,26 +79,28 @@ void LightDrawer::draw(int map_x, int map_y, int scroll_x, int scroll_y)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rme::ClientMapWidth, rme::ClientMapHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer.data());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, rme::ClientMapWidth, rme::ClientMapHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE,
+	             buffer.data());
 
 	glBlendFunc(GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
-		glTexCoord2f(0.f, 0.f); glVertex2f(draw_x, draw_y);
-		glTexCoord2f(1.f, 0.f); glVertex2f(draw_x + draw_width, draw_y);
-		glTexCoord2f(1.f, 1.f); glVertex2f(draw_x + draw_width, draw_y + draw_height);
-		glTexCoord2f(0.f, 1.f); glVertex2f(draw_x, draw_y + draw_height);
+	glTexCoord2f(0.f, 0.f);
+	glVertex2f(draw_x, draw_y);
+	glTexCoord2f(1.f, 0.f);
+	glVertex2f(draw_x + draw_width, draw_y);
+	glTexCoord2f(1.f, 1.f);
+	glVertex2f(draw_x + draw_width, draw_y + draw_height);
+	glTexCoord2f(0.f, 1.f);
+	glVertex2f(draw_x, draw_y + draw_height);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void LightDrawer::setGlobalLightColor(uint8_t color)
-{
-	global_color = colorFromEightBit(color);
-}
+void LightDrawer::setGlobalLightColor(uint8_t color) { global_color = colorFromEightBit(color); }
 
 void LightDrawer::addLight(int map_x, int map_y, const SpriteLight& light)
 {
@@ -115,20 +118,11 @@ void LightDrawer::addLight(int map_x, int map_y, const SpriteLight& light)
 		}
 	}
 
-	lights.push_back(Light{ static_cast<uint16_t>(map_x), static_cast<uint16_t>(map_y), light.color, intensity });
+	lights.push_back(Light{static_cast<uint16_t>(map_x), static_cast<uint16_t>(map_y), light.color, intensity});
 }
 
-void LightDrawer::clear() noexcept
-{
-	lights.clear();
-}
+void LightDrawer::clear() noexcept { lights.clear(); }
 
-void LightDrawer::createGLTexture()
-{
-	glGenTextures(1, &texture);
-}
+void LightDrawer::createGLTexture() { glGenTextures(1, &texture); }
 
-void LightDrawer::unloadGLTexture()
-{
-	glDeleteTextures(1, &texture);
-}
+void LightDrawer::unloadGLTexture() { glDeleteTextures(1, &texture); }

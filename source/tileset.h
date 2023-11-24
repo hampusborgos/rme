@@ -20,7 +20,8 @@
 
 class Brushes;
 
-enum TilesetCategoryType {
+enum TilesetCategoryType
+{
 	TILESET_UNKNOWN,
 	TILESET_TERRAIN,
 	TILESET_CREATURE,
@@ -31,7 +32,8 @@ enum TilesetCategoryType {
 	TILESET_WAYPOINT,
 };
 
-class TilesetCategory {
+class TilesetCategory
+{
 public:
 	TilesetCategory(Tileset& parent, TilesetCategoryType type);
 	~TilesetCategory();
@@ -47,6 +49,7 @@ public:
 
 protected:
 	TilesetCategoryType type;
+
 public:
 	std::vector<Brush*> brushlist;
 	Tileset& tileset;
@@ -58,7 +61,8 @@ private:
 
 typedef std::vector<TilesetCategory*> TilesetCategoryArray;
 
-class Tileset {
+class Tileset
+{
 public:
 	Tileset(Brushes& brushes, const std::string& name);
 	~Tileset();

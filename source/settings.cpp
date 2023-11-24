@@ -15,11 +15,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "settings.h"
-#include "gui_ids.h"
-#include "client_version.h"
 
 #include <wx/confbase.h>
 #include <wx/config.h>
@@ -30,11 +26,17 @@
 #include <iostream>
 #include <string>
 
+#include "client_version.h"
+#include "gui_ids.h"
+#include "main.h"
+
 Settings g_settings;
 
-Settings::Settings() : store(Config::LAST)
+Settings::Settings() :
+    store(Config::LAST)
 #ifdef __WINDOWS__
-			   , use_file_cfg(false)
+    ,
+    use_file_cfg(false)
 #endif
 {
 	setDefaults();
@@ -45,19 +47,16 @@ Settings::~Settings()
 	////
 }
 
-wxConfigBase& Settings::getConfigObject()
-{
-	return *dynamic_cast<wxConfigBase*>(wxConfig::Get());
-}
+wxConfigBase& Settings::getConfigObject() { return *dynamic_cast<wxConfigBase*>(wxConfig::Get()); }
 
 bool Settings::getBoolean(uint32_t key) const
 {
-	if(key > Config::LAST) {
+	if (key > Config::LAST) {
 		return false;
 	}
 
 	const DynamicValue& dv = store[key];
-	if(dv.type == TYPE_INT) {
+	if (dv.type == TYPE_INT) {
 		return dv.intval != 0;
 	}
 	return false;
@@ -65,18 +64,17 @@ bool Settings::getBoolean(uint32_t key) const
 
 int Settings::getInteger(uint32_t key) const
 {
-	if(key > Config::LAST) return 0;
+	if (key > Config::LAST) return 0;
 	const DynamicValue& dv = store[key];
-	if(dv.type == TYPE_INT)
-		return dv.intval;
+	if (dv.type == TYPE_INT) return dv.intval;
 	return 0;
 }
 
 float Settings::getFloat(uint32_t key) const
 {
-	if(key > Config::LAST) return 0.0;
+	if (key > Config::LAST) return 0.0;
 	const DynamicValue& dv = store[key];
-	if(dv.type == TYPE_FLOAT) {
+	if (dv.type == TYPE_FLOAT) {
 		return dv.floatval;
 	}
 	return 0.0;
@@ -84,20 +82,19 @@ float Settings::getFloat(uint32_t key) const
 
 std::string Settings::getString(uint32_t key) const
 {
-	if(key > Config::LAST) return "";
+	if (key > Config::LAST) return "";
 	const DynamicValue& dv = store[key];
-	if(dv.type == TYPE_STR && dv.strval != nullptr)
-		return *dv.strval;
+	if (dv.type == TYPE_STR && dv.strval != nullptr) return *dv.strval;
 	return "";
 }
 
 void Settings::setInteger(uint32_t key, int newval)
 {
-	if(key > Config::LAST) return;
+	if (key > Config::LAST) return;
 	DynamicValue& dv = store[key];
-	if(dv.type == TYPE_INT) {
+	if (dv.type == TYPE_INT) {
 		dv.intval = newval;
-	} else if(dv.type == TYPE_NONE) {
+	} else if (dv.type == TYPE_NONE) {
 		dv.type = TYPE_INT;
 		dv.intval = newval;
 	}
@@ -105,11 +102,11 @@ void Settings::setInteger(uint32_t key, int newval)
 
 void Settings::setFloat(uint32_t key, float newval)
 {
-	if(key > Config::LAST) return;
+	if (key > Config::LAST) return;
 	DynamicValue& dv = store[key];
-	if(dv.type == TYPE_FLOAT) {
+	if (dv.type == TYPE_FLOAT) {
 		dv.floatval = newval;
-	} else if(dv.type == TYPE_NONE) {
+	} else if (dv.type == TYPE_NONE) {
 		dv.type = TYPE_FLOAT;
 		dv.floatval = newval;
 	}
@@ -117,12 +114,12 @@ void Settings::setFloat(uint32_t key, float newval)
 
 void Settings::setString(uint32_t key, std::string newval)
 {
-	if(key > Config::LAST) return;
+	if (key > Config::LAST) return;
 	DynamicValue& dv = store[key];
-	if(dv.type == TYPE_STR) {
+	if (dv.type == TYPE_STR) {
 		delete dv.strval;
 		dv.strval = newd std::string(newval);
-	} else if(dv.type == TYPE_NONE) {
+	} else if (dv.type == TYPE_NONE) {
 		dv.type = TYPE_STR;
 		dv.strval = newd std::string(newval);
 	}
@@ -130,66 +127,71 @@ void Settings::setString(uint32_t key, std::string newval)
 
 std::string Settings::DynamicValue::str()
 {
-	switch(type) {
-		case TYPE_FLOAT:return f2s(floatval);
-		case TYPE_STR:  return std::string(*strval);
-		case TYPE_INT:  return i2s(intval);
+	switch (type) {
+		case TYPE_FLOAT:
+			return f2s(floatval);
+		case TYPE_STR:
+			return std::string(*strval);
+		case TYPE_INT:
+			return i2s(intval);
 		default:
-		case TYPE_NONE: return "";
+		case TYPE_NONE:
+			return "";
 	}
 }
 
 void Settings::IO(IOMode mode)
 {
-	wxConfigBase* conf = (mode == DEFAULT? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
+	wxConfigBase* conf = (mode == DEFAULT ? nullptr : dynamic_cast<wxConfigBase*>(wxConfig::Get()));
 
 	using namespace Config;
-#define section(s) if(conf) conf->SetPath("/" s)
+#define section(s) \
+	if (conf) conf->SetPath("/" s)
 #define Int(key, dflt) \
 	do { \
-		if(mode == DEFAULT) { \
+		if (mode == DEFAULT) { \
 			setInteger(key, dflt); \
-		} else if(mode == SAVE) { \
+		} else if (mode == SAVE) { \
 			conf->Write(#key, getInteger(key)); \
-		} else if(mode == LOAD) { \
+		} else if (mode == LOAD) { \
 			setInteger(key, conf->Read(#key, long(dflt))); \
 		} \
-	} while(false)
+	} while (false)
 #define IntToSave(key, dflt) \
 	do { \
-		if(mode == DEFAULT) { \
+		if (mode == DEFAULT) { \
 			setInteger(key, dflt); \
-		} else if(mode == SAVE) { \
+		} else if (mode == SAVE) { \
 			conf->Write(#key, getInteger(key##_TO_SAVE)); \
-		} else if(mode == LOAD) { \
+		} else if (mode == LOAD) { \
 			setInteger(key, conf->Read(#key, (long)dflt)); \
-			setInteger(key##_TO_SAVE , getInteger(key)); \
+			setInteger(key##_TO_SAVE, getInteger(key)); \
 		} \
-	} while(false)
+	} while (false)
 #define Float(key, dflt) \
-	do {\
-		if(mode == DEFAULT) { \
+	do { \
+		if (mode == DEFAULT) { \
 			setFloat(key, dflt); \
-		} else if(mode == SAVE) { \
+		} else if (mode == SAVE) { \
 			conf->Write(#key, getFloat(key)); \
-		} else if(mode == LOAD) { \
-			double tmp_float;\
+		} else if (mode == LOAD) { \
+			double tmp_float; \
 			conf->Read(#key, &tmp_float, dflt); \
 			setFloat(key, tmp_float); \
 		} \
-	} while(false)
+	} while (false)
 #define String(key, dflt) \
 	do { \
-		if(mode == DEFAULT) { \
+		if (mode == DEFAULT) { \
 			setString(key, dflt); \
-		} else if(mode == SAVE) { \
+		} else if (mode == SAVE) { \
 			conf->Write(#key, wxstr(getString(key))); \
-		} else if(mode == LOAD) { \
+		} else if (mode == LOAD) { \
 			wxString str; \
 			conf->Read(#key, &str, dflt); \
 			setString(key, nstr(str)); \
 		} \
-	} while(false)
+	} while (false)
 
 	section("View");
 	Int(TRANSPARENT_FLOORS, 0);
@@ -305,18 +307,25 @@ void Settings::IO(IOMode mode)
 	String(PALETTE_RAW_STYLE, "listbox");
 
 	section("Window");
-	String(PALETTE_LAYOUT, "name=02c30f6048629894000011bc00000002;caption=Palette;state=2099148;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=245;besth=100;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1");
+	String(
+	    PALETTE_LAYOUT,
+	    "name=02c30f6048629894000011bc00000002;caption=Palette;state=2099148;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=245;besth=100;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1");
 	Int(MINIMAP_VISIBLE, 0);
-	String(MINIMAP_LAYOUT, "name=066e2bc8486298990000259a00000003;caption=Minimap;state=2099151;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=170;besth=130;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=221;floath=164");
+	String(
+	    MINIMAP_LAYOUT,
+	    "name=066e2bc8486298990000259a00000003;caption=Minimap;state=2099151;dir=4;layer=0;row=0;pos=0;prop=100000;bestw=170;besth=130;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=221;floath=164");
 	Int(ACTIONS_HISTORY_VISIBLE, 0);
-	String(ACTIONS_HISTORY_LAYOUT, "name=945c6eb52a414f1B817e8befd4479412;caption=Actions;state=2099151;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=170;besth=130;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=221;floath=164");
+	String(
+	    ACTIONS_HISTORY_LAYOUT,
+	    "name=945c6eb52a414f1B817e8befd4479412;caption=Actions;state=2099151;dir=2;layer=0;row=0;pos=0;prop=100000;bestw=170;besth=130;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=221;floath=164");
 	Int(WINDOW_HEIGHT, 500);
 	Int(WINDOW_WIDTH, 700);
 	Int(WINDOW_MAXIMIZED, 0);
 	Int(WELCOME_DIALOG, 1);
 
 	section("Hotkeys");
-	String(NUMERICAL_HOTKEYS, "none:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\n");
+	String(NUMERICAL_HOTKEYS,
+	       "none:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\nnone:{}\n");
 
 	Int(SHOW_TOOLBAR_STANDARD, 1);
 	Int(SHOW_TOOLBAR_BRUSHES, 0);
@@ -349,7 +358,7 @@ void Settings::load()
 	wxConfigBase* conf;
 #ifdef __WINDOWS__
 	FileName filename("rme.cfg");
-	if(filename.FileExists()) { // Use local file if it exists
+	if (filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		use_file_cfg = true;
@@ -360,13 +369,13 @@ void Settings::load()
 	}
 #else
 	FileName filename("./rme.cfg");
-	if(filename.FileExists()) { // Use local file if it exists
+	if (filename.FileExists()) { // Use local file if it exists
 		wxFileInputStream file(filename.GetFullPath());
 		conf = newd wxFileConfig(file);
 		g_settings.setInteger(Config::INDIRECTORY_INSTALLATION, 1);
 	} else { // Else use global (user-specific) conf
 		filename.Assign(wxStandardPaths::Get().GetUserConfigDir() + "/.rme/rme.cfg");
-		if(filename.FileExists()) {
+		if (filename.FileExists()) {
 			wxFileInputStream file(filename.GetFullPath());
 			conf = newd wxFileConfig(file);
 		} else {
@@ -384,20 +393,18 @@ void Settings::save(bool endoftheworld)
 {
 	IO(SAVE);
 #ifdef __WINDOWS__
-	if(use_file_cfg) {
+	if (use_file_cfg) {
 		wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
-		if(!conf)
-			return;
+		if (!conf) return;
 		FileName filename("rme.cfg");
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
 	}
 #else
 	wxFileConfig* conf = dynamic_cast<wxFileConfig*>(wxConfig::Get());
-	if(!conf)
-		return;
+	if (!conf) return;
 	FileName filename("./rme.cfg");
-	if(filename.FileExists()) { // Use local file if it exists
+	if (filename.FileExists()) { // Use local file if it exists
 		wxFileOutputStream file(filename.GetFullPath());
 		conf->Save(file);
 	} else { // Else use global (user-specific) conf
@@ -408,10 +415,9 @@ void Settings::save(bool endoftheworld)
 		conf->Save(file);
 	}
 #endif
-	if(endoftheworld) {
+	if (endoftheworld) {
 		wxConfigBase* conf = dynamic_cast<wxConfigBase*>(wxConfig::Get());
 		wxConfig::Set(nullptr);
 		delete conf;
 	}
 }
-

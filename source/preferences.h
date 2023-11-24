@@ -15,20 +15,20 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-
 #ifndef RME_PREFERENCES_WINDOW_H_
 #define RME_PREFERENCES_WINDOW_H_
 
-#include "main.h"
-#include <wx/listbook.h>
-#include <wx/collpane.h>
 #include <wx/clrpicker.h>
+#include <wx/collpane.h>
+#include <wx/listbook.h>
+
+#include "main.h"
 
 class PreferencesWindow : public wxDialog
 {
 public:
-	explicit PreferencesWindow(wxWindow* parent) : PreferencesWindow(parent, false) {};
-    PreferencesWindow(wxWindow* parent, bool clientVersionSelected);
+	explicit PreferencesWindow(wxWindow* parent) : PreferencesWindow(parent, false){};
+	PreferencesWindow(wxWindow* parent, bool clientVersionSelected);
 	virtual ~PreferencesWindow();
 
 	void OnClickDefaults(wxCommandEvent&);
@@ -112,7 +112,8 @@ protected:
 	wxCheckBox* check_sigs_chkbox;
 
 	// Create controls
-	wxChoice* AddPaletteStyleChoice(wxWindow* parent, wxSizer* sizer, const wxString& short_description, const wxString& description, const std::string& setting);
+	wxChoice* AddPaletteStyleChoice(wxWindow* parent, wxSizer* sizer, const wxString& short_description,
+	                                const wxString& description, const std::string& setting);
 	void SetPaletteStyleChoice(wxChoice* ctrl, int key);
 
 	// Create windows

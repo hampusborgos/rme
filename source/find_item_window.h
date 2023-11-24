@@ -18,21 +18,22 @@
 #ifndef RME_FIND_ITEM_WINDOW_H_
 #define RME_FIND_ITEM_WINDOW_H_
 
+#include <wx/button.h>
+#include <wx/checkbox.h>
+#include <wx/dialog.h>
 #include <wx/radiobox.h>
-#include <wx/spinctrl.h>
 #include <wx/sizer.h>
+#include <wx/spinctrl.h>
 #include <wx/statbox.h>
 #include <wx/textctrl.h>
-#include <wx/checkbox.h>
-#include <wx/button.h>
-#include <wx/dialog.h>
 
 class FindDialogListBox;
 
 class FindItemDialog : public wxDialog
 {
 public:
-	enum SearchMode {
+	enum SearchMode
+	{
 		ServerIDs = 0,
 		ClientIDs,
 		Names,
@@ -40,7 +41,8 @@ public:
 		Properties,
 	};
 
-	enum SearchItemType {
+	enum SearchItemType
+	{
 		Depot,
 		Mailbox,
 		TrashHolder,

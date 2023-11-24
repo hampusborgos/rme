@@ -15,17 +15,16 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "spawn_brush.h"
+
 #include "basemap.h"
+#include "main.h"
 #include "spawn.h"
 
 //=============================================================================
 // Spawn brush
 
-SpawnBrush::SpawnBrush() :
-	Brush()
+SpawnBrush::SpawnBrush() : Brush()
 {
 	////
 }
@@ -35,21 +34,15 @@ SpawnBrush::~SpawnBrush()
 	////
 }
 
-int SpawnBrush::getLookID() const
-{
-	return 0;
-}
+int SpawnBrush::getLookID() const { return 0; }
 
-std::string SpawnBrush::getName() const
-{
-	return "Spawn Brush";
-}
+std::string SpawnBrush::getName() const { return "Spawn Brush"; }
 
 bool SpawnBrush::canDraw(BaseMap* map, const Position& position) const
 {
 	Tile* tile = map->getTile(position);
-	if(tile) {
-		if(tile->spawn) {
+	if (tile) {
+		if (tile->spawn) {
 			return false;
 		}
 	}
@@ -66,7 +59,7 @@ void SpawnBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 {
 	ASSERT(tile);
 	ASSERT(parameter); // Should contain an int which is the size of the newd spawn
-	if(tile->spawn == nullptr) {
+	if (tile->spawn == nullptr) {
 		tile->spawn = newd Spawn(std::max(1, *(int*)parameter));
 	}
 }

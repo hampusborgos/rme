@@ -38,13 +38,14 @@ UpdateChecker::~UpdateChecker()
 void UpdateChecker::connect(wxEvtHandler* receiver)
 {
 	wxString address = "http://www.remeresmapeditor.com/update.php";
-	address << "?os=" <<
+	address << "?os="
+	        <<
 #ifdef __WINDOWS__
-	"windows";
+	    "windows";
 #elif __LINUX__
-	"linux";
+	    "linux";
 #else
-	"unknown";
+	    "unknown";
 #endif
 	address << "&verid=" << __RME_VERSION_ID__;
 #ifdef __EXPERIMENTAL__
@@ -55,9 +56,7 @@ void UpdateChecker::connect(wxEvtHandler* receiver)
 	connection->Execute();
 }
 
-UpdateConnectionThread::UpdateConnectionThread(wxEvtHandler* receiver, wxURL* url) :
-	receiver(receiver),
-	url(url)
+UpdateConnectionThread::UpdateConnectionThread(wxEvtHandler* receiver, wxURL* url) : receiver(receiver), url(url)
 {
 	////
 }
@@ -70,14 +69,14 @@ UpdateConnectionThread::~UpdateConnectionThread()
 wxThread::ExitCode UpdateConnectionThread::Entry()
 {
 	wxInputStream* input = url->GetInputStream();
-	if(!input) {
+	if (!input) {
 		delete input;
 		delete url;
 		return 0;
 	}
 
 	std::string data;
-	while(!input->Eof()) {
+	while (!input->Eof()) {
 		data += input->GetC();
 	}
 
@@ -85,7 +84,7 @@ wxThread::ExitCode UpdateConnectionThread::Entry()
 	delete url;
 	wxCommandEvent event(EVT_UPDATE_CHECK_FINISHED);
 	event.SetClientData(newd std::string(data));
-	if(receiver) receiver->AddPendingEvent(event);
+	if (receiver) receiver->AddPendingEvent(event);
 	return 0;
 }
 

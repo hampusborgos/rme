@@ -18,19 +18,15 @@
 #ifndef RME_REPLACE_ITEMS_WINDOW_H_
 #define RME_REPLACE_ITEMS_WINDOW_H_
 
-#include "main.h"
 #include "common_windows.h"
 #include "editor.h"
+#include "main.h"
 
 struct ReplacingItem
 {
-	ReplacingItem() :
-		replaceId(0), withId(0), total(0), complete(false) { }
+	ReplacingItem() : replaceId(0), withId(0), total(0), complete(false) {}
 
-	bool operator==(const ReplacingItem& other) const
-	{
-		return replaceId == other.replaceId && withId == other.withId;
-	}
+	bool operator==(const ReplacingItem& other) const { return replaceId == other.replaceId && withId == other.withId; }
 
 	uint16_t replaceId;
 	uint16_t withId;
@@ -45,7 +41,7 @@ class ReplaceItemsButton : public DCButton
 {
 public:
 	ReplaceItemsButton(wxWindow* parent);
-	~ReplaceItemsButton() { }
+	~ReplaceItemsButton() {}
 
 	ItemGroup_t GetGroup() const;
 	uint16_t GetItemId() const { return m_id; }
@@ -87,14 +83,13 @@ struct ItemFinder
 {
 	ItemFinder(uint16_t itemid, int32_t limit = -1) : itemid(itemid), limit(limit), exceeded(false) {}
 
-	void operator()(Map& map, Tile* tile, Item* item, long long done) {
-		if(exceeded)
-			return;
+	void operator()(Map& map, Tile* tile, Item* item, long long done)
+	{
+		if (exceeded) return;
 
-		if(item->getID() == itemid) {
+		if (item->getID() == itemid) {
 			result.push_back(std::make_pair(tile, item));
-			if(limit > 0 && result.size() >= size_t(limit))
-				exceeded = true;
+			if (limit > 0 && result.size() >= size_t(limit)) exceeded = true;
 		}
 	}
 

@@ -15,18 +15,15 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-
-#include "main.h"
-
 #include "map_window.h"
-#include "gui.h"
-#include "sprites.h"
+
 #include "editor.h"
+#include "gui.h"
+#include "main.h"
+#include "sprites.h"
 
 MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
-	wxPanel(parent, PANE_MAIN),
-	editor(editor),
-	replaceItemsDialog(nullptr)
+    wxPanel(parent, PANE_MAIN), editor(editor), replaceItemsDialog(nullptr)
 {
 	int GL_settings[3];
 	GL_settings[0] = WX_GL_RGBA;
@@ -37,7 +34,8 @@ MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
 	vScroll = newd MapScrollBar(this, MAP_WINDOW_VSCROLL, wxVERTICAL, canvas);
 	hScroll = newd MapScrollBar(this, MAP_WINDOW_HSCROLL, wxHORIZONTAL, canvas);
 
-	gem = newd DCButton(this, MAP_WINDOW_GEM, wxDefaultPosition, DC_BTN_NORMAL, RENDER_SIZE_16x16, EDITOR_SPRITE_SELECTION_GEM);
+	gem = newd DCButton(this, MAP_WINDOW_GEM, wxDefaultPosition, DC_BTN_NORMAL, RENDER_SIZE_16x16,
+	                    EDITOR_SPRITE_SELECTION_GEM);
 
 	wxFlexGridSizer* topsizer = newd wxFlexGridSizer(2, 0, 0);
 
@@ -59,24 +57,24 @@ MapWindow::~MapWindow()
 
 void MapWindow::ShowReplaceItemsDialog(bool selectionOnly)
 {
-	if(replaceItemsDialog)
-		return;
+	if (replaceItemsDialog) return;
 
 	replaceItemsDialog = new ReplaceItemsDialog(this, selectionOnly);
-	replaceItemsDialog->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MapWindow::OnReplaceItemsDialogClose), NULL, this);
+	replaceItemsDialog->Connect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MapWindow::OnReplaceItemsDialogClose), NULL,
+	                            this);
 	replaceItemsDialog->Show();
 }
 
 void MapWindow::CloseReplaceItemsDialog()
 {
-	if(replaceItemsDialog)
-		replaceItemsDialog->Close();
+	if (replaceItemsDialog) replaceItemsDialog->Close();
 }
 
 void MapWindow::OnReplaceItemsDialogClose(wxCloseEvent& event)
 {
-	if(replaceItemsDialog) {
-		replaceItemsDialog->Disconnect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MapWindow::OnReplaceItemsDialogClose), NULL, this);
+	if (replaceItemsDialog) {
+		replaceItemsDialog->Disconnect(wxEVT_CLOSE_WINDOW, wxCloseEventHandler(MapWindow::OnReplaceItemsDialogClose),
+		                               NULL, this);
 		replaceItemsDialog->Destroy();
 		replaceItemsDialog = nullptr;
 	}
@@ -84,29 +82,32 @@ void MapWindow::OnReplaceItemsDialogClose(wxCloseEvent& event)
 
 void MapWindow::SetSize(int x, int y, bool center)
 {
-	if(x == 0 || y == 0) return;
+	if (x == 0 || y == 0) return;
 
 	int windowSizeX;
 	int windowSizeY;
 
 	canvas->GetSize(&windowSizeX, &windowSizeY);
 
-	hScroll->SetScrollbar(center? (x - windowSizeX)/2 : hScroll->GetThumbPosition(), windowSizeX / x,  x, windowSizeX / x);
-	vScroll->SetScrollbar(center? (y - windowSizeY)/2 : vScroll->GetThumbPosition(), windowSizeY / y,  y, windowSizeX / y);
-	//wxPanel::SetSize(x, y);
+	hScroll->SetScrollbar(center ? (x - windowSizeX) / 2 : hScroll->GetThumbPosition(), windowSizeX / x, x,
+	                      windowSizeX / x);
+	vScroll->SetScrollbar(center ? (y - windowSizeY) / 2 : vScroll->GetThumbPosition(), windowSizeY / y, y,
+	                      windowSizeX / y);
+	// wxPanel::SetSize(x, y);
 }
 
 void MapWindow::UpdateScrollbars(int nx, int ny)
 {
 	// nx and ny are size of this window
-	hScroll->SetScrollbar(hScroll->GetThumbPosition(), nx / std::max(1, hScroll->GetRange()), std::max(1, hScroll->GetRange()), 96);
-	vScroll->SetScrollbar(vScroll->GetThumbPosition(), ny / std::max(1, vScroll->GetRange()), std::max(1, vScroll->GetRange()), 96);
+	hScroll->SetScrollbar(hScroll->GetThumbPosition(), nx / std::max(1, hScroll->GetRange()),
+	                      std::max(1, hScroll->GetRange()), 96);
+	vScroll->SetScrollbar(vScroll->GetThumbPosition(), ny / std::max(1, vScroll->GetRange()),
+	                      std::max(1, vScroll->GetRange()), 96);
 }
 
 void MapWindow::UpdateDialogs(bool show)
 {
-	if(replaceItemsDialog)
-		replaceItemsDialog->Show(show);
+	if (replaceItemsDialog) replaceItemsDialog->Show(show);
 }
 
 void MapWindow::GetViewStart(int* x, int* y)
@@ -137,20 +138,19 @@ Position MapWindow::GetScreenCenterPosition()
 
 void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndicator)
 {
-	if(!position.isValid())
-		return;
+	if (!position.isValid()) return;
 
 	int x = position.x * rme::TileSize;
 	int y = position.y * rme::TileSize;
 	int z = position.z;
-	if(position.z < 8) {
+	if (position.z < 8) {
 		// Compensate for floor offset above ground
 		x -= (rme::MapGroundLayer - z) * rme::TileSize;
 		y -= (rme::MapGroundLayer - z) * rme::TileSize;
 	}
 
 	const Position& center = GetScreenCenterPosition();
-	if(previous_position != center) {
+	if (previous_position != center) {
 		previous_position.x = center.x;
 		previous_position.y = center.y;
 		previous_position.z = center.z;
@@ -159,18 +159,14 @@ void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndic
 	Scroll(x, y, true);
 	canvas->ChangeFloor(z);
 
-	if(showIndicator)
-		canvas->ShowPositionIndicator(position);
+	if (showIndicator) canvas->ShowPositionIndicator(position);
 }
 
-void MapWindow::GoToPreviousCenterPosition()
-{
-	SetScreenCenterPosition(previous_position, true);
-}
+void MapWindow::GoToPreviousCenterPosition() { SetScreenCenterPosition(previous_position, true); }
 
 void MapWindow::Scroll(int x, int y, bool center)
 {
-	if(center) {
+	if (center) {
 		int windowSizeX, windowSizeY;
 
 		canvas->GetSize(&windowSizeX, &windowSizeY);
@@ -185,15 +181,12 @@ void MapWindow::Scroll(int x, int y, bool center)
 
 void MapWindow::ScrollRelative(int x, int y)
 {
-	hScroll->SetThumbPosition(hScroll->GetThumbPosition()+x);
-	vScroll->SetThumbPosition(vScroll->GetThumbPosition()+y);
+	hScroll->SetThumbPosition(hScroll->GetThumbPosition() + x);
+	vScroll->SetThumbPosition(vScroll->GetThumbPosition() + y);
 	g_gui.UpdateMinimap();
 }
 
-void MapWindow::OnGem(wxCommandEvent& WXUNUSED(event))
-{
-	g_gui.SwitchMode();
-}
+void MapWindow::OnGem(wxCommandEvent& WXUNUSED(event)) { g_gui.SwitchMode(); }
 
 void MapWindow::OnSize(wxSizeEvent& event)
 {
@@ -201,43 +194,40 @@ void MapWindow::OnSize(wxSizeEvent& event)
 	event.Skip();
 }
 
-void MapWindow::OnScroll(wxScrollEvent& event)
-{
-	Refresh();
-}
+void MapWindow::OnScroll(wxScrollEvent& event) { Refresh(); }
 
 void MapWindow::OnScrollLineDown(wxScrollEvent& event)
 {
-	if(event.GetOrientation() == wxHORIZONTAL)
-		ScrollRelative(96,0);
+	if (event.GetOrientation() == wxHORIZONTAL)
+		ScrollRelative(96, 0);
 	else
-		ScrollRelative(0,96);
+		ScrollRelative(0, 96);
 	Refresh();
 }
 
 void MapWindow::OnScrollLineUp(wxScrollEvent& event)
 {
-	if(event.GetOrientation() == wxHORIZONTAL)
-		ScrollRelative(-96,0);
+	if (event.GetOrientation() == wxHORIZONTAL)
+		ScrollRelative(-96, 0);
 	else
-		ScrollRelative(0,-96);
+		ScrollRelative(0, -96);
 	Refresh();
 }
 
 void MapWindow::OnScrollPageDown(wxScrollEvent& event)
 {
-	if(event.GetOrientation() == wxHORIZONTAL)
-		ScrollRelative(5*96,0);
+	if (event.GetOrientation() == wxHORIZONTAL)
+		ScrollRelative(5 * 96, 0);
 	else
-		ScrollRelative(0,5*96);
+		ScrollRelative(0, 5 * 96);
 	Refresh();
 }
 
 void MapWindow::OnScrollPageUp(wxScrollEvent& event)
 {
-	if(event.GetOrientation() == wxHORIZONTAL)
-		ScrollRelative(-5*96,0);
+	if (event.GetOrientation() == wxHORIZONTAL)
+		ScrollRelative(-5 * 96, 0);
 	else
-		ScrollRelative(0,-5*96);
+		ScrollRelative(0, -5 * 96);
 	Refresh();
 }

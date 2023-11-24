@@ -15,11 +15,10 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "complexitem.h"
 
 #include "iomap.h"
+#include "main.h"
 
 // Container
 Container::Container(const uint16_t type) : Item(type, 0)
@@ -29,7 +28,7 @@ Container::Container(const uint16_t type) : Item(type, 0)
 
 Container::~Container()
 {
-	for(Item* item : contents) {
+	for (Item* item : contents) {
 		delete item;
 	}
 	contents.clear();
@@ -38,8 +37,8 @@ Container::~Container()
 Item* Container::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
-	if(Container* container = copy->getContainer()) {
-		for(const Item* item : contents) {
+	if (Container* container = copy->getContainer()) {
+		for (const Item* item : contents) {
 			container->contents.push_back(item->deepCopy());
 		}
 	}
@@ -48,15 +47,14 @@ Item* Container::deepCopy() const
 
 Item* Container::getItem(size_t index) const
 {
-	if(index >= 0 && index < contents.size()) {
+	if (index >= 0 && index < contents.size()) {
 		return contents.at(index);
 	}
 	return nullptr;
 }
 
 // Teleport
-Teleport::Teleport(const uint16_t type) : Item(type, 0),
-	destination(0, 0, 0)
+Teleport::Teleport(const uint16_t type) : Item(type, 0), destination(0, 0, 0)
 {
 	////
 }
@@ -64,15 +62,14 @@ Teleport::Teleport(const uint16_t type) : Item(type, 0),
 Item* Teleport::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
-	if(Teleport* teleport = copy->getTeleport()) {
+	if (Teleport* teleport = copy->getTeleport()) {
 		teleport->setDestination(destination);
 	}
 	return copy;
 }
 
 // Door
-Door::Door(const uint16_t type) : Item(type, 0),
-	doorId(0)
+Door::Door(const uint16_t type) : Item(type, 0), doorId(0)
 {
 	////
 }
@@ -80,15 +77,14 @@ Door::Door(const uint16_t type) : Item(type, 0),
 Item* Door::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
-	if(Door* door = copy->getDoor()) {
+	if (Door* door = copy->getDoor()) {
 		door->doorId = doorId;
 	}
 	return copy;
 }
 
 // Depot
-Depot::Depot(const uint16_t type) : Item(type, 0),
-	depotId(0)
+Depot::Depot(const uint16_t type) : Item(type, 0), depotId(0)
 {
 	////
 }
@@ -96,7 +92,7 @@ Depot::Depot(const uint16_t type) : Item(type, 0),
 Item* Depot::deepCopy() const
 {
 	Item* copy = Item::deepCopy();
-	if(Depot* depot = copy->getDepot()) {
+	if (Depot* depot = copy->getDepot()) {
 		depot->depotId = depotId;
 	}
 	return copy;

@@ -128,7 +128,7 @@ public:
 	virtual bool saveMap(Map& map, const FileName& identifier);
 
 protected:
-	static bool getVersionInfo(NodeFileReadHandle* f,  MapVersion& out_ver);
+	static bool getVersionInfo(NodeFileReadHandle* f, MapVersion& out_ver);
 
 	virtual bool loadMap(Map& map, NodeFileReadHandle& handle);
 	bool loadSpawns(Map& map, const FileName& dir);

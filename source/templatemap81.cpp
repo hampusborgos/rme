@@ -16,12 +16,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "main.h"
-
-
-
 #include "templates.h"
 
-ConversionMap getReplacementMapFrom800To810() {
+ConversionMap getReplacementMapFrom800To810()
+{
 	ConversionMap replacement_map;
 	std::vector<uint16_t> veckey, vecval;
 

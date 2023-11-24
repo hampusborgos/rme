@@ -16,11 +16,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "main.h"
-
-
 #include "templates.h"
 
-ConversionMap getReplacementMapFrom760To740() {
+ConversionMap getReplacementMapFrom760To740()
+{
 	ConversionMap replacement_map;
 	return replacement_map;
 }

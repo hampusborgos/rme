@@ -23,7 +23,8 @@
 
 class LightDrawer
 {
-	struct Light {
+	struct Light
+	{
 		uint16_t map_x = 0;
 		uint16_t map_y = 0;
 		uint8_t color = 0;
@@ -44,7 +45,8 @@ private:
 	void createGLTexture();
 	void unloadGLTexture();
 
-	inline float calculateIntensity(int map_x, int map_y, const Light& light) {
+	inline float calculateIntensity(int map_x, int map_y, const Light& light)
+	{
 		int dx = map_x - light.map_x;
 		int dy = map_y - light.map_y;
 		float distance = std::sqrt(dx * dx + dy * dy);

@@ -18,12 +18,13 @@
 #ifndef RME_ITEM_H_
 #define RME_ITEM_H_
 
-#include "items.h"
 #include "iomap_otbm.h"
-//#include "iomap_otmm.h"
+#include "items.h"
+// #include "iomap_otmm.h"
 #include "item_attributes.h"
 
-enum ITEMPROPERTY {
+enum ITEMPROPERTY
+{
 	BLOCKSOLID,
 	HASHEIGHT,
 	BLOCKPROJECTILE,
@@ -80,11 +81,11 @@ struct SpriteLight;
 class Item : public ItemAttributes
 {
 public:
-	//Factory member to create item of right type based on type
+	// Factory member to create item of right type based on type
 	static Item* Create(uint16_t id, uint16_t subtype = 0xFFFF);
 	static Item* Create(pugi::xml_node);
 	static Item* Create_OTBM(const IOMap& maphandle, BinaryNode* stream);
-	//static Item* Create_OTMM(const IOMap& maphandle, BinaryNode* stream);
+	// static Item* Create_OTMM(const IOMap& maphandle, BinaryNode* stream);
 
 protected:
 	// Constructor for items
@@ -93,7 +94,7 @@ protected:
 public:
 	virtual ~Item();
 
-// Deep copy thingy
+	// Deep copy thingy
 	virtual Item* deepCopy() const;
 
 	// Get memory footprint size
@@ -153,7 +154,7 @@ public:
 	int getAttack() const { return getItemType().attack; }
 	int getArmor() const { return getItemType().armor; }
 	int getDefense() const { return getItemType().defense; }
-	//int getSlotPosition() const { return g_items.getItemType(id).slot_position; }
+	// int getSlotPosition() const { return g_items.getItemType(id).slot_position; }
 
 	// Item g_settings
 	bool canHoldText() const;
@@ -191,15 +192,15 @@ public:
 	bool isCharged() const { return isClientCharged() || isExtraCharged(); }
 	bool isFluidContainer() const { return (getItemType().isFluidContainer()); }
 	bool isAlwaysOnBottom() const { return getItemType().alwaysOnBottom; }
-	int  getTopOrder() const { return getItemType().alwaysOnTopOrder; }
+	int getTopOrder() const { return getItemType().alwaysOnTopOrder; }
 	bool isGroundTile() const { return getItemType().isGroundTile(); }
 	bool isSplash() const { return getItemType().isSplash(); }
 	bool isMagicField() const { return getItemType().isMagicField(); }
 	bool isNotMoveable() const { return !getItemType().moveable; }
 	bool isMoveable() const { return getItemType().moveable; }
 	bool isPickupable() const { return getItemType().pickupable; }
-	//bool isWeapon() const { return (getItemType().weaponType != WEAPON_NONE && g_items[id].weaponType != WEAPON_AMMO); }
-	//bool isUseable() const { return getItemType().useable; }
+	// bool isWeapon() const { return (getItemType().weaponType != WEAPON_NONE && g_items[id].weaponType !=
+	// WEAPON_AMMO); } bool isUseable() const { return getItemType().useable; }
 	bool isHangable() const { return getItemType().isHangable; }
 	bool isRoteable() const { return getItemType().rotable && getItemType().rotateTo; }
 	bool hasCharges() const { return getItemType().charges != 0; }
@@ -224,12 +225,15 @@ public:
 
 	// Selection
 	bool isSelected() const { return selected; }
-	void select() {selected = true; }
-	void deselect() {selected = false; }
-	void toggleSelection() {selected =! selected; }
+	void select() { selected = true; }
+	void deselect() { selected = false; }
+	void toggleSelection() { selected = !selected; }
 
 	// Item properties!
-	virtual bool isComplex() const { return attributes && attributes->size(); } // If this item requires full save (not compact)
+	virtual bool isComplex() const
+	{
+		return attributes && attributes->size();
+	} // If this item requires full save (not compact)
 
 	// Weight
 	bool hasWeight() { return isPickupable(); }
@@ -256,23 +260,24 @@ public:
 	void animate();
 	int getFrame() const { return frame; }
 
-	void doRotate() {
-		if(isRoteable()) {
+	void doRotate()
+	{
+		if (isRoteable()) {
 			setID(getItemType().rotateTo);
 		}
 	}
 
 protected:
-	uint16_t id;  // the same id as in ItemType
+	uint16_t id; // the same id as in ItemType
 	// Subtype is either fluid type, count, subtype or charges
 	uint16_t subtype;
 	bool selected;
 	int frame;
 
 private:
-	Item& operator=(const Item& i);// Can't copy
-	Item(const Item &i); // Can't copy-construct
-	Item& operator==(const Item& i);// Can't compare
+	Item& operator=(const Item& i);  // Can't copy
+	Item(const Item& i);             // Can't copy-construct
+	Item& operator==(const Item& i); // Can't compare
 };
 
 typedef std::vector<Item*> ItemVector;
@@ -280,40 +285,40 @@ typedef std::list<Item*> ItemList;
 
 Item* transformItem(Item* old_item, uint16_t new_id, Tile* parent = nullptr);
 
-inline int Item::getCount() const {
-	if(isStackable() || isExtraCharged() || isClientCharged()) {
+inline int Item::getCount() const
+{
+	if (isStackable() || isExtraCharged() || isClientCharged()) {
 		return subtype;
 	}
 	return 1;
 }
 
-inline uint16_t Item::getUniqueID() const {
+inline uint16_t Item::getUniqueID() const
+{
 	const int32_t* a = getIntegerAttribute("uid");
-	if(a)
-		return *a;
+	if (a) return *a;
 	return 0;
 }
 
-inline uint16_t Item::getActionID() const {
+inline uint16_t Item::getActionID() const
+{
 	const int32_t* a = getIntegerAttribute("aid");
-	if(a)
-		return *a;
+	if (a) return *a;
 	return 0;
 }
 
-inline std::string Item::getText() const {
+inline std::string Item::getText() const
+{
 	const std::string* a = getStringAttribute("text");
-	if(a)
-		return *a;
+	if (a) return *a;
 	return "";
 }
 
-inline std::string Item::getDescription() const {
+inline std::string Item::getDescription() const
+{
 	const std::string* a = getStringAttribute("desc");
-	if(a)
-		return *a;
+	if (a) return *a;
 	return "";
 }
-
 
 #endif

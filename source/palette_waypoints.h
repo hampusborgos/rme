@@ -20,10 +20,11 @@
 
 #include <wx/listctrl.h>
 
-#include "waypoints.h"
 #include "palette_common.h"
+#include "waypoints.h"
 
-class WaypointPalettePanel : public PalettePanel {
+class WaypointPalettePanel : public PalettePanel
+{
 public:
 	WaypointPalettePanel(wxWindow* parent, wxWindowID id = wxID_ANY);
 	~WaypointPalettePanel();
@@ -46,6 +47,7 @@ public:
 	void OnSwitchIn();
 	// Called when this page is hidden
 	void OnSwitchOut();
+
 public:
 	// wxWidgets event handling
 	void OnClickWaypoint(wxListEvent& event);
@@ -55,6 +57,7 @@ public:
 	void OnClickRemoveWaypoint(wxCommandEvent& event);
 
 	void SetMap(Map* map);
+
 protected:
 	Map* map;
 	wxListCtrl* waypoint_list;

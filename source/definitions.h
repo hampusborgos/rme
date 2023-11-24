@@ -22,31 +22,32 @@
 
 // Version info
 // xxyyzzt (major, minor, subversion)
-#define __RME_VERSION_MAJOR__      3
-#define __RME_VERSION_MINOR__      8
-#define __RME_SUBVERSION__         0
+#define __RME_VERSION_MAJOR__ 3
+#define __RME_VERSION_MINOR__ 8
+#define __RME_SUBVERSION__ 0
 
-#define __LIVE_NET_VERSION__       5
+#define __LIVE_NET_VERSION__ 5
 
-#define MAKE_VERSION_ID(major, minor, subversion) \
-	((major)      * 10000000 + \
-     (minor)      * 100000 + \
-     (subversion) * 1000)
+#define MAKE_VERSION_ID(major, minor, subversion) ((major) * 10000000 + (minor) * 100000 + (subversion) * 1000)
 
-#define __RME_VERSION_ID__ MAKE_VERSION_ID(\
-	__RME_VERSION_MAJOR__, \
-    __RME_VERSION_MINOR__, \
-    __RME_SUBVERSION__)
+#define __RME_VERSION_ID__ MAKE_VERSION_ID(__RME_VERSION_MAJOR__, __RME_VERSION_MINOR__, __RME_SUBVERSION__)
 
 #ifdef __EXPERIMENTAL__
-#   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__) + " BETA")
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__ << " BETA")
+#define __RME_VERSION__ \
+	std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__) + " BETA")
+#define __W_RME_VERSION__ \
+	(wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__ << " BETA")
 #elif __SNAPSHOT__
-#   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__) + " - SNAPSHOT")
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__ << " - SNAPSHOT")
+#define __RME_VERSION__ \
+	std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__) + \
+	            " - SNAPSHOT")
+#define __W_RME_VERSION__ \
+	(wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__ << " - SNAPSHOT")
 #else
-#   define __RME_VERSION__ std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__))
-#   define __W_RME_VERSION__ (wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__)
+#define __RME_VERSION__ \
+	std::string(i2s(__RME_VERSION_MAJOR__) + "." + i2s(__RME_VERSION_MINOR__) + "." + i2s(__RME_SUBVERSION__))
+#define __W_RME_VERSION__ \
+	(wxString() << __RME_VERSION_MAJOR__ << "." << __RME_VERSION_MINOR__ << "." << __RME_SUBVERSION__)
 #endif
 // OS
 
@@ -54,59 +55,60 @@
 #define ASSETS_NAME "Tibia"
 
 #ifdef __VISUALC__
-#pragma warning(disable:4996) // Stupid MSVC complaining 'bout "unsafe" functions
-#pragma warning(disable:4800) // Bool conversion warning
-#pragma warning(disable:4100) // Unused parameter warning ( I like to name unused stuff... )
-#pragma warning(disable:4706) // Assignment within conditional expression
+#pragma warning(disable : 4996) // Stupid MSVC complaining 'bout "unsafe" functions
+#pragma warning(disable : 4800) // Bool conversion warning
+#pragma warning(disable : 4100) // Unused parameter warning ( I like to name unused stuff... )
+#pragma warning(disable : 4706) // Assignment within conditional expression
 #endif
 
 #ifndef FORCEINLINE
-#   ifdef __VISUALC__
-#       define FORCEINLINE __forceinline
-#   else
-#       define FORCEINLINE inline
-#   endif
+#ifdef __VISUALC__
+#define FORCEINLINE __forceinline
+#else
+#define FORCEINLINE inline
+#endif
 #endif
 
 // Debug mode?
 #if defined __DEBUG__ || defined _DEBUG || defined __DEBUG_MODE__
-#	undef __DEBUG_MODE__
-#	define __DEBUG_MODE__ 1
-#	undef _DEBUG
-#	define _DEBUG 1
-#	undef __DEBUG__
-#	define __DEBUG__ 1
+#undef __DEBUG_MODE__
+#define __DEBUG_MODE__ 1
+#undef _DEBUG
+#define _DEBUG 1
+#undef __DEBUG__
+#define __DEBUG__ 1
 #else
-#   ifndef __RELEASE__
-#       define __RELEASE__ 1
-#   endif
-#	ifndef NDEBUG
-#		define NDEBUG 1
-#	endif
+#ifndef __RELEASE__
+#define __RELEASE__ 1
+#endif
+#ifndef NDEBUG
+#define NDEBUG 1
+#endif
 #endif
 
 #ifdef __RELEASE__
-#   ifdef __VISUALC__
-#       define _SCL_SECURE 0
-#       define _SECURE_SCL 0 // They can't even decide on a coherent define interface!
-#       define _HAS_ITERATOR_DEBUGGING 0
-#   endif
+#ifdef __VISUALC__
+#define _SCL_SECURE 0
+#define _SECURE_SCL 0 // They can't even decide on a coherent define interface!
+#define _HAS_ITERATOR_DEBUGGING 0
+#endif
 #endif
 
 #ifndef _DONT_USE_UPDATER_
-#   if defined __WINDOWS__ && !defined _USE_UPDATER_
-#       define _USE_UPDATER_
-#    endif
+#if defined __WINDOWS__ && !defined _USE_UPDATER_
+#define _USE_UPDATER_
+#endif
 #endif
 
 #ifndef _DONT_USE_PROCESS_COM
-#   if defined __WINDOWS__ && !defined _USE_PROCESS_COM
-#       define _USE_PROCESS_COM
-#   endif
+#if defined __WINDOWS__ && !defined _USE_PROCESS_COM
+#define _USE_PROCESS_COM
+#endif
 #endif
 
 #define MAP_LOAD_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm;*.otgz)|*.otbm;*.otgz"
-#define MAP_SAVE_FILE_WILDCARD_OTGZ "OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz"
+#define MAP_SAVE_FILE_WILDCARD_OTGZ \
+	"OpenTibia Binary Map (*.otbm)|*.otbm|Compressed OpenTibia Binary Map (*.otgz)|*.otgz"
 
 #define MAP_LOAD_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
 #define MAP_SAVE_FILE_WILDCARD "OpenTibia Binary Map (*.otbm)|*.otbm"
@@ -118,22 +120,14 @@
 // increment & decrement definitions
 #define IMPLEMENT_INCREMENT_OP(Type) \
 	namespace { \
-		Type& operator++(Type& type) { \
-			return (type = static_cast<Type>(type + 1)); \
-		} \
-		Type operator++(Type& type, int) { \
-			return static_cast<Type>((++type) - 1); \
-		} \
+	Type& operator++(Type& type) { return (type = static_cast<Type>(type + 1)); } \
+	Type operator++(Type& type, int) { return static_cast<Type>((++type) - 1); } \
 	}
 
 #define IMPLEMENT_DECREMENT_OP(Type) \
 	namespace { \
-		Type& operator--(Type& type) { \
-			return (type = static_cast<Type>(type - 1)); \
-		} \
-		Type operator--(Type& type, int) { \
-			return static_cast<Type>((--type) + 1); \
-		} \
+	Type& operator--(Type& type) { return (type = static_cast<Type>(type - 1)); } \
+	Type operator--(Type& type, int) { return static_cast<Type>((--type) + 1); } \
 	}
 
 #endif

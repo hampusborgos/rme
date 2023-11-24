@@ -18,17 +18,16 @@
 #ifndef RME_GUI_H_
 #define RME_GUI_H_
 
-#include "graphics.h"
-#include "position.h"
-
+#include "brush_enums.h"
+#include "client_version.h"
 #include "copybuffer.h"
 #include "dcbutton.h"
-#include "brush_enums.h"
-#include "gui_ids.h"
 #include "editor_tabs.h"
+#include "graphics.h"
+#include "gui_ids.h"
 #include "map_tab.h"
 #include "palette_window.h"
-#include "client_version.h"
+#include "position.h"
 
 class BaseMap;
 class Map;
@@ -63,18 +62,14 @@ extern const wxEventType EVT_UPDATE_MENUS;
 extern const wxEventType EVT_UPDATE_ACTIONS;
 
 #define EVT_ON_UPDATE_MENUS(id, fn) \
-    DECLARE_EVENT_TABLE_ENTRY( \
-        EVT_UPDATE_MENUS, id, wxID_ANY, \
-        (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent(wxCommandEventFunction, &fn), \
-        (wxObject*) nullptr \
-    ),
+	DECLARE_EVENT_TABLE_ENTRY(EVT_UPDATE_MENUS, id, wxID_ANY, \
+	                          (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent(wxCommandEventFunction, &fn), \
+	                          (wxObject*)nullptr),
 
 #define EVT_ON_UPDATE_ACTIONS(id, fn) \
-    DECLARE_EVENT_TABLE_ENTRY( \
-        EVT_UPDATE_ACTIONS, id, wxID_ANY, \
-        (wxObjectEventFunction)(wxEventFunction) wxStaticCastEvent(wxCommandEventFunction, &fn), \
-        (wxObject*) nullptr \
-    ),
+	DECLARE_EVENT_TABLE_ENTRY(EVT_UPDATE_ACTIONS, id, wxID_ANY, \
+	                          (wxObjectEventFunction)(wxEventFunction)wxStaticCastEvent(wxCommandEventFunction, &fn), \
+	                          (wxObject*)nullptr),
 
 class Hotkey
 {
@@ -87,8 +82,16 @@ public:
 
 	bool IsPosition() const { return type == POSITION; }
 	bool IsBrush() const { return type == BRUSH; }
-	Position GetPosition() const { ASSERT(IsPosition()); return pos; }
-	std::string GetBrushname() const { ASSERT(IsBrush()); return brushname; }
+	Position GetPosition() const
+	{
+		ASSERT(IsPosition());
+		return pos;
+	}
+	std::string GetBrushname() const
+	{
+		ASSERT(IsBrush());
+		return brushname;
+	}
 
 private:
 	enum
@@ -115,8 +118,8 @@ public: // dtor and ctor
 	~GUI();
 
 private:
-	GUI(const GUI& g_gui); // Don't copy me
-	GUI& operator=(const GUI& g_gui); // Don't assign me
+	GUI(const GUI& g_gui);             // Don't copy me
+	GUI& operator=(const GUI& g_gui);  // Don't assign me
 	bool operator==(const GUI& g_gui); // Don't compare me
 
 public:
@@ -152,9 +155,9 @@ public:
 	 */
 	void SetLoadScale(int32_t from, int32_t to);
 
-	void ShowWelcomeDialog(const wxBitmap &icon);
+	void ShowWelcomeDialog(const wxBitmap& icon);
 	void FinishWelcomeDialog();
-    bool IsWelcomeDialogShown();
+	bool IsWelcomeDialogShown();
 
 	/**
 	 * Destroys (hides) the current loading bar.
@@ -172,8 +175,8 @@ public:
 	// This sends the event to the main window (redirecting from other controls)
 	void AddPendingCanvasEvent(wxEvent& event);
 
-    void OnWelcomeDialogClosed(wxCloseEvent &event);
-    void OnWelcomeDialogAction(wxCommandEvent &event);
+	void OnWelcomeDialogClosed(wxCloseEvent& event);
+	void OnWelcomeDialogAction(wxCommandEvent& event);
 
 protected:
 	void DisableRendering() { ++disabled_counter; }
@@ -188,8 +191,10 @@ public:
 	void ShowToolbar(ToolBarID id, bool show);
 	void SetStatusText(wxString text);
 
-	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
-	long PopupDialog(wxString title, wxString text, long style, wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
+	long PopupDialog(wxWindow* parent, wxString title, wxString text, long style,
+	                 wxString configsavename = wxEmptyString, uint32_t configsavevalue = 0);
+	long PopupDialog(wxString title, wxString text, long style, wxString configsavename = wxEmptyString,
+	                 uint32_t configsavevalue = 0);
 
 	void ListDialog(wxWindow* parent, wxString title, const wxArrayString& vec);
 	void ListDialog(const wxString& title, const wxArrayString& vec) { ListDialog(nullptr, title, vec); }
@@ -262,7 +267,6 @@ public:
 	void DecreaseBrushSize(bool wrap = false);
 	void IncreaseBrushSize(bool wrap = false);
 
-
 	// Fetch different useful directories
 	static wxString GetExecDirectory();
 	static wxString GetDataDirectory();
@@ -332,7 +336,8 @@ public:
 
 protected:
 	bool LoadDataFiles(wxString& error, wxArrayString& warnings);
-	ClientVersion* getLoadedVersion() const {
+	ClientVersion* getLoadedVersion() const
+	{
 		return loaded_version == CLIENT_VERSION_NONE ? nullptr : ClientVersion::get(loaded_version);
 	}
 
@@ -382,7 +387,7 @@ public:
 	ActionsHistoryWindow* actions_history_window;
 	GraphicManager gfx;
 
-	BaseMap* secondary_map; // A buffer map
+	BaseMap* secondary_map;     // A buffer map
 	BaseMap* doodad_buffer_map; // The map in which doodads are temporarily stored
 
 	//=========================================================================
@@ -407,7 +412,6 @@ public:
 	FlagBrush* pvp_brush;
 
 protected:
-
 	//=========================================================================
 	// Global GUI state
 	//=========================================================================
@@ -459,15 +463,10 @@ extern GUI g_gui;
 class RenderingLock
 {
 	bool acquired;
+
 public:
-	RenderingLock() : acquired(true)
-	{
-		g_gui.DisableRendering();
-	}
-	~RenderingLock()
-	{
-		release();
-	}
+	RenderingLock() : acquired(true) { g_gui.DisableRendering(); }
+	~RenderingLock() { release(); }
 	void release()
 	{
 		g_gui.EnableRendering();
@@ -483,24 +482,12 @@ public:
 class ScopedLoadingBar
 {
 public:
-	ScopedLoadingBar(wxString message, bool canCancel = false)
-	{
-		g_gui.CreateLoadBar(message, canCancel);
-	}
-	~ScopedLoadingBar()
-	{
-		g_gui.DestroyLoadBar();
-	}
+	ScopedLoadingBar(wxString message, bool canCancel = false) { g_gui.CreateLoadBar(message, canCancel); }
+	~ScopedLoadingBar() { g_gui.DestroyLoadBar(); }
 
-	void SetLoadDone(int32_t done, const wxString& newmessage = wxEmptyString)
-	{
-		g_gui.SetLoadDone(done, newmessage);
-	}
+	void SetLoadDone(int32_t done, const wxString& newmessage = wxEmptyString) { g_gui.SetLoadDone(done, newmessage); }
 
-	void SetLoadScale(int32_t from, int32_t to)
-	{
-		g_gui.SetLoadScale(from, to);
-	}
+	void SetLoadScale(int32_t from, int32_t to) { g_gui.SetLoadScale(from, to); }
 };
 
 #define UnnamedRenderingLock() RenderingLock __unnamed_rendering_lock_##__LINE__

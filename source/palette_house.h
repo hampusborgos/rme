@@ -22,7 +22,8 @@
 
 class House;
 
-class HousePalettePanel : public PalettePanel {
+class HousePalettePanel : public PalettePanel
+{
 public:
 	HousePalettePanel(wxWindow* parent, wxWindowID id = wxID_ANY);
 	~HousePalettePanel();
@@ -46,6 +47,7 @@ public:
 	void OnLayoutFixTimer(wxTimerEvent& event);
 
 	void SetMap(Map* map);
+
 protected:
 	// Internal use
 	void SaveHouse();
@@ -56,6 +58,7 @@ protected:
 
 	void SelectHouseBrush();
 	void SelectExitBrush();
+
 public:
 	// wxWidgets event handling
 	void OnTownChange(wxCommandEvent& event);
@@ -67,10 +70,10 @@ public:
 	void OnClickEditHouse(wxCommandEvent& event);
 	void OnClickRemoveHouse(wxCommandEvent& event);
 
-	#ifdef __APPLE__
-	//Used for detecting a deselect
+#ifdef __APPLE__
+	// Used for detecting a deselect
 	void OnListBoxClick(wxMouseEvent& event);
-	#endif
+#endif
 
 protected:
 	Map* map;
@@ -97,6 +100,7 @@ public:
 
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
+
 protected:
 	Map* map;
 	House* what_house;

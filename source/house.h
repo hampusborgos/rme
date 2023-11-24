@@ -39,7 +39,7 @@ public:
 
 	uint32_t id;
 	int rent;
-	//HouseDoorList doorList;
+	// HouseDoorList doorList;
 	std::string name;
 	uint32_t townid;
 	bool guildhall;
@@ -60,7 +60,8 @@ protected:
 
 typedef std::map<uint32_t, House*> HouseMap;
 
-class Houses {
+class Houses
+{
 public:
 	Houses(Map& map);
 	~Houses();
@@ -83,6 +84,7 @@ public:
 	House* getHouse(uint32_t houseid);
 	const House* getHouse(uint32_t houseid) const;
 	uint32_t getEmptyID();
+
 protected:
 	Map& map;
 	uint32_t max_house_id;

@@ -15,17 +15,16 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "waypoint_brush.h"
-#include "waypoints.h"
+
 #include "basemap.h"
+#include "main.h"
+#include "waypoints.h"
 
 //=============================================================================
 // Waypoint Brush
 
-WaypointBrush::WaypointBrush() :
-	Brush()
+WaypointBrush::WaypointBrush() : Brush()
 {
 	////
 }
@@ -37,22 +36,16 @@ WaypointBrush::~WaypointBrush()
 
 void WaypointBrush::setWaypoint(Waypoint* wp)
 {
-	if(wp) {
+	if (wp) {
 		waypoint_name = wp->name;
 	} else {
 		waypoint_name = "";
 	}
 }
 
-std::string WaypointBrush::getWaypoint() const
-{
-	return waypoint_name;
-}
+std::string WaypointBrush::getWaypoint() const { return waypoint_name; }
 
-bool WaypointBrush::canDraw(BaseMap* map, const Position& position) const
-{
-	return map->getTile(position) != nullptr;
-}
+bool WaypointBrush::canDraw(BaseMap* map, const Position& position) const { return map->getTile(position) != nullptr; }
 
 void WaypointBrush::undraw(BaseMap* map, Tile* tile)
 {

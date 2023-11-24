@@ -18,11 +18,10 @@
 #ifndef _RME_LIVE_TAB_H_
 #define _RME_LIVE_TAB_H_
 
-#include "main.h"
-
-#include "editor_tabs.h"
 #include "application.h"
+#include "editor_tabs.h"
 #include "live_server.h"
+#include "main.h"
 
 class wxGrid;
 
@@ -30,7 +29,8 @@ class MapTabbook;
 class LiveSocket;
 class LiveServer;
 
-class LiveLogTab : public EditorTab, public wxPanel {
+class LiveLogTab : public EditorTab, public wxPanel
+{
 public:
 	LiveLogTab(MapTabbook* aui, LiveSocket* socket);
 	~LiveLogTab();

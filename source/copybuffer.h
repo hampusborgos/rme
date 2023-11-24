@@ -20,8 +20,8 @@
 
 #include <wx/dataobj.h>
 
-#include "position.h"
 #include "basemap.h"
+#include "position.h"
 
 class Editor;
 

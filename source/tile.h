@@ -18,30 +18,33 @@
 #ifndef RME_TILE_H
 #define RME_TILE_H
 
-#include "position.h"
-#include "item.h"
-#include "map_region.h"
 #include <unordered_set>
 
-enum {
-	TILESTATE_NONE           = 0x0000,
+#include "item.h"
+#include "map_region.h"
+#include "position.h"
+
+enum
+{
+	TILESTATE_NONE = 0x0000,
 	TILESTATE_PROTECTIONZONE = 0x0001,
-	TILESTATE_DEPRECATED     = 0x0002, // Reserved
-	TILESTATE_NOPVP          = 0x0004,
-	TILESTATE_NOLOGOUT       = 0x0008,
-	TILESTATE_PVPZONE        = 0x0010,
-	TILESTATE_REFRESH        = 0x0020,
+	TILESTATE_DEPRECATED = 0x0002, // Reserved
+	TILESTATE_NOPVP = 0x0004,
+	TILESTATE_NOLOGOUT = 0x0008,
+	TILESTATE_PVPZONE = 0x0010,
+	TILESTATE_REFRESH = 0x0020,
 	// Internal
-	TILESTATE_SELECTED  = 0x0001,
-	TILESTATE_UNIQUE    = 0x0002,
-	TILESTATE_BLOCKING  = 0x0004,
+	TILESTATE_SELECTED = 0x0001,
+	TILESTATE_UNIQUE = 0x0002,
+	TILESTATE_BLOCKING = 0x0004,
 	TILESTATE_OP_BORDER = 0x0008, // If this is true, gravel will be placed on the tile!
 	TILESTATE_HAS_TABLE = 0x0010,
-	TILESTATE_HAS_CARPET= 0x0020,
-	TILESTATE_MODIFIED  = 0x0040,
+	TILESTATE_HAS_CARPET = 0x0020,
+	TILESTATE_MODIFIED = 0x0040,
 };
 
-enum : uint8_t {
+enum : uint8_t
+{
 	INVALID_MINIMAP_COLOR = 0xFF
 };
 
@@ -79,8 +82,8 @@ public:
 	int getZ() const noexcept { return location->getZ(); }
 
 	uint16_t getGroundSpeed() const noexcept;
-	
-public: //Functions
+
+public: // Functions
 	// Absorb the other tile into this tile
 	void merge(Tile* other);
 
@@ -100,8 +103,9 @@ public: //Functions
 
 	// PZ
 	bool isPZ() const { return testFlags(mapflags, TILESTATE_PROTECTIONZONE); }
-	void setPZ(bool pz) {
-		if(pz) {
+	void setPZ(bool pz)
+	{
+		if (pz) {
 			mapflags |= TILESTATE_PROTECTIONZONE;
 		} else {
 			mapflags &= ~TILESTATE_PROTECTIONZONE;
@@ -135,9 +139,7 @@ public: //Functions
 
 	bool hasItems() const noexcept { return ground || !items.empty(); }
 	bool hasGround() const noexcept { return ground != nullptr; }
-	bool hasBorders() const {
-		return !items.empty() && items.front()->isBorder();
-	}
+	bool hasBorders() const { return !items.empty() && items.front()->isBorder(); }
 
 	// Get the border brush of this tile
 	GroundBrush* getGroundBrush() const;
@@ -158,8 +160,9 @@ public: //Functions
 	Item* getCarpet() const;
 
 	bool hasOptionalBorder() const noexcept { return testFlags(statflags, TILESTATE_OP_BORDER); }
-	void setOptionalBorder(bool b) {
-		if(b) {
+	void setOptionalBorder(bool b)
+	{
+		if (b) {
 			statflags |= TILESTATE_OP_BORDER;
 		} else {
 			statflags &= ~TILESTATE_OP_BORDER;
@@ -206,8 +209,10 @@ public: //Functions
 	uint16_t getStatFlags() const noexcept;
 
 protected:
-	union {
-		struct {
+	union
+	{
+		struct
+		{
 			uint16_t mapflags;
 			uint16_t statflags;
 		};
@@ -217,62 +222,41 @@ protected:
 private:
 	uint8_t minimapColor;
 
-	Tile(const Tile& tile); // No copy
-	Tile& operator=(const Tile& i);// Can't copy
-	Tile& operator==(const Tile& i);// Can't compare
+	Tile(const Tile& tile);          // No copy
+	Tile& operator=(const Tile& i);  // Can't copy
+	Tile& operator==(const Tile& i); // Can't compare
 };
 
 typedef std::vector<Tile*> TileVector;
 typedef std::unordered_set<Tile*> TileSet;
 typedef std::list<Tile*> TileList;
 
-inline bool Tile::hasWall() const {
-	return getWall() != nullptr;
-}
+inline bool Tile::hasWall() const { return getWall() != nullptr; }
 
-inline bool Tile::isHouseTile() const noexcept {
-	return house_id != 0;
-}
+inline bool Tile::isHouseTile() const noexcept { return house_id != 0; }
 
-inline uint32_t Tile::getHouseID() const noexcept  {
-	return house_id;
-}
+inline uint32_t Tile::getHouseID() const noexcept { return house_id; }
 
-inline HouseExitList* Tile::getHouseExits() {
-	return location->getHouseExits();
-}
+inline HouseExitList* Tile::getHouseExits() { return location->getHouseExits(); }
 
-inline const HouseExitList* Tile::getHouseExits() const {
-	return location->getHouseExits();
-}
+inline const HouseExitList* Tile::getHouseExits() const { return location->getHouseExits(); }
 
-inline bool Tile::isHouseExit() const {
+inline bool Tile::isHouseExit() const
+{
 	const HouseExitList* exits = location->getHouseExits();
 	return exits && !exits->empty();
 }
 
-inline void Tile::setMapFlags(uint16_t flags) {
-	mapflags = flags | mapflags;
-}
+inline void Tile::setMapFlags(uint16_t flags) { mapflags = flags | mapflags; }
 
-inline void Tile::unsetMapFlags(uint16_t flags) {
-	mapflags &= ~flags;
-}
+inline void Tile::unsetMapFlags(uint16_t flags) { mapflags &= ~flags; }
 
-inline uint16_t Tile::getMapFlags() const noexcept {
-	return mapflags;
-}
+inline uint16_t Tile::getMapFlags() const noexcept { return mapflags; }
 
-inline void Tile::setStatFlags(uint16_t flags) {
-	statflags = flags | statflags;
-}
+inline void Tile::setStatFlags(uint16_t flags) { statflags = flags | statflags; }
 
-inline void Tile::unsetStatFlags(uint16_t flags) {
-	statflags &= ~flags;
-}
+inline void Tile::unsetStatFlags(uint16_t flags) { statflags &= ~flags; }
 
-inline uint16_t Tile::getStatFlags() const noexcept {
-	return statflags;
-}
+inline uint16_t Tile::getStatFlags() const noexcept { return statflags; }
 
 #endif

@@ -18,8 +18,8 @@
 #ifndef RME_SELECTION_H
 #define RME_SELECTION_H
 
-#include "position.h"
 #include "action.h"
+#include "position.h"
 
 class Action;
 class Editor;
@@ -63,7 +63,8 @@ public:
 	// Subthread means the session doesn't create a complete
 	// action, just part of one to be merged with the main thread
 	// later.
-	enum SessionFlags {
+	enum SessionFlags
+	{
 		NONE,
 		INTERNAL = 1,
 		SUBTHREAD = 2,
@@ -83,7 +84,11 @@ public:
 	TileSet::iterator begin() noexcept { return tiles.begin(); }
 	TileSet::iterator end() noexcept { return tiles.end(); }
 	const TileSet& getTiles() const noexcept { return tiles; }
-	Tile* getSelectedTile() { ASSERT(size() == 1); return *tiles.begin(); }
+	Tile* getSelectedTile()
+	{
+		ASSERT(size() == 1);
+		return *tiles.begin();
+	}
 
 private:
 	Editor& editor;

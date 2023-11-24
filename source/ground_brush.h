@@ -63,8 +63,11 @@ protected: // Members
 	bool use_only_optional; // If this is true, there will be no normal border under the gravel
 	bool randomize;
 
-	struct SpecificCaseBlock {
-		SpecificCaseBlock() : match_group(0), group_match_alignment(BORDER_NONE), to_replace_id(0), with_id(0), delete_all(false) {}
+	struct SpecificCaseBlock
+	{
+		SpecificCaseBlock() :
+		    match_group(0), group_match_alignment(BORDER_NONE), to_replace_id(0), with_id(0), delete_all(false)
+		{}
 		std::vector<uint16_t> items_to_match;
 		uint32_t match_group;
 		BorderType group_match_alignment;
@@ -73,7 +76,8 @@ protected: // Members
 		bool delete_all;
 	};
 
-	struct BorderBlock {
+	struct BorderBlock
+	{
 		bool outer;
 		bool super;
 		uint32_t to;
@@ -82,19 +86,19 @@ protected: // Members
 		std::vector<SpecificCaseBlock*> specific_cases;
 	};
 
-	struct ItemChanceBlock {
+	struct ItemChanceBlock
+	{
 		int chance;
 		uint16_t id;
 	};
 
-	struct BorderCluster {
+	struct BorderCluster
+	{
 		uint32_t alignment;
 		int32_t z;
 		const AutoBorder* border;
 
-		bool operator<(const BorderCluster& other) const {
-			return other.z > z;
-		}
+		bool operator<(const BorderCluster& other) const { return other.z > z; }
 	};
 
 	std::vector<BorderBlock*> borders;

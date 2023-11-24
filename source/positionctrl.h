@@ -23,8 +23,8 @@
 class PositionCtrl : public wxStaticBoxSizer
 {
 public:
-	PositionCtrl(wxWindow* parent, const wxString& label, int x, int y, int z,
-		int maxx = rme::MapMaxWidth, int maxy = rme::MapMaxHeight, int maxz = rme::MapMaxLayer);
+	PositionCtrl(wxWindow* parent, const wxString& label, int x, int y, int z, int maxx = rme::MapMaxWidth,
+	             int maxy = rme::MapMaxHeight, int maxz = rme::MapMaxLayer);
 	~PositionCtrl();
 
 	long GetX() const { return x_field->GetIntValue(); }

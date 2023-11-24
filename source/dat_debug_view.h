@@ -30,7 +30,6 @@ public:
 	void OnClickList(wxCommandEvent&);
 
 protected:
-
 	DatDebugViewListBox* item_list;
 	wxTextCtrl* search_field;
 

@@ -18,12 +18,11 @@
 #ifndef RME_PALETTE_COMMONS_H_
 #define RME_PALETTE_COMMONS_H_
 
-#include "main.h"
-
-#include "dcbutton.h"
-#include "tileset.h"
-#include "gui_ids.h"
 #include "common_windows.h"
+#include "dcbutton.h"
+#include "gui_ids.h"
+#include "main.h"
+#include "tileset.h"
 
 class GUI;
 class BrushButton;
@@ -34,7 +33,8 @@ class PaletteWindow;
 
 typedef TilesetCategoryType PaletteType;
 
-class BrushButton : public ItemToggleButton {
+class BrushButton : public ItemToggleButton
+{
 public:
 	BrushButton(wxWindow* parent, Brush* brush, RenderSize, uint32_t id = wxID_ANY);
 	BrushButton(wxWindow* parent, Brush* brush, RenderSize, EditorSprite* espr, uint32_t id = wxID_ANY);
@@ -47,7 +47,8 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-class PalettePanel : public wxPanel {
+class PalettePanel : public wxPanel
+{
 public:
 	PalettePanel(wxWindow* parent, wxWindowID id = wxID_ANY, long style = wxTAB_TRAVERSAL);
 	~PalettePanel();
@@ -90,6 +91,7 @@ public:
 	void OnRefreshTimer(wxTimerEvent&);
 
 	void RefreshOtherPalettes();
+
 protected:
 	typedef std::vector<PalettePanel*> ToolBarList;
 	ToolBarList tool_bars;
@@ -99,11 +101,11 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
-class BrushSizePanel : public PalettePanel {
+class BrushSizePanel : public PalettePanel
+{
 public:
 	BrushSizePanel(wxWindow* parent);
 	~BrushSizePanel() {}
-
 
 	// Interface
 	// Flushes this panel and consequent views will feature reloaded data
@@ -132,7 +134,7 @@ public:
 	void OnClickBrushSize4(wxCommandEvent& event) { OnClickBrushSize(4); }
 	void OnClickBrushSize6(wxCommandEvent& event) { OnClickBrushSize(6); }
 	void OnClickBrushSize8(wxCommandEvent& event) { OnClickBrushSize(8); }
-	void OnClickBrushSize11(wxCommandEvent& event){ OnClickBrushSize(11); }
+	void OnClickBrushSize11(wxCommandEvent& event) { OnClickBrushSize(11); }
 
 protected:
 	bool loaded;
@@ -152,7 +154,8 @@ protected:
 	DECLARE_EVENT_TABLE()
 };
 
-class BrushToolPanel : public PalettePanel {
+class BrushToolPanel : public PalettePanel
+{
 public:
 	BrushToolPanel(wxWindow* parent);
 	~BrushToolPanel();
@@ -191,6 +194,7 @@ public:
 	void OnClickNOPVPBrushButton(wxCommandEvent& event);
 	void OnClickNoLogoutBrushButton(wxCommandEvent& event);
 	void OnClickPVPZoneBrushButton(wxCommandEvent& event);
+
 public:
 	void DeselectAll();
 
@@ -215,7 +219,8 @@ public:
 	DECLARE_EVENT_TABLE()
 };
 
-class BrushThicknessPanel : public PalettePanel {
+class BrushThicknessPanel : public PalettePanel
+{
 public:
 	BrushThicknessPanel(wxWindow* parent);
 	~BrushThicknessPanel();
@@ -229,6 +234,7 @@ public:
 	// wxWidgets event handling
 	void OnScroll(wxScrollEvent& event);
 	void OnClickCustomThickness(wxCommandEvent& event);
+
 public:
 	wxSlider* slider;
 	wxCheckBox* use_button;

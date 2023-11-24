@@ -20,18 +20,21 @@
 
 // Enums
 
-enum {
+enum
+{
 	SELECT_CURRENT_FLOOR,
 	SELECT_ALL_FLOORS,
 	SELECT_VISIBLE_FLOORS,
 };
 
-enum BrushShape {
+enum BrushShape
+{
 	BRUSHSHAPE_CIRCLE,
 	BRUSHSHAPE_SQUARE,
 };
 
-enum EditorMode {
+enum EditorMode
+{
 	SELECTION_MODE,
 	DRAWING_MODE,
 };
@@ -181,7 +184,8 @@ enum EditorActionID
 	TOOLBAR_MOVEABLES
 };
 
-enum ToolBarID {
+enum ToolBarID
+{
 	TOOLBAR_STANDARD,
 	TOOLBAR_BRUSHES,
 	TOOLBAR_POSITION,

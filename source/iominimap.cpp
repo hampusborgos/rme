@@ -15,39 +15,31 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "iominimap.h"
-
-#include "tile.h"
-#include "filehandle.h"
-#include "editor.h"
-#include "gui.h"
 
 #include <wx/image.h>
 #include <zlib.h>
 
-void MinimapBlock::updateTile(int x, int y, const MinimapTile& tile)
-{
-	m_tiles[getTileIndex(x, y)] = tile;
-}
+#include "editor.h"
+#include "filehandle.h"
+#include "gui.h"
+#include "main.h"
+#include "tile.h"
+
+void MinimapBlock::updateTile(int x, int y, const MinimapTile& tile) { m_tiles[getTileIndex(x, y)] = tile; }
 
 IOMinimap::IOMinimap(Editor* editor, MinimapExportFormat format, MinimapExportMode mode, bool updateLoadbar) :
-	m_editor(editor),
-	m_format(format),
-	m_mode(mode),
-	m_updateLoadbar(updateLoadbar)
-{
-}
+    m_editor(editor), m_format(format), m_mode(mode), m_updateLoadbar(updateLoadbar)
+{}
 
 bool IOMinimap::saveMinimap(const std::string& directory, const std::string& name, int floor)
 {
-	if(m_mode == MinimapExportMode::AllFloors || m_mode == MinimapExportMode::SelectedArea) {
+	if (m_mode == MinimapExportMode::AllFloors || m_mode == MinimapExportMode::SelectedArea) {
 		floor = -1;
-	} else if(m_mode == MinimapExportMode::GroundFloor) {
+	} else if (m_mode == MinimapExportMode::GroundFloor) {
 		floor = rme::MapGroundLayer;
-	} else if(m_mode == MinimapExportMode::SpecificFloor) {
-		if(floor < rme::MapMinLayer || floor > rme::MapMaxLayer) {
+	} else if (m_mode == MinimapExportMode::SpecificFloor) {
+		if (floor < rme::MapMinLayer || floor > rme::MapMaxLayer) {
 			floor = rme::MapGroundLayer;
 		}
 	}
@@ -62,15 +54,14 @@ bool IOMinimap::saveMinimap(const std::string& directory, const std::string& nam
 
 bool IOMinimap::saveOtmm(const wxFileName& file)
 {
-	try
-	{
+	try {
 		FileWriteHandle writer(file.GetFullPath().ToStdString());
-		if(!writer.isOk()) {
-			//error("Unable to open file %s for save minimap", file);
+		if (!writer.isOk()) {
+			// error("Unable to open file %s for save minimap", file);
 			return false;
 		}
 
-		//TODO: compression flag with zlib
+		// TODO: compression flag with zlib
 		uint32_t flags = 0;
 
 		// header
@@ -94,8 +85,8 @@ bool IOMinimap::saveOtmm(const wxFileName& file)
 
 		readBlocks();
 
-		for(uint8_t z = 0; z <= rme::MapMaxLayer; ++z) {
-			for(auto& it : m_blocks[z]) {
+		for (uint8_t z = 0; z <= rme::MapMaxLayer; ++z) {
+			for (auto& it : m_blocks[z]) {
 				int index = it.first;
 				auto& block = it.second;
 
@@ -122,7 +113,7 @@ bool IOMinimap::saveOtmm(const wxFileName& file)
 
 		writer.flush();
 		writer.close();
-	} catch(std::exception& e) {
+	} catch (std::exception& e) {
 		m_error = wxString::Format("failed to save OTMM minimap: %s", e.what());
 		return false;
 	}
@@ -132,10 +123,8 @@ bool IOMinimap::saveOtmm(const wxFileName& file)
 
 bool IOMinimap::saveImage(const std::string& directory, const std::string& name)
 {
-	try
-	{
-		switch(m_mode)
-		{
+	try {
+		switch (m_mode) {
 			case MinimapExportMode::AllFloors:
 			case MinimapExportMode::GroundFloor:
 			case MinimapExportMode::SpecificFloor: {
@@ -147,9 +136,7 @@ bool IOMinimap::saveImage(const std::string& directory, const std::string& name)
 				break;
 			}
 		}
-	}
-	catch(std::bad_alloc&)
-	{
+	} catch (std::bad_alloc&) {
 		m_error = "There is not enough memory available to complete the operation.";
 	}
 
@@ -159,7 +146,7 @@ bool IOMinimap::saveImage(const std::string& directory, const std::string& name)
 bool IOMinimap::exportMinimap(const std::string& directory)
 {
 	auto& map = m_editor->getMap();
-	if(map.size() == 0) {
+	if (map.size() == 0) {
 		return true;
 	}
 
@@ -175,18 +162,18 @@ bool IOMinimap::exportMinimap(const std::string& directory)
 		rect.height = 0;
 	}
 
-	for(auto it = map.begin(); it != map.end(); ++it) {
+	for (auto it = map.begin(); it != map.end(); ++it) {
 		auto tile = (*it)->get();
-		if(!tile || (!tile->ground && tile->items.empty())) {
+		if (!tile || (!tile->ground && tile->items.empty())) {
 			continue;
 		}
 
 		const auto& position = tile->getPosition();
 		auto& rect = bounds[position.z];
-		if(position.x < rect.x) {
+		if (position.x < rect.x) {
 			rect.x = position.x;
 		}
-		if(position.y < rect.y) {
+		if (position.y < rect.y) {
 			rect.y = position.y;
 		}
 		if (position.x > rect.width) {
@@ -202,9 +189,9 @@ bool IOMinimap::exportMinimap(const std::string& directory)
 	uint8_t* pixels = new uint8_t[pixels_size];
 	auto image = new wxImage(image_size, image_size, pixels, true);
 
-	for(size_t z = min_z; z <= max_z; z++) {
+	for (size_t z = min_z; z <= max_z; z++) {
 		auto& rect = bounds[z];
-		if(rect.IsEmpty()) {
+		if (rect.IsEmpty()) {
 			continue;
 		}
 
@@ -221,14 +208,14 @@ bool IOMinimap::exportMinimap(const std::string& directory)
 				for (int y = 0; y < image_size; y++) {
 					for (int x = 0; x < image_size; x++) {
 						auto tile = map.getTile(w + x, h + y, z);
-						if(!tile || (!tile->ground && tile->items.empty())) {
+						if (!tile || (!tile->ground && tile->items.empty())) {
 							index += rme::PixelFormatRGB;
 							continue;
 						}
 						uint8_t color = tile->getMiniMapColor();
-						pixels[index  ] = (uint8_t)(static_cast<int>(color / 36) % 6 * 51); // red
-						pixels[index+1] = (uint8_t)(static_cast<int>(color / 6) % 6 * 51);  // green
-						pixels[index+2] = (uint8_t)(color % 6 * 51);                        // blue
+						pixels[index] = (uint8_t)(static_cast<int>(color / 36) % 6 * 51);    // red
+						pixels[index + 1] = (uint8_t)(static_cast<int>(color / 6) % 6 * 51); // green
+						pixels[index + 2] = (uint8_t)(color % 6 * 51);                       // blue
 						index += rme::PixelFormatRGB;
 						empty = false;
 					}
@@ -237,7 +224,7 @@ bool IOMinimap::exportMinimap(const std::string& directory)
 				if (!empty) {
 					image->SetData(pixels, true);
 					wxString extension = m_format == MinimapExportFormat::Png ? "png" : "bmp";
-					wxBitmapType type = m_format == MinimapExportFormat::Png ? wxBITMAP_TYPE_PNG : wxBITMAP_TYPE_BMP; 
+					wxBitmapType type = m_format == MinimapExportFormat::Png ? wxBITMAP_TYPE_PNG : wxBITMAP_TYPE_BMP;
 					wxFileName file = wxString::Format("%d-%d-%d.%s", h, w, z, extension);
 					file.Normalize(wxPATH_NORM_ALL, directory);
 					image->SaveFile(file.GetFullPath(), type);
@@ -261,42 +248,42 @@ bool IOMinimap::exportSelection(const std::string& directory, const std::string&
 	const auto& selection = m_editor->getSelection();
 	const auto& tiles = selection.getTiles();
 
-	for(auto tile : tiles) {
-		if(!tile || (!tile->ground && tile->items.empty())) {
+	for (auto tile : tiles) {
+		if (!tile || (!tile->ground && tile->items.empty())) {
 			continue;
 		}
 
 		const auto& position = tile->getPosition();
-		if(position.x < min_x) {
+		if (position.x < min_x) {
 			min_x = position.x;
 		}
-		if(position.x > max_x) {
+		if (position.x > max_x) {
 			max_x = position.x;
 		}
 
-		if(position.y < min_y) {
+		if (position.y < min_y) {
 			min_y = position.y;
 		}
-		if(position.y > max_y) {
+		if (position.y > max_y) {
 			max_y = position.y;
 		}
 
-		if(position.z < min_z) {
+		if (position.z < min_z) {
 			min_z = position.z;
 		}
-		if(position.z > max_z) {
+		if (position.z > max_z) {
 			max_z = position.z;
 		}
 	}
 
 	int numtiles = (max_x - min_x) * (max_y - min_y);
-	if(numtiles == 0) {
+	if (numtiles == 0) {
 		return false;
 	}
 
 	int image_width = max_x - min_x + 1;
 	int image_height = max_y - min_y + 1;
-	if(image_width > 2048 || image_height > 2048) {
+	if (image_width > 2048 || image_height > 2048) {
 		g_gui.PopupDialog("Error", "Minimap size greater than 2048px.", wxOK);
 		return false;
 	}
@@ -306,37 +293,37 @@ bool IOMinimap::exportSelection(const std::string& directory, const std::string&
 	auto image = new wxImage(image_width, image_height, pixels, true);
 
 	int tiles_iterated = 0;
-	for(int z = min_z; z <= max_z; z++) {
+	for (int z = min_z; z <= max_z; z++) {
 		bool empty = true;
 		memset(pixels, 0, pixels_size);
-		for(auto tile : tiles) {
-			if(tile->getZ() != z) {
+		for (auto tile : tiles) {
+			if (tile->getZ() != z) {
 				continue;
 			}
 
 			if (m_updateLoadbar) {
 				tiles_iterated++;
-				if(tiles_iterated % 8192 == 0) {
+				if (tiles_iterated % 8192 == 0) {
 					g_gui.SetLoadDone(int(tiles_iterated / double(tiles.size()) * 90.0));
 				}
 			}
 
-			if(!tile->ground && tile->items.empty()) {
+			if (!tile->ground && tile->items.empty()) {
 				continue;
 			}
 
 			uint8_t color = tile->getMiniMapColor();
 			uint32_t index = ((tile->getY() - min_y) * image_width + (tile->getX() - min_x)) * 3;
-			pixels[index  ] = (uint8_t)(static_cast<int>(color / 36) % 6 * 51); // red
-			pixels[index+1] = (uint8_t)(static_cast<int>(color / 6) % 6 * 51);  // green
-			pixels[index+2] = (uint8_t)(color % 6 * 51);                        // blue
+			pixels[index] = (uint8_t)(static_cast<int>(color / 36) % 6 * 51);    // red
+			pixels[index + 1] = (uint8_t)(static_cast<int>(color / 6) % 6 * 51); // green
+			pixels[index + 2] = (uint8_t)(color % 6 * 51);                       // blue
 			empty = false;
 		}
 
 		if (!empty) {
 			image->SetData(pixels, true);
 			wxString extension = m_format == MinimapExportFormat::Png ? "png" : "bmp";
-			wxBitmapType type = m_format == MinimapExportFormat::Png ? wxBITMAP_TYPE_PNG : wxBITMAP_TYPE_BMP; 
+			wxBitmapType type = m_format == MinimapExportFormat::Png ? wxBITMAP_TYPE_PNG : wxBITMAP_TYPE_BMP;
 			wxFileName file = wxString::Format("%s-%d.%s", name, z, extension);
 			file.Normalize(wxPATH_NORM_ALL, directory);
 			image->SaveFile(file.GetFullPath(), type);
@@ -357,7 +344,7 @@ void IOMinimap::readBlocks()
 	auto& map = m_editor->getMap();
 
 	int tiles_iterated = 0;
-	for(auto it = map.begin(); it != map.end(); ++it) {
+	for (auto it = map.begin(); it != map.end(); ++it) {
 		auto tile = (*it)->get();
 
 		if (m_updateLoadbar) {
@@ -367,7 +354,7 @@ void IOMinimap::readBlocks()
 			}
 		}
 
-		if(!tile || (!tile->ground && tile->items.empty())) {
+		if (!tile || (!tile->ground && tile->items.empty())) {
 			continue;
 		}
 
@@ -387,15 +374,15 @@ void IOMinimap::readBlocks()
 		if (tile->isBlocking()) {
 			minimapTile.flags |= MinimapTileNotWalkable;
 		}
-		//if (!tile->isPathable()) {
-			//minimapTile.flags |= MinimapTileNotPathable;
+		// if (!tile->isPathable()) {
+		// minimapTile.flags |= MinimapTileNotPathable;
 		//}
 		minimapTile.speed = std::min<int>((int)std::ceil(tile->getGroundSpeed() / 10.f), 0xFF);
 
 		auto& blocks = m_blocks[position.z];
 		uint32_t index = getBlockIndex(position);
 		if (blocks.find(index) == blocks.end()) {
-			blocks.insert({ index, MinimapBlock() });
+			blocks.insert({index, MinimapBlock()});
 		}
 
 		auto& block = blocks.at(index);

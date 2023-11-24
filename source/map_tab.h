@@ -18,11 +18,12 @@
 #ifndef RME_MAP_TAB_H_
 #define RME_MAP_TAB_H_
 
-#include "editor_tabs.h"
 #include "application.h"
+#include "editor_tabs.h"
 #include "map_window.h"
 
-class MapTab : public EditorTab, public MapWindow {
+class MapTab : public EditorTab, public MapWindow
+{
 public:
 	MapTab(MapTabbook* aui, Editor* editor);
 	// Constructs a newd window, but it uses the same internal editor as 'other'
@@ -47,7 +48,8 @@ public:
 	void OnSwitchEditorMode(EditorMode mode);
 
 protected:
-	struct InternalReference {
+	struct InternalReference
+	{
 		Editor* editor;
 		int owner_count;
 	};
@@ -55,8 +57,6 @@ protected:
 	InternalReference* iref;
 };
 
-inline bool MapTab::HasSameReference(MapTab* other) const {
-	return other->iref == iref;
-}
+inline bool MapTab::HasSameReference(MapTab* other) const { return other->iref == iref; }
 
 #endif

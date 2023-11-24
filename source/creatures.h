@@ -18,10 +18,10 @@
 #ifndef RME_CREATURES_H_
 #define RME_CREATURES_H_
 
-#include "outfit.h"
-
-#include <string>
 #include <map>
+#include <string>
+
+#include "outfit.h"
 
 class CreatureType;
 class CreatureBrush;

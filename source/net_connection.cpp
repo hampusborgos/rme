@@ -15,13 +15,11 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
 #include "net_connection.h"
 
-NetworkMessage::NetworkMessage()
-{
-	clear();
-}
+#include "main.h"
+
+NetworkMessage::NetworkMessage() { clear(); }
 
 void NetworkMessage::clear()
 {
@@ -32,13 +30,14 @@ void NetworkMessage::clear()
 
 void NetworkMessage::expand(const size_t length)
 {
-	if(position + length >= buffer.size()) {
+	if (position + length >= buffer.size()) {
 		buffer.resize(position + length + 1);
 	}
 	size += length;
 }
 
-template<> std::string NetworkMessage::read<std::string>()
+template <>
+std::string NetworkMessage::read<std::string>()
 {
 	const uint16_t length = read<uint16_t>();
 	char* strBuffer = reinterpret_cast<char*>(&buffer[position]);
@@ -46,7 +45,8 @@ template<> std::string NetworkMessage::read<std::string>()
 	return std::string(strBuffer, length);
 }
 
-template<> Position NetworkMessage::read<Position>()
+template <>
+Position NetworkMessage::read<Position>()
 {
 	Position position;
 	position.x = read<uint16_t>();
@@ -55,7 +55,8 @@ template<> Position NetworkMessage::read<Position>()
 	return position;
 }
 
-template<> void NetworkMessage::write<std::string>(const std::string& value)
+template <>
+void NetworkMessage::write<std::string>(const std::string& value)
 {
 	const size_t length = value.length();
 	write<uint16_t>(length);
@@ -65,7 +66,8 @@ template<> void NetworkMessage::write<std::string>(const std::string& value)
 	position += length;
 }
 
-template<> void NetworkMessage::write<Position>(const Position& value)
+template <>
+void NetworkMessage::write<Position>(const Position& value)
 {
 	write<uint16_t>(value.x);
 	write<uint16_t>(value.y);
@@ -73,16 +75,12 @@ template<> void NetworkMessage::write<Position>(const Position& value)
 }
 
 // NetworkConnection
-NetworkConnection::NetworkConnection() :
-	service(nullptr), thread(), stopped(false)
+NetworkConnection::NetworkConnection() : service(nullptr), thread(), stopped(false)
 {
 	//
 }
 
-NetworkConnection::~NetworkConnection()
-{
-	stop();
-}
+NetworkConnection::~NetworkConnection() { stop(); }
 
 NetworkConnection& NetworkConnection::getInstance()
 {
@@ -92,22 +90,22 @@ NetworkConnection& NetworkConnection::getInstance()
 
 bool NetworkConnection::start()
 {
-	if(thread.joinable()) {
-		if(stopped) {
+	if (thread.joinable()) {
+		if (stopped) {
 			return false;
 		}
 		return true;
 	}
 
 	stopped = false;
-	if(!service) {
+	if (!service) {
 		service = new asio::io_service;
 	}
 
 	thread = std::thread([this]() -> void {
 		asio::io_service& serviceRef = *service;
 		try {
-			while(!stopped) {
+			while (!stopped) {
 				serviceRef.run_one();
 				serviceRef.reset();
 			}
@@ -120,7 +118,7 @@ bool NetworkConnection::start()
 
 void NetworkConnection::stop()
 {
-	if(!service) {
+	if (!service) {
 		return;
 	}
 
@@ -132,7 +130,4 @@ void NetworkConnection::stop()
 	service = nullptr;
 }
 
-asio::io_service& NetworkConnection::get_service()
-{
-	return *service;
-}
+asio::io_service& NetworkConnection::get_service() { return *service; }

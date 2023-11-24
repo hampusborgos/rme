@@ -18,13 +18,12 @@
 #ifndef RME_EDITOR_H
 #define RME_EDITOR_H
 
-#include "item.h"
-#include "tile.h"
-#include "iomap.h"
-#include "map.h"
-
 #include "action.h"
+#include "iomap.h"
+#include "item.h"
+#include "map.h"
 #include "selection.h"
+#include "tile.h"
 
 class BaseMap;
 class CopyBuffer;
@@ -82,7 +81,8 @@ public: // Functions
 	uint16_t getMapHeight() const noexcept { return map.height; }
 
 	wxString getLoaderError() const { return map.getError(); }
-	bool importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset, ImportType house_import_type, ImportType spawn_import_type);
+	bool importMap(FileName filename, int import_x_offset, int import_y_offset, int import_z_offset,
+	               ImportType house_import_type, ImportType spawn_import_type);
 	bool importMiniMap(FileName filename, int import, int import_x_offset, int import_y_offset, int import_z_offset);
 
 	ActionQueue* getHistoryActions() const noexcept { return actionQueue; }
@@ -147,8 +147,14 @@ private:
 inline void Editor::draw(const Position& offset, bool alt) { drawInternal(offset, alt, true); }
 inline void Editor::undraw(const Position& offset, bool alt) { drawInternal(offset, alt, false); }
 inline void Editor::draw(const PositionVector& posvec, bool alt) { drawInternal(posvec, alt, true); }
-inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt) { drawInternal(todraw, toborder, alt, true); }
+inline void Editor::draw(const PositionVector& todraw, PositionVector& toborder, bool alt)
+{
+	drawInternal(todraw, toborder, alt, true);
+}
 inline void Editor::undraw(const PositionVector& posvec, bool alt) { drawInternal(posvec, alt, false); }
-inline void Editor::undraw(const PositionVector& todraw, PositionVector& toborder, bool alt) { drawInternal(todraw, toborder, alt, false); }
+inline void Editor::undraw(const PositionVector& todraw, PositionVector& toborder, bool alt)
+{
+	drawInternal(todraw, toborder, alt, false);
+}
 
 #endif

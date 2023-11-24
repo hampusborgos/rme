@@ -18,8 +18,8 @@
 #ifndef RME_ITEMS_H_
 #define RME_ITEMS_H_
 
-#include "filehandle.h"
 #include "brush_enums.h"
+#include "filehandle.h"
 
 class Brush;
 class GroundBrush;
@@ -44,7 +44,8 @@ typedef uint8_t attribute_t;
 typedef uint32_t flags_t;
 typedef uint16_t datasize_t;
 
-enum ItemGroup_t {
+enum ItemGroup_t
+{
 	ITEM_GROUP_NONE = 0,
 	ITEM_GROUP_GROUND,
 	ITEM_GROUP_CONTAINER,
@@ -63,7 +64,8 @@ enum ItemGroup_t {
 	ITEM_GROUP_LAST
 };
 
-enum ItemTypes_t {
+enum ItemTypes_t
+{
 	ITEM_TYPE_NONE = 0,
 	ITEM_TYPE_DEPOT,
 	ITEM_TYPE_MAILBOX,
@@ -79,11 +81,13 @@ enum ItemTypes_t {
 
 /////////OTB specific//////////////
 
-enum rootattrib_t{
+enum rootattrib_t
+{
 	ROOT_ATTR_VERSION = 0x01
 };
 
-enum itemattrib_t {
+enum itemattrib_t
+{
 	ITEM_ATTR_FIRST = 0x10,
 	ITEM_ATTR_SERVERID = ITEM_ATTR_FIRST,
 	ITEM_ATTR_CLIENTID,
@@ -107,7 +111,7 @@ enum itemattrib_t {
 	ITEM_ATTR_08,
 	ITEM_ATTR_LIGHT,
 
-	//1-byte aligned
+	// 1-byte aligned
 	ITEM_ATTR_DECAY2,
 	ITEM_ATTR_WEAPON2,
 	ITEM_ATTR_AMU2,
@@ -122,7 +126,8 @@ enum itemattrib_t {
 	ITEM_ATTR_LAST
 };
 
-enum itemflags_t {
+enum itemflags_t
+{
 	FLAG_UNPASSABLE = 1 << 0,
 	FLAG_BLOCK_MISSILES = 1 << 1,
 	FLAG_BLOCK_PATHFINDER = 1 << 2,
@@ -149,7 +154,8 @@ enum itemflags_t {
 	FLAG_IGNORE_LOOK = 1 << 23
 };
 
-enum slotsOTB_t{
+enum slotsOTB_t
+{
 	OTB_SLOT_DEFAULT,
 	OTB_SLOT_HEAD,
 	OTB_SLOT_BODY,
@@ -163,42 +169,46 @@ enum slotsOTB_t{
 	OTB_SLOT_HAND,
 };
 
-enum ShootTypeOtb_t {
-	OTB_SHOOT_NONE          = 0,
-	OTB_SHOOT_BOLT          = 1,
-	OTB_SHOOT_ARROW         = 2,
-	OTB_SHOOT_FIRE          = 3,
-	OTB_SHOOT_ENERGY        = 4,
-	OTB_SHOOT_POISONARROW   = 5,
-	OTB_SHOOT_BURSTARROW    = 6,
-	OTB_SHOOT_THROWINGSTAR  = 7,
+enum ShootTypeOtb_t
+{
+	OTB_SHOOT_NONE = 0,
+	OTB_SHOOT_BOLT = 1,
+	OTB_SHOOT_ARROW = 2,
+	OTB_SHOOT_FIRE = 3,
+	OTB_SHOOT_ENERGY = 4,
+	OTB_SHOOT_POISONARROW = 5,
+	OTB_SHOOT_BURSTARROW = 6,
+	OTB_SHOOT_THROWINGSTAR = 7,
 	OTB_SHOOT_THROWINGKNIFE = 8,
-	OTB_SHOOT_SMALLSTONE    = 9,
-	OTB_SHOOT_SUDDENDEATH   = 10,
-	OTB_SHOOT_LARGEROCK     = 11,
-	OTB_SHOOT_SNOWBALL      = 12,
-	OTB_SHOOT_POWERBOLT     = 13,
-	OTB_SHOOT_SPEAR         = 14,
-	OTB_SHOOT_POISONFIELD   = 15,
-	OTB_SHOOT_INFERNALBOLT  = 16
+	OTB_SHOOT_SMALLSTONE = 9,
+	OTB_SHOOT_SUDDENDEATH = 10,
+	OTB_SHOOT_LARGEROCK = 11,
+	OTB_SHOOT_SNOWBALL = 12,
+	OTB_SHOOT_POWERBOLT = 13,
+	OTB_SHOOT_SPEAR = 14,
+	OTB_SHOOT_POISONFIELD = 15,
+	OTB_SHOOT_INFERNALBOLT = 16
 };
 
-//1-byte aligned structs
+// 1-byte aligned structs
 #pragma pack(1)
 
-struct VERSIONINFO {
+struct VERSIONINFO
+{
 	uint32_t dwMajorVersion;
 	uint32_t dwMinorVersion;
 	uint32_t dwBuildNumber;
 	uint8_t CSDVersion[128];
 };
 
-struct decayBlock2 {
+struct decayBlock2
+{
 	uint16_t decayTo;
 	uint16_t decayTime;
 };
 
-struct weaponBlock2 {
+struct weaponBlock2
+{
 	uint8_t weaponType;
 	uint8_t amuType;
 	uint8_t shootType;
@@ -206,28 +216,33 @@ struct weaponBlock2 {
 	uint8_t defence;
 };
 
-struct amuBlock2 {
+struct amuBlock2
+{
 	uint8_t amuType;
 	uint8_t shootType;
 	uint8_t attack;
 };
 
-struct armorBlock2 {
+struct armorBlock2
+{
 	uint16_t armor;
 	double weight;
 	uint16_t slot_position;
 };
 
-struct writeableBlock2 {
+struct writeableBlock2
+{
 	uint16_t readOnlyId;
 };
 
-struct lightBlock2 {
+struct lightBlock2
+{
 	uint16_t lightLevel;
 	uint16_t lightColor;
 };
 
-struct writeableBlock3 {
+struct writeableBlock3
+{
 	uint16_t readOnlyId;
 	uint16_t maxTextLen;
 };
@@ -267,7 +282,7 @@ public:
 	float getWeight() const noexcept { return weight; }
 	uint16_t getVolume() const noexcept { return volume; }
 
-// editor related
+	// editor related
 public:
 	Brush* brush;
 	Brush* doodad_brush;
@@ -282,7 +297,7 @@ public:
 	uint16_t ground_equivalent;
 	uint32_t border_group;
 	bool has_equivalent; // True if any item has this as ground_equivalent
-	bool wall_hate_me; // (For wallbrushes, regard this as not part of the wall)
+	bool wall_hate_me;   // (For wallbrushes, regard this as not part of the wall)
 
 	bool isBorder;
 	bool isOptionalBorder;
@@ -303,7 +318,7 @@ public:
 
 	uint16_t volume;
 	uint16_t maxTextLen;
-	//uint16_t writeOnceItemId;
+	// uint16_t writeOnceItemId;
 
 	std::string name;
 	std::string editorsuffix;
@@ -372,7 +387,7 @@ public:
 	bool loadItemFromGameXml(pugi::xml_node itemNode, uint16_t id);
 	bool loadMetaItem(pugi::xml_node node);
 
-	//typedef std::map<int32_t, ItemType*> ItemMap;
+	// typedef std::map<int32_t, ItemType*> ItemMap;
 	typedef contigous_vector<ItemType*> ItemMap;
 	typedef std::map<std::string, ItemType*> ItemNameMap;
 

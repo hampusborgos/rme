@@ -37,5 +37,4 @@ private:
 	wxString HTMLForExtension(MaterialsExtension* me) const;
 };
 
-
 #endif

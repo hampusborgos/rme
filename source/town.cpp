@@ -15,10 +15,9 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "town.h"
 
+#include "main.h"
 #include "map.h"
 #include "tile.h"
 
@@ -27,15 +26,12 @@ Towns::Towns()
 	////
 }
 
-Towns::~Towns()
-{
-	clear();
-}
+Towns::~Towns() { clear(); }
 
 void Towns::clear()
 {
 	TownMap::const_iterator it = begin();
-	while(it != end()) {
+	while (it != end()) {
 		delete it->second;
 		++it;
 	}
@@ -45,7 +41,7 @@ void Towns::clear()
 bool Towns::addTown(Town* town)
 {
 	TownMap::iterator it = find(town->getID());
-	if(it != end()) {
+	if (it != end()) {
 		return false;
 	}
 	towns[town->getID()] = town;
@@ -55,8 +51,8 @@ bool Towns::addTown(Town* town)
 uint32_t Towns::getEmptyID()
 {
 	uint32_t empty = 0;
-	for(TownMap::iterator it = begin(); it != end(); ++it) {
-		if(it->second->getID() > empty) {
+	for (TownMap::iterator it = begin(); it != end(); ++it) {
+		if (it->second->getID() > empty) {
 			empty = it->second->getID();
 		}
 	}
@@ -65,8 +61,8 @@ uint32_t Towns::getEmptyID()
 
 Town* Towns::getTown(std::string& name)
 {
-	for(TownMap::iterator it = begin(); it != end(); ++it) {
-		if(it->second->getName() == name) {
+	for (TownMap::iterator it = begin(); it != end(); ++it) {
+		if (it->second->getName() == name) {
 			return it->second;
 		}
 	}
@@ -76,13 +72,10 @@ Town* Towns::getTown(std::string& name)
 Town* Towns::getTown(uint32_t id)
 {
 	TownMap::iterator it = find(id);
-	if(it != end()) {
+	if (it != end()) {
 		return it->second;
 	}
 	return nullptr;
 }
 
-void Town::setTemplePosition(const Position& position)
-{
-	templepos = position;
-}
+void Town::setTemplePosition(const Position& position) { templepos = position; }

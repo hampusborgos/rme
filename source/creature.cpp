@@ -15,26 +15,17 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "creature.h"
 
-Creature::Creature(CreatureType* type) :
-	direction(NORTH),
-	spawntime(0),
-	saved(false),
-	selected(false)
+#include "main.h"
+
+Creature::Creature(CreatureType* type) : direction(NORTH), spawntime(0), saved(false), selected(false)
 {
-	if(type)
-		type_name = type->name;
+	if (type) type_name = type->name;
 }
 
 Creature::Creature(const std::string& type_name) :
-	type_name(type_name),
-	direction(NORTH),
-	spawntime(0),
-	saved(false),
-	selected(false)
+    type_name(type_name), direction(NORTH), spawntime(0), saved(false), selected(false)
 {
 	////
 }
@@ -52,8 +43,7 @@ Creature* Creature::deepCopy() const
 const Outfit& Creature::getLookType() const
 {
 	const CreatureType* type = g_creatures[type_name];
-	if(type)
-		return type->outfit;
+	if (type) return type->outfit;
 	static const Outfit otfi; // Empty outfit
 	return otfi;
 }
@@ -61,7 +51,7 @@ const Outfit& Creature::getLookType() const
 bool Creature::isNpc() const
 {
 	const CreatureType* type = g_creatures[type_name];
-	if(type) {
+	if (type) {
 		return type->isNpc;
 	}
 	return false;
@@ -70,7 +60,7 @@ bool Creature::isNpc() const
 std::string Creature::getName() const
 {
 	const CreatureType* type = g_creatures[type_name];
-	if(type) {
+	if (type) {
 		return type->name;
 	}
 	return "";
@@ -79,7 +69,7 @@ std::string Creature::getName() const
 CreatureBrush* Creature::getBrush() const
 {
 	const CreatureType* type = g_creatures[type_name];
-	if(type) {
+	if (type) {
 		return type->brush;
 	}
 	return nullptr;
@@ -88,20 +78,25 @@ CreatureBrush* Creature::getBrush() const
 std::string Creature::DirID2Name(uint16_t id)
 {
 	switch (id) {
-		case NORTH: return "North";
-		case EAST: return "East";
-		case SOUTH: return "South";
-		case WEST: return "West";
-		default: return "Unknown";
+		case NORTH:
+			return "North";
+		case EAST:
+			return "East";
+		case SOUTH:
+			return "South";
+		case WEST:
+			return "West";
+		default:
+			return "Unknown";
 	}
 }
 
 uint16_t Creature::DirName2ID(std::string dir)
 {
 	to_lower_str(dir);
-	if(dir == "north") return NORTH;
-	if(dir == "east") return EAST;
-	if(dir == "south") return SOUTH;
-	if(dir == "west") return WEST;
+	if (dir == "north") return NORTH;
+	if (dir == "east") return EAST;
+	if (dir == "south") return SOUTH;
+	if (dir == "west") return WEST;
 	return SOUTH;
 }

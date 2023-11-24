@@ -18,22 +18,24 @@
 #ifndef RME_FILEHANDLE_H_
 #define RME_FILEHANDLE_H_
 
-#include "definitions.h"
-
-#include <stdexcept>
-#include <string>
-#include <stack>
 #include <stdio.h>
 
+#include <stack>
+#include <stdexcept>
+#include <string>
+
+#include "definitions.h"
+
 #ifndef FORCEINLINE
-#   ifdef _MSV_VER
-#       define FORCEINLINE __forceinline
-#   else
-#       define FORCEINLINE inline
-#   endif
+#ifdef _MSV_VER
+#define FORCEINLINE __forceinline
+#else
+#define FORCEINLINE inline
+#endif
 #endif
 
-enum FileHandleError {
+enum FileHandleError
+{
 	FILE_NO_ERROR,
 	FILE_COULD_NOT_OPEN,
 	FILE_INVALID_IDENTIFIER,
@@ -44,7 +46,8 @@ enum FileHandleError {
 	FILE_PREMATURE_END,
 };
 
-enum NodeType {
+enum NodeType
+{
 	NODE_START = 0xfe,
 	NODE_END = 0xff,
 	ESCAPE_CHAR = 0xfd,
@@ -61,8 +64,8 @@ public:
 	FORCEINLINE void skip(size_t offset) { seek(offset, SEEK_CUR); }
 
 	// Ensures we don't accidentally copy it.
-	FileHandle(const FileHandle &) = delete;
-	FileHandle &operator=(const FileHandle &) = delete;
+	FileHandle(const FileHandle&) = delete;
+	FileHandle& operator=(const FileHandle&) = delete;
 
 	virtual void close();
 	virtual bool isOpen() { return file != nullptr; }
@@ -93,12 +96,13 @@ public:
 
 	virtual void close();
 	size_t size() { return file_size; }
-	
+
 protected:
 	size_t file_size;
 
-	template<class T>
-	bool getType(T& ref) {
+	template <class T>
+	bool getType(T& ref)
+	{
 		fread(&ref, sizeof(ref), 1, file);
 		return ferror(file) == 0;
 	}
@@ -119,8 +123,9 @@ public:
 	FORCEINLINE bool getU16(uint16_t& u16) { return getType(u16); }
 	FORCEINLINE bool getU32(uint32_t& u32) { return getType(u32); }
 	FORCEINLINE bool getU64(uint64_t& u64) { return getType(u64); }
-	FORCEINLINE bool skip(size_t sz) {
-		if(read_offset + sz > data.size()) {
+	FORCEINLINE bool skip(size_t sz)
+	{
+		if (read_offset + sz > data.size()) {
 			read_offset = data.size();
 			return false;
 		}
@@ -135,14 +140,16 @@ public:
 	BinaryNode* getChild();
 	// Returns this on success, nullptr on failure
 	BinaryNode* advance();
+
 protected:
-	template<class T>
-	bool getType(T& ref) {
-		if(read_offset + sizeof(ref) > data.size()) {
+	template <class T>
+	bool getType(T& ref)
+	{
+		if (read_offset + sizeof(ref) > data.size()) {
 			read_offset = data.size();
 			return false;
 		}
-		ref = *(T*)(data.data()+read_offset);
+		ref = *(T*)(data.data() + read_offset);
 
 		read_offset += sizeof(ref);
 		return true;
@@ -169,6 +176,7 @@ public:
 
 	virtual size_t size() = 0;
 	virtual size_t tell() = 0;
+
 protected:
 	BinaryNode* getNode(BinaryNode* parent);
 	void freeNode(BinaryNode* node);
@@ -198,7 +206,12 @@ public:
 	virtual BinaryNode* getRootNode();
 
 	virtual size_t size() { return file_size; }
-	virtual size_t tell() {if(file) return ftell(file); return 0; }
+	virtual size_t tell()
+	{
+		if (file) return ftell(file);
+		return 0;
+	}
+
 protected:
 	virtual bool renewCache();
 
@@ -220,6 +233,7 @@ public:
 	virtual size_t size() { return cache_size; }
 	virtual size_t tell() { return local_read_index; }
 	virtual bool isOk() { return true; }
+
 protected:
 	virtual bool renewCache();
 
@@ -246,8 +260,9 @@ public:
 	void flush();
 
 protected:
-	template<class T>
-	bool addType(T ref) {
+	template <class T>
+	bool addType(T ref)
+	{
 		fwrite(&ref, sizeof(ref), 1, file);
 		return ferror(file) == 0;
 	}
@@ -284,22 +299,23 @@ protected:
 	size_t cache_size;
 	size_t local_write_index;
 
-	FORCEINLINE void writeBytes(const uint8_t* ptr, size_t sz) {
-		if(sz) {
+	FORCEINLINE void writeBytes(const uint8_t* ptr, size_t sz)
+	{
+		if (sz) {
 			do {
-				if(*ptr == NODE_START || *ptr == NODE_END || *ptr == ESCAPE_CHAR) {
+				if (*ptr == NODE_START || *ptr == NODE_END || *ptr == ESCAPE_CHAR) {
 					cache[local_write_index++] = ESCAPE_CHAR;
-					if(local_write_index >= cache_size) {
+					if (local_write_index >= cache_size) {
 						renewCache();
 					}
 				}
 				cache[local_write_index++] = *ptr;
-				if(local_write_index >= cache_size) {
+				if (local_write_index >= cache_size) {
 					renewCache();
 				}
 				++ptr;
 				--sz;
-			} while(sz != 0);
+			} while (sz != 0);
 		}
 	}
 };

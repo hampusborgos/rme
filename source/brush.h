@@ -17,11 +17,9 @@
 
 #ifndef RME_BRUSH_H_
 #define RME_BRUSH_H_
-#include "main.h"
-
-#include "position.h"
-
 #include "brush_enums.h"
+#include "main.h"
+#include "position.h"
 
 // Thanks to a million forward declarations, we don't have to include any files!
 // TODO move to a declarations file.
@@ -95,9 +93,7 @@ public:
 	Brush();
 	virtual ~Brush();
 
-	virtual bool load(pugi::xml_node node, wxArrayString& warnings) {
-		return true;
-	}
+	virtual bool load(pugi::xml_node node, wxArrayString& warnings) { return true; }
 
 	virtual void draw(BaseMap* map, Tile* tile, void* parameter = nullptr) = 0;
 	virtual void undraw(BaseMap* map, Tile* tile) = 0;
@@ -107,9 +103,7 @@ public:
 	uint32_t getID() const noexcept { return id; }
 
 	virtual std::string getName() const = 0;
-	virtual void setName(const std::string& newName) {
-		ASSERT(_MSG("setName attempted on nameless brush!"));
-	}
+	virtual void setName(const std::string& newName) { ASSERT(_MSG("setName attempted on nameless brush!")); }
 
 	virtual int getLookID() const = 0;
 
@@ -298,13 +292,15 @@ public:
 class AutoBorder
 {
 public:
-	AutoBorder(int _id) : id(_id), group(0), ground(false) {
-		for(int i = 0; i < 13; i++) tiles[i] = 0;
+	AutoBorder(int _id) : id(_id), group(0), ground(false)
+	{
+		for (int i = 0; i < 13; i++) tiles[i] = 0;
 	}
 	~AutoBorder() {}
 
 	static int edgeNameToID(const std::string& edgename);
-	bool load(pugi::xml_node node, wxArrayString& warnings, GroundBrush* owner = nullptr, uint16_t ground_equivalent = 0);
+	bool load(pugi::xml_node node, wxArrayString& warnings, GroundBrush* owner = nullptr,
+	          uint16_t ground_equivalent = 0);
 
 	uint32_t tiles[13];
 	uint32_t id;
@@ -313,4 +309,3 @@ public:
 };
 
 #endif
-

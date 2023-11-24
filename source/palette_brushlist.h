@@ -21,16 +21,18 @@
 #include "main.h"
 #include "palette_common.h"
 
-enum BrushListType {
+enum BrushListType
+{
 	BRUSHLIST_LARGE_ICONS,
 	BRUSHLIST_SMALL_ICONS,
 	BRUSHLIST_LISTBOX,
 	BRUSHLIST_TEXT_LISTBOX,
 };
 
-class BrushBoxInterface {
+class BrushBoxInterface
+{
 public:
-	BrushBoxInterface(const TilesetCategory* _tileset) : tileset(_tileset), loaded(false) {ASSERT(tileset); }
+	BrushBoxInterface(const TilesetCategory* _tileset) : tileset(_tileset), loaded(false) { ASSERT(tileset); }
 	virtual ~BrushBoxInterface() {}
 
 	virtual wxWindow* GetSelfWindow() = 0;
@@ -41,12 +43,14 @@ public:
 	virtual Brush* GetSelectedBrush() const = 0;
 	// Select the brush in the parameter, this only changes the look of the panel
 	virtual bool SelectBrush(const Brush* brush) = 0;
+
 protected:
 	const TilesetCategory* const tileset;
 	bool loaded;
 };
 
-class BrushListBox : public wxVListBox, public BrushBoxInterface {
+class BrushListBox : public wxVListBox, public BrushBoxInterface
+{
 public:
 	BrushListBox(wxWindow* parent, const TilesetCategory* _tileset);
 	~BrushListBox();
@@ -61,7 +65,7 @@ public:
 	bool SelectBrush(const Brush* brush);
 
 	// Event handlers
-    virtual void OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const;
+	virtual void OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const;
 	virtual wxCoord OnMeasureItem(size_t n) const;
 
 	void OnKey(wxKeyEvent& event);
@@ -69,7 +73,8 @@ public:
 	DECLARE_EVENT_TABLE();
 };
 
-class BrushIconBox : public wxScrolledWindow, public BrushBoxInterface {
+class BrushIconBox : public wxScrolledWindow, public BrushBoxInterface
+{
 public:
 	BrushIconBox(wxWindow* parent, const TilesetCategory* _tileset, RenderSize rsz);
 	~BrushIconBox();
@@ -89,9 +94,11 @@ public:
 
 	// Event handling...
 	void OnClickBrushButton(wxCommandEvent& event);
+
 protected:
 	// Used internally to deselect all buttons before selecting a newd one.
 	void DeselectAll();
+
 protected:
 	std::vector<BrushButton*> brush_buttons;
 	RenderSize icon_size;
@@ -105,7 +112,8 @@ protected:
 // but on the first call to LoadContents(), this is to
 // allow procedural loading (faster)
 
-class BrushPanel : public wxPanel {
+class BrushPanel : public wxPanel
+{
 public:
 	BrushPanel(wxWindow* parent);
 	~BrushPanel();
@@ -147,9 +155,11 @@ protected:
 	DECLARE_EVENT_TABLE();
 };
 
-class BrushPalettePanel : public PalettePanel {
+class BrushPalettePanel : public PalettePanel
+{
 public:
-	BrushPalettePanel(wxWindow* parent, const TilesetContainer& tilesets, TilesetCategoryType category, wxWindowID id = wxID_ANY);
+	BrushPalettePanel(wxWindow* parent, const TilesetContainer& tilesets, TilesetCategoryType category,
+	                  wxWindowID id = wxID_ANY);
 	~BrushPalettePanel();
 
 	// Interface
@@ -179,6 +189,7 @@ public:
 	// Event handler for child window
 	void OnSwitchingPage(wxChoicebookEvent& event);
 	void OnPageChanged(wxChoicebookEvent& event);
+
 protected:
 	PaletteType palette_type;
 	wxChoicebook* choicebook;

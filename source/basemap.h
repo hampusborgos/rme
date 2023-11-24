@@ -18,10 +18,10 @@
 #ifndef RME_BASE_MAP_H_
 #define RME_BASE_MAP_H_
 
-#include "main.h"
-#include "position.h"
 #include "filehandle.h"
+#include "main.h"
 #include "map_allocator.h"
+#include "position.h"
 #include "tile.h"
 
 // Class declarations
@@ -43,27 +43,26 @@ public:
 	TileLocation* operator->();
 	MapIterator& operator++();
 	MapIterator operator++(int);
-	bool operator==(const MapIterator& other) const {
-		if(other.local_z != local_z) return false;
-		if(other.local_i != local_i) return false;
-		if(other.nodestack == nodestack) return true;
-		if(other.current_tile == current_tile) return true;
+	bool operator==(const MapIterator& other) const
+	{
+		if (other.local_z != local_z) return false;
+		if (other.local_i != local_i) return false;
+		if (other.nodestack == nodestack) return true;
+		if (other.current_tile == current_tile) return true;
 		return false;
 	}
-	bool operator!=(const MapIterator& other) const {
-		return !(other == *this);
-	}
+	bool operator!=(const MapIterator& other) const { return !(other == *this); }
 
-	struct NodeIndex {
+	struct NodeIndex
+	{
 		NodeIndex(QTreeNode* _node) : index(0), node(_node) {}
 		NodeIndex(const NodeIndex& other) : index(other.index), node(other.node) {}
 		int index;
 		QTreeNode* node;
 
-		bool operator==(const NodeIndex& n) const {
-			return n.node == node && n.index == index;
-		}
+		bool operator==(const NodeIndex& n) const { return n.node == node && n.index == index; }
 	};
+
 private:
 	std::vector<NodeIndex> nodestack;
 	int local_i, local_z;
@@ -119,7 +118,7 @@ public:
 	MapAllocator allocator;
 
 protected:
-	virtual void updateUniqueIds(Tile* old_tile, Tile* new_tile) { }
+	virtual void updateUniqueIds(Tile* old_tile, Tile* new_tile) {}
 
 	uint64_t tilecount;
 
@@ -131,25 +130,25 @@ protected:
 inline Tile* BaseMap::getTile(int x, int y, int z)
 {
 	TileLocation* l = getTileL(x, y, z);
-	return l? l->get() : nullptr;
+	return l ? l->get() : nullptr;
 }
 
 inline Tile* BaseMap::getTile(const Position& pos)
 {
 	TileLocation* l = getTileL(pos);
-	return l? l->get() : nullptr;
+	return l ? l->get() : nullptr;
 }
 
 inline const Tile* BaseMap::getTile(int x, int y, int z) const
 {
 	const TileLocation* l = getTileL(x, y, z);
-	return l? l->get() : nullptr;
+	return l ? l->get() : nullptr;
 }
 
 inline const Tile* BaseMap::getTile(const Position& pos) const
 {
 	const TileLocation* l = getTileL(pos);
-	return l? l->get() : nullptr;
+	return l ? l->get() : nullptr;
 }
 
 #endif

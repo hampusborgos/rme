@@ -24,7 +24,8 @@ class Container;
 class ContainerItemButton;
 
 // Right-click popup menu
-class ContainerItemPopupMenu : public wxMenu {
+class ContainerItemPopupMenu : public wxMenu
+{
 public:
 	ContainerItemPopupMenu();
 	virtual ~ContainerItemPopupMenu();
@@ -36,31 +37,31 @@ public:
 class ContainerItemButton : public ItemButton
 {
 	DECLARE_EVENT_TABLE()
-	public:
-		ContainerItemButton(wxWindow* parent, bool large, int index, const Map* map, Item* item);
-		~ContainerItemButton();
+public:
+	ContainerItemButton(wxWindow* parent, bool large, int index, const Map* map, Item* item);
+	~ContainerItemButton();
 
-		void OnMouseDoubleLeftClick(wxMouseEvent& event);
-		void OnMouseRightRelease(wxMouseEvent& event);
+	void OnMouseDoubleLeftClick(wxMouseEvent& event);
+	void OnMouseRightRelease(wxMouseEvent& event);
 
-		void OnAddItem(wxCommandEvent& event);
-		void OnEditItem(wxCommandEvent& event);
-		void OnRemoveItem(wxCommandEvent& event);
+	void OnAddItem(wxCommandEvent& event);
+	void OnEditItem(wxCommandEvent& event);
+	void OnRemoveItem(wxCommandEvent& event);
 
-		ObjectPropertiesWindowBase* getParentContainerWindow();
-		Container* getParentContainer();
+	ObjectPropertiesWindowBase* getParentContainerWindow();
+	Container* getParentContainer();
 
-		void setItem(Item* item);
+	void setItem(Item* item);
 
-	private:
-		static std::unique_ptr<ContainerItemPopupMenu> popup_menu;
+private:
+	static std::unique_ptr<ContainerItemPopupMenu> popup_menu;
 
-		const Map* edit_map;
-		Item* edit_item;
+	const Map* edit_map;
+	Item* edit_item;
 
-		size_t index;
+	size_t index;
 
-		friend class ContainerItemPopupMenu;
+	friend class ContainerItemPopupMenu;
 };
 
 #endif

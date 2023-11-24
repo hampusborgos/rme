@@ -18,19 +18,18 @@
 #ifndef RME_COMMONS_H_
 #define RME_COMMONS_H_
 
-#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
+
 #include <cmath>
 #include <iomanip>
 #include <string>
 
+#include "main.h"
 #include "mt_rand.h"
 
 //
-inline bool testFlags(size_t flags, size_t test) noexcept {
-	return (flags & test) != 0;
-}
+inline bool testFlags(size_t flags, size_t test) noexcept { return (flags & test) != 0; }
 
 int32_t uniform_random(int32_t minNumber, int32_t maxNumber);
 int32_t uniform_random(int32_t maxNumber);

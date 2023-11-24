@@ -39,8 +39,10 @@ protected:
 	bool queryUser(const wxString& title, const wxString& format);
 	void warning(const wxString format, ...);
 	void error(const wxString format, ...);
+
 public:
-	IOMap() {
+	IOMap()
+	{
 		version.otbm = MAP_OTBM_1;
 		version.client = CLIENT_VERSION_NONE;
 	}
@@ -55,12 +57,10 @@ public:
 	virtual bool saveMap(Map& map, const FileName& identifier) = 0;
 };
 
-
-class VirtualIOMap : public IOMap {
+class VirtualIOMap : public IOMap
+{
 public:
-	VirtualIOMap(MapVersion v) {
-		version = v;
-	}
+	VirtualIOMap(MapVersion v) { version = v; }
 
 	virtual bool loadMap(Map& map, const FileName& identifier) { return false; }
 	virtual bool saveMap(Map& map, const FileName& identifier) { return false; }

@@ -15,17 +15,12 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
-#include "tile.h"
 #include "spawn.h"
 
-Spawn::Spawn(int size) :
-	size(0),
-	selected(false)
-{
-	setSize(size);
-}
+#include "main.h"
+#include "tile.h"
+
+Spawn::Spawn(int size) : size(0), selected(false) { setSize(size); }
 
 Spawn* Spawn::deepCopy() const
 {
@@ -42,7 +37,8 @@ void Spawns::addSpawn(Tile* tile)
 	ASSERT(it.second);
 }
 
-void Spawns::removeSpawn(Tile* tile) {
+void Spawns::removeSpawn(Tile* tile)
+{
 	ASSERT(tile->spawn);
 	spawns.erase(tile->getPosition());
 #if 0
@@ -58,7 +54,8 @@ void Spawns::removeSpawn(Tile* tile) {
 #endif
 }
 
-std::ostream& operator<<(std::ostream& os, const Spawn& spawn) {
+std::ostream& operator<<(std::ostream& os, const Spawn& spawn)
+{
 	os << &spawn << ":: -> " << spawn.getSize() << std::endl;
 	return os;
 }

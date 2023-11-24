@@ -18,7 +18,8 @@
 #ifndef RME_MINIMAP_WINDOW_H_
 #define RME_MINIMAP_WINDOW_H_
 
-class MinimapWindow : public wxPanel {
+class MinimapWindow : public wxPanel
+{
 public:
 	MinimapWindow(wxWindow* parent);
 	virtual ~MinimapWindow();
@@ -32,9 +33,10 @@ public:
 	void DelayedUpdate();
 	void OnDelayedUpdate(wxTimerEvent& event);
 	void OnKey(wxKeyEvent& event);
+
 protected:
 	wxPen* pens[256];
-	wxTimer	update_timer;
+	wxTimer update_timer;
 	int last_start_x;
 	int last_start_y;
 

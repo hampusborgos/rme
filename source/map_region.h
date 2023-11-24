@@ -28,6 +28,7 @@ class BaseMap;
 class TileLocation
 {
 	TileLocation();
+
 public:
 	~TileLocation();
 
@@ -42,7 +43,6 @@ protected:
 	HouseExitList* house_exits; // Any house exits pointing here
 
 public:
-
 	// Access tile
 	// Can't set directly since that does not update tile count
 	Tile* get() noexcept { return tile; }
@@ -87,7 +87,7 @@ public:
 	QTreeNode(const QTreeNode&) = delete;
 	QTreeNode& operator=(const QTreeNode&) = delete;
 
-	QTreeNode* getLeaf(int x, int y); // Might return nullptr
+	QTreeNode* getLeaf(int x, int y);      // Might return nullptr
 	QTreeNode* getLeafForce(int x, int y); // Will never return nullptr, it will create the node if it's not there
 
 	// Coordinates are NOT relative
@@ -97,13 +97,12 @@ public:
 	void clearTile(int x, int y, int z);
 
 	Floor* createFloor(int x, int y, int z);
-	Floor* getFloor(uint32_t z) {
+	Floor* getFloor(uint32_t z)
+	{
 		ASSERT(isLeaf);
 		return array[z];
 	}
-	Floor** getFloors() {
-		return array;
-	}
+	Floor** getFloors() { return array; }
 
 	void setVisible(bool overground, bool underground);
 	void setVisible(uint32_t client, bool underground, bool value);
@@ -120,12 +119,13 @@ protected:
 
 	bool isLeaf;
 
-	union {
+	union
+	{
 		QTreeNode* child[rme::MapLayers];
 		Floor* array[rme::MapLayers];
-//#if 16 != rme::MapLayers
-//#    error "You need to rewrite the QuadTree in order to handle more or less than 16 floors"
-//#endif
+		// #if 16 != rme::MapLayers
+		// #    error "You need to rewrite the QuadTree in order to handle more or less than 16 floors"
+		// #endif
 	};
 
 	friend class BaseMap;

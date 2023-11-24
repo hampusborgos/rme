@@ -32,7 +32,8 @@ public:
 	void deselect() noexcept { selected = false; }
 
 	int getSize() const noexcept { return size; }
-	void setSize(int newsize) {
+	void setSize(int newsize)
+	{
 		ASSERT(size < 100);
 		size = newsize;
 	}

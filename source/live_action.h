@@ -22,18 +22,22 @@
 
 class NetworkedActionQueue;
 
-class NetworkedAction : public Action {
+class NetworkedAction : public Action
+{
 protected:
 	NetworkedAction(Editor& editor, ActionIdentifier ident);
 	~NetworkedAction();
+
 public:
 	uint32_t owner;
 
 	friend class NetworkedActionQueue;
 };
 
-class NetworkedBatchAction : public BatchAction {
+class NetworkedBatchAction : public BatchAction
+{
 	NetworkedActionQueue& queue;
+
 protected:
 	NetworkedBatchAction(Editor& editor, NetworkedActionQueue& queue, ActionIdentifier ident);
 	~NetworkedBatchAction();

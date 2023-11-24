@@ -16,11 +16,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "main.h"
-
-
 #include "templates.h"
 
-ConversionMap getReplacementMapFrom854To854() {
+ConversionMap getReplacementMapFrom854To854()
+{
 	ConversionMap replacement_map;
 	std::vector<uint16_t> vecval;
 

@@ -49,7 +49,7 @@ public:
 	void setHouse(House* house);
 
 	uint32_t getHouseID() const;
-	virtual int getLookID() const { return 0; } // We don't have a graphic
+	virtual int getLookID() const { return 0; }                        // We don't have a graphic
 	virtual std::string getName() const { return "House Exit Brush"; } // We don't have a name
 
 protected:

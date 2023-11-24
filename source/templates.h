@@ -20,11 +20,12 @@
 
 #include "common.h"
 
-struct ConversionMap {
+struct ConversionMap
+{
 	// Many to Many
-	typedef std::map<std::vector<uint16_t>, std::vector<uint16_t> > MTM;
+	typedef std::map<std::vector<uint16_t>, std::vector<uint16_t>> MTM;
 	// Single to Many
-	typedef std::map<uint16_t, std::vector<uint16_t> > STM;
+	typedef std::map<uint16_t, std::vector<uint16_t>> STM;
 
 	MTM mtm;
 	STM stm;

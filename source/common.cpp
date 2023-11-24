@@ -15,13 +15,13 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "common.h"
-#include "math.h"
 
-#include <sstream>
 #include <random>
+#include <sstream>
+
+#include "main.h"
+#include "math.h"
 
 // random generator
 std::mt19937& getRandomGenerator()
@@ -34,18 +34,15 @@ std::mt19937& getRandomGenerator()
 int32_t uniform_random(int32_t minNumber, int32_t maxNumber)
 {
 	static std::uniform_int_distribution<int32_t> uniformRand;
-	if(minNumber == maxNumber) {
+	if (minNumber == maxNumber) {
 		return minNumber;
-	} else if(minNumber > maxNumber) {
+	} else if (minNumber > maxNumber) {
 		std::swap(minNumber, maxNumber);
 	}
 	return uniformRand(getRandomGenerator(), std::uniform_int_distribution<int32_t>::param_type(minNumber, maxNumber));
 }
 
-int32_t uniform_random(int32_t maxNumber)
-{
-	return uniform_random(0, maxNumber);
-}
+int32_t uniform_random(int32_t maxNumber) { return uniform_random(0, maxNumber); }
 
 //
 std::string i2s(const int _i)
@@ -64,15 +61,9 @@ std::string f2s(const double _d)
 	return ss.str();
 }
 
-int s2i(const std::string s)
-{
-	return atoi(s.c_str());
-}
+int s2i(const std::string s) { return atoi(s.c_str()); }
 
-double s2f(const std::string s)
-{
-	return atof(s.c_str());
-}
+double s2f(const std::string s) { return atof(s.c_str()); }
 
 wxString i2ws(const int _i)
 {
@@ -91,16 +82,14 @@ wxString f2ws(const double _d)
 int ws2i(const wxString s)
 {
 	long _i;
-	if(s.ToLong(&_i))
-		return int(_i);
+	if (s.ToLong(&_i)) return int(_i);
 	return 0;
 }
 
 double ws2f(const wxString s)
 {
 	double _d;
-	if(s.ToDouble(&_d))
-		return _d;
+	if (s.ToDouble(&_d)) return _d;
 	return 0.0;
 }
 
@@ -110,41 +99,28 @@ void replaceString(std::string& str, const std::string sought, const std::string
 	size_t start = 0;
 	size_t soughtLen = sought.length();
 	size_t replaceLen = replacement.length();
-	while((pos = str.find(sought, start)) != std::string::npos) {
+	while ((pos = str.find(sought, start)) != std::string::npos) {
 		str = str.substr(0, pos) + replacement + str.substr(pos + soughtLen);
 		start = pos + replaceLen;
 	}
 }
 
-void trim(std::string& str) {
+void trim(std::string& str)
+{
 	// Trim from start
-	str.erase(str.begin(), std::find_if(str.begin(), str.end(),
-		[](int ch) { return !std::isspace(ch); }));
+	str.erase(str.begin(), std::find_if(str.begin(), str.end(), [](int ch) { return !std::isspace(ch); }));
 
 	// Trim from end
-	str.erase(std::find_if(str.rbegin(), str.rend(),
-		[](int ch) { return !std::isspace(ch); }).base(), str.end());
+	str.erase(std::find_if(str.rbegin(), str.rend(), [](int ch) { return !std::isspace(ch); }).base(), str.end());
 }
 
-void trim_right(std::string& source, const std::string& t)
-{
-	source.erase(source.find_last_not_of(t)+1);
-}
+void trim_right(std::string& source, const std::string& t) { source.erase(source.find_last_not_of(t) + 1); }
 
-void trim_left(std::string& source, const std::string& t)
-{
-	source.erase(0, source.find_first_not_of(t));
-}
+void trim_left(std::string& source, const std::string& t) { source.erase(0, source.find_first_not_of(t)); }
 
-void to_lower_str(std::string& source)
-{
-	std::transform(source.begin(), source.end(), source.begin(), tolower);
-}
+void to_lower_str(std::string& source) { std::transform(source.begin(), source.end(), source.begin(), tolower); }
 
-void to_upper_str(std::string& source)
-{
-	std::transform(source.begin(), source.end(), source.begin(), toupper);
-}
+void to_upper_str(std::string& source) { std::transform(source.begin(), source.end(), source.begin(), toupper); }
 
 std::string as_lower_str(const std::string& other)
 {
@@ -162,24 +138,21 @@ std::string as_upper_str(const std::string& other)
 
 bool isFalseString(std::string& str)
 {
-	if(str == "false" || str == "0" || str == "" || str == "no" || str == "not") {
+	if (str == "false" || str == "0" || str == "" || str == "no" || str == "not") {
 		return true;
 	}
 	return false;
 }
 
-bool isTrueString(std::string& str)
-{
-	return !isFalseString(str);
-}
+bool isTrueString(std::string& str) { return !isFalseString(str); }
 
 int random(int low, int high)
 {
-	if(low == high) {
+	if (low == high) {
 		return low;
 	}
 
-	if(low > high) {
+	if (low > high) {
 		return low;
 	}
 
@@ -189,10 +162,7 @@ int random(int low, int high)
 	return low + std::min(range, int((1 + range) * dist));
 }
 
-int random(int high)
-{
-	return random(0,high);
-}
+int random(int high) { return random(0, high); }
 
 std::wstring string2wstring(const std::string& utf8string)
 {
@@ -210,33 +180,32 @@ bool posFromClipboard(int& x, int& y, int& z)
 {
 	bool done = false;
 
-	if(wxTheClipboard->Open()) {
-		if(wxTheClipboard->IsSupported(wxDF_TEXT)) {
+	if (wxTheClipboard->Open()) {
+		if (wxTheClipboard->IsSupported(wxDF_TEXT)) {
 			std::vector<int> values;
 			wxTextDataObject data;
 			wxTheClipboard->GetData(data);
 			wxString text = data.GetText();
 
-			if(text.size() < 50) {
+			if (text.size() < 50) {
 				bool r = false;
 				wxString sv;
 
-				for(size_t s = 0; s < text.size(); ++s) {
-					if(text[s] >= '0' && text[s] <= '9') {
+				for (size_t s = 0; s < text.size(); ++s) {
+					if (text[s] >= '0' && text[s] <= '9') {
 						sv << text[s];
 						r = true;
-					} else if(r) {
+					} else if (r) {
 						values.push_back(ws2i(sv));
 						sv.Clear();
 						r = false;
 
-						if(values.size() >= 3)
-							break;
+						if (values.size() >= 3) break;
 					}
 				}
 			}
 
-			if(values.size() == 3) {
+			if (values.size() == 3) {
 				x = values[0];
 				y = values[1];
 				z = values[2];
@@ -250,8 +219,7 @@ bool posFromClipboard(int& x, int& y, int& z)
 
 bool posToClipboard(int x, int y, int z, int format)
 {
-	if(!wxTheClipboard->Open())
-		return false;
+	if (!wxTheClipboard->Open()) return false;
 
 	wxTextDataObject* data = new wxTextDataObject();
 
@@ -283,8 +251,7 @@ bool posToClipboard(int x, int y, int z, int format)
 
 bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz)
 {
-	if(!wxTheClipboard->Open())
-		return false;
+	if (!wxTheClipboard->Open()) return false;
 
 	std::ostringstream clip;
 	clip << "{";
@@ -292,11 +259,10 @@ bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz)
 	clip << "tox = " << tox << ", ";
 	clip << "fromy = " << fromy << ", ";
 	clip << "toy = " << toy << ", ";
-	if(fromz != toz) {
+	if (fromz != toz) {
 		clip << "fromz = " << fromz << ", ";
 		clip << "toz = " << toz;
-	}
-	else
+	} else
 		clip << "z = " << fromz;
 	clip << "}";
 
@@ -305,15 +271,11 @@ bool posToClipboard(int fromx, int fromy, int fromz, int tox, int toy, int toz)
 	return true;
 }
 
-wxString b2yn(bool value)
-{
-	return value ? "Yes" : "No";
-}
+wxString b2yn(bool value) { return value ? "Yes" : "No"; }
 
 wxColor colorFromEightBit(int color)
 {
-	if(color <= 0 || color >= 216)
-		return wxColor(0, 0, 0);
+	if (color <= 0 || color >= 216) return wxColor(0, 0, 0);
 	const uint8_t red = (uint8_t)(int(color / 36) % 6 * 51);
 	const uint8_t green = (uint8_t)(int(color / 6) % 6 * 51);
 	const uint8_t blue = (uint8_t)(color % 6 * 51);

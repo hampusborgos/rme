@@ -18,9 +18,8 @@
 #ifndef RME_OLD_PROPERTIES_WINDOW_H_
 #define RME_OLD_PROPERTIES_WINDOW_H_
 
-#include "main.h"
-
 #include "common_windows.h"
+#include "main.h"
 
 class ContainerItemButton;
 class ContainerItemPopupMenu;
@@ -29,7 +28,8 @@ class OldPropertiesWindow : public ObjectPropertiesWindowBase
 {
 public:
 	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Item* item, wxPoint = wxDefaultPosition);
-	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Creature* creature, wxPoint = wxDefaultPosition);
+	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Creature* creature,
+	                    wxPoint = wxDefaultPosition);
 	OldPropertiesWindow(wxWindow* parent, const Map* map, const Tile* tile, Spawn* spawn, wxPoint = wxDefaultPosition);
 	virtual ~OldPropertiesWindow();
 
@@ -60,4 +60,3 @@ protected:
 };
 
 #endif
-

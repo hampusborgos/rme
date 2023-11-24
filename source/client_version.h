@@ -24,7 +24,8 @@
 typedef int ClientVersionID;
 
 // Client versions
-enum ClientVersions {
+enum ClientVersions
+{
 	CLIENT_VERSION_NONE = -1,
 	CLIENT_VERSION_ALL = -2,
 	CLIENT_VERSION_750 = 1,
@@ -199,8 +200,8 @@ public:
 	~ClientVersion() = default;
 
 	// Ensures we don't accidentally copy it.
-	ClientVersion(const ClientVersion &) = delete;
-	ClientVersion &operator=(const ClientVersion &) = delete;
+	ClientVersion(const ClientVersion&) = delete;
+	ClientVersion& operator=(const ClientVersion&) = delete;
 
 	static void loadVersions();
 	static void unloadVersions();
@@ -270,7 +271,7 @@ private:
 
 inline int VersionComparisonPredicate(ClientVersion* a, ClientVersion* b)
 {
-	if(a->getID() < b->getID()) {
+	if (a->getID() < b->getID()) {
 		return 1;
 	}
 	return 0;

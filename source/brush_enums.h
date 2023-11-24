@@ -18,7 +18,8 @@
 #ifndef RME_BRUSH_ENUMS_H_
 #define RME_BRUSH_ENUMS_H_
 
-enum BorderType {
+enum BorderType
+{
 	// Border types (also used for carpets)
 	BORDER_NONE = 0,
 	NORTH_HORIZONTAL = 1,
@@ -63,8 +64,9 @@ enum BorderType {
 	TABLE_ALONE = 6,
 };
 
-enum TileAlignement {
-	TILE_NORTHWEST =1,
+enum TileAlignement
+{
+	TILE_NORTHWEST = 1,
 	TILE_NORTH = 2,
 	TILE_NORTHEAST = 4,
 	TILE_WEST = 8,
@@ -78,7 +80,8 @@ enum TileAlignement {
 	WALLTILE_SOUTH = 8,
 };
 
-enum DoorType {
+enum DoorType
+{
 	WALL_UNDEFINED,
 	WALL_ARCHWAY,
 	WALL_DOOR_NORMAL,

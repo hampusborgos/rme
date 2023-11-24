@@ -15,21 +15,17 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
-
 #include "raw_brush.h"
-#include "settings.h"
-#include "items.h"
+
 #include "basemap.h"
+#include "items.h"
+#include "main.h"
+#include "settings.h"
 
 //=============================================================================
 // RAW brush
 
-RAWBrush::RAWBrush(uint16_t itemid) :
-	Brush()
-{
-	itemtype = g_items.getRawItemType(itemid);
-}
+RAWBrush::RAWBrush(uint16_t itemid) : Brush() { itemtype = g_items.getRawItemType(itemid); }
 
 RAWBrush::~RAWBrush()
 {
@@ -38,24 +34,19 @@ RAWBrush::~RAWBrush()
 
 int RAWBrush::getLookID() const
 {
-	if(itemtype)
-		return itemtype->clientID;
+	if (itemtype) return itemtype->clientID;
 	return 0;
 }
 
-uint16_t RAWBrush::getItemID() const
-{
-	return itemtype->id;
-}
+uint16_t RAWBrush::getItemID() const { return itemtype->id; }
 
 std::string RAWBrush::getName() const
 {
-	if(!itemtype)
-		return "RAWBrush";
+	if (!itemtype) return "RAWBrush";
 
-	if(itemtype->hookSouth)
+	if (itemtype->hookSouth)
 		return i2s(itemtype->id) + " - " + itemtype->name + " (Hook South)";
-	else if(itemtype->hookEast)
+	else if (itemtype->hookEast)
 		return i2s(itemtype->id) + " - " + itemtype->name + " (Hook East)";
 
 	return i2s(itemtype->id) + " - " + itemtype->name + itemtype->editorsuffix;
@@ -63,13 +54,13 @@ std::string RAWBrush::getName() const
 
 void RAWBrush::undraw(BaseMap* map, Tile* tile)
 {
-	if(tile->ground && tile->ground->getID() == itemtype->id) {
+	if (tile->ground && tile->ground->getID() == itemtype->id) {
 		delete tile->ground;
 		tile->ground = nullptr;
 	}
-	for(ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
+	for (ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
 		Item* item = *iter;
-		if(item->getID() == itemtype->id) {
+		if (item->getID() == itemtype->id) {
 			delete item;
 			iter = tile->items.erase(iter);
 		} else {
@@ -80,17 +71,17 @@ void RAWBrush::undraw(BaseMap* map, Tile* tile)
 
 void RAWBrush::draw(BaseMap* map, Tile* tile, void* parameter)
 {
-	if(!itemtype) return;
+	if (!itemtype) return;
 
-	bool b = parameter? *reinterpret_cast<bool*>(parameter) : false;
-	if((g_settings.getInteger(Config::RAW_LIKE_SIMONE) && !b) && itemtype->alwaysOnBottom && itemtype->alwaysOnTopOrder == 2) {
-		for(ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
+	bool b = parameter ? *reinterpret_cast<bool*>(parameter) : false;
+	if ((g_settings.getInteger(Config::RAW_LIKE_SIMONE) && !b) && itemtype->alwaysOnBottom &&
+	    itemtype->alwaysOnTopOrder == 2) {
+		for (ItemVector::iterator iter = tile->items.begin(); iter != tile->items.end();) {
 			Item* item = *iter;
-			if(item->getTopOrder() == itemtype->alwaysOnTopOrder) {
+			if (item->getTopOrder() == itemtype->alwaysOnTopOrder) {
 				delete item;
 				iter = tile->items.erase(iter);
-			}
-			else
+			} else
 				++iter;
 		}
 	}

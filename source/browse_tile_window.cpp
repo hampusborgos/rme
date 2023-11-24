@@ -15,15 +15,14 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-#include "main.h"
+#include "browse_tile_window.h"
 
-#include "map.h"
-#include "gui.h"
-#include "raw_brush.h"
-#include "tile.h"
 #include "graphics.h"
 #include "gui.h"
-#include "browse_tile_window.h"
+#include "main.h"
+#include "map.h"
+#include "raw_brush.h"
+#include "tile.h"
 
 // ============================================================================
 //
@@ -48,7 +47,7 @@ protected:
 };
 
 BrowseTileListBox::BrowseTileListBox(wxWindow* parent, wxWindowID id, Tile* tile) :
-wxVListBox(parent, id, wxDefaultPosition, wxSize(200, 180), wxLB_MULTIPLE), edit_tile(tile)
+    wxVListBox(parent, id, wxDefaultPosition, wxSize(200, 180), wxLB_MULTIPLE), edit_tile(tile)
 {
 	UpdateItems();
 }
@@ -64,12 +63,11 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	Item* item = item_iterator->second;
 
 	Sprite* sprite = g_gui.gfx.getSprite(item->getClientID());
-	if(sprite)
-		sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
+	if (sprite) sprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
 
-	if(IsSelected(n)) {
+	if (IsSelected(n)) {
 		item->select();
-		if(HasFocus())
+		if (HasFocus())
 			dc.SetTextForeground(wxColor(0xFF, 0xFF, 0xFF));
 		else
 			dc.SetTextForeground(wxColor(0x00, 0x00, 0xFF));
@@ -83,29 +81,25 @@ void BrowseTileListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 	dc.DrawText(label, rect.GetX() + 40, rect.GetY() + 6);
 }
 
-wxCoord BrowseTileListBox::OnMeasureItem(size_t n) const
-{
-	return 32;
-}
+wxCoord BrowseTileListBox::OnMeasureItem(size_t n) const { return 32; }
 
 Item* BrowseTileListBox::GetSelectedItem()
 {
-	if(GetItemCount() == 0 || GetSelectedCount() == 0)
-		return nullptr;
+	if (GetItemCount() == 0 || GetSelectedCount() == 0) return nullptr;
 
 	return edit_tile->getTopSelectedItem();
 }
 
 void BrowseTileListBox::RemoveSelected()
 {
-	if(GetItemCount() == 0 || GetSelectedCount() == 0) return;
+	if (GetItemCount() == 0 || GetSelectedCount() == 0) return;
 
 	Clear();
 	items.clear();
 
 	// Delete the items from the tile
 	ItemVector tile_selection = edit_tile->popSelectedItems(true);
-	for(ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
+	for (ItemVector::iterator iit = tile_selection.begin(); iit != tile_selection.end(); ++iit) {
 		delete *iit;
 	}
 
@@ -116,12 +110,12 @@ void BrowseTileListBox::RemoveSelected()
 void BrowseTileListBox::UpdateItems()
 {
 	int n = 0;
-	for(ItemVector::reverse_iterator it = edit_tile->items.rbegin(); it != edit_tile->items.rend(); ++it) {
+	for (ItemVector::reverse_iterator it = edit_tile->items.rbegin(); it != edit_tile->items.rend(); ++it) {
 		items[n] = (*it);
 		++n;
 	}
 
-	if(edit_tile->ground) {
+	if (edit_tile->ground) {
 		items[n] = edit_tile->ground;
 		++n;
 	}
@@ -133,14 +127,14 @@ void BrowseTileListBox::UpdateItems()
 //
 
 BEGIN_EVENT_TABLE(BrowseTileWindow, wxDialog)
-	EVT_BUTTON(wxID_REMOVE, BrowseTileWindow::OnClickDelete)
-	EVT_BUTTON(wxID_FIND, BrowseTileWindow::OnClickSelectRaw)
-	EVT_BUTTON(wxID_OK, BrowseTileWindow::OnClickOK)
-	EVT_BUTTON(wxID_CANCEL, BrowseTileWindow::OnClickCancel)
+EVT_BUTTON(wxID_REMOVE, BrowseTileWindow::OnClickDelete)
+EVT_BUTTON(wxID_FIND, BrowseTileWindow::OnClickSelectRaw)
+EVT_BUTTON(wxID_OK, BrowseTileWindow::OnClickOK)
+EVT_BUTTON(wxID_CANCEL, BrowseTileWindow::OnClickCancel)
 END_EVENT_TABLE()
 
 BrowseTileWindow::BrowseTileWindow(wxWindow* parent, Tile* tile, wxPoint position /* = wxDefaultPosition */) :
-wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER)
+    wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER)
 {
 	wxSizer* sizer = newd wxBoxSizer(wxVERTICAL);
 	item_list = newd BrowseTileListBox(this, wxID_ANY, tile);
@@ -150,7 +144,7 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	pos << "x=" << tile->getX() << ",  y=" << tile->getY() << ",  z=" << tile->getZ();
 
 	wxSizer* infoSizer = newd wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* buttons = newd wxBoxSizer(wxHORIZONTAL);
 	delete_button = newd wxButton(this, wxID_REMOVE, "Delete");
 	delete_button->Enable(false);
 	buttons->Add(delete_button);
@@ -161,11 +155,17 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	infoSizer->Add(buttons);
 	infoSizer->AddSpacer(5);
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "Position:  " + pos), wxSizerFlags(0).Left());
-	infoSizer->Add(item_count_txt = newd wxStaticText(this, wxID_ANY, "Item count:  " + i2ws(item_list->GetItemCount())), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "Protection zone:  " + b2yn(tile->isPZ())), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "No PvP:  " + b2yn(tile->getMapFlags() & TILESTATE_NOPVP)), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "No logout:  " + b2yn(tile->getMapFlags() & TILESTATE_NOLOGOUT)), wxSizerFlags(0).Left());
-	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "PvP zone:  " + b2yn(tile->getMapFlags() & TILESTATE_PVPZONE)), wxSizerFlags(0).Left());
+	infoSizer->Add(
+	    item_count_txt = newd wxStaticText(this, wxID_ANY, "Item count:  " + i2ws(item_list->GetItemCount())),
+	    wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "Protection zone:  " + b2yn(tile->isPZ())),
+	               wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "No PvP:  " + b2yn(tile->getMapFlags() & TILESTATE_NOPVP)),
+	               wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "No logout:  " + b2yn(tile->getMapFlags() & TILESTATE_NOLOGOUT)),
+	               wxSizerFlags(0).Left());
+	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "PvP zone:  " + b2yn(tile->getMapFlags() & TILESTATE_PVPZONE)),
+	               wxSizerFlags(0).Left());
 	infoSizer->Add(newd wxStaticText(this, wxID_ANY, "House:  " + b2yn(tile->isHouseTile())), wxSizerFlags(0).Left());
 
 	sizer->Add(infoSizer, wxSizerFlags(0).Left().DoubleBorder());
@@ -179,13 +179,15 @@ wxDialog(parent, wxID_ANY, "Browse Field", position, wxSize(600, 400), wxCAPTION
 	SetSizerAndFit(sizer);
 
 	// Connect Events
-	item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(BrowseTileWindow::OnItemSelected), NULL, this);
+	item_list->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(BrowseTileWindow::OnItemSelected), NULL,
+	                   this);
 }
 
 BrowseTileWindow::~BrowseTileWindow()
 {
 	// Disconnect Events
-	item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(BrowseTileWindow::OnItemSelected), NULL, this);
+	item_list->Disconnect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler(BrowseTileWindow::OnItemSelected), NULL,
+	                      this);
 }
 
 void BrowseTileWindow::OnItemSelected(wxCommandEvent& WXUNUSED(event))
@@ -204,19 +206,11 @@ void BrowseTileWindow::OnClickDelete(wxCommandEvent& WXUNUSED(event))
 void BrowseTileWindow::OnClickSelectRaw(wxCommandEvent& WXUNUSED(event))
 {
 	Item* item = item_list->GetSelectedItem();
-	if(item && item->getRAWBrush())
-		g_gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
+	if (item && item->getRAWBrush()) g_gui.SelectBrush(item->getRAWBrush(), TILESET_RAW);
 
 	EndModal(1);
 }
 
-void BrowseTileWindow::OnClickOK(wxCommandEvent& WXUNUSED(event))
-{
-	EndModal(1);
-}
+void BrowseTileWindow::OnClickOK(wxCommandEvent& WXUNUSED(event)) { EndModal(1); }
 
-void BrowseTileWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event))
-{
-	EndModal(0);
-}
-
+void BrowseTileWindow::OnClickCancel(wxCommandEvent& WXUNUSED(event)) { EndModal(0); }

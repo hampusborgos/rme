@@ -18,8 +18,8 @@
 #ifndef RME_ITEM_ATTRIBUTES_H_
 #define RME_ITEM_ATTRIBUTES_H_
 
-#include <string>
 #include <map>
+#include <string>
 
 #include "filehandle.h"
 
@@ -41,7 +41,8 @@ public:
 	ItemAttribute& operator=(const ItemAttribute& o);
 	~ItemAttribute();
 
-	enum Type {
+	enum Type
+	{
 		STRING = 1,
 		INTEGER = 2,
 		FLOAT = 3,
@@ -75,7 +76,7 @@ class ItemAttributes
 {
 public:
 	ItemAttributes();
-	ItemAttributes(const ItemAttributes &i);
+	ItemAttributes(const ItemAttributes& i);
 	virtual ~ItemAttributes();
 
 	// Save / load

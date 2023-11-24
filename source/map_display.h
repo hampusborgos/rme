@@ -19,8 +19,8 @@
 #define RME_DISPLAY_WINDOW_H_
 
 #include "action.h"
-#include "tile.h"
 #include "creature.h"
+#include "tile.h"
 
 class Item;
 class Creature;
@@ -119,23 +119,25 @@ public:
 	void TakeScreenshot(wxFileName path, wxString format);
 
 protected:
-	void getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw, PositionVector* tilestoborder, bool fill = false);
-	bool floodFill(Map *map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions);
+	void getTilesToDraw(int mouse_map_x, int mouse_map_y, int floor, PositionVector* tilestodraw,
+	                    PositionVector* tilestoborder, bool fill = false);
+	bool floodFill(Map* map, const Position& center, int x, int y, GroundBrush* brush, PositionVector* positions);
 
 private:
-	enum {
+	enum
+	{
 		BLOCK_SIZE = 64
 	};
 
 	inline int getFillIndex(int x, int y) const noexcept { return ((y % BLOCK_SIZE) * BLOCK_SIZE) + (x % BLOCK_SIZE); }
 
-	static bool processed[BLOCK_SIZE*BLOCK_SIZE];
+	static bool processed[BLOCK_SIZE * BLOCK_SIZE];
 
 	Editor& editor;
-	MapDrawer *drawer;
+	MapDrawer* drawer;
 	int keyCode;
 
-// View related
+	// View related
 	int floor;
 	double zoom;
 	int cursor_x;
@@ -185,7 +187,8 @@ private:
 };
 
 // Right-click popup menu
-class MapPopupMenu : public wxMenu {
+class MapPopupMenu : public wxMenu
+{
 public:
 	MapPopupMenu(Editor& editor);
 	virtual ~MapPopupMenu();
@@ -199,14 +202,14 @@ protected:
 class AnimationTimer : public wxTimer
 {
 public:
-	AnimationTimer(MapCanvas *canvas);
+	AnimationTimer(MapCanvas* canvas);
 
 	void Notify();
 	void Start();
 	void Stop();
 
 private:
-	MapCanvas *map_canvas;
+	MapCanvas* map_canvas;
 	bool started;
 };
 

@@ -18,8 +18,8 @@
 #ifndef RME_EXTENSION_H_
 #define RME_EXTENSION_H_
 
-#include "tileset.h"
 #include "client_version.h"
+#include "tileset.h"
 
 class MaterialsExtension
 {

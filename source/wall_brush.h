@@ -54,16 +54,19 @@ public:
 	virtual bool canDrag() const { return true; }
 
 protected:
-	struct WallType {
+	struct WallType
+	{
 		int chance;
 		uint16_t id;
 	};
-	struct WallNode {
+	struct WallNode
+	{
 		WallNode() : total_chance(0) {}
 		int total_chance;
 		std::vector<WallType> items;
 	};
-	struct DoorType {
+	struct DoorType
+	{
 		::DoorType type;
 		uint16_t id;
 	};

@@ -19,13 +19,13 @@
 #define RME_MAP_H_
 
 #include "basemap.h"
-#include "tile.h"
-#include "town.h"
+#include "complexitem.h"
 #include "house.h"
 #include "spawn.h"
-#include "complexitem.h"
-#include "waypoints.h"
 #include "templates.h"
+#include "tile.h"
+#include "town.h"
+#include "waypoints.h"
 
 class Map : public BaseMap
 {
@@ -103,8 +103,8 @@ protected:
 	wxArrayString warnings;
 	wxString error;
 
-	std::string name; // The map name, NOT the same as filename
-	std::string filename; // the maps filename
+	std::string name;        // The map name, NOT the same as filename
+	std::string filename;    // the maps filename
 	std::string description; // The description of the map
 
 	MapVersion mapVersion;
@@ -126,7 +126,7 @@ protected:
 	void removeUniqueId(uint16_t uid);
 
 	bool has_changed; // If the map has changed
-	bool unnamed; // If the map has yet to receive a name
+	bool unnamed;     // If the map has yet to receive a name
 
 	friend class IOMapOTBM;
 	friend class IOMapOTMM;
@@ -146,39 +146,42 @@ inline void foreach_ItemOnMap(Map& map, ForeachType& foreach, bool selectedTiles
 	MapIterator end = map.end();
 	long long done = 0;
 
-	while(tileiter != end) {
+	while (tileiter != end) {
 		++done;
 		Tile* tile = (*tileiter)->get();
-		if(selectedTiles && !tile->isSelected()) {
+		if (selectedTiles && !tile->isSelected()) {
 			++tileiter;
 			continue;
 		}
 
-		if(tile->ground) {
-			foreach(map, tile, tile->ground, done);
+		if (tile->ground) {
+			foreach (map, tile, tile->ground, done)
+				;
 		}
 
 		std::queue<Container*> containers;
-		for(ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ++itemiter) {
+		for (ItemVector::iterator itemiter = tile->items.begin(); itemiter != tile->items.end(); ++itemiter) {
 			Item* item = *itemiter;
 			Container* container = dynamic_cast<Container*>(item);
-			foreach(map, tile, item, done);
-			if(container) {
+			foreach (map, tile, item, done)
+				;
+			if (container) {
 				containers.push(container);
 
 				do {
 					container = containers.front();
 					ItemVector& v = container->getVector();
-					for(ItemVector::iterator containeriter = v.begin(); containeriter != v.end(); ++containeriter) {
+					for (ItemVector::iterator containeriter = v.begin(); containeriter != v.end(); ++containeriter) {
 						Item* i = *containeriter;
 						Container* c = dynamic_cast<Container*>(i);
-						foreach(map, tile, i, done);
-						if(c) {
+						foreach (map, tile, i, done)
+							;
+						if (c) {
 							containers.push(c);
 						}
 					}
 					containers.pop();
-				} while(containers.size());
+				} while (containers.size());
 			}
 		}
 		++tileiter;
@@ -192,8 +195,9 @@ inline void foreach_TileOnMap(Map& map, ForeachType& foreach)
 	MapIterator end = map.end();
 	long long done = 0;
 
-	while(tileiter != end)
-		foreach(map, (*tileiter++)->get(), ++done);
+	while (tileiter != end)
+		foreach (map, (*tileiter++)->get(), ++done)
+			;
 }
 
 template <typename RemoveIfType>
@@ -205,9 +209,9 @@ inline long long remove_if_TileOnMap(Map& map, RemoveIfType& remove_if)
 	long long removed = 0;
 	long long total = map.getTileCount();
 
-	while(tileiter != end) {
+	while (tileiter != end) {
 		Tile* tile = (*tileiter)->get();
-		if(remove_if(map, tile, removed, done, total)) {
+		if (remove_if(map, tile, removed, done, total)) {
 			map.setTile(tile->getPosition(), nullptr, true);
 			++removed;
 		}
@@ -219,37 +223,37 @@ inline long long remove_if_TileOnMap(Map& map, RemoveIfType& remove_if)
 }
 
 template <typename RemoveIfType>
-inline int64_t RemoveItemOnMap(Map& map, RemoveIfType& condition, bool selectedOnly) {
+inline int64_t RemoveItemOnMap(Map& map, RemoveIfType& condition, bool selectedOnly)
+{
 	int64_t done = 0;
 	int64_t removed = 0;
 
 	MapIterator it = map.begin();
 	MapIterator end = map.end();
 
-	while(it != end) {
+	while (it != end) {
 		++done;
 		Tile* tile = (*it)->get();
-		if(selectedOnly && !tile->isSelected()) {
+		if (selectedOnly && !tile->isSelected()) {
 			++it;
 			continue;
 		}
 
-		if(tile->ground) {
-			if(condition(map, tile->ground, removed, done)) {
+		if (tile->ground) {
+			if (condition(map, tile->ground, removed, done)) {
 				delete tile->ground;
 				tile->ground = nullptr;
 				++removed;
 			}
 		}
 
-		for(auto iit = tile->items.begin(); iit != tile->items.end();) {
+		for (auto iit = tile->items.begin(); iit != tile->items.end();) {
 			Item* item = *iit;
-			if(condition(map, item, removed, done)) {
+			if (condition(map, item, removed, done)) {
 				iit = tile->items.erase(iit);
 				delete item;
 				++removed;
-			}
-			else
+			} else
 				++iit;
 		}
 		++it;

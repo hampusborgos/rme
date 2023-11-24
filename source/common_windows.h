@@ -18,9 +18,8 @@
 #ifndef RME_MAP_WINDOWS_H_
 #define RME_MAP_WINDOWS_H_
 
-#include "main.h"
-
 #include "dcbutton.h"
+#include "main.h"
 #include "positionctrl.h"
 
 class GameSprite;
@@ -33,7 +32,8 @@ class ItemToggleButton : public DCButton
 {
 public:
 	ItemToggleButton(wxWindow* parent, RenderSize size, int lookid, wxWindowID id = wxID_ANY) :
-		DCButton(parent, id, wxDefaultPosition, DC_BTN_TOGGLE, size, lookid) {}
+	    DCButton(parent, id, wxDefaultPosition, DC_BTN_TOGGLE, size, lookid)
+	{}
 	virtual ~ItemToggleButton() {}
 };
 
@@ -44,7 +44,8 @@ class ItemButton : public DCButton
 {
 public:
 	ItemButton(wxWindow* parent, RenderSize size, uint16_t lookid, wxWindowID id = wxID_ANY) :
-		DCButton(parent, id, wxDefaultPosition, DC_BTN_NORMAL, size, lookid) {}
+	    DCButton(parent, id, wxDefaultPosition, DC_BTN_NORMAL, size, lookid)
+	{}
 	virtual ~ItemButton() {}
 };
 
@@ -92,6 +93,7 @@ public:
 	void OnClickBrowse(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
+
 protected:
 	Editor& editor;
 
@@ -144,8 +146,11 @@ protected:
 class KeyForwardingTextCtrl : public wxTextCtrl
 {
 public:
-	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = "", const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0, const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr)
-		: wxTextCtrl(parent, id, value, pos, size, style, validator, name) {}
+	KeyForwardingTextCtrl(wxWindow* parent, wxWindowID id, const wxString& value = "",
+	                      const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = 0,
+	                      const wxValidator& validator = wxDefaultValidator, const wxString& name = wxTextCtrlNameStr) :
+	    wxTextCtrl(parent, id, value, pos, size, style, validator, name)
+	{}
 	~KeyForwardingTextCtrl() {}
 
 	void OnKeyDown(wxKeyEvent&);
@@ -170,6 +175,7 @@ public:
 
 	void OnDrawItem(wxDC& dc, const wxRect& rect, size_t index) const;
 	wxCoord OnMeasureItem(size_t index) const;
+
 protected:
 	bool cleared;
 	bool no_matches;
@@ -177,15 +183,17 @@ protected:
 };
 
 /**
-* A wxListBox that can be sorted without using style wxLB_SORT.
-* wxLB_SORT does not work properly on Windows and causes errors on macOS.
-*/
+ * A wxListBox that can be sorted without using style wxLB_SORT.
+ * wxLB_SORT does not work properly on Windows and causes errors on macOS.
+ */
 class SortableListBox : public wxListBox
 {
 public:
-	SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint &pos = wxDefaultPosition, const wxSize &size = wxDefaultSize);
+	SortableListBox(wxWindow* parent, wxWindowID id, const wxPoint& pos = wxDefaultPosition,
+	                const wxSize& size = wxDefaultSize);
 	~SortableListBox();
 	void Sort();
+
 private:
 	void DoSort();
 };
@@ -211,6 +219,7 @@ public:
 	void RefreshContents();
 	virtual const Brush* getResult() const { return result_brush; }
 	virtual int getResultID() const { return result_id; }
+
 protected:
 	virtual void RefreshContentsInternal() = 0;
 	virtual void OnClickListInternal(wxCommandEvent&) = 0;
@@ -268,18 +277,12 @@ protected:
 class ObjectPropertiesWindowBase : public wxDialog
 {
 public:
-	ObjectPropertiesWindowBase(
-		wxWindow* parent, wxString title,
-		const Map* map, const Tile* tile, Item* item,
-		wxPoint position = wxDefaultPosition);
-	ObjectPropertiesWindowBase(
-		wxWindow* parent, wxString title,
-		const Map* map, const Tile* tile, Spawn* spawn,
-		wxPoint position = wxDefaultPosition);
-	ObjectPropertiesWindowBase(
-		wxWindow* parent, wxString title,
-		const Map* map, const Tile* tile, Creature* creature,
-		wxPoint position = wxDefaultPosition);
+	ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Item* item,
+	                           wxPoint position = wxDefaultPosition);
+	ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Spawn* spawn,
+	                           wxPoint position = wxDefaultPosition);
+	ObjectPropertiesWindowBase(wxWindow* parent, wxString title, const Map* map, const Tile* tile, Creature* creature,
+	                           wxPoint position = wxDefaultPosition);
 
 	Item* getItemBeingEdited();
 	Creature* getCreatureBeingEdited();
@@ -308,8 +311,8 @@ public:
 	void OnClickRemove(wxCommandEvent&);
 	void OnClickOK(wxCommandEvent&);
 	void OnClickCancel(wxCommandEvent&);
-protected:
 
+protected:
 	void BuildListBox(bool doselect);
 	void UpdateSelection(int new_selection);
 

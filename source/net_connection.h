@@ -18,13 +18,13 @@
 #ifndef _RME_NET_CONNECTION_H_
 #define _RME_NET_CONNECTION_H_
 
-#include "position.h"
-
-#include <string>
-#include <vector>
 #include <cstdint>
-#include <thread>
 #include <mutex>
+#include <string>
+#include <thread>
+#include <vector>
+
+#include "position.h"
 
 struct NetworkMessage
 {
@@ -34,14 +34,16 @@ struct NetworkMessage
 	void expand(const size_t length);
 
 	//
-	template<typename T> T read()
+	template <typename T>
+	T read()
 	{
 		T& value = *reinterpret_cast<T*>(&buffer[position]);
 		position += sizeof(T);
 		return value;
 	}
 
-	template<typename T> void write(const T& value)
+	template <typename T>
+	void write(const T& value)
 	{
 		expand(sizeof(T));
 		memcpy(&buffer[position], &value, sizeof(T));
@@ -54,31 +56,35 @@ struct NetworkMessage
 	size_t size;
 };
 
-template<> std::string NetworkMessage::read<std::string>();
-template<> Position NetworkMessage::read<Position>();
-template<> void NetworkMessage::write<std::string>(const std::string& value);
-template<> void NetworkMessage::write<Position>(const Position& value);
+template <>
+std::string NetworkMessage::read<std::string>();
+template <>
+Position NetworkMessage::read<Position>();
+template <>
+void NetworkMessage::write<std::string>(const std::string& value);
+template <>
+void NetworkMessage::write<Position>(const Position& value);
 
 class NetworkConnection
 {
-	private:
-		NetworkConnection();
-		NetworkConnection(const NetworkConnection& copy) = delete;
+private:
+	NetworkConnection();
+	NetworkConnection(const NetworkConnection& copy) = delete;
 
-	public:
-		~NetworkConnection();
+public:
+	~NetworkConnection();
 
-		static NetworkConnection& getInstance();
+	static NetworkConnection& getInstance();
 
-		bool start();
-		void stop();
+	bool start();
+	void stop();
 
-		asio::io_service& get_service();
+	asio::io_service& get_service();
 
-	private:
-		asio::io_service* service;
-		std::thread thread;
-		bool stopped;
+private:
+	asio::io_service* service;
+	std::thread thread;
+	bool stopped;
 };
 
 #endif

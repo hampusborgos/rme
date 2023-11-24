@@ -15,7 +15,6 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 //////////////////////////////////////////////////////////////////////
 
-
 #ifdef _USE_PROCESS_COM
 
 #ifndef RME_PROCESS_COMMUNICATION_H_
@@ -23,7 +22,8 @@
 
 #include "wx/ipc.h"
 
-class RMEProcessConnection : public wxConnection {
+class RMEProcessConnection : public wxConnection
+{
 public:
 	RMEProcessConnection();
 	~RMEProcessConnection();
@@ -31,7 +31,8 @@ public:
 	bool OnExec(const wxString& topic, const wxString& fileName);
 };
 
-class RMEProcessServer : public wxServer {
+class RMEProcessServer : public wxServer
+{
 public:
 	RMEProcessServer();
 	~RMEProcessServer();
@@ -39,8 +40,10 @@ public:
 	wxConnectionBase* OnAcceptConnection(const wxString& topic);
 };
 
-class RMEProcessClient : public wxClient {
+class RMEProcessClient : public wxClient
+{
 	wxConnectionBase* proc;
+
 public:
 	RMEProcessClient();
 	~RMEProcessClient();
