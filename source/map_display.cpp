@@ -1843,16 +1843,22 @@ void MapCanvas::OnDelete(wxCommandEvent& WXUNUSED(event))
 
 void MapCanvas::OnCopyPosition(wxCommandEvent& WXUNUSED(event))
 {
-	if(!editor.hasSelection())
-		return;
+	if (editor.hasSelection()) {
+		const Position minPos = editor.getSelection().minPosition();
+		const Position maxPos = editor.getSelection().maxPosition();
+		if (minPos != maxPos) {
+			posToClipboard(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
+			return;
+		}
+	}
 
-	Position minPos = editor.getSelection().minPosition();
-	Position maxPos = editor.getSelection().maxPosition();
-	if(minPos != maxPos) {
-		posToClipboard(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
-	} else {
-		int format = g_settings.getInteger(Config::COPY_POSITION_FORMAT);
-		posToClipboard(minPos.x, minPos.y, minPos.z, format);
+	MapTab* tab = g_gui.GetCurrentMapTab();
+	if (tab) {
+		MapCanvas* canvas = tab->GetCanvas();
+		int x, y;
+		int z = canvas->GetFloor();
+		canvas->MouseToMap(&x, &y);
+		posToClipboard(x, y, z, g_settings.getInteger(Config::COPY_POSITION_FORMAT));
 	}
 }
 
@@ -2283,7 +2289,7 @@ void MapPopupMenu::Update()
 	copyItem->Enable(anything_selected);
 
 	wxMenuItem* copyPositionItem = Append( MAP_POPUP_MENU_COPY_POSITION, "&Copy Position", "Copy the position as a lua table");
-	copyPositionItem->Enable(anything_selected);
+	copyPositionItem->Enable(true);
 
 	wxMenuItem* pasteItem = Append( MAP_POPUP_MENU_PASTE, "&Paste\tCTRL+V", "Paste items in the copybuffer here");
 	pasteItem->Enable(editor.copybuffer.canPaste());
