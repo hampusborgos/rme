@@ -145,8 +145,11 @@ MapCanvas::MapCanvas(MapWindow* parent, Editor& editor, int* attriblist) :
 MapCanvas::~MapCanvas()
 {
 	delete popup_menu;
+	popup_menu = nullptr;
 	delete animation_timer;
+	animation_timer = nullptr;
 	delete drawer;
+	drawer = nullptr;
 	free(screenshot_buffer);
 }
 
@@ -2669,7 +2672,7 @@ void AnimationTimer::Notify()
 {
 	if(map_canvas->GetZoom() <= 2.0)
 		map_canvas->Refresh();
-};
+}
 
 void AnimationTimer::Start()
 {

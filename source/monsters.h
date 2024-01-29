@@ -51,6 +51,8 @@ public:
 	bool importXMLFromOT(const FileName& filename, wxString& error, wxArrayString& warnings);
 
 	bool saveToXML(const FileName& filename);
+
+	wxArrayString getMissingMonsterNames() const;
 };
 
 class MonsterType {

@@ -157,7 +157,7 @@ protected:
 	};
 
 	void getColor(Brush* brush, const Position& position, uint8_t &r, uint8_t &g, uint8_t &b);
-	void glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha);
+	void glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha, const Outfit& outfit = {});
 	void glBlitSquare(int sx, int sy, int red, int green, int blue, int alpha);
 	void glColor(wxColor color);
 	void glColor(BrushColor color);

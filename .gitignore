@@ -58,3 +58,4 @@ cmake-build-debug/
 *.rar
 *.lzma
 *.dat
+*.manifest

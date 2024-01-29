@@ -337,8 +337,6 @@
     <ClCompile Include="..\..\source\palette_npc.cpp" />
     <ClInclude Include="..\..\source\palette_window.h" />
     <ClCompile Include="..\..\source\palette_window.cpp" />
-    <ClInclude Include="..\..\source\protobuf\appearances.pb.h" />
-    <ClCompile Include="..\..\source\protobuf\appearances.pb.cc" />
     <ClInclude Include="..\..\source\about_window.h" />
     <ClCompile Include="..\..\source\about_window.cpp" />
     <ClInclude Include="..\..\source\common_windows.h" />

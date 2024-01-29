@@ -72,6 +72,7 @@ NpcType* NpcType::loadFromXML(pugi::xml_node node, wxArrayString& warnings)
 
 	NpcType* npcType = newd NpcType();
 	npcType->name = attribute.as_string();
+	npcType->outfit.name = npcType->name;
 
 	if((attribute = node.attribute("looktype"))) {
 		npcType->outfit.lookType = attribute.as_int();
@@ -123,7 +124,6 @@ NpcType* NpcType::loadFromOTXML(const FileName& filename, pugi::xml_document& do
 	}
 
 	NpcType* npcType = newd NpcType();
-	npcType->name = nstr(filename.GetName());
 	npcType->name = nstr(filename.GetName());
 
 	for(pugi::xml_node optionNode = node.first_child(); optionNode; optionNode = optionNode.next_sibling()) {
@@ -325,4 +325,14 @@ bool NpcDatabase::saveToXML(const FileName& filename)
 		}
 	}
 	return doc.save_file(filename.GetFullPath().mb_str(), "\t", pugi::format_default, pugi::encoding_utf8);
+}
+
+wxArrayString NpcDatabase::getMissingNpcNames() const {
+	wxArrayString missingNpcs;
+	for(const auto& ncpEntry : npcMap) {
+		if(ncpEntry.second->missing) {
+			missingNpcs.Add(ncpEntry.second->name);
+		}
+	}
+	return missingNpcs;
 }

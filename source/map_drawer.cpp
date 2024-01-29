@@ -1291,6 +1291,10 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 		return;
 	}
 
+	if (outfit.lookType == 0) {
+		return;
+	}
+
 	GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
 	if(!spr || outfit.lookType == 0)
 		return;
@@ -1301,9 +1305,7 @@ void MapDrawer::BlitCreature(int screenx, int screeny, const Outfit& outfit, Dir
 	auto spriteId = spr->spriteList[0]->getSpriteId();
 	auto outfitImage = spr->getOutfitImage(spriteId, dir, outfit);
 	if (outfitImage) {
-		// Create outfits texture
-		outfitImage->createGLTexture(spriteId);
-		glBlitTexture(screenx, screeny, spriteId, red, green, blue, alpha);
+		glBlitTexture(screenx, screeny, outfitImage->getSpriteId(), red, green, blue, alpha, outfit);
 	}
 }
 
@@ -1760,21 +1762,26 @@ void MapDrawer::TakeScreenshot(uint8_t* screenshot_buffer)
 		glReadPixels(0, screensize_y - i, screensize_x, 1, GL_RGB, GL_UNSIGNED_BYTE, (GLubyte*)(screenshot_buffer) + 3*screensize_x*i);
 }
 
-void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha)
+void MapDrawer::glBlitTexture(int sx, int sy, int texture_number, int red, int green, int blue, int alpha, const Outfit& outfit/* = {}*/)
 {
 	if(texture_number != 0) {
 		SpriteSheetPtr sheet = g_spriteAppearances.getSheetBySpriteId(texture_number);
-		if (!sheet)
+		if (!sheet) {
 			return;
+		}
 
 		auto spriteWidth = sheet->getSpriteSize().width;
 		auto spriteHeight = sheet->getSpriteSize().height;
-		// Sprites that are 64x64 pixels but are only occupied by 32x32 pixels will be fixed
-		bool isHalfOccupied = g_spriteAppearances.isSpriteSizeEmpty(g_spriteAppearances.getSprite(texture_number)->pixels.data());
-		if (isHalfOccupied && spriteWidth == 64 && spriteHeight == 64) {
-			sx -= spriteWidth / 2;
-			sy -= spriteWidth / 2;
+		// Fix the outfit offset 8x8 sprites being drawn offset
+		if (spriteWidth == 64 && spriteHeight == 64 && (outfit.lookType > 0 || outfit.lookItem > 0)) {
+			GameSprite* spr = g_gui.gfx.getCreatureSprite(outfit.lookType);
+			if (spr && spr->drawoffset_x == 8 && spr->drawoffset_y == 8) {
+				sx -= spriteWidth / 2;
+				sy -= spriteWidth / 2;
+			}
 		}
+
+		spdlog::debug("Blitting outfit {} at ({}, {})", outfit.name, sx, sy);
 
 		glBindTexture(GL_TEXTURE_2D, texture_number);
 		glColor4ub(uint8_t(red), uint8_t(green), uint8_t(blue), uint8_t(alpha));

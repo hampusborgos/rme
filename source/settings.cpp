@@ -202,7 +202,7 @@ void Settings::IO(IOMode mode)
 	Int(SHOW_TOOLTIPS, 1);
 	Int(SHOW_ONLY_TILEFLAGS, 0);
 	Int(SHOW_ONLY_MODIFIED_TILES, 0);
-	Int(SHOW_PREVIEW, 1);
+	Int(SHOW_PREVIEW, 0);
 	Int(SHOW_WALL_HOOKS, 0);
 
 	section("Version");

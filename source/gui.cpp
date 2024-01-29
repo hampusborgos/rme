@@ -313,13 +313,6 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 	g_gui.SetLoadDone(0, "Loading assets file");
 	spdlog::info("Loading assets");
 
-	g_gui.SetLoadDone(30, "Loading items.xml ...");
-	spdlog::info("Loading items");
-	if(!g_items.loadFromGameXml(exec_directory.GetPath() + wxString("\\data\\items\\items.xml"), error, warnings)) {
-		warnings.push_back("Couldn't load items.xml: " + error);
-		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/items/items.xml").ToStdString(), error.ToStdString());
-	}
-
 	g_gui.SetLoadDone(20, "Loading client assets...");
 	spdlog::info("Loading appearances");
 	if(!ClientAssets::loadAppearanceProtobuf(error, warnings)) {
@@ -330,9 +323,16 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 		return false;
 	}
 
+	g_gui.SetLoadDone(30, "Loading items.xml ...");
+	spdlog::info("Loading items");
+	if(!g_items.loadFromGameXml(wxString("data/items/items.xml"), error, warnings)) {
+		warnings.push_back("Couldn't load items.xml: " + error);
+		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/items/items.xml").ToStdString(), error.ToStdString());
+	}
+
 	g_gui.SetLoadDone(45, "Loading monsters.xml ...");
 	spdlog::info("Loading monsters");
-	if(!g_monsters.loadFromXML(exec_directory.GetPath() + wxString("\\data\\creatures\\monsters.xml"), true, error, warnings)) {
+	if(!g_monsters.loadFromXML(wxString("data/creatures/monsters.xml"), true, error, warnings)) {
 		warnings.push_back("Couldn't load monsters.xml: " + error);
 		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/creatures/monsters.xml").ToStdString(), error.ToStdString());
 	}
@@ -349,7 +349,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.SetLoadDone(45, "Loading npcs.xml ...");
 	spdlog::info("Loading npcs");
-	if(!g_npcs.loadFromXML(exec_directory.GetPath() + wxString("\\data\\creatures\\npcs.xml"), true, error, warnings)) {
+	if(!g_npcs.loadFromXML(wxString("data/creatures/npcs.xml"), true, error, warnings)) {
 		warnings.push_back("Couldn't load npcs.xml: " + error);
 		spdlog::warn("[GUI::LoadDataFiles] {}: {}", wxString("data/creatures/npcs.xml").ToStdString(), error.ToStdString());
 	}
@@ -374,7 +374,7 @@ bool GUI::LoadDataFiles(wxString& error, wxArrayString& warnings)
 
 	g_gui.SetLoadDone(70, "Loading extensions...");
 	spdlog::info("Loading extensions");
-	if(!g_materials.loadExtensions(exec_directory.GetPath() + wxString("\\extensions\\"), error, warnings)) {
+	if(!g_materials.loadExtensions(wxString("extensions/"), error, warnings)) {
 		warnings.push_back("Couldn't load extensions: " + error);
 		spdlog::warn("[GUI::LoadDataFiles] extensions: {}", error.ToStdString());
 	}
@@ -559,7 +559,7 @@ void GUI::SaveMapAs()
 
 bool GUI::LoadMap(const FileName& fileName)
 {
-    FinishWelcomeDialog();
+	FinishWelcomeDialog();
 
 	if(GetCurrentEditor() && !GetCurrentMap().hasChanged() && !GetCurrentMap().hasFile())
 		g_gui.CloseCurrentEditor();

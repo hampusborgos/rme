@@ -54,20 +54,20 @@ END_EVENT_TABLE()
 BEGIN_EVENT_TABLE(MapWindow, wxPanel)
 	EVT_SIZE(MapWindow::OnSize)
 
-	EVT_COMMAND_SCROLL_TOP       (MAP_WINDOW_HSCROLL, MapWindow::OnScroll)
-	EVT_COMMAND_SCROLL_BOTTOM    (MAP_WINDOW_HSCROLL, MapWindow::OnScroll)
+	EVT_COMMAND_SCROLL_TOP	   (MAP_WINDOW_HSCROLL, MapWindow::OnScroll)
+	EVT_COMMAND_SCROLL_BOTTOM	(MAP_WINDOW_HSCROLL, MapWindow::OnScroll)
 	EVT_COMMAND_SCROLL_THUMBTRACK(MAP_WINDOW_HSCROLL, MapWindow::OnScroll)
-	EVT_COMMAND_SCROLL_LINEUP    (MAP_WINDOW_HSCROLL, MapWindow::OnScrollLineUp)
+	EVT_COMMAND_SCROLL_LINEUP	(MAP_WINDOW_HSCROLL, MapWindow::OnScrollLineUp)
 	EVT_COMMAND_SCROLL_LINEDOWN  (MAP_WINDOW_HSCROLL, MapWindow::OnScrollLineDown)
-	EVT_COMMAND_SCROLL_PAGEUP    (MAP_WINDOW_HSCROLL, MapWindow::OnScrollPageUp)
+	EVT_COMMAND_SCROLL_PAGEUP	(MAP_WINDOW_HSCROLL, MapWindow::OnScrollPageUp)
 	EVT_COMMAND_SCROLL_PAGEDOWN  (MAP_WINDOW_HSCROLL, MapWindow::OnScrollPageDown)
 
-	EVT_COMMAND_SCROLL_TOP       (MAP_WINDOW_VSCROLL, MapWindow::OnScroll)
-	EVT_COMMAND_SCROLL_BOTTOM    (MAP_WINDOW_VSCROLL, MapWindow::OnScroll)
+	EVT_COMMAND_SCROLL_TOP	   (MAP_WINDOW_VSCROLL, MapWindow::OnScroll)
+	EVT_COMMAND_SCROLL_BOTTOM	(MAP_WINDOW_VSCROLL, MapWindow::OnScroll)
 	EVT_COMMAND_SCROLL_THUMBTRACK(MAP_WINDOW_VSCROLL, MapWindow::OnScroll)
-	EVT_COMMAND_SCROLL_LINEUP    (MAP_WINDOW_VSCROLL, MapWindow::OnScrollLineUp)
+	EVT_COMMAND_SCROLL_LINEUP	(MAP_WINDOW_VSCROLL, MapWindow::OnScrollLineUp)
 	EVT_COMMAND_SCROLL_LINEDOWN  (MAP_WINDOW_VSCROLL, MapWindow::OnScrollLineDown)
-	EVT_COMMAND_SCROLL_PAGEUP    (MAP_WINDOW_VSCROLL, MapWindow::OnScrollPageUp)
+	EVT_COMMAND_SCROLL_PAGEUP	(MAP_WINDOW_VSCROLL, MapWindow::OnScrollPageUp)
 	EVT_COMMAND_SCROLL_PAGEDOWN  (MAP_WINDOW_VSCROLL, MapWindow::OnScrollPageDown)
 
 	EVT_BUTTON(MAP_WINDOW_GEM, MapWindow::OnGem)
@@ -112,7 +112,8 @@ bool Application::OnInit()
 
 #if defined(__LINUX__) || defined(__WINDOWS__)
 	int argc = 1;
-	char* argv[1] = { wxString(this->argv[0]).char_str() };
+	auto arg = wxString(this->argv[0]).ToStdString();
+	char* argv[] = { &arg[0] };
 	glutInit(&argc, argv);
 #endif
 
@@ -169,14 +170,14 @@ bool Application::OnInit()
 	// Load palette
 	g_gui.LoadPerspective();
 
-    wxIcon icon(rme_icon);
-    g_gui.root->SetIcon(icon);
+	wxIcon icon(rme_icon);
+	g_gui.root->SetIcon(icon);
 
-    if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1 && m_file_to_open == wxEmptyString) {
-        g_gui.ShowWelcomeDialog(icon);
-    } else {
-        g_gui.root->Show();
-    }
+	if (g_settings.getInteger(Config::WELCOME_DIALOG) == 1 && m_file_to_open == wxEmptyString) {
+		g_gui.ShowWelcomeDialog(icon);
+	} else {
+		g_gui.root->Show();
+	}
 
 	// Set idle event handling mode
 	wxIdleEvent::SetMode(wxIDLE_PROCESS_SPECIFIED);
@@ -268,18 +269,18 @@ bool Application::OnInit()
 
 void Application::OnEventLoopEnter(wxEventLoopBase* loop) {
 
-    //First startup?
-    if (!m_startup)
-        return;
-    m_startup = false;
+	//First startup?
+	if (!m_startup)
+		return;
+	m_startup = false;
 
-    //Open a map.
-    if (m_file_to_open != wxEmptyString) {
-        g_gui.LoadMap(FileName(m_file_to_open));
-    } else if (!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
-        // You generally don't want to save this map...
-        g_gui.GetCurrentEditor()->map.clearChanges();
-    }
+	//Open a map.
+	if (m_file_to_open != wxEmptyString) {
+		g_gui.LoadMap(FileName(m_file_to_open));
+	} else if (!g_gui.IsWelcomeDialogShown() && g_gui.NewMap()) { //Open a new empty map
+		// You generally don't want to save this map...
+		g_gui.GetCurrentEditor()->map.clearChanges();
+	}
 }
 
 void Application::MacOpenFiles(const wxArrayString& fileNames)
@@ -332,7 +333,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	#if wxCHECK_VERSION(3, 1, 0) //3.1.0 or higher
 		// Make sure ShowFullScreen() uses the full screen API on macOS
 		EnableFullScreenView(true);
-    #endif
+	#endif
 
 	// Creates the file-dropdown menu
 	menu_bar = newd MainMenuBar(this);
@@ -511,10 +512,31 @@ bool MainFrame::DoQuerySave(bool doclose)
 	return true;
 }
 
+void MainFrame::ShowMissingMonsters() {
+	wxArrayString missingMonsters = g_monsters.getMissingMonsterNames();
+
+	if (!missingMonsters.IsEmpty()) {
+		wxString missingMonstersStr = "Missing Monsters:\n" + wxJoin(missingMonsters, '\n');
+		wxMessageDialog dialog(this, missingMonstersStr, "Missing Monsters Outfit (data/monsters.xml)", wxOK | wxICON_INFORMATION);
+		dialog.ShowModal();
+	}
+}
+
+void MainFrame::ShowMissingNpcs() {
+	wxArrayString missingMonsters = g_npcs.getMissingNpcNames();
+
+	if (!missingMonsters.IsEmpty()) {
+		wxString missingMonstersStr = "Missing Npcs:\n" + wxJoin(missingMonsters, '\n');
+		wxMessageDialog dialog(this, missingMonstersStr, "Missing Npcs Outfit (data/npcs.xml)", wxOK | wxICON_INFORMATION);
+		dialog.ShowModal();
+	}
+}
+
 bool MainFrame::DoQueryImportCreatures()
 {
 	// Monsters
 	if(g_monsters.hasMissing()) {
+		ShowMissingMonsters();
 		long ret = g_gui.PopupDialog("Missing monsters", "There are missing monsters in the editor, do you want to load them from an OT monster file?", wxYES | wxNO);
 		if(ret == wxID_YES) {
 			do {
@@ -539,6 +561,7 @@ bool MainFrame::DoQueryImportCreatures()
 	}
 	// Npcs
 	if(g_npcs.hasMissing()) {
+		ShowMissingNpcs();
 		long ret = g_gui.PopupDialog("Missing npcs", "There are missing npcs in the editor, do you want to load them from an OT npc file?", wxYES | wxNO);
 		if(ret == wxID_YES) {
 			do {
@@ -613,7 +636,7 @@ void MainFrame::SaveRecentFiles()
 
 std::vector<wxString> MainFrame::GetRecentFiles()
 {
-    return menu_bar->GetRecentFiles();
+	return menu_bar->GetRecentFiles();
 }
 
 void MainFrame::PrepareDC(wxDC& dc)

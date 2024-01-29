@@ -81,20 +81,6 @@ bool SpriteAppearances::loadCatalogContent(const std::string& dir, bool loadData
 	return true;
 }
 
-bool SpriteAppearances::isSpriteSizeEmpty(uint8_t* buffer) {
-	for (int y = 0; y < 32; ++y) {
-		uint8_t* itr = &buffer[y * 64 * 4];
-
-		for (std::size_t x = 0; x < 32; ++x) {
-			if (*(itr + x * 4 + 3) != 0x00) {
-				return false;
-			}
-		}
-	}
-
-	return true;
-}
-
 bool SpriteAppearances::loadSpriteSheet(const SpriteSheetPtr& sheet)
 {
 	if (sheet->loaded) {
@@ -234,7 +220,7 @@ SpriteSheetPtr SpriteAppearances::getSheetBySpriteId(int id, bool load /* = true
 
 wxImage SpriteAppearances::getWxImageBySpriteId(int id, bool toSavePng/* = false*/)
 {
-	SpritePtr sprite = getSprite(id);
+	const auto &sprite = getSprite(id);
 	if (!sprite) {
 		spdlog::error("[{}] - Unknown sprite id", __func__);
 		return {};
@@ -242,23 +228,16 @@ wxImage SpriteAppearances::getWxImageBySpriteId(int id, bool toSavePng/* = false
 
 	const int width = sprite->size.width;
 	const int height = sprite->size.height;
-
+	auto pixels = sprite->pixels.data();
 	wxImage image(width, height);
-	
 	for (int y = 0; y < height; ++y) {
 		for (int x = 0; x < width; ++x) {
 			const int index = (y * width + x) * 4;
-			const uint8_t r = sprite->pixels[index + 2];
-			const uint8_t g = sprite->pixels[index + 1];
-			const uint8_t b = sprite->pixels[index];
+			const uint8_t r = pixels[index + 2];
+			const uint8_t g = pixels[index + 1];
+			const uint8_t b = pixels[index];
 			image.SetRGB(x, y, r, g, b);
 		}
-	}
-
-	if (toSavePng) {
-		image.SetMaskColour(0, 0, 0);
-		image.InitAlpha();
-		image.ConvertAlphaToMask();
 	}
 
 	return image;
@@ -272,7 +251,7 @@ SpritePtr SpriteAppearances::getSprite(int spriteId)
 		return it->second;
 	}
 
-	SpriteSheetPtr sheet = getSheetBySpriteId(spriteId);
+	const auto &sheet = getSheetBySpriteId(spriteId);
 	if (!sheet || !sheet->loaded) {
 		return nullptr;
 	}

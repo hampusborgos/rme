@@ -3,6 +3,17 @@ cmake_minimum_required(VERSION 3.1)
 project(cmake)
 
 # *****************************************************************************
+# Append cmake search path
+# *****************************************************************************
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+
+# *****************************************************************************
+# Include cmake tools
+# *****************************************************************************
+include(MessageColors)
+include(LoggingHelper)
+
+# *****************************************************************************
 # Vcpkg Configs
 # *****************************************************************************
 
@@ -31,6 +42,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # *****************************************************************************
 option(OPTIONS_ENABLE_CCACHE "Enable ccache" OFF)
 option(OPTIONS_ENABLE_SCCACHE "Use sccache to speed up compilation process" OFF)
+option(ASAN_ENABLED "Build this target with AddressSanitizer" ON)
+
+# === ASAN ===
+if(ASAN_ENABLED AND (CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo"))
+    log_option_enabled("asan")
+    if(MSVC)
+        add_compile_options(/fsanitize=address)
+    else()
+        add_compile_options(-fsanitize=address)
+        link_libraries(-fsanitize=address)
+    endif()
+else()
+    log_option_disabled("asan")
+endif()
 
 # *****************************************************************************
 # Set Sanity Check
@@ -51,17 +76,6 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 		message(FATAL_ERROR "Visual Studio version must be at least ${MSVC_MINIMUM_VERSION}")
 	endif()
 endif()
-
-# *****************************************************************************
-# Append cmake search path
-# *****************************************************************************
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-# *****************************************************************************
-# Include cmake tools
-# *****************************************************************************
-include(MessageColors)
-include(LoggingHelper)
 
 # *****************************************************************************
 # Options Code

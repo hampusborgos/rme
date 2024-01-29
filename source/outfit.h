@@ -21,6 +21,7 @@
 struct Outfit {
 	Outfit() : lookType(0), lookItem(0), lookMount(0), lookAddon(0), lookHead(0), lookBody(0), lookLegs(0), lookFeet(0) {}
 	~Outfit() {}
+	std::string name;
 	int lookType;
 	int lookItem;
 	int lookMount;

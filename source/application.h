@@ -72,6 +72,8 @@ public:
 	void UpdateMenubar();
 	bool DoQueryClose();
 	bool DoQuerySave(bool doclose = true);
+	void ShowMissingMonsters();
+	void ShowMissingNpcs();
 	bool DoQueryImportCreatures();
 	bool LoadMap(FileName name);
 

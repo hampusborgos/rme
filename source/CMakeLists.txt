@@ -27,7 +27,6 @@ target_precompile_headers(${PROJECT_NAME} PRIVATE main.h)
 
 target_sources(${PROJECT_NAME}
 	PRIVATE
-	protobuf/appearances.pb.cc
 	about_window.cpp
 	action.cpp
 	application.cpp
@@ -148,6 +147,7 @@ target_link_libraries(${PROJECT_NAME}
 	pugixml::pugixml
 	protobuf::libprotobuf
 	wx::base wx::core wx::net wx::gl wx::html wx::aui wx::adv
+	protobuf
 )
 
 set_target_properties(${PROJECT_NAME}

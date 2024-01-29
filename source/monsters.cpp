@@ -72,6 +72,7 @@ MonsterType* MonsterType::loadFromXML(pugi::xml_node node, wxArrayString& warnin
 
 	MonsterType* ct = newd MonsterType();
 	ct->name = attribute.as_string();
+	ct->outfit.name = ct->name;
 
 	if((attribute = node.attribute("looktype"))) {
 		ct->outfit.lookType = attribute.as_int();
@@ -372,4 +373,14 @@ bool MonsterDatabase::saveToXML(const FileName& filename)
 		}
 	}
 	return doc.save_file(filename.GetFullPath().mb_str(), "\t", pugi::format_default, pugi::encoding_utf8);
+}
+
+wxArrayString MonsterDatabase::getMissingMonsterNames() const {
+	wxArrayString missingMonsters;
+	for(const auto& monsterEntry : monster_map) {
+		if(monsterEntry.second->missing) {
+			missingMonsters.Add(monsterEntry.second->name);
+		}
+	}
+	return missingMonsters;
 }

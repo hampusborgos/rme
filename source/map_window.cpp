@@ -52,9 +52,26 @@ MapWindow::MapWindow(wxWindow* parent, Editor& editor) :
 	SetSizerAndFit(topsizer);
 }
 
-MapWindow::~MapWindow()
-{
-	////
+MapWindow::~MapWindow() {
+	if (canvas) {
+		delete canvas;
+		canvas = nullptr;
+	}
+
+	if (vScroll) {
+		delete vScroll;
+		vScroll = nullptr;
+	}
+
+	if (hScroll) {
+		delete hScroll;
+		hScroll = nullptr;
+	}
+
+	if (gem) {
+		delete gem;
+		gem = nullptr;
+	}
 }
 
 void MapWindow::ShowReplaceItemsDialog(bool selectionOnly)

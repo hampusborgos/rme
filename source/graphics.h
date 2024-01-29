@@ -24,7 +24,8 @@
 
 #include "client_assets.h"
 #include "sprite_appearances.h"
-#include "protobuf/appearances.pb.h"
+
+#include <appearances.pb.h>
 
 enum SpriteSize {
 	SPRITE_SIZE_16x16,
@@ -48,30 +49,6 @@ class GraphicManager;
 class FileReadHandle;
 class Animator;
 class GameSprite;
-
-class OutfitImage {
-public:
-	OutfitImage(GameSprite* initParent, int initSpriteIndex, GLuint initSpriteId, const Outfit& initOutfit);
-	~OutfitImage();
-
-	GLuint getSpriteId();
-	uint8_t* getRGBAData();
-
-	GLuint m_spriteId = 0;
-	GameSprite* m_parent = 0;
-	int m_spriteIndex = 0;
-	uint8_t m_lookHead = 0;
-	uint8_t m_lookBody = 0;
-	uint8_t m_lookLegs = 0;
-	uint8_t m_lookFeet = 0;
-	bool m_isGLLoaded = false;
-	uint8_t* dump = nullptr;
-
-	void colorizePixel(uint8_t color, uint8_t &r, uint8_t &b, uint8_t &g);
-	uint8_t* getOutfitData(int spriteId);
-
-	void createGLTexture(GLuint spriteId = 0);
-};
 
 class Sprite {
 public:
@@ -111,11 +88,11 @@ public:
 	std::pair<int, int> getDrawOffset();
 	uint8_t getMiniMapColor() const;
 	static uint8_t* invertGLColors(int spriteHeight, int spriteWidth, uint8_t* rgba);
-	std::shared_ptr<OutfitImage> getOutfitImage(int spriteId, Direction direction, const Outfit& outfit);
 
 protected:
 	class Image;
 	class NormalImage;
+	class OutfitImage;
 
 	wxMemoryDC* getDC(SpriteSize spriteSize);
 
@@ -147,7 +124,7 @@ protected:
 
 		// This contains the pixel data
 		uint16_t size;
-		uint8_t* dump;
+		uint8_t* m_cachedData = nullptr;
 
 		virtual void clean(int time);
 
@@ -158,10 +135,38 @@ protected:
 		virtual void unloadGLTexture(GLuint ignored = 0);
 	};
 
+	class OutfitImage : public Image {
+	public:
+		OutfitImage(GameSprite* initParent, int initSpriteIndex, GLuint initSpriteId, const Outfit& initOutfit);
+		~OutfitImage();
+
+		virtual GLuint getSpriteId();
+		virtual uint8_t* getRGBAData();
+
+		GLuint m_spriteId = 0;
+		GameSprite* m_parent = 0;
+		int m_spriteIndex = 0;
+		std::string m_name;
+		uint8_t m_lookHead = 0;
+		uint8_t m_lookBody = 0;
+		uint8_t m_lookLegs = 0;
+		uint8_t m_lookFeet = 0;
+		bool m_isGLLoaded = false;
+		uint8_t* m_cachedOutfitData = nullptr;
+
+		void colorizePixel(uint8_t color, uint8_t &r, uint8_t &b, uint8_t &g);
+		uint8_t* getOutfitData(int spriteId);
+
+		virtual void createGLTexture(GLuint spriteId = 0);
+		virtual void unloadGLTexture(GLuint ignored = 0);
+	};
+
 	uint32_t id;
 	wxMemoryDC* m_wxMemoryDc[SPRITE_SIZE_COUNT];
 
 public:
+	std::shared_ptr<GameSprite::OutfitImage> getOutfitImage(int spriteId, Direction direction, const Outfit& outfit);
+
 	uint32_t getID() const {
 		return id;
 	}
@@ -190,7 +195,7 @@ public:
 	uint16_t minimap_color;
 
 	std::vector<NormalImage*> spriteList;
-	std::list<std::shared_ptr<OutfitImage>> instanced_templates; // Templates that use this sprite
+	std::list<std::shared_ptr<GameSprite::OutfitImage>> instanced_templates; // Templates that use this sprite
 
 	friend class GraphicManager;
 };
@@ -312,7 +317,7 @@ private:
 
 	friend class GameSprite::Image;
 	friend class GameSprite::NormalImage;
-	friend class OutfitImage;
+	friend class GameSprite::OutfitImage;
 };
 
 struct RGBQuad {

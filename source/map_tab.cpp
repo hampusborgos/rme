@@ -57,7 +57,9 @@ MapTab::~MapTab()
 	iref->owner_count--;
 	if(iref->owner_count <= 0) {
 		delete iref->editor;
+		iref->editor = nullptr;
 		delete iref;
+		iref = nullptr;
 	}
 }
 

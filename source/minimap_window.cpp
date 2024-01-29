@@ -48,6 +48,7 @@ MinimapWindow::~MinimapWindow()
 {
 	for(int i = 0; i < 256; ++i) {
 		delete pens[i];
+		pens[i] = nullptr;
 	}
 }
 

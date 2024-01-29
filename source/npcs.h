@@ -51,6 +51,8 @@ public:
 	bool importXMLFromOT(const FileName& filename, wxString& error, wxArrayString& warnings);
 
 	bool saveToXML(const FileName& filename);
+
+	wxArrayString getMissingNpcNames() const;
 };
 
 class NpcType {

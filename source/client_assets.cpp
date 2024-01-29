@@ -139,6 +139,7 @@ bool ClientAssets::loadAppearanceProtobuf(wxString& error, wxArrayString& warnin
 			return false;
 		}
 	}
+
 	fileStream.close();
 
 	// Disposing allocated objects.

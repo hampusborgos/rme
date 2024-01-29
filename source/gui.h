@@ -29,7 +29,8 @@
 #include "map_tab.h"
 #include "palette_window.h"
 #include "client_assets.h"
-#include "protobuf/appearances.pb.h"
+
+#include <appearances.pb.h>
 
 class BaseMap;
 class Map;

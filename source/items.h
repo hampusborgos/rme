@@ -21,7 +21,8 @@
 #include "filehandle.h"
 #include "brush_enums.h"
 #include "sprite_appearances.h"
-#include "protobuf/appearances.pb.h"
+
+#include <appearances.pb.h>
 
 class Brush;
 class GroundBrush;
