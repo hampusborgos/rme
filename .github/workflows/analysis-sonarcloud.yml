@@ -4,7 +4,21 @@ name: Analysis - SonarCloud
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'src/**'
+      - 'source/**'
+      - 'cmake/**'
+      - 'CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'vcpkg.json'
   push:
+    paths:
+      - 'src/**'
+      - 'source/**'
+      - 'cmake/**'
+      - 'CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'vcpkg.json'
     branches:
       - main
 
@@ -20,6 +34,13 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      - name: Cancel Previous Runs
+        if: github.ref != 'refs/heads/main'
+        uses: fkirc/skip-duplicate-actions@master
+        with:
+          concurrent_skipping: 'same_content'
+          cancel_others: true
+
       - uses: actions/checkout@v3
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}
         with:
@@ -35,12 +56,6 @@ jobs:
       - name: Install Linux Dependencies
         run: >
           sudo apt-get update && sudo apt-get install ccache linux-headers-$(uname -r)
-
-      - name: Switch to gcc-11
-        run: |
-          sudo apt install gcc-11 g++-11
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 --slave /usr/bin/g++ g++ /usr/bin/g++-11 --slave /usr/bin/gcov gcov /usr/bin/gcov-11
-          sudo update-alternatives --set gcc /usr/bin/gcc-11
 
       - name: CCache
         id: ccache
@@ -64,23 +79,24 @@ jobs:
         run: |
           vcpkgCommitId=$(grep '.builtin-baseline' vcpkg.json | awk -F: '{print $2}' | tr -d '," ')
           echo "vcpkg commit ID: $vcpkgCommitId"
-          echo "::set-output name=vcpkgGitCommitId::$vcpkgCommitId"
+          echo "VCPKG_GIT_COMMIT_ID=$vcpkgCommitId" >> $GITHUB_ENV
+
       - name: Get vcpkg commit id from vcpkg.json
         uses: lukka/run-vcpkg@main
         with:
           vcpkgGitURL: "https://github.com/microsoft/vcpkg.git"
-          vcpkgGitCommitId: ${{ steps.vcpkg-step.outputs.vcpkgGitCommitId }}
+          vcpkgGitCommitId: ${{ env.VCPKG_GIT_COMMIT_ID }}
 
       - name: Install additional libraries
         run: sudo apt-get install libasio-dev nlohmann-json3-dev libfmt-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev libxrandr-dev libxxf86vm-dev libglib2.0-dev at-spi2-core libwxgtk3.0-gtk3-dev libarchive-dev freeglut3-dev libxmu-dev libdbus-1-dev libxtst-dev
 
       - name: Install sonar-scanner
-        uses: SonarSource/sonarcloud-github-c-cpp@v1
+        uses: SonarSource/sonarcloud-github-c-cpp@v2
 
       - name: Generate compilation database
         run: |
           mkdir -p build
-          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" -DOPTIONS_ENABLE_CCACHE=ON -S . -B build
+          cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" -DOPTIONS_ENABLE_CCACHE=ON -DSPEED_UP_BUILD_UNITY=OFF -S . -B build
 
       - name: Run PR sonar-scanner
         if: ${{ github.event_name == 'pull_request' || github.event_name == 'pull_request_target' }}

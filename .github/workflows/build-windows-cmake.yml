@@ -1,5 +1,5 @@
 ---
-name: Build - Ubuntu
+name: Build - Windows - CMake
 
 on:
   workflow_dispatch:
@@ -26,22 +26,20 @@ on:
 env:
   CMAKE_BUILD_PARALLEL_LEVEL: 2
   MAKEFLAGS: '-j 2'
-
 jobs:
   job:
     if: ${{ github.event_name == 'push' || !github.event.pull_request.draft }}
     name: ${{ matrix.os }}-${{ matrix.buildtype }}
     runs-on: ${{ matrix.os }}
-
     strategy:
-      fail-fast: false
       matrix:
-        os: [ ubuntu-22.04 ]
-        buildtype: [ linux-release ]
+        os: [windows-2022]
+        buildtype: [ windows-release ]
         include:
-          - os: ubuntu-22.04
-            triplet: x64-linux
-
+          - os: windows-2022
+            triplet: x64-windows-static
+            packages: >
+              sccache
     steps:
       - name: Cancel Previous Runs
         if: github.ref != 'refs/heads/main'
@@ -53,14 +51,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@main
 
-      - name: Install Linux Dependencies
-        run: >
-          sudo apt-get update && sudo apt-get install ccache linux-headers-$(uname -r)
-
       - name: CCache
         uses: hendrikmuhs/ccache-action@main
         with:
           max-size: "1G"
+          variant: "sccache"
           key: ccache-${{ matrix.os }}-${{ matrix.buildtype }}
           restore-keys: |
             ccache-${{ matrix.os }}
@@ -68,9 +63,10 @@ jobs:
       - name: Restore artifacts and install vcpkg
         id: vcpkg-step
         run: |
-          vcpkgCommitId=$(grep '.builtin-baseline' vcpkg.json | awk -F: '{print $2}' | tr -d '," ')
-          echo "vcpkg commit ID: $vcpkgCommitId"
-          echo "VCPKG_GIT_COMMIT_ID=$vcpkgCommitId" >> $GITHUB_ENV
+          $json=Get-Content vcpkg.json -Raw | ConvertFrom-Json
+          $vcpkgCommitId=$json.'builtin-baseline'
+          Write-Host "vcpkg commit ID: $vcpkgCommitId"
+          echo "VCPKG_GIT_COMMIT_ID=$vcpkgCommitId" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: Get vcpkg commit id from vcpkg.json
         uses: lukka/run-vcpkg@main
@@ -81,18 +77,15 @@ jobs:
       - name: Get latest CMake and ninja
         uses: lukka/get-cmake@main
 
-      - name: Install additional libraries
-        run: sudo apt-get install libasio-dev nlohmann-json3-dev libfmt-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev mesa-common-dev libxrandr-dev libxxf86vm-dev libglib2.0-dev at-spi2-core libwxgtk3.0-gtk3-dev libarchive-dev freeglut3-dev libxmu-dev libdbus-1-dev libxtst-dev
-
-      - name: Run CMake Cache and Build
+      - name: Run CMake
         uses: lukka/run-cmake@main
         with:
           configurePreset: ${{ matrix.buildtype }}
           buildPreset: ${{ matrix.buildtype }}
 
-      - name: Upload artifacts
+      - name: Create and Upload Artifact
         uses: actions/upload-artifact@main
         with:
-          name: ${{ matrix.os }}-${{ matrix.buildtype }}
+          name: canary-${{ matrix.buildtype }}-${{ github.sha }}
           path: |
-            ${{ github.workspace }}/remeres
+            ${{ github.workspace }}/*.exe
