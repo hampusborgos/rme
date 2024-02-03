@@ -961,6 +961,16 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 		Sprite* spr = g_gui.gfx.getSprite(brushlist[n]->getLookID());
 		if(spr) {
 			spr->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
+		} else {
+			auto creatureType = g_creatures[brushlist[n]->getName()];
+			if (!creatureType) {
+				return;
+			}
+
+			auto creatureSprite = g_gui.gfx.getCreatureSprite(creatureType->outfit.lookType);
+			if (creatureSprite) {
+				creatureSprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
+			}
 		}
 
 		if(IsSelected(n)) {
