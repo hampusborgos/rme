@@ -24,7 +24,6 @@ data/user
 *.obj
 *.db
 *.opendb
-*.filters
 *.user
 *.vs
 
