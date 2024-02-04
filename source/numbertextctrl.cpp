@@ -27,7 +27,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long value, long minvalue, long maxvalue,
 		const wxPoint& pos, const wxSize& sz,
 		long style, const wxString& name) :
-	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NUMERIC), name),
+	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NONE), name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 	////
@@ -37,7 +37,7 @@ NumberTextCtrl::NumberTextCtrl(wxWindow* parent, wxWindowID id,
 		long value, long minvalue, long maxvalue,
 		long style, const wxString& name,
 		const wxPoint& pos, const wxSize& sz) :
-	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NUMERIC), name),
+	wxTextCtrl(parent, id, (wxString() << value), pos, sz, style, wxTextValidator(wxFILTER_NONE), name),
 	minval(minvalue), maxval(maxvalue), lastval(value)
 {
 	////
