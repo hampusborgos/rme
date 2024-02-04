@@ -969,7 +969,7 @@ void FindDialogListBox::OnDrawItem(wxDC& dc, const wxRect& rect, size_t n) const
 
 			auto creatureSprite = g_gui.gfx.getCreatureSprite(creatureType->outfit.lookType);
 			if (creatureSprite) {
-				creatureSprite->DrawTo(&dc, SPRITE_SIZE_32x32, rect.GetX(), rect.GetY(), rect.GetWidth(), rect.GetHeight());
+				creatureSprite->DrawTo(&dc, rect, creatureType->outfit);
 			}
 		}
 
