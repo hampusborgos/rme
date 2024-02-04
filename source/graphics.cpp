@@ -1037,6 +1037,52 @@ wxMemoryDC* GameSprite::getDC(SpriteSize size)
 	return dc[size];
 }
 
+wxMemoryDC* GameSprite::getDC(const Outfit& outfit)
+{
+	ASSERT(width >= 1 && height >= 1);
+
+	if(dc[SPRITE_SIZE_32x32]) {
+		return dc[SPRITE_SIZE_32x32];
+	}
+
+	const int image_size = std::max<int>(width, height) * rme::SpritePixels;
+	wxImage image(image_size, image_size);
+	image.Clear(g_settings.getInteger(Config::ICON_BACKGROUND));
+
+	const int direction = static_cast<int>(SOUTH) % pattern_x;
+
+	for(uint8_t w = 0; w < width; w++) {
+		for(uint8_t h = 0; h < height; h++) {
+			const int index = getIndex(w, h, 0, direction, 0, 0, 0);
+			uint8_t* data = nullptr;
+			if(layers == 1) {
+				data = spriteList[index]->getRGBData();
+			} else {
+				auto img = getTemplateImage(index, outfit);
+				data = img->getRGBData();
+			}
+			if(data) {
+				wxImage img(rme::SpritePixels, rme::SpritePixels, data);
+				img.SetMaskColour(0xFF, 0x00, 0xFF);
+				image.Paste(img, (width - w - 1) * rme::SpritePixels, (height - h - 1) * rme::SpritePixels);
+				img.Destroy();
+			}
+		}
+	}
+
+	// resizing to 32x32
+	if (image.GetWidth() > rme::SpritePixels || image.GetHeight() > rme::SpritePixels) {
+		image.Rescale(32, 32);
+	}
+
+	wxBitmap bitmap(image);
+	dc[SPRITE_SIZE_32x32] = new wxMemoryDC(bitmap);
+	image.Destroy();
+
+	g_gui.gfx.addSpriteToCleanup(this);
+	return dc[SPRITE_SIZE_32x32];
+}
+
 void GameSprite::DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int width, int height)
 {
 	if(width == -1)  width = sz == SPRITE_SIZE_32x32 ? 32 : 16;
@@ -1049,6 +1095,19 @@ void GameSprite::DrawTo(wxDC* dc, SpriteSize sz, int start_x, int start_y, int w
 		dc->SetBrush(*wxRED_BRUSH);
 		dc->DrawRectangle(start_x, start_y, width, height);
 		dc->SetBrush(b);
+	}
+}
+
+void GameSprite::DrawTo(wxDC* context, const wxRect& rect, const Outfit& outfit)
+{
+	wxDC* source = getDC(outfit);
+	if(source) {
+		context->Blit(rect.x, rect.y, rect.width, rect.height, source, 0, 0, wxCOPY, true);
+	} else {
+		const wxBrush& brush = context->GetBrush();
+		context->SetBrush(*wxRED_BRUSH);
+		context->DrawRectangle(rect);
+		context->SetBrush(brush);
 	}
 }
 
