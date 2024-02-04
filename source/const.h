@@ -55,6 +55,9 @@ constexpr int MaxUniqueId = 65535;
 constexpr int MinActionId = 100;
 constexpr int MaxActionId = 65535;
 
+// Position indicator when using the position control
+constexpr int PositionIndicatorDuration = 3000;
+
 } // namespace rme
 
 #endif // RME_CONST_H_

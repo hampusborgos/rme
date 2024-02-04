@@ -159,8 +159,10 @@ void MapWindow::SetScreenCenterPosition(const Position& position, bool showIndic
 	Scroll(x, y, true);
 	canvas->ChangeFloor(z);
 
-	if(showIndicator)
+	if(showIndicator) {
 		canvas->ShowPositionIndicator(position);
+		Refresh();
+	}
 }
 
 void MapWindow::GoToPreviousCenterPosition()

@@ -143,6 +143,13 @@ public:
 	void TakeScreenshot(uint8_t* screenshot_buffer);
 
 	void ShowPositionIndicator(const Position& position);
+	long GetPositionIndicatorTime() const {
+		const long time = pos_indicator_timer.Time();
+		if(time < rme::PositionIndicatorDuration) {
+			return time;
+		}
+		return 0;
+	}
 
 	DrawingOptions& getOptions() noexcept { return options; }
 

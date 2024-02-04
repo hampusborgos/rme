@@ -1692,10 +1692,10 @@ void MapDrawer::DrawPositionIndicator(int z)
 		return;
 	}
 
-	constexpr int duration = 3000;
-	const long time = pos_indicator_timer.Time();
-	if(time >= duration)
+	const long time = GetPositionIndicatorTime();
+	if(time == 0) {
 		return;
+	}
 
 	int x, y;
 	getDrawPosition(pos_indicator, x, y);
