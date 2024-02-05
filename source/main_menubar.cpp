@@ -26,6 +26,7 @@
 #include "result_window.h"
 #include "extension_window.h"
 #include "find_item_window.h"
+#include "duplicated_items_window.h"
 #include "settings.h"
 
 #include "gui.h"
@@ -76,12 +77,14 @@ MainMenuBar::MainMenuBar(MainFrame *frame) : frame(frame)
 	MAKE_ACTION(SEARCH_ON_MAP_ACTION, wxITEM_NORMAL, OnSearchForActionOnMap);
 	MAKE_ACTION(SEARCH_ON_MAP_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnMap);
 	MAKE_ACTION(SEARCH_ON_MAP_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnMap);
+	MAKE_ACTION(SEARCH_ON_MAP_DUPLICATED_ITEMS, wxITEM_NORMAL, OnSearchForDuplicatedItemsOnMap);
 	MAKE_ACTION(SEARCH_ON_SELECTION_EVERYTHING, wxITEM_NORMAL, OnSearchForStuffOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_UNIQUE, wxITEM_NORMAL, OnSearchForUniqueOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_ACTION, wxITEM_NORMAL, OnSearchForActionOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_CONTAINER, wxITEM_NORMAL, OnSearchForContainerOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_WRITEABLE, wxITEM_NORMAL, OnSearchForWriteableOnSelection);
 	MAKE_ACTION(SEARCH_ON_SELECTION_ITEM, wxITEM_NORMAL, OnSearchForItemOnSelection);
+	MAKE_ACTION(SEARCH_ON_SELECTION_DUPLICATED_ITEMS, wxITEM_NORMAL, OnSearchForDuplicatedItemsOnSelection);
 	MAKE_ACTION(REPLACE_ON_SELECTION_ITEMS, wxITEM_NORMAL, OnReplaceItemsOnSelection);
 	MAKE_ACTION(REMOVE_ON_SELECTION_ITEM, wxITEM_NORMAL, OnRemoveItemOnSelection);
 	MAKE_ACTION(SELECT_MODE_COMPENSATE, wxITEM_RADIO, OnSelectionTypeChange);
@@ -334,11 +337,13 @@ void MainMenuBar::Update()
 	EnableItem(SEARCH_ON_MAP_ACTION, is_host);
 	EnableItem(SEARCH_ON_MAP_CONTAINER, is_host);
 	EnableItem(SEARCH_ON_MAP_WRITEABLE, is_host);
+	EnableItem(SEARCH_ON_MAP_DUPLICATED_ITEMS, is_host);
 	EnableItem(SEARCH_ON_SELECTION_EVERYTHING, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_UNIQUE, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_ACTION, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_CONTAINER, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_WRITEABLE, has_selection && is_host);
+	EnableItem(SEARCH_ON_SELECTION_DUPLICATED_ITEMS, has_selection && is_host);
 	EnableItem(SEARCH_ON_SELECTION_ITEM, has_selection && is_host);
 	EnableItem(REPLACE_ON_SELECTION_ITEMS, has_selection && is_host);
 	EnableItem(REMOVE_ON_SELECTION_ITEM, has_selection && is_host);
@@ -1027,6 +1032,11 @@ void MainMenuBar::OnSearchForWriteableOnMap(wxCommandEvent& WXUNUSED(event))
 	SearchItems(false, false, false, true);
 }
 
+void MainMenuBar::OnSearchForDuplicatedItemsOnMap(wxCommandEvent& WXUNUSED(event))
+{
+	SearchDuplicatedItems(false);
+}
+
 void MainMenuBar::OnSearchForStuffOnSelection(wxCommandEvent& WXUNUSED(event))
 {
 	SearchItems(true, true, true, true, true);
@@ -1086,6 +1096,11 @@ void MainMenuBar::OnSearchForItemOnSelection(wxCommandEvent& WXUNUSED(event))
 	}
 
 	dialog.Destroy();
+}
+
+void MainMenuBar::OnSearchForDuplicatedItemsOnSelection(wxCommandEvent& WXUNUSED(event))
+{
+	SearchDuplicatedItems(true);
 }
 
 void MainMenuBar::OnReplaceItemsOnSelection(wxCommandEvent& WXUNUSED(event))
@@ -2153,4 +2168,14 @@ void MainMenuBar::SearchItems(bool unique, bool action, bool container, bool wri
 	for(std::vector<std::pair<Tile*, Item*> >::iterator iter = found.begin(); iter != found.end(); ++iter) {
 		result->AddPosition(searcher.desc(iter->second), iter->first->getPosition());
 	}
+}
+
+void MainMenuBar::SearchDuplicatedItems(bool selection)
+{
+	if(!g_gui.IsEditorOpen()) {
+		return;
+	}
+
+	auto dialog = g_gui.ShowDuplicatedItemsWindow();
+	dialog->StartSearch(g_gui.GetCurrentMapTab(), selection);
 }

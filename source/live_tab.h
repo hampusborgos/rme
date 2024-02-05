@@ -35,6 +35,8 @@ public:
 	LiveLogTab(MapTabbook* aui, LiveSocket* socket);
 	~LiveLogTab();
 
+	bool IsCurrent() const;
+
 	void Message(const wxString& str);
 	void Chat(const wxString& speaker, const wxString& str);
 

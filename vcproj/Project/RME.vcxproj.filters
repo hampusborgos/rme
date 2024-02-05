@@ -352,6 +352,9 @@
     <ClInclude Include="..\..\source\pngfiles.h">
       <Filter>gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\source\duplicated_items_window.h">
+      <Filter>gui\dialogs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\mkpch.cpp" />
@@ -636,6 +639,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\pngfiles.cpp">
       <Filter>gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\duplicated_items_window.cpp">
+      <Filter>gui\dialogs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -127,6 +127,21 @@ LiveLogTab::~LiveLogTab()
 
 }
 
+bool LiveLogTab::IsCurrent() const
+{
+	auto editor_tab = aui->GetCurrentTab();
+	if (!editor_tab) {
+		return false;
+	}
+
+	auto live_tab = dynamic_cast<LiveLogTab*>(editor_tab);
+	if (!live_tab) {
+		return false;
+	}
+
+	return live_tab == this;
+}
+
 wxString LiveLogTab::GetTitle() const
 {
 	if(socket) {

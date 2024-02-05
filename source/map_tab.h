@@ -22,7 +22,8 @@
 #include "application.h"
 #include "map_window.h"
 
-class MapTab : public EditorTab, public MapWindow {
+class MapTab : public EditorTab, public MapWindow
+{
 public:
 	MapTab(MapTabbook* aui, Editor* editor);
 	// Constructs a newd window, but it uses the same internal editor as 'other'
@@ -30,6 +31,7 @@ public:
 	MapTab(const MapTab* other);
 	~MapTab();
 
+	bool IsCurrent() const;
 	bool IsUniqueReference() const;
 	bool HasSameReference(MapTab* other) const;
 

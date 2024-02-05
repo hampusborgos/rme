@@ -37,6 +37,8 @@
             <item name="Find $Action" action="SEARCH_ON_MAP_ACTION" help="Find all items with an action ID on map."/>
             <item name="Find $Container" action="SEARCH_ON_MAP_CONTAINER" help="Find all containers on map."/>
             <item name="Find $Writeable" action="SEARCH_ON_MAP_WRITEABLE" help="Find all writeable items on map."/>
+            <separator/>
+            <item name="Find $Duplicated" action="SEARCH_ON_MAP_DUPLICATED_ITEMS" help="Find for duplicated items on map."/>
         </menu>
         <separator/>
         <menu name="$Border Options">
@@ -86,6 +88,8 @@
             <item name="Find $Action" action="SEARCH_ON_SELECTION_ACTION" help="Find all items with an action ID on selected area."/>
             <item name="Find $Container" action="SEARCH_ON_SELECTION_CONTAINER" help="Find all containers on selected area."/>
             <item name="Find $Writeable" action="SEARCH_ON_SELECTION_WRITEABLE" help="Find all writeable items on selected area."/>
+            <separator/>
+            <item name="Find $Duplicated" action="SEARCH_ON_SELECTION_DUPLICATED_ITEMS" help="Find for duplicated items on selected area."/>
         </menu>
         <separator/>
         <menu name="$Selection Mode">

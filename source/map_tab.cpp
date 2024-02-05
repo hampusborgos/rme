@@ -61,6 +61,21 @@ MapTab::~MapTab()
 	}
 }
 
+bool MapTab::IsCurrent() const
+{
+	auto editor_tab = aui->GetCurrentTab();
+	if(!editor_tab) {
+		return false;
+	}
+
+	auto map_tab = dynamic_cast<MapTab*>(editor_tab);
+	if(!map_tab) {
+		return false;
+	}
+
+	return HasSameReference(map_tab);
+}
+
 bool MapTab::IsUniqueReference() const
 {
 	return iref->owner_count == 1;

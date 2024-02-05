@@ -50,6 +50,7 @@ class MapWindow;
 class MapCanvas;
 
 class SearchResultWindow;
+class DuplicatedItemsWindow;
 class MinimapWindow;
 class ActionsHistoryWindow;
 class PaletteWindow;
@@ -204,6 +205,9 @@ public:
 	// Search Results
 	SearchResultWindow* ShowSearchWindow();
 	void HideSearchWindow();
+
+	DuplicatedItemsWindow* ShowDuplicatedItemsWindow();
+	void HideDuplicatedItemsWindow();
 
 	ActionsHistoryWindow* ShowActionsWindow();
 	void HideActionsWindow();
@@ -379,6 +383,7 @@ public:
 	MinimapWindow* minimap;
 	DCButton* gem; // The small gem in the lower-right corner
 	SearchResultWindow* search_result_window;
+	DuplicatedItemsWindow* duplicated_items_window;
 	ActionsHistoryWindow* actions_history_window;
 	GraphicManager gfx;
 

@@ -65,6 +65,7 @@ public:
 	// Properties
 	virtual wxWindow* GetWindow() const = 0;
 	virtual wxString GetTitle() const = 0;
+	virtual bool IsCurrent() const = 0;
 
 	//
 	virtual void OnSwitchEditorMode(EditorMode mode) {}

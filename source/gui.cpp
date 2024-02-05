@@ -32,6 +32,7 @@
 
 #include "common_windows.h"
 #include "result_window.h"
+#include "duplicated_items_window.h"
 #include "minimap_window.h"
 #include "palette_window.h"
 #include "map_display.h"
@@ -60,6 +61,7 @@ GUI::GUI() :
 	minimap(nullptr),
 	gem(nullptr),
 	search_result_window(nullptr),
+	duplicated_items_window(nullptr),
 	actions_history_window(nullptr),
 	secondary_map(nullptr),
 	doodad_buffer_map(nullptr),
@@ -703,6 +705,10 @@ void GUI::CloseCurrentEditor()
 	RefreshPalettes();
 	tabbook->DeleteTab(tabbook->GetSelection());
 	root->UpdateMenubar();
+
+	if(duplicated_items_window) {
+		duplicated_items_window->Clear();
+	}
 }
 
 bool GUI::CloseLiveEditors(LiveSocket* sock)
@@ -745,8 +751,13 @@ bool GUI::CloseAllEditors()
 			}
 		}
 	}
+
 	if(root)
 		root->UpdateMenubar();
+
+	if(duplicated_items_window) {
+		duplicated_items_window->Clear();
+	}
 	return true;
 }
 
@@ -939,6 +950,26 @@ SearchResultWindow* GUI::ShowSearchWindow()
 	return search_result_window;
 }
 
+DuplicatedItemsWindow* GUI::ShowDuplicatedItemsWindow()
+{
+	if(!duplicated_items_window) {
+		duplicated_items_window = new DuplicatedItemsWindow(root);
+		aui_manager->AddPane(duplicated_items_window, wxAuiPaneInfo().Caption("Duplicated Items"));
+	} else {
+		aui_manager->GetPane(duplicated_items_window).Show();
+	}
+	aui_manager->Update();
+	return duplicated_items_window;
+}
+
+void GUI::HideDuplicatedItemsWindow()
+{
+	if(duplicated_items_window) {
+		aui_manager->GetPane(duplicated_items_window).Show(false);
+		aui_manager->Update();
+	}
+}
+
 ActionsHistoryWindow* GUI::ShowActionsWindow()
 {
 	if(!actions_history_window) {
@@ -982,6 +1013,10 @@ void GUI::RefreshPalettes(Map* m, bool usedefault)
 		palette->OnUpdate(m? m : (usedefault? (IsEditorOpen()? &GetCurrentMap() : nullptr): nullptr));
 	}
 	SelectBrush();
+
+	if(duplicated_items_window) {
+		duplicated_items_window->UpdateButtons();
+	}
 
 	RefreshActions();
 }
