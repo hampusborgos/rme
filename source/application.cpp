@@ -640,6 +640,7 @@ void MainFrame::PrepareDC(wxDC& dc)
 	dc.SetMapMode( wxMM_TEXT );
 }
 
+#ifdef _WIN32
 // This is necessary for cmake to understand that it needs to set the executable
 int main(int argc, char** argv)
 {
@@ -650,3 +651,4 @@ int main(int argc, char** argv)
 	wxEntryCleanup(); // Clear the wxWidgets library
 	return 0;
 }
+#endif

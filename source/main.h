@@ -99,6 +99,10 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #   define ASSERT(...)
 #endif
 
+#ifdef _WIN32
+#include <crtdbg.h>
+#endif
+
 // The complete STL ?, well, almost ;)
 #include <math.h>
 #include <list>
@@ -116,7 +120,6 @@ _Ret_bytecap_(_Size) inline void* __CRTDECL operator new[](size_t _Size, const c
 #include <queue>
 #include <stdexcept>
 #include <stdlib.h>
-#include <crtdbg.h>
 #include <time.h>
 #include <fstream>
 #include <memory>
