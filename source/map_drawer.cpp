@@ -1121,8 +1121,8 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 
 	int subtype = -1;
 
-	int pattern_x = pos.x % sprite->pattern_x;
-	int pattern_y = pos.y % sprite->pattern_y;
+	int pattern_x = 0;
+	int pattern_y = 0;
 	int pattern_z = pos.z % sprite->pattern_z;
 
 	if(type.isSplash() || type.isFluidContainer()) {
@@ -1132,26 +1132,31 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Tile* tile, const Item*
 			pattern_x = 1;
 		} else if(tile->hasProperty(HOOK_EAST)) {
 			pattern_x = 2;
-		} else {
-			pattern_x = 0;
 		}
-	} else if(type.stackable) {
-		if(item->getSubtype() <= 1)
-			subtype = 0;
-		else if(item->getSubtype() <= 2)
-			subtype = 1;
-		else if(item->getSubtype() <= 3)
-			subtype = 2;
-		else if(item->getSubtype() <= 4)
-			subtype = 3;
-		else if(item->getSubtype() < 10)
-			subtype = 4;
-		else if(item->getSubtype() < 25)
-			subtype = 5;
-		else if(item->getSubtype() < 50)
-			subtype = 6;
-		else
-			subtype = 7;
+	} else if(type.stackable && sprite->pattern_x == 4 && sprite->pattern_y == 2) {
+		int count = item->getSubtype();
+		if(count <= 0) {
+			pattern_x = 0;
+			pattern_y = 0;
+		} else if(count < 5) {
+			pattern_x = count - 1;
+			pattern_y = 0;
+		} else if(count < 10) {
+			pattern_x = 0;
+			pattern_y = 1;
+		} else if(count < 25) {
+			pattern_x = 1;
+			pattern_y = 1;
+		} else if(count < 50) {
+			pattern_x = 2;
+			pattern_y = 1;
+		} else {
+			pattern_x = 3;
+			pattern_y = 1;
+		}
+	} else {
+		pattern_x = pos.x % sprite->pattern_x;
+		pattern_y = pos.y % sprite->pattern_y;
 	}
 
 	if(!ephemeral && options.transparent_items &&
@@ -1225,40 +1230,36 @@ void MapDrawer::BlitItem(int& draw_x, int& draw_y, const Position& pos, const It
 
 	int subtype = -1;
 
-	int pattern_x = pos.x % sprite->pattern_x;
-	int pattern_y = pos.y % sprite->pattern_y;
+	int pattern_x = 0;
+	int pattern_y = 0;
 	int pattern_z = pos.z % sprite->pattern_z;
 
 	if(type.isSplash() || type.isFluidContainer()) {
 		subtype = item->getSubtype();
-	} else if(type.isHangable) {
-		pattern_x = 0;
-		/*
-		if(tile->hasProperty(HOOK_SOUTH)) {
-			pattern_x = 2;
-		} else if(tile->hasProperty(HOOK_EAST)) {
+	} else if(type.stackable && sprite->pattern_x == 4 && sprite->pattern_y == 2) {
+		int count = item->getSubtype();
+		if(count <= 0) {
+			pattern_x = 0;
+			pattern_y = 0;
+		} else if(count < 5) {
+			pattern_x = count - 1;
+			pattern_y = 0;
+		} else if(count < 10) {
+			pattern_x = 0;
+			pattern_y = 1;
+		} else if(count < 25) {
 			pattern_x = 1;
+			pattern_y = 1;
+		} else if(count < 50) {
+			pattern_x = 2;
+			pattern_y = 1;
 		} else {
-			pattern_x = -0;
+			pattern_x = 3;
+			pattern_y = 1;
 		}
-		*/
-	} else if(type.stackable) {
-		if(item->getSubtype() <= 1)
-			subtype = 0;
-		else if(item->getSubtype() <= 2)
-			subtype = 1;
-		else if(item->getSubtype() <= 3)
-			subtype = 2;
-		else if(item->getSubtype() <= 4)
-			subtype = 3;
-		else if(item->getSubtype() < 10)
-			subtype = 4;
-		else if(item->getSubtype() < 25)
-			subtype = 5;
-		else if(item->getSubtype() < 50)
-			subtype = 6;
-		else
-			subtype = 7;
+	} else {
+		pattern_x = pos.x % sprite->pattern_x;
+		pattern_y = pos.y % sprite->pattern_y;
 	}
 
 	if(!ephemeral && options.transparent_items &&
