@@ -89,7 +89,7 @@
             <item name="Find $Container" action="SEARCH_ON_SELECTION_CONTAINER" help="Find all containers on selected area."/>
             <item name="Find $Writeable" action="SEARCH_ON_SELECTION_WRITEABLE" help="Find all writeable items on selected area."/>
             <separator/>
-            <item name="Find $Duplicated" action="SEARCH_ON_SELECTION_DUPLICATED_ITEMS" help="Find for duplicated items on selected area."/>
+            <item name="Find $Duplicated"  hotkey="Ctrl+R" action="SEARCH_ON_SELECTION_DUPLICATED_ITEMS" help="Find for duplicated items on selected area."/>
         </menu>
         <separator/>
         <menu name="$Selection Mode">
