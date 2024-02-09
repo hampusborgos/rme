@@ -6,7 +6,7 @@ if(NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
-find_package(asio CONFIG REQUIRED)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS date_time system filesystem iostreams)
 find_package(fmt CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
@@ -51,6 +51,9 @@ target_link_libraries(${PROJECT_NAME}
     ${GLUT_LIBRARIES}
     ${ZLIB_LIBRARIES}
     fmt::fmt
-    asio::asio
+    Boost::date_time
+    Boost::system
+    Boost::filesystem
+    Boost::iostreams
     nlohmann_json::nlohmann_json
 )
