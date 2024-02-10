@@ -1,0 +1,46 @@
+---
+name: Build - Windows
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: 2
+  MAKEFLAGS: '-j 2'
+
+jobs:
+  job:
+    if: ${{ github.event_name == 'push' || !github.event.pull_request.draft }}
+    name: ${{ matrix.os }}-${{ matrix.buildtype }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2022]
+        buildtype: [Release, Debug]
+        include:
+          - os: windows-2022
+            triplet: x64-windows
+            packages: >
+              sccache
+    steps:
+      - name: Setup MSBuild.exe
+        uses: microsoft/setup-msbuild@v1.1
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install vcpkg
+        run: |
+          git clone https://github.com/Microsoft/vcpkg.git
+          cd vcpkg
+          ./bootstrap-vcpkg.bat
+          ./vcpkg integrate install
+
+      - name: Build project
+        run: msbuild.exe /p:VcpkgEnableManifest=true vcproj/RME.sln

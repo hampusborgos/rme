@@ -1,0 +1,12 @@
+{
+  "name": "remeres",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "asio",
+    "freeglut",
+    "nlohmann-json",
+    "fmt",
+    "wxwidgets",
+    "opengl"
+  ]
+}
