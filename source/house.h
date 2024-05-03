@@ -50,6 +50,8 @@ public:
 	uint8_t getEmptyDoorID() const;
 	Position getDoorPositionByID(uint8_t id) const;
 
+	const PositionList& getTiles() const { return tiles; }
+
 protected:
 	Map* map;
 	PositionList tiles;
