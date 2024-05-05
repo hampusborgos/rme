@@ -333,10 +333,19 @@ void HousePalettePanel::OnListBoxChange(wxCommandEvent& event)
 
 void HousePalettePanel::OnListBoxDoubleClick(wxCommandEvent& event)
 {
-	House* house = reinterpret_cast<House*>(event.GetClientData());
-	// I find it extremly unlikely that one actually wants the exit at 0,0,0, so just treat it as the null value
-	if(house && house->getExit() != Position(0,0,0)) {
-		g_gui.SetScreenCenterPosition(house->getExit());
+	if (House* house = reinterpret_cast<House*>(event.GetClientData())) {
+		const Position& position = house->getExit();
+		if (!position.isValid()) {
+			// find a valid tile position
+			for (const Position& tilePosition : house->getTiles()) {
+				if (tilePosition.isValid()) {
+					g_gui.SetScreenCenterPosition(tilePosition);
+					break;
+				}
+			}
+		} else {
+			g_gui.SetScreenCenterPosition(position);
+		}
 	}
 }
 
